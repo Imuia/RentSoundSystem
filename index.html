@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html class="dark" lang="fr">
-<head>
+<!DOCTYPE html><html class="dark" lang="fr"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <title>RentSoundSystem | Location Sonorisation Professionnelle, Line Array &amp; Éclairage Événementiel</title>
@@ -32,80 +30,81 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 
-<!-- Leaflet map assets - RentSoundSystem -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQK0ZYoZ6b+3H2g4XM5YkM9z6nQs5K4=" crossorigin="anonymous">
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<!-- Leaflet map assets -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <style>
-  /* FIX MAP : le conteneur doit avoir une vraie hauteur AVANT l'initialisation Leaflet */
   #rss-map-wrap {
-    position: relative;
-    width: 100%;
-    height: 600px;
-    min-height: 600px;
-    border-radius: 12px;
-    overflow: hidden;
-    background: #1f1f1f;
+    height: 600px !important;
+    min-height: 600px !important;
   }
+
   #rss-map {
-    position: absolute;
-    inset: 0;
     width: 100% !important;
-    height: 100% !important;
-    min-height: 600px;
-    z-index: 1;
-    background: #1f1f1f;
-  }
-  #rss-map .leaflet-container,
-  .leaflet-container {
-    width: 100% !important;
-    height: 100% !important;
+    height: 600px !important;
+    min-height: 600px !important;
+    display: block !important;
+    position: relative !important;
+    z-index: 1 !important;
     background: #1f1f1f !important;
-    font-family: Inter, sans-serif;
   }
+
+  #rss-map.leaflet-container {
+    width: 100% !important;
+    height: 600px !important;
+    min-height: 600px !important;
+    background: #1f1f1f !important;
+    font-family: Inter, sans-serif !important;
+  }
+
   #rss-map .leaflet-tile {
     max-width: none !important;
     max-height: none !important;
   }
-  #rss-map .leaflet-control-zoom {
-    border: 1px solid rgba(255,255,255,.12) !important;
-    border-radius: 10px !important;
-    overflow: hidden;
-  }
-  #rss-map .leaflet-control-zoom a {
-    background: #2a2a2a !important;
-    color: #e2e2e2 !important;
-    border-color: rgba(255,255,255,.12) !important;
-  }
-  #rss-map .leaflet-control-zoom a:hover {
-    color: #FC036D !important;
-  }
+
   #rss-map .leaflet-control-attribution {
     background: rgba(19,19,19,.75) !important;
     color: #aaa !important;
   }
-  #rss-map .leaflet-control-attribution a { color:#FC036D !important; }
+
+  #rss-map .leaflet-control-attribution a {
+    color: #FC036D !important;
+  }
+
+  .rss-product-marker,
+  .rss-user-marker {
+    background: transparent !important;
+    border: 0 !important;
+  }
+
   .rss-pin {
-    color:#FC036D;
-    font-size:38px;
-    line-height:38px;
-    filter:drop-shadow(0 0 10px rgba(252,3,109,.85));
+    color: #FC036D;
+    font-size: 38px;
+    line-height: 38px;
+    filter: drop-shadow(0 0 10px rgba(252,3,109,.85));
   }
-  .rss-user-pin {
-    width:20px;
-    height:20px;
-    background:#FC036D;
-    border:3px solid #fff;
-    border-radius:50%;
-    box-shadow:0 0 0 8px rgba(252,3,109,.22), 0 0 18px rgba(252,3,109,.8);
+
+  .rss-user-dot {
+    width: 20px;
+    height: 20px;
+    background: #FC036D;
+    border: 3px solid #fff;
+    border-radius: 999px;
+    box-shadow: 0 0 0 8px rgba(252,3,109,.22), 0 0 16px rgba(252,3,109,.8);
   }
+
   .rss-popup .leaflet-popup-content-wrapper {
-    background:#1f1f1f;
-    color:#e2e2e2;
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:12px;
+    background: #1f1f1f;
+    color: #e2e2e2;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
   }
-  .rss-popup .leaflet-popup-tip { background:#1f1f1f; }
+
+  .rss-popup .leaflet-popup-tip {
+    background: #1f1f1f;
+  }
 </style>
+
 <script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
 <style>
         body { background-color: #131313; color: #e2e2e2; }
@@ -262,10 +261,12 @@
       <span class="material-symbols-outlined">my_location</span> Utiliser ma position
     </button>
   </div>
+
   <div id="rss-map-wrap" class="relative w-full h-[600px] min-h-[600px] rounded-xl overflow-hidden border border-white/10 bg-surface-container">
     <div id="rss-map" aria-label="Carte des équipements disponibles autour de vous"></div>
   </div>
 </section>
+
 <!-- Featured Categories Bento Grid -->
 <section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col gap-2">
@@ -431,20 +432,69 @@
     </div>
   </div>
 </footer>
+
+
+
+
+
+
 <script>
 (function () {
-  function bootRentSoundSystemMap() {
-    const mapEl = document.getElementById('rss-map');
-    const wrap = document.getElementById('rss-map-wrap');
-    if (!mapEl || !wrap || typeof L === 'undefined') return;
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
 
-    // Évite une double initialisation après navigation/rechargement partiel.
+  ready(function () {
+    if (typeof L === 'undefined') {
+      console.error('Leaflet non chargé');
+      return;
+    }
+
+    const mapEl = document.getElementById('rss-map');
+    const mapWrap = document.getElementById('rss-map-wrap');
+    if (!mapEl || !mapWrap) return;
+
+    // Sécurité anti double-initialisation sur Vercel / hot reload
     if (mapEl._leaflet_id) {
       mapEl._leaflet_id = null;
       mapEl.innerHTML = '';
     }
 
     const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
+
+    const productIcon = L.divIcon({
+      className: 'rss-product-marker',
+      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
+      popupAnchor: [0, -38]
+    });
+
+    const userIcon = L.divIcon({
+      className: 'rss-user-marker',
+      html: '<div class="rss-user-dot"></div>',
+      iconSize: [20, 20],
+      iconAnchor: [10, 10],
+      popupAnchor: [0, -10]
+    });
+
+    const map = L.map(mapEl, {
+      zoomControl: false,
+      scrollWheelZoom: true,
+      preferCanvas: false,
+      maxZoom: 18
+    }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], DEFAULT_CITY.zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 2,
+      maxZoom: 18,
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+
     const products = [
       { title: 'L-Acoustics K2', price: '450€ / jour', city: 'Saint-Denis', lat: 48.9362, lng: 2.3574 },
       { title: 'Pioneer CDJ-3000', price: '85€ / jour', city: 'Paris 11e', lat: 48.8577, lng: 2.3819 },
@@ -452,60 +502,59 @@
       { title: 'Shure AD4D Axient', price: '150€ / jour', city: 'Paris 15e', lat: 48.8412, lng: 2.3003 }
     ];
 
-    const map = L.map(mapEl, {
-      zoomControl: false,
-      scrollWheelZoom: true,
-      preferCanvas: false
-    }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], DEFAULT_CITY.zoom);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      detectRetina: true,
-      attribution: '&copy; OpenStreetMap'
-    }).addTo(map);
-
-    L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-    const productIcon = L.divIcon({
-      className: 'rss-product-marker',
-      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
-      iconSize: [38, 38],
-      iconAnchor: [19, 38],
-      popupAnchor: [0, -36]
-    });
-
-    const userIcon = L.divIcon({
-      className: 'rss-user-pin',
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
-      popupAnchor: [0, -10]
-    });
-
-    products.forEach(item => {
-      L.marker([item.lat, item.lng], { icon: productIcon })
-        .addTo(map)
-        .bindPopup(`<strong style="color:#fff">${item.title}</strong><br><span style="color:#b4b5b5">${item.city}</span><br><strong style="color:#FC036D">${item.price}</strong>`, { className: 'rss-popup' });
-    });
-
+    let productMarkers = [];
     let userMarker = null;
-    function refreshMapSize() {
-      if (wrap.offsetWidth > 0 && wrap.offsetHeight > 0) {
-        map.invalidateSize(true);
-      }
+
+    function addProductMarkers(items) {
+      productMarkers.forEach(marker => map.removeLayer(marker));
+      productMarkers = items.map(item => {
+        return L.marker([item.lat, item.lng], { icon: productIcon })
+          .addTo(map)
+          .bindPopup(
+            '<strong style="color:#fff">' + item.title + '</strong><br>' +
+            '<span style="color:#b4b5b5">' + item.city + '</span><br>' +
+            '<strong style="color:#FC036D">' + item.price + '</strong>',
+            { className: 'rss-popup' }
+          );
+      });
     }
 
-    function setCity(lat, lng, label, zoom) {
-      refreshMapSize();
-      map.setView([lat, lng], zoom || 13, { animate: true });
+    function fixMapSize() {
+      mapEl.style.height = '600px';
+      mapEl.style.minHeight = '600px';
+      mapWrap.style.height = '600px';
+      mapWrap.style.minHeight = '600px';
+      map.invalidateSize(true);
+    }
+
+    function setLabel(label) {
       const cityLabel = document.getElementById('map-city-label');
-      if (cityLabel) cityLabel.textContent = `${label} • Autour de vous`;
-      if (userMarker) userMarker.remove();
-      userMarker = L.marker([lat, lng], { icon: userIcon })
+      if (cityLabel) cityLabel.textContent = label + ' • Autour de vous';
+    }
+
+    function setUserPosition(lat, lng, label, zoom) {
+      const safeZoom = Math.min(zoom || 14, 16);
+
+      if (userMarker) map.removeLayer(userMarker);
+
+      userMarker = L.marker([lat, lng], { icon: userIcon, zIndexOffset: 1000 })
         .addTo(map)
-        .bindPopup('Votre position / ville connectée', { className: 'rss-popup' })
-        .openPopup();
-      setTimeout(refreshMapSize, 150);
-      setTimeout(refreshMapSize, 600);
+        .bindPopup('Votre position', { className: 'rss-popup' });
+
+      map.setView([lat, lng], safeZoom, { animate: true });
+      setLabel(label || 'Votre position');
+
+      // Si l’utilisateur est loin de Paris, on place aussi 4 exemples autour de sa position.
+      const localProducts = [
+        { title: 'L-Acoustics K2', price: '450€ / jour', city: 'À proximité', lat: lat + 0.012, lng: lng + 0.010 },
+        { title: 'Pioneer CDJ-3000', price: '85€ / jour', city: 'À proximité', lat: lat - 0.010, lng: lng + 0.014 },
+        { title: 'Yamaha Rivage PM7', price: '1200€ / jour', city: 'À proximité', lat: lat + 0.008, lng: lng - 0.016 },
+        { title: 'Shure AD4D Axient', price: '150€ / jour', city: 'À proximité', lat: lat - 0.014, lng: lng - 0.012 }
+      ];
+      addProductMarkers(localProducts);
+
+      setTimeout(fixMapSize, 50);
+      setTimeout(fixMapSize, 300);
     }
 
     function locateUser(showError) {
@@ -513,58 +562,69 @@
         if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
         return;
       }
+
       navigator.geolocation.getCurrentPosition(
-        pos => setCity(pos.coords.latitude, pos.coords.longitude, 'Votre position', 14),
-        () => { if (showError) alert('Position refusée. Tapez une ville dans le champ de recherche.'); },
-        { enableHighAccuracy: true, timeout: 12000, maximumAge: 60000 }
+        function (pos) {
+          setUserPosition(pos.coords.latitude, pos.coords.longitude, 'Votre position', 14);
+        },
+        function () {
+          if (showError) alert('Position refusée. Tapez une ville dans le champ de recherche.');
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
       );
     }
+
+    async function searchCity() {
+      const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+      const q = cityInput && cityInput.value ? cityInput.value.trim() : '';
+      if (!q) return;
+
+      try {
+        const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q));
+        const data = await res.json();
+
+        if (!data || !data.length) {
+          alert('Ville introuvable.');
+          return;
+        }
+
+        setUserPosition(parseFloat(data[0].lat), parseFloat(data[0].lon), q, 13);
+        mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (e) {
+        alert('Erreur de recherche de ville.');
+      }
+    }
+
+    addProductMarkers(products);
 
     document.getElementById('use-my-location')?.addEventListener('click', function () {
       locateUser(true);
     });
 
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-    const searchButton = Array.from(document.querySelectorAll('button')).find(b => b.textContent.trim().toLowerCase() === 'rechercher');
-
-    async function searchCity() {
-      const q = cityInput?.value?.trim();
-      if (!q) return;
-      try {
-        const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(q)}`);
-        const data = await res.json();
-        if (!data.length) return alert('Ville introuvable.');
-        setCity(parseFloat(data[0].lat), parseFloat(data[0].lon), q, 12);
-        wrap.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } catch (e) {
-        alert('Erreur de recherche de ville.');
-      }
-    }
+    const searchButton = Array.from(document.querySelectorAll('button')).find(function (button) {
+      return button.textContent.trim().toLowerCase() === 'rechercher';
+    });
 
     searchButton?.addEventListener('click', searchCity);
-    cityInput?.addEventListener('keydown', e => { if (e.key === 'Enter') searchCity(); });
+    cityInput?.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') searchCity();
+    });
 
-    // Corrections Leaflet/Vercel/Tailwind : recalcul quand le layout et les images sont prêts.
-    refreshMapSize();
-    requestAnimationFrame(refreshMapSize);
-    [100, 300, 700, 1200, 2000].forEach(ms => setTimeout(refreshMapSize, ms));
-    window.addEventListener('load', refreshMapSize);
-    window.addEventListener('resize', refreshMapSize);
+    // Recalcul forcé : corrige la carte coupée / tuiles au centre / bandes noires.
+    fixMapSize();
+    setTimeout(fixMapSize, 100);
+    setTimeout(fixMapSize, 500);
+    setTimeout(fixMapSize, 1000);
+    window.addEventListener('load', fixMapSize);
+    window.addEventListener('resize', fixMapSize);
 
-    if ('ResizeObserver' in window) {
-      new ResizeObserver(refreshMapSize).observe(wrap);
-    }
-
-    // Géolocalisation automatique sur HTTPS. Si refusée, Paris reste affiché.
-    setTimeout(() => locateUser(false), 900);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', bootRentSoundSystemMap);
-  } else {
-    bootRentSoundSystemMap();
-  }
+    // Géolocalisation automatique douce.
+    setTimeout(function () {
+      locateUser(false);
+    }, 800);
+  });
 })();
 </script>
-</body>
-</html>
+
+</body></html>
