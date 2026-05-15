@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout - Sonic Precision</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container": "#1f1f1f",
+                        "on-primary-fixed": "#ffffff",
+                        "outline": "#ac878d",
+                        "on-secondary": "#2f3131",
+                        "surface-container-low": "#1b1b1b",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-primary-fixed-variant": "#ffffff",
+                        "inverse-primary": "#bc004f",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "outline-variant": "#5d3f44",
+                        "inverse-surface": "#e2e2e2",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#454747",
+                        "primary-fixed": "#FC036D",
+                        "on-background": "#e2e2e2",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-container": "#929090",
+                        "background": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "primary-fixed-dim": "#FC036D",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#313030",
+                        "on-surface": "#e2e2e2",
+                        "surface-tint": "#FC036D",
+                        "surface-dim": "#131313",
+                        "secondary-fixed": "#e2e2e2",
+                        "inverse-on-surface": "#303030",
+                        "tertiary": "#c8c6c5",
+                        "on-error": "#690005",
+                        "surface-variant": "#353535",
+                        "primary": "#FC036D",
+                        "on-primary": "#ffffff",
+                        "surface-bright": "#393939",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "error-container": "#93000a",
+                        "on-surface-variant": "#e6bcc2",
+                        "surface-container-highest": "#353535",
+                        "primary-container": "#FC036D",
+                        "secondary": "#c6c6c7",
+                        "on-primary-container": "#ffffff",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface": "#131313"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    fontFamily: {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface w-full top-0 sticky border-b border-outline-variant dark:border-outline-variant z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto z-50">
+<div class="font-headline text-headline-md font-bold tracking-tighter text-on-surface dark:text-on-surface">
+                Sonic Precision
+            </div>
+<!-- Simplified Nav for Checkout: Intent Linear/Transactional -->
+<div class="flex items-center gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label text-label-md">Besoin d'aide ?</span>
+</a>
+<button class="text-on-surface-variant hover:text-on-surface active:scale-95 duration-100 flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
+<div class="mb-8">
+<h1 class="font-headline text-headline-xl text-inverse-surface mb-2 tracking-tighter">Paiement Sécurisé</h1>
+<p class="font-body text-body-lg text-on-surface-variant">Finalisez votre réservation de matériel audio professionnel.</p>
+</div>
+<div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+<!-- Left Column: Checkout Steps -->
+<div class="w-full lg:w-2/3 flex flex-col gap-6">
+<!-- Step 1: Information -->
+<section class="bg-surface-container border border-surface-container-highest rounded-lg p-6 md:p-8">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold">1</div>
+<h2 class="font-headline text-headline-md text-inverse-surface">Informations de Contact</h2>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Prénom</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Jean" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Nom</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Dupont" type="text"/>
+</div>
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="font-label text-label-caps text-on-surface-variant">Société / Production (Optionnel)</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Nom de l'entreprise" type="text"/>
+</div>
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="font-label text-label-caps text-on-surface-variant">Email</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="jean.dupont@example.com" type="email"/>
+</div>
+<div class="flex flex-col gap-1 md:col-span-2">
+<label class="font-label text-label-caps text-on-surface-variant">Téléphone</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="+33 6 00 00 00 00" type="tel"/>
+</div>
+</form>
+</section>
+<!-- Step 2: Services -->
+<section class="bg-surface-container border border-surface-container-highest rounded-lg p-6 md:p-8">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold">2</div>
+<h2 class="font-headline text-headline-md text-inverse-surface">Services &amp; Logistique</h2>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Option 1 -->
+<label class="flex items-start gap-4 p-4 border border-outline-variant rounded cursor-pointer hover:border-primary hover:bg-surface-container-high transition-colors relative">
+<input checked="" class="mt-1 text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" name="delivery" type="radio"/>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="font-headline font-semibold text-inverse-surface">Retrait en Entrepôt</span>
+<span class="font-body text-body-md font-bold text-inverse-surface">Gratuit</span>
+</div>
+<p class="font-body text-body-sm text-on-surface-variant">Retrait par vos soins à notre entrepôt de Paris Nord. Véhicule adapté requis pour le système K2.</p>
+</div>
+</label>
+<!-- Option 2 -->
+<label class="flex items-start gap-4 p-4 border border-outline-variant rounded cursor-pointer hover:border-primary hover:bg-surface-container-high transition-colors relative">
+<input class="mt-1 text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" name="delivery" type="radio"/>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="font-headline font-semibold text-inverse-surface">Livraison &amp; Reprise</span>
+<span class="font-body text-body-md font-bold text-inverse-surface">+ 250 €</span>
+</div>
+<p class="font-body text-body-sm text-on-surface-variant">Transport aller-retour sur le lieu de l'événement (Île-de-France uniquement).</p>
+</div>
+</label>
+<!-- Add-on -->
+<div class="mt-4 pt-4 border-t border-outline-variant">
+<label class="flex items-start gap-4 p-4 bg-surface rounded border border-surface-container-highest cursor-pointer hover:border-primary transition-colors">
+<input class="mt-1 rounded text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" type="checkbox"/>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="engineering">engineering</span>
+<span class="font-headline font-semibold text-inverse-surface">Installation par un Technicien</span>
+</div>
+<span class="font-body text-body-md font-bold text-primary">+ 450 € / jour</span>
+</div>
+<p class="font-body text-body-sm text-on-surface-variant">Montage, calage système et assistance technique durant l'événement par un ingénieur certifié L-Acoustics.</p>
+</div>
+</label>
+</div>
+</div>
+</section>
+<!-- Step 3: Payment -->
+<section class="bg-surface-container border border-surface-container-highest rounded-lg p-6 md:p-8">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-on-surface-variant font-headline font-bold">3</div>
+<h2 class="font-headline text-headline-md text-inverse-surface">Méthode de Paiement</h2>
+</div>
+<div class="grid gap-4 mb-6 grid-cols-2 md:grid-cols-5">
+<button class="p-4 border-2 border-primary rounded flex flex-col items-center justify-center gap-2 bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-inverse-surface text-3xl" data-icon="credit_card">credit_card</span>
+<span class="font-label text-label-md text-inverse-surface">Carte Bancaire</span>
+</button>
+<button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label text-label-md text-on-surface-variant">PayPal</span>
+</button>
+<button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="payments">payments</span>
+<span class="font-label text-label-md text-on-surface-variant">Apple Pay</span>
+</button>
+<button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">currency_bitcoin</span>
+<span class="font-label text-label-md text-on-surface-variant">Crypto</span>
+</button><button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">account_balance</span>
+<span class="font-label text-label-md text-on-surface-variant text-center">Virement Bancaire</span>
+</button></div>
+<form class="flex flex-col gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Numéro de carte</label>
+<div class="relative">
+<input class="w-full bg-surface border border-outline-variant rounded px-4 py-3 pl-12 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="0000 0000 0000 0000" type="text"/>
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="credit_card">credit_card</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Date d'expiration</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="MM/AA" type="text"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">CVC</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="123" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<label class="font-label text-label-caps text-on-surface-variant">Nom sur la carte</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Jean Dupont" type="text"/>
+</div>
+</form>
+</section>
+</div>
+<!-- Right Column: Order Summary -->
+<div class="w-full lg:w-1/3">
+<div class="bg-surface-container-low border border-outline-variant rounded-lg p-6 sticky top-24 shadow-2xl">
+<h3 class="font-headline text-headline-md text-inverse-surface border-b border-outline-variant pb-4 mb-6">Résumé de la Commande</h3>
+<!-- Item -->
+<div class="flex gap-4 mb-6">
+<div class="w-20 h-20 rounded bg-surface-container overflow-hidden flex-shrink-0 border border-outline-variant">
+<img alt="L-Acoustics K2 Line Array System in a dark, professional studio setting. The lighting is moody with subtle pink accents highlighting the metallic grills." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0ujoF2Ba4o6_PrN0k1SDnwKc8pvHg8nP00XQ9H4Qhjh7Ih2Th5VLOF7diMJenu09w0B-GqDqfaIZ6Xk8mUIKRauHSeU6X5rVoEDFgfNQIbDskV1idxB_-p0DvTZ6aEgQZmcn2mCvV7in7RFh3VEabyK08MmFnLjQNeNBCZ9-ucKFrYArt0LigPsK7MeV2b2dxdE4McgE0POgKDD9S_bI6lc75Gx-Lz595eE8QvfT2y6AinORulZ_4ubJ72n2Tv7AzuX8kz2ztxR7"/>
+</div>
+<div class="flex flex-col justify-between">
+<div>
+<h4 class="font-headline font-semibold text-inverse-surface text-base">L-Acoustics K2 System</h4>
+<p class="font-body text-body-sm text-on-surface-variant">Pack Complet (8 Boîtes + Subs)</p>
+</div>
+<div class="font-body text-body-sm text-primary font-medium">1 200 € / jour</div>
+</div>
+</div>
+<!-- Rental Details -->
+<div class="bg-surface rounded p-4 mb-6 border border-surface-container-highest">
+<div class="flex justify-between items-center mb-2">
+<span class="font-body text-body-sm text-on-surface-variant">Dates</span>
+<span class="font-body text-body-sm font-medium text-inverse-surface">15 Oct - 17 Oct (3 Jours)</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body text-body-sm text-on-surface-variant">Quantité</span>
+<span class="font-body text-body-sm font-medium text-inverse-surface">1 Système</span>
+</div>
+</div>
+<!-- Breakdown -->
+<div class="flex flex-col gap-3 mb-6 border-b border-outline-variant pb-6">
+<div class="flex justify-between items-center">
+<span class="font-body text-body-md text-on-surface-variant">Location (3 jours)</span>
+<span class="font-body text-body-md text-inverse-surface">3 600,00 €</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body text-body-md text-on-surface-variant">Retrait en Entrepôt</span>
+<span class="font-body text-body-md text-inverse-surface">0,00 €</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body text-body-md text-on-surface-variant">Assurance (Optionnelle)</span>
+<span class="font-body text-body-md text-inverse-surface">--</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body text-body-md text-on-surface-variant">Caution (Dépôt de garantie)</span>
+<span class="font-body text-body-md text-inverse-surface">5 000,00 €</span>
+</div><div class="flex justify-between items-center mt-2">
+<span class="font-body text-body-sm text-on-surface-variant">TVA (20%)</span>
+<span class="font-body text-body-sm text-on-surface-variant">720,00 €</span>
+</div>
+</div>
+<!-- Total -->
+<div class="flex justify-between items-center mb-8">
+<span class="font-headline text-headline-md text-inverse-surface">Total TTC</span>
+<span class="font-headline text-headline-lg text-primary font-bold">4 320,00 €</span>
+</div>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-headline font-bold text-lg py-4 px-6 rounded transition-colors active:scale-95 duration-100 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+                        Confirmer et Payer
+                    </button>
+<p class="font-body text-body-sm text-on-surface-variant text-center mt-4 flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="shield">shield</span>
+                        Paiement sécurisé par cryptage SSL.
+                    </p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest border-t border-outline-variant pt-16 pb-8 px-6">
+<div class="max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+<!-- Brand Section -->
+<div class="flex flex-col gap-6">
+<div class="font-headline text-headline-md text-on-surface font-bold tracking-tighter">
+          Sonic Precision
+        </div>
+<p class="font-body text-body-md text-on-surface-variant max-w-xs">
+          Solutions de sonorisation haut de gamme pour événements live, tournées et festivals. Précision acoustique sans compromis.
+        </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">public</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">share</span>
+</a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-lg">videocam</span>
+</a>
+</div>
+</div>
+<!-- Quick Links -->
+<div>
+<h4 class="font-headline text-title-md text-inverse-surface mb-6">Navigation</h4>
+<ul class="flex flex-col gap-4 font-body text-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Location Matériel</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Prestations Audio</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Études Acoustiques</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Notre Parc</a></li>
+</ul>
+</div>
+<!-- Support & Legal -->
+<div>
+<h4 class="font-headline text-title-md text-inverse-surface mb-6">Support</h4>
+<ul class="flex flex-col gap-4 font-body text-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Conditions de Location</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Assurances</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">FAQ technique</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
+</ul>
+</div>
+<!-- Newsletter -->
+<div>
+<h4 class="font-headline text-title-md text-inverse-surface mb-6">Newsletter</h4>
+<p class="font-body text-body-sm text-on-surface-variant mb-4">Recevez nos dernières actualités techniques et offres exclusives.</p>
+<form class="flex flex-col gap-2">
+<input class="bg-surface-container border border-outline-variant rounded px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="votre@email.com" type="email"/>
+<button class="bg-primary text-on-primary font-headline font-bold py-2 rounded hover:bg-primary-container transition-colors">
+            S'abonner
+          </button>
+</form>
+</div>
+</div>
+<!-- Bottom Bar -->
+<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<div class="font-body text-body-sm text-on-surface-variant text-center md:text-left">
+        © 2024 Sonic Precision. Professional Live Event Audio Solutions.
+      </div>
+<div class="flex gap-6 font-label text-label-sm text-on-surface-variant">
+<a class="hover:text-primary" href="#">Mentions Légales</a>
+<a class="hover:text-primary" href="#">Politique de Confidentialité</a>
+<a class="hover:text-primary" href="#">Cookies</a>
+</div>
+</div>
+</div>
+</footer>
+</body></html>
