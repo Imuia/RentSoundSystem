@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Precision - Configuration Campagne</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e2e2e2",
+                        "on-error": "#690005",
+                        "on-surface": "#e2e2e2",
+                        "secondary-container": "#454747",
+                        "surface-tint": "#ffb2bf",
+                        "on-primary-container": "#5a0022",
+                        "surface-container": "#1f1f1f",
+                        "surface-bright": "#393939",
+                        "primary-fixed": "#ffd9de",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-tertiary": "#313030",
+                        "outline-variant": "#5d3f44",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-fixed-variant": "#90003b",
+                        "error-container": "#93000a",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "primary": "#ffb2bf",
+                        "surface-container-highest": "#353535",
+                        "on-primary-fixed": "#3f0016",
+                        "on-secondary-fixed-variant": "#454747",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-container": "#b4b5b5",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-container-low": "#1b1b1b",
+                        "tertiary": "#c8c6c5",
+                        "background": "#131313",
+                        "primary-container": "#ff4d80",
+                        "secondary": "#c6c6c7",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#353535",
+                        "surface": "#131313",
+                        "secondary-fixed": "#e2e2e2",
+                        "outline": "#ac878d",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-container": "#929090",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-dim": "#131313",
+                        "on-primary": "#660028",
+                        "on-secondary": "#2f3131",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-primary": "#bc004f",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-surface-variant": "#e6bcc2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "display": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (from JSON, modified logic to suppress if not top-level, but keeping it here as it's an app interface) -->
+<nav class="docked h-screen w-64 left-0 bg-surface-container dark:bg-surface-container flex flex-col h-full p-6 border-r border-outline-variant dark:border-outline-variant hidden md:flex shrink-0 sticky top-0">
+<div class="mb-8">
+<span class="text-headline-md font-bold text-primary dark:text-primary tracking-tight font-headline">Sonic Precision</span>
+</div>
+<div class="flex items-center gap-3 mb-8 px-2">
+<div class="w-10 h-10 rounded-full bg-surface-variant flex items-center justify-center overflow-hidden border border-outline-variant">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+<div>
+<p class="font-body text-label-md font-semibold text-on-surface">AI Agent</p>
+<p class="font-body text-label-caps text-primary tracking-widest text-[10px]">Precision Mode Active</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary py-2.5 px-4 rounded font-semibold text-sm mb-8 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-lg">add</span>
+            Create Campaign
+        </button>
+<ul class="flex-1 space-y-2">
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded font-body text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-bright dark:hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Overview
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 bg-primary-container text-on-primary-container rounded font-body text-sm font-semibold scale-95 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+                    Campaigns
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded font-body text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-bright dark:hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined">insights</span>
+                    Analytics
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded font-body text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-bright dark:hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined">forum</span>
+                    Interactions
+                </a>
+</li>
+<li>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded font-body text-sm font-medium text-on-surface-variant hover:text-on-surface hover:bg-surface-bright dark:hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                    Scheduler
+                </a>
+</li>
+</ul>
+<div class="mt-auto border-t border-outline-variant pt-4 space-y-2">
+<a class="flex items-center gap-3 px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body" href="#">
+<span class="material-symbols-outlined">help</span>
+                Help Center
+            </a>
+<a class="flex items-center gap-3 px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface transition-colors font-body" href="#">
+<span class="material-symbols-outlined">settings</span>
+                Settings
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-h-screen overflow-hidden">
+<!-- TopAppBar (Mobile & Global Actions) -->
+<header class="bg-surface dark:bg-surface flex justify-between items-center w-full px-6 md:px-10 py-4 max-w-[1280px] mx-auto border-b md:border-none border-outline-variant sticky top-0 z-10 shrink-0">
+<div class="md:hidden flex items-center gap-4">
+<button class="text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<span class="text-headline-md font-bold text-primary dark:text-primary tracking-tight font-headline">Sonic Precision</span>
+</div>
+<!-- Breadcrumbs / Title for Desktop -->
+<div class="hidden md:flex items-center gap-2 text-sm font-body">
+<span class="text-on-surface-variant">Campaigns</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">chevron_right</span>
+<span class="text-on-surface font-semibold">New Configuration</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors active:opacity-80 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-surface-variant md:hidden flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-sm">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Configuration Canvas -->
+<div class="flex-1 overflow-y-auto p-4 md:p-10">
+<div class="max-w-[1280px] mx-auto">
+<!-- Page Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="text-[32px] md:text-[48px] font-headline font-bold leading-tight tracking-tight text-inverse-surface mb-2">Configuration de Campagne</h1>
+<p class="text-on-surface-variant text-sm md:text-base font-body max-w-2xl">Ajustez les paramètres générés par l'Agent IA avant le déploiement sur les réseaux professionnels.</p>
+</div>
+<div class="flex gap-3">
+<button class="px-4 py-2 border border-outline-variant text-on-surface rounded font-medium text-sm hover:bg-surface-bright transition-colors">Enregistrer Brouillon</button>
+<button class="px-6 py-2 bg-primary text-on-primary rounded font-bold text-sm hover:opacity-90 transition-opacity shadow-[0_0_15px_rgba(255,178,191,0.3)]">Lancer la Campagne</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Left Column: Settings -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Metadata Card -->
+<div class="bg-surface-container rounded-lg border border-outline-variant p-6 shadow-sm">
+<h2 class="text-lg font-headline font-semibold text-inverse-surface mb-5 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">tune</span>
+                                Paramètres Généraux
+                            </h2>
+<div class="space-y-5">
+<div>
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-widest mb-2">Nom de la Campagne</label>
+<input class="w-full bg-background border border-outline-variant rounded px-3 py-2 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" readonly="" type="text" value="Promotion Collection Signature"/>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-widest mb-2">Cible Principale</label>
+<div class="flex items-center gap-2 bg-surface-variant px-3 py-2 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-sm">target</span>
+<span class="text-sm text-on-surface font-medium">Ingénieurs du Son &amp; Prestataires Événementiels</span>
+</div>
+</div>
+<div>
+<label class="block text-xs font-semibold text-on-surface-variant uppercase tracking-widest mb-2">Tonalité IA</label>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-bright text-on-surface text-xs font-medium rounded border border-outline-variant">Luxueux</span>
+<span class="px-3 py-1 bg-surface-bright text-on-surface text-xs font-medium rounded border border-outline-variant">Technique</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Platforms Card -->
+<div class="bg-surface-container rounded-lg border border-outline-variant p-6 shadow-sm">
+<h2 class="text-lg font-headline font-semibold text-inverse-surface mb-5 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">share</span>
+                                Plateformes Cibles
+                            </h2>
+<div class="space-y-3">
+<label class="flex items-center justify-between p-3 border border-primary bg-primary-fixed/5 rounded cursor-pointer transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-bright flex items-center justify-center text-on-surface group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">work</span>
+</div>
+<span class="text-sm font-semibold text-on-surface">LinkedIn</span>
+</div>
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-variant rounded-full peer peer-checked:bg-primary peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 border border-primary bg-primary-fixed/5 rounded cursor-pointer transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-bright flex items-center justify-center text-on-surface group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">photo_camera</span>
+</div>
+<span class="text-sm font-semibold text-on-surface">Instagram</span>
+</div>
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-variant rounded-full peer peer-checked:bg-primary peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</div>
+</label>
+<label class="flex items-center justify-between p-3 border border-outline-variant bg-background rounded cursor-pointer hover:border-outline transition-colors group opacity-60">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-surface-bright flex items-center justify-center text-on-surface group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-lg">mail</span>
+</div>
+<span class="text-sm font-medium text-on-surface">Newsletter (Email)</span>
+</div>
+<div class="relative">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-5 bg-surface-variant rounded-full peer peer-checked:bg-primary peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-on-primary after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Right Column: Content Preview -->
+<div class="lg:col-span-8 flex flex-col gap-6">
+<!-- AI Post Preview -->
+<div class="bg-surface-container rounded-lg border border-outline-variant shadow-sm overflow-hidden flex flex-col h-full">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<h3 class="text-sm font-headline font-bold text-inverse-surface">Aperçu Généré par l'IA</h3>
+</div>
+<div class="flex gap-2">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors rounded hover:bg-surface-bright" title="Régénérer le texte">
+<span class="material-symbols-outlined text-sm">refresh</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors rounded hover:bg-surface-bright" title="Éditer manuellement">
+<span class="material-symbols-outlined text-sm">edit</span>
+</button>
+</div>
+</div>
+<div class="p-6 flex-1 flex flex-col">
+<!-- Text Preview Area -->
+<div class="bg-background border border-outline-variant rounded p-4 mb-6 relative group">
+<div class="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-[10px] uppercase font-bold text-on-surface-variant tracking-widest bg-surface px-2 py-1 rounded">LinkedIn Format</span>
+</div>
+<p class="text-sm text-on-surface font-body leading-relaxed whitespace-pre-wrap">L'excellence sonore ne tolère aucun compromis. 
+
+Découvrez la puissance brute et la clarté cristalline de la Collection Signature. Ce mois-ci, nous mettons en avant l'association redoutable du système <strong class="text-white">L-Acoustics K2</strong> pour une couverture line array sans faille, couplé à la précision analogique et numérique de la console <strong class="text-white">Pioneer DJM-V10</strong>.
+
+Conçus pour les environnements les plus exigeants, ces équipements redéfinissent les standards de la production live. Prêt à élever votre prochain événement ?
+
+Contactez notre équipe technique pour une consultation personnalisée et intégrez la Signature Sonic Precision à votre rider technique.
+
+<span class="text-primary mt-4 inline-block font-medium">#SignatureCollection #ProAudio #RentSoundSystem #LiveEventProduction #LAcoustics #DJMV10</span></p>
+</div>
+<!-- Visual Assets Gallery -->
+<div class="mt-auto">
+<div class="flex items-center justify-between mb-3">
+<h4 class="text-xs font-semibold text-on-surface-variant uppercase tracking-widest">Assets Visuels Sélectionnés (2)</h4>
+<button class="text-xs text-primary hover:underline font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">add_photo_alternate</span>
+                                            Ajouter
+                                        </button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Image 1 -->
+<div class="group relative rounded overflow-hidden border border-outline-variant aspect-[16/10] bg-surface-dim">
+<img alt="Concert crowd illuminated by intense red laser lighting overhead, creating a dynamic and energetic club atmosphere in dark mode aesthetic" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100" src="https://lh3.googleusercontent.com/aida/ADBb0ujZiu7P0lKVrcryW24xnhaup4D0i90MsZNCXaH2RWtvB9DpIp-W3t80grU300o8xb_nYducxN0Ybx0Ff3br1IpgzDd2uIv2JaD-EaiB3YnwCpeZ8R3xVe1RPnBPkcQ48Sn3T4ZzpG2p6wyROl4lmYHj1NN4h7svvCfJIt61mjiod3P4roQSdMw7xcVcdvsgdqLQ27UR918MnW3Qkj4BOMzLmTN8JDgJSQy3a9Rkhllnk7mSsjqcbYnjvhgkyJGtxw1cdO1Nx3a8-Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+<button class="text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="absolute top-2 left-2 bg-surface/80 backdrop-blur border border-outline-variant px-2 py-0.5 rounded text-[10px] font-bold tracking-widest text-on-surface flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                IMAGE 1
+                                            </div>
+</div>
+<!-- Image 2 -->
+<div class="group relative rounded overflow-hidden border border-outline-variant aspect-[16/10] bg-surface-dim">
+<img alt="Silhouettes of people standing in a large industrial warehouse space facing a bright, glowing yellow and orange circular light installation, minimalist high contrast lighting" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105 opacity-80 group-hover:opacity-100" src="https://lh3.googleusercontent.com/aida/ADBb0uhlaPkXVa-7MZbQC14JWm7L4KVNpFeuGjODw4AFtcAmRvA1J7G8L79kK2Kg40OqnAKPLvjbS5d2nCWQ-oqBNccrwa2xPWWSNTCqXWFlIhOKfvnv6jacZ_TrIlgABDx93FlrQA-vI7lWx7qBhvqIOF13t4oKZfBC_ObOwjf-fWIDaJqLwam5x6dEpFxxMIuj3fOg8r35HOGBu1Ua6v1bitHxzJtr2JAkVKq2kHJfz0QULLHpdabmd3H0dE09fS9eLqimezq4JvfNZA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-3">
+<button class="text-white hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-sm">delete</span>
+</button>
+</div>
+<div class="absolute top-2 left-2 bg-surface/80 backdrop-blur border border-outline-variant px-2 py-0.5 rounded text-[10px] font-bold tracking-widest text-on-surface flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                                                IMAGE 2
+                                            </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
