@@ -368,4 +368,11 @@
 <a class="hover:text-primary transition-colors focus:underline" href="#">Confidentialité</a>
 </div>
 </footer>
+<script>
+fetch('header.html')
+.then(response => response.text())
+.then(data => {
+document.getElementById('header').innerHTML = data;
+});
+</script>
 </body></html>

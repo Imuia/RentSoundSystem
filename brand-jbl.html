@@ -492,4 +492,11 @@
 <div class="font-body text-body-sm text-on-surface-variant">© 2024 Sonic Precision. Professional Grade Audio.</div>
 </div>
 </footer>
+<script>
+fetch('header.html')
+.then(response => response.text())
+.then(data => {
+document.getElementById('header').innerHTML = data;
+});
+</script>
 </body></html>
