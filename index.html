@@ -36,7 +36,19 @@
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQK0ZYoZ6b+3H2g4XM5YkM9z6nQs5K4=" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <style>
-  #rss-map { width: 100%; height: 600px; min-height: 420px; background: #1b1b1b; position: relative; z-index: 1; }
+  #rss-map { position:absolute; inset:0; width:100% !important; height:100% !important; min-height:600px; background:#1b1b1b; z-index:1; }
+  #rss-map .leaflet-pane,
+  #rss-map .leaflet-map-pane,
+  #rss-map .leaflet-tile,
+  #rss-map .leaflet-marker-icon,
+  #rss-map .leaflet-marker-shadow,
+  #rss-map .leaflet-tile-container,
+  #rss-map .leaflet-pane > svg,
+  #rss-map .leaflet-pane > canvas,
+  #rss-map .leaflet-zoom-box,
+  #rss-map .leaflet-image-layer,
+  #rss-map .leaflet-layer { position:absolute; left:0; top:0; }
+  #rss-map .leaflet-tile { max-width:none !important; max-height:none !important; }
   .leaflet-container { background:#131313; font-family: Inter, sans-serif; }
   .leaflet-control-attribution { background: rgba(19,19,19,.75)!important; color:#aaa!important; }
   .leaflet-control-attribution a { color:#FC036D!important; }
@@ -200,7 +212,7 @@
       <span class="material-symbols-outlined">my_location</span> Utiliser ma position
     </button>
   </div>
-  <div class="relative w-full h-[600px] rounded-xl overflow-hidden border border-white/10 bg-surface-container">
+  <div id="rss-map-wrap" class="relative w-full h-[600px] min-h-[600px] rounded-xl overflow-hidden border border-white/10 bg-surface-container">
     <div id="rss-map"></div>
   </div>
 </section>
@@ -387,7 +399,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const mapEl = document.getElementById('rss-map');
   if (!mapEl || typeof L === 'undefined') return;
 
-  const map = L.map('rss-map', { zoomControl: false }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], DEFAULT_CITY.zoom);
+  const map = L.map('rss-map', { zoomControl: false, preferCanvas: true }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], DEFAULT_CITY.zoom);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     maxZoom: 19,
@@ -459,10 +471,25 @@ document.addEventListener('DOMContentLoaded', function () {
   searchButton?.addEventListener('click', searchCity);
   cityInput?.addEventListener('keydown', e => { if (e.key === 'Enter') searchCity(); });
 
+  function fixMapSize() {
+    const wrap = document.getElementById('rss-map-wrap');
+    if (wrap && wrap.offsetWidth > 0) {
+      map.invalidateSize(false);
+    }
+  }
+
+  // Important : Leaflet bug si la carte est initialisée avant la fin du rendu Tailwind/images.
+  requestAnimationFrame(fixMapSize);
+  setTimeout(fixMapSize, 100);
+  setTimeout(fixMapSize, 400);
+  setTimeout(fixMapSize, 900);
+  window.addEventListener('load', fixMapSize);
+  window.addEventListener('resize', fixMapSize);
+
   setTimeout(() => {
-    map.invalidateSize();
+    fixMapSize();
     locateUser(false);
-  }, 350);
+  }, 700);
 });
 </script>
 </body></html>
