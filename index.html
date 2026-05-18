@@ -33,6 +33,7 @@
 <!-- Leaflet map assets -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   #rss-map-wrap {
     height: 600px !important;
@@ -115,6 +116,9 @@
 #rss-map.leaflet-container {
   background: #111111 !important;
 }
+
+  .rss-loading-products { color:#e6bcc2; font-size:14px; padding:18px 0; }
+  .rss-card-placeholder { position:absolute; inset:0; background:radial-gradient(circle at 35% 20%, rgba(252,3,109,.22), transparent 35%), linear-gradient(135deg,#242424,#111); opacity:.9; }
 </style>
 
 <script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
@@ -183,7 +187,7 @@
 </div>
 <a class="text-primary hover:underline font-label-md text-[14px] uppercase tracking-wide flex items-center gap-1" href="#">Voir tout <span class="material-symbols-outlined text-[20px]">arrow_forward</span></a>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div id="nearest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <!-- Product Card 1 -->
 <div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
 <img alt="Enceinte Line Array L-Acoustics K2 en location" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0ujIZ-By40k7Jm_dx4ZIKTB4tQS9nvDHxibg6yHdBZYneOXlmj44ew22d6ub_jv-F_7WMpCL-JO_a3mcesX9W4ycRYU2PF8a_yCIrIJRss0tKlfjMwzDPezBAzRjwo6JLXZHwQ3i46LBSQ05IqWIFFMXdIM_lrUXWkjlVpj6_7Exckrc2NTrsfH0Ke6H_3RCdex7dmnqYNuCMd_058Pon0LFdvyNzkh3pQuPfkM-Tzpjd7tPmNve463US_JpaEZ3qasD3z7arsZB">
@@ -285,7 +289,7 @@
 <h2 class="font-headline-lg text-[40px] text-on-background tracking-tight">Nouveaux équipements à louer</h2>
 <p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières pépites techniques fraîchement arrivées sur notre marketplace.</p>
 </div>
-<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<div id="newest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <!-- New Product Card 1 -->
 <div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
 <img alt="Allen &amp; Heath dLive S5000" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0uhu0myPBrSCOLLDv9gGfufp9Ktn0uTSdQDsETv2aJEN63G-t8KYiblFuN767IulVHAXQKfeboRaBs1jlz_bTS0Pr-hfSqxBHBknHlhw9jxnFd3wbzSpQyIXZrb-_kx6SHYo54kNRZaOEIUQhmnP8vblVVQdSH-oerQjwHuybVoiWSJa8Eo0wRaeMyk7wU7ydxnmIhm0TTU-5W4G5K8xrM6VBkxdqMisiyL_qTqKCumHXpk4poz2Eob20g">
@@ -446,9 +450,113 @@
 </footer>
 
 
+<script>
+(function () {
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
 
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
 
+  function formatPrice(value) {
+    const n = Number(value || 0);
+    if (!n) return 'Prix sur demande';
+    return Math.round(n) + '€';
+  }
 
+  function getImage(item) {
+    const imgs = Array.isArray(item.listing_images) ? item.listing_images : [];
+    imgs.sort((a, b) => Number(a.position || 0) - Number(b.position || 0));
+    return imgs[0]?.image_url || '';
+  }
+
+  function productCard(item, badge) {
+    const title = escapeHtml(item.title || 'Matériel professionnel');
+    const city = escapeHtml(item.city || item.location || 'France');
+    const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
+    const image = getImage(item);
+    const price = formatPrice(item.price);
+
+    return `
+      <div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+        <div class="rss-card-placeholder"></div>
+        ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="lazy" onerror="this.style.display='none'">` : ''}
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+        <div class="absolute top-4 left-4 z-10">
+          <span class="${badge === 'Nouveau' ? 'bg-primary text-on-primary' : 'bg-background/80 text-on-surface'} backdrop-blur-md text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">${badge || category}</span>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+          <h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md line-clamp-2">${title}</h3>
+          <div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
+            <span class="material-symbols-outlined text-[18px]">near_me</span>
+            <span>${city}</span>
+          </div>
+          <div class="pt-3 border-t border-white/20 flex justify-between items-center">
+            <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+            <span class="text-primary font-bold text-2xl drop-shadow">${price}</span>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  async function loadSupabaseProducts() {
+    if (!window.supabase) {
+      console.error('Supabase JS non chargé');
+      return;
+    }
+
+    const nearestGrid = document.getElementById('nearest-products-grid');
+    const newestGrid = document.getElementById('newest-products-grid');
+    if (!nearestGrid && !newestGrid) return;
+
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const { data, error } = await client
+      .from('listings')
+      .select(`
+        *,
+        listing_images (
+          image_url,
+          position
+        )
+      `)
+      .eq('status', 'publish')
+      .order('featured', { ascending: false })
+      .order('published_at', { ascending: false })
+      .limit(8);
+
+    if (error) {
+      console.error('Erreur chargement produits Supabase:', error);
+      return;
+    }
+
+    if (!data || !data.length) return;
+
+    const firstFour = data.slice(0, 4);
+    const nextFour = data.slice(4, 8).length ? data.slice(4, 8) : data.slice(0, 4);
+
+    if (nearestGrid) {
+      nearestGrid.innerHTML = firstFour.map(item => productCard(item, null)).join('');
+    }
+
+    if (newestGrid) {
+      newestGrid.innerHTML = nextFour.map(item => productCard(item, 'Nouveau')).join('');
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', loadSupabaseProducts);
+  } else {
+    loadSupabaseProducts();
+  }
+})();
+</script>
 
 <script>
 (function () {
