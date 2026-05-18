@@ -91,6 +91,12 @@
 <style>
   .rss-img-placeholder { background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010); }
   .rss-img-placeholder::after { content: 'image bientôt disponible'; color: rgba(255,255,255,.45); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+
+  .rss-clickable-card { cursor: pointer; transition: transform .25s ease, border-color .25s ease, background .25s ease; }
+  .rss-clickable-card:hover { transform: translateY(-4px); border-color: rgba(252,3,109,.65) !important; background: #202020; }
+  .rss-related-img { background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.30), transparent 32%), linear-gradient(180deg,#242424,#101010); }
+  .rss-related-img img { width: 100%; height: 100%; object-fit: cover; }
+  .rss-loading { opacity: .7; }
 </style>
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
@@ -306,7 +312,7 @@
 <!-- Footer Component -->
 <section class="w-full max-w-[1280px] mx-auto px-6 py-12 border-t border-outline-variant/20">
 <h2 class="font-headline text-headline-lg text-on-surface mb-8">Accessoires Complémentaires</h2>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div id="related-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
 <!-- Product Card 1 -->
 <div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">
 <div class="aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">
@@ -375,6 +381,7 @@
 (function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  let client = null;
 
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
@@ -392,7 +399,19 @@
 
   function cleanDescription(value) {
     if (!value) return 'Description détaillée prochainement disponible pour cette annonce.';
-    return String(value).replace(/<[^>]*>?/gm, '').trim();
+    return String(value).replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
+  }
+
+  function safe(value) {
+    return String(value || '').replace(/[&<>"]/g, function (m) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m];
+    });
+  }
+
+  function productUrl(item) {
+    if (item && item.original_id !== undefined && item.original_id !== null) return 'product.html?original_id=' + encodeURIComponent(item.original_id);
+    if (item && item.id) return 'product.html?id=' + encodeURIComponent(item.id);
+    return 'product.html';
   }
 
   function placeholder(el) {
@@ -417,13 +436,88 @@
     img.src = url;
   }
 
+  function getImages(item) {
+    return (item && item.listing_images ? item.listing_images : [])
+      .slice()
+      .sort((a, b) => (a.position || 0) - (b.position || 0))
+      .map(img => img.image_url)
+      .filter(Boolean);
+  }
+
+  function bindStaticClickableCards() {
+    document.querySelectorAll('[data-product-link]').forEach(function (card) {
+      const url = card.getAttribute('data-product-link');
+      if (!url) return;
+      card.classList.add('rss-clickable-card');
+      card.setAttribute('role', 'link');
+      card.setAttribute('tabindex', '0');
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('button, a, input, label')) return;
+        window.location.href = url;
+      });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') window.location.href = url;
+      });
+    });
+  }
+
+  function renderRelated(items) {
+    const grid = document.getElementById('related-products-grid');
+    if (!grid || !items || !items.length) return;
+
+    grid.innerHTML = items.slice(0, 3).map(function (item) {
+      const imgs = getImages(item);
+      const img = imgs[0] || '';
+      const title = safe(item.title || 'Matériel professionnel');
+      const desc = safe(cleanDescription(item.description || '').slice(0, 115));
+      const price = money(item.price || 0);
+      const url = productUrl(item);
+      const imageBlock = img
+        ? `<img src="${safe(img)}" alt="${title}" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('rss-img-placeholder');this.remove();">`
+        : '<span class="material-symbols-outlined text-outline-variant text-[40px]">inventory_2</span>';
+
+      return `
+        <article data-product-link="${url}" class="rss-clickable-card bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">
+          <div class="rss-related-img aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">
+            ${imageBlock}
+          </div>
+          <h3 class="font-headline text-body-lg font-bold text-on-surface mb-2 line-clamp-2">${title}</h3>
+          <p class="font-body text-body-sm text-on-surface-variant mb-4 flex-grow line-clamp-3">${desc || 'Annonce disponible sur RentSoundSystem.'}</p>
+          <div class="flex items-center justify-between gap-3">
+            <span class="font-headline text-primary font-bold">${price}</span>
+            <button type="button" class="py-2 px-3 bg-surface-container-high hover:bg-primary hover:text-on-primary text-primary border border-primary/20 transition-colors rounded-lg font-label text-label-caps font-bold">
+              Voir l'annonce
+            </button>
+          </div>
+        </article>`;
+    }).join('');
+
+    bindStaticClickableCards();
+  }
+
+  async function loadRelated(currentItem) {
+    if (!client) return;
+    let query = client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status', 'publish')
+      .limit(3);
+
+    if (currentItem && currentItem.original_id !== undefined && currentItem.original_id !== null) {
+      query = query.neq('original_id', currentItem.original_id);
+    }
+
+    const { data, error } = await query;
+    if (!error && data) renderRelated(data);
+  }
+
   async function loadProduct() {
     if (!window.supabase) {
       console.error('Supabase JS non chargé');
       return;
     }
 
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const params = new URLSearchParams(window.location.search);
     const originalId = params.get('original_id');
     const id = params.get('id');
@@ -445,17 +539,11 @@
 
     if (error || !item) {
       console.error('Produit introuvable', error);
-      const h1 = document.querySelector('.lg\\:col-span-5 h1');
-      text(h1, 'Produit introuvable');
+      text(document.querySelector('.lg\\:col-span-5 h1'), 'Produit introuvable');
       return;
     }
 
-    const images = (item.listing_images || [])
-      .slice()
-      .sort((a, b) => (a.position || 0) - (b.position || 0))
-      .map(img => img.image_url)
-      .filter(Boolean);
-
+    const images = getImages(item);
     const firstImage = images[0] || '';
     const title = item.title || 'Annonce RentSoundSystem';
     const city = item.city || item.location || 'Votre ville';
@@ -465,16 +553,13 @@
 
     document.title = title + ' - RentSoundSystem.com';
 
-    // Titre principal droite
     text(document.querySelector('.lg\\:col-span-5 h1'), title);
 
-    // Breadcrumb
     const breadcrumbLast = document.querySelector('main .flex.items-center.space-x-2.text-body-sm span.text-on-surface');
     text(breadcrumbLast, title);
     const breadcrumbCategory = document.querySelectorAll('main .flex.items-center.space-x-2.text-body-sm a')[1];
     text(breadcrumbCategory, category.replace(/-/g, ' '));
 
-    // Bloc vendeur / ville
     const vendorBox = document.querySelector('.bg-surface-container-low.px-4.py-2');
     if (vendorBox) {
       const vendorTexts = vendorBox.querySelectorAll('div.font-headline, div.font-body');
@@ -482,23 +567,22 @@
       text(vendorTexts[1], country.toUpperCase());
     }
 
-    // Galerie image principale
     const mainImage = document.querySelector('.aspect-square.md\\:aspect-\\[4\\/3\\] img') || document.querySelector('main img[alt*="Système"]');
     setImage(mainImage, firstImage, title);
 
-    // Miniatures
     const thumbsGrid = document.querySelector('.grid.grid-cols-5.gap-4');
     if (thumbsGrid) {
       thumbsGrid.innerHTML = '';
       const thumbImages = images.length ? images.slice(0, 5) : [''];
-      thumbImages.forEach((url, index) => {
+      thumbImages.forEach(function (url, index) {
         const btn = document.createElement('button');
+        btn.type = 'button';
         btn.className = 'aspect-square rounded bg-surface overflow-hidden transition-all ' + (index === 0 ? 'border-2 border-primary' : 'border border-outline-variant/30 hover:border-outline-variant opacity-60 hover:opacity-100');
         if (url) {
-          btn.innerHTML = `<img alt="${title.replace(/"/g, '&quot;')}" class="h-full w-full object-cover" referrerpolicy="no-referrer" src="${url}">`;
+          btn.innerHTML = '<img alt="' + safe(title) + '" class="h-full w-full object-cover" referrerpolicy="no-referrer" src="' + safe(url) + '">';
           btn.addEventListener('click', function () {
             setImage(mainImage, url, title);
-            Array.from(thumbsGrid.children).forEach(child => {
+            Array.from(thumbsGrid.children).forEach(function (child) {
               child.classList.remove('border-2', 'border-primary');
               child.classList.add('border', 'border-outline-variant/30', 'opacity-60');
             });
@@ -512,20 +596,17 @@
       });
     }
 
-    // Description
     const overviewTitle = Array.from(document.querySelectorAll('h3')).find(el => el.textContent.includes('Qualité Sonore'));
     text(overviewTitle, title);
     const overviewP = overviewTitle ? overviewTitle.parentElement.querySelector('p') : null;
     text(overviewP, cleanDescription(item.description));
 
-    // Titre image alt / labels specs simples
     const statBoxes = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 .font-headline');
     text(statBoxes[0], category.replace(/-/g, ' '));
     text(statBoxes[1], item.brand || 'Pro Audio');
     text(statBoxes[2], item.model || 'Matériel professionnel');
     text(statBoxes[3], city);
 
-    // Prix base + total
     const priceLabel = Array.from(document.querySelectorAll('div')).find(el => el.textContent.trim() === 'Tarif de base');
     if (priceLabel && priceLabel.nextElementSibling) {
       priceLabel.nextElementSibling.innerHTML = price + ' <span class="text-body-md text-on-surface-variant font-normal">/ jour</span>';
@@ -533,12 +614,11 @@
     const totalRow = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim() === 'Total :');
     if (totalRow && totalRow.nextElementSibling) text(totalRow.nextElementSibling, price);
 
-    // Boutons actions
     const quoteBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('Faire une demande de devis'));
     if (quoteBtn) {
       quoteBtn.addEventListener('click', function () {
         const subject = encodeURIComponent('Demande de devis - ' + title);
-        const body = encodeURIComponent('Bonjour, je souhaite recevoir un devis pour :\n\n' + title + '\nVille : ' + city + '\nPrix affiché : ' + price + '/jour\nAnnonce ID : ' + item.original_id);
+        const body = encodeURIComponent('Bonjour, je souhaite recevoir un devis pour :\n\n' + title + '\nVille : ' + city + '\nPrix affiché : ' + price + '/jour\nAnnonce ID : ' + (item.original_id || item.id || ''));
         window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + body;
       });
     }
@@ -547,18 +627,18 @@
     if (reserveBtn) {
       reserveBtn.addEventListener('click', function () {
         const subject = encodeURIComponent('Réservation - ' + title);
-        const body = encodeURIComponent('Bonjour, je souhaite réserver :
-
-' + title + '
-Ville : ' + city + '
-Prix affiché : ' + price + '/jour
-Annonce ID : ' + item.original_id);
+        const body = encodeURIComponent('Bonjour, je souhaite réserver :\n\n' + title + '\nVille : ' + city + '\nPrix affiché : ' + price + '/jour\nAnnonce ID : ' + (item.original_id || item.id || ''));
         window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + body;
       });
     }
+
+    loadRelated(item);
   }
 
-  ready(loadProduct);
+  ready(function () {
+    bindStaticClickableCards();
+    loadProduct();
+  });
 })();
 </script>
 
