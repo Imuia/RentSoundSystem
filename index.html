@@ -484,10 +484,9 @@
   }
 
   function productUrl(item) {
-    const id = encodeURIComponent(item.id || '');
-    const originalId = encodeURIComponent(item.original_id || '');
+    const originalId = encodeURIComponent(item.original_id || item.id || '');
     const slug = encodeURIComponent(slugify(item.title));
-    return `product.html?id=${id}&original_id=${originalId}&slug=${slug}`;
+    return `product.html?original_id=${originalId}&slug=${slug}`;
   }
 
   function productCard(item, badge) {
