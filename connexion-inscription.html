@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion & Inscription - RentSoundSystem.com</title>
+  <meta name="description" content="Connectez-vous ou créez votre compte RentSoundSystem pour louer, réserver ou publier du matériel de sonorisation professionnel." />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link crossorigin href="https://fonts.gstatic.com" rel="preconnect" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            background: '#131313', surface: '#131313', 'surface-container-lowest': '#0e0e0e',
+            'surface-container-low': '#1b1b1b', 'surface-container': '#1f1f1f',
+            'surface-container-high': '#2a2a2a', 'surface-container-highest': '#353535',
+            primary: '#FC036D', 'primary-container': '#C20253', 'on-primary': '#ffffff',
+            'on-background': '#e2e2e2', 'on-surface': '#e2e2e2', 'on-surface-variant': '#e6bcc2',
+            outline: '#ac878d', 'outline-variant': '#5d3f44'
+          },
+          fontFamily: { headline: ['Manrope', 'sans-serif'], body: ['Inter', 'sans-serif'], label: ['Inter', 'sans-serif'] }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: Inter, sans-serif; background:#131313; color:#e2e2e2; }
+    .font-headline, h1, h2, h3 { font-family: Manrope, sans-serif; }
+    .material-symbols-outlined { font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24; }
+    .auth-bg { background: radial-gradient(circle at 20% 15%, rgba(252,3,109,.18), transparent 32%), radial-gradient(circle at 90% 80%, rgba(252,3,109,.12), transparent 36%), #131313; }
+    .auth-hidden { display:none; }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
+  <header class="bg-background/95 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50 w-full">
+    <div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
+      <a class="font-headline font-bold text-[24px] leading-[32px] text-primary tracking-tight" href="/">RentSoundSystem.com</a>
+      <nav class="hidden md:flex items-center gap-8">
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="/">Marketplace</a>
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="/">Louer du matériel</a>
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="/brand-turbosound.html">Marques</a>
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
+        <a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#support">Assistance</a>
+      </nav>
+      <div class="hidden md:flex items-center gap-3">
+        <button aria-label="Recherche" class="text-on-surface hover:text-primary transition-colors p-2"><span class="material-symbols-outlined">search</span></button>
+        <button aria-label="Panier" class="text-on-surface hover:text-primary transition-colors p-2"><span class="material-symbols-outlined">shopping_cart</span></button>
+        <a href="/connexion.html" class="border border-primary text-primary px-4 py-2 rounded font-label text-[12px] leading-[16px] font-bold hover:bg-primary hover:text-on-primary transition-colors">Mon Compte</a>
+      </div>
+      <button id="mobile-menu-btn" aria-label="Menu" class="md:hidden text-on-surface hover:text-primary transition-colors p-2"><span class="material-symbols-outlined">menu</span></button>
+    </div>
+    <nav id="mobile-menu" class="hidden md:hidden border-t border-outline-variant bg-background/98 px-6 py-4">
+      <div class="flex flex-col gap-4">
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="/">Marketplace</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="/">Louer du matériel</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="/brand-turbosound.html">Marques</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
+        <a class="text-on-surface-variant hover:text-primary transition-colors" href="#support">Assistance</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="auth-bg flex-grow flex items-center justify-center px-4 py-16">
+    <section class="w-full max-w-[1120px] grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+      <div class="hidden lg:flex flex-col gap-8 pr-8">
+        <div>
+          <p class="text-primary uppercase tracking-[0.25em] text-xs font-bold mb-4">Espace professionnel</p>
+          <h1 class="font-headline text-5xl font-bold tracking-tight leading-tight mb-6">Connexion & inscription RentSoundSystem.</h1>
+          <p class="text-on-surface-variant text-lg leading-relaxed max-w-xl">Accédez à votre compte pour louer du matériel, gérer vos réservations, publier vos annonces et suivre vos demandes de devis.</p>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-5">
+            <span class="material-symbols-outlined text-primary text-3xl mb-3">verified_user</span>
+            <h3 class="font-headline font-bold mb-1">Sécurisé</h3>
+            <p class="text-sm text-on-surface-variant">Comptes et annonces vérifiés.</p>
+          </div>
+          <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-5">
+            <span class="material-symbols-outlined text-primary text-3xl mb-3">inventory_2</span>
+            <h3 class="font-headline font-bold mb-1">Inventaire</h3>
+            <p class="text-sm text-on-surface-variant">Matériel audio, lumière, scène.</p>
+          </div>
+          <div class="bg-surface-container-low border border-outline-variant/40 rounded-xl p-5">
+            <span class="material-symbols-outlined text-primary text-3xl mb-3">request_quote</span>
+            <h3 class="font-headline font-bold mb-1">Devis</h3>
+            <p class="text-sm text-on-surface-variant">Demandes clients centralisées.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full max-w-md mx-auto">
+        <div class="text-center mb-8 lg:hidden">
+          <h1 class="font-headline text-3xl font-bold mb-2">Bienvenue</h1>
+          <p class="text-on-surface-variant text-sm">Connectez-vous ou créez votre compte.</p>
+        </div>
+
+        <div class="bg-surface-container border border-outline-variant/30 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+          <div class="absolute -top-20 -right-20 w-44 h-44 bg-primary/10 blur-[55px] rounded-full pointer-events-none"></div>
+          <div class="relative z-10">
+            <div class="flex bg-surface-container-lowest p-1 rounded-xl mb-8 border border-outline-variant/20">
+              <button id="login-tab" class="flex-1 py-3 text-sm font-bold rounded-lg bg-surface-container-high text-on-surface border border-outline-variant/20 transition-all">Connexion</button>
+              <button id="signup-tab" class="flex-1 py-3 text-sm font-bold rounded-lg text-on-surface-variant hover:text-on-surface transition-all">Inscription</button>
+            </div>
+
+            <div id="auth-message" class="hidden mb-5 rounded-lg border px-4 py-3 text-sm"></div>
+
+            <form id="login-form" class="space-y-5">
+              <div>
+                <label class="block text-sm font-medium text-on-surface-variant mb-2" for="login-email">Adresse email</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant"><span class="material-symbols-outlined text-xl">mail</span></span>
+                  <input id="login-email" class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-3 sm:text-sm" placeholder="pro@domaine.com" type="email" required />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-on-surface-variant mb-2" for="login-password">Mot de passe</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant"><span class="material-symbols-outlined text-xl">lock</span></span>
+                  <input id="login-password" class="block w-full pl-10 pr-10 bg-surface-container-lowest border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-3 sm:text-sm" placeholder="••••••••" type="password" required />
+                  <button class="toggle-password absolute inset-y-0 right-0 flex items-center pr-3 text-on-surface-variant hover:text-primary" type="button" data-target="login-password"><span class="material-symbols-outlined text-xl">visibility</span></button>
+                </div>
+              </div>
+              <div class="flex items-center justify-between">
+                <label class="flex items-center text-sm text-on-surface-variant"><input class="h-4 w-4 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-primary" type="checkbox" /> <span class="ml-2">Se souvenir de moi</span></label>
+                <button id="forgot-password" class="text-sm font-medium text-primary hover:text-primary-container" type="button">Mot de passe oublié ?</button>
+              </div>
+              <button class="w-full flex justify-center py-3 px-4 rounded-lg text-sm font-bold text-on-primary bg-primary hover:bg-primary-container transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)]" type="submit">Se connecter</button>
+            </form>
+
+            <form id="signup-form" class="auth-hidden space-y-5">
+              <div>
+                <label class="block text-sm font-medium text-on-surface-variant mb-2" for="signup-name">Nom / Société</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant"><span class="material-symbols-outlined text-xl">business_center</span></span>
+                  <input id="signup-name" class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-3 sm:text-sm" placeholder="Votre nom ou société" type="text" />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-on-surface-variant mb-2" for="signup-email">Adresse email</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant"><span class="material-symbols-outlined text-xl">mail</span></span>
+                  <input id="signup-email" class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-3 sm:text-sm" placeholder="pro@domaine.com" type="email" required />
+                </div>
+              </div>
+              <div>
+                <label class="block text-sm font-medium text-on-surface-variant mb-2" for="signup-password">Mot de passe</label>
+                <div class="relative">
+                  <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant"><span class="material-symbols-outlined text-xl">lock</span></span>
+                  <input id="signup-password" class="block w-full pl-10 pr-10 bg-surface-container-lowest border border-outline-variant/40 rounded-lg focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-3 sm:text-sm" placeholder="8 caractères minimum" type="password" required />
+                  <button class="toggle-password absolute inset-y-0 right-0 flex items-center pr-3 text-on-surface-variant hover:text-primary" type="button" data-target="signup-password"><span class="material-symbols-outlined text-xl">visibility</span></button>
+                </div>
+              </div>
+              <label class="flex items-start text-sm text-on-surface-variant"><input class="mt-1 h-4 w-4 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-primary" type="checkbox" required /> <span class="ml-2">J’accepte les conditions d’utilisation et la politique de confidentialité.</span></label>
+              <button class="w-full flex justify-center py-3 px-4 rounded-lg text-sm font-bold text-on-primary bg-primary hover:bg-primary-container transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)]" type="submit">Créer mon compte</button>
+            </form>
+
+            <div class="mt-8">
+              <div class="relative"><div class="absolute inset-0 flex items-center"><div class="w-full border-t border-outline-variant/30"></div></div><div class="relative flex justify-center text-sm"><span class="px-2 bg-surface-container text-on-surface-variant">Ou continuer avec</span></div></div>
+              <div class="mt-6 grid grid-cols-3 gap-3">
+                <button class="social-btn flex justify-center items-center gap-2 py-3 px-4 border border-outline-variant/40 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface" data-provider="google" type="button"><span class="material-symbols-outlined text-lg">public</span></button>
+                <button class="social-btn flex justify-center items-center gap-2 py-3 px-4 border border-outline-variant/40 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface" data-provider="facebook" type="button"><span class="material-symbols-outlined text-lg">group</span></button>
+                <button class="social-btn flex justify-center items-center gap-2 py-3 px-4 border border-outline-variant/40 rounded-lg bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface" data-provider="linkedin_oidc" type="button"><span class="material-symbols-outlined text-lg">work</span></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p class="mt-8 text-center text-xs text-on-surface-variant">En vous connectant, vous acceptez nos <a class="underline hover:text-primary" href="#">Conditions de service</a> et notre <a class="underline hover:text-primary" href="#">Politique de confidentialité</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer id="support" class="bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant">
+    <div class="max-w-[1280px] mx-auto px-0 md:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+        <div class="col-span-1"><a class="font-headline font-bold text-primary text-2xl tracking-tight mb-4 block" href="/">RentSoundSystem.com</a><p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Location de sonorisation, éclairage, DJ gear et matériel scénique professionnel. La plateforme premium pour organiser vos événements avec des partenaires vérifiés.</p><div class="flex gap-4"><a aria-label="Partager" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a><a aria-label="Site" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a><a aria-label="Contact" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a></div></div>
+        <nav aria-label="Marketplace"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="/">Louer du matériel</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Devenir partenaire</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Annonces vérifiées</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Garanties pro</a></li></ul></nav>
+        <nav aria-label="Catégories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Sonorisation</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Éclairage</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">DJ Gear</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Scène & Structures</a></li></ul></nav>
+        <nav aria-label="Support"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Centre d'aide</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Nous contacter</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Logistique & Livraison</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Conditions générales</a></li></ul></nav>
+      </div>
+      <div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4"><p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p><div class="flex flex-wrap justify-center gap-6"><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Mentions légales</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Confidentialité</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Plan du site</a></div></div>
+    </div>
+  </footer>
+
+  <script>
+    const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+    const client = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+    const loginTab = document.getElementById('login-tab');
+    const signupTab = document.getElementById('signup-tab');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    const message = document.getElementById('auth-message');
+
+    function showMessage(text, type = 'info') {
+      message.textContent = text;
+      message.className = 'mb-5 rounded-lg border px-4 py-3 text-sm ' + (type === 'error' ? 'border-red-500/40 bg-red-500/10 text-red-200' : 'border-primary/40 bg-primary/10 text-on-surface');
+      message.classList.remove('hidden');
+    }
+    function setMode(mode) {
+      const login = mode === 'login';
+      loginForm.classList.toggle('auth-hidden', !login);
+      signupForm.classList.toggle('auth-hidden', login);
+      loginTab.className = 'flex-1 py-3 text-sm font-bold rounded-lg transition-all ' + (login ? 'bg-surface-container-high text-on-surface border border-outline-variant/20' : 'text-on-surface-variant hover:text-on-surface');
+      signupTab.className = 'flex-1 py-3 text-sm font-bold rounded-lg transition-all ' + (!login ? 'bg-surface-container-high text-on-surface border border-outline-variant/20' : 'text-on-surface-variant hover:text-on-surface');
+      message.classList.add('hidden');
+    }
+
+    document.getElementById('mobile-menu-btn')?.addEventListener('click', () => document.getElementById('mobile-menu')?.classList.toggle('hidden'));
+    loginTab.addEventListener('click', () => setMode('login'));
+    signupTab.addEventListener('click', () => setMode('signup'));
+    document.querySelectorAll('.toggle-password').forEach(btn => btn.addEventListener('click', () => {
+      const input = document.getElementById(btn.dataset.target);
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }));
+
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!client) return showMessage('Supabase n’est pas chargé.', 'error');
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const { error } = await client.auth.signInWithPassword({ email, password });
+      if (error) return showMessage(error.message, 'error');
+      showMessage('Connexion réussie. Redirection...', 'info');
+      setTimeout(() => window.location.href = '/', 700);
+    });
+
+    signupForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!client) return showMessage('Supabase n’est pas chargé.', 'error');
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const password = document.getElementById('signup-password').value;
+      const { error } = await client.auth.signUp({ email, password, options: { data: { full_name: name } } });
+      if (error) return showMessage(error.message, 'error');
+      showMessage('Compte créé. Vérifiez votre email si la confirmation est activée.', 'info');
+    });
+
+    document.getElementById('forgot-password').addEventListener('click', async () => {
+      if (!client) return showMessage('Supabase n’est pas chargé.', 'error');
+      const email = document.getElementById('login-email').value.trim();
+      if (!email) return showMessage('Entrez votre email avant de demander la réinitialisation.', 'error');
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + '/connexion.html' });
+      if (error) return showMessage(error.message, 'error');
+      showMessage('Email de réinitialisation envoyé.', 'info');
+    });
+
+    document.querySelectorAll('.social-btn').forEach(btn => btn.addEventListener('click', async () => {
+      if (!client) return showMessage('Supabase n’est pas chargé.', 'error');
+      const provider = btn.dataset.provider;
+      const { error } = await client.auth.signInWithOAuth({ provider, options: { redirectTo: window.location.origin } });
+      if (error) showMessage(error.message, 'error');
+    }));
+  </script>
+</body>
+</html>
