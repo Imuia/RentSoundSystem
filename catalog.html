@@ -311,7 +311,7 @@
     const filters = getFilters();
     let query = client
       .from('listings')
-      .select('*, listing_images(image_url, position)', { count: 'exact', head: countOnly })
+      .select('id, original_id, title, description, city, location, category, price, featured, listing_images(image_url, position)', { count: 'exact', head: countOnly })
       .eq('status', 'publish');
 
     if (filters.search) {
@@ -334,13 +334,7 @@
     else if (filters.sort.includes('Décroissant')) query = query.order('price', { ascending: false });
     else {
       query = query.order('featured', { ascending: false });
-
-      // fallback sécurisé si created_at n'existe pas
-      try {
-        query = query.order('published_at', { ascending: false });
-      } catch (e) {
-        query = query.order('id', { ascending: false });
-      }
+      query = query.order('id', { ascending: false });
     }
 
     return query;
@@ -448,6 +442,14 @@
         if (!next || next === currentPage) return;
         currentPage = next;
         loadCatalog();
+    
+setTimeout(function(){
+  const grid = document.getElementById('catalog-grid');
+  if(grid && grid.innerHTML.includes('Chargement des produits')){
+    grid.innerHTML = '<div class="col-span-full text-center text-red-400 py-16">Connexion Supabase impossible ou table listings vide.</div>';
+  }
+}, 8000);
+
         window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     });
