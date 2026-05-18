@@ -126,17 +126,51 @@
     document.querySelectorAll('img').forEach(function(img){
       img.setAttribute('referrerpolicy','no-referrer');
       if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      img.decoding = 'async';
       img.addEventListener('error', function(){
         var parent = img.parentElement;
         if(parent){ parent.classList.add('brand-img-fallback'); }
         img.remove();
       });
+      if(!img.getAttribute('src')) {
+        var parent = img.parentElement;
+        if(parent){ parent.classList.add('brand-img-fallback'); }
+        img.remove();
+      }
+    });
+    document.querySelectorAll('.animate-marquee').forEach(function(el){
+      el.style.animationDuration = '38s';
+      el.style.animationTimingFunction = 'linear';
     });
     var btn = document.getElementById('mobile-menu-btn');
     var menu = document.getElementById('mobile-menu');
     if(btn && menu){ btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); }); }
   });
 </script>
+
+<style id="rss-jbl-final-fixes">
+  /* Harmonisation finale JBL avec le style Turbosound */
+  body { background:#131313; color:#e2e2e2; }
+  img { display:block; max-width:100%; }
+  .brand-img-fallback {
+    min-height: 220px;
+    background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010) !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+  }
+  .brand-img-fallback::after { content:'image bientôt disponible'; color:rgba(255,255,255,.6); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  @keyframes rss-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-marquee { animation: rss-marquee 38s linear infinite !important; will-change: transform; }
+  .animate-marquee:hover { animation-play-state: paused; }
+  header a[href="/"] { color:#FC036D; }
+  button, a { -webkit-tap-highlight-color: transparent; }
+  .material-symbols-outlined { vertical-align: middle; }
+  @media (max-width: 768px) {
+    main { padding-top: 0 !important; }
+    section[class*="h-[60vh]"] { min-height: 560px !important; }
+    .animate-marquee { animation-duration: 38s !important; }
+    footer { padding-bottom: 5rem !important; }
+  }
+</style>
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
 <!-- TopAppBar -->
@@ -229,12 +263,12 @@
 </div>
 </div>
 <style>
-        @keyframes marquee {
+        @keyframes rss-marquee {
             0% { transform: translateX(0); }
             100% { transform: translateX(-100%); }
         }
         .animate-marquee {
-            animation: marquee 30s linear infinite;
+            animation: rss-marquee 38s linear infinite !important;
         }
     </style>
 </section>
@@ -503,19 +537,19 @@
 <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-4 md:hidden bg-surface-container-low dark:bg-surface-container-low text-primary dark:text-primary font-label text-label-md border-t border-outline-variant shadow-lg">
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high w-full h-full" href="#">
 <span class="material-symbols-outlined">home</span>
-<span class="mt-1">Home</span>
+<span class="mt-1">Accueil</span>
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high w-full h-full" href="#">
 <span class="material-symbols-outlined">search</span>
-<span class="mt-1">Search</span>
+<span class="mt-1">Recherche</span>
 </a>
 <a class="flex flex-col items-center justify-center text-primary font-bold scale-95 transition-transform hover:bg-surface-container-high w-full h-full" href="#">
 <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>confirmation_number</span>
-<span class="mt-1">Rentals</span> <!-- Mapped My Tickets intent to Rentals contextually -->
+<span class="mt-1">Locations</span> 
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high w-full h-full" href="#">
 <span class="material-symbols-outlined">person</span>
-<span class="mt-1">Profile</span>
+<span class="mt-1">Compte</span>
 </a>
 </nav>
 <!-- Footer -->
