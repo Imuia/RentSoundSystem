@@ -38,6 +38,7 @@
     height: 600px !important;
     min-height: 600px !important;
   }
+  
 
   #rss-map {
     width: 100% !important;
@@ -103,6 +104,17 @@
   .rss-popup .leaflet-popup-tip {
     background: #1f1f1f;
   }
+  /* MAP DARK GREY */
+#rss-map .leaflet-tile {
+  filter:
+    grayscale(100%)
+    brightness(0.45)
+    contrast(1.2);
+}
+
+#rss-map.leaflet-container {
+  background: #111111 !important;
+}
 </style>
 
 <script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
