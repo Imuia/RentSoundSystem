@@ -119,18 +119,36 @@
 <div class="bg-surface-container border border-outline-variant/20 rounded-xl p-8 shadow-2xl">
 <!-- Tabs -->
 <div class="flex bg-surface-container-lowest p-1 rounded-lg mb-8 border border-outline-variant/10">
-<button class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Connexion</button>
-<button class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Inscription</button>
+<button id="login-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Connexion</button>
+<button id="register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Inscription</button>
 </div>
 <!-- Form -->
-<form class="space-y-5">
+<form id="auth-form" class="space-y-5">
+<div id="name-field" class="hidden">
+<label class="block text-sm font-medium text-on-surface-variant mb-1" for="full-name">Nom complet</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">person</span>
+</span>
+<input class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="full-name" placeholder="Votre nom" type="text">
+</div>
+</div>
+<div id="company-field" class="hidden">
+<label class="block text-sm font-medium text-on-surface-variant mb-1" for="company-name">Entreprise / activité</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">business_center</span>
+</span>
+<input class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="company-name" placeholder="Nom de société ou activité" type="text">
+</div>
+</div>
 <div>
 <label class="block text-sm font-medium text-on-surface-variant mb-1" for="email">Adresse Email</label>
 <div class="relative">
 <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant">
 <span class="material-symbols-outlined text-xl" data-icon="mail">mail</span>
 </span>
-<input class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="email" placeholder="pro@domaine.com" type="email">
+<input class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="email" placeholder="pro@domaine.com" type="email" required>
 </div>
 </div>
 <div>
@@ -139,13 +157,22 @@
 <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant">
 <span class="material-symbols-outlined text-xl" data-icon="lock">lock</span>
 </span>
-<input class="block w-full pl-10 pr-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="password" placeholder="••••••••" type="password">
-<button class="absolute inset-y-0 right-0 flex items-center pr-3 text-on-surface-variant hover:text-primary transition-colors" type="button">
+<input class="block w-full pl-10 pr-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="password" placeholder="••••••••" type="password" required>
+<button id="toggle-password" class="absolute inset-y-0 right-0 flex items-center pr-3 text-on-surface-variant hover:text-primary transition-colors" type="button">
 <span class="material-symbols-outlined text-xl" data-icon="visibility">visibility</span>
 </button>
 </div>
 </div>
-<div class="flex items-center justify-between mt-2 mb-6">
+<div id="confirm-password-field" class="hidden">
+<label class="block text-sm font-medium text-on-surface-variant mb-1" for="confirm-password">Confirmer le mot de passe</label>
+<div class="relative">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-xl">lock_reset</span>
+</span>
+<input class="block w-full pl-10 bg-surface-container-lowest border border-outline-variant/30 rounded focus:ring-1 focus:ring-primary focus:border-primary text-on-surface py-2.5 transition-colors sm:text-sm" id="confirm-password" placeholder="••••••••" type="password">
+</div>
+</div>
+<div id="login-options" class="flex items-center justify-between mt-2 mb-6">
 <div class="flex items-center">
 <input class="h-4 w-4 rounded border-outline-variant bg-surface-container-lowest text-primary focus:ring-primary focus:ring-offset-surface" id="remember-me" name="remember-me" type="checkbox">
 <label class="ml-2 block text-sm text-on-surface-variant" for="remember-me">Se souvenir de moi</label>
@@ -154,8 +181,8 @@
 <a class="font-medium text-primary hover:text-primary-container transition-colors" href="#">Mot de passe oublié ?</a>
 </div>
 </div>
-<button class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded text-sm font-bold text-on-primary bg-primary hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-surface transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)]" type="submit">
-                        Se Connecter
+<button id="auth-submit" class="w-full flex justify-center py-2.5 px-4 border border-transparent rounded text-sm font-bold text-on-primary bg-primary hover:bg-primary-container focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-surface transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)]" type="submit">
+                        Se connecter
                     </button>
 </form>
 <div class="mt-8">
@@ -256,5 +283,67 @@
   </div>
 </footer>
 
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const loginTab = document.getElementById('login-tab');
+  const registerTab = document.getElementById('register-tab');
+  const nameField = document.getElementById('name-field');
+  const companyField = document.getElementById('company-field');
+  const confirmField = document.getElementById('confirm-password-field');
+  const loginOptions = document.getElementById('login-options');
+  const submitBtn = document.getElementById('auth-submit');
+  const title = document.querySelector('main h1');
+  const subtitle = document.querySelector('main h1 + p');
+  const form = document.getElementById('auth-form');
+  const password = document.getElementById('password');
+  const togglePassword = document.getElementById('toggle-password');
+  let mode = 'login';
+
+  function activateTab(nextMode) {
+    mode = nextMode;
+    const isRegister = mode === 'register';
+    loginTab.className = isRegister
+      ? 'flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all'
+      : 'flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all';
+    registerTab.className = isRegister
+      ? 'flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all'
+      : 'flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all';
+
+    nameField.classList.toggle('hidden', !isRegister);
+    companyField.classList.toggle('hidden', !isRegister);
+    confirmField.classList.toggle('hidden', !isRegister);
+    loginOptions.classList.toggle('hidden', isRegister);
+    submitBtn.textContent = isRegister ? 'Créer mon compte' : 'Se connecter';
+    if (title) title.textContent = isRegister ? 'Créer un compte' : 'Bienvenue';
+    if (subtitle) subtitle.textContent = isRegister
+      ? 'Créez votre espace pour louer ou proposer du matériel.'
+      : "Accédez à l'inventaire de production technique.";
+  }
+
+  loginTab.addEventListener('click', () => activateTab('login'));
+  registerTab.addEventListener('click', () => activateTab('register'));
+
+  togglePassword.addEventListener('click', function () {
+    password.type = password.type === 'password' ? 'text' : 'password';
+    togglePassword.querySelector('span').textContent = password.type === 'password' ? 'visibility' : 'visibility_off';
+  });
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (mode === 'register') {
+      const confirm = document.getElementById('confirm-password').value;
+      if (password.value !== confirm) {
+        alert('Les mots de passe ne correspondent pas.');
+        return;
+      }
+      alert('Compte prêt à être créé avec Supabase.');
+    } else {
+      alert('Connexion prête à être reliée à Supabase.');
+    }
+  });
+});
+</script>
 
 </body></html>
