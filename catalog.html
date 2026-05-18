@@ -1,497 +1,193 @@
 <!DOCTYPE html>
 
-<html class="dark" lang="en"><head>
+<html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Equipment Search - Vantage Audio Marketplace</title>
+<title>Catalogue de Location - RentSoundSystem.com</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script id="tailwind-config">
-        tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "primary": "#fc036d",
-                      "on-tertiary-fixed": "#1c1b1b",
-                      "on-tertiary-container": "#2a2a2a",
-                      "on-primary-container": "#5a0022",
-                      "on-background": "#e2e2e2",
-                      "surface-container": "#1f1f1f",
-                      "on-primary-fixed-variant": "#90003b",
-                      "error": "#ffb4ab",
-                      "background": "#131313",
-                      "secondary-fixed": "#e2e2e2",
-                      "secondary-container": "#454747",
-                      "on-secondary": "#2f3131",
-                      "surface-dim": "#131313",
-                      "surface": "#131313",
-                      "surface-container-lowest": "#0e0e0e",
-                      "on-tertiary-fixed-variant": "#474746",
-                      "tertiary-fixed": "#e5e2e1",
-                      "primary-container": "#ff4d80",
-                      "inverse-surface": "#e2e2e2",
-                      "surface-container-low": "#1b1b1b",
-                      "surface-container-high": "#2a2a2a",
-                      "tertiary-fixed-dim": "#c8c6c5",
-                      "outline-variant": "#5d3f44",
-                      "tertiary": "#c8c6c5",
-                      "outline": "#ac878d",
-                      "surface-variant": "#353535",
-                      "on-secondary-fixed": "#1a1c1c",
-                      "secondary": "#c6c6c7",
-                      "primary-fixed-dim": "#fc036d",
-                      "error-container": "#93000a",
-                      "on-error": "#690005",
-                      "on-primary": "#660028",
-                      "on-surface-variant": "#e6bcc2",
-                      "on-tertiary": "#313030",
-                      "on-secondary-container": "#b4b5b5",
-                      "inverse-primary": "#bc004f",
-                      "on-primary-fixed": "#3f0016",
-                      "inverse-on-surface": "#303030",
-                      "surface-tint": "#fc036d",
-                      "primary-fixed": "#ffd9de",
-                      "on-surface": "#e2e2e2",
-                      "tertiary-container": "#929090",
-                      "on-error-container": "#ffdad6",
-                      "on-secondary-fixed-variant": "#454747",
-                      "surface-bright": "#393939",
-                      "secondary-fixed-dim": "#c6c6c7",
-                      "surface-container-highest": "#353535"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                "margin-mobile": "16px",
-                "margin-desktop": "40px",
-                "container-max": "1280px",
-                "stack-sm": "12px",
-                "stack-md": "24px",
-                "stack-lg": "48px"
-              },
-              "fontFamily": {
-                      "headline": [
-                              "Manrope"
-                      ],
-                      "display": [
-                              "Manrope"
-                      ],
-                      "body": [
-                              "Inter"
-                      ],
-                      "label": [
-                              "Inter"
-                      ]
-              },
-              "fontSize": {}
-      },
-          },
-        }
-      </script>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#5a0022", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#ff4d80", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#D9025D", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
 <style>
-        .material-symbols-outlined {
-          font-variation-settings:
-          'FILL' 0,
-          'wght' 400,
-          'GRAD' 0,
-          'opsz' 24;
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
         }
-      </style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353535;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #454747;
+        }
+    
+.catalog-card { cursor:pointer; }
+.catalog-card:hover { transform: translateY(-4px); }
+.catalog-img-placeholder {
+  background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.28), transparent 35%), linear-gradient(180deg,#242424,#101010);
+}
+.catalog-img-placeholder::after {
+  content:'image bientôt disponible';
+  color:rgba(255,255,255,.45);
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+</style>
 </head>
-<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
 <!-- TopNavBar -->
-<header class="bg-surface border-b border-white/10 w-full sticky top-0 z-50">
+<header class="w-full border-b border-white/10 bg-surface dark:bg-surface sticky top-0 z-50">
 <div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-<div class="flex items-center gap-8">
-<a class="font-headline text-[24px] font-bold text-primary tracking-tight" href="#">RENTSOUNDSYSTEM</a>
-<nav class="hidden md:flex gap-6">
-<!-- Active State Logic Applied -->
-<a class="font-body text-[16px] text-primary font-bold border-b-2 border-primary pb-1 opacity-80 transition-all" href="#">Rent Equipment</a>
-<a class="font-body text-[16px] text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Become a Partner</a>
-<a class="font-body text-[16px] text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Support</a>
+<div class="flex items-center gap-gutter">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tight" href="/">RENTSOUNDSYSTEM</a>
+<!-- Search Bar (on_left as per JSON) -->
+<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-2 border border-white/10 focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant mr-2 text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant w-64" id="catalog-search" placeholder="Rechercher du matériel..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-stack-md">
+<a class="font-body-md text-body-md text-primary dark:text-primary font-bold border-b-2 border-primary pb-1" href="/catalog.html">Louer du Matériel</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="/connexion-inscription.html?mode=register">Devenir Partenaire</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="/comment-ca-marche.html">Support</a>
 </nav>
-</div>
-<div class="flex items-center gap-4">
-<div class="relative hidden sm:block">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">search</span>
-<input class="bg-surface-container border border-outline-variant rounded text-on-surface text-sm pl-9 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary placeholder-on-surface-variant w-64" placeholder="Search equipment..." type="text"/>
-</div>
-<button class="text-on-surface-variant hover:text-primary transition-colors">
+<div class="flex items-center gap-stack-sm">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 p-2">
 <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
 </button>
-<button class="text-on-surface-variant hover:text-primary transition-colors">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 p-2 relative">
 <span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
 </button>
-<div class="h-8 w-8 rounded-full bg-surface-container-high overflow-hidden ml-2 border border-outline-variant">
-<img alt="User profile" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhnaLy4CcSIJQYKwJLgrvTsHo8wObI3QR8kz8VkwxGc5b46d0jKekn0rxf89y2WnNIAHMzAQ3tajMBA6OkztBtrM-Z1orzrWvZ9ehNGT7NY_YNEqzjfYGOaCnAeqzR90kg1FNVoG1BhuAZxUPnEmZ5_Ie8Pzmfjebh8tGrhJrSGWOO09t2HhY3Z7PCXvk57Ps8Y7rDFXsHKjlMeo-8iFtNLI11QlQArs1GglPfsYf8hmwkxNqE98-NzZRKagm382SpyjaNA2fLHrQ"/>
-</div>
-<button class="hidden md:block font-label text-[12px] font-medium text-on-surface ml-2 hover:text-primary transition-colors">My Account</button>
+<a class="ml-4 font-label-md text-label-md bg-surface-container border border-white/10 hover:border-primary text-on-surface px-4 py-2 rounded-full transition-colors flex items-center gap-2" href="/connexion-inscription.html">
+<img alt="User profile" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzE5DHPl_SAwOWQLqIRhZaqIBQlKa_ngRiA6q_bduTEWRZgIwNppDVtn7pM4Ga8oz4j8-KGhGTE6Bo6G3JpdmveluRFaJinKGj8RsK-WseriOgOghjHZuzbVHhf3M6mw_8Jbvee-4mhF_Re5HHhoGQx58OcIsOz8ASm_j19XrGjzw_MRJLO-m7eiTVn8vcAWbJS4L5-bEmRTgGu-RvjjipUlo4FD9Zjp9u5nvLbVG38x1lMXBUmIVusrCa7pLHklEsR-Iy1Jd7xCM"/>
+                    Mon Compte
+                </a>
 </div>
 </div>
 </header>
-<!-- Main Content Layout -->
-<main class="flex-grow w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-lg flex flex-col lg:flex-row gap-stack-lg">
-<!-- Sidebar Filters -->
-<aside class="w-full lg:w-64 flex-shrink-0 flex flex-col gap-stack-md">
-<div class="bg-surface-container rounded-lg p-6 border border-white/5">
-<div class="flex items-center justify-between mb-6">
-<h2 class="font-headline text-[18px] font-semibold text-on-surface">Filters</h2>
-<button class="font-label text-[12px] text-on-surface-variant hover:text-primary transition-colors">Clear All</button>
+<main class="flex-grow flex flex-col md:flex-row w-full max-w-container-max mx-auto pt-stack-lg pb-stack-lg gap-gutter px-margin-mobile md:px-margin-desktop">
+<!-- Filters Sidebar -->
+<aside class="w-full md:w-64 flex-shrink-0 space-y-stack-md">
+<div class="bg-surface-container rounded-xl p-stack-md border border-white/10">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Filtres</h2>
+<!-- Category Filter -->
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Catégorie</h3>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="sonorisation" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Haut-parleurs &amp; Moniteurs</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="console" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Tables de Mixage &amp; Consoles</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="microphone" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Microphones</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="amplificateur" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Amplificateurs</span>
+</label>
+</div>
+</div>
+<!-- Price Filter -->
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Tarif Journalier</h3>
+<div class="flex items-center gap-2">
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-2 py-1 placeholder:text-on-surface-variant" id="filter-min-price" placeholder="Min" type="number"/>
+<span class="text-on-surface-variant">-</span>
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-2 py-1 placeholder:text-on-surface-variant" id="filter-max-price" placeholder="Max" type="number"/>
+</div>
 </div>
 <!-- Location Filter -->
-<div class="mb-6">
-<label class="block font-label text-[12px] font-medium text-on-surface-variant uppercase tracking-wider mb-2">Location</label>
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Lieu</h3>
 <div class="relative">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm">location_on</span>
-<input class="bg-surface border border-outline-variant rounded text-on-surface text-sm pl-9 pr-4 py-2 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary w-full" type="text" value="Los Angeles, CA"/>
-</div>
-</div>
-<!-- Dates Filter -->
-<div class="mb-6">
-<label class="block font-label text-[12px] font-medium text-on-surface-variant uppercase tracking-wider mb-2">Availability</label>
-<div class="flex gap-2">
-<input class="bg-surface border border-outline-variant rounded text-on-surface text-sm px-3 py-2 w-full focus:outline-none focus:border-primary" type="date"/>
-<input class="bg-surface border border-outline-variant rounded text-on-surface text-sm px-3 py-2 w-full focus:outline-none focus:border-primary" type="date"/>
-</div>
-</div>
-<!-- Category Filter -->
-<div class="mb-6 border-t border-white/5 pt-6">
-<label class="block font-label text-[12px] font-medium text-on-surface-variant uppercase tracking-wider mb-3">Category</label>
-<div class="flex flex-col gap-3">
-<label class="flex items-center gap-3 cursor-pointer group">
-<input checked="" class="form-checkbox h-4 w-4 text-primary bg-surface border-outline-variant rounded focus:ring-primary focus:ring-offset-background" type="checkbox"/>
-<span class="font-body text-[14px] text-on-surface group-hover:text-primary transition-colors">Speakers</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-4 w-4 text-primary bg-surface border-outline-variant rounded focus:ring-primary focus:ring-offset-background" type="checkbox"/>
-<span class="font-body text-[14px] text-on-surface group-hover:text-primary transition-colors">Mixing Consoles</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-4 w-4 text-primary bg-surface border-outline-variant rounded focus:ring-primary focus:ring-offset-background" type="checkbox"/>
-<span class="font-body text-[14px] text-on-surface group-hover:text-primary transition-colors">Microphones</span>
-</label>
-<label class="flex items-center gap-3 cursor-pointer group">
-<input class="form-checkbox h-4 w-4 text-primary bg-surface border-outline-variant rounded focus:ring-primary focus:ring-offset-background" type="checkbox"/>
-<span class="font-body text-[14px] text-on-surface group-hover:text-primary transition-colors">Amplifiers</span>
-</label>
-</div>
-</div>
-<!-- Price Slider Filter -->
-<div class="border-t border-white/5 pt-6">
-<label class="block font-label text-[12px] font-medium text-on-surface-variant uppercase tracking-wider mb-3">Daily Rate</label>
-<div class="flex items-center justify-between font-body text-[14px] text-on-surface mb-2">
-<span class="">$50</span>
-<span class="">$1,500+</span>
-</div>
-<input class="w-full h-1 bg-surface-variant rounded-full appearance-none cursor-pointer accent-primary" max="1500" min="50" type="range" value="800"/>
-</div>
-</div>
-</aside>
-<!-- Main Search Results Canvas -->
-<section class="flex-grow flex flex-col gap-stack-md min-w-0">
-<!-- Search Header -->
-<div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 mb-2">
-<div>
-<h1 class="font-headline text-[32px] font-semibold text-on-surface mb-1">Equipment Search</h1>
-<p class="font-body text-[16px] text-on-surface-variant">124 articles found in Los Angeles, CA</p>
-</div>
-<div class="flex items-center gap-3 w-full sm:w-auto">
-<span class="font-label text-[12px] text-on-surface-variant uppercase tracking-wider hidden sm:inline">Sort by:</span>
-<select class="bg-surface-container border border-outline-variant rounded text-on-surface text-sm px-4 py-2 focus:outline-none focus:border-primary w-full sm:w-48 appearance-none cursor-pointer">
-<option>Recommended</option>
-<option>Price: Low to High</option>
-<option>Price: High to Low</option>
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="location_on">location_on</span>
+<select id="filter-city" class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm pl-8 pr-2 py-2 appearance-none text-on-surface">
+<option value="">Toutes les villes</option>
+<option>Paris</option>
+<option>Agadir</option>
+<option>Hell-Ville</option>
+<option>Antananarivo</option>
+<option>Cannes</option>
 </select>
 </div>
 </div>
-<!-- Bento Grid Results -->
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6"><!-- Product Card 1 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="L-Acoustics K2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
+<!-- Dates Filter -->
+<div class="mb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Dates de Location</h3>
+<div class="space-y-2">
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-2 text-on-surface" id="filter-start-date" placeholder="Retrait" type="date"/>
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-2 text-on-surface" id="filter-end-date" placeholder="Retour" type="date"/>
 </div>
 </div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">L-Acoustics K2</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$350<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
+<button id="clear-filters" type="button" class="w-full bg-surface-bright hover:bg-surface-variant text-on-surface font-label-md text-label-md py-2 rounded transition-colors border border-white/5">
+                    Effacer les Filtres
+                </button>
 </div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">Source line WST variable curvature</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">24 units available</span>
+</aside>
+<!-- Product Grid Catalog -->
+<section class="flex-grow">
+<div class="flex justify-between items-end mb-stack-md">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Catalogue de Location</h1>
+<p class="font-body-md text-body-md text-on-surface-variant"><span id="catalog-count">Chargement des annonces...</span></p>
 </div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">LA Mega Hub (Burbank)</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 2 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Pioneer DJM-V10" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0ujoF2Ba4o6_PrN0k1SDnwKc8pvHg8nP00XQ9H4Qhjh7Ih2Th5VLOF7diMJenu09w0B-GqDqfaIZ6Xk8mUIKRauHSeU6X5rVoEDFgfNQIbDskV1idxB_-p0DvTZ6aEgQZmcn2mCvV7in7RFh3VEabyK08MmFnLjQNeNBCZ9-ucKFrYArt0LigPsK7MeV2b2dxdE4McgE0POgKDD9S_bI6lc75Gx-Lz595eE8QvfT2y6AinORulZ_4ubJ72n2Tv7AzuX8kz2ztxR7"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#c6c6c7]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Reserved (10/12)</span>
+<div class="flex items-center gap-2">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Trier par:</span>
+<select id="catalog-sort" class="bg-surface-container border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-1 appearance-none text-on-surface">
+<option>Recommandé</option>
+<option>Prix: Croissant</option>
+<option>Prix: Décroissant</option>
+<option>Mieux Noté</option>
+</select>
 </div>
 </div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Pioneer DJM-V10</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$125<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">6-Channel Professional DJ Mixer</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">2 units available soon</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">Downtown LA Depot</span>
-</div>
-<button class="w-full mt-4 bg-transparent border border-outline text-on-surface font-body text-[14px] font-medium py-2.5 rounded hover:bg-surface-variant transition-colors" disabled="">Waitlist</button>
+<!-- Header Image Banner -->
+<div class="w-full h-48 md:h-64 mb-stack-lg rounded-xl overflow-hidden relative border border-white/10 group">
+<img alt="Hero image showing professional audio equipment setup" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" data-alt="A wide shot of a massive professional audio setup on a dark, minimalist concert stage before a show. Towering line array speakers flank a complex mixing console in the foreground. The lighting is low and moody, dominated by deep pitch blacks and sharp, vivid pink accent lights slicing through a subtle atmospheric haze. The aesthetic is highly technical, clinical, and premium, reflecting a high-end corporate event production environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr5mylJdg_7eBxu0Tq2C8UNJcJJRvFqrOlsV_C62oe9at4xL5FrteqRSOV24h7lMs1ITFbmcjritXmXmCk0_kkunYfuwS2S9qGUVqjhOk0zmXRpgINnThKpskkR17Fzk5cbxA5kl5_p_CIHnBvsPqDLQ6OlcMzOsIiELQDDErgJ7oeSyFkYsVD4t0QaC3sW6BfKNaAf3mouN9YNLCCJKSuy9EgD-xJ5FXv8M3l5aOr9-tbNEXa7YqIxUgfahYQWyYhHgd_NRpP8bo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+<div class="absolute bottom-stack-md left-stack-md">
+<span class="bg-primary text-on-primary font-label-caps text-label-caps px-2 py-1 rounded mb-2 inline-block">Configuration Vedette</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Système L-Acoustics K2</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Système line array complet prêt pour les arènes, disponible pour un déploiement immédiat.</p>
 </div>
 </div>
-</article>
-<!-- Product Card 3 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Shure Axient Digital" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0ujZiu7P0lKVrcryW24xnhaup4D0i90MsZNCXaH2RWtvB9DpIp-W3t80grU300o8xb_nYducxN0Ybx0Ff3br1IpgzDd2uIv2JaD-EaiB3YnwCpeZ8R3xVe1RPnBPkcQ48Sn3T4ZzpG2p6wyROl4lmYHj1NN4h7svvCfJIt61mjiod3P4roQSdMw7xcVcdvsgdqLQ27UR918MnW3Qkj4BOMzLmTN8JDgJSQy3a9Rkhllnk7mSsjqcbYnjvhgkyJGtxw1cdO1Nx3a8-Q"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
+<!-- Bento Grid / Dynamic Supabase Layout -->
+<div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+  <div class="col-span-full text-center text-on-surface-variant py-16">Chargement des produits...</div>
 </div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Shure Axient Digital</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$180<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">AD4Q Four-Channel Receiver</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">8 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">LA Mega Hub (Burbank)</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 4 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Crown I-Tech" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uhlaPkXVa-7MZbQC14JWm7L4KVNpFeuGjODw4AFtcAmRvA1J7G8L79kK2Kg40OqnAKPLvjbS5d2nCWQ-oqBNccrwa2xPWWSNTCqXWFlIhOKfvnv6jacZ_TrIlgABDx93FlrQA-vI7lWx7qBhvqIOF13t4oKZfBC_ObOwjf-fWIDaJqLwam5x6dEpFxxMIuj3fOg8r35HOGBu1Ua6v1bitHxzJtr2JAkVKq2kHJfz0QULLHpdabmd3H0dE09fS9eLqimezq4JvfNZA"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
-</div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Crown I-Tech 4x3500HD</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$150<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">4-Channel Power Amplifier</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">12 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">Hollywood Hills Depot</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 5 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Meyer Sound Leopard" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZbhep06RywaSERfLMV-M51ZFkAbC2LzmZB8QVh1Ol6nwvk1v4-xnTqkljjYXIONpAYz-HdHOygnYgfMakH2vz4QA-J-yCZbvbyeBOJDMmEoKR0-xIJU4kBAzczILEHxU0eU7uCDUCZQRxhWcxClXHJp_QinWaB96p5M4bn_JpQe-pPsWuKk7cScLNUqTkxIVPxZl6z0KdP2BrFNy2kQg9HgNJ4g2PWmHOBGPAPkAMWfPgTRPj9l6z-FaNUdfkTFp7zjpDiQRv0Jw"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
-</div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Meyer Sound Leopard</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$280<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">Compact Linear Line Array</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">30 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">LA Mega Hub (Burbank)</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 6 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Martin MAC Ultra" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOZQVTa5zK2W9Gc9AxPs6y4VNHA4TclBUBT4DdDEAKBA7S3m2qTX-LlY4gV2XqCYWY74RH9O6wc5149dTGsk9xy6rH4t5JbrndlCy0UYpdsDOAgGfyQCaIGPQDR08lgLfWc24QZnn0b5oyFpyQw00Qc2fajpnwpxDMR-Bg0L9-7-bigbgKDaAIJVTj1FeF6bWTbKzVIgwJDrQfsIO8uV8c7_AV6578ws6cU-QcMLjIEP29bzfp22U_-Xo348ROwvk6Otl3JQvheTo"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
-</div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Martin MAC Ultra Perf</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$220<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">High-output LED Performance</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">16 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">Hollywood Hills Depot</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 7 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Allen &amp; Heath dLive" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDLP8u2Nu-XZdrfwTUDOKBtt6FlwUZrXctt8H8aq5cWm_ym6KJyjEMdhR55PHtuKQoBwlJa6VDM0l3B5HCKLXBVSPWMl7GwD1t0NUwk4nnX78Lk8aDiGRrkgM6RRUh4i5k5G81mmRpcPQKmvqO0qXsTo6Oez07XeSRVHrKIgIegl8dVd9_2hRtQSKhaRb4qrMmUVT2XTE8PHmF4CooV8J79evCgtFRFoueXcWGaXNPhaRB-ry5iGtUigd54gMx8f6IxOjnzDEipe0"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
-</div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Allen &amp; Heath dLive S5000</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$350<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">Digital Mixing System Control</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">4 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">Downtown LA Depot</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 8 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="grandMA3 compact" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLKPhpMlqJ4qxtS7FnrBXwGqvfkSmmeKtX-W2kk2d8F8IZTdMgQx2cR2i4NezMzsBMFUwWopbaVxwW7X2myul7PzQOs7Fc_Gfz8rYUMy1RZ_ycWofhYvuZIzrIxF2F6UI6uwTMe9phHC9OyHqE1sgHsgCdDBDbE2gID4v22_bWXU6-9PW-IMNFU1BQdxAZrnXzZeRlTinvfrjFfVjHRaHhFKg_YW-GF1c0cUWcqmeCD6uE4NZn4jO5D6-XwfHHP4Kw4UYC29fB6bY"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
-</div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">grandMA3 compact XT</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$410<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">Lighting Control Console</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">2 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">LA Mega Hub (Burbank)</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article>
-<!-- Product Card 9 -->
-<article class="bg-surface-container rounded-lg border border-white/5 overflow-hidden group hover:border-primary/50 transition-all duration-300 flex flex-col h-full shadow-[0_4px_24px_rgba(0,0,0,0.4)]">
-<div class="relative h-48 w-full overflow-hidden bg-surface-dim">
-<img alt="Pioneer CDJ-3000" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaVPhV7iZOvSB59u-vxTgBHdc8dteHqsuA7QmtrTd7XbpL6FpwU4t3CDHu3jJrWsOTjwbdNjtD--07qF-CA319V9cC6MH7foJTe1NieJxKDOPGRWamDUmm-9lRFO5QbcisgqBOPx1gnAO4HPWP198W4V9U30rGOIZ08JxUI_QzEisx88rBZIExmMh0fgWbULqQtrtmXYu2pXcaid9dKmSztFDe6olhUbx6d__6XJOJKS7NLJttXtJSkJkt2gAhAdMkpvmjEHrQGh4"/>
-<div class="absolute top-3 left-3 bg-surface/80 backdrop-blur-sm border border-white/10 rounded px-2 py-1 flex items-center gap-1.5">
-<span class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#fc036d]"></span>
-<span class="font-label text-[10px] font-medium text-on-surface uppercase tracking-wider">Available</span>
-</div>
-</div>
-<div class="p-5 flex flex-col flex-grow">
-<div class="flex justify-between items-start mb-2">
-<h3 class="font-headline text-[18px] font-semibold text-on-surface line-clamp-1">Pioneer CDJ-3000</h3>
-<span class="font-headline text-[18px] font-bold text-primary shrink-0">$85<span class="text-[12px] text-on-surface-variant font-normal">/day</span></span>
-</div>
-<p class="font-body text-[14px] text-on-surface-variant mb-4">Professional DJ Multi Player</p>
-<div class="mt-auto space-y-3">
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">inventory_2</span>
-<span class="">10 units available</span>
-</div>
-<div class="flex items-center gap-2 text-on-surface-variant text-[12px]">
-<span class="material-symbols-outlined text-[16px]">warehouse</span>
-<span class="">Downtown LA Depot</span>
-</div>
-<button class="w-full mt-4 bg-primary text-on-primary font-body text-[14px] font-medium py-2.5 rounded hover:bg-primary-container transition-colors">Rent Now</button>
-</div>
-</div>
-</article></div>
 <!-- Pagination -->
-<div class="flex justify-center mt-8">
-<div class="flex gap-2">
-<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:border-primary transition-colors disabled:opacity-50" disabled="">
-<span class="material-symbols-outlined">chevron_left</span>
-</button>
-<button class="w-10 h-10 flex items-center justify-center rounded bg-primary text-on-primary font-body text-[14px] font-medium">1</button>
-<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:border-primary transition-colors font-body text-[14px]">2</button>
-<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:border-primary transition-colors font-body text-[14px]">3</button>
-<span class="w-10 h-10 flex items-center justify-center text-on-surface-variant">...</span>
-<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:border-primary transition-colors font-body text-[14px]">12</button>
-<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface hover:border-primary transition-colors">
-<span class="material-symbols-outlined">chevron_right</span>
-</button>
-</div>
-</div>
+<div id="catalog-pagination" class="flex justify-center items-center gap-2 mt-stack-lg pt-stack-md border-t border-white/10"></div>
 </section>
 </main>
 <!-- Footer -->
 <footer class="bg-surface-container-lowest border-t border-white/5 pt-16 pb-8">
 <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-<!-- Brand Column -->
-<div class="flex flex-col gap-6">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+<!-- Brand Column (SEO enhanced) -->
+<div class="flex flex-col gap-6 lg:col-span-2">
 <a class="font-headline text-[24px] font-bold text-primary tracking-tight" href="#">RENTSOUNDSYSTEM</a>
-<p class="font-body text-[14px] text-on-surface-variant max-w-xs">
-                    La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.
-                </p>
+<p class="font-body text-[14px] text-on-surface-variant max-w-sm">
+          Expert en location de systèmes de sonorisation, éclairage et matériel scénique pour événements professionnels. La plateforme de référence entre experts de l'événementiel.
+        </p>
 <div class="flex gap-4">
 <a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
 <span class="material-symbols-outlined text-[20px]">share</span>
@@ -506,22 +202,22 @@
 </div>
 <!-- Marketplace Column -->
 <div class="flex flex-col gap-6">
-<h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Marketplace</h4>
+<h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Villes</h4>
 <nav class="flex flex-col gap-3">
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Louer du matériel</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Devenir Partenaire</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Comment ça marche</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Assurance &amp; Protection</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Paris</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Lyon</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Marseille</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Bordeaux</a>
 </nav>
 </div>
 <!-- Categories Column -->
 <div class="flex flex-col gap-6">
 <h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Catégories</h4>
 <nav class="flex flex-col gap-3">
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Sonorisation</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Éclairage</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Line Arrays</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Consoles de mixage</a>
 <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">DJ Gear</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Scène &amp; Structures</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Éclairage &amp; Lyres</a>
 </nav>
 </div>
 <!-- Support Column -->
@@ -530,7 +226,7 @@
 <nav class="flex flex-col gap-3">
 <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Centre d'aide</a>
 <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Contactez-nous</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Blog</a>
+<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Devenir Partenaire</a>
 <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
 </nav>
 </div>
@@ -538,8 +234,8 @@
 <!-- Bottom Bar -->
 <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
 <span class="font-body text-[14px] text-on-secondary-container text-center md:text-left">
-                © 2024 Vantage Audio Marketplace. Logistique Sonore Professionnelle.
-            </span>
+        © 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.
+      </span>
 <nav class="flex flex-wrap justify-center gap-6">
 <a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Conditions d'utilisation</a>
 <a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Politique de confidentialité</a>
@@ -548,11 +244,289 @@
 </div>
 </div>
 </footer>
-<script>
-fetch('header.html')
-.then(response => response.text())
-.then(data => {
-document.getElementById('header').innerHTML = data;
-});
+
+<script id="rss-catalog-supabase">
+(function () {
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const PAGE_SIZE = 12;
+
+  let client = null;
+  let currentPage = 1;
+  let totalItems = 0;
+  let searchTimer = null;
+
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  function safe(value) {
+    return String(value || '').replace(/[&<>"]/g, function (m) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m];
+    });
+  }
+
+  function cleanDescription(value) {
+    if (!value) return 'Annonce disponible sur RentSoundSystem.';
+    return String(value).replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
+  }
+
+  function money(value) {
+    const n = Number(value || 0);
+    return n.toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + '€';
+  }
+
+  function productUrl(item) {
+    if (item.original_id !== undefined && item.original_id !== null) {
+      return '/product.html?original_id=' + encodeURIComponent(item.original_id);
+    }
+    if (item.id) return '/product.html?id=' + encodeURIComponent(item.id);
+    return '/product.html';
+  }
+
+  function getFirstImage(item) {
+    const imgs = (item.listing_images || [])
+      .slice()
+      .sort((a, b) => (a.position || 0) - (b.position || 0));
+    return imgs[0]?.image_url || '';
+  }
+
+  function getFilters() {
+    const selectedCategories = Array.from(document.querySelectorAll('.catalog-category:checked'))
+      .map(input => input.dataset.category)
+      .filter(Boolean);
+
+    return {
+      search: document.getElementById('catalog-search')?.value?.trim() || '',
+      min: document.getElementById('filter-min-price')?.value || '',
+      max: document.getElementById('filter-max-price')?.value || '',
+      city: document.getElementById('filter-city')?.value || '',
+      categories: selectedCategories,
+      sort: document.getElementById('catalog-sort')?.value || 'Recommandé'
+    };
+  }
+
+  function buildQuery(countOnly) {
+    const filters = getFilters();
+    let query = client
+      .from('listings')
+      .select('*, listing_images(image_url, position)', { count: 'exact', head: countOnly })
+      .eq('status', 'publish');
+
+    if (filters.search) {
+      query = query.or('title.ilike.%' + filters.search + '%,description.ilike.%' + filters.search + '%,city.ilike.%' + filters.search + '%,category.ilike.%' + filters.search + '%');
+    }
+
+    if (filters.city) {
+      query = query.ilike('city', '%' + filters.city + '%');
+    }
+
+    if (filters.min) query = query.gte('price', Number(filters.min));
+    if (filters.max) query = query.lte('price', Number(filters.max));
+
+    if (filters.categories.length) {
+      const ors = filters.categories.map(c => 'category.ilike.%' + c + '%').join(',');
+      query = query.or(ors);
+    }
+
+    if (filters.sort.includes('Croissant')) query = query.order('price', { ascending: true });
+    else if (filters.sort.includes('Décroissant')) query = query.order('price', { ascending: false });
+    else {
+      query = query.order('featured', { ascending: false });
+
+      // fallback sécurisé si created_at n'existe pas
+      try {
+        query = query.order('published_at', { ascending: false });
+      } catch (e) {
+        query = query.order('id', { ascending: false });
+      }
+    }
+
+    return query;
+  }
+
+  function renderProducts(items) {
+    const grid = document.getElementById('catalog-grid');
+    if (!grid) return;
+
+    if (!items.length) {
+      grid.innerHTML = '<div class="col-span-full text-center text-on-surface-variant py-16">Aucun produit trouvé avec ces filtres.</div>';
+      return;
+    }
+
+    grid.innerHTML = items.map(function (item) {
+      const img = getFirstImage(item);
+      const title = safe(item.title || 'Matériel professionnel');
+      const desc = safe(cleanDescription(item.description).slice(0, 140));
+      const category = safe(item.category || 'Matériel');
+      const city = safe(item.city || item.location || 'Ville non précisée');
+      const price = money(item.price || 0);
+      const url = productUrl(item);
+      const imageHtml = img
+        ? '<img alt="' + title + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" referrerpolicy="no-referrer" src="' + safe(img) + '" onerror="this.parentElement.classList.add(\\'catalog-img-placeholder\\');this.remove();">'
+        : '<div class="catalog-img-placeholder w-full h-full flex items-center justify-center"></div>';
+
+      return `
+      <article data-url="${url}" class="catalog-card bg-surface-container border border-white/5 hover:border-primary/50 rounded-xl overflow-hidden group flex flex-col transition-all duration-300 relative">
+        <div class="absolute top-3 left-3 z-10 flex gap-2">
+          <span class="bg-surface-container-high/90 backdrop-blur text-on-surface font-label-caps text-label-caps px-2 py-1 rounded border border-white/10">${category}</span>
+        </div>
+        <div class="absolute top-3 right-3 z-10">
+          <button type="button" class="favorite-btn text-on-surface-variant hover:text-primary transition-colors bg-surface-container-high/90 backdrop-blur p-1.5 rounded-full border border-white/10">
+            <span class="material-symbols-outlined text-[18px]">favorite_border</span>
+          </button>
+        </div>
+        <div class="h-48 bg-surface-container-lowest relative overflow-hidden">
+          ${imageHtml}
+        </div>
+        <div class="p-stack-sm flex flex-col flex-grow">
+          <div class="flex justify-between items-start gap-3 mb-2">
+            <h3 class="font-headline-md text-[20px] leading-tight text-on-surface line-clamp-2">${title}</h3>
+            <div class="flex items-center gap-1 shrink-0">
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <span class="font-label-caps text-label-caps text-on-surface-variant">Disponible</span>
+            </div>
+          </div>
+          <p class="font-body-sm text-body-sm text-on-surface-variant mb-4 flex-grow line-clamp-3">${desc}</p>
+          <div class="flex items-center gap-4 mb-4 font-body-sm text-body-sm text-on-surface-variant">
+            <div class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span>${city}</div>
+          </div>
+          <div class="flex justify-between items-center border-t border-white/10 pt-4 mt-auto">
+            <div>
+              <span class="font-headline-md text-headline-md text-primary">${price}</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">/jour</span>
+            </div>
+            <button type="button" class="open-product bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded hover:bg-primary-fixed transition-colors font-bold">Voir l'annonce</button>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+
+    grid.querySelectorAll('.catalog-card').forEach(function (card) {
+      card.addEventListener('click', function (event) {
+        if (event.target.closest('.favorite-btn')) {
+          event.stopPropagation();
+          const icon = event.target.closest('.favorite-btn').querySelector('.material-symbols-outlined');
+          icon.textContent = icon.textContent.trim() === 'favorite' ? 'favorite_border' : 'favorite';
+          return;
+        }
+        window.location.href = card.dataset.url;
+      });
+    });
+  }
+
+  function renderPagination() {
+    const box = document.getElementById('catalog-pagination');
+    if (!box) return;
+
+    const totalPages = Math.max(1, Math.ceil(totalItems / PAGE_SIZE));
+    if (totalPages <= 1) {
+      box.innerHTML = '';
+      return;
+    }
+
+    let pages = [];
+    const start = Math.max(1, currentPage - 2);
+    const end = Math.min(totalPages, currentPage + 2);
+    for (let i = start; i <= end; i++) pages.push(i);
+
+    box.innerHTML = `
+      <button data-page="${Math.max(1, currentPage - 1)}" ${currentPage === 1 ? 'disabled' : ''} class="catalog-page-btn p-2 border border-white/10 rounded hover:border-primary text-on-surface-variant hover:text-primary transition-colors disabled:opacity-40">
+        <span class="material-symbols-outlined">chevron_left</span>
+      </button>
+      ${currentPage > 3 ? '<button data-page="1" class="catalog-page-btn w-10 h-10 flex items-center justify-center border border-white/10 text-on-surface rounded font-label-md hover:border-primary">1</button><span class="text-on-surface-variant px-2">...</span>' : ''}
+      ${pages.map(p => `<button data-page="${p}" class="catalog-page-btn w-10 h-10 flex items-center justify-center ${p === currentPage ? 'bg-primary text-on-primary' : 'border border-white/10 text-on-surface hover:border-primary'} rounded font-label-md">${p}</button>`).join('')}
+      ${currentPage < totalPages - 2 ? '<span class="text-on-surface-variant px-2">...</span><button data-page="' + totalPages + '" class="catalog-page-btn w-10 h-10 flex items-center justify-center border border-white/10 text-on-surface rounded font-label-md hover:border-primary">' + totalPages + '</button>' : ''}
+      <button data-page="${Math.min(totalPages, currentPage + 1)}" ${currentPage === totalPages ? 'disabled' : ''} class="catalog-page-btn p-2 border border-white/10 rounded hover:border-primary text-on-surface-variant hover:text-primary transition-colors disabled:opacity-40">
+        <span class="material-symbols-outlined">chevron_right</span>
+      </button>`;
+
+    box.querySelectorAll('.catalog-page-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        const next = Number(btn.dataset.page);
+        if (!next || next === currentPage) return;
+        currentPage = next;
+        loadCatalog();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    });
+  }
+
+  async function loadCatalog() {
+    const grid = document.getElementById('catalog-grid');
+    const count = document.getElementById('catalog-count');
+    if (grid) grid.innerHTML = '<div class="col-span-full text-center text-on-surface-variant py-16">Chargement des produits...</div>';
+
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+
+    const { data, error, count: total } = await buildQuery(false).range(from, to);
+
+    if (error) {
+      console.error('SUPABASE CATALOG ERROR:', error);
+      document.body.insertAdjacentHTML('beforeend',
+      '<div style="position:fixed;bottom:20px;right:20px;background:#93000a;color:white;padding:14px 18px;border-radius:12px;z-index:999999;font-family:Arial;font-size:14px;max-width:420px">Erreur Supabase : ' + (error.message || 'Unknown error') + '</div>');
+      if (grid) grid.innerHTML = '<div class="col-span-full text-center text-red-400 py-16">Erreur de chargement Supabase.</div>';
+      return;
+    }
+
+    totalItems = total || 0;
+    const start = totalItems ? from + 1 : 0;
+    const end = Math.min(to + 1, totalItems);
+
+    if (count) count.textContent = 'Affichage de ' + start + '-' + end + ' sur ' + totalItems + ' annonces disponibles';
+
+    renderProducts(data || []);
+    renderPagination();
+  }
+
+  function bindFilters() {
+    ['filter-min-price', 'filter-max-price', 'filter-city', 'catalog-sort', 'filter-start-date', 'filter-end-date'].forEach(function (id) {
+      document.getElementById(id)?.addEventListener('change', function () {
+        currentPage = 1;
+        loadCatalog();
+      });
+    });
+
+    document.querySelectorAll('.catalog-category').forEach(function (input) {
+      input.addEventListener('change', function () {
+        currentPage = 1;
+        loadCatalog();
+      });
+    });
+
+    document.getElementById('catalog-search')?.addEventListener('input', function () {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(function () {
+        currentPage = 1;
+        loadCatalog();
+      }, 350);
+    });
+
+    document.getElementById('clear-filters')?.addEventListener('click', function () {
+      document.getElementById('catalog-search').value = '';
+      document.getElementById('filter-min-price').value = '';
+      document.getElementById('filter-max-price').value = '';
+      document.getElementById('filter-city').value = '';
+      document.getElementById('catalog-sort').selectedIndex = 0;
+      document.querySelectorAll('.catalog-category').forEach(input => input.checked = false);
+      currentPage = 1;
+      loadCatalog();
+    });
+  }
+
+  ready(function () {
+    if (!window.supabase) {
+      document.getElementById('catalog-grid').innerHTML = '<div class="col-span-full text-center text-red-400 py-16">Supabase JS non chargé.</div>';
+      return;
+    }
+
+    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    bindFilters();
+    loadCatalog();
+  });
+})();
 </script>
+
 </body></html>
