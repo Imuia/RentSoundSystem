@@ -97,6 +97,13 @@
   .rss-related-img { background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.30), transparent 32%), linear-gradient(180deg,#242424,#101010); }
   .rss-related-img img { width: 100%; height: 100%; object-fit: cover; }
   .rss-loading { opacity: .7; }
+
+  .rss-selected-day { background:#fc036d !important; color:#fff !important; border-color:#fc036d !important; }
+  .rss-tab-panel { display:none; }
+  .rss-tab-panel.active { display:block; }
+  .rss-tab-active { color:#fc036d !important; border-bottom:2px solid #fc036d !important; background:#2a2a2a !important; }
+  .rss-day { cursor:pointer; }
+  .rss-qty-btn, .rss-tab-btn, .rss-calendar-nav { cursor:pointer; }
 </style>
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
@@ -169,11 +176,11 @@
 <!-- Detailed Description & Specs Tabs -->
 <div class="bg-surface-container-low rounded-xl border border-outline-variant/20 overflow-hidden">
 <div class="flex border-b border-outline-variant/20">
-<button class="flex-1 py-4 text-center font-headline font-bold text-body-md text-primary border-b-2 border-primary bg-surface-container-high">Aperçu</button>
-<button class="flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Spécifications techniques</button>
-<button class="flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Inclus</button>
+<button type="button" data-tab="overview" class="rss-tab-btn rss-tab-active flex-1 py-4 text-center font-headline font-bold text-body-md text-primary border-b-2 border-primary bg-surface-container-high">Aperçu</button>
+<button type="button" data-tab="specs" class="rss-tab-btn flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Spécifications techniques</button>
+<button type="button" data-tab="included" class="rss-tab-btn flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Inclus</button>
 </div>
-<div class="p-8 space-y-6">
+<div id="rss-tab-overview" class="rss-tab-panel active p-8 space-y-6">
 <h3 class="font-headline text-headline-lg text-on-surface">Qualité Sonore Exceptionnelle &amp; Puissance</h3>
 <p class="font-body text-body-md text-on-surface-variant leading-relaxed">Découvrez la qualité sonore exceptionnelle du système JBL Pro avec notre configuration sur-mesure pour Marrakech. Idéal pour les événements en direct, les clubs et les scènes exigeantes, ce système offre une couverture sonore optimale et une fiabilité reconnue. Associé à une amplification Crown de pointe, il garantit une expérience audio inoubliable pour tous vos événements.</p>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
@@ -192,6 +199,24 @@
 </div>
 </div>
 </div>
+</div>
+<div id="rss-tab-specs" class="rss-tab-panel p-8 space-y-5">
+<h3 class="font-headline text-headline-lg text-on-surface">Spécifications techniques</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-surface p-4 rounded border border-outline-variant/20"><div class="text-primary font-bold mb-1">Puissance</div><div class="text-on-surface-variant">Configuration professionnelle adaptée aux événements live.</div></div>
+<div class="bg-surface p-4 rounded border border-outline-variant/20"><div class="text-primary font-bold mb-1">Connectique</div><div class="text-on-surface-variant">Entrées/sorties audio professionnelles selon disponibilité.</div></div>
+<div class="bg-surface p-4 rounded border border-outline-variant/20"><div class="text-primary font-bold mb-1">Utilisation</div><div class="text-on-surface-variant">Concerts, clubs, DJ sets, soirées privées et événements corporate.</div></div>
+<div class="bg-surface p-4 rounded border border-outline-variant/20"><div class="text-primary font-bold mb-1">État</div><div class="text-on-surface-variant">Matériel vérifié avant départ/location.</div></div>
+</div>
+</div>
+<div id="rss-tab-included" class="rss-tab-panel p-8 space-y-5">
+<h3 class="font-headline text-headline-lg text-on-surface">Inclus dans la location</h3>
+<ul class="space-y-3 text-on-surface-variant">
+<li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> Matériel principal selon l’annonce</li>
+<li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> Câblage de base si précisé par le loueur</li>
+<li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> Vérification fonctionnelle au retrait</li>
+<li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> Options livraison et installation disponibles</li>
+</ul>
 </div>
 </div>
 </div>
@@ -228,64 +253,64 @@
 <div class="flex justify-between items-end mb-6 border-b border-outline-variant/20 pb-4">
 <div>
 <div class="font-label text-label-caps text-on-surface-variant mb-1">Tarif de base</div>
-<div class="font-headline text-headline-lg text-primary font-bold">850.00€ <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
+<div id="rss-base-price" class="font-headline text-headline-lg text-primary font-bold" data-price="850">850.00€ <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
 </div>
 <div class="flex items-center space-x-2">
-<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">-</button>
-<span class="font-body text-body-lg w-8 text-center">1</span>
-<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">+</button>
+<button id="rss-qty-minus" type="button" class="rss-qty-btn w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">-</button>
+<span id="rss-qty-value" class="font-body text-body-lg w-8 text-center">1</span>
+<button id="rss-qty-plus" type="button" class="rss-qty-btn w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">+</button>
 </div>
 </div>
 <!-- Date Picker Placeholder -->
 <div class="mb-6">
-<label class="block font-label text-label-caps text-on-surface mb-2">Date de location</label>
+<label class="block font-label text-label-caps text-on-surface mb-2">Dates de location</label><p class="text-xs text-on-surface-variant mb-2">Cliquez sur une ou plusieurs dates pour les sélectionner.</p>
 <div class="border border-outline-variant/30 rounded-lg overflow-hidden bg-surface">
 <div class="bg-primary flex justify-between items-center p-3 text-on-primary font-bold">
-<span class="material-symbols-outlined cursor-pointer text-[20px]">chevron_left</span>
-<span class="">Mai 2026</span>
-<span class="material-symbols-outlined cursor-pointer text-[20px]">chevron_right</span>
+<span id="rss-cal-prev" class="rss-calendar-nav material-symbols-outlined cursor-pointer text-[20px]">chevron_left</span>
+<span id="rss-calendar-month">Mai 2026</span>
+<span id="rss-cal-next" class="rss-calendar-nav material-symbols-outlined cursor-pointer text-[20px]">chevron_right</span>
 </div>
 <div class="p-3 grid grid-cols-7 gap-1 text-center font-body text-body-sm text-on-surface-variant">
 <div class="">Di</div><div class="">Lu</div><div class="">Ma</div><div class="">Me</div><div class="">Je</div><div class="">Ve</div><div class="">Sa</div>
 <!-- Empty days -->
 <div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div>
-<div class="py-2 border border-outline-variant/10 rounded">1</div>
-<div class="py-2 border border-outline-variant/10 rounded">2</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">1</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">2</div>
 <!-- Week 1 -->
-<div class="py-2 border border-outline-variant/10 rounded">3</div>
-<div class="py-2 border border-outline-variant/10 rounded">4</div>
-<div class="py-2 border border-outline-variant/10 rounded">5</div>
-<div class="py-2 border border-outline-variant/10 rounded">6</div>
-<div class="py-2 border border-outline-variant/10 rounded">7</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">8</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">9</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">3</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">4</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">5</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">6</div>
+<div class="rss-day py-2 border border-outline-variant/10 rounded">7</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">8</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">9</div>
 <!-- Week 2 -->
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">10</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">11</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">12</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">13</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">14</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">15</div>
-<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">16</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">10</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">11</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">12</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">13</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">14</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">15</div>
+<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">16</div>
 </div>
 </div>
 </div>
 <!-- Options -->
 <div class="space-y-3 mb-8">
 <label class="flex items-center space-x-3 cursor-pointer group">
-<input class="form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
+<input id="rss-option-delivery" data-option-price="50" class="rss-price-option form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
 <span class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Frais de livraison</span>
 <span class="font-body text-body-md text-on-surface-variant">+50.00 €</span>
 </label>
 <label class="flex items-center space-x-3 cursor-pointer group">
-<input class="form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
+<input id="rss-option-install" data-option-price="150" class="rss-price-option form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
 <span class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Installation technique</span>
 <span class="font-body text-body-md text-on-surface-variant">+150.00 €</span>
 </label>
 </div>
 <div class="flex justify-between items-center mb-6 pt-4 border-t border-outline-variant/20">
 <span class="font-headline text-headline-md text-on-surface">Total :</span>
-<span class="font-headline text-headline-md text-primary font-bold">850.00 €</span>
+<span id="rss-total-price" class="font-headline text-headline-md text-primary font-bold">850.00 €</span>
 </div>
 <div class="space-y-4">
 <button class="w-full bg-primary text-on-primary font-headline font-bold text-body-lg py-4 rounded-lg hover:bg-primary-fixed transition-colors flex justify-center items-center space-x-2">
@@ -298,10 +323,10 @@
 </button>
 </div>
 <div class="mt-4 flex justify-center space-x-4 text-on-surface-variant">
-<button class="p-2 border border-outline-variant/30 rounded-full hover:bg-surface hover:text-primary transition-all">
+<button id="rss-share-facebook" type="button" class="p-2 border border-outline-variant/30 rounded-full hover:bg-surface hover:text-primary transition-all">
 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
 </button>
-<button class="p-2 border border-outline-variant/30 rounded-full hover:bg-surface hover:text-primary transition-all">
+<button id="rss-share-twitter" type="button" class="p-2 border border-outline-variant/30 rounded-full hover:bg-surface hover:text-primary transition-all">
 <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg>
 </button>
 </div>
@@ -638,6 +663,235 @@
   ready(function () {
     bindStaticClickableCards();
     loadProduct();
+  });
+})();
+</script>
+
+
+<script id="rss-product-interactions">
+(function () {
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  function parseMoney(text) {
+    const raw = String(text || '').replace(/\s/g, '').replace(',', '.');
+    const match = raw.match(/(\d+(?:\.\d+)?)/);
+    return match ? Number(match[1]) : 0;
+  }
+
+  function formatMoney(value) {
+    return Number(value || 0).toLocaleString('fr-FR', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }) + ' €';
+  }
+
+  ready(function () {
+    let qty = 1;
+    let selectedDates = [];
+    let currentMonthIndex = 4;
+    const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    let currentYear = 2026;
+
+    const minusBtn = document.getElementById('rss-qty-minus');
+    const plusBtn = document.getElementById('rss-qty-plus');
+    const qtyValue = document.getElementById('rss-qty-value');
+    const basePriceEl = document.getElementById('rss-base-price');
+    const totalPriceEl = document.getElementById('rss-total-price');
+    const optionInputs = document.querySelectorAll('.rss-price-option');
+
+    function getBasePrice() {
+      const dynamic = basePriceEl ? parseMoney(basePriceEl.textContent) : 0;
+      return dynamic || 850;
+    }
+
+    function updateTotal() {
+      const base = getBasePrice();
+      let options = 0;
+
+      optionInputs.forEach(function (input) {
+        if (input.checked) options += Number(input.dataset.optionPrice || 0);
+      });
+
+      const rentalDays = Math.max(1, selectedDates.length);
+      const total = (base * qty * rentalDays) + options;
+
+      if (qtyValue) qtyValue.textContent = qty;
+      if (totalPriceEl) totalPriceEl.textContent = formatMoney(total);
+    }
+
+    if (plusBtn) {
+      plusBtn.addEventListener('click', function () {
+        qty += 1;
+        updateTotal();
+      });
+    }
+
+    if (minusBtn) {
+      minusBtn.addEventListener('click', function () {
+        qty = Math.max(1, qty - 1);
+        updateTotal();
+      });
+    }
+
+    optionInputs.forEach(function (input) {
+      input.addEventListener('change', updateTotal);
+    });
+
+    // Calendrier multi-dates cliquable
+    document.querySelectorAll('.rss-day').forEach(function (day) {
+      const value = day.textContent.trim();
+      if (!value) return;
+
+      day.addEventListener('click', function () {
+        const dateLabel = value + ' ' + months[currentMonthIndex] + ' ' + currentYear;
+
+        if (day.classList.contains('rss-selected-day')) {
+          day.classList.remove('rss-selected-day');
+          selectedDates = selectedDates.filter(function (d) { return d !== dateLabel; });
+        } else {
+          day.classList.add('rss-selected-day');
+          selectedDates.push(dateLabel);
+        }
+
+        day.setAttribute('title', selectedDates.length ? 'Dates sélectionnées : ' + selectedDates.join(', ') : 'Sélectionner cette date');
+        updateTotal();
+      });
+    });
+
+    const monthLabel = document.getElementById('rss-calendar-month');
+    function updateMonthLabel() {
+      if (monthLabel) monthLabel.textContent = months[currentMonthIndex] + ' ' + currentYear;
+      document.querySelectorAll('.rss-day').forEach(function(day) {
+        day.classList.remove('rss-selected-day');
+      });
+      selectedDates = [];
+      updateTotal();
+    }
+
+    document.getElementById('rss-cal-prev')?.addEventListener('click', function () {
+      currentMonthIndex -= 1;
+      if (currentMonthIndex < 0) {
+        currentMonthIndex = 11;
+        currentYear -= 1;
+      }
+      updateMonthLabel();
+    });
+
+    document.getElementById('rss-cal-next')?.addEventListener('click', function () {
+      currentMonthIndex += 1;
+      if (currentMonthIndex > 11) {
+        currentMonthIndex = 0;
+        currentYear += 1;
+      }
+      updateMonthLabel();
+    });
+
+    // Tabs cliquables
+    document.querySelectorAll('.rss-tab-btn').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        const name = tab.dataset.tab;
+
+        document.querySelectorAll('.rss-tab-btn').forEach(function (btn) {
+          btn.classList.remove('rss-tab-active', 'text-primary', 'border-primary', 'border-b-2', 'bg-surface-container-high');
+          btn.classList.add('text-on-surface-variant');
+        });
+
+        tab.classList.add('rss-tab-active', 'text-primary', 'border-primary', 'border-b-2', 'bg-surface-container-high');
+        tab.classList.remove('text-on-surface-variant');
+
+        document.querySelectorAll('.rss-tab-panel').forEach(function (panel) {
+          panel.classList.remove('active');
+        });
+
+        document.getElementById('rss-tab-' + name)?.classList.add('active');
+      });
+    });
+
+    // Boutons sociaux
+    document.getElementById('rss-share-facebook')?.addEventListener('click', function () {
+      window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(location.href), '_blank');
+    });
+
+    document.getElementById('rss-share-twitter')?.addEventListener('click', function () {
+      const title = document.title || 'Annonce RentSoundSystem';
+      window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(location.href) + '&text=' + encodeURIComponent(title), '_blank');
+    });
+
+    // Réservation/devis : enrichit le mail avec quantité + date + options
+    function buildBookingBody(type) {
+      const title = document.querySelector('.lg\\:col-span-5 h1')?.textContent?.trim() || document.title;
+      const total = totalPriceEl?.textContent?.trim() || '';
+      const delivery = document.getElementById('rss-option-delivery')?.checked ? 'Oui' : 'Non';
+      const install = document.getElementById('rss-option-install')?.checked ? 'Oui' : 'Non';
+
+      return encodeURIComponent(
+        'Bonjour,\n\n' +
+        'Je souhaite faire une ' + type + ' pour :\n\n' +
+        title + '\n' +
+        'Quantité / jours : ' + qty + '\n' +
+        'Dates sélectionnées : ' + (selectedDates.length ? selectedDates.join(', ') : 'Non précisées') + '\n' +
+        'Livraison : ' + delivery + '\n' +
+        'Installation technique : ' + install + '\n' +
+        'Total estimé : ' + total + '\n\n' +
+        'Lien annonce : ' + location.href
+      );
+    }
+
+    const reserveBtn = Array.from(document.querySelectorAll('button')).find(function (btn) {
+      return btn.textContent.includes('Réserver maintenant');
+    });
+
+    const quoteBtn = Array.from(document.querySelectorAll('button')).find(function (btn) {
+      return btn.textContent.includes('Faire une demande de devis');
+    });
+
+    if (reserveBtn) {
+      reserveBtn.addEventListener('click', function () {
+        const subject = encodeURIComponent('Réservation RentSoundSystem');
+        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + buildBookingBody('réservation');
+      });
+    }
+
+    if (quoteBtn) {
+      quoteBtn.addEventListener('click', function () {
+        const subject = encodeURIComponent('Demande de devis RentSoundSystem');
+        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + buildBookingBody('demande de devis');
+      });
+    }
+
+    // Accessoires existants et chargés dynamiquement : tout est cliquable
+    function bindRelatedClick() {
+      document.querySelectorAll('#related-products-grid article, #related-products-grid > div').forEach(function (card) {
+        if (card.dataset.rssBound === '1') return;
+        card.dataset.rssBound = '1';
+        card.style.cursor = 'pointer';
+        card.setAttribute('tabindex', '0');
+
+        card.addEventListener('click', function (e) {
+          if (e.target.closest('button, a')) {
+            const url = card.getAttribute('data-product-link');
+            if (url && e.target.closest('button')) window.location.href = url;
+            return;
+          }
+          const url = card.getAttribute('data-product-link') || 'product.html';
+          window.location.href = url;
+        });
+
+        card.addEventListener('keydown', function (e) {
+          if (e.key === 'Enter') {
+            const url = card.getAttribute('data-product-link') || 'product.html';
+            window.location.href = url;
+          }
+        });
+      });
+    }
+
+    bindRelatedClick();
+    setInterval(bindRelatedClick, 1200);
+    updateTotal();
   });
 })();
 </script>
