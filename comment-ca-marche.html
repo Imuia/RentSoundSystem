@@ -1,0 +1,303 @@
+<!DOCTYPE html><html class="dark" lang="fr" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Comment ça marche ? - RentSoundSystem</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-bright": "#393939",
+                        "primary": "#FC036D",
+                        "inverse-primary": "#bc004f",
+                        "surface-variant": "#353535",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-tint": "#FC036D",
+                        "on-background": "#e2e2e2",
+                        "on-primary-container": "#5a0022",
+                        "on-secondary": "#2f3131",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#90003b",
+                        "surface-dim": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-container": "#454747",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface": "#131313",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed": "#3f0016",
+                        "secondary": "#c6c6c7",
+                        "outline-variant": "#5d3f44",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#929090",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-container-highest": "#353535",
+                        "surface-container": "#1f1f1f",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface": "#e2e2e2",
+                        "outline": "#ac878d",
+                        "on-tertiary-container": "#2a2a2a",
+                        "inverse-on-surface": "#303030",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#e6bcc2",
+                        "surface-container-low": "#1b1b1b",
+                        "primary-container": "#ff4d80",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#d90059",
+                        "inverse-surface": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<nav class="sticky top-0 z-50 flex justify-between items-center px-6 py-4 w-full bg-surface/90 backdrop-blur-md border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<div class="font-headline text-headline-md font-bold text-primary">RENTSOUNDSYSTEM</div>
+<div class="hidden md:flex gap-6"><a class="text-on-surface-variant font-body text-body-md hover:text-primary transition-colors duration-200" href="#">Louer du matriel</a><a class="text-on-surface-variant font-body text-body-md hover:text-primary transition-colors duration-200" href="#">Devenir Partenaire</a><a class="text-on-surface-variant font-body text-body-md hover:text-primary transition-colors duration-200" href="#">Assistance</a></div>
+</div>
+<div class="flex items-center gap-4"><button class="bg-primary text-on-primary font-label text-label-caps px-6 py-2 rounded-lg hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)]">Mon Compte</button></div>
+</nav>
+<main class="flex-grow">
+<!-- Hero Section -->
+<header class="relative pt-24 pb-20 px-6 overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-20" data-alt="Abstract geometric sound waves in neon pink and deep violet on a pitch black background, minimalist 3d render, professional audio vibe, dark mode aesthetic, subtle lighting" style="background-image: url(&quot;https://lh3.googleusercontent.com/aida/ADBb0uj8pJHBXLiizvyXBgtHFWt73MAbSocOmGyqb81vzUWD2SCHvWHY9aMQvrq_mOu1OMQQjnv_oURdVcu948QiYlFMSQcc1XdeSfc-22ZpuEDardfMvdmaYYgnX5yzTLqTo0RxYgcEZ2ruRs5_fBGA9ih_uv0d2MzMscA7VvBxpV8UhlPXE24gHbIjylWgQb3_Fc68agtR6UuXmD_T8CGFoZOfLb1fBJqx_2geImXsaUcE-PH0G6uoTurQeUY&quot;); background-size: cover; background-position: center center;"></div>
+<div class="absolute inset-0 z-0 bg-gradient-to-b from-background/40 to-background"></div>
+<div class="container mx-auto max-w-container-max relative z-10 text-center">
+<h1 class="font-headline text-headline-xl text-on-surface mb-6">Comment ça marche ?</h1>
+<p class="font-body text-body-lg text-on-surface-variant max-w-2xl mx-auto">La logistique sonore professionnelle simplifiée pour les organisateurs et les loueurs.</p>
+</div>
+</header><section class="py-16 px-6 bg-background relative overflow-hidden">
+<style>
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .animate-fade-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        .step-icon-glow {
+            filter: drop-shadow(0 0 8px rgba(252, 3, 109, 0.4));
+        }
+        .process-connector {
+            position: absolute;
+            top: 2.5rem;
+            left: 50%;
+            width: 100%;
+            border-top: 2px dashed #FC036D;
+            opacity: 0.3;
+            z-index: 0;
+        }
+    </style>
+<div class="container mx-auto max-w-container-max relative">
+<h2 class="font-headline text-headline-lg text-on-surface text-center mb-16">Notre Processus Intelligent</h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
+<!-- Step 1 -->
+<div class="flex flex-col items-center text-center animate-fade-up relative z-10" style="animation-delay: 0.1s;">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center border-2 border-primary mb-6 step-icon-glow relative bg-background">
+<span class="material-symbols-outlined text-4xl text-primary">search</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Analyse</h3>
+<p class="font-body text-body-sm text-on-surface-variant px-4">L'IA identifie les besoins spécifiques de votre événement.</p>
+<div class="hidden md:block process-connector"></div>
+</div>
+<!-- Step 2 -->
+<div class="flex flex-col items-center text-center animate-fade-up relative z-10" style="animation-delay: 0.2s;">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center border-2 border-primary mb-6 step-icon-glow relative bg-background">
+<span class="material-symbols-outlined text-4xl text-primary">hub</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Matching</h3>
+<p class="font-body text-body-sm text-on-surface-variant px-4">Mise en relation instantanée avec le meilleur partenaire local.</p>
+<div class="hidden md:block process-connector"></div>
+</div>
+<!-- Step 3 -->
+<div class="flex flex-col items-center text-center animate-fade-up relative z-10" style="animation-delay: 0.3s;">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center border-2 border-primary mb-6 step-icon-glow relative bg-background">
+<span class="material-symbols-outlined text-4xl text-primary">verified_user</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Sécurisation</h3>
+<p class="font-body text-body-sm text-on-surface-variant px-4">Validation technique et assurance automatisée.</p>
+<div class="hidden md:block process-connector"></div>
+</div>
+<!-- Step 4 -->
+<div class="flex flex-col items-center text-center animate-fade-up relative z-10" style="animation-delay: 0.4s;">
+<div class="w-20 h-20 rounded-full bg-surface-container flex items-center justify-center border-2 border-primary mb-6 step-icon-glow relative bg-background">
+<span class="material-symbols-outlined text-4xl text-primary">auto_awesome</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Succès</h3>
+<p class="font-body text-body-sm text-on-surface-variant px-4">Livraison et installation pour une performance sans faille.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Content -->
+<section class="py-16 px-6 container mx-auto max-w-container-max">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+<!-- Côté Client -->
+<div class="space-y-12">
+<div class="border-b border-surface-variant pb-4">
+<h2 class="font-headline text-headline-lg text-on-surface">Côté Client</h2>
+<p class="font-body text-body-sm text-primary uppercase tracking-wider mt-2">Le parcours du loueur</p>
+</div>
+<div class="space-y-8">
+<div class="flex gap-6 items-start group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">search</span>
+</div>
+<div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Trouvez votre matériel</h3>
+<p class="font-body text-body-md text-on-surface-variant">Recherchez par emplacement, marque ou catégorie. Accédez à un catalogue précis d'équipements vérifiés.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">shopping_cart_checkout</span>
+</div>
+<div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Réservez en ligne</h3>
+<p class="font-body text-body-md text-on-surface-variant">Vérifiez la disponibilité en temps réel et payez de manière sécurisée via notre plateforme professionnelle.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">local_shipping</span>
+</div>
+<div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Récupérez &amp; Profitez</h3>
+<p class="font-body text-body-md text-on-surface-variant">Récupérez l'équipement dans un hub local ou choisissez l'option de livraison sur le site de votre événement.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Côté Partenaire -->
+<div class="space-y-12">
+<div class="border-b border-surface-variant pb-4">
+<h2 class="font-headline text-headline-lg text-on-surface">Côté Partenaire</h2>
+<p class="font-body text-body-sm text-primary uppercase tracking-wider mt-2">Le parcours du propriétaire</p>
+</div>
+<div class="space-y-8">
+<div class="flex gap-6 items-start group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">add_box</span>
+</div>
+<div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Listez votre inventaire</h3>
+<p class="font-body text-body-md text-on-surface-variant">Ajoutez votre matériel professionnel avec des spécifications techniques détaillées pour attirer les bons clients.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">smart_toy</span>
+</div>
+<div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Gérez vos demandes</h3>
+<p class="font-body text-body-md text-on-surface-variant">Utilisez notre agent IA pour gérer vos réseaux sociaux et optimiser vos réservations de manière automatisée.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start group">
+<div class="flex-shrink-0 w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-outline-variant group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+</div>
+<div>
+<h3 class="font-headline text-headline-md text-on-surface mb-2">Générez des revenus</h3>
+<p class="font-body text-body-md text-on-surface-variant">Recevez des paiements sécurisés directement sur votre compte pour chaque location effectuée.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Trust & Security -->
+<section class="bg-surface-container-low py-20 px-6 mt-12 border-y border-outline-variant">
+<div class="container mx-auto max-w-container-max text-center">
+<h2 class="font-headline text-headline-lg text-on-surface mb-12">Confiance &amp; Sécurité</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-surface p-8 rounded-xl border border-outline-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">shield</span>
+<h3 class="font-headline text-headline-md text-on-surface mb-3">Assurance Incluse</h3>
+<p class="font-body text-body-sm text-on-surface-variant">Chaque location est couverte par notre assurance partenaire complète, protégeant le matériel de bout en bout.</p>
+</div>
+<div class="bg-surface p-8 rounded-xl border border-outline-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
+<h3 class="font-headline text-headline-md text-on-surface mb-3">Matériel Vérifié</h3>
+<p class="font-body text-body-sm text-on-surface-variant">Tous les équipements listés sont issus de professionnels vérifiés garantissant des standards de qualité élevés.</p>
+</div>
+<div class="bg-surface p-8 rounded-xl border border-outline-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-4xl text-primary mb-4" data-weight="fill" style="font-variation-settings: &quot;FILL&quot; 1;">lock</span>
+<h3 class="font-headline text-headline-md text-on-surface mb-3">Paiement Sécurisé</h3>
+<p class="font-body text-body-sm text-on-surface-variant">Vos transactions sont cryptées et sécurisées via notre plateforme de traitement des paiements certifiée.</p>
+</div>
+</div>
+<div class="mt-16">
+<button class="bg-primary text-on-primary font-headline text-headline-md px-8 py-4 rounded-xl hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)] hover:shadow-[0_0_25px_rgba(252,3,109,0.5)]">
+                        Commencer maintenant
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant"><div class="max-w-[1280px] mx-auto px-6">
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+    <div class="col-span-1"><div class="font-headline font-bold text-primary text-2xl tracking-tight mb-4">RentSoundSystem</div><p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Votre plateforme de référence pour la location de sonorisation, éclairage et matériel scénique professionnel. Simplifiez la logistique de vos événements partout en France.</p><div class="flex gap-4"><a href="#" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" aria-label="LinkedIn"><span class="material-symbols-outlined">brand_family</span></a><a href="#" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" aria-label="Instagram"><span class="material-symbols-outlined">photo_camera</span></a><a href="#" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" aria-label="Twitter X"><span class="material-symbols-outlined">close</span></a></div></div>
+
+    <nav aria-label="Marketplace links"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Vendre du matériel</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Acheter d'occasion</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Garanties Pro</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Annonces vérifiées</a></li></ul></nav>
+
+    <nav aria-label="Product categories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Systèmes Sonorisation</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Projecteurs Éclairage</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Consoles de Mixage</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Praticables &amp; Scènes</a></li></ul></nav>
+
+    <nav aria-label="Support links"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Centre d'aide</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Nous contacter</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Logistique &amp; Livraison</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Conditions Générales</a></li></ul></nav>
+  </div>
+
+  <div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+    <p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p>
+    <div class="flex gap-6">
+      <a href="#" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Mentions Lgales</a>
+      <a href="#" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Confidentialit</a>
+      <a href="#" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Plan du site</a>
+    </div>
+  </div>
+</div></footer>
+
+
+
+
+</body></html>
