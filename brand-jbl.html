@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-
-<html class="dark" lang="fr"><head>
+<html class="dark" lang="fr" style=""><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Location JBL Professional | Systèmes Audio de Tournée - RentSoundSystem
-</title>
+<title>Location JBL Professional | Systèmes Audio de Tournée - RentSoundSystem.com</title>
 <meta content="Louez le meilleur du son JBL Professional partout en France. Systèmes Line Array VTX, subwoofers et amplification de pointe pour vos événements et festivals." name="description"/>
-<meta content="Location JBL Professional | Audio Haut de Gamme - Sonic Precision" property="og:title"/>
+<meta content="Location JBL Professional | Audio Haut de Gamme - RentSoundSystem.com" property="og:title"/>
 <meta content="Accédez à la puissance légendaire de JBL pour vos événements. Catalogue complet de sonorisation professionnelle en location." property="og:description"/>
 <meta content="website" property="og:type"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="Location JBL Professional - Sonic Precision" name="twitter:title"/>
+<meta content="Location JBL Professional - RentSoundSystem.com" name="twitter:title"/>
 <meta content="Le son légendaire JBL disponible à la location pour vos prestations professionnelles." name="twitter:description"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -99,35 +97,79 @@
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "name": "Sonic Precision",
-  "url": "https://sonicprecision.com",
+  "name": "RentSoundSystem.com",
+  "url": "https://rentsoundsystem.com",
   "brand": {
     "@type": "Brand",
     "name": "JBL Professional"
   },
   "description": "Leader en location de matériel audio professionnel JBL."
 }
-</script></head>
+</script>
+<style id="rss-unified-brand-style">
+  img { max-width: 100%; }
+  .brand-img-fallback {
+    background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010) !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+  }
+  .brand-img-fallback::after { content:'image bientôt disponible'; color:rgba(255,255,255,.55); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  @keyframes rss-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-marquee { animation: rss-marquee 38s linear infinite !important; will-change: transform; }
+  @media (max-width: 768px) {
+    h1 { font-size: 2.4rem !important; line-height: 1.1 !important; }
+    section[class*="h-[60vh]"] { min-height: 560px; }
+    .animate-marquee { animation-duration: 38s !important; }
+  }
+</style>
+<script id="rss-unified-brand-script">
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('img').forEach(function(img){
+      img.setAttribute('referrerpolicy','no-referrer');
+      if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      img.addEventListener('error', function(){
+        var parent = img.parentElement;
+        if(parent){ parent.classList.add('brand-img-fallback'); }
+        img.remove();
+      });
+    });
+    var btn = document.getElementById('mobile-menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if(btn && menu){ btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); }); }
+  });
+</script>
+</head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
 <!-- TopAppBar -->
-<header class="bg-background dark:bg-background text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant flat no shadows">
+<header class="bg-background/95 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50 w-full">
 <div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
-<div class="text-headline-md font-headline font-bold tracking-tight text-primary dark:text-primary">RentSoundSystem</div>
-<nav class="hidden md:flex gap-8">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Marketplace</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-200 opacity-80 transition-all" href="#">Rentals</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Partner Hub</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Support</a>
+<a class="font-headline font-bold text-[24px] leading-[32px] text-primary tracking-tight" href="/">RentSoundSystem.com</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/">Marketplace</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors duration-200" href="/">Louer du matériel</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/brand-turbosound.html">Marques</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/comment-ca-marche.html">Comment ça marche</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#support">Assistance</a>
 </nav>
-<div class="flex items-center gap-4">
-<button class="text-on-surface hover:text-primary transition-colors">
-<span class="material-symbols-outlined">account_circle</span>
-</button>
+<div class="hidden md:flex items-center gap-3">
+<button aria-label="Recherche" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">search</span></button>
+<button aria-label="Panier" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">shopping_cart</span></button>
+<button class="border border-on-surface text-on-surface px-4 py-2 rounded font-label text-[12px] leading-[16px] font-medium hover:border-primary hover:text-primary transition-colors">Mon Compte</button>
 </div>
+<button aria-label="Menu" class="md:hidden text-on-surface hover:text-primary transition-colors p-2" id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button>
 </div>
+<nav class="hidden md:hidden border-t border-outline-variant bg-background/98 px-6 py-4" id="mobile-menu">
+<div class="flex flex-col gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/">Marketplace</a>
+<a class="text-primary font-bold" href="/">Louer du matériel</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/brand-turbosound.html">Marques</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#support">Assistance</a>
+<button class="border border-primary text-primary px-4 py-3 rounded font-label font-bold uppercase tracking-widest">Mon Compte</button>
+</div>
+</nav>
 </header>
 <!-- Main Content -->
-<main class="flex-grow">
+<main class="flex-grow pt-[72px]">
 <!-- Hero Section -->
 <section class="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden border-b border-outline-variant bg-surface-container-lowest">
 <!-- Background Image with Overlay -->
@@ -136,7 +178,7 @@
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
 </div>
 <div class="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
-<h1 class="font-headline font-bold text-5xl md:text-7xl text-on-surface mb-6 tracking-tight">JBL Professional</h1>
+<h1 class="font-headline font-bold text-5xl md:text-7xl text-on-surface mb-6 tracking-tight"><img alt="JBL Professional Logo" class="h-12 md:h-20 w-auto object-contain mx-auto" src="https://lh3.googleusercontent.com/aida/ADBb0uhIAkPYpXkiNKkqjoCPzwtjDERd0ackBukPzjIIdWE-BdW1GfhkcsteV6PlPCOsytNyznYoAT_m2q1Hqqh9vQlx_9ll_KAO_ATGn1DTWw1arKeSZSvm2dJBH8JVIC8gECfoj-Q89N2niUnIaw1_hYrqO_Y2DPnr8-HUxWg1UHq1CrEfpkR4Bo_DomH10_tq5pbzC1P2cl_1o-BgDu0c9QGEh5-tYht971KFO8y7DOQR4eFfVzIy8vK7sWA"/></h1>
 <p class="font-body text-xl md:text-2xl text-on-surface-variant max-w-3xl mx-auto mb-10 leading-relaxed">
                     Leader mondial de l'audio professionnel. Des solutions de sonorisation légendaires conçues pour la précision, la puissance et la fiabilité sur les scènes les plus exigeantes.
                 </p>
@@ -153,11 +195,7 @@
 <div class="max-w-[1280px] mx-auto px-6 flex flex-col items-center text-center">
 <!-- JBL Logo Container -->
 <div class="mb-8">
-<svg class="h-12 md:h-16 text-on-surface" fill="currentColor" viewbox="0 0 100 45" xmlns="http://www.w3.org/2000/svg">
-<path d="M15.5 0H0v45h15.5c8.5 0 15.5-7 15.5-15.5V15.5C31 7 24 0 15.5 0zm6.5 29.5c0 3.6-2.9 6.5-6.5 6.5H9V9h6.5c3.6 0 6.5 2.9 6.5 6.5v14zM45 0H34v45h21v-9H45V0zM89 0h-9v36h-9V0h-9v45h27V0z"></path>
-<path d="M62.5 0C55.6 0 50 5.6 50 12.5S55.6 25 62.5 25 75 19.4 75 12.5 69.4 0 62.5 0zm0 16c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z" transform="translate(15 5)"></path>
-</svg>
-<div class="mt-2 font-display font-bold text-xs uppercase tracking-[0.3em] text-on-surface-variant">Professional</div>
+<img alt="Logo JBL Professional" class="h-12 md:h-16 w-auto object-contain mx-auto" src="https://lh3.googleusercontent.com/aida/ADBb0uhIAkPYpXkiNKkqjoCPzwtjDERd0ackBukPzjIIdWE-BdW1GfhkcsteV6PlPCOsytNyznYoAT_m2q1Hqqh9vQlx_9ll_KAO_ATGn1DTWw1arKeSZSvm2dJBH8JVIC8gECfoj-Q89N2niUnIaw1_hYrqO_Y2DPnr8-HUxWg1UHq1CrEfpkR4Bo_DomH10_tq5pbzC1P2cl_1o-BgDu0c9QGEh5-tYht971KFO8y7DOQR4eFfVzIy8vK7sWA"/>
 </div>
 <h2 class="font-headline font-bold text-3xl md:text-5xl text-on-surface mb-6">Le son JBL à louer</h2>
 <p class="font-body text-lg text-on-surface-variant max-w-2xl mb-12">
@@ -219,13 +257,13 @@
 <!-- Product 1 (Large) -->
 <div class="md:col-span-2 group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors">
 <div class="absolute inset-0 z-0">
-<img alt="Enceinte Line Array JBL Série VTX A12 pour grands événements" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0ujoF2Ba4o6_PrN0k1SDnwKc8pvHg8nP00XQ9H4Qhjh7Ih2Th5VLOF7diMJenu09w0B-GqDqfaIZ6Xk8mUIKRauHSeU6X5rVoEDFgfNQIbDskV1idxB_-p0DvTZ6aEgQZmcn2mCvV7in7RFh3VEabyK08MmFnLjQNeNBCZ9-ucKFrYArt0LigPsK7MeV2b2dxdE4McgE0POgKDD9S_bI6lc75Gx-Lz595eE8QvfT2y6AinORulZ_4ubJ72n2Tv7AzuX8kz2ztxR7"/>
+<img alt="Enceinte Line Array JBL Série VTX A12 pour grands événements" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBD776zkfEko34IWhfHmHD0NjUFQRYV8H4olzW9gqOvx62FeQPqQhyj5NCO8kSL5Lsv6u2fm9dkvNMcV8eJsR2cj9bqILlFVyS_ZowHGTz-xJpek-9yiTNiGUgvIlyMTtJBeILMfaD42nb9XB9IgKpCPGMJvyuVeAotK29M9F1EnyRomHwN_y-sfc2q-dRDdhfEEh2_68VgqeQ2EzqgyH82iwmSVk5zWSxTeNvxFGX9pGvGtzxGbHvgmkOReLV9lKBx8IUBZFm7204"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div>
 </div>
 <div class="relative z-10 h-[400px] flex flex-col justify-end p-8">
 <div class="flex items-center gap-3 mb-4">
 <span class="bg-surface-container text-on-surface font-label font-bold text-xs uppercase tracking-widest px-3 py-1 rounded border border-outline-variant">Line Array</span>
-<span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">fiber_manual_record</span> Disponible</span>
+<span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary" style='font-variation-settings: "FILL" 1;'>fiber_manual_record</span> Disponible</span>
 </div>
 <h3 class="font-headline font-bold text-3xl text-on-surface mb-2">Série VTX A12</h3>
 <p class="font-body text-on-surface-variant mb-6 max-w-lg">Système line array double 12" nouvelle génération. Performances acoustiques exceptionnelles avec une distorsion minimale pour les événements de grande envergure.</p>
@@ -240,7 +278,7 @@
 <!-- Product 2 -->
 <div class="group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors">
 <div class="absolute inset-0 z-0">
-<img alt="Subwoofer haute performance JBL VTX B28" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uhlaPkXVa-7MZbQC14JWm7L4KVNpFeuGjODw4AFtcAmRvA1J7G8L79kK2Kg40OqnAKPLvjbS5d2nCWQ-oqBNccrwa2xPWWSNTCqXWFlIhOKfvnv6jacZ_TrIlgABDx93FlrQA-vI7lWx7qBhvqIOF13t4oKZfBC_ObOwjf-fWIDaJqLwam5x6dEpFxxMIuj3fOg8r35HOGBu1Ua6v1bitHxzJtr2JAkVKq2kHJfz0QULLHpdabmd3H0dE09fS9eLqimezq4JvfNZA"/>
+<img alt="Subwoofer haute performance JBL VTX B28" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1PQMX1eTzRZ4aAa3n_ipurCPRi9HvMGYxb-1F4I4EpbLOE5XnJNrKCdLYBSoCVA52KeHf-sg5yMFosiFgqjlvI9xWUL7ylSYGANWbPBwWE27Vk2_mtrCrEpblQ-jjP8MrcPFeRrxM2dKc_WAjXwXAv64QCMFXx9LcrTHgKzIrVinuL-X002WKQn-Gn7COJG_5NayKPu-n2MkxVF3DT7AEoztiG1YlI8XaMy4IHFznBUgMWoZuqgfClHPsvBNI3rsCO8-msEM1qtE"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/80 to-surface-container-highest/20"></div>
 </div>
 <div class="relative z-10 h-[400px] flex flex-col justify-end p-6">
@@ -348,7 +386,7 @@
 </div>
 <div class="absolute inset-0 z-10 flex items-center justify-center">
 <div class="w-16 h-16 rounded-full bg-primary/90 text-on-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-<span class="material-symbols-outlined text-[32px] ml-1" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="material-symbols-outlined text-[32px] ml-1" style='font-variation-settings: "FILL" 1;'>play_arrow</span>
 </div>
 </div>
 <div class="relative z-20 h-[300px] flex flex-col justify-between p-6">
@@ -363,12 +401,12 @@
 <!-- Video Card 2 -->
 <div class="group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low cursor-pointer">
 <div class="absolute inset-0 z-0">
-<img alt="Configuration audio JBL Série VTX optimisée pour clubbing" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBybeaegDzTMKvuo9Wf8CWrc-rwIF6lCMRdCdzKpsae3Z0hO0auaX3Wym-_5peToX1p6AvxAsN8KiUDByLHtTg9DNJTaOFj36KpCXIS73CfNLMmbNp7vLuqHNeVQBk_4mvS_adMTPDv8pIXb8UgrPepqKzum-oxP6OPTGp5Q-zeRtq_p0a_LAdrVLtD4VZT_f_cf9ValYopwjKddUBDqoq2fJi6WCEwssoV9o-RyM-jDAra1JjEK__ejhrk0Q-4-2Beuc4CND0Lj0Q"/>
+<img alt="Configuration audio JBL Série VTX optimisée pour clubbing" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVSGZMoxweGcGvVYnptQ8mXrotX4Yks65GLE_SnM6VHfovRKGFs4h1RouQsbZpg06NbedEs3PCyFpJREK4KzCdKRodERBKcEhdIU8-FGtOjlzn6goJ5BkNf9zyVMed8bSGBsgw1CMnnFZMXe_Hrwls99oPGk6TXxHrvvZ70YL5J3x_tjA5vxCdVdfGvBCl8Z3p4KSbGz8ykgo5phbOd7wWgH-IsI7ZNgPMPlEmVTgSfUs3TLlPzek4jZxDL1gTz8YSGLvtR9rpXeM"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div>
 </div>
 <div class="absolute inset-0 z-10 flex items-center justify-center">
 <div class="w-16 h-16 rounded-full bg-primary/90 text-on-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-<span class="material-symbols-outlined text-[32px] ml-1" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="material-symbols-outlined text-[32px] ml-1" style='font-variation-settings: "FILL" 1;'>play_arrow</span>
 </div>
 </div>
 <div class="relative z-20 h-[300px] flex flex-col justify-between p-6">
@@ -410,7 +448,7 @@
 </div>
 </div>
 <button class="w-full bg-primary text-on-primary font-label font-bold text-sm uppercase tracking-widest px-4 py-3 rounded hover:bg-surface-tint transition-colors text-center">
-                            Lire l'étude de cas sur Sonic Insights
+                            Lire l'étude de cas sur RentSoundSystem Insights
                         </button>
 </div>
 <!-- Testimonial 2 -->
@@ -432,7 +470,7 @@
 </div>
 </div>
 <button class="w-full bg-primary text-on-primary font-label font-bold text-sm uppercase tracking-widest px-4 py-3 rounded hover:bg-surface-tint transition-colors text-center">
-                            Lire l'étude de cas sur Sonic Insights
+                            Lire l'étude de cas sur RentSoundSystem Insights
                         </button>
 </div>
 <!-- Testimonial 3 -->
@@ -454,7 +492,7 @@
 </div>
 </div>
 <button class="w-full bg-primary text-on-primary font-label font-bold text-sm uppercase tracking-widest px-4 py-3 rounded hover:bg-surface-tint transition-colors text-center">
-                            Lire l'étude de cas sur Sonic Insights
+                            Lire l'étude de cas sur RentSoundSystem Insights
                         </button>
 </div>
 </div>
@@ -472,7 +510,7 @@
 <span class="mt-1">Search</span>
 </a>
 <a class="flex flex-col items-center justify-center text-primary font-bold scale-95 transition-transform hover:bg-surface-container-high w-full h-full" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1;'>confirmation_number</span>
 <span class="mt-1">Rentals</span> <!-- Mapped My Tickets intent to Rentals contextually -->
 </a>
 <a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high w-full h-full" href="#">
@@ -481,24 +519,26 @@
 </a>
 </nav>
 <!-- Footer -->
-<footer class="w-full py-12 px-6 mt-auto bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant flat">
-<div class="flex flex-col md:flex-row justify-between items-center max-w-[1280px] mx-auto gap-8">
-<div class="font-headline font-bold text-on-surface">RentSoundSystem
+<footer class="bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant" id="support">
+<div class="max-w-[1280px] mx-auto px-0 md:px-6">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1">
+<a class="font-headline font-bold text-primary text-2xl tracking-tight mb-4 block" href="/">RentSoundSystem.com</a>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Location de sonorisation, éclairage, DJ gear et matériel scénique professionnel. La plateforme premium pour organiser vos événements avec des partenaires vérifiés.</p>
+<div class="flex gap-4">
+<a aria-label="Partager" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
 </div>
-<nav class="flex flex-wrap justify-center gap-6">
-<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body-sm" href="#">Terms of Service</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body-sm" href="#">Privacy Policy</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body-sm" href="#">Partner Agreement</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors font-body text-body-sm" href="#">Contact Us</a>
-</nav>
-<div class="font-body text-body-sm text-on-surface-variant">© 2024 Sonic Precision. Professional Grade Audio.</div>
+</div>
+<nav aria-label="Marketplace"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="/">Louer du matériel</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Devenir partenaire</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Annonces vérifiées</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Garanties pro</a></li></ul></nav>
+<nav aria-label="Catégories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Sonorisation</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Éclairage</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">DJ Gear</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Scène &amp; Structures</a></li></ul></nav>
+<nav aria-label="Support"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Centre d'aide</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Nous contacter</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Logistique &amp; Livraison</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Conditions Générales</a></li></ul></nav>
+</div>
+<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p>
+<div class="flex flex-wrap justify-center gap-6"><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Mentions légales</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Confidentialité</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Plan du site</a></div>
+</div>
 </div>
 </footer>
-<script>
-fetch('header.html')
-.then(response => response.text())
-.then(data => {
-document.getElementById('header').innerHTML = data;
-});
-</script>
 </body></html>

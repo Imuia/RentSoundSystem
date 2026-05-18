@@ -4,13 +4,13 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Electro-Voice - RentSoundSystem</title>
-<meta content="Louez le meilleur de l'audio professionnel avec Electro-Voice chez Sonic Precision. Découvrez nos systèmes line array Série X-Line, subwoofers X12-128 et retours MFX partout en France." name="description"/>
-<meta content="Electro-Voice - Location Audio Professionnel | Sonic Precision" property="og:title"/>
+<meta content="Louez le meilleur de l'audio professionnel avec Electro-Voice chez RentSoundSystem.com. Découvrez nos systèmes line array Série X-Line, subwoofers X12-128 et retours MFX partout en France." name="description"/>
+<meta content="Electro-Voice - Location Audio Professionnel | RentSoundSystem.com" property="og:title"/>
 <meta content="Accédez à la puissance légendaire d'Electro-Voice. Location de systèmes de sonorisation haut de gamme pour concerts et événements." property="og:description"/>
 <meta content="website" property="og:type"/>
-<meta content="https://sonic-precision.fr/rentals/electro-voice" property="og:url"/>
+<meta content="https://rentsoundsystem.com/rentals/electro-voice" property="og:url"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="Electro-Voice - Location Audio Professionnel | Sonic Precision" name="twitter:title"/>
+<meta content="Electro-Voice - Location Audio Professionnel | RentSoundSystem.com" name="twitter:title"/>
 <meta content="Location de systèmes de sonorisation Electro-Voice : X-Line, Subwoofers et plus." name="twitter:description"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
@@ -109,24 +109,68 @@
             animation: marquee 30s linear infinite;
         }
     </style>
-<style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style></head>
+<style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style>
+<style id="rss-unified-brand-style">
+  img { max-width: 100%; }
+  .brand-img-fallback {
+    background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010) !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+  }
+  .brand-img-fallback::after { content:'image bientôt disponible'; color:rgba(255,255,255,.55); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  @keyframes rss-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-marquee { animation: rss-marquee 38s linear infinite !important; will-change: transform; }
+  @media (max-width: 768px) {
+    h1 { font-size: 2.4rem !important; line-height: 1.1 !important; }
+    section[class*="h-[60vh]"] { min-height: 560px; }
+    .animate-marquee { animation-duration: 38s !important; }
+  }
+</style>
+<script id="rss-unified-brand-script">
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('img').forEach(function(img){
+      img.setAttribute('referrerpolicy','no-referrer');
+      if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      img.addEventListener('error', function(){
+        var parent = img.parentElement;
+        if(parent){ parent.classList.add('brand-img-fallback'); }
+        img.remove();
+      });
+    });
+    var btn = document.getElementById('mobile-menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if(btn && menu){ btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); }); }
+  });
+</script>
+</head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
 <!-- TopAppBar -->
-<header class="bg-background dark:bg-background text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant flat no shadows sticky z-50 w-full">
+<header class="bg-background/95 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50 w-full">
 <div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
-<div class="text-2xl font-headline font-bold tracking-tight text-primary dark:text-primary">RentSoundSystem</div>
-<nav class="hidden md:flex gap-8">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Marketplace</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-200 opacity-80 transition-all" href="#">Rentals</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Partner Hub</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Support</a>
+<a class="font-headline font-bold text-[24px] leading-[32px] text-primary tracking-tight" href="/">RentSoundSystem.com</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/">Marketplace</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors duration-200" href="/">Louer du matériel</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/brand-turbosound.html">Marques</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/comment-ca-marche.html">Comment ça marche</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#support">Assistance</a>
 </nav>
-<div class="flex items-center gap-4">
-<button class="text-on-surface hover:text-primary transition-colors">
-<span class="material-symbols-outlined">account_circle</span>
-</button>
+<div class="hidden md:flex items-center gap-3">
+<button aria-label="Recherche" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">search</span></button>
+<button aria-label="Panier" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">shopping_cart</span></button>
+<button class="border border-on-surface text-on-surface px-4 py-2 rounded font-label text-[12px] leading-[16px] font-medium hover:border-primary hover:text-primary transition-colors">Mon Compte</button>
 </div>
+<button aria-label="Menu" class="md:hidden text-on-surface hover:text-primary transition-colors p-2" id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button>
 </div>
+<nav class="hidden md:hidden border-t border-outline-variant bg-background/98 px-6 py-4" id="mobile-menu">
+<div class="flex flex-col gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/">Marketplace</a>
+<a class="text-primary font-bold" href="/">Louer du matériel</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/brand-turbosound.html">Marques</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#support">Assistance</a>
+<button class="border border-primary text-primary px-4 py-3 rounded font-label font-bold uppercase tracking-widest">Mon Compte</button>
+</div>
+</nav>
 </header>
 <!-- Main Content -->
 <main class="flex-grow">
@@ -443,6 +487,26 @@
 </main>
 <!-- BottomNavBar (Mobile Only) -->
 <!-- Footer -->
-<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant flat no shadows"><div class="max-w-[1280px] mx-auto px-6"><div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12"><div class="col-span-1"><div class="font-headline font-bold text-primary text-2xl tracking-tight mb-4"> RentSoundSystem
- </div><p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed"> Location de sonorisation, éclairage et matériel scénique professionnel pour événements. La plateforme de référence pour les experts de l'événementiel en France. </p><div class="flex gap-4"><a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a><a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a><a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">chat</span></a></div></div><nav aria-label="Marketplace links"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest"> Marketplace </h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Vendre du matériel </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Acheter d'occasion </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Garanties Pro </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Annonces vérifiées </a></li></ul></nav><nav aria-label="Product categories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest"> Catégories </h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Systèmes Sonorisation </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Projecteurs éclairage </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Consoles de Mixage </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Praticables &amp; Scènes </a></li></ul></nav><nav aria-label="Support links"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest"> Support </h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Centre d'aide </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Nous contacter </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Logistique &amp; Livraison </a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#"> Conditions Générales </a></li></ul></nav></div><div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4"><p class="font-body text-xs text-on-surface-variant"> © 2026 RentSoundSystem.com. Logistique Sonore Professionnelle. </p><div class="flex gap-6"><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#"> Mentions Légales </a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#"> Confidentialité </a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#"> Plan du site </a></div></div></div></footer>
+<footer class="bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant" id="support">
+<div class="max-w-[1280px] mx-auto px-0 md:px-6">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1">
+<a class="font-headline font-bold text-primary text-2xl tracking-tight mb-4 block" href="/">RentSoundSystem.com</a>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Location de sonorisation, éclairage, DJ gear et matériel scénique professionnel. La plateforme premium pour organiser vos événements avec des partenaires vérifiés.</p>
+<div class="flex gap-4">
+<a aria-label="Partager" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<nav aria-label="Marketplace"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="/">Louer du matériel</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Devenir partenaire</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Annonces vérifiées</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Garanties pro</a></li></ul></nav>
+<nav aria-label="Catégories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Sonorisation</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Éclairage</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">DJ Gear</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Scène &amp; Structures</a></li></ul></nav>
+<nav aria-label="Support"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Centre d'aide</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Nous contacter</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Logistique &amp; Livraison</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Conditions Générales</a></li></ul></nav>
+</div>
+<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p>
+<div class="flex flex-wrap justify-center gap-6"><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Mentions légales</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Confidentialité</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Plan du site</a></div>
+</div>
+</div>
+</footer>
 </body></html>

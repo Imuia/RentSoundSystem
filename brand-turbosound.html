@@ -1,25 +1,57 @@
-<!DOCTYPE html><html class="dark" lang="fr" style=""><head></head><body class="bg-background text-on-background font-body min-h-screen flex flex-col">
-
-<meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
-<meta content="Louez le son professionnel légendaire de Turbosound avec RentSoundSystem. Partenaire officiel de location de systèmes de sonorisation, Line Array Flashline, Subwoofers NuQ et retours pour événements professionnels et festivals." name="description">
-<meta content="location sonorisation, Turbosound, matériel audio professionnel, systèmes son, Line Array, location audio événementiel, RentSoundSystem" name="keywords">
+<!DOCTYPE html>
+<html class="dark" lang="fr" style=""><head>
+<style id="rss-unified-brand-style">
+  img { max-width: 100%; }
+  .brand-img-fallback {
+    background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010) !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+  }
+  .brand-img-fallback::after { content:'image bientôt disponible'; color:rgba(255,255,255,.55); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  @keyframes rss-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-marquee { animation: rss-marquee 38s linear infinite !important; will-change: transform; }
+  @media (max-width: 768px) {
+    h1 { font-size: 2.4rem !important; line-height: 1.1 !important; }
+    section[class*="h-[60vh]"] { min-height: 560px; }
+    .animate-marquee { animation-duration: 38s !important; }
+  }
+</style>
+<script id="rss-unified-brand-script">
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('img').forEach(function(img){
+      img.setAttribute('referrerpolicy','no-referrer');
+      if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      img.addEventListener('error', function(){
+        var parent = img.parentElement;
+        if(parent){ parent.classList.add('brand-img-fallback'); }
+        img.remove();
+      });
+    });
+    var btn = document.getElementById('mobile-menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if(btn && menu){ btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); }); }
+  });
+</script>
+</head><body class="bg-background text-on-background font-body min-h-screen flex flex-col">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Louez le son professionnel légendaire de Turbosound avec RentSoundSystem. Partenaire officiel de location de systèmes de sonorisation, Line Array Flashline, Subwoofers NuQ et retours pour événements professionnels et festivals." name="description"/>
+<meta content="location sonorisation, Turbosound, matériel audio professionnel, systèmes son, Line Array, location audio événementiel, RentSoundSystem" name="keywords"/>
 <!-- Open Graph / Facebook -->
-<meta content="website" property="og:type">
-<meta content="https://rentsoundsystem.com/brands/turbosound" property="og:url">
-<meta content="Location Turbosound | Systèmes Audio Professionnels | RentSoundSystem" property="og:title">
-<meta content="Accédez à la puissance légendaire de Turbosound pour vos événements avec RentSoundSystem. Line Array, Subwoofers et monitoring disponibles à la location." property="og:description">
-<meta content="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA" property="og:image">
+<meta content="website" property="og:type"/>
+<meta content="https://rentsoundsystem.com/brands/turbosound" property="og:url"/>
+<meta content="Location Turbosound | Systèmes Audio Professionnels | RentSoundSystem" property="og:title"/>
+<meta content="Accédez à la puissance légendaire de Turbosound pour vos événements avec RentSoundSystem. Line Array, Subwoofers et monitoring disponibles à la location." property="og:description"/>
+<meta content="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA" property="og:image"/>
 <!-- Twitter -->
-<meta content="summary_large_image" property="twitter:card">
-<meta content="https://rentsoundsystem.com/brands/turbosound" property="twitter:url">
-<meta content="Location Turbosound | Systèmes Audio Professionnels | RentSoundSystem" property="twitter:title">
-<meta content="Accédez à la puissance légendaire de Turbosound pour vos événements avec RentSoundSystem. Line Array, Subwoofers et monitoring disponibles à la location." property="twitter:description">
-<meta content="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA" property="twitter:image">
+<meta content="summary_large_image" property="twitter:card"/>
+<meta content="https://rentsoundsystem.com/brands/turbosound" property="twitter:url"/>
+<meta content="Location Turbosound | Systèmes Audio Professionnels | RentSoundSystem" property="twitter:title"/>
+<meta content="Accédez à la puissance légendaire de Turbosound pour vos événements avec RentSoundSystem. Line Array, Subwoofers et monitoring disponibles à la location." property="twitter:description"/>
+<meta content="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA" property="twitter:image"/>
 <title>Location Turbosound | Systèmes Audio Professionnels | RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
   tailwind.config = {
     darkMode: "class",
@@ -141,35 +173,41 @@
   }
 }
 </script>
-
 <!-- TopAppBar -->
-<header class="bg-background dark:bg-background text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant flat no shadows sticky z-50">
+<header class="bg-background/95 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50 w-full">
 <div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
-<div class="text-headline-md font-headline font-bold tracking-tight text-primary dark:text-primary">
-                RentSoundSystem
-            </div>
-<nav class="hidden md:flex gap-8 items-center">
-<a class="text-primary font-bold border-b-2 border-primary pb-1 font-headline text-headline-md opacity-80 transition-all" href="#">Marketplace</a>
-<a class="text-on-surface-variant font-medium font-headline text-headline-md hover:text-primary transition-colors duration-200" href="#">Locations</a>
-<a class="text-on-surface-variant font-medium font-headline text-headline-md hover:text-primary transition-colors duration-200" href="#">Espace Partenaire</a>
-<a class="text-on-surface-variant font-medium font-headline text-headline-md hover:text-primary transition-colors duration-200" href="#">Assistance</a>
+<a class="font-headline font-bold text-[24px] leading-[32px] text-primary tracking-tight" href="/">RentSoundSystem.com</a>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/">Marketplace</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors duration-200" href="/">Louer du matériel</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/brand-turbosound.html">Marques</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/comment-ca-marche.html">Comment ça marche</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#support">Assistance</a>
 </nav>
-<div class="flex items-center gap-4">
-<button class="text-primary hover:text-primary transition-colors duration-200">
-<span class="material-symbols-outlined text-[24px]">search</span>
-</button>
-<button class="text-primary hover:text-primary transition-colors duration-200">
-<span class="material-symbols-outlined text-[24px]">account_circle</span>
-</button>
+<div class="hidden md:flex items-center gap-3">
+<button aria-label="Recherche" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">search</span></button>
+<button aria-label="Panier" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">shopping_cart</span></button>
+<button class="border border-on-surface text-on-surface px-4 py-2 rounded font-label text-[12px] leading-[16px] font-medium hover:border-primary hover:text-primary transition-colors">Mon Compte</button>
 </div>
+<button aria-label="Menu" class="md:hidden text-on-surface hover:text-primary transition-colors p-2" id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button>
 </div>
+<nav class="hidden md:hidden border-t border-outline-variant bg-background/98 px-6 py-4" id="mobile-menu">
+<div class="flex flex-col gap-4">
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/">Marketplace</a>
+<a class="text-primary font-bold" href="/">Louer du matériel</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/brand-turbosound.html">Marques</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors" href="#support">Assistance</a>
+<button class="border border-primary text-primary px-4 py-3 rounded font-label font-bold uppercase tracking-widest">Mon Compte</button>
+</div>
+</nav>
 </header>
 <main class="flex-grow flex flex-col items-center pb-24 md:pb-0">
 <!-- Hero Section -->
 <section class="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden border-b border-outline-variant bg-surface-container-lowest">
 <!-- Background Image with Overlay -->
 <div class="absolute inset-0 z-0">
-<img alt="Turbosound equipment on a stage" class="w-full h-full object-cover opacity-40 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA">
+<img alt="Turbosound equipment on a stage" class="w-full h-full object-cover opacity-40 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida/ADBb0uithrV_72yw_-gNmXsm9rSwf1llKqAgPRBmjaDmK2m3vopq66UBEyPHV9Keg_eB1Fsxp7O4PRjgtme-azAXa1KOtnPKmIFgWIgWy95-8cD9NJzXVWUyrDscokoxfHRt-k1efWLs7pf0vqr46W81FVvS2p1Za1RyDTmQBSzOVD5jCvj5KrPqqlp38FkqNJxyUl5hbkvZaIlMV2orXqEexWzJnA_AfgxRw9riVFxRgykzQDzfPjpxJK_yufaR8JrRApcG-R4sA2amSA"/>
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
 </div>
 <div class="relative z-10 max-w-[1280px] mx-auto px-6 text-center w-full">
@@ -288,13 +326,13 @@
 <!-- Product 1 (Large) -->
 <div class="md:col-span-2 group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors border-primary/30">
 <div class="absolute inset-0 z-0">
-<img alt="Système de sonorisation Line Array Turbosound Série Flashline" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uic5op1YPqjxvqBrmYX5XxQJsfMJlTkd6iLuGbHngcKW82zBDMUcSHMHyWVWeHiTKGq6BbsWSR3Vm-u1pXCi7K74qCNKMtZAe4_hlOCRtiCW3bvINsimFyy6UPktheGnYa8nAe1Y2iNVOPnKjNIHOdIwUuyUwkeK4fYOq7jhtEPorihcJjwtkjvJebou3qr47S91MHN6ssSzAJSVqY51P_N5nK0Gqsi3F80lXiyBj0htH6qnD_ZQbYQOw">
+<img alt="Système de sonorisation Line Array Turbosound Série Flashline" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uic5op1YPqjxvqBrmYX5XxQJsfMJlTkd6iLuGbHngcKW82zBDMUcSHMHyWVWeHiTKGq6BbsWSR3Vm-u1pXCi7K74qCNKMtZAe4_hlOCRtiCW3bvINsimFyy6UPktheGnYa8nAe1Y2iNVOPnKjNIHOdIwUuyUwkeK4fYOq7jhtEPorihcJjwtkjvJebou3qr47S91MHN6ssSzAJSVqY51P_N5nK0Gqsi3F80lXiyBj0htH6qnD_ZQbYQOw"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div>
 </div>
 <div class="relative z-10 h-[400px] flex flex-col justify-end p-8">
 <div class="flex items-center gap-3 mb-4">
 <span class="bg-surface-container text-on-surface font-label font-bold text-xs uppercase tracking-widest px-3 py-1 rounded border border-outline-variant">Line Array</span>
-<span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">fiber_manual_record</span> Disponible</span>
+<span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary" style='font-variation-settings: "FILL" 1;'>fiber_manual_record</span> Disponible</span>
 </div>
 <h3 class="font-headline font-bold text-3xl text-on-surface mb-2">Série Flashline</h3>
 <p class="font-body text-on-surface-variant mb-6 max-w-lg">Système line array de nouvelle génération. Performances acoustiques exceptionnelles avec une distorsion minimale pour les événements de grande envergure.</p>
@@ -309,7 +347,7 @@
 <!-- Product 2 -->
 <div class="group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors border-primary/30">
 <div class="absolute inset-0 z-0">
-<img alt="Subwoofer professionnel Turbosound NuQ118B" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uiY2G5MXc_eKBHnldGqTvuGjlwwhG4V71hLyfbLeZTLXPoP_U6UBFXTd2OQhzY9z2qntjjh1i-QnM8lJALLDDj9m5gtKGTEmpqnbWVejdKxakpkcQqxcc8Ci80_2J28CcGmiwkVjfhKJDAMyt24Uza5V6C8aMpGTDGThirg-D74sfVYhwwzvOB4D_qOYPCJei80yFmDmEsVL8mteV5Hp80PtwINvd--Yta563WxwS2bFLiciG37Krh9230">
+<img alt="Subwoofer professionnel Turbosound NuQ118B" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uiY2G5MXc_eKBHnldGqTvuGjlwwhG4V71hLyfbLeZTLXPoP_U6UBFXTd2OQhzY9z2qntjjh1i-QnM8lJALLDDj9m5gtKGTEmpqnbWVejdKxakpkcQqxcc8Ci80_2J28CcGmiwkVjfhKJDAMyt24Uza5V6C8aMpGTDGThirg-D74sfVYhwwzvOB4D_qOYPCJei80yFmDmEsVL8mteV5Hp80PtwINvd--Yta563WxwS2bFLiciG37Krh9230"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/80 to-surface-container-highest/20"></div>
 </div>
 <div class="relative z-10 h-[400px] flex flex-col justify-end p-6">
@@ -329,7 +367,7 @@
 <!-- Product 3 -->
 <div class="group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors border-primary/30">
 <div class="absolute inset-0 z-0">
-<img alt="Moniteur de scène de référence Turbosound Série TFM" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uilM0ScyA79nwUph3dxIAaBoja238ELXmA5qlOJS0ZzY9bmakERpBlp8kUgHK4QDaKPqLx3JLN2DCwKMvfQrWDF70KT3Gq7TL3OILTwA4qdU_Qao4EobG6yNwDFIXeVJTC570Ix5f-mVc_eiP2IeG9BwFXdiTeYWc17Ba7KJY691AN53KlmBsXyYl9j53T_UoSUK5O5-XndjMsa_VW_jxImtNxWMXKxqZjQw-POwMpi4NYR5TAG0f7hf-k">
+<img alt="Moniteur de scène de référence Turbosound Série TFM" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uilM0ScyA79nwUph3dxIAaBoja238ELXmA5qlOJS0ZzY9bmakERpBlp8kUgHK4QDaKPqLx3JLN2DCwKMvfQrWDF70KT3Gq7TL3OILTwA4qdU_Qao4EobG6yNwDFIXeVJTC570Ix5f-mVc_eiP2IeG9BwFXdiTeYWc17Ba7KJY691AN53KlmBsXyYl9j53T_UoSUK5O5-XndjMsa_VW_jxImtNxWMXKxqZjQw-POwMpi4NYR5TAG0f7hf-k"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/80 to-surface-container-highest/20"></div>
 </div>
 <div class="relative z-10 h-[400px] flex flex-col justify-end p-6">
@@ -359,7 +397,7 @@
                                 Demander un devis
                             </button>
 </div>
-<div class="w-full md:w-1/2 h-full rounded border border-outline-variant/50 bg-surface flex items-center justify-center relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-surface-container-low via-surface-container-low/20 to-transparent z-10 pointer-events-none"></div><img alt="Amplification Lab Gruppen Rack" class="w-full h-full object-cover [mask-image:linear-gradient(to_right,transparent,black_30%)]" src="https://lh3.googleusercontent.com/aida/ADBb0uj25ze0YV9DYQMyd87TIcMi6SFGS1u_hOy5obCVmUzYYZeGU0GJc_BSVZlg1mWxQKYrQzec6fMMvOUC1YV2yiAopxNl3tc9mZLkM1z6dISXekQhcMPqF-sMKV9u_DNT1fPWQK362p2vELi0VP7YbzlJiE0TYpPejHWcgFAnR1-fT5PINkdb8rnaBIWf2XByfCddbPTo79bccggAHNGCDhXu4OkW96f2ws8V1LZCXQAplJVwFAfE03ltFbw"></div>
+<div class="w-full md:w-1/2 h-full rounded border border-outline-variant/50 bg-surface flex items-center justify-center relative overflow-hidden"><div class="absolute inset-0 bg-gradient-to-r from-surface-container-low via-surface-container-low/20 to-transparent z-10 pointer-events-none"></div><img alt="Amplification Lab Gruppen Rack" class="w-full h-full object-cover [mask-image:linear-gradient(to_right,transparent,black_30%)]" src="https://lh3.googleusercontent.com/aida/ADBb0uj25ze0YV9DYQMyd87TIcMi6SFGS1u_hOy5obCVmUzYYZeGU0GJc_BSVZlg1mWxQKYrQzec6fMMvOUC1YV2yiAopxNl3tc9mZLkM1z6dISXekQhcMPqF-sMKV9u_DNT1fPWQK362p2vELi0VP7YbzlJiE0TYpPejHWcgFAnR1-fT5PINkdb8rnaBIWf2XByfCddbPTo79bccggAHNGCDhXu4OkW96f2ws8V1LZCXQAplJVwFAfE03ltFbw"/></div>
 </div>
 </div>
 </div>
@@ -407,12 +445,12 @@
 <!-- Video Card 1 -->
 <div class="group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low cursor-pointer">
 <div class="absolute inset-0 z-0">
-<img alt="Concert Zénith" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEw2Au0rUWmIsD0n3DJqx7bWcZzeZK-0wv6iLJ6zS3_U33fYjthcfkk7awkDHGDlKOmtMDiKY4JXLj5uKzSCa4Vf3Pwj2NE_ewRHfydxOnFcLhxuLbEslcZlhNjw8zXFSNHB9VNd0bb0boDTnVxcdDz6t-YGjvbqlbIb7oIietF4UI-kcApqMQ6SQ6MagX3WGIYyxV9_PsltcVCCGa5KXYG3ntWEcx4fBzc4_RPJhVu3zQ4iZsriKQtkRX0DpxF72sTxiL-Pnd2O4">
+<img alt="Concert Zénith" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEw2Au0rUWmIsD0n3DJqx7bWcZzeZK-0wv6iLJ6zS3_U33fYjthcfkk7awkDHGDlKOmtMDiKY4JXLj5uKzSCa4Vf3Pwj2NE_ewRHfydxOnFcLhxuLbEslcZlhNjw8zXFSNHB9VNd0bb0boDTnVxcdDz6t-YGjvbqlbIb7oIietF4UI-kcApqMQ6SQ6MagX3WGIYyxV9_PsltcVCCGa5KXYG3ntWEcx4fBzc4_RPJhVu3zQ4iZsriKQtkRX0DpxF72sTxiL-Pnd2O4"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div>
 </div>
 <div class="absolute inset-0 z-10 flex items-center justify-center">
 <div class="w-16 h-16 rounded-full bg-primary/90 text-on-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-<span class="material-symbols-outlined text-[32px] ml-1" style="font-variation-settings: &quot;FILL&quot; 1;">play_arrow</span>
+<span class="material-symbols-outlined text-[32px] ml-1" style='font-variation-settings: "FILL" 1;'>play_arrow</span>
 </div>
 </div>
 <div class="relative z-20 h-[300px] flex flex-col justify-between p-6">
@@ -427,12 +465,12 @@
 <!-- Video Card 2 -->
 <div class="group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low cursor-pointer">
 <div class="absolute inset-0 z-0">
-<img alt="Club Audio Setup" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uiY2G5MXc_eKBHnldGqTvuGjlwwhG4V71hLyfbLeZTLXPoP_U6UBFXTd2OQhzY9z2qntjjh1i-QnM8lJALLDDj9m5gtKGTEmpqnbWVejdKxakpkcQqxcc8Ci80_2J28CcGmiwkVjfhKJDAMyt24Uza5V6C8aMpGTDGThirg-D74sfVYhwwzvOB4D_qOYPCJei80yFmDmEsVL8mteV5Hp80PtwINvd--Yta563WxwS2bFLiciG37Krh9230">
+<img alt="Club Audio Setup" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida/ADBb0uiY2G5MXc_eKBHnldGqTvuGjlwwhG4V71hLyfbLeZTLXPoP_U6UBFXTd2OQhzY9z2qntjjh1i-QnM8lJALLDDj9m5gtKGTEmpqnbWVejdKxakpkcQqxcc8Ci80_2J28CcGmiwkVjfhKJDAMyt24Uza5V6C8aMpGTDGThirg-D74sfVYhwwzvOB4D_qOYPCJei80yFmDmEsVL8mteV5Hp80PtwINvd--Yta563WxwS2bFLiciG37Krh9230"/>
 <div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div>
 </div>
 <div class="absolute inset-0 z-10 flex items-center justify-center">
 <div class="w-16 h-16 rounded-full bg-primary/90 text-on-primary flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-<span class="material-symbols-outlined text-[32px] ml-1" style="font-variation-settings: &quot;FILL&quot; 1;">play_arrow</span>
+<span class="material-symbols-outlined text-[32px] ml-1" style='font-variation-settings: "FILL" 1;'>play_arrow</span>
 </div>
 </div>
 <div class="relative z-20 h-[300px] flex flex-col justify-between p-6">
@@ -520,68 +558,26 @@
 </section>
 </main>
 <!-- Footer -->
-<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant"><div class="max-w-[1280px] mx-auto px-6">
+<footer class="bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant" id="support">
+<div class="max-w-[1280px] mx-auto px-0 md:px-6">
 <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
 <div class="col-span-1">
-<div class="font-headline font-bold text-primary text-2xl tracking-tight mb-4">
-        RentSoundSystem
-      </div>
-<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">
-        Location de sonorisation, clairage et matriel scnique professionnel pour vnements. La plateforme de rfrence pour les experts de l'vnementiel en France.
-      </p>
+<a class="font-headline font-bold text-primary text-2xl tracking-tight mb-4 block" href="/">RentSoundSystem.com</a>
+<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Location de sonorisation, éclairage, DJ gear et matériel scénique professionnel. La plateforme premium pour organiser vos événements avec des partenaires vérifiés.</p>
 <div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" href="#">
-<span class="material-symbols-outlined">share</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" href="#">
-<span class="material-symbols-outlined">public</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" href="#">
-<span class="material-symbols-outlined">chat</span>
-</a>
+<a aria-label="Partager" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
 </div>
 </div>
-<nav aria-label="Marketplace links">
-<h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3>
-<ul class="space-y-4">
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Vendre du matriel</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Acheter d'occasion</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Garanties Pro</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Annonces vrifies</a></li>
-</ul>
-</nav>
-<nav aria-label="Product categories">
-<h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catgories</h3>
-<ul class="space-y-4">
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Systmes Sonorisation</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Projecteurs clairage</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Consoles de Mixage</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Praticables &amp; Scnes</a></li>
-</ul>
-</nav>
-<nav aria-label="Support links">
-<h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3>
-<ul class="space-y-4">
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Centre d'aide</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Nous contacter</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Logistique &amp; Livraison</a></li>
-<li class=""><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Conditions Gnrales</a></li>
-</ul>
-</nav>
+<nav aria-label="Marketplace"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="/">Louer du matériel</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Devenir partenaire</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Annonces vérifiées</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Garanties pro</a></li></ul></nav>
+<nav aria-label="Catégories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Sonorisation</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Éclairage</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">DJ Gear</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Scène &amp; Structures</a></li></ul></nav>
+<nav aria-label="Support"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Centre d'aide</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Nous contacter</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Logistique &amp; Livraison</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Conditions Générales</a></li></ul></nav>
 </div>
 <div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="font-body text-xs text-on-surface-variant">
-       2026 RentSoundSystem.com. Logistique Sonore Professionnelle.
-    </p>
-<div class="flex gap-6">
-<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Mentions Lgales</a>
-<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Confidentialit</a>
-<a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Plan du site</a>
+<p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p>
+<div class="flex flex-wrap justify-center gap-6"><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Mentions légales</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Confidentialité</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Plan du site</a></div>
 </div>
 </div>
-</div></footer>
-
-
-
-
+</footer>
 </body></html>
