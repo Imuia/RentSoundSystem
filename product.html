@@ -1,293 +1,565 @@
-<!DOCTYPE html>
-<html class="dark" lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Produit - RentSoundSystem</title>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: { extend: {
-        colors: {
-          background:'#131313', surface:'#131313', primary:'#FC036D', 'on-primary':'#fff',
-          'on-background':'#e2e2e2', 'on-surface':'#e2e2e2', 'on-surface-variant':'#e6bcc2',
-          'surface-container-lowest':'#0e0e0e', 'surface-container-low':'#1b1b1b',
-          'surface-container':'#1f1f1f', 'surface-container-high':'#2a2a2a',
-          'outline-variant':'#5d3f44', outline:'#ac878d'
-        },
-        fontFamily: { headline:['Manrope'], body:['Inter'], label:['Inter'] },
-        animation: { 'glow-pulse':'glow-pulse 2s infinite' },
-        keyframes: { 'glow-pulse': { '0%,100%':{boxShadow:'0 0 10px rgba(252,3,109,.2)'}, '50%':{boxShadow:'0 0 25px rgba(252,3,109,.6)'} } }
-      } }
-    }
-  </script>
-  <style>
-    body { background:#131313; color:#e2e2e2; font-family:Inter, sans-serif; }
-    .rss-img-bg { background: radial-gradient(circle at 50% 18%, rgba(252,3,109,.35), transparent 30%), linear-gradient(180deg,#242424,#111); }
-    .rss-popup-description p { margin-bottom: 1rem; }
-  </style>
+<!DOCTYPE html><html class="dark" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Système de Sonorisation JBL Pro - Marrakech - RentSoundSystem.com</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#131313",
+                        "primary-fixed": "#fc036d",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#c6c6c7",
+                        "on-primary-fixed": "#ffffff",
+                        "on-surface": "#e2e2e2",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-container": "#ff4d80",
+                        "surface-variant": "#353535",
+                        "surface-dim": "#131313",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-container": "#2a2a2a",
+                        "primary-fixed-dim": "#fc036d",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary": "#313030",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-secondary-fixed-variant": "#454747",
+                        "inverse-on-surface": "#303030",
+                        "outline": "#ac878d",
+                        "surface-container-low": "#1b1b1b",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-container": "#b4b5b5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-tint": "#fc036d",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#e6bcc2",
+                        "surface-container-highest": "#353535",
+                        "surface-bright": "#393939",
+                        "surface-container": "#1f1f1f",
+                        "inverse-primary": "#bc004f",
+                        "outline-variant": "#5d3f44",
+                        "inverse-surface": "#e2e2e2",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-primary-fixed-variant": "#ffffff",
+                        "background": "#131313",
+                        "primary": "#fc036d",
+                        "on-secondary": "#2f3131",
+                        "on-primary-container": "#ffffff",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-container": "#929090",
+                        "secondary-container": "#454747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {},
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    },
+                    "fontSize": {},
+                    "keyframes": {
+                        "glow-pulse": {
+                            "0%, 100%": { boxShadow: "0 0 10px rgba(252, 3, 109, 0.2)" },
+                            "50%": { boxShadow: "0 0 25px rgba(252, 3, 109, 0.6)" }
+                        }
+                    },
+                    "animation": {
+                        "glow-pulse": "glow-pulse 2s infinite"
+                    }
+                },
+            },
+        }
+    </script>
+
+<style>
+  .rss-img-placeholder { background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010); }
+  .rss-img-placeholder::after { content: 'image bientôt disponible'; color: rgba(255,255,255,.45); font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+</style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex flex-col pt-20">
-  <nav class="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-10 h-20 bg-background/95 backdrop-blur-md border-b border-white/10">
-    <a href="index.html" class="font-headline text-[22px] font-bold text-primary">RENTSOUNDSYSTEM</a>
-    <div class="hidden md:flex space-x-8">
-      <a class="text-primary border-b-2 border-primary pb-1" href="index.html">Inventaire</a>
-      <a class="text-on-surface-variant hover:text-primary" href="#description">Détails</a>
-      <a class="text-on-surface-variant hover:text-primary" href="#booking">Réservation</a>
-    </div>
-    <div class="flex items-center space-x-4">
-      <button class="p-2 text-primary hover:bg-surface-container-high rounded-full"><span class="material-symbols-outlined">shopping_cart</span></button>
-      <button class="p-2 text-primary hover:bg-surface-container-high rounded-full"><span class="material-symbols-outlined">account_circle</span></button>
-    </div>
-  </nav>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
+<!-- TopNavBar Component -->
+<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-10 h-20 bg-background/95 backdrop-blur-md border-b border-outline-variant/10">
+<a href="/" class="font-headline text-headline-md font-bold text-primary">RentSoundSystem.com</a>
+<div class="hidden md:flex space-x-8">
+<a class="text-primary border-b-2 border-primary pb-1 font-body text-body-md hover:bg-surface-container-high transition-colors opacity-80" href="/">Inventaire</a>
+<a class="text-on-surface-variant hover:text-on-surface font-body text-body-md hover:bg-surface-container-high transition-colors" href="#">Signature</a>
+<a class="text-on-surface-variant hover:text-on-surface font-body text-body-md hover:bg-surface-container-high transition-colors" href="#">Lieux</a>
+<a class="text-on-surface-variant hover:text-on-surface font-body text-body-md hover:bg-surface-container-high transition-colors" href="#">Logistique</a>
+</div>
+<div class="flex items-center space-x-4">
+<button class="p-2 text-primary hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+<button class="p-2 text-primary hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-grow container mx-auto max-w-[1280px] px-6 py-12 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Visuals & Details -->
+<div class="lg:col-span-7 space-y-8">
+<!-- Breadcrumb & Vendor Context -->
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-2 text-body-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors" href="#">Inventaire</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Systèmes Son</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-on-surface">Système de Sonorisation JBL Pro</span>
+</div>
+<div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/30">
+<div class="h-10 w-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant/50">
+<img alt="Vendor Logo" class="h-full w-full object-cover opacity-80" data-alt="A professional vendor logo or avatar for a sound equipment rental company, featuring a subtle geometric design in dark greys and pink accents, set against a pitch black background. Minimalist corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5ssxkWIylNE8HIbQniPBRpAx7jG5_neA8P9g5ThT0AdDXcqZlfk7QM3CqoMq7RNfb1HvPhL04t3WVIaycfHPEvSqZZ01VNzuXCUMd6latavK2CPCFFAh5RN9uwwJlp4gpkLtMEnddOv1pBZo5OmsuFybQ6Dpm6MXujBJM7yrhrf4F9auM13R6IJKV4hRXdqMwPEQ0LClLLmGZZm0-0cntyqz73JyzmCijr8UeNEAEImJM_LXGh5HhoxbwFM43AQvJCsLAf0Ni-4Q">
+</div>
+<div>
+<div class="font-headline text-body-md font-bold text-on-surface uppercase tracking-wide">MARRAKECH</div>
+<div class="font-body text-body-sm text-on-surface-variant uppercase tracking-wider">MAROC</div>
+</div>
+</div>
+</div>
+<!-- Product Image Gallery -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant/20 p-8 flex flex-col space-y-6">
+<!-- Main Image -->
+<div class="aspect-square md:aspect-[4/3] bg-surface relative rounded-lg overflow-hidden flex items-center justify-center group border border-outline-variant/10">
+<img alt="Système de Sonorisation JBL Pro" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" data-alt="Professional studio shot of a JBL Pro speaker system." src="https://lh3.googleusercontent.com/aida/ADBb0uhocRl_Cao9AK-YVP70tuThAP5ow9XBqZ5odrpzUMR9OeWJEuZKzsIG_4VPTyj9wQHOGSgIE_w2QJg50T5aI83kpy-7R12Jvy__gAqffsharREf-WydFw0VYNQVZgYgb4khrgYDtPWLF3Kz0ozLPm-9GEAMGxc1xaAvIaIbJkXzbSIumWJb7jTzoOXhj50YDi6ldd6bKVnidxeV9Owgos3X0a0a84fZjPBN-xtf7Z88sPCnHDJ9O-VIc6qeIqhNZZII-7kuQW4T">
+</div>
+<!-- Thumbnails -->
+<div class="grid grid-cols-5 gap-4">
+<button class="aspect-square rounded bg-surface border-2 border-primary overflow-hidden">
+<img alt="Thumbnail 1" class="h-full w-full object-cover" data-alt="Close up of JBL Pro." src="https://lh3.googleusercontent.com/aida/ADBb0uhocRl_Cao9AK-YVP70tuThAP5ow9XBqZ5odrpzUMR9OeWJEuZKzsIG_4VPTyj9wQHOGSgIE_w2QJg50T5aI83kpy-7R12Jvy__gAqffsharREf-WydFw0VYNQVZgYgb4khrgYDtPWLF3Kz0ozLPm-9GEAMGxc1xaAvIaIbJkXzbSIumWJb7jTzoOXhj50YDi6ldd6bKVnidxeV9Owgos3X0a0a84fZjPBN-xtf7Z88sPCnHDJ9O-VIc6qeIqhNZZII-7kuQW4T">
+</button>
+<button class="aspect-square rounded bg-surface border border-outline-variant/30 hover:border-outline-variant overflow-hidden opacity-60 hover:opacity-100 transition-all">
+<img alt="Thumbnail 2" class="h-full w-full object-cover" data-alt="Detailed shot of the system." src="https://lh3.googleusercontent.com/aida/ADBb0uiXiiUCpQ8NwFmhtttFsBludS7tW6uzAFWgn6uJ3HrMgN6lutKKK-C036jOGCBKdw7GpuheQ9hPxjiOjT0opm8Xj-5bC8ANWdRQ2WwgVBwqHkWbTyACDOHAVas9TJaXzo6LenPF25xvFdKroHh1reQW5RA_YI95ev2VQecYCFy1cyDaXYEELtKhVa1G7tiCIzh9e7KdiJUD3jbEaDB2uz0frre6zQ5ebaPtiQNWWKQvfZWYHBK574Uc6ueOw3BAyUxYPWqTmvZ5yw">
+</button>
+<button class="aspect-square rounded bg-surface border border-outline-variant/30 hover:border-outline-variant overflow-hidden opacity-60 hover:opacity-100 transition-all">
+<img alt="Thumbnail 3" class="h-full w-full object-cover" data-alt="Subwoofer." src="https://lh3.googleusercontent.com/aida/ADBb0uhB8INnslkgiI_KeyyCzSqxFIWISnKRzDdPfcMmGE02Hl1pvuNFMFU_hEZUdvkM95OjT9TwF8p6UNnVmix8SA-N_jGT91Gp6-tnxxgZSFxb9l0wCCp8JZSdawXxY_cEx6tOy8S5ewCuQPULfKxGjwBZDdMJG6MK8oIs0VgdGdiV03EHge6-SwK86LCsxYwqABoq415z040PEzpfa7GfN6Cj5nOLOf7qZ6euIeEEIoJzzq4c5grktt1kNd9EFCqC8Nf9xasXo6uM7w">
+</button>
+<button class="aspect-square rounded bg-surface border border-outline-variant/30 hover:border-outline-variant overflow-hidden opacity-60 hover:opacity-100 transition-all">
+<img alt="Thumbnail 4" class="h-full w-full object-cover" data-alt="Rear connection panel." src="https://lh3.googleusercontent.com/aida/ADBb0uiNfPEQUC8msmkMUuhr9zR3nMyRUXZsKhItksLZC059RjJ2RLPiKxKhHUvYNvCbGG85pJ-ZjbQ9tb5unJthx4DMfhOnnFRN0F89PEoInML5WJJF_6Iy-G1UQNuckyTYkznKkiThKmCwQsY6Pef29vv87FrtZPwoaZouUvws7oIYaZgsFApGqNVkOIsrk3SZYVssV_PkOevmNTrfC2v5KlfCKPoTOQ7j6g_bPy9X5KNRZ87nNZmwCKnWb6hY0WeHJO0uK-8TZDFX">
+</button>
+<button class="aspect-square rounded bg-surface border border-outline-variant/30 hover:border-outline-variant overflow-hidden opacity-60 hover:opacity-100 transition-all">
+<img alt="Thumbnail 5" class="h-full w-full object-cover" data-alt="Additional view." src="https://lh3.googleusercontent.com/aida/ADBb0ug7vjJhKD8HpXdwIygiT6cQG7MSFPXtomlbjdCcXueErpG6kOR21myLs2oZ36IHif8lGCWdMRxYB5aAYCQeQIsj96TFhfKsTFP_NyYGiRAuplmA2vcNO-vIaOlAhswPTJlFIGe6n2ZB0mLavjfp_gfe6-boWXevLgPW7o8BfyZjAiPO9ldheEcuFm1cYBSa8wRNq6O7fht9VGOWmYnIc5P8cyscofODu-447-h3cO9kNVH3g99HZnDkW1PXFl--9QszEuhaC0vHHg">
+</button>
+</div>
+</div>
+<!-- Detailed Description & Specs Tabs -->
+<div class="bg-surface-container-low rounded-xl border border-outline-variant/20 overflow-hidden">
+<div class="flex border-b border-outline-variant/20">
+<button class="flex-1 py-4 text-center font-headline font-bold text-body-md text-primary border-b-2 border-primary bg-surface-container-high">Aperçu</button>
+<button class="flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Spécifications techniques</button>
+<button class="flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Inclus</button>
+</div>
+<div class="p-8 space-y-6">
+<h3 class="font-headline text-headline-lg text-on-surface">Qualité Sonore Exceptionnelle &amp; Puissance</h3>
+<p class="font-body text-body-md text-on-surface-variant leading-relaxed">Découvrez la qualité sonore exceptionnelle du système JBL Pro avec notre configuration sur-mesure pour Marrakech. Idéal pour les événements en direct, les clubs et les scènes exigeantes, ce système offre une couverture sonore optimale et une fiabilité reconnue. Associé à une amplification Crown de pointe, il garantit une expérience audio inoubliable pour tous vos événements.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
+<div class="bg-surface p-4 rounded border border-outline-variant/20 flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary">speaker</span>
+<div>
+<div class="font-label text-label-caps text-on-surface mb-1">Enceintes</div>
+<div class="font-body text-body-sm text-on-surface-variant">4x Enceintes JBL, 2x Subwoofers</div>
+</div>
+</div>
+<div class="bg-surface p-4 rounded border border-outline-variant/20 flex items-start space-x-3">
+<span class="material-symbols-outlined text-primary">settings_input_component</span>
+<div>
+<div class="font-label text-label-caps text-on-surface mb-1">Amplification</div>
+<div class="font-body text-body-sm text-on-surface-variant">Amplification Crown, Câblage haute fidélité</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Configuration & Booking Action -->
+<div class="lg:col-span-5">
+<div class="sticky top-28 space-y-6">
+<!-- Title & Core Stats -->
+<div>
+<h1 class="font-headline text-headline-xl text-on-surface mb-4">Système de Sonorisation JBL Pro - Marrakech</h1>
+<!-- Core Stats Bento -->
+<div class="grid grid-cols-2 gap-2 mb-6">
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/20 flex flex-col justify-center items-center text-center">
+<div class="font-label text-label-caps text-on-surface-variant mb-1">Application</div>
+<div class="font-headline text-headline-md text-primary font-bold">Clubs &amp; Festivals</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/20 flex flex-col justify-center items-center text-center">
+<div class="font-label text-label-caps text-on-surface-variant mb-1">Réponse en fréq.</div>
+<div class="font-headline text-headline-md text-on-surface font-bold">35Hz - 18kHz</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/20 flex flex-col justify-center items-center text-center">
+<div class="font-label text-label-caps text-on-surface-variant mb-1">Médiums-Aigus</div>
+<div class="font-headline text-headline-md text-on-surface font-bold">4x Enceintes JBL</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-lg border border-outline-variant/20 flex flex-col justify-center items-center text-center">
+<div class="font-label text-label-caps text-on-surface-variant mb-1">Caissons de basses</div>
+<div class="font-headline text-headline-md text-on-surface font-bold">2x Subwoofers</div>
+</div>
+</div>
+</div>
+<!-- Booking Panel -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-lg relative overflow-hidden">
+<!-- Subtle Glow -->
+<div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 blur-[50px] rounded-full pointer-events-none"></div>
+<div class="flex justify-between items-end mb-6 border-b border-outline-variant/20 pb-4">
+<div>
+<div class="font-label text-label-caps text-on-surface-variant mb-1">Tarif de base</div>
+<div class="font-headline text-headline-lg text-primary font-bold">850.00€ <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
+</div>
+<div class="flex items-center space-x-2">
+<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">-</button>
+<span class="font-body text-body-lg w-8 text-center">1</span>
+<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">+</button>
+</div>
+</div>
+<!-- Date Picker Placeholder -->
+<div class="mb-6">
+<label class="block font-label text-label-caps text-on-surface mb-2">Date de location</label>
+<div class="border border-outline-variant/30 rounded-lg overflow-hidden bg-surface">
+<div class="bg-primary flex justify-between items-center p-3 text-on-primary font-bold">
+<span class="material-symbols-outlined cursor-pointer text-[20px]">chevron_left</span>
+<span class="">Mai 2026</span>
+<span class="material-symbols-outlined cursor-pointer text-[20px]">chevron_right</span>
+</div>
+<div class="p-3 grid grid-cols-7 gap-1 text-center font-body text-body-sm text-on-surface-variant">
+<div class="">Di</div><div class="">Lu</div><div class="">Ma</div><div class="">Me</div><div class="">Je</div><div class="">Ve</div><div class="">Sa</div>
+<!-- Empty days -->
+<div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div>
+<div class="py-2 border border-outline-variant/10 rounded">1</div>
+<div class="py-2 border border-outline-variant/10 rounded">2</div>
+<!-- Week 1 -->
+<div class="py-2 border border-outline-variant/10 rounded">3</div>
+<div class="py-2 border border-outline-variant/10 rounded">4</div>
+<div class="py-2 border border-outline-variant/10 rounded">5</div>
+<div class="py-2 border border-outline-variant/10 rounded">6</div>
+<div class="py-2 border border-outline-variant/10 rounded">7</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">8</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">9</div>
+<!-- Week 2 -->
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">10</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">11</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">12</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">13</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">14</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">15</div>
+<div class="py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">16</div>
+</div>
+</div>
+</div>
+<!-- Options -->
+<div class="space-y-3 mb-8">
+<label class="flex items-center space-x-3 cursor-pointer group">
+<input class="form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
+<span class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Frais de livraison</span>
+<span class="font-body text-body-md text-on-surface-variant">+50.00 €</span>
+</label>
+<label class="flex items-center space-x-3 cursor-pointer group">
+<input class="form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
+<span class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Installation technique</span>
+<span class="font-body text-body-md text-on-surface-variant">+150.00 €</span>
+</label>
+</div>
+<div class="flex justify-between items-center mb-6 pt-4 border-t border-outline-variant/20">
+<span class="font-headline text-headline-md text-on-surface">Total :</span>
+<span class="font-headline text-headline-md text-primary font-bold">850.00 €</span>
+</div>
+<div class="space-y-4">
+<button class="w-full bg-primary text-on-primary font-headline font-bold text-body-lg py-4 rounded-lg hover:bg-primary-fixed transition-colors flex justify-center items-center space-x-2">
+<span class="material-symbols-outlined">event_available</span>
+<span class="">Réserver maintenant</span>
+</button>
+<button class="animate-glow-pulse w-full bg-transparent border border-outline-variant text-on-surface font-headline font-bold text-body-lg py-4 rounded-lg hover:border-primary hover:text-primary transition-colors flex justify-center items-center space-x-2">
+<span class="material-symbols-outlined">request_quote</span>
+<span class="">Faire une demande de devis</span>
+</button>
+</div>
+<div class="mt-4 flex justify-center space-x-4 text-on-surface-variant">
+<button class="p-2 border border-outline-variant/30 rounded-full hover:bg-surface hover:text-primary transition-all">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.469h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.469h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path></svg>
+</button>
+<button class="p-2 border border-outline-variant/30 rounded-full hover:bg-surface hover:text-primary transition-all">
+<svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"></path></svg>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Component -->
+<section class="w-full max-w-[1280px] mx-auto px-6 py-12 border-t border-outline-variant/20">
+<h2 class="font-headline text-headline-lg text-on-surface mb-8">Accessoires Complémentaires</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Product Card 1 -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">
+<div class="aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-[40px]">mic</span>
+</div>
+<h3 class="font-headline text-body-lg font-bold text-on-surface mb-2">Microphone Shure SM58</h3>
+<p class="font-body text-body-sm text-on-surface-variant mb-4 flex-grow">Le standard mondial pour le chant, robuste et fiable.</p>
+<button class="w-full py-2 bg-surface-container-high hover:bg-primary hover:text-on-primary text-primary border border-primary/20 transition-colors rounded-lg font-label text-label-caps font-bold">
+                Ajouter à la réquisition
+            </button>
+</div>
+<!-- Product Card 2 -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">
+<div class="aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-[40px]">settings_input_component</span>
+</div>
+<h3 class="font-headline text-body-lg font-bold text-on-surface mb-2">Pack de Câbles XLR</h3>
+<p class="font-body text-body-sm text-on-surface-variant mb-4 flex-grow">Lot de 3 câbles XLR haute qualité de 10m.</p>
+<button class="w-full py-2 bg-surface-container-high hover:bg-primary hover:text-on-primary text-primary border border-primary/20 transition-colors rounded-lg font-label text-label-caps font-bold">
+                Ajouter à la réquisition
+            </button>
+</div>
+<!-- Product Card 3 -->
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">
+<div class="aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-outline-variant text-[40px]">vertical_align_bottom</span>
+</div>
+<h3 class="font-headline text-body-lg font-bold text-on-surface mb-2">Pied d'Enceinte Additionnel</h3>
+<p class="font-body text-body-sm text-on-surface-variant mb-4 flex-grow">Support robuste avec système de sécurité.</p>
+<button class="w-full py-2 bg-surface-container-high hover:bg-primary hover:text-on-primary text-primary border border-primary/20 transition-colors rounded-lg font-label text-label-caps font-bold">
+                Ajouter à la réquisition
+            </button>
+</div>
+</div>
+</section><footer class="w-full py-16 px-10 flex flex-col md:flex-row justify-between items-start gap-8 max-w-[1280px] mx-auto bg-surface-container-lowest border-t border-outline-variant/20 mt-12">
+<div class="flex flex-col space-y-4">
+<div class="font-headline text-headline-sm font-bold text-on-surface">© 2024 RentSoundSystem.com. Solutions Audio Professionnelles.</div>
+<div class="flex space-x-4 text-on-surface-variant">
+<!-- LinkedIn -->
+<a class="hover:text-primary transition-colors" href="#">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path></svg>
+</a>
+<!-- Instagram -->
+<a class="hover:text-primary transition-colors" href="#">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"></path></svg>
+</a>
+<!-- YouTube -->
+<a class="hover:text-primary transition-colors" href="#">
+<svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
+</a>
+</div>
+</div>
+<div class="flex flex-wrap gap-6 font-body text-body-sm text-on-surface-variant">
+<a class="hover:text-primary transition-colors focus:underline" href="#">Spécifications techniques</a>
+<a class="hover:text-primary transition-colors focus:underline" href="#">Politique de livraison</a>
+<a class="hover:text-primary transition-colors focus:underline" href="#">Conditions de location</a>
+<a class="hover:text-primary transition-colors focus:underline" href="#">Support</a>
+<a class="hover:text-primary transition-colors focus:underline" href="#">Carrières</a>
+<a class="hover:text-primary transition-colors focus:underline" href="#">Confidentialité</a>
+</div>
+</footer>
 
-  <main class="flex-grow container mx-auto max-w-[1280px] px-6 py-10 md:py-14 grid grid-cols-1 lg:grid-cols-12 gap-8">
-    <div class="lg:col-span-7 space-y-8">
-      <div class="flex items-center justify-between gap-4 flex-wrap">
-        <div class="flex items-center space-x-2 text-sm text-on-surface-variant">
-          <a class="hover:text-primary" href="index.html">Inventaire</a>
-          <span class="material-symbols-outlined text-[16px]">chevron_right</span>
-          <span id="breadcrumb-category" class="text-on-surface">Matériel</span>
-        </div>
-        <div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-lg border border-white/10">
-          <div class="h-10 w-10 rounded-full bg-surface-container-high flex items-center justify-center border border-white/10">
-            <span class="material-symbols-outlined text-primary">storefront</span>
-          </div>
-          <div>
-            <div id="vendor-city" class="font-headline text-sm font-bold text-on-surface uppercase tracking-wide">VILLE</div>
-            <div id="vendor-country" class="text-xs text-on-surface-variant uppercase tracking-wider">LOCATION</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="bg-surface-container-lowest rounded-xl border border-white/10 p-6 md:p-8 flex flex-col space-y-6">
-        <div class="aspect-square md:aspect-[4/3] rss-img-bg relative rounded-lg overflow-hidden flex items-center justify-center group border border-white/10">
-          <img id="main-image" alt="Produit RentSoundSystem" class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105 hidden" referrerpolicy="no-referrer" />
-          <span id="main-image-placeholder" class="material-symbols-outlined text-primary text-[72px] opacity-70">speaker</span>
-        </div>
-        <div id="thumbs" class="grid grid-cols-5 gap-4"></div>
-      </div>
-
-      <div id="description" class="bg-surface-container-low rounded-xl border border-white/10 overflow-hidden">
-        <div class="flex border-b border-white/10">
-          <button class="flex-1 py-4 text-center font-bold text-primary border-b-2 border-primary bg-surface-container-high">Aperçu</button>
-          <button class="flex-1 py-4 text-center font-semibold text-on-surface-variant">Spécifications</button>
-          <button class="flex-1 py-4 text-center font-semibold text-on-surface-variant">Inclus</button>
-        </div>
-        <div class="p-8 space-y-6">
-          <h3 id="description-title" class="font-headline text-[28px] text-on-surface">Description</h3>
-          <div id="description-text" class="rss-popup-description text-on-surface-variant leading-relaxed"></div>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-            <div class="bg-surface p-4 rounded border border-white/10 flex items-start space-x-3">
-              <span class="material-symbols-outlined text-primary">category</span>
-              <div><div class="text-xs uppercase text-on-surface mb-1">Catégorie</div><div id="spec-category" class="text-sm text-on-surface-variant">-</div></div>
-            </div>
-            <div class="bg-surface p-4 rounded border border-white/10 flex items-start space-x-3">
-              <span class="material-symbols-outlined text-primary">branding_watermark</span>
-              <div><div class="text-xs uppercase text-on-surface mb-1">Marque / Modèle</div><div id="spec-brand" class="text-sm text-on-surface-variant">-</div></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="lg:col-span-5">
-      <div class="sticky top-28 space-y-6">
-        <div>
-          <h1 id="product-title" class="font-headline text-[42px] leading-tight text-on-surface mb-4">Chargement...</h1>
-          <div class="grid grid-cols-2 gap-2 mb-6">
-            <div class="bg-surface-container-low p-4 rounded-lg border border-white/10 text-center"><div class="text-xs text-on-surface-variant mb-1">Ville</div><div id="stat-city" class="font-headline text-primary font-bold">-</div></div>
-            <div class="bg-surface-container-low p-4 rounded-lg border border-white/10 text-center"><div class="text-xs text-on-surface-variant mb-1">Type</div><div id="stat-type" class="font-headline text-on-surface font-bold">Location</div></div>
-            <div class="bg-surface-container-low p-4 rounded-lg border border-white/10 text-center"><div class="text-xs text-on-surface-variant mb-1">Caution</div><div id="stat-caution" class="font-headline text-on-surface font-bold">-</div></div>
-            <div class="bg-surface-container-low p-4 rounded-lg border border-white/10 text-center"><div class="text-xs text-on-surface-variant mb-1">Vues</div><div id="stat-views" class="font-headline text-on-surface font-bold">-</div></div>
-          </div>
-        </div>
-
-        <div id="booking" class="bg-surface-container-lowest p-6 rounded-xl border border-white/10 shadow-lg relative overflow-hidden">
-          <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 blur-[50px] rounded-full pointer-events-none"></div>
-          <div class="flex justify-between items-end mb-6 border-b border-white/10 pb-4">
-            <div>
-              <div class="text-xs uppercase text-on-surface-variant mb-1">Tarif de base</div>
-              <div class="font-headline text-[34px] text-primary font-bold"><span id="price">-</span> <span class="text-base text-on-surface-variant font-normal">/ jour</span></div>
-            </div>
-            <div class="flex items-center space-x-2">
-              <button class="w-8 h-8 rounded bg-surface-container border border-white/10">-</button>
-              <span class="text-lg w-8 text-center">1</span>
-              <button class="w-8 h-8 rounded bg-surface-container border border-white/10">+</button>
-            </div>
-          </div>
-
-          <div class="mb-6">
-            <label class="block text-xs uppercase text-on-surface mb-2">Date de location</label>
-            <div class="border border-white/10 rounded-lg overflow-hidden bg-surface">
-              <div class="bg-primary flex justify-between items-center p-3 text-on-primary font-bold"><span class="material-symbols-outlined text-[20px]">chevron_left</span><span>Disponibilités</span><span class="material-symbols-outlined text-[20px]">chevron_right</span></div>
-              <div class="p-4 text-on-surface-variant text-sm">Sélection de dates à connecter à votre calendrier / CRM.</div>
-            </div>
-          </div>
-
-          <div class="space-y-3 mb-8">
-            <label class="flex items-center space-x-3 cursor-pointer group"><input class="form-checkbox bg-surface border-outline text-primary focus:ring-primary rounded-sm h-5 w-5" type="checkbox"/><span class="text-on-surface group-hover:text-primary flex-1">Frais de livraison</span><span class="text-on-surface-variant">+50€</span></label>
-            <label class="flex items-center space-x-3 cursor-pointer group"><input class="form-checkbox bg-surface border-outline text-primary focus:ring-primary rounded-sm h-5 w-5" type="checkbox"/><span class="text-on-surface group-hover:text-primary flex-1">Installation technique</span><span class="text-on-surface-variant">+150€</span></label>
-          </div>
-
-          <div class="flex justify-between items-center mb-6 pt-4 border-t border-white/10"><span class="font-headline text-[24px] text-on-surface">Total :</span><span id="total-price" class="font-headline text-[24px] text-primary font-bold">-</span></div>
-          <div class="space-y-4">
-            <button class="w-full bg-primary text-on-primary font-headline font-bold text-lg py-4 rounded-lg hover:opacity-90 flex justify-center items-center space-x-2"><span class="material-symbols-outlined">event_available</span><span>Réserver maintenant</span></button>
-            <button class="animate-glow-pulse w-full bg-transparent border border-outline text-on-surface font-headline font-bold text-lg py-4 rounded-lg hover:border-primary hover:text-primary flex justify-center items-center space-x-2"><span class="material-symbols-outlined">request_quote</span><span>Faire une demande de devis</span></button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </main>
-
-  <section class="w-full max-w-[1280px] mx-auto px-6 py-12 border-t border-white/10">
-    <h2 class="font-headline text-[32px] text-on-surface mb-8">Accessoires complémentaires</h2>
-    <div id="related-products" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
-  </section>
-
-  <footer class="w-full py-12 px-6 md:px-10 flex flex-col md:flex-row justify-between items-start gap-8 max-w-[1280px] mx-auto bg-surface-container-lowest border-t border-white/10 mt-12">
-    <div class="font-headline font-bold text-on-surface">© 2026 RentSoundSystem. Solutions Audio Professionnelles.</div>
-    <a class="text-primary" href="index.html">Retour accueil</a>
-  </footer>
 
 <script>
 (function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
-  const originalId = params.get('original_id');
-
-  function escapeHtml(value) {
-    return String(value || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
   }
 
-  function text(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.textContent = value || '-';
+  function text(el, value) {
+    if (el && value !== undefined && value !== null && String(value).trim() !== '') el.textContent = value;
   }
 
-  function html(id, value) {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = value || '';
-  }
-
-  function formatPrice(value) {
+  function money(value) {
     const n = Number(value || 0);
-    if (!n) return 'Prix sur demande';
-    return Math.round(n) + '€';
+    return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€';
   }
 
-  function getImages(item) {
-    const imgs = Array.isArray(item.listing_images) ? [...item.listing_images] : [];
-    imgs.sort((a,b) => Number(a.position || 0) - Number(b.position || 0));
-    return imgs.map(img => img.image_url).filter(Boolean);
+  function cleanDescription(value) {
+    if (!value) return 'Description détaillée prochainement disponible pour cette annonce.';
+    return String(value).replace(/<[^>]*>?/gm, '').trim();
   }
 
-  function setMainImage(url, alt) {
-    const img = document.getElementById('main-image');
-    const ph = document.getElementById('main-image-placeholder');
-    if (!img || !url) return;
-    img.onload = () => { img.classList.remove('hidden'); if (ph) ph.classList.add('hidden'); };
-    img.onerror = () => { img.classList.add('hidden'); if (ph) ph.classList.remove('hidden'); };
-    img.alt = alt || 'Produit RentSoundSystem';
+  function placeholder(el) {
+    if (!el) return;
+    const parent = el.parentElement;
+    if (parent) {
+      parent.classList.add('rss-img-placeholder');
+      parent.style.display = 'flex';
+      parent.style.alignItems = 'center';
+      parent.style.justifyContent = 'center';
+    }
+    el.remove();
+  }
+
+  function setImage(img, url, alt) {
+    if (!img) return;
+    if (!url) { placeholder(img); return; }
+    img.referrerPolicy = 'no-referrer';
+    img.loading = 'lazy';
+    img.alt = alt || 'Image produit';
+    img.onerror = function () { placeholder(img); };
     img.src = url;
   }
 
-  function renderThumbs(images, title) {
-    const thumbs = document.getElementById('thumbs');
-    if (!thumbs) return;
-    if (!images.length) {
-      thumbs.innerHTML = '<div class="aspect-square rounded bg-surface border border-white/10 flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[32px]">speaker</span></div>';
-      return;
-    }
-    thumbs.innerHTML = images.slice(0,5).map((url, i) => `
-      <button class="aspect-square rounded bg-surface border ${i === 0 ? 'border-2 border-primary' : 'border-white/10 opacity-70 hover:opacity-100'} overflow-hidden" data-img="${escapeHtml(url)}">
-        <img src="${escapeHtml(url)}" alt="${escapeHtml(title)}" class="h-full w-full object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.style.display='none'">
-      </button>`).join('');
-    thumbs.querySelectorAll('button[data-img]').forEach(btn => btn.addEventListener('click', () => setMainImage(btn.dataset.img, title)));
-  }
-
-  function renderProduct(item) {
-    const title = item.title || 'Matériel professionnel';
-    const city = item.city || item.location || 'France';
-    const country = item.country || item.location || '';
-    const category = item.category || 'Audio Pro';
-    const price = formatPrice(item.price);
-    const images = getImages(item);
-
-    document.title = title + ' - RentSoundSystem';
-    text('product-title', title);
-    text('breadcrumb-category', category);
-    text('vendor-city', city);
-    text('vendor-country', country);
-    text('stat-city', city);
-    text('stat-type', item.type || 'Location');
-    text('stat-caution', item.caution ? formatPrice(item.caution) : '-');
-    text('stat-views', item.views || '-');
-    text('price', price);
-    text('total-price', price);
-    text('description-title', title);
-    html('description-text', item.description || 'Description détaillée à compléter pour cette annonce.');
-    text('spec-category', category);
-    text('spec-brand', [item.brand, item.model].filter(Boolean).join(' / ') || '-');
-
-    setMainImage(images[0], title);
-    renderThumbs(images, title);
-  }
-
-  function relatedCard(item) {
-    const imgs = getImages(item);
-    const img = imgs[0] || '';
-    return `<a href="product.html?id=${encodeURIComponent(item.id)}&original_id=${encodeURIComponent(item.original_id || '')}" class="bg-surface-container-low p-4 rounded-xl border border-white/10 flex flex-col hover:border-primary/60 transition-colors">
-      <div class="aspect-video rss-img-bg rounded-lg mb-4 overflow-hidden border border-white/10 flex items-center justify-center">
-        ${img ? `<img src="${escapeHtml(img)}" alt="${escapeHtml(item.title)}" class="h-full w-full object-cover" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : `<span class="material-symbols-outlined text-primary text-[40px]">speaker</span>`}
-      </div>
-      <h3 class="font-headline text-lg font-bold text-on-surface mb-2 line-clamp-2">${escapeHtml(item.title)}</h3>
-      <p class="text-sm text-on-surface-variant mb-4 flex-grow">${escapeHtml(item.city || item.location || 'France')}</p>
-      <div class="w-full py-2 bg-surface-container-high text-primary border border-primary/20 rounded-lg text-center text-xs font-bold uppercase">Voir l’annonce</div>
-    </a>`;
-  }
-
   async function loadProduct() {
-    if (!window.supabase) return;
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let query = client.from('listings').select(`*, listing_images (image_url, position)`).eq('status', 'publish');
-    if (id) query = query.eq('id', id);
-    else if (originalId) query = query.eq('original_id', Number(originalId));
-    else query = query.order('featured', { ascending:false }).limit(1);
-
-    let { data, error } = await query.limit(1).maybeSingle();
-    if (error || !data) {
-      console.error('Produit introuvable', error);
-      text('product-title', 'Produit introuvable');
-      html('description-text', '<p>Impossible de charger cette annonce.</p>');
+    if (!window.supabase) {
+      console.error('Supabase JS non chargé');
       return;
     }
 
-    // Fallback staging images si la table listing_images n'a pas encore été alimentée.
-    if ((!data.listing_images || !data.listing_images.length) && data.original_id) {
-      const staging = await client.from('listing_images_staging').select('image_url,position').eq('listing_original_id', data.original_id).order('position');
-      if (!staging.error && staging.data && staging.data.length) data.listing_images = staging.data;
+    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const params = new URLSearchParams(window.location.search);
+    const originalId = params.get('original_id');
+    const id = params.get('id');
+
+    let query = client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status', 'publish');
+
+    if (originalId && !isNaN(Number(originalId))) {
+      query = query.eq('original_id', Number(originalId)).maybeSingle();
+    } else if (id) {
+      query = query.eq('id', id).maybeSingle();
+    } else {
+      query = query.order('featured', { ascending: false }).limit(1).maybeSingle();
     }
 
-    renderProduct(data);
+    const { data: item, error } = await query;
 
-    const related = await client.from('listings').select(`*, listing_images (image_url, position)`).eq('status','publish').neq('id', data.id).limit(3);
-    if (!related.error && related.data) {
-      document.getElementById('related-products').innerHTML = related.data.map(relatedCard).join('');
+    if (error || !item) {
+      console.error('Produit introuvable', error);
+      const h1 = document.querySelector('.lg\\:col-span-5 h1');
+      text(h1, 'Produit introuvable');
+      return;
+    }
+
+    const images = (item.listing_images || [])
+      .slice()
+      .sort((a, b) => (a.position || 0) - (b.position || 0))
+      .map(img => img.image_url)
+      .filter(Boolean);
+
+    const firstImage = images[0] || '';
+    const title = item.title || 'Annonce RentSoundSystem';
+    const city = item.city || item.location || 'Votre ville';
+    const country = item.country || 'France';
+    const category = item.category || 'Matériel audio';
+    const price = money(item.price || 0);
+
+    document.title = title + ' - RentSoundSystem.com';
+
+    // Titre principal droite
+    text(document.querySelector('.lg\\:col-span-5 h1'), title);
+
+    // Breadcrumb
+    const breadcrumbLast = document.querySelector('main .flex.items-center.space-x-2.text-body-sm span.text-on-surface');
+    text(breadcrumbLast, title);
+    const breadcrumbCategory = document.querySelectorAll('main .flex.items-center.space-x-2.text-body-sm a')[1];
+    text(breadcrumbCategory, category.replace(/-/g, ' '));
+
+    // Bloc vendeur / ville
+    const vendorBox = document.querySelector('.bg-surface-container-low.px-4.py-2');
+    if (vendorBox) {
+      const vendorTexts = vendorBox.querySelectorAll('div.font-headline, div.font-body');
+      text(vendorTexts[0], city.toUpperCase());
+      text(vendorTexts[1], country.toUpperCase());
+    }
+
+    // Galerie image principale
+    const mainImage = document.querySelector('.aspect-square.md\\:aspect-\\[4\\/3\\] img') || document.querySelector('main img[alt*="Système"]');
+    setImage(mainImage, firstImage, title);
+
+    // Miniatures
+    const thumbsGrid = document.querySelector('.grid.grid-cols-5.gap-4');
+    if (thumbsGrid) {
+      thumbsGrid.innerHTML = '';
+      const thumbImages = images.length ? images.slice(0, 5) : [''];
+      thumbImages.forEach((url, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'aspect-square rounded bg-surface overflow-hidden transition-all ' + (index === 0 ? 'border-2 border-primary' : 'border border-outline-variant/30 hover:border-outline-variant opacity-60 hover:opacity-100');
+        if (url) {
+          btn.innerHTML = `<img alt="${title.replace(/"/g, '&quot;')}" class="h-full w-full object-cover" referrerpolicy="no-referrer" src="${url}">`;
+          btn.addEventListener('click', function () {
+            setImage(mainImage, url, title);
+            Array.from(thumbsGrid.children).forEach(child => {
+              child.classList.remove('border-2', 'border-primary');
+              child.classList.add('border', 'border-outline-variant/30', 'opacity-60');
+            });
+            btn.classList.remove('border', 'border-outline-variant/30', 'opacity-60');
+            btn.classList.add('border-2', 'border-primary');
+          });
+        } else {
+          btn.classList.add('rss-img-placeholder', 'flex', 'items-center', 'justify-center');
+        }
+        thumbsGrid.appendChild(btn);
+      });
+    }
+
+    // Description
+    const overviewTitle = Array.from(document.querySelectorAll('h3')).find(el => el.textContent.includes('Qualité Sonore'));
+    text(overviewTitle, title);
+    const overviewP = overviewTitle ? overviewTitle.parentElement.querySelector('p') : null;
+    text(overviewP, cleanDescription(item.description));
+
+    // Titre image alt / labels specs simples
+    const statBoxes = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 .font-headline');
+    text(statBoxes[0], category.replace(/-/g, ' '));
+    text(statBoxes[1], item.brand || 'Pro Audio');
+    text(statBoxes[2], item.model || 'Matériel professionnel');
+    text(statBoxes[3], city);
+
+    // Prix base + total
+    const priceLabel = Array.from(document.querySelectorAll('div')).find(el => el.textContent.trim() === 'Tarif de base');
+    if (priceLabel && priceLabel.nextElementSibling) {
+      priceLabel.nextElementSibling.innerHTML = price + ' <span class="text-body-md text-on-surface-variant font-normal">/ jour</span>';
+    }
+    const totalRow = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim() === 'Total :');
+    if (totalRow && totalRow.nextElementSibling) text(totalRow.nextElementSibling, price);
+
+    // Boutons actions
+    const quoteBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('Faire une demande de devis'));
+    if (quoteBtn) {
+      quoteBtn.addEventListener('click', function () {
+        const subject = encodeURIComponent('Demande de devis - ' + title);
+        const body = encodeURIComponent('Bonjour, je souhaite recevoir un devis pour :\n\n' + title + '\nVille : ' + city + '\nPrix affiché : ' + price + '/jour\nAnnonce ID : ' + item.original_id);
+        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + body;
+      });
+    }
+
+    const reserveBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('Réserver maintenant'));
+    if (reserveBtn) {
+      reserveBtn.addEventListener('click', function () {
+        const subject = encodeURIComponent('Réservation - ' + title);
+        const body = encodeURIComponent('Bonjour, je souhaite réserver :
+
+' + title + '
+Ville : ' + city + '
+Prix affiché : ' + price + '/jour
+Annonce ID : ' + item.original_id);
+        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + body;
+      });
     }
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', loadProduct);
-  else loadProduct();
+  ready(loadProduct);
 })();
 </script>
-</body>
-</html>
+
+</body></html>
