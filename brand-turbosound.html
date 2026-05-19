@@ -174,6 +174,133 @@
   }
 }
 </script>
+
+<style id="rss-turbosound-final-fix">
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: #131313 !important;
+    color: #e2e2e2 !important;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+
+  #header-container {
+    min-height: 73px;
+  }
+
+  #footer-container {
+    min-height: 320px;
+  }
+
+  #header-container header,
+  #footer-container footer {
+    display: block;
+  }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max {
+    max-width: 1280px;
+  }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  #header-container .gap-stack-sm {
+    gap: 12px;
+  }
+
+  #header-container .gap-stack-md {
+    gap: 24px;
+  }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline {
+    font-family: Manrope, sans-serif;
+  }
+
+  #header-container .font-body-md,
+  #footer-container .font-body {
+    font-family: Inter, sans-serif;
+  }
+
+  #header-container .text-headline-md {
+    font-size: 24px;
+    line-height: 32px;
+    font-weight: 600;
+  }
+
+  #header-container .text-body-md {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  #header-container .text-label-md {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  #header-container header {
+    background: rgba(19, 19, 19, 0.90) !important;
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  main,
+  main section {
+    background-color: #131313 !important;
+  }
+
+  .bg-background,
+  .bg-surface,
+  .bg-surface-container-lowest {
+    background-color: #131313 !important;
+  }
+
+  .bg-surface-container,
+  section.bg-surface-container {
+    background-color: #1f1f1f !important;
+  }
+
+  .bg-surface-container-low,
+  .bg-surface-container-lowest {
+    background-color: #0e0e0e !important;
+  }
+
+  /* Corrige la zone blanche provoquée par les sections sans fond */
+  section[class*="max-w-[1280px]"],
+  section[class*="py-16"],
+  section[class*="py-24"] {
+    background-color: #131313 !important;
+  }
+
+  /* Garde le catalogue bien centré */
+  main > section {
+    width: 100%;
+  }
+</style>
+
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
 <main class="flex-grow flex flex-col items-center pb-24 md:pb-0">
 <!-- Hero Section -->
@@ -638,5 +765,9 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+
+
 <script src="/components.js"></script>
-</body></html>
+
+</body>
+</html>
