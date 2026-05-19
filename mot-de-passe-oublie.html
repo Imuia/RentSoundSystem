@@ -3,6 +3,8 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Mot de passe oublié - RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -92,8 +94,55 @@
             box-shadow: 0 0 40px rgba(255, 178, 191, 0.2);
         }
     </style>
+
+<style id="rss-forgot-global-compat">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+</style>
+
 </head>
-<body class="bg-background text-on-background font-body min-h-screen flex flex-col antialiased"><header class="bg-surface border-b border-outline-variant sticky top-0 z-50 px-6 py-4 flex items-center justify-between gap-8"><div class="flex items-center gap-8"><a href="/" class="font-headline text-2xl text-[#FC036D] font-bold">RentSoundSystem</a><nav class="hidden lg:flex items-center gap-6 font-label text-sm font-medium"> <a class="hover:text-primary transition-colors" href="/index.html">Louer du matériel</a> <a class="hover:text-primary transition-colors" href="/connexion-inscription.html?mode=register">Devenir Partenaire</a> <a class="hover:text-primary transition-colors" href="/comment-ca-marche.html">Assistance</a> </nav></div><div class="flex-grow max-w-xl relative hidden md:block"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span><input class="w-full bg-surface-container rounded-full py-2 pl-10 pr-4 border border-outline-variant focus:outline-none focus:border-primary text-sm" placeholder="Rechercher du matériel..." type="text"/></div><div class="flex items-center gap-4"><button class="material-symbols-outlined text-on-surface hover:text-primary transition-colors">account_circle</button><button class="lg:hidden material-symbols-outlined text-on-surface">menu</button></div></header>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col antialiased pt-20"><div id="header-container"></div>
 <!-- TopNavBar Suppressed for Transactional Intent (Success Screen) -->
 <!-- Main Content Area -->
 <main class="flex-grow flex items-center justify-center p-6 sm:p-12">
@@ -134,8 +183,9 @@
 <p id="forgot-message" class="hidden mt-5 font-body text-sm"></p>
 </div>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest border-t border-outline-variant pt-16 pb-8 px-8 font-body"><div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"><div><div class="font-headline text-2xl text-[#FC036D] font-bold mb-6">RentSoundSystem</div><p class="text-on-surface-variant text-sm mb-6">La marketplace n°1 de location de matériel audio professionnel en Europe.</p><div class="flex gap-4"><a class="text-on-surface-variant hover:text-[#FC036D]" href="#"><span class="material-symbols-outlined">share</span></a><a class="text-on-surface-variant hover:text-[#FC036D]" href="#"><span class="material-symbols-outlined">public</span></a><a class="text-on-surface-variant hover:text-[#FC036D]" href="#"><span class="material-symbols-outlined">language</span></a></div></div><div><h4 class="text-on-surface font-semibold mb-6">Louer</h4><ul class="space-y-4 text-sm text-on-surface-variant"><li class="hover:text-on-surface cursor-pointer">Enceintes &amp; Sono</li><li class="hover:text-on-surface cursor-pointer">Tables de mixage</li><li class="hover:text-on-surface cursor-pointer">Microphones</li><li class="hover:text-on-surface cursor-pointer">Éclairage</li></ul></div><div><h4 class="text-on-surface font-semibold mb-6">À propos</h4><ul class="space-y-4 text-sm text-on-surface-variant"><li class="hover:text-on-surface cursor-pointer">Notre concept</li><li class="hover:text-on-surface cursor-pointer">Assurance Sérénité</li><li class="hover:text-on-surface cursor-pointer">Partenaires</li><li class="hover:text-on-surface cursor-pointer">Blog</li></ul></div><div><h4 class="text-on-surface font-semibold mb-6">Support</h4><ul class="space-y-4 text-sm text-on-surface-variant"><li class="hover:text-on-surface cursor-pointer">Centre d'aide</li><li class="hover:text-on-surface cursor-pointer">Contact</li><li class="hover:text-on-surface cursor-pointer">Confidentialité</li><li class="hover:text-on-surface cursor-pointer">Conditions</li></ul></div></div><div class="max-w-7xl mx-auto pt-8 border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-on-surface-variant"><div>© 2026 RentSoundSystem. Marketplace de Matériel Audio Professionnel.</div><div class="flex gap-6"><a class="hover:text-on-surface" href="#">Mentions légales</a><a class="hover:text-on-surface" href="#">Politique de cookies</a></div></div></footer>
+<div id="footer-container"></div>
+
+<script src="/components.js"></script>
 
 <script id="rss-forgot-password-script">
 (function () {
