@@ -1,0 +1,232 @@
+<!DOCTYPE html><html class="dark" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Centre d'Assistance | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+      </style>
+
+<style id="rss-assistance-global-style">
+  body {
+    background-color: #131313;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer {
+    display:block;
+  }
+</style>
+
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col bg-tech-grid antialiased">
+<div id="header-container"></div>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[80px]">
+<!-- Hero Section -->
+<section class="relative pt-stack-lg pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col items-center justify-center text-center mt-stack-md">
+<h1 class="font-headline text-headline-xl text-on-surface mb-stack-sm tracking-tight">Comment pouvons-nous vous aider ?</h1>
+<p class="font-body text-body-lg text-on-surface-variant mb-stack-md max-w-2xl">Recherchez dans notre base de connaissances ou explorez les catégories ci-dessous pour trouver des réponses à vos questions sur la location et la gestion d'équipement audio professionnel.</p>
+<div class="w-full max-w-3xl relative mt-stack-sm group">
+<span class="material-symbols-outlined absolute left-6 top-1/2 -translate-y-1/2 text-on-surface-variant text-2xl group-focus-within:text-primary transition-colors">search</span>
+<input class="w-full bg-surface-container h-16 pl-16 pr-6 rounded-xl border-2 border-surface-container-highest focus:border-primary text-on-surface text-lg placeholder-on-surface-variant/50 focus:outline-none transition-all shadow-[0_0_0_1px_rgba(255,255,255,0.05)] focus:shadow-[0_0_20px_rgba(252,3,109,0.1)]" placeholder="Rechercher des articles, des guides ou des FAQ..." type="text">
+<button class="absolute right-3 top-1/2 -translate-y-1/2 bg-primary text-on-primary px-6 py-3 rounded-lg font-medium hover:bg-primary-container transition-colors">Rechercher</button>
+</div>
+</section>
+<!-- Category Grid -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<a class="group bg-surface-container-low border border-outline-variant/20 rounded-xl p-8 hover:border-primary/50 hover:bg-surface-container transition-all duration-300 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface group-hover:text-primary transition-colors">rocket_launch</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Premiers Pas</h3>
+<p class="font-body text-body-md text-on-surface-variant">Guides de configuration, création de compte et bases de la plateforme RentSoundSystem.com.</p>
+</a>
+<!-- Card 2 -->
+<a class="group bg-surface-container-low border border-outline-variant/20 rounded-xl p-8 hover:border-primary/50 hover:bg-surface-container transition-all duration-300 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface group-hover:text-primary transition-colors">calendar_month</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Gestion des Réservations</h3>
+<p class="font-body text-body-md text-on-surface-variant">Modifications, annulations, prolongations et suivi de vos locations d'équipement.</p>
+</a>
+<!-- Card 3 -->
+<a class="group bg-surface-container-low border border-outline-variant/20 rounded-xl p-8 hover:border-primary/50 hover:bg-surface-container transition-all duration-300 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface group-hover:text-primary transition-colors">payments</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Paiements &amp; Facturation</h3>
+<p class="font-body text-body-md text-on-surface-variant">Moyens de paiement acceptés, cautions, factures et gestion des remboursements.</p>
+</a>
+<!-- Card 4 -->
+<a class="group bg-surface-container-low border border-outline-variant/20 rounded-xl p-8 hover:border-primary/50 hover:bg-surface-container transition-all duration-300 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface group-hover:text-primary transition-colors">handshake</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Espace Partenaire</h3>
+<p class="font-body text-body-md text-on-surface-variant">Ressources pour les loueurs, gestion des stocks, tarification et conditions de partenariat.</p>
+</a>
+<!-- Card 5 -->
+<a class="group bg-surface-container-low border border-outline-variant/20 rounded-xl p-8 hover:border-primary/50 hover:bg-surface-container transition-all duration-300 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface group-hover:text-primary transition-colors">build</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Support Technique</h3>
+<p class="font-body text-body-md text-on-surface-variant">Dépannage matériel, compatibilité, fiches techniques et signalement de pannes.</p>
+</a>
+<!-- Card 6 -->
+<a class="group bg-surface-container-low border border-outline-variant/20 rounded-xl p-8 hover:border-primary/50 hover:bg-surface-container transition-all duration-300 relative overflow-hidden" href="#">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
+<div class="w-14 h-14 bg-surface-container-highest rounded-lg flex items-center justify-center mb-6 group-hover:bg-primary/10 transition-colors">
+<span class="material-symbols-outlined text-3xl text-on-surface group-hover:text-primary transition-colors">local_shipping</span>
+</div>
+<h3 class="font-headline text-headline-md text-on-surface mb-3 group-hover:text-primary transition-colors">Logistique &amp; Livraison</h3>
+<p class="font-body text-body-md text-on-surface-variant">Zones de couverture, frais de transport, suivi des livraisons et retours de matériel.</p>
+</a>
+</div>
+</section>
+<!-- Popular Articles & Contact Split -->
+<section class="py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto border-t border-outline-variant/10">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+<!-- Articles List -->
+<div class="lg:col-span-7">
+<h2 class="font-headline text-headline-lg text-on-surface mb-stack-md flex items-center">
+<span class="material-symbols-outlined text-primary mr-3 text-3xl" style="font-variation-settings: &quot;FILL&quot; 1;">star</span>
+                        Articles Populaires
+                    </h2>
+<div class="space-y-4">
+<a class="block bg-surface-container-lowest border border-outline-variant/10 rounded-lg p-6 hover:bg-surface-container-low hover:border-outline-variant/30 transition-all flex items-center justify-between group" href="#">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-4 group-hover:text-primary transition-colors">description</span>
+<span class="font-body text-body-lg text-on-surface group-hover:text-primary transition-colors">Comment annuler ou modifier une réservation en cours ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<a class="block bg-surface-container-lowest border border-outline-variant/10 rounded-lg p-6 hover:bg-surface-container-low hover:border-outline-variant/30 transition-all flex items-center justify-between group" href="#">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-4 group-hover:text-primary transition-colors">description</span>
+<span class="font-body text-body-lg text-on-surface group-hover:text-primary transition-colors">Quelles sont les garanties d'assurance incluses dans la location ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<a class="block bg-surface-container-lowest border border-outline-variant/10 rounded-lg p-6 hover:bg-surface-container-low hover:border-outline-variant/30 transition-all flex items-center justify-between group" href="#">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-4 group-hover:text-primary transition-colors">description</span>
+<span class="font-body text-body-lg text-on-surface group-hover:text-primary transition-colors">Que faire en cas de panne de matériel pendant un événement ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<a class="block bg-surface-container-lowest border border-outline-variant/10 rounded-lg p-6 hover:bg-surface-container-low hover:border-outline-variant/30 transition-all flex items-center justify-between group" href="#">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-4 group-hover:text-primary transition-colors">description</span>
+<span class="font-body text-body-lg text-on-surface group-hover:text-primary transition-colors">Comment se déroule la restitution du matériel et la levée de caution ?</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+<a class="block bg-surface-container-lowest border border-outline-variant/10 rounded-lg p-6 hover:bg-surface-container-low hover:border-outline-variant/30 transition-all flex items-center justify-between group" href="#">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-4 group-hover:text-primary transition-colors">description</span>
+<span class="font-body text-body-lg text-on-surface group-hover:text-primary transition-colors">Délais et conditions de remboursement standard.</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transform group-hover:translate-x-1 transition-all">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Contact CTA Block -->
+<div class="lg:col-span-5 flex flex-col justify-center">
+<div class="bg-surface-container border border-outline-variant/20 rounded-xl p-8 relative overflow-hidden">
+<!-- Decorative gradient blob -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
+<div class="relative z-10">
+<div class="w-16 h-16 bg-surface-container-highest rounded-full flex items-center justify-center mb-6 border border-outline-variant/20">
+<span class="material-symbols-outlined text-3xl text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">support_agent</span>
+</div>
+<h3 class="font-headline text-headline-lg text-on-surface mb-4">Besoin d'un accompagnement direct ?</h3>
+<p class="font-body text-body-md text-on-surface-variant mb-8">Notre équipe d'experts techniques est disponible 24/7 pour assurer le bon déroulement de vos productions.</p>
+<div class="space-y-4">
+<button class="w-full bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center group">
+<span class="material-symbols-outlined mr-2">chat</span>
+                                    Accéder à la Messagerie
+                                </button>
+<button class="w-full bg-transparent border border-primary text-primary hover:bg-primary/10 font-semibold py-4 px-6 rounded-lg transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined mr-2">confirmation_number</span>
+                                    Ouvrir un Ticket Support
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div id="footer-container"></div>
+
+
+<script src="/components.js"></script>
+
+<script id="rss-assistance-functional">
+document.addEventListener('DOMContentLoaded', () => {
+
+  const searchInput = document.querySelector('input[placeholder*="Rechercher des articles"]');
+  const searchButton = Array.from(document.querySelectorAll('button')).find(btn =>
+    btn.textContent.trim().toLowerCase() === 'rechercher'
+  );
+
+  const cards = Array.from(document.querySelectorAll('section a.group'));
+
+  function filterCards() {
+    const value = (searchInput?.value || '').toLowerCase().trim();
+
+    cards.forEach(card => {
+      const text = card.textContent.toLowerCase();
+      card.style.display = !value || text.includes(value) ? '' : 'none';
+    });
+  }
+
+  searchButton?.addEventListener('click', filterCards);
+  searchInput?.addEventListener('input', filterCards);
+
+  // Contact buttons
+  document.querySelectorAll('button').forEach(btn => {
+    const text = btn.textContent.toLowerCase();
+
+    if(text.includes('messagerie')){
+      btn.addEventListener('click', () => {
+        window.location.href = '/connexion-inscription.html';
+      });
+    }
+
+    if(text.includes('ticket')){
+      btn.addEventListener('click', () => {
+        alert('Le système de ticket support sera bientôt disponible.');
+      });
+    }
+  });
+
+});
+</script>
+
+</body></html>
