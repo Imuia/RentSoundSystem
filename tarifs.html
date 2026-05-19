@@ -170,11 +170,47 @@
         }
     </style>
 
-<style id="rss-global-components-only">
+<style id="rss-header-footer-compat">
   #header-container { min-height: 73px; }
   #footer-container { min-height: 320px; }
+
   #header-container header,
   #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop { padding-left: 40px; padding-right: 40px; }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
 </style>
 
 </head>
@@ -338,27 +374,4 @@
 
 
 <script src="/components.js"></script>
-
-<script id="rss-tarifs-functional-minimal">
-document.addEventListener('DOMContentLoaded', () => {
-  // Boutons déjà transformés en liens sans changer le design.
-
-  // FAQ : rend les blocs cliquables, sans changer leur design d'origine.
-  document.querySelectorAll('section h4').forEach(title => {
-    const box = title.closest('div.bg-surface-container');
-    const paragraph = box ? box.querySelector('p') : null;
-    if (!box || !paragraph) return;
-
-    box.style.cursor = 'pointer';
-    paragraph.dataset.open = 'true';
-
-    box.addEventListener('click', () => {
-      const isOpen = paragraph.dataset.open === 'true';
-      paragraph.style.display = isOpen ? 'none' : '';
-      paragraph.dataset.open = isOpen ? 'false' : 'true';
-    });
-  });
-});
-</script>
-
 </body></html>
