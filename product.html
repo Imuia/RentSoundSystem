@@ -1,6 +1,8 @@
 <!DOCTYPE html><html class="dark" lang="fr"><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Système de Sonorisation JBL Pro - Marrakech - RentSoundSystem.com</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -105,26 +107,56 @@
   .rss-day { cursor:pointer; }
   .rss-qty-btn, .rss-tab-btn, .rss-calendar-nav { cursor:pointer; }
 </style>
+
+<style id="rss-product-global-header-footer-compat">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop { padding-left: 40px; padding-right: 40px; }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+
+  .rss-day-empty { opacity:.18; pointer-events:none; }
+  .rss-day-disabled { opacity:.35; pointer-events:none; }
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
-<!-- TopNavBar Component -->
-<nav class="fixed top-0 w-full z-50 flex justify-between items-center px-10 h-20 bg-background/95 backdrop-blur-md border-b border-outline-variant/10">
-<a href="/" class="font-headline text-headline-md font-bold text-primary">RentSoundSystem.com</a>
-<div class="hidden md:flex space-x-8">
-<a class="text-primary border-b-2 border-primary pb-1 font-body text-body-md hover:bg-surface-container-high transition-colors opacity-80" href="/">Inventaire</a>
-<a class="text-on-surface-variant hover:text-on-surface font-body text-body-md hover:bg-surface-container-high transition-colors" href="#">Signature</a>
-<a class="text-on-surface-variant hover:text-on-surface font-body text-body-md hover:bg-surface-container-high transition-colors" href="#">Lieux</a>
-<a class="text-on-surface-variant hover:text-on-surface font-body text-body-md hover:bg-surface-container-high transition-colors" href="#">Logistique</a>
-</div>
-<div class="flex items-center space-x-4">
-<button class="p-2 text-primary hover:bg-surface-container-high transition-colors rounded-full">
-<span class="material-symbols-outlined">shopping_cart</span>
-</button>
-<button class="p-2 text-primary hover:bg-surface-container-high transition-colors rounded-full">
-<span class="material-symbols-outlined">account_circle</span>
-</button>
-</div>
-</nav>
+<div id="header-container"></div>
 <!-- Main Content Canvas -->
 <main class="flex-grow container mx-auto max-w-[1280px] px-6 py-12 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-8">
 <!-- Left Column: Visuals & Details -->
@@ -270,29 +302,7 @@
 <span id="rss-calendar-month">Mai 2026</span>
 <span id="rss-cal-next" class="rss-calendar-nav material-symbols-outlined cursor-pointer text-[20px]">chevron_right</span>
 </div>
-<div class="p-3 grid grid-cols-7 gap-1 text-center font-body text-body-sm text-on-surface-variant">
-<div class="">Di</div><div class="">Lu</div><div class="">Ma</div><div class="">Me</div><div class="">Je</div><div class="">Ve</div><div class="">Sa</div>
-<!-- Empty days -->
-<div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div><div class="py-2 opacity-30"></div>
-<div class="rss-day py-2 border border-outline-variant/10 rounded">1</div>
-<div class="rss-day py-2 border border-outline-variant/10 rounded">2</div>
-<!-- Week 1 -->
-<div class="rss-day py-2 border border-outline-variant/10 rounded">3</div>
-<div class="rss-day py-2 border border-outline-variant/10 rounded">4</div>
-<div class="rss-day py-2 border border-outline-variant/10 rounded">5</div>
-<div class="rss-day py-2 border border-outline-variant/10 rounded">6</div>
-<div class="rss-day py-2 border border-outline-variant/10 rounded">7</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">8</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">9</div>
-<!-- Week 2 -->
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">10</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">11</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">12</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">13</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">14</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">15</div>
-<div class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface">16</div>
-</div>
+<div id="rss-calendar-grid" class="p-3 grid grid-cols-7 gap-1 text-center font-body text-body-sm text-on-surface-variant"></div>
 </div>
 </div>
 <!-- Options -->
@@ -376,70 +386,7 @@
 
 </section>
 
-<!-- Footer -->
-<footer class="bg-surface-container-lowest border-t border-white/5 pt-16 pb-8 w-full">
-  <div class="w-full max-w-[1280px] mx-auto px-6 md:px-10">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-<!-- Brand Column -->
-<div class="flex flex-col gap-6">
-<a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="#">RENTSOUNDSYSTEM</a>
-<p class="font-body-sm text-body-sm text-on-surface-variant max-w-xs">
-                    La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.
-                </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]">share</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]">public</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]">mail</span>
-</a>
-</div>
-</div>
-<!-- Marketplace Column -->
-<div class="flex flex-col gap-6">
-<h4 class="font-label-caps text-label-caps text-on-surface uppercase tracking-widest font-bold">Marketplace</h4>
-<nav class="flex flex-col gap-3">
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Louer du matériel</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Devenir Partenaire</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Comment ça marche</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Assurance &amp; Protection</a>
-</nav>
-</div>
-<!-- Categories Column -->
-<div class="flex flex-col gap-6">
-<h4 class="font-label-caps text-label-caps text-on-surface uppercase tracking-widest font-bold">Catégories</h4>
-<nav class="flex flex-col gap-3">
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Sonorisation</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Éclairage</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">DJ Gear</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Scène &amp; Structures</a>
-</nav>
-</div>
-<!-- Support Column -->
-<div class="flex flex-col gap-6">
-<h4 class="font-label-caps text-label-caps text-on-surface uppercase tracking-widest font-bold">Support</h4>
-<nav class="flex flex-col gap-3">
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Centre d'aide</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contactez-nous</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Blog</a>
-<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
-</nav>
-</div>
-</div>
-<!-- Bottom Bar -->
-<div class="pt-8 border-t border-outline-variant flex flex-col md:flex-row justify-between items-center gap-6">
-<span class="font-body-sm text-body-sm text-on-secondary-container text-center md:text-left text-[14px]">© 2024 RENTSOUNDSYSTEM. Tous droits réservés. Production d'événements haut de gamme.</span>
-<nav class="flex flex-wrap justify-center gap-6 ">
-<a class="font-body-sm text-body-sm text-on-secondary-container hover:text-primary transition-colors text-[14px]" href="#">Conditions d'utilisation</a>
-<a class="font-body-sm text-body-sm text-on-secondary-container hover:text-primary transition-colors text-[14px]" href="#">Politique de confidentialité</a>
-<a class="font-body-sm text-body-sm text-on-secondary-container hover:text-primary transition-colors text-[14px]" href="#">Mentions légales</a>
-</nav>
-</div>
-</div>
-</footer>
+<div id="footer-container"></div>
 
 
 
@@ -682,24 +629,6 @@
     const totalRow = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim() === 'Total :');
     if (totalRow && totalRow.nextElementSibling) text(totalRow.nextElementSibling, price);
 
-    const quoteBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('Faire une demande de devis'));
-    if (quoteBtn) {
-      quoteBtn.addEventListener('click', function () {
-        const subject = encodeURIComponent('Demande de devis - ' + title);
-        const body = encodeURIComponent('Bonjour, je souhaite recevoir un devis pour :\n\n' + title + '\nVille : ' + city + '\nPrix affiché : ' + price + '/jour\nAnnonce ID : ' + (item.original_id || item.id || ''));
-        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + body;
-      });
-    }
-
-    const reserveBtn = Array.from(document.querySelectorAll('button')).find(btn => btn.textContent.includes('Réserver maintenant'));
-    if (reserveBtn) {
-      reserveBtn.addEventListener('click', function () {
-        const subject = encodeURIComponent('Réservation - ' + title);
-        const body = encodeURIComponent('Bonjour, je souhaite réserver :\n\n' + title + '\nVille : ' + city + '\nPrix affiché : ' + price + '/jour\nAnnonce ID : ' + (item.original_id || item.id || ''));
-        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + body;
-      });
-    }
-
     loadRelated(item);
   }
 
@@ -709,6 +638,7 @@
   });
 })();
 </script>
+
 
 
 <script id="rss-product-interactions">
@@ -734,9 +664,10 @@
   ready(function () {
     let qty = 1;
     let selectedDates = [];
-    let currentMonthIndex = 4;
-    const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    let currentMonthIndex = 4; // Mai
     let currentYear = 2026;
+
+    const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
 
     const minusBtn = document.getElementById('rss-qty-minus');
     const plusBtn = document.getElementById('rss-qty-plus');
@@ -744,10 +675,21 @@
     const basePriceEl = document.getElementById('rss-base-price');
     const totalPriceEl = document.getElementById('rss-total-price');
     const optionInputs = document.querySelectorAll('.rss-price-option');
+    const calendarGrid = document.getElementById('rss-calendar-grid');
+    const monthLabel = document.getElementById('rss-calendar-month');
 
     function getBasePrice() {
       const dynamic = basePriceEl ? parseMoney(basePriceEl.textContent) : 0;
       return dynamic || 850;
+    }
+
+    function dateKey(year, monthIndex, day) {
+      return year + '-' + String(monthIndex + 1).padStart(2, '0') + '-' + String(day).padStart(2, '0');
+    }
+
+    function prettyDate(key) {
+      const parts = key.split('-');
+      return Number(parts[2]) + ' ' + months[Number(parts[1]) - 1] + ' ' + parts[0];
     }
 
     function updateTotal() {
@@ -763,6 +705,59 @@
 
       if (qtyValue) qtyValue.textContent = qty;
       if (totalPriceEl) totalPriceEl.textContent = formatMoney(total);
+    }
+
+    function renderCalendar() {
+      if (!calendarGrid) return;
+
+      if (monthLabel) monthLabel.textContent = months[currentMonthIndex] + ' ' + currentYear;
+
+      const daysOfWeek = ['Di','Lu','Ma','Me','Je','Ve','Sa'];
+      const firstDay = new Date(currentYear, currentMonthIndex, 1).getDay();
+      const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
+
+      let html = '';
+      daysOfWeek.forEach(function(day) {
+        html += '<div class="py-1 font-bold text-on-surface-variant">' + day + '</div>';
+      });
+
+      for (let i = 0; i < firstDay; i++) {
+        html += '<div class="rss-day-empty py-2 rounded"></div>';
+      }
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const key = dateKey(currentYear, currentMonthIndex, day);
+        const selected = selectedDates.includes(key);
+        html += '<button type="button" data-date="' + key + '" class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface hover:border-primary hover:text-primary transition-colors ' + (selected ? 'rss-selected-day' : '') + '">' + day + '</button>';
+      }
+
+      calendarGrid.innerHTML = html;
+
+      calendarGrid.querySelectorAll('.rss-day').forEach(function(dayButton) {
+        dayButton.addEventListener('click', function () {
+          const key = dayButton.dataset.date;
+
+          if (selectedDates.includes(key)) {
+            selectedDates = selectedDates.filter(function(d) { return d !== key; });
+            dayButton.classList.remove('rss-selected-day');
+          } else {
+            selectedDates.push(key);
+            selectedDates.sort();
+            dayButton.classList.add('rss-selected-day');
+          }
+
+          dayButton.setAttribute(
+            'title',
+            selectedDates.length
+              ? 'Dates sélectionnées : ' + selectedDates.map(prettyDate).join(', ')
+              : 'Sélectionner cette date'
+          );
+
+          updateTotal();
+        });
+      });
+
+      updateTotal();
     }
 
     if (plusBtn) {
@@ -783,44 +778,14 @@
       input.addEventListener('change', updateTotal);
     });
 
-    // Calendrier multi-dates cliquable
-    document.querySelectorAll('.rss-day').forEach(function (day) {
-      const value = day.textContent.trim();
-      if (!value) return;
-
-      day.addEventListener('click', function () {
-        const dateLabel = value + ' ' + months[currentMonthIndex] + ' ' + currentYear;
-
-        if (day.classList.contains('rss-selected-day')) {
-          day.classList.remove('rss-selected-day');
-          selectedDates = selectedDates.filter(function (d) { return d !== dateLabel; });
-        } else {
-          day.classList.add('rss-selected-day');
-          selectedDates.push(dateLabel);
-        }
-
-        day.setAttribute('title', selectedDates.length ? 'Dates sélectionnées : ' + selectedDates.join(', ') : 'Sélectionner cette date');
-        updateTotal();
-      });
-    });
-
-    const monthLabel = document.getElementById('rss-calendar-month');
-    function updateMonthLabel() {
-      if (monthLabel) monthLabel.textContent = months[currentMonthIndex] + ' ' + currentYear;
-      document.querySelectorAll('.rss-day').forEach(function(day) {
-        day.classList.remove('rss-selected-day');
-      });
-      selectedDates = [];
-      updateTotal();
-    }
-
     document.getElementById('rss-cal-prev')?.addEventListener('click', function () {
       currentMonthIndex -= 1;
       if (currentMonthIndex < 0) {
         currentMonthIndex = 11;
         currentYear -= 1;
       }
-      updateMonthLabel();
+      selectedDates = [];
+      renderCalendar();
     });
 
     document.getElementById('rss-cal-next')?.addEventListener('click', function () {
@@ -829,7 +794,8 @@
         currentMonthIndex = 0;
         currentYear += 1;
       }
-      updateMonthLabel();
+      selectedDates = [];
+      renderCalendar();
     });
 
     // Tabs cliquables
@@ -863,7 +829,7 @@
       window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(location.href) + '&text=' + encodeURIComponent(title), '_blank');
     });
 
-    // Réservation/devis : enrichit le mail avec quantité + date + options
+    // Réservation/devis avec quantité + dates + options
     function buildBookingBody(type) {
       const title = document.querySelector('.lg\\:col-span-5 h1')?.textContent?.trim() || document.title;
       const total = totalPriceEl?.textContent?.trim() || '';
@@ -874,8 +840,9 @@
         'Bonjour,\n\n' +
         'Je souhaite faire une ' + type + ' pour :\n\n' +
         title + '\n' +
-        'Quantité / jours : ' + qty + '\n' +
-        'Dates sélectionnées : ' + (selectedDates.length ? selectedDates.join(', ') : 'Non précisées') + '\n' +
+        'Quantité : ' + qty + '\n' +
+        'Dates sélectionnées : ' + (selectedDates.length ? selectedDates.map(prettyDate).join(', ') : 'Non précisées') + '\n' +
+        'Nombre de jours : ' + Math.max(1, selectedDates.length) + '\n' +
         'Livraison : ' + delivery + '\n' +
         'Installation technique : ' + install + '\n' +
         'Total estimé : ' + total + '\n\n' +
@@ -905,7 +872,7 @@
       });
     }
 
-    // Accessoires existants et chargés dynamiquement : tout est cliquable
+    // Accessoires : cartes et boutons cliquables
     function bindRelatedClick() {
       document.querySelectorAll('#related-products-grid article, #related-products-grid > div').forEach(function (card) {
         if (card.dataset.rssBound === '1') return;
@@ -914,12 +881,11 @@
         card.setAttribute('tabindex', '0');
 
         card.addEventListener('click', function (e) {
+          const url = card.getAttribute('data-product-link') || 'product.html';
           if (e.target.closest('button, a')) {
-            const url = card.getAttribute('data-product-link');
-            if (url && e.target.closest('button')) window.location.href = url;
+            window.location.href = url;
             return;
           }
-          const url = card.getAttribute('data-product-link') || 'product.html';
           window.location.href = url;
         });
 
@@ -934,9 +900,12 @@
 
     bindRelatedClick();
     setInterval(bindRelatedClick, 1200);
+    renderCalendar();
     updateTotal();
   });
 })();
 </script>
 
+
+<script src="/components.js"></script>
 </body></html>
