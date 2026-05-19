@@ -145,7 +145,7 @@
 </script>
 
 <style id="rss-brand-global-compat">
-  #header-container { min-height: 73px; }
+  #header-container { min-height: auto; }
   #footer-container { min-height: 320px; }
 
   #header-container header,
@@ -188,6 +188,62 @@
     background: #0e0e0e;
     border-top: 1px solid rgba(255,255,255,.05);
   }
+</style>
+
+
+<style id="rss-filter-hover-fix">
+/* Hover blanc + actif propre */
+button[data-filter],
+.filters button,
+section button {
+  transition: all .25s ease !important;
+}
+
+button:hover {
+  color: #ffffff !important;
+}
+
+button.bg-surface:hover {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+button.bg-primary {
+  background: #fc036d !important;
+  border-color: #fc036d !important;
+  color: #ffffff !important;
+}
+
+/* Fix images */
+img {
+  display:block !important;
+  max-width:100% !important;
+  height:auto;
+}
+
+/* Evite les images Google cassées */
+img[src*="gstatic"],
+img[src*="googleusercontent"] {
+  object-fit: cover;
+}
+
+/* Placeholder plus propre */
+.brand-img-fallback {
+  min-height: 260px !important;
+  background:
+    radial-gradient(circle at center, rgba(252,3,109,.25), transparent 40%),
+    linear-gradient(180deg,#1b1b1b,#0e0e0e) !important;
+}
+
+/* Hover cartes */
+.group:hover img {
+  transform: scale(1.03);
+}
+
+.group img {
+  transition: transform .5s ease, opacity .4s ease;
+}
 </style>
 
 </head>
@@ -615,4 +671,39 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script src="/components.js"></script>
+
+<script id="rss-image-fallback-fix">
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('img').forEach(function(img){
+
+    function fallback() {
+      const parent = img.parentElement;
+      if(parent){
+        parent.classList.add('brand-img-fallback');
+      }
+      img.style.display = 'none';
+    }
+
+    img.setAttribute('loading','lazy');
+    img.setAttribute('decoding','async');
+    img.setAttribute('referrerpolicy','no-referrer');
+
+    if(!img.src || img.src.trim() === ''){
+      fallback();
+    }
+
+    img.onerror = fallback;
+
+    setTimeout(function(){
+      if(!img.complete || img.naturalWidth === 0){
+        fallback();
+      }
+    }, 3500);
+
+  });
+
+});
+</script>
+
 </body></html>
