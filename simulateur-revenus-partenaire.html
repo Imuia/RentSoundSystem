@@ -73,9 +73,9 @@
 <div>
 <div class="flex justify-between items-center mb-2">
 <label class="text-body-md font-medium text-on-surface">K2 Line Array Elements</label>
-<span class="text-label-caps text-on-surface-variant">QTE: 12</span>
+<span id="k2-qte" class="text-label-caps text-on-surface-variant">QTE: 12</span>
 </div>
-<input max="24" min="0" type="range" value="12"/>
+<input id="k2-slider" data-price="180" max="24" min="0" type="range" value="12"/>
 <div class="flex justify-between text-label-md text-on-surface-variant mt-1">
 <span>0</span>
 <span>24</span>
@@ -84,9 +84,9 @@
 <div>
 <div class="flex justify-between items-center mb-2">
 <label class="text-body-md font-medium text-on-surface">KS28 Subwoofers</label>
-<span class="text-label-caps text-on-surface-variant">QTE: 4</span>
+<span id="ks28-qte" class="text-label-caps text-on-surface-variant">QTE: 4</span>
 </div>
-<input max="16" min="0" type="range" value="4"/>
+<input id="ks28-slider" data-price="120" max="16" min="0" type="range" value="4"/>
 <div class="flex justify-between text-label-md text-on-surface-variant mt-1">
 <span>0</span>
 <span>16</span>
@@ -104,9 +104,9 @@
 <div>
 <div class="flex justify-between items-center mb-2">
 <label class="text-body-md font-medium text-on-surface">CDJ-3000 Multi Players</label>
-<span class="text-label-caps text-on-surface-variant">QTE: 2</span>
+<span id="cdj-qte" class="text-label-caps text-on-surface-variant">QTE: 2</span>
 </div>
-<input max="8" min="0" type="range" value="2"/>
+<input id="cdj-slider" data-price="90" max="8" min="0" type="range" value="2"/>
 <div class="flex justify-between text-label-md text-on-surface-variant mt-1">
 <span>0</span>
 <span>8</span>
@@ -115,9 +115,9 @@
 <div>
 <div class="flex justify-between items-center mb-2">
 <label class="text-body-md font-medium text-on-surface">DJM-A9 Mixers</label>
-<span class="text-label-caps text-on-surface-variant">QTE: 1</span>
+<span id="djm-qte" class="text-label-caps text-on-surface-variant">QTE: 1</span>
 </div>
-<input max="4" min="0" type="range" value="1"/>
+<input id="djm-slider" data-price="140" max="4" min="0" type="range" value="1"/>
 <div class="flex justify-between text-label-md text-on-surface-variant mt-1">
 <span>0</span>
 <span>4</span>
@@ -135,9 +135,9 @@
 <div>
 <div class="flex justify-between items-center mb-2">
 <label class="text-body-md font-medium text-on-surface">AD4Q Quad Receivers</label>
-<span class="text-label-caps text-on-surface-variant">QTE: 2</span>
+<span id="shure-qte" class="text-label-caps text-on-surface-variant">QTE: 2</span>
 </div>
-<input max="8" min="0" type="range" value="2"/>
+<input id="shure-slider" data-price="110" max="8" min="0" type="range" value="2"/>
 <div class="flex justify-between text-label-md text-on-surface-variant mt-1">
 <span>0</span>
 <span>8</span>
@@ -154,7 +154,7 @@
 <!-- Background glow effect -->
 <div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
 <h3 class="text-body-lg text-on-surface-variant mb-2 relative z-10">Revenus Mensuels Estimés</h3>
-<div class="text-headline-xl text-primary font-bold mb-6 tracking-tighter relative z-10">€8,450<span class="text-headline-md text-on-surface-variant font-normal">/mo</span></div>
+<div class="text-headline-xl text-primary font-bold mb-6 tracking-tighter relative z-10"><span id="monthly-revenue">€8,450</span><span class="text-headline-md text-on-surface-variant font-normal">/mo</span></div>
 <button class="w-full py-4 bg-fuchsia-gradient text-on-primary font-bold rounded-lg text-body-lg hover:shadow-[0_0_20px_rgba(252,3,109,0.4)] transition-all active:scale-[0.98] relative z-10">
                             Commencer à lister
                         </button>
@@ -168,21 +168,21 @@
 <span class="material-symbols-outlined text-tertiary-container text-sm">monitoring</span>
 <span class="text-body-md text-on-surface-variant">Taux d'occupation estimé</span>
 </div>
-<span class="text-body-md font-semibold text-on-surface">32%</span>
+<span id="occupation-rate" class="text-body-md font-semibold text-on-surface">32%</span>
 </div>
 <div class="flex justify-between items-center">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-tertiary-container text-sm">payments</span>
 <span class="text-body-md text-on-surface-variant">Prix moyen journalier</span>
 </div>
-<span class="text-body-md font-semibold text-on-surface">€880</span>
+<span id="daily-price" class="text-body-md font-semibold text-on-surface">€880</span>
 </div>
 <div class="flex justify-between items-center">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-tertiary-container text-sm">receipt</span>
 <span class="text-body-md text-on-surface-variant">Frais de service (15%)</span>
 </div>
-<span class="text-body-md font-semibold text-error">-€1,490</span>
+<span id="service-fees" class="text-body-md font-semibold text-error">-€1,490</span>
 </div>
 </div>
 <!-- Mini Chart Placeholder -->
@@ -209,4 +209,82 @@
 
 <div id="footer-container"></div>
 <script src="/components.js"></script>
+
+<script id="rss-simulator-functional">
+document.addEventListener('DOMContentLoaded', () => {
+  const configs = [
+    { slider:'k2-slider', qte:'k2-qte', price:180 },
+    { slider:'ks28-slider', qte:'ks28-qte', price:120 },
+    { slider:'cdj-slider', qte:'cdj-qte', price:90 },
+    { slider:'djm-slider', qte:'djm-qte', price:140 },
+    { slider:'shure-slider', qte:'shure-qte', price:110 }
+  ];
+
+  const revenueEl = document.getElementById('monthly-revenue');
+  const occEl = document.getElementById('occupation-rate');
+  const dailyEl = document.getElementById('daily-price');
+  const feesEl = document.getElementById('service-fees');
+
+  function formatEuro(v){
+    return '€' + Math.round(v).toLocaleString('fr-FR');
+  }
+
+  function update(){
+    let totalDaily = 0;
+    let totalUnits = 0;
+
+    configs.forEach(cfg => {
+      const slider = document.getElementById(cfg.slider);
+      const qte = document.getElementById(cfg.qte);
+
+      if(!slider) return;
+
+      const value = Number(slider.value || 0);
+
+      if(qte){
+        qte.textContent = 'QTE: ' + value;
+      }
+
+      totalUnits += value;
+      totalDaily += value * cfg.price;
+    });
+
+    const occupation = Math.min(85, 20 + totalUnits);
+    const monthlyGross = totalDaily * 30 * (occupation / 100);
+    const fees = monthlyGross * 0.15;
+    const net = monthlyGross - fees;
+
+    revenueEl.textContent = formatEuro(net);
+    occEl.textContent = occupation + '%';
+    dailyEl.textContent = formatEuro(totalDaily);
+    feesEl.textContent = '-' + formatEuro(fees);
+  }
+
+  configs.forEach(cfg => {
+    const slider = document.getElementById(cfg.slider);
+    if(slider){
+      slider.addEventListener('input', update);
+    }
+  });
+
+  document.querySelectorAll('button').forEach(btn => {
+    const text = btn.textContent.trim().toLowerCase();
+
+    if(text.includes('commencer')){
+      btn.addEventListener('click', () => {
+        window.location.href = '/connexion-inscription.html?mode=register';
+      });
+    }
+
+    if(text.includes('simulat')){
+      btn.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  });
+
+  update();
+});
+</script>
+
 </body></html>
