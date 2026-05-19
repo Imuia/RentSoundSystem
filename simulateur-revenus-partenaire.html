@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>RentSoundSystem - Simulateur de Revenus</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom range slider styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #FC036D;
+            cursor: pointer;
+            margin-top: -6px;
+            box-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            cursor: pointer;
+            background: #353535;
+            border-radius: 2px;
+        }
+        input[type=range]:focus {
+            outline: none;
+        }
+    </style>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
+
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col bg-tech-grid">
+<div id="header-container"></div>
+<!-- Main Content -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-4 md:px-6 py-12 md:py-16">
+<div class="mb-12 text-center md:text-left">
+<h1 class="text-headline-xl text-secondary-fixed mb-4">Simulateur de Revenus</h1>
+<p class="text-body-lg text-on-surface-variant max-w-2xl">Estimez vos revenus mensuels potentiels en louant votre équipement audio professionnel sur RentSoundSystem. Ajustez les quantités ci-dessous pour voir l'impact immédiat sur votre chiffre d'affaires.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Calculators -->
+<div class="lg:col-span-7 space-y-6">
+<!-- Category: L-Acoustics -->
+<div class="bg-surface-container/80 backdrop-blur p-6 rounded-lg border border-surface-container-highest">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">speaker</span>
+<h2 class="text-headline-md text-on-surface">Systèmes de Diffusion L-Acoustics</h2>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-body-md font-medium text-on-surface">K2 Line Array Elements</label>
+<span class="text-label-caps text-on-surface-variant">QTE: 12</span>
+</div>
+<input max="24" min="0" type="range" value="12"/>
+<div class="flex justify-between text-label-md text-on-surface-variant mt-1">
+<span>0</span>
+<span>24</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-body-md font-medium text-on-surface">KS28 Subwoofers</label>
+<span class="text-label-caps text-on-surface-variant">QTE: 4</span>
+</div>
+<input max="16" min="0" type="range" value="4"/>
+<div class="flex justify-between text-label-md text-on-surface-variant mt-1">
+<span>0</span>
+<span>16</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Category: Pioneer DJ -->
+<div class="bg-surface-container/80 backdrop-blur p-6 rounded-lg border border-surface-container-highest">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">album</span>
+<h2 class="text-headline-md text-on-surface">Régies Pioneer DJ</h2>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-body-md font-medium text-on-surface">CDJ-3000 Multi Players</label>
+<span class="text-label-caps text-on-surface-variant">QTE: 2</span>
+</div>
+<input max="8" min="0" type="range" value="2"/>
+<div class="flex justify-between text-label-md text-on-surface-variant mt-1">
+<span>0</span>
+<span>8</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-body-md font-medium text-on-surface">DJM-A9 Mixers</label>
+<span class="text-label-caps text-on-surface-variant">QTE: 1</span>
+</div>
+<input max="4" min="0" type="range" value="1"/>
+<div class="flex justify-between text-label-md text-on-surface-variant mt-1">
+<span>0</span>
+<span>4</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Category: Shure Wireless -->
+<div class="bg-surface-container/80 backdrop-blur p-6 rounded-lg border border-surface-container-highest">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl">mic</span>
+<h2 class="text-headline-md text-on-surface">Systèmes HF Shure Axient</h2>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="text-body-md font-medium text-on-surface">AD4Q Quad Receivers</label>
+<span class="text-label-caps text-on-surface-variant">QTE: 2</span>
+</div>
+<input max="8" min="0" type="range" value="2"/>
+<div class="flex justify-between text-label-md text-on-surface-variant mt-1">
+<span>0</span>
+<span>8</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Results & Breakdown -->
+<div class="lg:col-span-5">
+<div class="sticky top-24 space-y-6">
+<!-- Main Revenue Display -->
+<div class="bg-surface-container-lowest/90 backdrop-blur p-8 rounded-xl border border-primary/30 shadow-[0_0_40px_-15px_rgba(252,3,109,0.25)] relative overflow-hidden">
+<!-- Background glow effect -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-32 -mt-32"></div>
+<h3 class="text-body-lg text-on-surface-variant mb-2 relative z-10">Revenus Mensuels Estimés</h3>
+<div class="text-headline-xl text-primary font-bold mb-6 tracking-tighter relative z-10">€8,450<span class="text-headline-md text-on-surface-variant font-normal">/mo</span></div>
+<button class="w-full py-4 bg-fuchsia-gradient text-on-primary font-bold rounded-lg text-body-lg hover:shadow-[0_0_20px_rgba(252,3,109,0.4)] transition-all active:scale-[0.98] relative z-10">
+                            Commencer à lister
+                        </button>
+</div>
+<!-- Breakdown -->
+<div class="bg-surface-container/80 backdrop-blur p-6 rounded-lg border border-surface-container-highest">
+<h4 class="text-headline-md text-on-surface mb-6 border-b border-surface-container-highest pb-4">Analyse de Rentabilité</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container text-sm">monitoring</span>
+<span class="text-body-md text-on-surface-variant">Taux d'occupation estimé</span>
+</div>
+<span class="text-body-md font-semibold text-on-surface">32%</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container text-sm">payments</span>
+<span class="text-body-md text-on-surface-variant">Prix moyen journalier</span>
+</div>
+<span class="text-body-md font-semibold text-on-surface">€880</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container text-sm">receipt</span>
+<span class="text-body-md text-on-surface-variant">Frais de service (15%)</span>
+</div>
+<span class="text-body-md font-semibold text-error">-€1,490</span>
+</div>
+</div>
+<!-- Mini Chart Placeholder -->
+<div class="mt-8 pt-6 border-t border-surface-container-highest">
+<h5 class="text-label-caps text-on-surface-variant mb-4">PROJECTION SUR 6 MOIS</h5>
+<div class="h-32 w-full bg-gradient-to-t from-surface-container-highest/50 to-transparent rounded border-b-2 border-l-2 border-outline-variant flex items-end justify-between px-2 pt-4">
+<div class="w-1/6 bg-primary/40 h-[30%] hover:bg-primary transition-all cursor-pointer rounded-t-sm hover:shadow-[0_0_10px_rgba(252,3,109,0.8)]"></div>
+<div class="w-1/6 bg-primary/50 h-[45%] hover:bg-primary transition-all cursor-pointer rounded-t-sm hover:shadow-[0_0_10px_rgba(252,3,109,0.8)]"></div>
+<div class="w-1/6 bg-primary/60 h-[60%] hover:bg-primary transition-all cursor-pointer rounded-t-sm hover:shadow-[0_0_10px_rgba(252,3,109,0.8)]"></div>
+<div class="w-1/6 bg-primary/70 h-[80%] hover:bg-primary transition-all cursor-pointer rounded-t-sm hover:shadow-[0_0_10px_rgba(252,3,109,0.8)]"></div>
+<div class="w-1/6 bg-primary/80 h-[90%] hover:bg-primary transition-all cursor-pointer rounded-t-sm hover:shadow-[0_0_10px_rgba(252,3,109,0.8)]"></div>
+<div class="w-1/6 bg-primary h-[100%] hover:bg-primary-fixed transition-all cursor-pointer rounded-t-sm shadow-[0_0_10px_rgba(252,3,109,0.5)] hover:shadow-[0_0_15px_rgba(252,3,109,0.9)]"></div>
+</div>
+<div class="flex justify-between text-label-md text-on-surface-variant mt-2 px-2">
+<span>M1</span>
+<span>M6</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<div id="footer-container"></div>
+<script src="/components.js"></script>
+</body></html>
