@@ -1,6 +1,8 @@
 <!DOCTYPE html><html class="dark" lang="fr" style=""><head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Comment ça marche ? - RentSoundSystem</title>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -80,16 +82,57 @@
             font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
+
+<style id="rss-comment-global-compat">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop { padding-left: 40px; padding-right: 40px; }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+
+  .rss-clickable-step { cursor:pointer; }
+  .rss-clickable-step.is-active h3 { color:#FC036D; }
+  .rss-clickable-step.is-active > div:first-child { border-color:#FC036D; box-shadow:0 0 18px rgba(252,3,109,.35); }
+</style>
+
 </head>
-<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
-<!-- TopNavBar -->
-<nav class="sticky top-0 z-50 flex justify-between items-center px-6 py-4 w-full bg-surface/90 backdrop-blur-md border-b border-outline-variant">
-<div class="flex items-center gap-8">
-<div class="font-headline text-headline-md font-bold text-primary">RENTSOUNDSYSTEM</div>
-<div class="hidden md:flex gap-6"><a class="text-on-surface-variant font-body text-body-md hover:text-primary transition-colors duration-200" href="#">Louer du matriel</a><a class="text-on-surface-variant font-body text-body-md hover:text-primary transition-colors duration-200" href="#">Devenir Partenaire</a><a class="text-on-surface-variant font-body text-body-md hover:text-primary transition-colors duration-200" href="#">Assistance</a></div>
-</div>
-<div class="flex items-center gap-4"><button class="bg-primary text-on-primary font-label text-label-caps px-6 py-2 rounded-lg hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)]">Mon Compte</button></div>
-</nav>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
 <main class="flex-grow">
 <!-- Hero Section -->
 <header class="relative pt-24 pb-20 px-6 overflow-hidden">
@@ -268,36 +311,42 @@
 </div>
 </div>
 <div class="mt-16">
-<button class="bg-primary text-on-primary font-headline text-headline-md px-8 py-4 rounded-xl hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)] hover:shadow-[0_0_25px_rgba(252,3,109,0.5)]">
+<a href="/catalog.html" class="inline-flex bg-primary text-on-primary font-headline text-headline-md px-8 py-4 rounded-xl hover:bg-primary-fixed-dim transition-colors shadow-[0_0_15px_rgba(252,3,109,0.3)] hover:shadow-[0_0_25px_rgba(252,3,109,0.5)]">
                         Commencer maintenant
-                    </button>
+                    </a>
 </div>
 </div>
 </section>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant"><div class="max-w-[1280px] mx-auto px-6">
-  <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-    <div class="col-span-1"><div class="font-headline font-bold text-primary text-2xl tracking-tight mb-4">RentSoundSystem</div><p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Votre plateforme de référence pour la location de sonorisation, éclairage et matériel scénique professionnel. Simplifiez la logistique de vos événements partout en France.</p><div class="flex gap-4"><a href="#" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" aria-label="LinkedIn"><span class="material-symbols-outlined">brand_family</span></a><a href="#" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" aria-label="Instagram"><span class="material-symbols-outlined">photo_camera</span></a><a href="#" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-[#FC036D] hover:bg-primary hover:text-on-primary transition-colors" aria-label="Twitter X"><span class="material-symbols-outlined">close</span></a></div></div>
-
-    <nav aria-label="Marketplace links"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Vendre du matériel</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Acheter d'occasion</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Garanties Pro</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Annonces vérifiées</a></li></ul></nav>
-
-    <nav aria-label="Product categories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Systèmes Sonorisation</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Projecteurs Éclairage</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Consoles de Mixage</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Praticables &amp; Scènes</a></li></ul></nav>
-
-    <nav aria-label="Support links"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Centre d'aide</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Nous contacter</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Logistique &amp; Livraison</a></li><li class=""><a href="#" class="text-on-surface-variant hover:text-primary transition-colors text-sm">Conditions Générales</a></li></ul></nav>
-  </div>
-
-  <div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-    <p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p>
-    <div class="flex gap-6">
-      <a href="#" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Mentions Lgales</a>
-      <a href="#" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Confidentialit</a>
-      <a href="#" class="text-xs text-on-surface-variant hover:text-primary transition-colors">Plan du site</a>
-    </div>
-  </div>
-</div></footer>
+<div id="footer-container"></div>
 
 
 
+
+<script src="/components.js"></script>
+
+<script id="rss-comment-functional">
+document.addEventListener('DOMContentLoaded', () => {
+  const steps = Array.from(document.querySelectorAll('.animate-fade-up'));
+  const sections = Array.from(document.querySelectorAll('main section'));
+
+  steps.forEach((step, index) => {
+    step.classList.add('rss-clickable-step');
+    step.setAttribute('tabindex', '0');
+
+    step.addEventListener('click', () => {
+      steps.forEach(s => s.classList.remove('is-active'));
+      step.classList.add('is-active');
+
+      const target = index < 2 ? sections[2] : sections[3];
+      target?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    step.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') step.click();
+    });
+  });
+});
+</script>
 
 </body></html>
