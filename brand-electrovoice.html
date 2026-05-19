@@ -144,18 +144,50 @@
   });
 </script>
 
-<style id="rss-global-components-style">
-#header-container{min-height:74px}
-#footer-container{min-height:320px}
-#header-container header{
-background:rgba(19,19,19,.85)!important;
-backdrop-filter:blur(12px)!important;
-border-bottom:1px solid rgba(255,255,255,.08)!important;
-}
-#footer-container footer{
-background:#0e0e0e!important;
-border-top:1px solid rgba(255,255,255,.06)!important;
-}
+<style id="rss-brand-global-compat">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
 </style>
 
 </head>
@@ -475,7 +507,112 @@ border-top:1px solid rgba(255,255,255,.06)!important;
 </section>
 </main>
 <!-- BottomNavBar (Mobile Only) -->
-<!-- Footer -->
 <div id="footer-container"></div>
+
+<script id="rss-brand-functional">
+document.addEventListener('DOMContentLoaded', () => {
+  // CTA hero : Voir l'inventaire
+  document.querySelectorAll('button').forEach((btn) => {
+    const text = btn.textContent.trim().toLowerCase();
+
+    if (text.includes("voir l'inventaire") || text.includes("voir l’inventaire")) {
+      btn.addEventListener('click', () => {
+        const catalogue = Array.from(document.querySelectorAll('section')).find(sec =>
+          sec.textContent.toLowerCase().includes('catalogue')
+        );
+        if (catalogue) {
+          catalogue.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.location.href = '/catalog.html';
+        }
+      });
+    }
+
+    if (text.includes('spécifications')) {
+      btn.addEventListener('click', () => {
+        const specs = Array.from(document.querySelectorAll('section')).find(sec =>
+          sec.textContent.toLowerCase().includes('spécification') ||
+          sec.textContent.toLowerCase().includes('technique')
+        );
+        if (specs) {
+          specs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    if (text.includes('réserver')) {
+      btn.addEventListener('click', () => {
+        window.location.href = '/catalog.html';
+      });
+    }
+  });
+
+  // Filtres catalogue visuels : Tout, Line Array, Subwoofers, Retours, Amplification
+  const filterButtons = Array.from(document.querySelectorAll('section button')).filter(btn => {
+    const t = btn.textContent.trim().toLowerCase();
+    return ['tout','line array','subwoofers','retours','amplification'].some(k => t.includes(k));
+  });
+
+  const productCards = Array.from(document.querySelectorAll('.group.relative.rounded-lg, [class*="hover:border-primary"]')).filter(card => {
+    return card.querySelector('h3') && card.textContent.match(/€|jour|disponible|line array|subwoofer|retour|amplification/i);
+  });
+
+  function setActiveFilter(activeBtn) {
+    filterButtons.forEach(btn => {
+      btn.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+      btn.classList.add('bg-surface', 'text-on-surface', 'border-outline-variant');
+    });
+
+    activeBtn.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+    activeBtn.classList.remove('bg-surface', 'text-on-surface', 'border-outline-variant');
+  }
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.textContent.trim().toLowerCase();
+      setActiveFilter(btn);
+
+      productCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const show =
+          filter.includes('tout') ||
+          (filter.includes('line') && text.includes('line')) ||
+          (filter.includes('sub') && text.includes('sub')) ||
+          (filter.includes('retour') && text.includes('retour')) ||
+          (filter.includes('amplification') && text.includes('amplification'));
+
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  // Cartes produits cliquables
+  productCards.forEach(card => {
+    if (card.dataset.rssBrandBound === '1') return;
+    card.dataset.rssBrandBound = '1';
+    card.style.cursor = 'pointer';
+    card.setAttribute('tabindex', '0');
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('button, a')) return;
+      window.location.href = '/catalog.html';
+    });
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') window.location.href = '/catalog.html';
+    });
+  });
+
+  // Boutons Mon Compte injectés/anciens
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.trim().toLowerCase().includes('mon compte')) {
+      btn.addEventListener('click', () => {
+        window.location.href = '/connexion-inscription.html';
+      });
+    }
+  });
+});
+</script>
+
 <script src="/components.js"></script>
 </body></html>
