@@ -2,6 +2,8 @@
 <html class="dark" lang="fr" style=""><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Location JBL Professional | Systèmes Audio de Tournée - RentSoundSystem.com</title>
 <meta content="Louez le meilleur du son JBL Professional partout en France. Systèmes Line Array VTX, subwoofers et amplification de pointe pour vos événements et festivals." name="description"/>
 <meta content="Location JBL Professional | Audio Haut de Gamme - RentSoundSystem.com" property="og:title"/>
@@ -171,37 +173,24 @@
     footer { padding-bottom: 5rem !important; }
   }
 </style>
+
+<style id="rss-global-components-style">
+#header-container{min-height:74px}
+#footer-container{min-height:320px}
+#header-container header{
+background:rgba(19,19,19,.85)!important;
+backdrop-filter:blur(12px)!important;
+border-bottom:1px solid rgba(255,255,255,.08)!important;
+}
+#footer-container footer{
+background:#0e0e0e!important;
+border-top:1px solid rgba(255,255,255,.06)!important;
+}
+</style>
+
 </head>
-<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="bg-background/95 backdrop-blur-md border-b border-outline-variant sticky top-0 z-50 w-full">
-<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto">
-<a class="font-headline font-bold text-[24px] leading-[32px] text-primary tracking-tight" href="/">RentSoundSystem.com</a>
-<nav class="hidden md:flex items-center gap-8">
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/">Marketplace</a>
-<a class="text-primary font-bold border-b-2 border-primary pb-1 transition-colors duration-200" href="/">Louer du matériel</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/brand-turbosound.html">Marques</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="/comment-ca-marche.html">Comment ça marche</a>
-<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#support">Assistance</a>
-</nav>
-<div class="hidden md:flex items-center gap-3">
-<button aria-label="Recherche" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">search</span></button>
-<button aria-label="Panier" class="text-on-surface hover:text-primary transition-colors duration-200 p-2"><span class="material-symbols-outlined">shopping_cart</span></button>
-<button class="border border-on-surface text-on-surface px-4 py-2 rounded font-label text-[12px] leading-[16px] font-medium hover:border-primary hover:text-primary transition-colors">Mon Compte</button>
-</div>
-<button aria-label="Menu" class="md:hidden text-on-surface hover:text-primary transition-colors p-2" id="mobile-menu-btn"><span class="material-symbols-outlined">menu</span></button>
-</div>
-<nav class="hidden md:hidden border-t border-outline-variant bg-background/98 px-6 py-4" id="mobile-menu">
-<div class="flex flex-col gap-4">
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="/">Marketplace</a>
-<a class="text-primary font-bold" href="/">Louer du matériel</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="/brand-turbosound.html">Marques</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
-<a class="text-on-surface-variant hover:text-primary transition-colors" href="#support">Assistance</a>
-<button class="border border-primary text-primary px-4 py-3 rounded font-label font-bold uppercase tracking-widest">Mon Compte</button>
-</div>
-</nav>
-</header>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
 <!-- Main Content -->
 <main class="flex-grow">
 <!-- Hero Section -->
@@ -558,26 +547,6 @@
 </a>
 </nav>
 <!-- Footer -->
-<footer class="bg-surface-container-lowest w-full py-16 px-6 mt-auto border-t border-outline-variant" id="support">
-<div class="max-w-[1280px] mx-auto px-0 md:px-6">
-<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-<div class="col-span-1">
-<a class="font-headline font-bold text-primary text-2xl tracking-tight mb-4 block" href="/">RentSoundSystem.com</a>
-<p class="font-body text-sm text-on-surface-variant mb-6 leading-relaxed">Location de sonorisation, éclairage, DJ gear et matériel scénique professionnel. La plateforme premium pour organiser vos événements avec des partenaires vérifiés.</p>
-<div class="flex gap-4">
-<a aria-label="Partager" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">share</span></a>
-<a aria-label="Site" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">public</span></a>
-<a aria-label="Contact" class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-on-primary transition-colors" href="#"><span class="material-symbols-outlined">mail</span></a>
-</div>
-</div>
-<nav aria-label="Marketplace"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Marketplace</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="/">Louer du matériel</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Devenir partenaire</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Annonces vérifiées</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Garanties pro</a></li></ul></nav>
-<nav aria-label="Catégories"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Catégories</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Sonorisation</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Éclairage</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">DJ Gear</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Scène &amp; Structures</a></li></ul></nav>
-<nav aria-label="Support"><h3 class="font-headline font-bold text-on-surface mb-6 uppercase text-xs tracking-widest">Support</h3><ul class="space-y-4"><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Centre d'aide</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Nous contacter</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Logistique &amp; Livraison</a></li><li><a class="text-on-surface-variant hover:text-primary transition-colors text-sm" href="#">Conditions Générales</a></li></ul></nav>
-</div>
-<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-<p class="font-body text-xs text-on-surface-variant">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</p>
-<div class="flex flex-wrap justify-center gap-6"><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Mentions légales</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Confidentialité</a><a class="text-xs text-on-surface-variant hover:text-primary transition-colors" href="#">Plan du site</a></div>
-</div>
-</div>
-</footer>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body></html>
