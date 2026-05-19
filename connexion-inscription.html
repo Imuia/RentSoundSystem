@@ -84,7 +84,7 @@
     </style>
 
 <style id="rss-auth-global-compat">
-  #header-container { min-height: auto; }
+  #header-container { min-height: 73px; }
   #footer-container { min-height: 320px; }
 
   #header-container header,
@@ -225,13 +225,13 @@
 </div>
 </div>
 <div class="mt-6 grid grid-cols-3 gap-3">
-<button class="flex justify-center items-center py-2 px-4 border border-outline-variant/30 rounded bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface">
+<button id="oauth-google" type="button" title="Connexion Google" class="flex justify-center items-center py-2 px-4 border border-outline-variant/30 rounded bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface">
 <span class="material-symbols-outlined text-lg" data-icon="globe">globe</span>
 </button>
-<button class="flex justify-center items-center py-2 px-4 border border-outline-variant/30 rounded bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface">
+<button id="oauth-partner" type="button" title="Inscription partenaire" class="flex justify-center items-center py-2 px-4 border border-outline-variant/30 rounded bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface">
 <span class="material-symbols-outlined text-lg" data-icon="group">group</span>
 </button>
-<button class="flex justify-center items-center py-2 px-4 border border-outline-variant/30 rounded bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface">
+<button id="oauth-pro" type="button" title="Espace professionnel" class="flex justify-center items-center py-2 px-4 border border-outline-variant/30 rounded bg-surface-container-lowest hover:bg-surface-container-high transition-colors text-on-surface">
 <span class="material-symbols-outlined text-lg" data-icon="work">work</span>
 </button>
 </div>
@@ -306,6 +306,33 @@ document.addEventListener('DOMContentLoaded', function () {
       alert('Connexion prête à être reliée à Supabase.');
     }
   });
+  // Boutons “Ou continuer avec”
+  const googleBtn = document.getElementById('oauth-google');
+  const partnerBtn = document.getElementById('oauth-partner');
+  const proBtn = document.getElementById('oauth-pro');
+
+  if (googleBtn) {
+    googleBtn.addEventListener('click', function () {
+      alert('Connexion Google prête à être reliée à Supabase OAuth.');
+      // Quand Supabase OAuth sera configuré, remplacer l’alerte par :
+      // supabase.auth.signInWithOAuth({ provider: 'google' });
+    });
+  }
+
+  if (partnerBtn) {
+    partnerBtn.addEventListener('click', function () {
+      activateTab('register');
+      const companyInput = document.getElementById('company-name');
+      if (companyInput) companyInput.focus();
+    });
+  }
+
+  if (proBtn) {
+    proBtn.addEventListener('click', function () {
+      window.location.href = '/devenir-partenaire.html';
+    });
+  }
+
 });
 </script>
 
