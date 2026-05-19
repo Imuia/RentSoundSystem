@@ -1,0 +1,308 @@
+<!DOCTYPE html><html class="dark" lang="fr" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Nos Tarifs - RentSoundSystem.com</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
+<style>
+        .neon-glow-shadow { box-shadow: 0 0 30px var(--neon-glow); }
+        .glass-panel { background: linear-gradient(145deg, var(--surface-glass), rgba(19, 19, 19, 0.8)); backdrop-filter: blur(12px); border: 1px solid var(--surface-glass-border); }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+             font-variation-settings: 'FILL' 1;
+        }
+    </style>
+
+<style id="rss-tarifs-global-style">
+  body {
+    background-color: #131313;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  .pricing-faq-item.is-open {
+    border-color: rgba(252, 3, 109, 0.45);
+    background: rgba(31, 31, 31, 0.75);
+  }
+
+  .pricing-faq-item.is-open .pricing-faq-icon {
+    transform: rotate(90deg);
+    color: #FC036D;
+  }
+
+  .billing-toggle-active {
+    background: #FC036D;
+    color: #fff;
+  }
+</style>
+
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col antialiased">
+<div id="header-container"></div>
+<!-- Main Content Canvas -->
+<main class="flex-grow pt-[80px]">
+<!-- Hero Section -->
+<section class="py-section-padding-y px-gutter-x max-w-container-max mx-auto text-center relative">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary-container/10 via-background to-background -z-10"></div>
+<h1 class="font-display-hero text-display-hero md:text-display-hero text-display-hero-mobile mb-6">Nos Tarifs</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted max-w-2xl mx-auto">
+                Un modèle transparent, basé sur la performance. Nous ne gagnons que lorsque vous louez. Sans frais cachés, sans abonnement.
+            </p>
+</section>
+<!-- Pricing Bento Grid -->
+<section class="py-section-padding-y px-gutter-x max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-card-gap">
+<!-- Partners Card -->
+<div class="glass-panel rounded-xl p-8 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-150"></div>
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]">handshake</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Pour les Partenaires</h2>
+</div>
+<div class="mb-8 flex-grow">
+<div class="flex items-baseline gap-2 mb-2">
+<span class="font-display-hero text-[64px] font-bold text-primary drop-shadow-[0_0_15px_rgba(252,3,109,0.3)]">15%</span>
+<span class="font-body-md text-on-surface-muted">de commission unique</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Prélevée uniquement sur les locations réussies. Tout est inclus.</p>
+</div>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">check_circle</span>
+<span class="font-body-md text-on-surface">Assurance matériel jusqu'à 1M€</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">check_circle</span>
+<span class="font-body-md text-on-surface">Traitement des paiements sécurisé</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">check_circle</span>
+<span class="font-body-md text-on-surface">Vérification de l'identité des clients</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">check_circle</span>
+<span class="font-body-md text-on-surface">Visibilité premium sur la plateforme</span>
+</li>
+</ul>
+<a href="/devenir-partenaire.html" class="w-full bg-primary text-on-primary font-label-caps text-label-caps uppercase py-4 rounded-lg hover:bg-primary/80 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)] mt-auto text-center block">
+                        Devenir Partenaire
+                    </a>
+</div>
+<!-- Clients Card -->
+<div class="bg-surface-container border border-surface-glass-border rounded-xl p-8 flex flex-col shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-secondary text-3xl">music_note</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Pour les Clients</h2>
+</div>
+<div class="mb-8 flex-grow">
+<div class="flex items-baseline gap-2 mb-2">
+<span class="font-display-hero text-[64px] font-bold text-on-surface">5%</span>
+<span class="font-body-md text-on-surface-muted">de frais de service</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Ajoutés au montant total de votre location pour garantir un service de qualité.</p>
+</div>
+<div class="bg-surface-container-high p-6 rounded-lg mb-8 border border-surface-glass-border">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-tertiary">lock</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Système de Caution</h3>
+</div>
+<p class="font-body-md text-on-surface-variant">
+                            Une empreinte bancaire est réalisée lors de la réservation (non débitée). Le montant de la caution est défini par le loueur et protégé par notre système.
+                        </p>
+</div>
+<ul class="space-y-4 mb-8">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span class="font-body-md text-on-surface">Garantie de réservation</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span class="font-body-md text-on-surface">Support client 7j/7</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">check_circle</span>
+<span class="font-body-md text-on-surface">Annulation flexible (selon conditions)</span>
+</li>
+</ul>
+<a href="/catalog.html" class="w-full bg-transparent border border-surface-glass-border text-on-surface font-label-caps text-label-caps uppercase py-4 rounded-lg hover:bg-surface-container-high transition-colors mt-auto text-center block">
+                        Explorer le catalogue
+                    </a>
+</div>
+</div>
+
+<div id="pricing-calculator" class="mt-12 bg-surface-container border border-white/10 rounded-xl p-8">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+    <div>
+      <h3 class="font-headline text-[28px] text-on-surface mb-2">Simulateur de frais</h3>
+      <p class="font-body text-on-surface-variant">Entrez un montant de location pour estimer automatiquement les frais client et la commission partenaire.</p>
+    </div>
+    <div class="flex rounded-lg border border-white/10 overflow-hidden">
+      <button id="toggle-client" type="button" class="billing-toggle-active px-4 py-2 text-sm font-semibold">Client</button>
+      <button id="toggle-partner" type="button" class="px-4 py-2 text-sm font-semibold text-on-surface hover:text-primary">Partenaire</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <label class="block">
+      <span class="block text-sm text-on-surface-variant mb-2">Montant location / jour</span>
+      <input id="rental-amount" type="number" min="0" value="500" class="w-full bg-surface border border-outline-variant rounded-lg px-4 py-3 text-on-surface focus:border-primary focus:ring-primary">
+    </label>
+
+    <div class="bg-surface-container-lowest rounded-lg p-5 border border-white/10">
+      <div class="text-sm text-on-surface-variant mb-1">Frais calculés</div>
+      <div id="calculated-fees" class="text-3xl font-bold text-primary">25€</div>
+    </div>
+
+    <div class="bg-surface-container-lowest rounded-lg p-5 border border-white/10">
+      <div class="text-sm text-on-surface-variant mb-1">Total estimé</div>
+      <div id="calculated-total" class="text-3xl font-bold text-on-surface">525€</div>
+    </div>
+  </div>
+</div>
+
+</section>
+<!-- Value Props Section -->
+<section class="py-section-padding-y px-gutter-x max-w-container-max mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-center mb-12 text-on-surface">La sécurité avant tout</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="text-center p-6 bg-surface-container border border-surface-glass-border rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mx-auto mb-6 border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]">shield</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-3 text-on-surface">Assurance Incluse</h3>
+<p class="font-body-md text-on-surface-variant">Jusqu'à 1 000 000 € de couverture pour le matériel loué via notre partenaire certifié.</p>
+</div>
+<div class="text-center p-6 bg-surface-container border border-surface-glass-border rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mx-auto mb-6 border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]">payments</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-3 text-on-surface">Paiements Sécurisés</h3>
+<p class="font-body-md text-on-surface-variant">Transactions cryptées et gestion des cautions par empreinte bancaire sans débit préalable.</p>
+</div>
+<div class="text-center p-6 bg-surface-container border border-surface-glass-border rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-16 h-16 rounded-full bg-surface-container-high flex items-center justify-center mx-auto mb-6 border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]">support_agent</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-3 text-on-surface">Support 24/7</h3>
+<p class="font-body-md text-on-surface-variant">Une équipe technique experte disponible à tout moment en cas d'urgence sur un événement.</p>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-section-padding-y px-gutter-x max-w-container-max mx-auto max-w-3xl">
+<h2 class="font-headline-lg text-headline-lg text-center mb-10 text-on-surface">Questions Fréquentes</h2>
+<div class="space-y-4">
+
+<div class="pricing-faq-item bg-surface-container border border-surface-glass-border rounded-xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+  <button type="button" class="pricing-faq-toggle w-full p-6 flex items-center justify-between text-left hover:bg-surface-container-high transition-colors">
+    <span class="font-headline-md text-headline-md flex items-center gap-2 text-on-surface">
+      <span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">help</span>
+      Quand suis-je payé en tant que partenaire ?
+    </span>
+    <span class="material-symbols-outlined pricing-faq-icon text-on-surface-variant transition-transform">chevron_right</span>
+  </button>
+  <div class="pricing-faq-content hidden px-6 pb-6 pl-14 font-body-md text-on-surface-variant">
+    Le paiement est déclenché automatiquement après validation du début effectif de la location. Les fonds sont sécurisés via la plateforme puis transférés selon les délais bancaires habituels.
+  </div>
+</div>
+
+<div class="pricing-faq-item bg-surface-container border border-surface-glass-border rounded-xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+  <button type="button" class="pricing-faq-toggle w-full p-6 flex items-center justify-between text-left hover:bg-surface-container-high transition-colors">
+    <span class="font-headline-md text-headline-md flex items-center gap-2 text-on-surface">
+      <span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">help</span>
+      Comment fonctionne la caution ?
+    </span>
+    <span class="material-symbols-outlined pricing-faq-icon text-on-surface-variant transition-transform">chevron_right</span>
+  </button>
+  <div class="pricing-faq-content hidden px-6 pb-6 pl-14 font-body-md text-on-surface-variant">
+    La caution est une pré-autorisation bancaire. Elle n’est pas débitée automatiquement, mais elle protège le loueur en cas de casse, retard ou matériel manquant après vérification.
+  </div>
+</div>
+
+<div class="pricing-faq-item bg-surface-container border border-surface-glass-border rounded-xl overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+  <button type="button" class="pricing-faq-toggle w-full p-6 flex items-center justify-between text-left hover:bg-surface-container-high transition-colors">
+    <span class="font-headline-md text-headline-md flex items-center gap-2 text-on-surface">
+      <span class="material-symbols-outlined text-primary drop-shadow-[0_0_8px_rgba(252,3,109,0.4)]">help</span>
+      Puis-je annuler une location ?
+    </span>
+    <span class="material-symbols-outlined pricing-faq-icon text-on-surface-variant transition-transform">chevron_right</span>
+  </button>
+  <div class="pricing-faq-content hidden px-6 pb-6 pl-14 font-body-md text-on-surface-variant">
+    Oui, selon les conditions d’annulation indiquées au moment de la réservation. Les frais peuvent varier selon le délai restant avant l’événement et le statut de préparation du matériel.
+  </div>
+</div>
+</div>
+</section>
+</main>
+<div id="footer-container"></div>
+
+
+
+
+<script src="/components.js"></script>
+
+<script id="rss-tarifs-functional">
+document.addEventListener('DOMContentLoaded', () => {
+  // Simulateur de frais
+  const amountInput = document.getElementById('rental-amount');
+  const feesEl = document.getElementById('calculated-fees');
+  const totalEl = document.getElementById('calculated-total');
+  const clientBtn = document.getElementById('toggle-client');
+  const partnerBtn = document.getElementById('toggle-partner');
+  let mode = 'client';
+
+  function formatEuro(value) {
+    return Math.round(value).toLocaleString('fr-FR') + '€';
+  }
+
+  function updateCalculator() {
+    const amount = Number(amountInput?.value || 0);
+    const rate = mode === 'client' ? 0.05 : 0.15;
+    const fees = amount * rate;
+    const total = mode === 'client' ? amount + fees : amount - fees;
+
+    if (feesEl) feesEl.textContent = formatEuro(fees);
+    if (totalEl) totalEl.textContent = formatEuro(total);
+  }
+
+  function setMode(nextMode) {
+    mode = nextMode;
+    clientBtn?.classList.toggle('billing-toggle-active', mode === 'client');
+    partnerBtn?.classList.toggle('billing-toggle-active', mode === 'partner');
+    clientBtn?.classList.toggle('text-on-surface', mode !== 'client');
+    partnerBtn?.classList.toggle('text-on-surface', mode !== 'partner');
+    updateCalculator();
+  }
+
+  amountInput?.addEventListener('input', updateCalculator);
+  clientBtn?.addEventListener('click', () => setMode('client'));
+  partnerBtn?.addEventListener('click', () => setMode('partner'));
+  updateCalculator();
+
+  // FAQ accordion
+  document.querySelectorAll('.pricing-faq-toggle').forEach(button => {
+    button.addEventListener('click', () => {
+      const item = button.closest('.pricing-faq-item');
+      const content = item.querySelector('.pricing-faq-content');
+      item.classList.toggle('is-open');
+      content.classList.toggle('hidden');
+    });
+  });
+});
+</script>
+
+</body></html>
