@@ -3,6 +3,8 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Catalogue de Location - RentSoundSystem.com</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -46,39 +48,53 @@
 .line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 
 </style>
+
+<style id="rss-catalog-global-header-footer-compat">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop { padding-left: 40px; padding-right: 40px; }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+</style>
+
 </head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
-<!-- TopNavBar -->
-<header class="w-full border-b border-white/10 bg-surface dark:bg-surface sticky top-0 z-50">
-<div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
-<div class="flex items-center gap-gutter">
-<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tight" href="/">RENTSOUNDSYSTEM</a>
-<!-- Search Bar (on_left as per JSON) -->
-<div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-2 border border-white/10 focus-within:border-primary transition-colors">
-<span class="material-symbols-outlined text-on-surface-variant mr-2 text-[20px]" data-icon="search">search</span>
-<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant w-64" id="catalog-search" placeholder="Rechercher du matériel..." type="text"/>
-</div>
-</div>
-<nav class="hidden md:flex items-center gap-stack-md">
-<a class="font-body-md text-body-md text-primary dark:text-primary font-bold border-b-2 border-primary pb-1" href="/catalog.html">Louer du Matériel</a>
-<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="/connexion-inscription.html?mode=register">Devenir Partenaire</a>
-<a class="font-body-md text-body-md text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="/comment-ca-marche.html">Support</a>
-</nav>
-<div class="flex items-center gap-stack-sm">
-<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 p-2">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="text-on-surface-variant hover:text-primary transition-colors duration-200 p-2 relative">
-<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-<span class="absolute top-1 right-1 w-2 h-2 bg-primary rounded-full"></span>
-</button>
-<a class="ml-4 font-label-md text-label-md bg-surface-container border border-white/10 hover:border-primary text-on-surface px-4 py-2 rounded-full transition-colors flex items-center gap-2" href="/connexion-inscription.html">
-<img alt="User profile" class="w-6 h-6 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzE5DHPl_SAwOWQLqIRhZaqIBQlKa_ngRiA6q_bduTEWRZgIwNppDVtn7pM4Ga8oz4j8-KGhGTE6Bo6G3JpdmveluRFaJinKGj8RsK-WseriOgOghjHZuzbVHhf3M6mw_8Jbvee-4mhF_Re5HHhoGQx58OcIsOz8ASm_j19XrGjzw_MRJLO-m7eiTVn8vcAWbJS4L5-bEmRTgGu-RvjjipUlo4FD9Zjp9u5nvLbVG38x1lMXBUmIVusrCa7pLHklEsR-Iy1Jd7xCM"/>
-                    Mon Compte
-                </a>
-</div>
-</div>
-</header>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
 <main class="flex-grow flex flex-col md:flex-row w-full max-w-container-max mx-auto pt-stack-lg pb-stack-lg gap-gutter px-margin-mobile md:px-margin-desktop">
 <!-- Filters Sidebar -->
 <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-md">
@@ -145,20 +161,28 @@
 </aside>
 <!-- Product Grid Catalog -->
 <section class="flex-grow">
-<div class="flex justify-between items-end mb-stack-md">
-<div>
-<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Catalogue de Location</h1>
-<p class="font-body-md text-body-md text-on-surface-variant"><span id="catalog-count">Chargement des annonces...</span></p>
-</div>
-<div class="flex items-center gap-2">
-<span class="font-body-sm text-body-sm text-on-surface-variant">Trier par:</span>
-<select id="catalog-sort" class="bg-surface-container border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-1 appearance-none text-on-surface">
-<option>Recommandé</option>
-<option>Prix: Croissant</option>
-<option>Prix: Décroissant</option>
-<option>Mieux Noté</option>
-</select>
-</div>
+<div class="flex flex-col gap-stack-sm mb-stack-md">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-stack-sm">
+    <div>
+      <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Catalogue de Location</h1>
+      <p class="font-body-md text-body-md text-on-surface-variant"><span id="catalog-count">Chargement des annonces...</span></p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="font-body-sm text-body-sm text-on-surface-variant">Trier par:</span>
+      <select id="catalog-sort" class="bg-surface-container border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-1 appearance-none text-on-surface">
+        <option>Recommandé</option>
+        <option>Prix: Croissant</option>
+        <option>Prix: Décroissant</option>
+        <option>Mieux Noté</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Search Bar moved from header into page body -->
+  <div class="w-full md:max-w-xl flex items-center bg-surface-container rounded-full px-4 py-3 border border-white/10 focus-within:border-primary transition-colors">
+    <span class="material-symbols-outlined text-on-surface-variant mr-2 text-[20px]" data-icon="search">search</span>
+    <input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant w-full" id="catalog-search" placeholder="Rechercher du matériel..." type="text"/>
+  </div>
 </div>
 <!-- Header Image Banner -->
 <div class="w-full h-48 md:h-64 mb-stack-lg rounded-xl overflow-hidden relative border border-white/10 group">
@@ -178,72 +202,7 @@
 <div id="catalog-pagination" class="flex justify-center items-center gap-2 mt-stack-lg pt-stack-md border-t border-white/10"></div>
 </section>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest border-t border-white/5 pt-16 pb-8">
-<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
-<!-- Brand Column (SEO enhanced) -->
-<div class="flex flex-col gap-6 lg:col-span-2">
-<a class="font-headline text-[24px] font-bold text-primary tracking-tight" href="#">RENTSOUNDSYSTEM</a>
-<p class="font-body text-[14px] text-on-surface-variant max-w-sm">
-          Expert en location de systèmes de sonorisation, éclairage et matériel scénique pour événements professionnels. La plateforme de référence entre experts de l'événementiel.
-        </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]">share</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]">public</span>
-</a>
-<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-<span class="material-symbols-outlined text-[20px]">mail</span>
-</a>
-</div>
-</div>
-<!-- Marketplace Column -->
-<div class="flex flex-col gap-6">
-<h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Villes</h4>
-<nav class="flex flex-col gap-3">
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Paris</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Lyon</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Marseille</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Location sonorisation Bordeaux</a>
-</nav>
-</div>
-<!-- Categories Column -->
-<div class="flex flex-col gap-6">
-<h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Catégories</h4>
-<nav class="flex flex-col gap-3">
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Line Arrays</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Consoles de mixage</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">DJ Gear</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Éclairage &amp; Lyres</a>
-</nav>
-</div>
-<!-- Support Column -->
-<div class="flex flex-col gap-6">
-<h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Support</h4>
-<nav class="flex flex-col gap-3">
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Centre d'aide</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Contactez-nous</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Devenir Partenaire</a>
-<a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
-</nav>
-</div>
-</div>
-<!-- Bottom Bar -->
-<div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-<span class="font-body text-[14px] text-on-secondary-container text-center md:text-left">
-        © 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.
-      </span>
-<nav class="flex flex-wrap justify-center gap-6">
-<a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Conditions d'utilisation</a>
-<a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Politique de confidentialité</a>
-<a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Mentions légales</a>
-</nav>
-</div>
-</div>
-</footer>
+<div id="footer-container"></div>
 
 
 <script id="rss-catalog-supabase">
@@ -544,4 +503,5 @@
 </script>
 
 
+<script src="/components.js"></script>
 </body></html>
