@@ -92,11 +92,195 @@
   }
 </style>
 
+
+<style id="rss-catalog-responsive-fix">
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* Desktop stays unchanged */
+#catalog-grid article {
+  min-width: 0;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  main {
+    gap: 20px !important;
+  }
+
+  #catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  aside {
+    width: 240px !important;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  body {
+    padding-top: 74px !important;
+  }
+
+  main {
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 24px !important;
+    padding-bottom: 32px !important;
+    gap: 24px !important;
+  }
+
+  aside {
+    width: 100% !important;
+    position: relative !important;
+    order: 2 !important;
+  }
+
+  section.flex-grow {
+    order: 1 !important;
+    width: 100% !important;
+  }
+
+  aside > div {
+    padding: 18px !important;
+    border-radius: 14px !important;
+  }
+
+  h1.font-headline-xl {
+    font-size: 34px !important;
+    line-height: 40px !important;
+  }
+
+  h2.font-headline-lg {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .flex.items-center.gap-2:has(#catalog-sort) {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  #catalog-sort {
+    min-width: 170px !important;
+    padding: 10px 12px !important;
+  }
+
+  #catalog-search {
+    font-size: 16px !important;
+  }
+
+  .w-full.md\:max-w-xl {
+    max-width: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  .w-full.h-48.md\:h-64 {
+    height: 220px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .w-full.h-48.md\:h-64 .absolute.bottom-stack-md {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+
+  .w-full.h-48.md\:h-64 h2 {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .w-full.h-48.md\:h-64 p {
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  #catalog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  #catalog-grid article {
+    border-radius: 14px !important;
+  }
+
+  #catalog-grid article .h-48 {
+    height: 220px !important;
+  }
+
+  #catalog-grid article h3 {
+    font-size: 20px !important;
+    line-height: 26px !important;
+  }
+
+  .open-product {
+    padding: 12px 14px !important;
+  }
+
+  #catalog-pagination {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  #catalog-pagination button {
+    min-width: 42px !important;
+    min-height: 42px !important;
+  }
+
+  input,
+  select,
+  button {
+    min-height: 44px;
+  }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 420px) {
+  h1.font-headline-xl {
+    font-size: 30px !important;
+    line-height: 36px !important;
+  }
+
+  main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .px-margin-mobile {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  #catalog-grid article .p-stack-sm {
+    padding: 14px !important;
+  }
+
+  #catalog-grid article .flex.justify-between.items-center.border-t {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .open-product {
+    width: 100% !important;
+  }
+}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
 <main class="flex-grow flex flex-col md:flex-row w-full max-w-container-max mx-auto pt-stack-lg pb-stack-lg gap-gutter px-margin-mobile md:px-margin-desktop">
 <!-- Filters Sidebar -->
+
+<button id="rss-mobile-filter-toggle" type="button" class="md:hidden w-full bg-surface-container-high border border-white/10 text-on-surface rounded-xl px-4 py-3 flex items-center justify-between mb-4">
+  <span class="font-label-md text-label-md uppercase tracking-widest">Filtres</span>
+  <span class="material-symbols-outlined" id="rss-mobile-filter-icon">expand_more</span>
+</button>
+
 <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-md">
 <div class="bg-surface-container rounded-xl p-stack-md border border-white/10">
 <h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Filtres</h2>
@@ -504,4 +688,33 @@
 
 
 <script src="/components.js"></script>
+
+<script id="rss-catalog-responsive-js">
+document.addEventListener('DOMContentLoaded', function () {
+  const toggle = document.getElementById('rss-mobile-filter-toggle');
+  const icon = document.getElementById('rss-mobile-filter-icon');
+  const aside = document.querySelector('aside');
+
+  if (toggle && aside) {
+    if (window.innerWidth < 768) {
+      aside.style.display = 'none';
+    }
+
+    toggle.addEventListener('click', function () {
+      const isHidden = aside.style.display === 'none';
+      aside.style.display = isHidden ? 'block' : 'none';
+      if (icon) icon.textContent = isHidden ? 'expand_less' : 'expand_more';
+    });
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 768) {
+        aside.style.display = '';
+      } else if (!toggle.dataset.opened) {
+        aside.style.display = 'none';
+      }
+    });
+  }
+});
+</script>
+
 </body></html>
