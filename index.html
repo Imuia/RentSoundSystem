@@ -127,6 +127,102 @@
 <style>
         body { background-color: #131313; color: #e2e2e2; }
     </style>
+
+<style id="rss-responsive-home-fix">
+html, body {
+  overflow-x:hidden !important;
+}
+
+@media (max-width:1024px){
+  h1.font-headline-xl{
+    font-size:52px !important;
+    line-height:58px !important;
+  }
+}
+
+@media (max-width:768px){
+
+  section.relative.w-full.min-h-screen{
+    min-height:auto !important;
+    padding-top:120px !important;
+    padding-bottom:80px !important;
+  }
+
+  h1.font-headline-xl{
+    font-size:38px !important;
+    line-height:44px !important;
+  }
+
+  h2.font-headline-lg{
+    font-size:30px !important;
+    line-height:36px !important;
+  }
+
+  .font-body-lg.text-\[22px\]{
+    font-size:17px !important;
+    line-height:28px !important;
+  }
+
+  .max-w-2xl.bg-surface\/80{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:12px !important;
+    padding:14px !important;
+  }
+
+  .max-w-2xl.bg-surface\/80 button{
+    width:100% !important;
+  }
+
+  .h-8.w-px{
+    display:none !important;
+  }
+
+  .group.relative.aspect-\[3\/4\]{
+    aspect-ratio:1/1.15 !important;
+  }
+
+  .group.relative.aspect-\[3\/4\] h3{
+    font-size:20px !important;
+  }
+
+  .min-h-\[500px\]{
+    min-height:320px !important;
+  }
+
+  #rss-map-wrap,
+  #rss-map,
+  #rss-map.leaflet-container{
+    height:420px !important;
+    min-height:420px !important;
+  }
+
+  .px-margin-mobile{
+    padding-left:14px !important;
+    padding-right:14px !important;
+  }
+}
+
+@media (max-width:480px){
+
+  h1.font-headline-xl{
+    font-size:32px !important;
+    line-height:38px !important;
+  }
+
+  h2.font-headline-lg{
+    font-size:26px !important;
+    line-height:32px !important;
+  }
+
+  .group.relative.aspect-\[3\/4\] h3{
+    font-size:18px !important;
+    line-height:24px !important;
+  }
+
+}
+</style>
+
 </head>
 <body class="font-body-md text-body-md bg-background text-on-background min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -726,5 +822,23 @@
 })();
 </script>
 <script src="/components.js"></script>
+
+
+<script id="rss-mobile-map-fix">
+window.addEventListener('resize', function(){
+  if(window.innerWidth < 768){
+    const map = document.getElementById('rss-map');
+    const wrap = document.getElementById('rss-map-wrap');
+    if(map){
+      map.style.height='420px';
+      map.style.minHeight='420px';
+    }
+    if(wrap){
+      wrap.style.height='420px';
+      wrap.style.minHeight='420px';
+    }
+  }
+});
+</script>
 
 </body></html>
