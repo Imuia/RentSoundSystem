@@ -270,6 +270,45 @@ html, body {
 }
 </style>
 
+
+<style id="rss-catalog-filter-toggle-fix">
+@media (max-width: 767px) {
+  body.catalog-filters-closed aside {
+    display: none !important;
+  }
+
+  body.catalog-filters-open aside {
+    display: block !important;
+  }
+
+  #rss-mobile-filter-toggle {
+    display: flex !important;
+    order: 1 !important;
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+  }
+
+  aside {
+    order: 2 !important;
+  }
+
+  section.flex-grow {
+    order: 3 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  #rss-mobile-filter-toggle {
+    display: none !important;
+  }
+
+  aside {
+    display: block !important;
+  }
+}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -689,32 +728,82 @@ html, body {
 
 <script src="/components.js"></script>
 
-<script id="rss-catalog-responsive-js">
-document.addEventListener('DOMContentLoaded', function () {
-  const toggle = document.getElementById('rss-mobile-filter-toggle');
-  const icon = document.getElementById('rss-mobile-filter-icon');
-  const aside = document.querySelector('aside');
 
-  if (toggle && aside) {
-    if (window.innerWidth < 768) {
-      aside.style.display = 'none';
+
+
+<script id="rss-catalog-filter-toggle-working">
+(function () {
+  function initCatalogFilterToggle() {
+    const toggle = document.getElementById('rss-mobile-filter-toggle');
+    const icon = document.getElementById('rss-mobile-filter-icon');
+    const label = toggle ? toggle.querySelector('span:first-child') : null;
+    const aside = document.querySelector('main aside');
+
+    if (!toggle || !aside || toggle.dataset.bound === '1') return;
+    toggle.dataset.bound = '1';
+
+    function isMobile() {
+      return window.innerWidth < 768;
     }
 
-    toggle.addEventListener('click', function () {
-      const isHidden = aside.style.display === 'none';
-      aside.style.display = isHidden ? 'block' : 'none';
-      if (icon) icon.textContent = isHidden ? 'expand_less' : 'expand_more';
-    });
+    function closeFilters() {
+      document.body.classList.remove('catalog-filters-open');
+      document.body.classList.add('catalog-filters-closed');
+      if (icon) icon.textContent = 'expand_more';
+      if (label) label.textContent = 'Afficher les filtres';
+      toggle.setAttribute('aria-expanded', 'false');
+    }
 
-    window.addEventListener('resize', function () {
-      if (window.innerWidth >= 768) {
-        aside.style.display = '';
-      } else if (!toggle.dataset.opened) {
-        aside.style.display = 'none';
+    function openFilters() {
+      document.body.classList.remove('catalog-filters-closed');
+      document.body.classList.add('catalog-filters-open');
+      if (icon) icon.textContent = 'expand_less';
+      if (label) label.textContent = 'Masquer les filtres';
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function syncMode() {
+      if (isMobile()) {
+        if (!document.body.classList.contains('catalog-filters-open')) closeFilters();
+      } else {
+        document.body.classList.remove('catalog-filters-closed', 'catalog-filters-open');
+        if (icon) icon.textContent = 'expand_more';
+        if (label) label.textContent = 'Filtres';
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (document.body.classList.contains('catalog-filters-open')) {
+        closeFilters();
+      } else {
+        openFilters();
       }
     });
+
+    // Fermer automatiquement après "Effacer les filtres" sur mobile uniquement
+    const clearBtn = document.getElementById('clear-filters');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        if (isMobile()) setTimeout(closeFilters, 200);
+      });
+    }
+
+    window.addEventListener('resize', syncMode);
+    syncMode();
   }
-});
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCatalogFilterToggle);
+  } else {
+    initCatalogFilterToggle();
+  }
+
+  window.addEventListener('load', initCatalogFilterToggle);
+})();
 </script>
 
 </body></html>
