@@ -1,8 +1,10 @@
 <!-- TopNavBar -->
 <header class="bg-surface/80 backdrop-blur-md border-b border-white/10 fixed top-0 z-50 w-full transition-all">
+  <input id="rss-mobile-menu-toggle" type="checkbox" class="hidden peer" />
+
   <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
     <div class="flex items-center gap-stack-md">
-      <a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="/">RENTSOUNDSYSTEM</a>
+      <a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="/index.html">RENTSOUNDSYSTEM</a>
     </div>
 
     <nav class="hidden md:flex items-center gap-stack-md">
@@ -13,25 +15,25 @@
     </nav>
 
     <div class="flex items-center gap-stack-sm">
-      <button class="hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" type="button" aria-label="Notifications">
+      <a href="/centre-assistance.html" class="hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Notifications">
         <span class="material-symbols-outlined">notifications</span>
-      </button>
+      </a>
 
-      <button class="hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" type="button" aria-label="Panier">
+      <a href="/catalog.html" class="hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Panier">
         <span class="material-symbols-outlined">shopping_cart</span>
-      </button>
+      </a>
 
       <a href="/connexion-inscription.html" class="hidden md:block border border-on-surface text-on-surface px-4 py-2 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors">
         Mon Compte
       </a>
 
-      <button id="rss-mobile-menu-button" class="md:hidden text-on-surface hover:text-primary transition-colors duration-200 p-2 border border-white/10 rounded" type="button" aria-label="Ouvrir le menu" aria-expanded="false">
-        <span class="material-symbols-outlined" id="rss-mobile-menu-icon">menu</span>
-      </button>
+      <label for="rss-mobile-menu-toggle" class="md:hidden text-on-surface hover:text-primary transition-colors duration-200 p-2 border border-white/10 rounded cursor-pointer" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined peer-checked:hidden">menu</span>
+      </label>
     </div>
   </div>
 
-  <nav id="rss-mobile-menu" class="hidden md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-md">
+  <nav class="hidden peer-checked:block md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-md">
     <div class="px-margin-mobile py-4 flex flex-col gap-3">
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/catalog.html">Louer du matériel</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/devenir-partenaire.html">Devenir Partenaire</a>
@@ -48,38 +50,4 @@
       </div>
     </div>
   </nav>
-
-  <script>
-    (function () {
-      function initMobileMenu() {
-        const button = document.getElementById('rss-mobile-menu-button');
-        const menu = document.getElementById('rss-mobile-menu');
-        const icon = document.getElementById('rss-mobile-menu-icon');
-
-        if (!button || !menu || button.dataset.bound === '1') return;
-        button.dataset.bound = '1';
-
-        button.addEventListener('click', function () {
-          const isOpen = !menu.classList.contains('hidden');
-          menu.classList.toggle('hidden', isOpen);
-          button.setAttribute('aria-expanded', String(!isOpen));
-          if (icon) icon.textContent = isOpen ? 'menu' : 'close';
-        });
-
-        menu.querySelectorAll('a').forEach(function (link) {
-          link.addEventListener('click', function () {
-            menu.classList.add('hidden');
-            button.setAttribute('aria-expanded', 'false');
-            if (icon) icon.textContent = 'menu';
-          });
-        });
-      }
-
-      if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initMobileMenu);
-      } else {
-        initMobileMenu();
-      }
-    })();
-  </script>
 </header>
