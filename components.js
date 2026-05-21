@@ -2,7 +2,7 @@ async function loadComponent(id, file) {
   const el = document.getElementById(id);
   if (!el) return;
 
-  el.style.minHeight = id === "header-container" ? "73px" : "300px";
+  el.style.minHeight = id === "header-container" ? "75px" : "300px";
 
   try {
     const response = await fetch(file, { cache: "force-cache" });
