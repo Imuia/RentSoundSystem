@@ -154,6 +154,20 @@
   .rss-day-disabled { opacity:.35; pointer-events:none; }
 </style>
 
+
+<style id="rss-product-dynamic-adapter-css">
+@media (max-width: 767px) {
+  .rss-tab-btn {
+    font-size: 13px !important;
+    padding: 14px 8px !important;
+  }
+  #rss-tab-specs .grid,
+  #rss-tab-overview .grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
