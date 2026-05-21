@@ -155,8 +155,7 @@
 </style>
 
 
-
-<style id="rss-product-real-tech-css">
+<style id="rss-product-dynamic-adapter-css">
 @media (max-width: 767px) {
   .rss-tab-btn {
     font-size: 13px !important;
@@ -166,14 +165,11 @@
   #rss-tab-overview .grid {
     grid-template-columns: 1fr !important;
   }
-  .lg\:col-span-5 .grid.grid-cols-2.gap-2 {
-    grid-template-columns: 1fr 1fr !important;
-  }
-  .lg\:col-span-5 .grid.grid-cols-2.gap-2 .font-headline {
-    font-size: 14px !important;
-    line-height: 20px !important;
-  }
 }
+</style>
+
+
+<style id="rss-product-real-tech-css">
 .rss-tech-card {
   background:#131313;
   border:1px solid rgba(93,63,68,.45);
@@ -188,6 +184,10 @@
 .rss-tech-card-value {
   color:#e6bcc2;
   line-height:1.55;
+}
+@media (max-width:767px){
+  .rss-tab-btn{font-size:13px!important;padding:14px 8px!important;}
+  #rss-tab-specs .grid,#rss-tab-overview .grid{grid-template-columns:1fr!important;}
 }
 </style>
 
@@ -498,6 +498,240 @@
       .filter(Boolean);
   }
 
+
+  function normalizeTech(value) {
+    return String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '');
+  }
+
+  function productTechType(item) {
+    const txt = normalizeTech([item.title, item.category, item.brand, item.model, item.description].join(' '));
+    if (/casque|silent|uhf|headphone|ecouteur/.test(txt)) return 'silent';
+    if (/micro|shure|sm58|hf|wireless|sans fil/.test(txt)) return 'microphone';
+    if (/console|mixage|mixer|dj|cdj|djm|pioneer|controleur|controller|regie/.test(txt)) return 'dj';
+    if (/light|eclairage|lyre|spot|beam|wash|par|strobe|led/.test(txt)) return 'eclairage';
+    if (/sub|caisson|bass|grave|subwoofer/.test(txt)) return 'subwoofer';
+    if (/ampli|amplificateur|crown|lab gruppen|amplification/.test(txt)) return 'amplification';
+    if (/cable|xlr|speakon|multipaire/.test(txt)) return 'cablage';
+    if (/pied|support|structure|stand|truss/.test(txt)) return 'structure';
+    return 'sonorisation';
+  }
+
+  function techFind(text, patterns) {
+    for (const p of patterns) {
+      const m = text.match(p);
+      if (m && m[1]) return m[1].trim();
+      if (m && m[0]) return m[0].trim();
+    }
+    return '';
+  }
+
+  function valueOr(value, fallback) {
+    return value !== undefined && value !== null && String(value).trim() !== '' ? String(value).trim() : fallback;
+  }
+
+  function rowsFromColumns(item) {
+    const ignore = new Set([
+      'id','original_id','created_at','updated_at','published_at','status','slug',
+      'listing_images','image_url','featured_image','thumbnail','description','title',
+      'featured','user_id','owner_id'
+    ]);
+
+    const labels = {
+      brand:'Marque',
+      model:'Modèle',
+      category:'Catégorie',
+      city:'Ville',
+      location:'Localisation',
+      country:'Pays',
+      price:'Tarif journalier',
+      condition:'État',
+      quantity:'Quantité',
+      stock:'Stock',
+      power:'Puissance',
+      watt:'Puissance',
+      channels:'Canaux',
+      frequency:'Réponse en fréquence',
+      frequency_response:'Réponse en fréquence',
+      autonomy:'Autonomie',
+      range:'Portée',
+      coverage:'Couverture',
+      spl:'SPL Max',
+      weight:'Poids',
+      dimensions:'Dimensions',
+      connectivity:'Connectique',
+      included:'Inclus',
+      accessories:'Accessoires',
+      application:'Application'
+    };
+
+    const rows = [];
+    Object.keys(item || {}).forEach(function (key) {
+      if (ignore.has(key)) return;
+      const value = item[key];
+      if (value === null || value === undefined || value === '') return;
+      if (typeof value === 'object') return;
+      const label = labels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+      let v = String(value);
+      if (key === 'price') v = money(value) + ' / jour';
+      rows.push([label, v]);
+    });
+    return rows;
+  }
+
+  function realTechRows(item) {
+    const type = productTechType(item);
+    const title = valueOr(item.title, 'Produit');
+    const brandModel = valueOr([item.brand, item.model].filter(Boolean).join(' '), title);
+    const category = valueOr(item.category, 'Matériel').replace(/-/g, ' ');
+    const city = valueOr(item.city || item.location, 'Ville non précisée');
+    const desc = cleanDescription(item.description);
+    const txt = normalizeTech(title + ' ' + desc + ' ' + category + ' ' + brandModel);
+
+    let rows = [];
+
+    if (type === 'silent') {
+      rows = [
+        ['Type', 'Silent Disco / casques audio'],
+        ['Configuration', techFind(txt, [/(\d+\s*casques?)/i, /kit de\s*(\d+)/i]) || 'Kit casques audio'],
+        ['Canaux UHF', techFind(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || '1 ou 2 canaux'],
+        ['Transmission', /uhf/i.test(txt) ? 'UHF' : 'Sans fil selon annonce'],
+        ['Autonomie', techFind(txt, [/(\d+\s*h(?:eures?)?)/i]) || 'Selon annonce'],
+        ['Inclus pack', techFind(txt, [/inclus dans le pack\s*:?([^.]*)/i]) || 'Casques + accessoires selon annonce'],
+        ['Localisation', city]
+      ];
+    } else if (type === 'dj') {
+      rows = [
+        ['Type', 'Régie DJ / matériel de mixage'],
+        ['Marque / modèle', brandModel],
+        ['Application', 'DJ set, club, festival, événement privé ou corporate'],
+        ['Configuration', category],
+        ['Connectique', techFind(txt, [/(usb[^.]{0,60})/i, /(xlr[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || 'Selon annonce'],
+        ['Localisation', city]
+      ];
+    } else if (type === 'eclairage') {
+      rows = [
+        ['Type', 'Éclairage scénique'],
+        ['Marque / modèle', brandModel],
+        ['Application', 'Show lumière, scène, club, événementiel'],
+        ['Pilotage', /dmx/i.test(txt) ? 'DMX' : 'Selon annonce'],
+        ['Source', /led/i.test(txt) ? 'LED' : 'Selon annonce'],
+        ['Localisation', city]
+      ];
+    } else {
+      rows = [
+        ['Catégorie', category],
+        ['Marque / modèle', brandModel],
+        ['Application', 'Concerts, clubs, DJ sets, soirées privées et événements corporate'],
+        ['Configuration', /line array/i.test(txt) ? 'Système line array' : 'Système professionnel selon annonce'],
+        ['Connectique', techFind(txt, [/(xlr[^.]{0,60})/i, /(speakon[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || 'Selon disponibilité loueur'],
+        ['Localisation', city]
+      ];
+    }
+
+    if (item.price) rows.push(['Tarif journalier', money(item.price) + ' / jour']);
+
+    const extracted = [
+      ['Puissance', techFind(txt, [/(\d+\s*(?:w|kw|watts?)(?:\s*rms|\s*aes)?)/i])],
+      ['Réponse en fréquence', techFind(txt, [/(\d+\s*hz\s*[-–]\s*\d+\s*(?:hz|khz))/i])],
+      ['Portée', techFind(txt, [/(\d+\s*m(?:etres?)?)/i])],
+      ['Quantité', techFind(txt, [/(\d+\s*(?:casques?|enceintes?|subs?|subwoofers?|lyres?|micros?))/i])]
+    ];
+
+    extracted.concat(rowsFromColumns(item)).forEach(function (r) {
+      if (!r[1]) return;
+      const exists = rows.some(x => normalizeTech(x[0]) === normalizeTech(r[0]) || normalizeTech(x[1]) === normalizeTech(r[1]));
+      if (!exists) rows.push(r);
+    });
+
+    return rows.filter(r => r[1]).slice(0, 12);
+  }
+
+  function realCoreStats(item) {
+    const type = productTechType(item);
+    const txt = normalizeTech([item.title, item.description, item.category].join(' '));
+    const city = valueOr(item.city || item.location, 'Ville non précisée');
+
+    if (type === 'silent') {
+      return [
+        ['Application', 'Silent Disco'],
+        ['Canaux UHF', techFind(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || '1 ou 2 canaux'],
+        ['Quantité', techFind(txt, [/(\d+\s*casques?)/i]) || 'Kit casques'],
+        ['Lieu', city]
+      ];
+    }
+
+    const rows = realTechRows(item);
+    while (rows.length < 4) rows.push(['Info', 'Selon annonce']);
+    return rows.slice(0, 4);
+  }
+
+  function realIncludedRows(item) {
+    const type = productTechType(item);
+    const title = valueOr(item.title, 'Matériel principal');
+
+    if (type === 'silent') {
+      return [
+        title,
+        'Casques audio selon quantité indiquée dans l’annonce',
+        'Émetteur UHF / base selon configuration loueur',
+        'Vérification fonctionnelle avant retrait'
+      ];
+    }
+
+    return [
+      title,
+      'Câblage ou accessoires de base si précisés par le loueur',
+      'Vérification fonctionnelle au retrait',
+      'Options livraison et installation disponibles'
+    ];
+  }
+
+  function updateRealProductTech(item) {
+    const rows = realTechRows(item);
+
+    const specsGrid = document.querySelector('#rss-tab-specs .grid');
+    if (specsGrid) {
+      specsGrid.innerHTML = rows.map(function (row) {
+        return '<div class="rss-tech-card">' +
+          '<div class="rss-tech-card-title">' + safe(row[0]) + '</div>' +
+          '<div class="rss-tech-card-value">' + safe(row[1]) + '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    const statCards = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 > div');
+    realCoreStats(item).forEach(function (row, index) {
+      const card = statCards[index];
+      if (!card) return;
+      const label = card.querySelector('.font-label');
+      const value = card.querySelector('.font-headline');
+      if (label) label.textContent = row[0];
+      if (value) value.textContent = row[1];
+    });
+
+    const overviewGrid = document.querySelector('#rss-tab-overview .grid');
+    if (overviewGrid) {
+      const core = realCoreStats(item).slice(0, 2);
+      overviewGrid.innerHTML = core.map(function(row){
+        return '<div class="bg-surface p-4 rounded border border-outline-variant/20 flex items-start space-x-3">' +
+          '<span class="material-symbols-outlined text-primary">inventory_2</span>' +
+          '<div><div class="font-label text-label-caps text-on-surface mb-1">' + safe(row[0]) + '</div>' +
+          '<div class="font-body text-body-sm text-on-surface-variant">' + safe(row[1]) + '</div></div>' +
+        '</div>';
+      }).join('');
+    }
+
+    const includedList = document.querySelector('#rss-tab-included ul');
+    if (includedList) {
+      includedList.innerHTML = realIncludedRows(item).map(function(line){
+        return '<li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> ' + safe(line) + '</li>';
+      }).join('');
+    }
+  }
+
   function bindStaticClickableCards() {
     document.querySelectorAll('[data-product-link]').forEach(function (card) {
       const url = card.getAttribute('data-product-link');
@@ -655,11 +889,9 @@
     const overviewP = overviewTitle ? overviewTitle.parentElement.querySelector('p') : null;
     text(overviewP, cleanDescription(item.description));
 
+    updateRealProductTech(item);
+
     const statBoxes = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 .font-headline');
-    text(statBoxes[0], category.replace(/-/g, ' '));
-    text(statBoxes[1], item.brand || 'Pro Audio');
-    text(statBoxes[2], item.model || 'Matériel professionnel');
-    text(statBoxes[3], city);
 
     const priceLabel = Array.from(document.querySelectorAll('div')).find(el => el.textContent.trim() === 'Tarif de base');
     if (priceLabel && priceLabel.nextElementSibling) {
@@ -945,419 +1177,6 @@
 })();
 </script>
 
-
-
-<script id="rss-product-real-tech-adapter">
-(function () {
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-
-  function ready(fn) {
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
-
-  function safe(value) {
-    return String(value || '').replace(/[&<>"]/g, function (m) {
-      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m];
-    });
-  }
-
-  function clean(value) {
-    return String(value || '')
-      .replace(/<br\s*\/?>/gi, '\n')
-      .replace(/<\/p>/gi, '\n')
-      .replace(/<[^>]*>?/gm, '')
-      .replace(/&nbsp;/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim();
-  }
-
-  function money(value) {
-    const n = Number(value || 0);
-    if (!n) return '';
-    return n.toLocaleString('fr-FR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + '€';
-  }
-
-  function normalize(value) {
-    return String(value || '')
-      .toLowerCase()
-      .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '');
-  }
-
-  function val(value, fallback) {
-    return value !== undefined && value !== null && String(value).trim() !== '' ? String(value).trim() : fallback;
-  }
-
-  function productUrl(item) {
-    if (item && item.original_id !== undefined && item.original_id !== null) return 'product.html?original_id=' + encodeURIComponent(item.original_id);
-    if (item && item.id) return 'product.html?id=' + encodeURIComponent(item.id);
-    return 'product.html';
-  }
-
-  function firstImage(item) {
-    const imgs = Array.isArray(item.listing_images) ? item.listing_images.slice() : [];
-    imgs.sort(function (a, b) { return Number(a.position || 0) - Number(b.position || 0); });
-    return imgs[0] && imgs[0].image_url ? imgs[0].image_url : '';
-  }
-
-  function productText(item) {
-    return normalize([item.title, item.category, item.brand, item.model, item.description].join(' '));
-  }
-
-  function typeOfProduct(item) {
-    const txt = productText(item);
-    if (/casque|silent|uhf|headphone|ecouteur/.test(txt)) return 'silent';
-    if (/micro|shure|sm58|hf|wireless|sans fil/.test(txt)) return 'microphone';
-    if (/console|mixage|mixer|dj|cdj|djm|pioneer|controleur|controller|regie/.test(txt)) return 'dj';
-    if (/light|eclairage|lyre|spot|beam|wash|par|strobe|led/.test(txt)) return 'eclairage';
-    if (/sub|caisson|bass|grave|subwoofer/.test(txt)) return 'subwoofer';
-    if (/ampli|amplificateur|crown|lab gruppen|amplification/.test(txt)) return 'amplification';
-    if (/cable|xlr|speakon|multipaire/.test(txt)) return 'cablage';
-    if (/pied|support|structure|stand|truss/.test(txt)) return 'structure';
-    return 'sonorisation';
-  }
-
-  function findInText(text, patterns) {
-    for (const p of patterns) {
-      const m = text.match(p);
-      if (m && m[1]) return m[1].trim();
-      if (m && m[0]) return m[0].trim();
-    }
-    return '';
-  }
-
-  function extractNumber(text, patterns, suffix) {
-    const found = findInText(text, patterns);
-    return found ? found + (suffix || '') : '';
-  }
-
-  function fieldRowsFromItem(item) {
-    const ignore = new Set([
-      'id','original_id','created_at','updated_at','published_at','status','slug','listing_images',
-      'image_url','featured_image','thumbnail','description','title','featured','user_id','owner_id'
-    ]);
-    const labels = {
-      brand:'Marque',
-      model:'Modèle',
-      category:'Catégorie',
-      city:'Ville',
-      location:'Localisation',
-      country:'Pays',
-      price:'Tarif journalier',
-      condition:'État',
-      quantity:'Quantité',
-      stock:'Stock',
-      power:'Puissance',
-      watt:'Puissance',
-      channels:'Canaux',
-      frequency:'Réponse en fréquence',
-      frequency_response:'Réponse en fréquence',
-      autonomy:'Autonomie',
-      range:'Portée',
-      coverage:'Couverture',
-      spl:'SPL Max',
-      weight:'Poids',
-      dimensions:'Dimensions',
-      connectivity:'Connectique',
-      included:'Inclus',
-      accessories:'Accessoires',
-      application:'Application'
-    };
-
-    const rows = [];
-    Object.keys(item || {}).forEach(function (key) {
-      if (ignore.has(key)) return;
-      const value = item[key];
-      if (value === null || value === undefined || value === '') return;
-      if (typeof value === 'object') return;
-      const label = labels[key] || key.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-      let v = String(value);
-      if (key === 'price') v = money(value) + ' / jour';
-      rows.push([label, v]);
-    });
-    return rows;
-  }
-
-  function smartRows(item) {
-    const type = typeOfProduct(item);
-    const title = val(item.title, 'Produit');
-    const brand = val(item.brand, '');
-    const model = val(item.model, '');
-    const category = val(item.category, 'Matériel').replace(/-/g, ' ');
-    const city = val(item.city || item.location, 'Ville non précisée');
-    const desc = clean(item.description);
-    const txt = normalize(title + ' ' + desc + ' ' + category + ' ' + brand + ' ' + model);
-
-    let rows = [];
-    const fieldRows = fieldRowsFromItem(item);
-
-    if (type === 'silent') {
-      const qty = findInText(txt, [/(\d+\s*casques?)/i, /kit de\s*(\d+)/i]) || 'Kit casques audio';
-      const channels = findInText(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i, /(\d+\s*channels?)/i]) || '1 ou 2 canaux UHF';
-      const uhf = /uhf/i.test(txt) ? 'Transmission UHF' : 'Transmission audio sans fil selon annonce';
-      const color = /noir/i.test(txt) ? 'Noir' : '';
-      rows = [
-        ['Type', 'Silent Disco / casques audio'],
-        ['Configuration', qty],
-        ['Canaux d’émission', channels],
-        ['Transmission', uhf],
-        ['Couleur', color || 'Selon annonce'],
-        ['Application', 'Silent party, conférence, événement privé, club ou animation'],
-        ['Localisation', city]
-      ];
-    } else if (type === 'dj') {
-      rows = [
-        ['Type', 'Régie DJ / matériel de mixage'],
-        ['Marque / modèle', val((brand + ' ' + model).trim(), title)],
-        ['Application', 'DJ set, club, festival, événement privé ou corporate'],
-        ['Configuration', category],
-        ['Connectique', findInText(txt, [/(usb[^.]{0,60})/i, /(xlr[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || 'Audio professionnelle selon annonce'],
-        ['Localisation', city]
-      ];
-    } else if (type === 'eclairage') {
-      rows = [
-        ['Type', 'Éclairage scénique'],
-        ['Marque / modèle', val((brand + ' ' + model).trim(), title)],
-        ['Application', 'Show lumière, scène, club, événementiel'],
-        ['Pilotage', /dmx/i.test(txt) ? 'DMX' : 'Contrôle lumière selon annonce'],
-        ['Source', /led/i.test(txt) ? 'LED' : 'Selon annonce'],
-        ['Localisation', city]
-      ];
-    } else if (type === 'microphone') {
-      rows = [
-        ['Type', 'Microphone / système voix'],
-        ['Marque / modèle', val((brand + ' ' + model).trim(), title)],
-        ['Application', 'Voix, chant, conférence ou animation'],
-        ['Transmission', /wireless|sans fil|hf/i.test(txt) ? 'Sans fil / HF' : 'Filaire ou selon annonce'],
-        ['Connectique', /xlr/i.test(txt) ? 'XLR' : 'Selon annonce'],
-        ['Localisation', city]
-      ];
-    } else if (type === 'subwoofer') {
-      rows = [
-        ['Type', 'Caisson de basses / Subwoofer'],
-        ['Marque / modèle', val((brand + ' ' + model).trim(), title)],
-        ['Application', 'Renfort grave pour concerts, clubs, DJ sets'],
-        ['Bande grave', findInText(txt, [/(\d+\s*hz\s*[-–]\s*\d+\s*hz)/i]) || 'Basse fréquence selon fiche loueur'],
-        ['Configuration', category],
-        ['Localisation', city]
-      ];
-    } else {
-      rows = [
-        ['Catégorie', category],
-        ['Marque / modèle', val((brand + ' ' + model).trim(), title)],
-        ['Application', 'Concerts, clubs, DJ sets, soirées privées et événements corporate'],
-        ['Configuration', /line array/i.test(txt) ? 'Système line array' : 'Système professionnel selon annonce'],
-        ['Connectique', findInText(txt, [/(xlr[^.]{0,60})/i, /(speakon[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || 'Selon disponibilité loueur'],
-        ['Localisation', city]
-      ];
-    }
-
-    if (item.price) rows.push(['Tarif journalier', money(item.price) + ' / jour']);
-
-    // Ajoute les colonnes Supabase réelles en plus, sans doublons.
-    fieldRows.forEach(function (r) {
-      const exists = rows.some(x => normalize(x[0]) === normalize(r[0]) || normalize(x[1]) === normalize(r[1]));
-      if (!exists) rows.push(r);
-    });
-
-    // Si la description contient des infos techniques visibles, on les ajoute.
-    const technicalFinds = [
-      ['Puissance', findInText(txt, [/(\d+\s*(?:w|kw|watts?)(?:\s*rms|\s*aes)?)/i])],
-      ['Réponse en fréquence', findInText(txt, [/(\d+\s*hz\s*[-–]\s*\d+\s*(?:hz|khz))/i])],
-      ['Autonomie', findInText(txt, [/(\d+\s*h(?:eures?)?\s*(?:d.?autonomie)?)/i])],
-      ['Portée', findInText(txt, [/(\d+\s*m(?:etres?)?\s*(?:de portée)?)/i])],
-      ['Nombre de canaux', findInText(txt, [/(\d+\s*canaux?)/i])],
-      ['Quantité', findInText(txt, [/(\d+\s*(?:casques?|enceintes?|subs?|subwoofers?|lyres?|micros?))/i])]
-    ];
-
-    technicalFinds.forEach(function (r) {
-      if (!r[1]) return;
-      const exists = rows.some(x => normalize(x[0]) === normalize(r[0]) || normalize(x[1]) === normalize(r[1]));
-      if (!exists) rows.push(r);
-    });
-
-    return rows.filter(r => r[1]).slice(0, 12);
-  }
-
-  function coreStats(item) {
-    const rows = smartRows(item);
-    const type = typeOfProduct(item);
-    const city = val(item.city || item.location, 'Ville non précisée');
-
-    if (type === 'silent') {
-      return [
-        ['Application', 'Silent Disco'],
-        ['Canaux', findInText(normalize(item.title + ' ' + item.description), [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || '1 ou 2 canaux UHF'],
-        ['Quantité', findInText(normalize(item.title + ' ' + item.description), [/(\d+\s*casques?)/i]) || 'Kit casques'],
-        ['Lieu', city]
-      ];
-    }
-
-    const preferred = rows.slice(0, 4);
-    while (preferred.length < 4) preferred.push(['Info', 'Selon annonce']);
-    return preferred.slice(0, 4);
-  }
-
-  function includedRows(item) {
-    const type = typeOfProduct(item);
-    const title = val(item.title, 'Matériel principal');
-    const rows = {
-      silent: [title, 'Casques audio selon quantité indiquée dans l’annonce', 'Émetteur UHF / base selon configuration loueur', 'Vérification fonctionnelle avant retrait'],
-      sonorisation: [title, 'Câblage audio de base si précisé par le loueur', 'Vérification fonctionnelle au retrait', 'Options livraison et installation disponibles'],
-      subwoofer: [title, 'Câble secteur / signal selon configuration', 'Vérification du fonctionnement avant départ', 'Possibilité de couplage avec système principal'],
-      microphone: [title, 'Pince ou accessoire compatible si disponible', 'Vérification fonctionnelle avant retrait', 'Piles / alimentation selon conditions du loueur'],
-      dj: [title, 'Câbles audio/secteur selon annonce', 'Vérification lecture, sorties et commandes', 'Flight case ou protection si disponible'],
-      eclairage: [title, 'Câble secteur selon annonce', 'Contrôle DMX si précisé par le loueur', 'Vérification lampe, LED ou moteur avant retrait'],
-      amplification: [title, 'Câblage d’alimentation selon configuration', 'Vérification canaux / sorties', 'Conseil de compatibilité système si demandé'],
-      cablage: [title, 'Lot ou unité selon annonce', 'Contrôle visuel et continuité si applicable', 'Conditionnement propre au retrait'],
-      structure: [title, 'Accessoires de fixation si précisés', 'Contrôle sécurité visuel', 'Conseil d’installation selon disponibilité']
-    };
-    return rows[type] || rows.sonorisation;
-  }
-
-  function updateDesignBlocks(item) {
-    const title = val(item.title, 'Produit');
-    const rows = smartRows(item);
-
-    const specsTitle = document.querySelector('#rss-tab-specs h3');
-    if (specsTitle) specsTitle.textContent = 'Spécifications techniques';
-
-    const specsGrid = document.querySelector('#rss-tab-specs .grid');
-    if (specsGrid) {
-      specsGrid.innerHTML = rows.map(function (row) {
-        return '<div class="rss-tech-card">' +
-          '<div class="rss-tech-card-title">' + safe(row[0]) + '</div>' +
-          '<div class="rss-tech-card-value">' + safe(row[1]) + '</div>' +
-        '</div>';
-      }).join('');
-    }
-
-    const statBoxes = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 > div');
-    const stats = coreStats(item);
-    stats.forEach(function (row, i) {
-      const card = statBoxes[i];
-      if (!card) return;
-      const label = card.querySelector('.font-label');
-      const value = card.querySelector('.font-headline');
-      if (label) label.textContent = row[0];
-      if (value) value.textContent = row[1];
-    });
-
-    const includedTitle = document.querySelector('#rss-tab-included h3');
-    if (includedTitle) includedTitle.textContent = 'Inclus dans la location';
-
-    const includedList = document.querySelector('#rss-tab-included ul');
-    if (includedList) {
-      includedList.innerHTML = includedRows(item).map(function (line) {
-        return '<li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> ' + safe(line) + '</li>';
-      }).join('');
-    }
-  }
-
-  function wantedAccessories(type) {
-    return {
-      silent: ['micro', 'cable', 'console', 'sonorisation'],
-      sonorisation: ['micro', 'cable', 'pied', 'structure'],
-      subwoofer: ['cable', 'ampli', 'sonorisation'],
-      microphone: ['cable', 'pied', 'console'],
-      dj: ['cable', 'sonorisation', 'eclairage'],
-      eclairage: ['cable', 'structure', 'console'],
-      amplification: ['cable', 'sonorisation', 'subwoofer'],
-      cablage: ['micro', 'sonorisation', 'dj'],
-      structure: ['eclairage', 'sonorisation', 'cable']
-    }[type] || ['micro', 'cable', 'structure'];
-  }
-
-  function renderRelated(items) {
-    const grid = document.getElementById('related-products-grid');
-    if (!grid || !items.length) return;
-
-    grid.innerHTML = items.slice(0, 3).map(function (item) {
-      const img = firstImage(item);
-      const title = safe(item.title || 'Matériel professionnel');
-      const desc = safe(clean(item.description).slice(0, 110) || 'Annonce disponible sur RentSoundSystem.');
-      const price = money(item.price || 0);
-      const url = productUrl(item);
-
-      return '<article data-product-link="' + safe(url) + '" class="rss-clickable-card bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">' +
-        '<div class="rss-related-img aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">' +
-          (img ? '<img src="' + safe(img) + '" alt="' + title + '" loading="eager" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'rss-img-placeholder\\');this.remove();">' : '<span class="material-symbols-outlined text-outline-variant text-[40px]">inventory_2</span>') +
-        '</div>' +
-        '<h3 class="font-headline text-body-lg font-bold text-on-surface mb-2 line-clamp-2">' + title + '</h3>' +
-        '<p class="font-body text-body-sm text-on-surface-variant mb-4 flex-grow line-clamp-3">' + desc + '</p>' +
-        '<div class="flex items-center justify-between gap-3">' +
-          '<span class="font-headline text-primary font-bold">' + price + '</span>' +
-          '<button type="button" class="py-2 px-3 bg-surface-container-high hover:bg-primary hover:text-on-primary text-primary border border-primary/20 transition-colors rounded-lg font-label text-label-caps font-bold">Voir l’annonce</button>' +
-        '</div>' +
-      '</article>';
-    }).join('');
-
-    grid.querySelectorAll('[data-product-link]').forEach(function (card) {
-      card.addEventListener('click', function () {
-        window.location.href = card.getAttribute('data-product-link');
-      });
-    });
-  }
-
-  async function loadAndAdapt() {
-    if (!window.supabase) return;
-
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const params = new URLSearchParams(window.location.search);
-    const originalId = params.get('original_id');
-    const id = params.get('id');
-
-    let query = client.from('listings').select('*, listing_images(image_url, position)').eq('status', 'publish');
-
-    if (originalId && !isNaN(Number(originalId))) query = query.eq('original_id', Number(originalId)).maybeSingle();
-    else if (id) query = query.eq('id', id).maybeSingle();
-    else query = query.order('featured', { ascending: false }).limit(1).maybeSingle();
-
-    const result = await query;
-    const item = result.data;
-    if (!item) return;
-
-    setTimeout(async function () {
-      updateDesignBlocks(item);
-
-      const type = typeOfProduct(item);
-      const wanted = wantedAccessories(type);
-
-      let relatedQuery = client
-        .from('listings')
-        .select('*, listing_images(image_url, position)')
-        .eq('status', 'publish')
-        .limit(30);
-
-      if (item.original_id !== undefined && item.original_id !== null) {
-        relatedQuery = relatedQuery.neq('original_id', item.original_id);
-      }
-
-      const related = await relatedQuery;
-      if (!related.error && related.data) {
-        const scored = related.data.map(function (p) {
-          const txt = normalize([p.title, p.category, p.brand, p.model, p.description].join(' '));
-          let score = 0;
-          wanted.forEach(function (key, index) {
-            if (txt.indexOf(key) !== -1) score += 10 - index;
-          });
-          return { item: p, score: score };
-        }).sort(function (a, b) {
-          return b.score - a.score;
-        }).map(function (x) {
-          return x.item;
-        });
-
-        renderRelated(scored);
-      }
-    }, 1000);
-  }
-
-  ready(loadAndAdapt);
-})();
-</script>
 
 <script src="/components.js"></script>
 </body></html>
