@@ -1,0 +1,370 @@
+<!DOCTYPE html><html class="dark" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Sonic Insights | RentSoundSystem Blog</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined';
+            font-weight: 400;
+            font-style: normal;
+            font-size: 24px;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#393939",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary-container": "#2a2a2a",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-variant": "#353534",
+                        "on-tertiary": "#303030",
+                        "secondary": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "on-surface-muted": "#E6BCC2",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-secondary": "#2f3132",
+                        "on-background": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface-container-highest": "#353534",
+                        "inverse-on-surface": "#313030",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#929090",
+                        "surface-dim": "#131313",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "surface": "#131313",
+                        "primary": "#ffb2bf",
+                        "on-primary": "#660028",
+                        "on-primary-fixed": "#3f0016",
+                        "on-error": "#690005",
+                        "background": "#131313",
+                        "surface-container": "#201f1f",
+                        "on-primary-container": "#5a0022",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#454748",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#bc004f",
+                        "secondary-fixed": "#e3e2e3",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-surface-variant": "#e6bcc2",
+                        "tertiary": "#c8c6c5",
+                        "outline-variant": "#5d3f44",
+                        "surface-tint": "#ffb2bf",
+                        "secondary-container": "#454748",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-fixed": "#ffd9de",
+                        "outline": "#ac878d",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-container": "#ff4d80",
+                        "brand-magenta": "#FC036D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter-x": "2.5rem",
+                        "component-padding-y": "0.625rem",
+                        "container-max": "1280px",
+                        "card-gap": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "component-padding-x": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "display-hero-mobile": ["Manrope", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "display-hero": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+
+<style id="rss-blog-final-fix">
+html,body{overflow-x:hidden!important}
+body{padding-top:74px!important}
+.blog-card-hidden{display:none!important}
+.blog-search-hidden{display:none!important}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.rss-blog-filter-active{color:#FC036D!important;border-bottom:2px solid #FC036D!important}
+@media(max-width:1024px){
+  section.py-section-padding-y{padding-top:70px!important;padding-bottom:70px!important}
+}
+@media(max-width:767px){
+  body{padding-top:72px!important}
+  .px-gutter-x{padding-left:18px!important;padding-right:18px!important}
+  section.py-section-padding-y{padding-top:48px!important;padding-bottom:48px!important}
+  .aspect-\[21\/9\],
+  .md\:aspect-\[16\/6\]{aspect-ratio:auto!important;min-height:620px!important}
+  h1{font-size:34px!important;line-height:42px!important}
+  .p-8{padding:22px!important}
+  .md\:p-16{padding:24px!important}
+  .flex.justify-between.items-end{flex-direction:column!important;align-items:flex-start!important;gap:18px!important}
+  article h3{font-size:20px!important;line-height:28px!important}
+  form.flex{width:100%!important}
+  form input{min-width:0!important;width:100%!important}
+  form button{width:100%!important}
+}
+</style>
+
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-brand-magenta selection:text-white">
+<div id="header-container"></div>
+<main>
+<!-- Hero Section -->
+<section class="py-section-padding-y px-gutter-x max-w-container-max mx-auto">
+<div class="relative rounded-xl overflow-hidden shadow-[0_0_30px_rgba(252,3,109,0.15)] border border-surface-glass-border aspect-[21/9] md:aspect-[16/6] bg-surface-container flex items-end">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A massive, professional line array speaker system suspended above a dark, moody stage. The speakers are silhouetted against a deep obsidian background with vibrant electric magenta LED accents cutting through the darkness. The scene feels highly technical, premium, and powerful, capturing the essence of a high-end electronic music festival or arena concert audio setup." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAj9NhAKHvdh6Ah5vTqd6sXz3Q0OoNJ4mH_Fo9VlX8FwcubZr2jcKI5iTgt_zkrkT8Jg1cURVdsh2S5fof9MJndtIA3zvLEm3dRJn_o2RtCz-K0l1qf2-JCDd3qpNqW_HZDXRHr5r6Xc8UgeP0hKx1OF9yqarhJkDSuOANPGulYvCwlcvvd1EvqXxXrQ8pVFufUTgRcmePlwOXNuCzSMdpIiWLZ2fA_PDdF6fWuELCoWaml9wGpNGRaZFKVYM0w5CVljjB-ja-ny4M');"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 p-8 md:p-16 max-w-3xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-magenta/10 border border-brand-magenta/30 mb-6">
+<span class="material-symbols-outlined text-brand-magenta text-[16px]" data-icon="insights">insights</span>
+<span class="font-label-caps text-label-caps text-brand-magenta uppercase">Étude de Cas Principale</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-4">Optimisation de la Couverture Line Array pour les Festivals en Plein Air</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-2xl">Une analyse approfondie des défis acoustiques rencontrés lors de la configuration de systèmes de diffusion à grande échelle en extérieur, avec des solutions pratiques pour une clarté maximale.</p>
+<a class="inline-flex items-center gap-2 bg-brand-magenta text-white font-label-caps text-label-caps px-8 py-4 rounded-DEFAULT shadow-[0_0_20px_rgba(252,3,109,0.3)] hover:scale-95 transition-transform uppercase" href="#">
+                        Lire l'article complet
+                        <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+<!-- Content Grid -->
+<section class="py-12 px-gutter-x max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-10 border-b border-surface-glass-border pb-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Dernières Publications</h2>
+<div class="hidden md:flex gap-4">
+<button class="font-label-caps text-label-caps text-brand-magenta border-b-2 border-brand-magenta pb-1 uppercase">Tout Voir</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-brand-magenta transition-colors uppercase">Actualités</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-brand-magenta transition-colors uppercase">Conseils</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap">
+<!-- Article Card 1 -->
+<article data-blog-card class="bg-surface-container-low rounded-lg border border-surface-glass-border overflow-hidden group hover:border-brand-magenta/50 transition-colors duration-300 flex flex-col h-full">
+<div class="aspect-video bg-surface-container-high relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A close-up view of a professional digital audio mixing console in a dark studio setting. The illuminated faders, buttons, and high-resolution metering displays glow vividly against the black surface. Focus is tight on the intricate controls, conveying technical precision and high-end audio engineering. Subtle magenta rim lighting highlights the metallic edges." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCVn0SEyLpnEDpj7tYiEgV8glLu25ZrEh1qFkdDrWjwB3jewqg4hoo5o9dO8thgh4l2DjbELIJkAwK-KqfvEsfFvPLlQIis4LDxXbZupANMpCeqbSJp6KWPNb57eqUvlm8yqdC8rzh3UkPEpENHO6eMttAI1NWTwQKCEHuQb7Lx87fOMYvfjfp66TEI74fLJpXmhR92dYGid20-zRjjsoIp7afgVW4rjxcZ3vjcvEDgG52l5xquhZ8SXer_PBhtbT1cNif1dn9A2rI');"></div>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-DEFAULT border border-surface-glass-border">
+<span class="font-label-caps text-label-caps text-tertiary uppercase">Conseils d'Experts</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-[20px] font-semibold text-on-surface mb-3 group-hover:text-brand-magenta transition-colors">La Compression Multibande sur les Voix Live : Quand et Comment l'Utiliser</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 mb-6 flex-grow">Évitez les erreurs communes lors du mixage de voix dynamiques sur scène. Ce guide détaille les réglages de crossover et les temps d'attaque optimaux.</p>
+<div class="flex justify-between items-center mt-auto pt-4 border-t border-surface-glass-border">
+<span class="font-label-caps text-[10px] text-on-surface-muted flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 8 min read
+                            </span>
+<a class="font-label-caps text-label-caps text-brand-magenta hover:text-white transition-colors flex items-center gap-1 uppercase" href="#">
+                                Lire plus <span class="material-symbols-outlined text-[16px]" data-icon="arrow_right_alt">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Article Card 2 -->
+<article data-blog-card class="bg-surface-container-low rounded-lg border border-surface-glass-border overflow-hidden group hover:border-brand-magenta/50 transition-colors duration-300 flex flex-col h-full">
+<div class="aspect-video bg-surface-container-high relative overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-105 transition-transform duration-500" data-alt="A rack of high-end audio amplifiers stacked vertically in a dark environment. The sleek, black metal chassis are detailed with tiny, precise glowing indicator lights. The lighting is dramatic, emphasizing the industrial, heavy-duty nature of professional touring sound equipment. A faint haze in the background adds atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD7bK3MyPsFw9B0O2swRO9ruFtJ_t2cTVMOfaM_T6t79GnLVS1Zik-SQpd0iyDjOA6AFoYa0dkM-HIrsJK-k2HeCAxxUB_35ZzbKR_qtfZpMOhZ7qPJqUWRSppR13050kZj6Z1IzbyUnpgmALBfBSYYJwB_gMlCcs5-Rt-WSbKt-w9xDuGNF_-NCCMq04BC7XKYxbx9hDz1TZVdVZQkxCNDQcb7DpkK6bNBcMZ1UlmcSYTmKgruRpJ6CPwUoPcLhmu6PAGLfC0ksYw');"></div>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-DEFAULT border border-surface-glass-border">
+<span class="font-label-caps text-label-caps text-tertiary uppercase">Actualités Industry</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-[20px] font-semibold text-on-surface mb-3 group-hover:text-brand-magenta transition-colors">L'Industrie se tourne vers des solutions d'amplification de classe D plus vertes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 mb-6 flex-grow">Une analyse des données de consommation électrique des principales tournées européennes et les innovations matérielles visant à réduire l'empreinte carbone.</p>
+<div class="flex justify-between items-center mt-auto pt-4 border-t border-surface-glass-border">
+<span class="font-label-caps text-[10px] text-on-surface-muted flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 5 min read
+                            </span>
+<a class="font-label-caps text-label-caps text-brand-magenta hover:text-white transition-colors flex items-center gap-1 uppercase" href="#">
+                                Lire plus <span class="material-symbols-outlined text-[16px]" data-icon="arrow_right_alt">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</article>
+<!-- Article Card 3 -->
+<article data-blog-card class="bg-surface-container-low rounded-lg border border-surface-glass-border overflow-hidden group hover:border-brand-magenta/50 transition-colors duration-300 flex flex-col h-full">
+<div class="aspect-video bg-surface-container-high relative overflow-hidden flex items-center justify-center">
+<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA24MUc3icbNL94II-_x1z7LvMT-9pZgbsCCiPZEvLbxgQNRgJvecPILbjL9VgqpOaPImEHKvHPfRmod9MEOsBp9cnP2tcvqsI5v9Uk73lQyB08B52Wzn9CZWi6ltziCzQU-GarMFDmVuEo8HBk6_Db8IzxnxdA0XOPRpTxgnXhMhGI41ZNhOzwjZFnpUXKv_jm8qj4qF9zUP9PXzclnO-oVsrHHoXoMr0K6Rx4AU7IdRG6NxQoIbd56ywOz44C3LOlUpLyYFoellg" alt="High-end audio cables and connectors with fuchsia pink rim lighting" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-3 py-1 rounded-DEFAULT border border-surface-glass-border">
+<span class="font-label-caps text-label-caps text-tertiary uppercase">Études de Cas</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline-md text-[20px] font-semibold text-on-surface mb-3 group-hover:text-brand-magenta transition-colors">Redondance Réseau au Stade de France : Architecture et Déploiement</h3>
+<p class="font-body-md text-body-md text-on-surface-variant line-clamp-3 mb-6 flex-grow">Plongée dans la topologie réseau complexe mise en place pour la cérémonie de clôture. Comment le protocole Dante a été sécurisé sur une infrastructure de fibre optique massive.</p>
+<div class="flex justify-between items-center mt-auto pt-4 border-t border-surface-glass-border">
+<span class="font-label-caps text-[10px] text-on-surface-muted flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span> 16 min read
+                            </span>
+<a class="font-label-caps text-label-caps text-brand-magenta hover:text-white transition-colors flex items-center gap-1 uppercase" href="#">
+                                Lire plus <span class="material-symbols-outlined text-[16px]" data-icon="arrow_right_alt">arrow_right_alt</span>
+</a>
+</div>
+</div>
+</article>
+</div>
+<div class="mt-12 text-center">
+<button class="bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps px-8 py-3 rounded-DEFAULT hover:bg-surface-container transition-colors uppercase">Charger Plus d'Articles</button>
+</div>
+</section>
+<!-- Newsletter Section -->
+<section class="py-section-padding-y px-gutter-x max-w-container-max mx-auto">
+<div class="bg-gradient-to-br from-surface-container-low to-surface border border-surface-glass-border rounded-xl p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 relative overflow-hidden">
+<div class="absolute -right-20 -bottom-20 w-64 h-64 bg-brand-magenta/10 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="max-w-xl relative z-10">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-4">Restez à l'écoute de l'innovation.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Abonnez-vous à notre newsletter mensuelle pour recevoir des analyses techniques exclusives, des études de cas et les dernières nouveautés de l'industrie audio professionnelle directement dans votre boîte de réception.</p>
+</div>
+<div class="w-full md:w-auto relative z-10">
+<form class="flex flex-col sm:flex-row gap-4 w-full">
+<input class="bg-surface-container-highest border border-surface-glass-border text-on-surface placeholder:text-on-surface-muted px-4 py-3 rounded-DEFAULT focus:outline-none focus:border-brand-magenta focus:ring-1 focus:ring-brand-magenta font-body-md min-w-[280px]" placeholder="Adresse e-mail professionnelle" type="email">
+<button class="bg-brand-magenta text-white font-label-caps text-label-caps px-8 py-3 rounded-DEFAULT shadow-[0_0_15px_rgba(252,3,109,0.3)] hover:scale-95 transition-transform uppercase whitespace-nowrap" type="submit">S'abonner</button>
+</form>
+<p class="font-label-caps text-[10px] text-on-surface-muted mt-3 uppercase tracking-wider">Pas de spam. Désinscription à tout moment.</p>
+</div>
+</div>
+</section>
+</main>
+<div id="footer-container"></div>
+
+
+
+<script id="rss-blog-functional">
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = Array.from(document.querySelectorAll('[data-blog-card]'));
+  const loadMoreBtn = Array.from(document.querySelectorAll('button')).find(btn => 
+    (btn.textContent || '').toLowerCase().includes('charger plus')
+  );
+
+  // Links
+  document.querySelectorAll('a').forEach((a, index) => {
+    const text = (a.textContent || '').toLowerCase().trim();
+
+    if(text.includes('marketplace')) a.href = '/catalog.html';
+    if(text.includes('about')) a.href = '/a-propos.html';
+    if(text.includes('support') || text.includes('contact')) a.href = '/contact.html';
+
+    if(text.includes('lire') || text.includes("l'article")) {
+      const card = a.closest('[data-blog-card]') || document.querySelector('section');
+      const title = card?.querySelector('h1,h3')?.textContent?.trim() || 'article-blog';
+      const slug = title.toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+        .replace(/[^a-z0-9]+/g,'-')
+        .replace(/(^-|-$)/g,'');
+      a.href = '/article.html?slug=' + encodeURIComponent(slug);
+    }
+  });
+
+  // Filters
+  const filterButtons = Array.from(document.querySelectorAll('button')).filter(btn => {
+    const t = (btn.textContent || '').toLowerCase();
+    return t.includes('tout voir') || t.includes('actualités') || t.includes('conseils');
+  });
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = (btn.textContent || '').toLowerCase();
+      filterButtons.forEach(b => b.classList.remove('rss-blog-filter-active'));
+      btn.classList.add('rss-blog-filter-active');
+
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        let show = true;
+        if(filter.includes('actualités')) show = text.includes('actualité') || text.includes('industry');
+        if(filter.includes('conseils')) show = text.includes('conseil') || text.includes('expert');
+        card.classList.toggle('blog-search-hidden', !show);
+      });
+    });
+  });
+
+  // Search button opens search prompt/filter
+  document.querySelectorAll('[data-icon="search"], .material-symbols-outlined').forEach(icon => {
+    if((icon.textContent || '').trim() === 'search') {
+      icon.closest('button')?.addEventListener('click', () => {
+        const query = prompt('Rechercher dans le blog :');
+        if(query === null) return;
+        const q = query.toLowerCase().trim();
+        cards.forEach(card => {
+          card.classList.toggle('blog-search-hidden', q && !card.textContent.toLowerCase().includes(q));
+        });
+      });
+    }
+  });
+
+  // Load more simulation
+  if(loadMoreBtn){
+    loadMoreBtn.addEventListener('click', () => {
+      loadMoreBtn.textContent = 'Tous les articles sont affichés';
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.classList.add('opacity-60');
+    });
+  }
+
+  // Newsletter
+  document.querySelectorAll('form').forEach(form => {
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = form.querySelector('input[type="email"]')?.value?.trim();
+      if(!email){
+        alert('Merci de renseigner votre email.');
+        return;
+      }
+
+      const btn = form.querySelector('button[type="submit"]');
+      const old = btn ? btn.textContent : '';
+      if(btn) btn.textContent = 'INSCRIPTION OK ✓';
+
+      setTimeout(() => {
+        if(btn) btn.textContent = old;
+        form.reset();
+      }, 2200);
+    });
+  });
+});
+</script>
+<script src="/components.js"></script>
+
+</body></html>
