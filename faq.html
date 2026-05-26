@@ -225,6 +225,78 @@ html,body{
 <span class="material-symbols-outlined">arrow_forward</span>
 </button>
 
+</div>
+</div>
+</section>
+<!-- FAQ Content Section -->
+<section class="w-full max-w-[1280px] mx-auto px-6 py-16 flex flex-col lg:flex-row gap-12 relative z-10">
+<!-- Sidebar Navigation (Sticky) -->
+<aside class="w-full lg:w-1/4 flex-shrink-0">
+<div class="sticky top-32 glass-panel rounded-xl p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 pb-4 border-b border-surface-glass-border">Catégories</h3>
+<nav class="flex flex-col gap-2" id="faq-nav">
+<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all active-nav" href="#location">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-body-md text-body-md font-semibold">Durée &amp; Réservation</span>
+</a>
+<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#partenaire">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-body-md text-body-md font-semibold">Paiements &amp; Dépôts</span>
+</a>
+<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#logistique">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-md text-body-md font-semibold">Logistique &amp; Technique</span>
+</a>
+<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#securite">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-body-md text-body-md font-semibold">Paiements &amp; Sécurité</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Accordions Container -->
+<div class="w-full lg:w-3/4 flex flex-col gap-16">
+<!-- Category 1 -->
+<div class="scroll-mt-32" id="location">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-[#fc036d]">calendar_month</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Durée &amp; Rservation</h2>
+</div>
+<div class="flex flex-col gap-4">
+<div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer" onclick="toggleAccordion(this)">
+<div class="px-6 py-5 flex justify-between items-center group">
+<h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Quelle est la dure minimale de location ?</h3>
+<span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span>
+</div>
+<div class="accordion-content px-6 bg-surface-container-low/50">
+<p class="font-body-md text-body-md text-on-surface-variant">La dure minimale de location est de 24 heures (une journe). Pour les locations de longue dure, des tarifs dgressifs sont automatiquement appliqus lors de la rservation.</p>
+</div>
+</div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Livrez-vous dans toute la France ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">Oui, nous livrons dans toutes les grandes villes et rgions. Les frais de livraison sont calculs en fonction de la distance et du volume de matriel command.</p></div></div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer mt-4" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Proposez-vous l'installation par un technicien ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">Absolument. Vous pouvez choisir l'option 'Installation &amp; Montage' lors de votre commande. Un technicien qualifi s'occupera du dploiement et des tests sonores sur votre lieu d'vnement.</p></div></div>
+<!-- Add more accordions as needed -->
+</div>
+</div>
+<!-- Category 2 -->
+<div class="scroll-mt-32" id="partenaire">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-[#fc036d]">handshake</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Paiements &amp; Dépôts</h2>
+</div>
+<div class="flex flex-col gap-4">
+<div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer" onclick="toggleAccordion(this)">
+<div class="px-6 py-5 flex justify-between items-center group">
+<h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Comment fonctionne le dpt de garantie (caution) ?</h3>
+<span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span>
+</div>
+<div class="accordion-content px-6 bg-surface-container-low/50">
+<p class="font-body-md text-body-md text-on-surface-variant">Une empreinte bancaire est ralise avant le dbut de la location. Le montant dpend de la valeur du matriel lou. Cette somme n'est pas dbite, sauf en cas de dgradation ou de non-restitution du matriel.</p>
+</div>
+</div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer mt-4" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Quels sont les moyens de paiement accepts ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">Nous acceptons les cartes bancaires (Visa, Mastercard, AMEX), les virements bancaires pour les professionnels, et Apple/Google Pay.</p></div></div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer mt-4" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Quelle est votre politique d'annulation ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">L'annulation est gratuite jusqu' 48h avant l'vnement. Entre 48h et 24h, 50% du montant est d. Moins de 24h avant, la totalit de la prestation est due.</p></div></div>
+</div>
+</div>
 <!-- Category 3 -->
 <div class="scroll-mt-32" id="logistique">
 <div class="flex items-center gap-4 mb-8">
@@ -308,79 +380,6 @@ html,body{
 </div>
 </div>
 
-</div>
-</div>
-
-</div>
-</div>
-</section>
-<!-- FAQ Content Section -->
-<section class="w-full max-w-[1280px] mx-auto px-6 py-16 flex flex-col lg:flex-row gap-12 relative z-10">
-<!-- Sidebar Navigation (Sticky) -->
-<aside class="w-full lg:w-1/4 flex-shrink-0">
-<div class="sticky top-32 glass-panel rounded-xl p-6">
-<h3 class="font-headline-md text-headline-md text-on-surface mb-6 pb-4 border-b border-surface-glass-border">Catégories</h3>
-<nav class="flex flex-col gap-2" id="faq-nav">
-<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all active-nav" href="#location">
-<span class="material-symbols-outlined">calendar_month</span>
-<span class="font-body-md text-body-md font-semibold">Durée &amp; Réservation</span>
-</a>
-<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#partenaire">
-<span class="material-symbols-outlined">handshake</span>
-<span class="font-body-md text-body-md font-semibold">Paiements &amp; Dépôts</span>
-</a>
-<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#logistique">
-<span class="material-symbols-outlined">local_shipping</span>
-<span class="font-body-md text-body-md font-semibold">Logistique &amp; Technique</span>
-</a>
-<a class="faq-nav-link flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" href="#securite">
-<span class="material-symbols-outlined">payments</span>
-<span class="font-body-md text-body-md font-semibold">Paiements &amp; Sécurité</span>
-</a>
-</nav>
-</div>
-</aside>
-<!-- Accordions Container -->
-<div class="w-full lg:w-3/4 flex flex-col gap-16">
-<!-- Category 1 -->
-<div class="scroll-mt-32" id="location">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border border-surface-glass-border">
-<span class="material-symbols-outlined text-[#fc036d]">calendar_month</span>
-</div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface">Durée &amp; Rservation</h2>
-</div>
-<div class="flex flex-col gap-4">
-<div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer" onclick="toggleAccordion(this)">
-<div class="px-6 py-5 flex justify-between items-center group">
-<h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Quelle est la dure minimale de location ?</h3>
-<span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span>
-</div>
-<div class="accordion-content px-6 bg-surface-container-low/50">
-<p class="font-body-md text-body-md text-on-surface-variant">La dure minimale de location est de 24 heures (une journe). Pour les locations de longue dure, des tarifs dgressifs sont automatiquement appliqus lors de la rservation.</p>
-</div>
-</div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Livrez-vous dans toute la France ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">Oui, nous livrons dans toutes les grandes villes et rgions. Les frais de livraison sont calculs en fonction de la distance et du volume de matriel command.</p></div></div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer mt-4" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Proposez-vous l'installation par un technicien ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">Absolument. Vous pouvez choisir l'option 'Installation &amp; Montage' lors de votre commande. Un technicien qualifi s'occupera du dploiement et des tests sonores sur votre lieu d'vnement.</p></div></div>
-<!-- Add more accordions as needed -->
-</div>
-</div>
-<!-- Category 2 -->
-<div class="scroll-mt-32" id="partenaire">
-<div class="flex items-center gap-4 mb-8">
-<div class="w-12 h-12 rounded-full bg-surface-container flex items-center justify-center border border-surface-glass-border">
-<span class="material-symbols-outlined text-[#fc036d]">handshake</span>
-</div>
-<h2 class="font-headline-lg text-headline-lg text-on-surface">Paiements &amp; Dépôts</h2>
-</div>
-<div class="flex flex-col gap-4">
-<div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer" onclick="toggleAccordion(this)">
-<div class="px-6 py-5 flex justify-between items-center group">
-<h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Comment fonctionne le dpt de garantie (caution) ?</h3>
-<span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span>
-</div>
-<div class="accordion-content px-6 bg-surface-container-low/50">
-<p class="font-body-md text-body-md text-on-surface-variant">Une empreinte bancaire est ralise avant le dbut de la location. Le montant dpend de la valeur du matriel lou. Cette somme n'est pas dbite, sauf en cas de dgradation ou de non-restitution du matriel.</p>
-</div>
-</div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer mt-4" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Quels sont les moyens de paiement accepts ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">Nous acceptons les cartes bancaires (Visa, Mastercard, AMEX), les virements bancaires pour les professionnels, et Apple/Google Pay.</p></div></div><div class="accordion-item glass-panel rounded-xl overflow-hidden cursor-pointer mt-4" onclick="toggleAccordion(this)"><div class="px-6 py-5 flex justify-between items-center group"><h3 class="font-headline-md text-[20px] font-semibold text-on-surface group-hover:text-[#fc036d] transition-colors accordion-title">Quelle est votre politique d'annulation ?</h3><span class="material-symbols-outlined text-on-surface-variant accordion-icon transition-transform duration-300">expand_more</span></div><div class="accordion-content px-6 bg-surface-container-low/50"><p class="font-body-md text-body-md text-on-surface-variant">L'annulation est gratuite jusqu' 48h avant l'vnement. Entre 48h et 24h, 50% du montant est d. Moins de 24h avant, la totalit de la prestation est due.</p></div></div>
 </div>
 </div>
 </div>
