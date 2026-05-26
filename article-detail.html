@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Optimisation de la Couverture Line Array - Sonic Insights | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-fixed": "#e3e2e3",
+                    "on-surface-variant": "#e6bcc2",
+                    "secondary-container": "#454748",
+                    "primary": "#ffb2bf",
+                    "on-secondary": "#2f3132",
+                    "on-secondary-fixed-variant": "#454748",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "primary-container": "#ff4d80",
+                    "surface-variant": "#353534",
+                    "on-tertiary-container": "#2a2a2a",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed": "#1b1b1c",
+                    "background": "#131313",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary-container": "#929090",
+                    "inverse-primary": "#bc004f",
+                    "on-secondary-fixed": "#1a1c1d",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-tint": "#ffb2bf",
+                    "inverse-surface": "#e5e2e1",
+                    "outline-variant": "#5d3f44",
+                    "primary-fixed": "#ffd9de",
+                    "on-surface-muted": "#E6BCC2",
+                    "surface-dim": "#131313",
+                    "on-primary": "#660028",
+                    "error": "#ffb4ab",
+                    "on-surface": "#e5e2e1",
+                    "on-primary-fixed": "#3f0016",
+                    "surface-bright": "#393939",
+                    "surface-glass": "rgba(31, 31, 31, 0.6)",
+                    "surface": "#131313",
+                    "on-error": "#690005",
+                    "on-background": "#e5e2e1",
+                    "surface-container": "#201f1f",
+                    "on-primary-container": "#5a0022",
+                    "on-secondary-container": "#b5b5b6",
+                    "neon-glow": "rgba(252, 3, 109, 0.3)",
+                    "tertiary": "#c8c6c5",
+                    "surface-container-highest": "#353534",
+                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                    "on-tertiary": "#303030",
+                    "on-primary-fixed-variant": "#90003b",
+                    "inverse-on-surface": "#313030",
+                    "secondary": "#c6c6c7",
+                    "outline": "#ac878d",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-fixed-dim": "#ffb2bf"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "section-padding-y": "6rem",
+                    "gutter-x": "2.5rem",
+                    "component-padding-x": "1.5rem",
+                    "card-gap": "1.5rem",
+                    "component-padding-y": "0.625rem"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Manrope"
+                    ],
+                    "body-md": [
+                            "Inter"
+                    ],
+                    "label-caps": [
+                            "Inter"
+                    ],
+                    "display-hero-mobile": [
+                            "Manrope"
+                    ],
+                    "headline-lg": [
+                            "Manrope"
+                    ],
+                    "display-hero": [
+                            "Manrope"
+                    ],
+                    "body-lg": [
+                            "Inter"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-caps": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.0",
+                                    "letterSpacing": "0.15em",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "display-hero-mobile": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "40px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "display-hero": [
+                            "72px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "20px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+    },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.7) 0%, rgba(20, 20, 20, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--surface-glass-border, rgba(255, 255, 255, 0.05));
+        }
+        .neon-shadow {
+            box-shadow: 0 0 25px rgba(252, 3, 109, 0.3);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+        }
+    </style>
+
+<style id="rss-article-responsive">
+html,body{overflow-x:hidden!important}
+body{padding-top:78px!important}
+@media(max-width:1024px){
+  header.min-h-\[500px\]{min-height:420px!important}
+  aside.sticky{position:relative!important;top:auto!important}
+}
+@media(max-width:767px){
+  body{padding-top:72px!important}
+  .px-component-padding-x{
+    padding-left:18px!important;
+    padding-right:18px!important;
+  }
+  h1.font-display-hero-mobile{
+    font-size:38px!important;
+    line-height:46px!important;
+  }
+  .grid-cols-1.lg\:grid-cols-12{
+    gap:32px!important;
+  }
+  .glass-panel.p-8,
+  .bg-surface-container-high.p-8{
+    padding:22px!important;
+  }
+  .flex.items-center.gap-6{
+    flex-wrap:wrap!important;
+    gap:14px!important;
+  }
+  .w-full.h-\[400px\]{
+    height:260px!important;
+  }
+}
+</style>
+
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-primary selection:text-on-primary">
+<div id="header-container"></div>
+<!-- Main Content Canvas -->
+<main class="w-full">
+<!-- Hero Section -->
+<header class="relative w-full h-[60vh] min-h-[500px] flex items-end pb-section-padding-y">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0 overflow-hidden">
+<img alt="Concert stage lighting" class="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida/ADBb0uhWO6QEnZdEirw4s5MgOQPufGS0fBWbe46J3LX-SXYH0eAPz_f9APg1ZQtzl6u7SJkGwgfAVsTUA_eE4Y1cxMIHwBzvj6QxqQTn3SswkhDAKiw6eOU0PMcB7qGReS8-mIsoGdoAuJkN0OhuS_gKMDSerXOQKQFBB5iPl5LOj43sC9Ut87pY1nt5CKIHpxQLl_vWGE_YR9vK4kRsYDLvwWbTtOKKrC8G_IrpAT2MJLhA0PkY6bqbKSqHBYE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-component-padding-x">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 text-sm text-on-surface-variant mb-6 font-body-md">
+<a class="hover:text-primary transition-colors" href="#">Home</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Sonic Insights</a>
+<span class="material-symbols-outlined text-xs">chevron_right</span>
+<span class="text-primary">Études de cas</span>
+</nav>
+<!-- Category Badge -->
+<div class="inline-flex items-center gap-2 bg-primary/10 border border-primary/30 text-primary px-3 py-1 rounded-full font-label-caps text-label-caps mb-6 backdrop-blur-sm">
+<span class="material-symbols-outlined text-[14px]">speaker</span>
+                    TECHNICAL REVIEW
+                </div>
+<!-- Title -->
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-6 max-w-4xl">
+                    Optimisation de la Couverture Line Array pour les Festivals en Plein Air
+                </h1>
+<!-- Meta -->
+<div class="flex items-center gap-6 text-on-surface-variant font-body-md">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-on-surface">person</span>
+</div>
+<div>
+<p class="text-on-surface font-headline-md text-sm">Jean-Luc Morel</p>
+<p class="text-xs">Ingénieur Système Audio</p>
+</div>
+</div>
+<div class="w-px h-8 bg-surface-glass-border"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+<span>12 min de lecture</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+<span>24 Oct 2025</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Layout Grid -->
+<div class="max-w-container-max mx-auto px-component-padding-x py-12 grid grid-cols-1 lg:grid-cols-12 gap-gutter-x items-start">
+<!-- Main Article Content (Left Column) -->
+<article class="lg:col-span-8 space-y-12">
+<section class="prose prose-invert max-w-none">
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                        La conception d'un système de diffusion sonore pour un festival en plein air présente des défis uniques comparés aux environnements fermés. L'absence de réverbération naturelle, l'impact des conditions météorologiques et la nécessité de couvrir des zones vastes et asymétriques exigent une approche rigoureuse de l'ingénierie des Line Arrays.
+                    </p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6 border-l-4 border-primary pl-4" id="section-1">1. La Physique de la Propagation Thermique</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                        L'un des facteurs les plus souvent sous-estimés dans la conception de festivals est le gradient de température. En journée, le soleil chauffe la surface du sol, créant une couche d'air chaud qui réfracte les ondes sonores vers le haut. Ce phénomène peut réduire drastiquement l'intelligibilité dans les hautes fréquences à grande distance.
+                    </p>
+<!-- Pull Quote -->
+<blockquote class="glass-panel p-8 rounded-xl my-10 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-2 h-full bg-primary"></div>
+<span class="material-symbols-outlined text-primary text-4xl opacity-50 absolute top-4 right-4">format_quote</span>
+<p class="font-headline-md text-xl text-on-surface relative z-10 italic">
+                            "Un Line Array parfaitement calé à 10h du matin peut perdre jusqu'à 6dB dans la bande des 4kHz à 80 mètres lorsque le soleil atteint son zénith. La compensation prédictive est non négociable."
+                        </p>
+</blockquote>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6 border-l-4 border-primary pl-4" id="section-2">2. Stratégies de Subwoofers : End-Fire vs. Gradient</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                        Le contrôle de l'énergie dans les basses fréquences (LF) est crucial, non seulement pour l'expérience du public, mais aussi pour le confort des artistes sur scène et le respect des normes de nuisances sonores locales.
+                    </p>
+</section>
+<!-- Technical Image Block -->
+<figure class="w-full rounded-xl overflow-hidden glass-panel border border-surface-glass-border">
+<img alt="Audio engineer adjusting digital mixing console during live event" class="w-full h-[400px] object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uiSy9QkghPk-GgAOGf8GuAe-2g5JDEmdgX8yefhrkANj5nPK-4p8W6nQyL3zTHYo7I-ACgsGRS3G9BNa1HRDWhvTYcCS50mg8IvERfvdtzNvyN6UBd3BAgkS1MqPrq8SEFAJUyroXp-ZXVZ5mq20zUH6hfX7pDIGvAWu5OHcDMX6fB1kAfinpde_yXO5jBYzvOpJkmNBpcuClzstckIKJqAGn6XLrFpajanI8F5b3lmAcRRgmMZmi-xG8s"/>
+<figcaption class="p-4 bg-surface-container-low border-t border-surface-glass-border text-sm text-on-surface-variant flex justify-between items-center">
+<span>Analyse en temps réel de la réponse impulsionnelle via Smaart v9.</span>
+<span class="material-symbols-outlined text-primary text-[18px]">insights</span>
+</figcaption>
+</figure>
+<section class="prose prose-invert max-w-none">
+<!-- Technical Spec Block -->
+<div class="bg-surface-container-high border border-surface-glass-border rounded-xl p-8 my-10">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined">tune</span>
+                            Paramètres de Configuration Recommandés
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="border-b border-surface-glass-border pb-4">
+<span class="block text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Angle Inter-Boîtes Max</span>
+<span class="font-headline-md text-lg text-on-surface">5° (Haut) à 10° (Bas)</span>
+</div>
+<div class="border-b border-surface-glass-border pb-4">
+<span class="block text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Crossover Typique Subs</span>
+<span class="font-headline-md text-lg text-on-surface">60Hz - 80Hz (Linkwitz-Riley 24dB)</span>
+</div>
+<div class="border-b md:border-b-0 border-surface-glass-border pb-4 md:pb-0">
+<span class="block text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Compensation Atmosphérique</span>
+<span class="font-headline-md text-lg text-on-surface">+1.5dB / 100m &gt; 4kHz</span>
+</div>
+<div>
+<span class="block text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">Délai d'Alignement Front-Fill</span>
+<span class="font-headline-md text-lg text-on-surface">~15ms (Mesuré au centre)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Tags & Sharing -->
+<div class="border-t border-surface-glass-border pt-8 mt-12 flex flex-col md:flex-row justify-between items-center gap-6">
+<div class="flex flex-wrap gap-2">
+<span class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary transition-colors cursor-pointer">Line Array</span>
+<span class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary transition-colors cursor-pointer">Festival</span>
+<span class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary transition-colors cursor-pointer">Acoustique</span>
+<span class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary transition-colors cursor-pointer">L-Acoustics</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-sm font-headline-md text-on-surface">Partager:</span>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">bookmark</span>
+</button>
+</div>
+</div>
+</article>
+<!-- Sidebar (Right Column) -->
+<aside class="lg:col-span-4 space-y-8 sticky top-28">
+<!-- Table of Contents -->
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-headline-md text-lg text-on-surface mb-4 border-b border-surface-glass-border pb-2">Sommaire</h3>
+<ul class="space-y-3">
+<li><a class="text-primary text-sm hover:underline flex items-center gap-2" href="#"><span class="material-symbols-outlined text-[16px]">arrow_right</span> 1. La Physique de la Propagation Thermique</a></li>
+<li><a class="text-on-surface-variant text-sm hover:text-primary transition-colors flex items-center gap-2" href="#"><span class="material-symbols-outlined text-[16px] opacity-0">arrow_right</span> 2. Stratégies de Subwoofers</a></li>
+<li><a class="text-on-surface-variant text-sm hover:text-primary transition-colors flex items-center gap-2" href="#"><span class="material-symbols-outlined text-[16px] opacity-0">arrow_right</span> 3. Les Outils de Prédiction</a></li>
+<li><a class="text-on-surface-variant text-sm hover:text-primary transition-colors flex items-center gap-2" href="#"><span class="material-symbols-outlined text-[16px] opacity-0">arrow_right</span> 4. Cas Pratique: Festival Main Stage</a></li>
+</ul>
+</div>
+<!-- Related Articles -->
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-headline-md text-lg text-on-surface mb-6 border-b border-surface-glass-border pb-2">Articles Similaires</h3>
+<div class="space-y-6">
+<a class="group block" href="#">
+<div class="flex gap-4 items-center">
+<div class="w-20 h-16 bg-surface-container-high rounded overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-gradient-to-br from-surface-variant to-background"></div>
+</div>
+<div>
+<h4 class="font-headline-md text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-2">L'impact du vent sur les hautes fréquences en plein air</h4>
+<span class="text-xs text-on-surface-variant mt-1 block">5 min de lecture</span>
+</div>
+</div>
+</a>
+<a class="group block" href="#">
+<div class="flex gap-4 items-center">
+<div class="w-20 h-16 bg-surface-container-high rounded overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-gradient-to-br from-surface-variant to-background"></div>
+</div>
+<div>
+<h4 class="font-headline-md text-sm text-on-surface group-hover:text-primary transition-colors line-clamp-2">Comprendre les configurations End-Fire</h4>
+<span class="text-xs text-on-surface-variant mt-1 block">8 min de lecture</span>
+</div>
+</div>
+</a>
+</div>
+</div>
+<!-- CTA Block -->
+<div class="bg-surface-container-lowest border border-primary/30 p-8 rounded-xl text-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-50"></div>
+<span class="material-symbols-outlined text-primary text-5xl mb-4 group-hover:scale-110 transition-transform duration-500">support_agent</span>
+<h3 class="font-headline-md text-xl text-on-surface mb-3 relative z-10">Besoin d'expertise pour votre festival ?</h3>
+<p class="text-sm text-on-surface-variant mb-6 relative z-10">Nos ingénieurs systèmes sont disponibles pour la modélisation et le déploiement de vos parcs audio.</p>
+<button class="w-full bg-transparent border border-primary text-primary font-label-caps text-label-caps uppercase px-6 py-3 rounded hover:bg-primary hover:text-on-primary transition-all duration-300 relative z-10">Demander un Devis</button>
+</div>
+</aside>
+</div>
+</main>
+<div id="footer-container"></div>
+
+<script id="rss-article-functional">
+document.addEventListener('DOMContentLoaded', () => {
+
+  // TOC smooth scroll
+  document.querySelectorAll('aside a').forEach(link => {
+    const txt = (link.textContent || '').toLowerCase();
+
+    if(txt.includes('physique')){
+      link.href = '#section-1';
+    }
+
+    if(txt.includes('subwoofers')){
+      link.href = '#section-2';
+    }
+
+    link.addEventListener('click', (e) => {
+      if(link.getAttribute('href')?.startsWith('#')){
+        e.preventDefault();
+        document.querySelector(link.getAttribute('href'))?.scrollIntoView({
+          behavior:'smooth',
+          block:'start'
+        });
+      }
+    });
+  });
+
+  // CTA button
+  document.querySelectorAll('button').forEach(btn => {
+    const txt = (btn.textContent || '').toLowerCase();
+
+    if(txt.includes('devis')){
+      btn.addEventListener('click', () => {
+        window.location.href = '/contact.html';
+      });
+    }
+
+    if(txt.includes('share')){
+      btn.addEventListener('click', async () => {
+        try{
+          await navigator.share({
+            title: document.title,
+            url: window.location.href
+          });
+        }catch(e){}
+      });
+    }
+  });
+
+  // Related articles
+  document.querySelectorAll('a').forEach(a => {
+    const txt = (a.textContent || '').toLowerCase();
+
+    if(txt.includes('home')) a.href = '/';
+    if(txt.includes('sonic insights')) a.href = '/blog.html';
+
+    if(txt.includes('impact du vent')){
+      a.href = '/article.html?slug=impact-vent-frequences';
+    }
+
+    if(txt.includes('end-fire')){
+      a.href = '/article.html?slug=comprendre-end-fire';
+    }
+  });
+
+});
+</script>
+<script src="/components.js"></script>
+
+</body></html>
