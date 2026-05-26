@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
         .replace(/[^a-z0-9]+/g,'-')
         .replace(/(^-|-$)/g,'');
-      a.href = '/article.html?slug=' + encodeURIComponent(slug);
+      a.href = '/article-detail.html?slug=' + encodeURIComponent(slug);
     }
   });
 
@@ -365,6 +365,45 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+
+<script id="rss-blog-article-linker">
+document.addEventListener('DOMContentLoaded', () => {
+  function slugify(text){
+    return String(text || 'article')
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+      .replace(/[^a-z0-9]+/g,'-')
+      .replace(/(^-|-$)/g,'');
+  }
+
+  const featured = Array.from(document.querySelectorAll('a')).find(a =>
+    (a.textContent || '').toLowerCase().includes("l'article complet")
+  );
+  if(featured){
+    featured.href = '/article-detail.html?slug=optimisation-couverture-line-array-festivals-plein-air';
+  }
+
+  document.querySelectorAll('[data-blog-card]').forEach(card => {
+    const title = card.querySelector('h3')?.textContent?.trim() || 'article-blog';
+    const slug = slugify(title);
+    const url = '/article-detail.html?slug=' + encodeURIComponent(slug);
+
+    card.style.cursor = 'pointer';
+
+    card.querySelectorAll('a').forEach(a => {
+      if((a.textContent || '').toLowerCase().includes('lire')){
+        a.href = url;
+      }
+    });
+
+    card.addEventListener('click', (e) => {
+      if(e.target.closest('a,button')) return;
+      window.location.href = url;
+    });
+  });
+});
+</script>
+
 <script src="/components.js"></script>
 
 </body></html>

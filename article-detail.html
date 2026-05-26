@@ -225,9 +225,9 @@ body{padding-top:78px!important}
 <div class="relative z-10 w-full max-w-container-max mx-auto px-component-padding-x">
 <!-- Breadcrumbs -->
 <nav class="flex items-center gap-2 text-sm text-on-surface-variant mb-6 font-body-md">
-<a class="hover:text-primary transition-colors" href="#">Home</a>
+<a class="hover:text-primary transition-colors" href="/">Home</a>
 <span class="material-symbols-outlined text-xs">chevron_right</span>
-<a class="hover:text-primary transition-colors" href="#">Sonic Insights</a>
+<a class="hover:text-primary transition-colors" href="/blog.html">Sonic Insights</a>
 <span class="material-symbols-outlined text-xs">chevron_right</span>
 <span class="text-primary">Études de cas</span>
 </nav>
@@ -461,6 +461,155 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 </script>
+
+<script id="rss-article-dynamic-content">
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get('slug') || 'optimisation-couverture-line-array-festivals-plein-air';
+
+  const articles = {
+    'optimisation-couverture-line-array-festivals-plein-air': {
+      category: 'Étude de Cas',
+      badge: 'TECHNICAL REVIEW',
+      title: 'Optimisation de la Couverture Line Array pour les Festivals en Plein Air',
+      author: 'Jean-Luc Morel',
+      role: 'Ingénieur Système Audio',
+      read: '12 min de lecture',
+      date: '24 Oct 2025',
+      intro: "La conception d’un système de diffusion sonore pour un festival en plein air présente des défis uniques : couverture longue distance, météo, gestion des basses fréquences et intelligibilité homogène.",
+      h1: '1. La Physique de la Propagation Thermique',
+      p1: "En extérieur, les variations de température modifient la propagation des hautes fréquences. Une calibration faite le matin peut changer fortement en journée, surtout sur les longues distances.",
+      quote: "Un Line Array bien calé doit être anticipé pour la distance, la météo et les variations de température.",
+      h2: '2. Stratégies de Subwoofers : End-Fire vs. Gradient',
+      p2: "Le contrôle des basses fréquences permet d’améliorer l’impact public tout en réduisant les nuisances arrière scène et les débordements sonores.",
+      tags: ['Line Array','Festival','Acoustique','Subwoofers']
+    },
+    'la-compression-multibande-sur-les-voix-live-quand-et-comment-l-utiliser': {
+      category: "Conseils d’Experts",
+      badge: 'EXPERT TIPS',
+      title: "La Compression Multibande sur les Voix Live : Quand et Comment l’Utiliser",
+      author: 'Équipe RentSoundSystem',
+      role: 'Mixage Live',
+      read: '8 min de lecture',
+      date: '2026',
+      intro: "La compression multibande peut stabiliser une voix live très dynamique sans écraser toute la performance. Elle permet de contrôler certaines zones fréquentielles sans affecter le reste du signal.",
+      h1: '1. Quand utiliser une compression multibande ?',
+      p1: "Elle devient utile lorsque la voix change fortement selon les registres : bas médiums trop présents, sifflantes agressives ou projection irrégulière.",
+      quote: "L’objectif n’est pas de compresser plus, mais de compresser uniquement la zone qui pose problème.",
+      h2: '2. Réglages recommandés en live',
+      p2: "Travaillez avec des seuils modérés, des attaques pas trop rapides et vérifiez toujours le rendu dans le système principal plutôt qu’au casque uniquement.",
+      tags: ['Mixage Live','Voix','Compression','Console']
+    },
+    'l-industrie-se-tourne-vers-des-solutions-d-amplification-de-classe-d-plus-vertes': {
+      category: 'Actualités Industry',
+      badge: 'INDUSTRY NEWS',
+      title: "L’Industrie se tourne vers des solutions d’amplification de classe D plus vertes",
+      author: 'RentSoundSystem Newsroom',
+      role: 'Veille Audio Pro',
+      read: '5 min de lecture',
+      date: '2026',
+      intro: "Les amplificateurs de classe D s’imposent dans les tournées et installations grâce à leur rendement, leur poids réduit et leur consommation électrique optimisée.",
+      h1: '1. Pourquoi la classe D gagne du terrain',
+      p1: "La réduction de la consommation électrique est devenue un enjeu majeur pour les événements, les festivals et les prestataires techniques.",
+      quote: "Moins d’énergie consommée, moins de poids transporté, plus d’efficacité opérationnelle.",
+      h2: '2. Impact sur les prestataires',
+      p2: "Ces solutions permettent de réduire les coûts de transport, simplifier les racks d’amplification et améliorer la fiabilité globale des systèmes.",
+      tags: ['Amplification','Classe D','Énergie','Touring']
+    },
+    'redondance-reseau-au-stade-de-france-architecture-et-deploiement': {
+      category: 'Études de Cas',
+      badge: 'CASE STUDY',
+      title: 'Redondance Réseau au Stade de France : Architecture et Déploiement',
+      author: 'Équipe Technique',
+      role: 'Infrastructure Audio Réseau',
+      read: '16 min de lecture',
+      date: '2026',
+      intro: "Les grands événements nécessitent une architecture réseau audio robuste, capable de supporter les flux critiques avec redondance et supervision permanente.",
+      h1: '1. Architecture réseau primaire et secondaire',
+      p1: "Un réseau Dante ou AVB doit être pensé avec chemins séparés, switches managés et monitoring continu pour éviter tout point de rupture.",
+      quote: "La redondance n’est pas une option sur un événement critique : c’est une partie du design système.",
+      h2: '2. Supervision et tests avant ouverture public',
+      p2: "Les tests de charge, la vérification des latences et la documentation des routes audio sont indispensables avant exploitation.",
+      tags: ['Dante','Réseau Audio','Stade','Redondance']
+    },
+    'impact-vent-frequences': {
+      category: 'Conseils Techniques',
+      badge: 'EXPERT TIPS',
+      title: "L’impact du vent sur les hautes fréquences en plein air",
+      author: 'RentSoundSystem',
+      role: 'Acoustique Outdoor',
+      read: '5 min de lecture',
+      date: '2026',
+      intro: "Le vent influence la perception des hautes fréquences en extérieur et peut créer des variations importantes selon les zones du public.",
+      h1: '1. Comprendre l’effet du vent',
+      p1: "Les hautes fréquences sont particulièrement sensibles aux mouvements d’air, ce qui peut réduire la précision perçue à distance.",
+      quote: "En plein air, la météo fait partie du système audio.",
+      h2: '2. Solutions pratiques',
+      p2: "Prévoyez des zones de mesure, adaptez les délais/fills et évitez de surcorriger une zone au détriment d’une autre.",
+      tags: ['Vent','Outdoor','Acoustique','Festival']
+    },
+    'comprendre-end-fire': {
+      category: 'Guide Technique',
+      badge: 'TECHNICAL GUIDE',
+      title: 'Comprendre les configurations End-Fire',
+      author: 'RentSoundSystem',
+      role: 'Systèmes Subwoofers',
+      read: '8 min de lecture',
+      date: '2026',
+      intro: "La configuration End-Fire permet de diriger l’énergie grave vers le public tout en réduisant le niveau derrière les subs.",
+      h1: '1. Principe de base',
+      p1: "L’End-Fire utilise plusieurs subwoofers alignés avec des délais calculés pour additionner vers l’avant et atténuer vers l’arrière.",
+      quote: "Le grave se contrôle avec le placement, le délai et la cohérence de phase.",
+      h2: '2. Mise en œuvre',
+      p2: "La distance entre subs, le délai et la fréquence de travail doivent être adaptés au modèle utilisé et à la zone à couvrir.",
+      tags: ['Subwoofers','End-Fire','Basses','Festival']
+    }
+  };
+
+  const data = articles[slug] || articles['optimisation-couverture-line-array-festivals-plein-air'];
+
+  document.title = data.title + ' | RentSoundSystem Blog';
+
+  const heroTitle = document.querySelector('h1');
+  if(heroTitle) heroTitle.textContent = data.title;
+
+  const badge = Array.from(document.querySelectorAll('.font-label-caps')).find(el => (el.textContent || '').includes('TECHNICAL') || (el.textContent || '').includes('REVIEW'));
+  if(badge) badge.textContent = data.badge;
+
+  const category = document.querySelector('nav span.text-primary');
+  if(category) category.textContent = data.category;
+
+  const author = Array.from(document.querySelectorAll('p')).find(p => (p.textContent || '').includes('Jean-Luc'));
+  if(author) author.textContent = data.author;
+
+  const role = Array.from(document.querySelectorAll('p.text-xs')).find(p => (p.textContent || '').includes('Ingénieur'));
+  if(role) role.textContent = data.role;
+
+  const metaSpans = Array.from(document.querySelectorAll('.flex.items-center.gap-2 span:last-child'));
+  metaSpans.forEach(span => {
+    if((span.textContent || '').includes('min')) span.textContent = data.read;
+    if((span.textContent || '').includes('Oct')) span.textContent = data.date;
+  });
+
+  const articleParagraphs = document.querySelectorAll('article section.prose p');
+  if(articleParagraphs[0]) articleParagraphs[0].textContent = data.intro;
+  if(articleParagraphs[1]) articleParagraphs[1].textContent = data.p1;
+  if(articleParagraphs[2]) articleParagraphs[2].textContent = data.p2;
+
+  const headings = document.querySelectorAll('article h2');
+  if(headings[0]) headings[0].textContent = data.h1;
+  if(headings[1]) headings[1].textContent = data.h2;
+
+  const quote = document.querySelector('blockquote p');
+  if(quote) quote.textContent = '“' + data.quote + '”';
+
+  const tagWrap = document.querySelector('.border-t.border-surface-glass-border.pt-8 .flex.flex-wrap');
+  if(tagWrap){
+    tagWrap.innerHTML = data.tags.map(t => '<span class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary transition-colors cursor-pointer">' + t + '</span>').join('');
+  }
+});
+</script>
+
 <script src="/components.js"></script>
 
 </body></html>
