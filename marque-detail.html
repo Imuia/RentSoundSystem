@@ -258,6 +258,12 @@ img[src*="googleusercontent"] {
 }
 </style>
 
+
+<style id="rss-marque-detail-final-fix-css">
+#header-container{position:relative;z-index:9999}
+#header-container header{z-index:9999!important}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -442,19 +448,59 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
 <script id="rss-marque-dynamic">
 (function(){
  const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
  const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+ const fallbackBrands = 
+[
+  {title:"Apart", slug:"apart", letter:"A", description:"Apart Audio est une marque belge fondée pour l'audio d'installation et de sonorisation professionnelle."},
+  {title:"Bose", slug:"bose", letter:"B", description:"Bose Corporation est une entreprise américaine spécialisée dans les systèmes audio professionnels."},
+  {title:"Botex", slug:"botex", letter:"B", description:"Botex propose des solutions d'éclairage, DMX et accessoires pour événements."},
+  {title:"Bergervault", slug:"bergervault", letter:"B", description:"Fabricant et distributeur d'équipements professionnels pour la scène et l'événementiel."},
+  {title:"Black Swamp", slug:"black-swamp", letter:"B", description:"Black Swamp Percussion développe des instruments et accessoires de percussion."},
+  {title:"Cameo", slug:"cameo", letter:"C", description:"Cameo est une marque de solutions d'éclairage professionnel pour événements et scènes."},
+  {title:"Celestion", slug:"celestion", letter:"C", description:"Celestion est une marque britannique reconnue pour ses haut-parleurs professionnels."},
+  {title:"De Haske", slug:"de-haske", letter:"D", description:"De Haske est une maison d'édition musicale et pédagogique."},
+  {title:"Denis Wick", slug:"denis-wick", letter:"D", description:"Denis Wick développe des accessoires reconnus pour instruments à vent."},
+  {title:"Denon", slug:"denon", letter:"D", description:"Denon est une société japonaise spécialisée dans l'audio et les équipements DJ."},
+  {title:"Dunlop", slug:"dunlop", letter:"D", description:"Dunlop Manufacturing est une marque d'accessoires musicaux professionnels."},
+  {title:"Edition Dux", slug:"edition-dux", letter:"E", description:"Edition Dux est une maison d'édition musicale."},
+  {title:"ESP", slug:"esp", letter:"E", description:"ESP propose des instruments et équipements musicaux professionnels."},
+  {title:"Faber Music", slug:"faber-music", letter:"F", description:"Faber Music est une maison d'édition musicale internationale."},
+  {title:"Fischer Amps", slug:"fischer-amps", letter:"F", description:"Fischer Amps développe des solutions audio professionnelles et monitoring."},
+  {title:"Friedman", slug:"friedman", letter:"F", description:"Friedman est reconnu pour ses amplificateurs guitare haut de gamme."},
+  {title:"GHS", slug:"ghs", letter:"G", description:"GHS Strings est une marque américaine spécialisée dans les cordes pour instruments."},
+  {title:"Gibraltar", slug:"gibraltar", letter:"G", description:"Gibraltar Hardware propose du matériel de batterie et hardware de scène."},
+  {title:"Goldon", slug:"goldon", letter:"G", description:"Goldon est une marque d'instruments et accessoires pédagogiques."},
+  {title:"Jakob Winter", slug:"jakob-winter", letter:"J", description:"Jakob Winter propose des étuis et accessoires pour instruments."},
+  {title:"Jamey Aebersold", slug:"jamey-aebersold", letter:"J", description:"Jamey Aebersold est une référence pour l'apprentissage du jazz."},
+  {title:"Jargar", slug:"jargar", letter:"J", description:"Jargar fabrique des cordes pour instruments classiques."},
+  {title:"JBL", slug:"jbl", letter:"J", description:"JBL est une marque américaine majeure dans la sonorisation professionnelle."},
+  {title:"Joral", slug:"joral", letter:"J", description:"Joral propose des accessoires spécialisés pour instruments."},
+  {title:"Kaufmann", slug:"kaufmann", letter:"K", description:"Kaufmann est une marque d'accessoires et instruments."},
+  {title:"Lindy", slug:"lindy", letter:"L", description:"Lindy développe des solutions de câblage, audio, vidéo et connectique."},
+  {title:"Electro-Voice", slug:"electro-voice-ev", letter:"E", description:"Electro-Voice propose des systèmes de sonorisation professionnels pour concerts et événements."},
+  {title:"Pioneer DJ", slug:"pioneer-dj", letter:"P", description:"Pioneer DJ propose des régies, lecteurs et mixers DJ professionnels."},
+  {title:"Yamaha", slug:"yamaha", letter:"Y", description:"Yamaha propose des consoles, enceintes, instruments et équipements audio professionnels."},
+  {title:"NEXO", slug:"nexo", letter:"N", description:"NEXO développe des systèmes de sonorisation professionnels pour scène et installation."},
+  {title:"L-Acoustics", slug:"l-acoustics", letter:"L", description:"L-Acoustics est une référence mondiale des systèmes line array et touring."}
+]
+;
  let allProducts=[];
 
  function $(id){return document.getElementById(id)}
  function safe(v){return String(v||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
  function clean(v){return String(v||"").replace(/<[^>]*>?/gm,"").replace(/&nbsp;/g," ").trim()}
  function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
+ function slugify(v){return norm(v).replace(/\s+/g,"-").replace(/(^-|-$)/g,"")}
+ function getSlug(){const p=new URLSearchParams(location.search);return p.get("slug")||p.get("marque")||"jbl"}
+ function getTitle(b){return b.title || b.name || b.brand_name || b.nom || b.marque || "Marque"}
+ function getBrandSlug(b){return b.slug || b.brand_slug || slugify(getTitle(b))}
+ function getDescription(b){return b.description || b.content || b.about || b.presentation || ""}
+ function logoUrl(u){if(!u)return ""; if(String(u).startsWith("http"))return u; return "https://rentsoundsystem.vercel.app/"+String(u).replace(/^\/+/,"")}
  function money(v){return Number(v||0).toLocaleString("fr-FR",{maximumFractionDigits:0})+"€"}
- function getSlug(){const p=new URLSearchParams(location.search);return p.get("slug")||p.get("marque")||"electro-voice-ev"}
- function logoUrl(u){if(!u)return ""; if(u.startsWith("http"))return u; return "https://rentsoundsystem.vercel.app/"+u.replace(/^\/+/,"")}
  function firstImage(item){const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));return imgs[0]?.image_url||""}
  function productUrl(item){if(item.original_id!==undefined&&item.original_id!==null)return "/product.html?original_id="+encodeURIComponent(item.original_id); if(item.id)return "/product.html?id="+encodeURIComponent(item.id); return "/product.html"}
  function filterType(item){const t=norm([item.title,item.category,item.description,item.brand,item.model].join(" ")); if(t.includes("line"))return"line"; if(t.includes("sub")||t.includes("caisson"))return"sub"; if(t.includes("retour")||t.includes("monitor"))return"retour"; if(t.includes("ampli"))return"ampli"; return"all"}
@@ -471,90 +517,78 @@ document.addEventListener('DOMContentLoaded', () => {
    title.split(/\s+/).forEach(w => { const nw=norm(w); if(nw.length >= 3) terms.add(nw); });
    return Array.from(terms).filter(Boolean);
  }
+ function productMatchesBrand(item, terms){const text = norm([item.brand,item.title,item.model,item.category,item.description].join(" "));return terms.some(term => text.includes(term));}
 
- function productMatchesBrand(item, terms){
-   const text = norm([item.brand,item.title,item.model,item.category,item.description].join(" "));
-   return terms.some(term => text.includes(term));
+ function renderBrand(brand){
+   const title = getTitle(brand);
+   document.title = title + " - RentSoundSystem";
+   if($("marque-title")) $("marque-title").textContent=title;
+   if($("marque-subtitle")) $("marque-subtitle").textContent="Le son "+title+" à louer";
+   if($("marque-hero-description")) $("marque-hero-description").textContent=clean(getDescription(brand)).slice(0,260)||"Découvrez cette marque disponible à la location.";
+   if($("marque-about")) $("marque-about").textContent=clean(getDescription(brand))||"Description à venir.";
+   const logo=$("marque-logo");
+   const lu=brand.logo_url || brand.logo || brand.image_url || "";
+   if(logo && lu){logo.src=logoUrl(lu);logo.style.display="block"}
  }
 
  function renderProducts(filter){
   const grid=$("marque-products-grid"); if(!grid)return;
   const list=(filter&&filter!=="all")?allProducts.filter(p=>filterType(p)===filter):allProducts;
-  if(!list.length){setGridMessage("Aucun produit trouvé pour cette marque.");return}
-
+  if(!list.length){setGridMessage("Aucun produit trouvé pour cette marque pour le moment.");return}
   grid.innerHTML=list.map((item,i)=>{
    const img=firstImage(item), title=safe(item.title||"Matériel professionnel"), desc=safe(clean(item.description).slice(0,160)||"Annonce disponible sur RentSoundSystem."), price=money(item.price||0), url=productUrl(item), tag=safe(item.category||item.brand||"Matériel");
-   const imageHtml=img?'<img alt="'+title+'" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="'+safe(img)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'brand-img-fallback\\');this.remove();">':'<div class="brand-img-fallback w-full h-full"></div>';
-   return '<article data-url="'+safe(url)+'" class="'+(i===0?'md:col-span-2 ':'')+'marque-product-card group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors cursor-pointer min-h-[360px]"><div class="absolute inset-0 z-0">'+imageHtml+'<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div></div><div class="relative z-10 h-[400px] flex flex-col justify-end p-8"><div class="flex items-center gap-3 mb-4"><span class="bg-surface-container text-on-surface font-label font-bold text-xs uppercase tracking-widest px-3 py-1 rounded border border-outline-variant">'+tag+'</span><span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary">fiber_manual_record</span> Disponible</span></div><h3 class="font-headline font-bold text-3xl text-on-surface mb-2 line-clamp-2">'+title+'</h3><p class="font-body text-on-surface-variant mb-6 max-w-lg line-clamp-3">'+desc+'</p><div class="flex items-center justify-between mt-auto gap-4"><span class="font-headline font-bold text-2xl text-on-surface">'+price+' <span class="font-body text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="text-primary font-label font-bold text-sm uppercase tracking-widest hover:text-on-surface transition-colors flex items-center gap-2">Réserver <span class="material-symbols-outlined">arrow_forward</span></button></div></div></article>';
+   const imageHtml=img?'<img alt="'+title+'" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="'+safe(img)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\'brand-img-fallback\');this.remove();">':'<div class="brand-img-fallback w-full h-full"></div>';
+   return '<article data-url="'+safe(url)+'" class="'+(i===0?'md:col-span-2 ':'')+'marque-product-card group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors cursor-pointer min-h-[360px]"><div class="absolute inset-0 z-0">'+imageHtml+'<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div></div><div class="relative z-10 h-[400px] flex flex-col justify-end p-8"><div class="flex items-center gap-3 mb-4"><span class="bg-surface-container text-on-surface font-label font-bold text-xs uppercase tracking-widest px-3 py-1 rounded border border-outline-variant">'+tag+'</span><span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary">fiber_manual_record</span> Disponible</span></div><h3 class="font-headline font-bold text-3xl text-on-surface mb-2 line-clamp-2">'+title+'</h3><p class="font-body text-on-surface-variant mb-6 max-w-lg line-clamp-3">'+desc+'</p><div class="flex items-center justify-between mt-auto gap-4"><span class="font-headline font-bold text-2xl text-on-surface">'+price+' <span class="font-body text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="text-primary font-label font-bold text-sm uppercase tracking-widest hover:text-on-surface transition-colors flex items-center gap-2">Voir l’annonce <span class="material-symbols-outlined">arrow_forward</span></button></div></div></article>';
   }).join("");
-
   grid.querySelectorAll(".marque-product-card").forEach(c=>c.addEventListener("click",()=>location.href=c.dataset.url));
  }
 
  async function load(){
+  const slug=getSlug();
+  let brand = fallbackBrands.find(b=>getBrandSlug(b)===slug) || fallbackBrands.find(b=>slugify(getTitle(b))===slug) || {title: slug.replace(/-/g," "), slug: slug, description:"Découvrez cette marque disponible à la location sur RentSoundSystem."};
+  renderBrand(brand);
+  setGridMessage("Chargement des produits...");
+
   try{
-   if(!window.supabase){setGridMessage("Supabase JS n’est pas chargé.");return;}
+   if(!window.supabase){setGridMessage("Aucun produit trouvé pour cette marque pour le moment.");return;}
    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-   const slug=getSlug();
-
    const brandRes=await client.from("brands").select("*").eq("slug",slug).maybeSingle();
-   if(brandRes.error){setGridMessage("Erreur Supabase brands : "+brandRes.error.message);return;}
-   const brand=brandRes.data;
-   if(!brand){$("marque-title").textContent="Marque introuvable";$("marque-about").textContent="Vérifiez le slug dans l’URL.";setGridMessage("Marque introuvable dans Supabase : "+slug);return;}
+   if(!brandRes.error && brandRes.data){brand=brandRes.data; renderBrand(brand);}
 
-   document.title=brand.title+" - RentSoundSystem";
-   $("marque-title").textContent=brand.title;
-   $("marque-subtitle").textContent="Le son "+brand.title+" à louer";
-   $("marque-hero-description").textContent=clean(brand.description).slice(0,260)||"Découvrez cette marque disponible à la location.";
-   $("marque-about").textContent=clean(brand.description)||"Description à venir.";
-
-   const logo=$("marque-logo");
-   if(logo&&brand.logo_url){logo.src=logoUrl(brand.logo_url);logo.style.display="block"}
-
-   const listingsRes=await client
-     .from("listings")
-     .select("*, listing_images(image_url, position)")
-     .eq("status","publish")
-     .limit(500);
-
-   if(listingsRes.error){setGridMessage("Erreur Supabase listings : "+listingsRes.error.message);return;}
-
-   const terms=brandSearchTerms(brand.title);
+   const listingsRes=await client.from("listings").select("*, listing_images(image_url, position)").eq("status","publish").limit(500);
+   if(listingsRes.error){setGridMessage("Aucun produit trouvé pour cette marque pour le moment.");return;}
+   const terms=brandSearchTerms(getTitle(brand));
    allProducts=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,terms));
-
    if(!allProducts.length){
-     const loose = norm(brand.title).split(" ").filter(w=>w.length>=3);
+     const loose = norm(getTitle(brand)).split(" ").filter(w=>w.length>=3);
      allProducts=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,loose));
    }
-
    renderProducts("all");
   }catch(e){
-   console.error(e);
-   setGridMessage("Erreur JavaScript : "+(e.message||e));
+   console.warn(e);
+   setGridMessage("Aucun produit trouvé pour cette marque pour le moment.");
   }
  }
 
- document.addEventListener("DOMContentLoaded",function(){
+ function init(){
   load();
-
   document.querySelectorAll(".rss-filter-btn").forEach(btn=>btn.addEventListener("click",function(){
-   document.querySelectorAll(".rss-filter-btn").forEach(b=>{
-     b.classList.remove("bg-primary","text-on-primary","border-primary");
-     b.classList.add("bg-surface","text-on-surface","border-outline-variant");
-   });
+   document.querySelectorAll(".rss-filter-btn").forEach(b=>{b.classList.remove("bg-primary","text-on-primary","border-primary");b.classList.add("bg-surface","text-on-surface","border-outline-variant");});
    btn.classList.add("bg-primary","text-on-primary","border-primary");
    btn.classList.remove("bg-surface","text-on-surface","border-outline-variant");
    renderProducts(btn.dataset.filter);
   }));
-
   document.querySelectorAll("button").forEach(btn=>{
     const t=norm(btn.textContent);
     if(t.includes("voir l")||t.includes("inventaire"))btn.addEventListener("click",()=>$("marque-products-grid")?.scrollIntoView({behavior:"smooth"}));
     if(t.includes("specifications")||t.includes("spécifications"))btn.addEventListener("click",()=>$("marque-about")?.scrollIntoView({behavior:"smooth"}));
   });
- });
+ }
+ if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+ else init();
 })();
 </script>
+
 
 
 <script src="/components.js"></script>

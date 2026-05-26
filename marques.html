@@ -293,6 +293,14 @@ html,body{overflow-x:hidden!important}
 }
 </style>
 
+
+<style id="rss-marques-final-fix-css">
+#header-container{position:relative;z-index:9999}
+#header-container header{z-index:9999!important}
+.marques-hero{padding-top:40px!important}
+@media(max-width:767px){.marques-hero{padding-top:100px!important}}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -353,33 +361,53 @@ html,body{overflow-x:hidden!important}
 (function(){
   const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
   const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+  const fallbackBrands = 
+[
+  {title:"Apart", slug:"apart", letter:"A", description:"Apart Audio est une marque belge fondée pour l'audio d'installation et de sonorisation professionnelle."},
+  {title:"Bose", slug:"bose", letter:"B", description:"Bose Corporation est une entreprise américaine spécialisée dans les systèmes audio professionnels."},
+  {title:"Botex", slug:"botex", letter:"B", description:"Botex propose des solutions d'éclairage, DMX et accessoires pour événements."},
+  {title:"Bergervault", slug:"bergervault", letter:"B", description:"Fabricant et distributeur d'équipements professionnels pour la scène et l'événementiel."},
+  {title:"Black Swamp", slug:"black-swamp", letter:"B", description:"Black Swamp Percussion développe des instruments et accessoires de percussion."},
+  {title:"Cameo", slug:"cameo", letter:"C", description:"Cameo est une marque de solutions d'éclairage professionnel pour événements et scènes."},
+  {title:"Celestion", slug:"celestion", letter:"C", description:"Celestion est une marque britannique reconnue pour ses haut-parleurs professionnels."},
+  {title:"De Haske", slug:"de-haske", letter:"D", description:"De Haske est une maison d'édition musicale et pédagogique."},
+  {title:"Denis Wick", slug:"denis-wick", letter:"D", description:"Denis Wick développe des accessoires reconnus pour instruments à vent."},
+  {title:"Denon", slug:"denon", letter:"D", description:"Denon est une société japonaise spécialisée dans l'audio et les équipements DJ."},
+  {title:"Dunlop", slug:"dunlop", letter:"D", description:"Dunlop Manufacturing est une marque d'accessoires musicaux professionnels."},
+  {title:"Edition Dux", slug:"edition-dux", letter:"E", description:"Edition Dux est une maison d'édition musicale."},
+  {title:"ESP", slug:"esp", letter:"E", description:"ESP propose des instruments et équipements musicaux professionnels."},
+  {title:"Faber Music", slug:"faber-music", letter:"F", description:"Faber Music est une maison d'édition musicale internationale."},
+  {title:"Fischer Amps", slug:"fischer-amps", letter:"F", description:"Fischer Amps développe des solutions audio professionnelles et monitoring."},
+  {title:"Friedman", slug:"friedman", letter:"F", description:"Friedman est reconnu pour ses amplificateurs guitare haut de gamme."},
+  {title:"GHS", slug:"ghs", letter:"G", description:"GHS Strings est une marque américaine spécialisée dans les cordes pour instruments."},
+  {title:"Gibraltar", slug:"gibraltar", letter:"G", description:"Gibraltar Hardware propose du matériel de batterie et hardware de scène."},
+  {title:"Goldon", slug:"goldon", letter:"G", description:"Goldon est une marque d'instruments et accessoires pédagogiques."},
+  {title:"Jakob Winter", slug:"jakob-winter", letter:"J", description:"Jakob Winter propose des étuis et accessoires pour instruments."},
+  {title:"Jamey Aebersold", slug:"jamey-aebersold", letter:"J", description:"Jamey Aebersold est une référence pour l'apprentissage du jazz."},
+  {title:"Jargar", slug:"jargar", letter:"J", description:"Jargar fabrique des cordes pour instruments classiques."},
+  {title:"JBL", slug:"jbl", letter:"J", description:"JBL est une marque américaine majeure dans la sonorisation professionnelle."},
+  {title:"Joral", slug:"joral", letter:"J", description:"Joral propose des accessoires spécialisés pour instruments."},
+  {title:"Kaufmann", slug:"kaufmann", letter:"K", description:"Kaufmann est une marque d'accessoires et instruments."},
+  {title:"Lindy", slug:"lindy", letter:"L", description:"Lindy développe des solutions de câblage, audio, vidéo et connectique."},
+  {title:"Electro-Voice", slug:"electro-voice-ev", letter:"E", description:"Electro-Voice propose des systèmes de sonorisation professionnels pour concerts et événements."},
+  {title:"Pioneer DJ", slug:"pioneer-dj", letter:"P", description:"Pioneer DJ propose des régies, lecteurs et mixers DJ professionnels."},
+  {title:"Yamaha", slug:"yamaha", letter:"Y", description:"Yamaha propose des consoles, enceintes, instruments et équipements audio professionnels."},
+  {title:"NEXO", slug:"nexo", letter:"N", description:"NEXO développe des systèmes de sonorisation professionnels pour scène et installation."},
+  {title:"L-Acoustics", slug:"l-acoustics", letter:"L", description:"L-Acoustics est une référence mondiale des systèmes line array et touring."}
+]
+;
   let allBrands=[];
-
-  const fallbackBrands = [
-    {title:"JBL", slug:"jbl", description:"Systèmes audio professionnels JBL disponibles à la location."},
-    {title:"Electro-Voice", slug:"electro-voice-ev", description:"Location de matériel Electro-Voice pour concerts et événements."},
-    {title:"Pioneer DJ", slug:"pioneer-dj", description:"Régies DJ, contrôleurs et équipements Pioneer DJ."},
-    {title:"Yamaha", slug:"yamaha", description:"Consoles, enceintes et équipements audio Yamaha."},
-    {title:"NEXO", slug:"nexo", description:"Systèmes de sonorisation NEXO pour événements professionnels."},
-    {title:"L-Acoustics", slug:"l-acoustics", description:"Solutions line array et systèmes live L-Acoustics."},
-    {title:"d&b audiotechnik", slug:"d-b-audiotechnik", description:"Systèmes audio touring et installation d&b audiotechnik."},
-    {title:"Funktion-One", slug:"funktion-one", description:"Sonorisation haut rendement pour clubs, festivals et événements."},
-    {title:"Void Acoustics", slug:"void-acoustics", description:"Systèmes audio premium Void Acoustics disponibles à la location."},
-    {title:"Allen & Heath", slug:"allen-heath", description:"Consoles de mixage numériques et analogiques Allen & Heath."},
-    {title:"Shure", slug:"shure", description:"Microphones, HF et systèmes sans fil professionnels Shure."},
-    {title:"Sennheiser", slug:"sennheiser", description:"Microphones, in-ear monitoring et solutions HF Sennheiser."}
-  ];
 
   function $(id){return document.getElementById(id)}
   function safe(v){return String(v||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
   function clean(v){return String(v||"").replace(/<[^>]*>?/gm,"").replace(/&nbsp;/g," ").trim()}
   function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
   function slugify(v){return norm(v).replace(/\s+/g,"-").replace(/(^-|-$)/g,"")}
-  function firstLetter(title){ return (norm(title).charAt(0) || "#").toUpperCase(); }
-  function getTitle(b){return b.title || b.name || b.brand_name || b.nom || b.marque || "Marque";}
-  function getSlug(b){return b.slug || b.brand_slug || slugify(getTitle(b));}
-  function getDescription(b){return b.description || b.content || b.about || b.presentation || "";}
-  function getLogo(b){return b.logo_url || b.logo || b.image_url || b.image || b.logo_path || "";}
+  function getTitle(b){return b.title || b.name || b.brand_name || b.nom || b.marque || "Marque"}
+  function getSlug(b){return b.slug || b.brand_slug || slugify(getTitle(b))}
+  function getDescription(b){return b.description || b.content || b.about || b.presentation || ""}
+  function getLogo(b){return b.logo_url || b.logo || b.image_url || b.image || b.logo_path || ""}
+  function firstLetter(b){return (b.letter || norm(getTitle(b)).charAt(0) || "#").toUpperCase()}
   function logoUrl(url){
     if(!url) return "";
     if(String(url).startsWith("http")) return url;
@@ -388,14 +416,14 @@ html,body{overflow-x:hidden!important}
 
   function card(raw){
     const title = getTitle(raw);
-    const desc = clean(getDescription(raw)).slice(0,130) || "Découvrez les annonces et équipements disponibles pour cette marque.";
+    const desc = clean(getDescription(raw)).slice(0,150) || "Découvrez les annonces et équipements disponibles pour cette marque.";
     const logo = logoUrl(getLogo(raw));
     const img = logo
-      ? '<img src="'+safe(logo)+'" alt="Logo '+safe(title)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'brand-img-fallback\\');this.remove();">'
+      ? '<img src="'+safe(logo)+'" alt="Logo '+safe(title)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\'brand-img-fallback\');this.remove();">'
       : '<div class="brand-img-fallback w-full h-full"></div>';
     const url = "/marque-detail.html?slug=" + encodeURIComponent(getSlug(raw));
     return `
-      <article data-brand-card data-title="${safe(norm(title))}" data-letter="${safe(firstLetter(title))}" class="group bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden hover:border-primary transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+      <article data-brand-card data-title="${safe(norm(title))}" data-letter="${safe(firstLetter(raw))}" class="group bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden hover:border-primary transition-all duration-300 hover:-translate-y-1 cursor-pointer">
         <a href="${url}" class="block h-full">
           <div class="brand-card-logo-wrap flex items-center justify-center p-8 border-b border-outline-variant">${img}</div>
           <div class="p-6">
@@ -406,8 +434,7 @@ html,body{overflow-x:hidden!important}
             <p class="font-body text-sm text-on-surface-variant leading-relaxed line-clamp-3">${safe(desc)}</p>
           </div>
         </a>
-      </article>
-    `;
+      </article>`;
   }
 
   function render(brands){
@@ -415,9 +442,10 @@ html,body{overflow-x:hidden!important}
     const loading = $("brands-loading");
     const empty = $("brands-empty");
     if(loading) loading.style.display = "none";
+    if(!list) return;
 
-    if(!brands.length){
-      if(list) list.innerHTML = "";
+    if(!brands || !brands.length){
+      list.innerHTML = "";
       if(empty) empty.style.display = "block";
       return;
     }
@@ -425,7 +453,7 @@ html,body{overflow-x:hidden!important}
 
     const groups = {};
     brands.forEach(b=>{
-      const l = firstLetter(getTitle(b));
+      const l = firstLetter(b);
       if(!groups[l]) groups[l]=[];
       groups[l].push(b);
     });
@@ -440,8 +468,7 @@ html,body{overflow-x:hidden!important}
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           ${groups[letter].map(card).join("")}
         </div>
-      </div>
-    `).join("");
+      </div>`).join("");
 
     renderAlpha(letters);
   }
@@ -449,9 +476,7 @@ html,body{overflow-x:hidden!important}
   function renderAlpha(letters){
     const nav = $("brand-alpha-nav");
     if(!nav) return;
-    nav.innerHTML = letters.map(l => `
-      <a href="#letter-${l}" class="w-9 h-9 rounded-full border border-outline-variant text-on-surface-variant hover:text-white hover:border-primary hover:bg-primary/20 transition-all flex items-center justify-center font-label font-bold text-xs">${l}</a>
-    `).join("");
+    nav.innerHTML = letters.map(l => `<a href="#letter-${l}" class="w-9 h-9 rounded-full border border-outline-variant text-on-surface-variant hover:text-white hover:border-primary hover:bg-primary/20 transition-all flex items-center justify-center font-label font-bold text-xs">${l}</a>`).join("");
     nav.querySelectorAll("a").forEach(a=>{
       a.addEventListener("click", e=>{
         e.preventDefault();
@@ -460,49 +485,45 @@ html,body{overflow-x:hidden!important}
     });
   }
 
+  function setBrands(data){
+    allBrands = (data && data.length ? data : fallbackBrands).slice().sort((a,b)=>getTitle(a).localeCompare(getTitle(b),"fr"));
+    const count = $("brand-count");
+    if(count) count.textContent = allBrands.length + " marques disponibles";
+    render(allBrands);
+  }
+
   function filter(q){
     const query = norm(q);
-    const filtered = !query ? allBrands : allBrands.filter(b =>
-      norm(getTitle(b)).includes(query) || norm(getDescription(b)).includes(query)
-    );
-    $("brand-count").textContent = filtered.length + " marque" + (filtered.length>1?"s":"") + " disponible" + (filtered.length>1?"s":"");
+    const filtered = !query ? allBrands : allBrands.filter(b => norm(getTitle(b)).includes(query) || norm(getDescription(b)).includes(query));
+    const count = $("brand-count");
+    if(count) count.textContent = filtered.length + " marque" + (filtered.length>1?"s":"") + " disponible" + (filtered.length>1?"s":"");
     render(filtered);
   }
 
-  async function load(){
+  async function loadSupabase(){
     try{
-      let data = [];
-      if(window.supabase){
-        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        const res = await client.from("brands").select("*").order("title", {ascending:true});
-        if(res.error){
-          console.warn("Supabase brands error:", res.error.message);
-          data = fallbackBrands;
-        }else{
-          data = res.data || [];
-        }
-      }else{
-        data = fallbackBrands;
+      if(!window.supabase) return;
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      let res = await client.from("brands").select("*").order("title", {ascending:true});
+      if(res.error){
+        console.warn("Supabase brands error:", res.error.message);
+        return;
       }
-
-      allBrands = (data && data.length) ? data : fallbackBrands;
-      allBrands.sort((a,b)=>getTitle(a).localeCompare(getTitle(b), "fr"));
-      $("brand-count").textContent = allBrands.length + " marques disponibles";
-      render(allBrands);
-
-      const search = $("brand-search");
-      if(search){
-        search.addEventListener("input", () => filter(search.value));
-      }
+      if(res.data && res.data.length) setBrands(res.data);
     }catch(e){
-      console.error(e);
-      allBrands = fallbackBrands;
-      $("brand-count").textContent = allBrands.length + " marques disponibles";
-      render(allBrands);
+      console.warn("Supabase loading failed:", e);
     }
   }
 
-  document.addEventListener("DOMContentLoaded", load);
+  function init(){
+    setBrands(fallbackBrands);
+    const search = $("brand-search");
+    if(search) search.addEventListener("input", () => filter(search.value));
+    loadSupabase();
+  }
+
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();
 </script>
 
