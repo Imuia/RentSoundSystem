@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Marque - RentSoundSystem</title>
+<meta content="Louez le meilleur de l'audio professionnel avec Electro-Voice chez RentSoundSystem.com. Découvrez nos systèmes line array Série X-Line, subwoofers X12-128 et retours MFX partout en France." name="description"/>
+<meta content="Electro-Voice - Location Audio Professionnel | RentSoundSystem.com" property="og:title"/>
+<meta content="Accédez à la puissance légendaire d'Electro-Voice. Location de systèmes de sonorisation haut de gamme pour concerts et événements." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://rentsoundsystem.com/rentals/electro-voice" property="og:url"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Electro-Voice - Location Audio Professionnel | RentSoundSystem.com" name="twitter:title"/>
+<meta content="Location de systèmes de sonorisation Electro-Voice : X-Line, Subwoofers et plus." name="twitter:description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "error": "#ffb4ab",
+                "surface-container-highest": "#353535",
+                "surface-tint": "#fc036d",
+                "on-surface-variant": "#e6bcc2",
+                "surface-dim": "#131313",
+                "on-tertiary": "#313030",
+                "inverse-primary": "#bc004f",
+                "primary-fixed-dim": "#fc036d",
+                "outline-variant": "#5d3f44",
+                "primary-fixed": "#ffd9de",
+                "tertiary-fixed": "#e5e2e1",
+                "on-secondary-container": "#b4b5b5",
+                "secondary": "#c6c6c7",
+                "on-error-container": "#ffdad6",
+                "on-tertiary-fixed": "#1c1b1b",
+                "secondary-fixed-dim": "#c6c6c7",
+                "primary-container": "#ff4d80",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "on-secondary-fixed": "#1a1c1c",
+                "tertiary-container": "#929090",
+                "on-tertiary-fixed-variant": "#474746",
+                "on-error": "#690005",
+                "surface-variant": "#353535",
+                "surface-container-lowest": "#0e0e0e",
+                "outline": "#ac878d",
+                "surface": "#131313",
+                "inverse-surface": "#e2e2e2",
+                "on-tertiary-container": "#2a2a2a",
+                "error-container": "#93000a",
+                "surface-container": "#1f1f1f",
+                "on-primary-container": "#5a0022",
+                "on-primary-fixed": "#3f0016",
+                "on-secondary": "#2f3131",
+                "surface-bright": "#393939",
+                "on-secondary-fixed-variant": "#454747",
+                "on-primary": "#660028",
+                "inverse-on-surface": "#303030",
+                "surface-container-low": "#1b1b1b",
+                "secondary-container": "#454747",
+                "on-surface": "#e2e2e2",
+                "on-background": "#e2e2e2",
+                "surface-container-high": "#2a2a2a",
+                "tertiary": "#c8c6c5",
+                "on-primary-fixed-variant": "#90003b",
+                "background": "#131313",
+                "primary": "#fc036d",
+                "secondary-fixed": "#e2e2e2"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {},
+        "fontFamily": {
+                "headline": [
+                        "Manrope"
+                ],
+                "display": [
+                        "Manrope"
+                ],
+                "body": [
+                        "Inter"
+                ],
+                "label": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {}
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+    </style>
+<style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style>
+<style id="rss-unified-brand-style">
+  img { max-width: 100%; }
+  .brand-img-fallback {
+    background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010) !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+  }
+  .brand-img-fallback::after { content:'image bientôt disponible'; color:rgba(255,255,255,.55); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  @keyframes rss-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-marquee { animation: rss-marquee 38s linear infinite !important; will-change: transform; }
+  @media (max-width: 768px) {
+    h1 { font-size: 2.4rem !important; line-height: 1.1 !important; }
+    section[class*="h-[60vh]"] { min-height: 560px; }
+    .animate-marquee { animation-duration: 38s !important; }
+  }
+</style>
+<script id="rss-unified-brand-script">
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('img').forEach(function(img){
+      img.setAttribute('referrerpolicy','no-referrer');
+      if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      img.addEventListener('error', function(){
+        var parent = img.parentElement;
+        if(parent){ parent.classList.add('brand-img-fallback'); }
+        img.remove();
+      });
+    });
+    var btn = document.getElementById('mobile-menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if(btn && menu){ btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); }); }
+  });
+</script>
+
+<style id="rss-brand-global-compat">
+  #header-container { min-height: auto; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+</style>
+
+
+<style id="rss-filter-hover-fix">
+/* Hover blanc + actif propre */
+button[data-filter],
+.filters button,
+section button {
+  transition: all .25s ease !important;
+}
+
+button:hover {
+  color: #ffffff !important;
+}
+
+button.bg-surface:hover {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+button.bg-primary {
+  background: #fc036d !important;
+  border-color: #fc036d !important;
+  color: #ffffff !important;
+}
+
+/* Fix images */
+img {
+  display:block !important;
+  max-width:100% !important;
+  height:auto;
+}
+
+/* Evite les images Google cassées */
+img[src*="gstatic"],
+img[src*="googleusercontent"] {
+  object-fit: cover;
+}
+
+/* Placeholder plus propre */
+.brand-img-fallback {
+  min-height: 260px !important;
+  background:
+    radial-gradient(circle at center, rgba(252,3,109,.25), transparent 40%),
+    linear-gradient(180deg,#1b1b1b,#0e0e0e) !important;
+}
+
+/* Hover cartes */
+.group:hover img {
+  transform: scale(1.03);
+}
+
+.group img {
+  transition: transform .5s ease, opacity .4s ease;
+}
+</style>
+
+
+<style id="rss-marque-dynamic-css">
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:767px){
+  .marque-product-card{min-height:420px!important}
+  .marque-product-card .h-\[400px\]{height:420px!important;padding:22px!important}
+  .marque-product-card h3{font-size:24px!important;line-height:30px!important}
+}
+</style>
+
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
+<!-- Main Content -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative w-full h-[60vh] min-h-[500px] flex items-center justify-center overflow-hidden border-b border-outline-variant bg-surface-container-lowest">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<img alt="Système de sonorisation Electro-Voice en situation de concert live" class="w-full h-full object-cover opacity-40 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida/ADBb0ujZiu7P0lKVrcryW24xnhaup4D0i90MsZNCXaH2RWtvB9DpIp-W3t80grU300o8xb_nYducxN0Ybx0Ff3br1IpgzDd2uIv2JaD-EaiB3YnwCpeZ8R3xVe1RPnBPkcQ48Sn3T4ZzpG2p6wyROl4lmYHj1NN4h7svvCfJIt61mjiod3P4roQSdMw7xcVcdvsgdqLQ27UR918MnW3Qkj4BOMzLmTN8JDgJSQy3a9Rkhllnk7mSsjqcbYnjvhgkyJGtxw1cdO1Nx3a8-Q"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
+<h1 class="font-headline font-bold text-5xl md:text-7xl text-on-surface mb-6 tracking-tight" id="marque-title">Marque</h1>
+<p id="marque-hero-description" class="font-body text-xl md:text-2xl text-on-surface-variant max-w-3xl mx-auto mb-10 leading-relaxed">Chargement...</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-primary text-on-primary font-label font-bold text-sm uppercase tracking-widest px-8 py-4 rounded hover:bg-surface-tint transition-colors">
+                        Voir l'inventaire
+                    </button>
+<button class="bg-transparent border border-primary text-primary font-label font-bold text-sm uppercase tracking-widest px-8 py-4 rounded hover:bg-primary/10 transition-colors">
+                        Spécifications techniques
+                    </button>
+</div>
+</div>
+</section>
+<section class="bg-surface border-b border-outline-variant py-16 overflow-hidden">
+<div class="max-w-[1280px] mx-auto px-6 flex flex-col items-center text-center">
+<div class="mb-8"><img id="marque-logo" alt="Logo marque" class="h-16 w-auto mx-auto mb-2 object-contain" src="" style="display:none"/><div class="mt-2 font-display font-bold text-xs uppercase tracking-[0.3em] text-on-surface-variant">Professional</div></div>
+<h2 id="marque-subtitle" class="font-headline font-bold text-3xl md:text-5xl text-on-surface mb-6">La marque à louer</h2>
+<p id="marque-about" class="font-body text-lg text-on-surface-variant max-w-2xl mb-12">Chargement de la marque...</p>
+<!-- City Ticker Animation -->
+<div class="w-full relative py-4">
+<div class="flex whitespace-nowrap overflow-hidden">
+<div class="animate-marquee flex items-center gap-12">
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> PARIS</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> LYON</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> MARSEILLE</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> BORDEAUX</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> LILLE</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> NANTES</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> STRASBOURG</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> TOULOUSE</span>
+</div>
+<div aria-hidden="true" class="animate-marquee flex items-center gap-12 ml-12">
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> PARIS</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> LYON</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> MARSEILLE</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> BORDEAUX</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> LILLE</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> NANTES</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> STRASBOURG</span>
+<span class="flex items-center gap-2 font-headline font-bold text-xl text-primary"><span class="material-symbols-outlined text-sm">location_on</span> TOULOUSE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Filters Section -->
+<section class="max-w-[1280px] mx-auto px-6 py-8 border-b border-outline-variant bg-surface-container">
+  <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
+    <h2 class="font-headline font-bold text-2xl text-on-surface">Catalogue Location</h2>
+    <div id="marque-filters" class="flex flex-wrap gap-3">
+      <button data-filter="all" class="rss-filter-btn bg-primary text-on-primary font-label font-medium text-sm px-4 py-2 rounded-full border border-primary transition-colors">Tout</button>
+      <button data-filter="line" class="rss-filter-btn bg-surface text-on-surface font-label font-medium text-sm px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-colors">Line Array</button>
+      <button data-filter="sub" class="rss-filter-btn bg-surface text-on-surface font-label font-medium text-sm px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-colors">Subwoofers</button>
+      <button data-filter="retour" class="rss-filter-btn bg-surface text-on-surface font-label font-medium text-sm px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-colors">Retours</button>
+      <button data-filter="ampli" class="rss-filter-btn bg-surface text-on-surface font-label font-medium text-sm px-4 py-2 rounded-full border border-outline-variant hover:border-primary hover:text-primary transition-colors">Amplification</button>
+    </div>
+  </div>
+</section>
+<section class="max-w-[1280px] mx-auto px-6 py-16">
+  <div id="marque-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="col-span-full text-center text-on-surface-variant py-16">Chargement des produits...</div>
+  </div>
+</section>
+<div id="footer-container"></div>
+
+<script id="rss-brand-functional">
+document.addEventListener('DOMContentLoaded', () => {
+  // CTA hero : Voir l'inventaire
+  document.querySelectorAll('button').forEach((btn) => {
+    const text = btn.textContent.trim().toLowerCase();
+
+    if (text.includes("voir l'inventaire") || text.includes("voir l’inventaire")) {
+      btn.addEventListener('click', () => {
+        const catalogue = Array.from(document.querySelectorAll('section')).find(sec =>
+          sec.textContent.toLowerCase().includes('catalogue')
+        );
+        if (catalogue) {
+          catalogue.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          window.location.href = '/catalog.html';
+        }
+      });
+    }
+
+    if (text.includes('spécifications')) {
+      btn.addEventListener('click', () => {
+        const specs = Array.from(document.querySelectorAll('section')).find(sec =>
+          sec.textContent.toLowerCase().includes('spécification') ||
+          sec.textContent.toLowerCase().includes('technique')
+        );
+        if (specs) {
+          specs.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    }
+
+    if (text.includes('réserver')) {
+      btn.addEventListener('click', () => {
+        window.location.href = '/catalog.html';
+      });
+    }
+  });
+
+  // Filtres catalogue visuels : Tout, Line Array, Subwoofers, Retours, Amplification
+  const filterButtons = Array.from(document.querySelectorAll('section button')).filter(btn => {
+    const t = btn.textContent.trim().toLowerCase();
+    return ['tout','line array','subwoofers','retours','amplification'].some(k => t.includes(k));
+  });
+
+  const productCards = Array.from(document.querySelectorAll('.group.relative.rounded-lg, [class*="hover:border-primary"]')).filter(card => {
+    return card.querySelector('h3') && card.textContent.match(/€|jour|disponible|line array|subwoofer|retour|amplification/i);
+  });
+
+  function setActiveFilter(activeBtn) {
+    filterButtons.forEach(btn => {
+      btn.classList.remove('bg-primary', 'text-on-primary', 'border-primary');
+      btn.classList.add('bg-surface', 'text-on-surface', 'border-outline-variant');
+    });
+
+    activeBtn.classList.add('bg-primary', 'text-on-primary', 'border-primary');
+    activeBtn.classList.remove('bg-surface', 'text-on-surface', 'border-outline-variant');
+  }
+
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.textContent.trim().toLowerCase();
+      setActiveFilter(btn);
+
+      productCards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const show =
+          filter.includes('tout') ||
+          (filter.includes('line') && text.includes('line')) ||
+          (filter.includes('sub') && text.includes('sub')) ||
+          (filter.includes('retour') && text.includes('retour')) ||
+          (filter.includes('amplification') && text.includes('amplification'));
+
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  // Cartes produits cliquables
+  productCards.forEach(card => {
+    if (card.dataset.rssBrandBound === '1') return;
+    card.dataset.rssBrandBound = '1';
+    card.style.cursor = 'pointer';
+    card.setAttribute('tabindex', '0');
+
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('button, a')) return;
+      window.location.href = '/catalog.html';
+    });
+
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') window.location.href = '/catalog.html';
+    });
+  });
+
+  // Boutons Mon Compte injectés/anciens
+  document.querySelectorAll('button').forEach(btn => {
+    if (btn.textContent.trim().toLowerCase().includes('mon compte')) {
+      btn.addEventListener('click', () => {
+        window.location.href = '/connexion-inscription.html';
+      });
+    }
+  });
+});
+</script>
+
+
+
+<script id="rss-marque-dynamic">
+(function(){
+ const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+ const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+ let allProducts=[];
+
+ function $(id){return document.getElementById(id)}
+ function safe(v){return String(v||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+ function clean(v){return String(v||"").replace(/<[^>]*>?/gm,"").replace(/&nbsp;/g," ").trim()}
+ function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
+ function money(v){return Number(v||0).toLocaleString("fr-FR",{maximumFractionDigits:0})+"€"}
+ function getSlug(){const p=new URLSearchParams(location.search);return p.get("slug")||p.get("marque")||"electro-voice-ev"}
+ function logoUrl(u){if(!u)return ""; if(u.startsWith("http"))return u; return "https://rentsoundsystem.vercel.app/"+u.replace(/^\/+/,"")}
+ function firstImage(item){const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));return imgs[0]?.image_url||""}
+ function productUrl(item){if(item.original_id!==undefined&&item.original_id!==null)return "/product.html?original_id="+encodeURIComponent(item.original_id); if(item.id)return "/product.html?id="+encodeURIComponent(item.id); return "/product.html"}
+ function filterType(item){const t=norm([item.title,item.category,item.description,item.brand,item.model].join(" ")); if(t.includes("line"))return"line"; if(t.includes("sub")||t.includes("caisson"))return"sub"; if(t.includes("retour")||t.includes("monitor"))return"retour"; if(t.includes("ampli"))return"ampli"; return"all"}
+ function setGridMessage(msg){const grid=$("marque-products-grid"); if(grid) grid.innerHTML='<div class="col-span-full text-center text-on-surface-variant py-16">'+safe(msg)+'</div>'}
+
+ function brandSearchTerms(title){
+   const base = norm(title).replace(/\bev\b/g,"").replace(/\bprofessional\b/g,"").replace(/\bprofessionnal\b/g,"").trim();
+   const terms = new Set();
+   if(base) terms.add(base);
+   if(base.includes("turbo sound")) terms.add("turbosound");
+   if(base.includes("turbosound")) terms.add("turbo sound");
+   if(base.includes("electro voice")) terms.add("electrovoice");
+   if(base.includes("jbl")) terms.add("jbl");
+   title.split(/\s+/).forEach(w => { const nw=norm(w); if(nw.length >= 3) terms.add(nw); });
+   return Array.from(terms).filter(Boolean);
+ }
+
+ function productMatchesBrand(item, terms){
+   const text = norm([item.brand,item.title,item.model,item.category,item.description].join(" "));
+   return terms.some(term => text.includes(term));
+ }
+
+ function renderProducts(filter){
+  const grid=$("marque-products-grid"); if(!grid)return;
+  const list=(filter&&filter!=="all")?allProducts.filter(p=>filterType(p)===filter):allProducts;
+  if(!list.length){setGridMessage("Aucun produit trouvé pour cette marque.");return}
+
+  grid.innerHTML=list.map((item,i)=>{
+   const img=firstImage(item), title=safe(item.title||"Matériel professionnel"), desc=safe(clean(item.description).slice(0,160)||"Annonce disponible sur RentSoundSystem."), price=money(item.price||0), url=productUrl(item), tag=safe(item.category||item.brand||"Matériel");
+   const imageHtml=img?'<img alt="'+title+'" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" src="'+safe(img)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'brand-img-fallback\\');this.remove();">':'<div class="brand-img-fallback w-full h-full"></div>';
+   return '<article data-url="'+safe(url)+'" class="'+(i===0?'md:col-span-2 ':'')+'marque-product-card group relative rounded-lg overflow-hidden border border-outline-variant bg-surface-container-low hover:border-primary transition-colors cursor-pointer min-h-[360px]"><div class="absolute inset-0 z-0">'+imageHtml+'<div class="absolute inset-0 bg-gradient-to-t from-surface-container-highest via-surface-container-highest/50 to-transparent"></div></div><div class="relative z-10 h-[400px] flex flex-col justify-end p-8"><div class="flex items-center gap-3 mb-4"><span class="bg-surface-container text-on-surface font-label font-bold text-xs uppercase tracking-widest px-3 py-1 rounded border border-outline-variant">'+tag+'</span><span class="flex items-center gap-1 text-primary text-sm font-medium"><span class="material-symbols-outlined text-[16px] text-primary">fiber_manual_record</span> Disponible</span></div><h3 class="font-headline font-bold text-3xl text-on-surface mb-2 line-clamp-2">'+title+'</h3><p class="font-body text-on-surface-variant mb-6 max-w-lg line-clamp-3">'+desc+'</p><div class="flex items-center justify-between mt-auto gap-4"><span class="font-headline font-bold text-2xl text-on-surface">'+price+' <span class="font-body text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="text-primary font-label font-bold text-sm uppercase tracking-widest hover:text-on-surface transition-colors flex items-center gap-2">Réserver <span class="material-symbols-outlined">arrow_forward</span></button></div></div></article>';
+  }).join("");
+
+  grid.querySelectorAll(".marque-product-card").forEach(c=>c.addEventListener("click",()=>location.href=c.dataset.url));
+ }
+
+ async function load(){
+  try{
+   if(!window.supabase){setGridMessage("Supabase JS n’est pas chargé.");return;}
+   const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+   const slug=getSlug();
+
+   const brandRes=await client.from("brands").select("*").eq("slug",slug).maybeSingle();
+   if(brandRes.error){setGridMessage("Erreur Supabase brands : "+brandRes.error.message);return;}
+   const brand=brandRes.data;
+   if(!brand){$("marque-title").textContent="Marque introuvable";$("marque-about").textContent="Vérifiez le slug dans l’URL.";setGridMessage("Marque introuvable dans Supabase : "+slug);return;}
+
+   document.title=brand.title+" - RentSoundSystem";
+   $("marque-title").textContent=brand.title;
+   $("marque-subtitle").textContent="Le son "+brand.title+" à louer";
+   $("marque-hero-description").textContent=clean(brand.description).slice(0,260)||"Découvrez cette marque disponible à la location.";
+   $("marque-about").textContent=clean(brand.description)||"Description à venir.";
+
+   const logo=$("marque-logo");
+   if(logo&&brand.logo_url){logo.src=logoUrl(brand.logo_url);logo.style.display="block"}
+
+   const listingsRes=await client
+     .from("listings")
+     .select("*, listing_images(image_url, position)")
+     .eq("status","publish")
+     .limit(500);
+
+   if(listingsRes.error){setGridMessage("Erreur Supabase listings : "+listingsRes.error.message);return;}
+
+   const terms=brandSearchTerms(brand.title);
+   allProducts=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,terms));
+
+   if(!allProducts.length){
+     const loose = norm(brand.title).split(" ").filter(w=>w.length>=3);
+     allProducts=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,loose));
+   }
+
+   renderProducts("all");
+  }catch(e){
+   console.error(e);
+   setGridMessage("Erreur JavaScript : "+(e.message||e));
+  }
+ }
+
+ document.addEventListener("DOMContentLoaded",function(){
+  load();
+
+  document.querySelectorAll(".rss-filter-btn").forEach(btn=>btn.addEventListener("click",function(){
+   document.querySelectorAll(".rss-filter-btn").forEach(b=>{
+     b.classList.remove("bg-primary","text-on-primary","border-primary");
+     b.classList.add("bg-surface","text-on-surface","border-outline-variant");
+   });
+   btn.classList.add("bg-primary","text-on-primary","border-primary");
+   btn.classList.remove("bg-surface","text-on-surface","border-outline-variant");
+   renderProducts(btn.dataset.filter);
+  }));
+
+  document.querySelectorAll("button").forEach(btn=>{
+    const t=norm(btn.textContent);
+    if(t.includes("voir l")||t.includes("inventaire"))btn.addEventListener("click",()=>$("marque-products-grid")?.scrollIntoView({behavior:"smooth"}));
+    if(t.includes("specifications")||t.includes("spécifications"))btn.addEventListener("click",()=>$("marque-about")?.scrollIntoView({behavior:"smooth"}));
+  });
+ });
+})();
+</script>
+
+
+<script src="/components.js"></script>
+
+<script id="rss-image-fallback-fix">
+document.addEventListener('DOMContentLoaded', function () {
+
+  document.querySelectorAll('img').forEach(function(img){
+
+    function fallback() {
+      const parent = img.parentElement;
+      if(parent){
+        parent.classList.add('brand-img-fallback');
+      }
+      img.style.display = 'none';
+    }
+
+    img.setAttribute('loading','lazy');
+    img.setAttribute('decoding','async');
+    img.setAttribute('referrerpolicy','no-referrer');
+
+    if(!img.src || img.src.trim() === ''){
+      fallback();
+    }
+
+    img.onerror = fallback;
+
+    setTimeout(function(){
+      if(!img.complete || img.naturalWidth === 0){
+        fallback();
+      }
+    }, 3500);
+
+  });
+
+});
+</script>
+
+</body></html>
