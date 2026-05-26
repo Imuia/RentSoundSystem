@@ -348,31 +348,59 @@ html,body{overflow-x:hidden!important}
 
 <div id="footer-container"></div>
 
+
 <script id="rss-marques-list-dynamic">
 (function(){
   const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
   const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
   let allBrands=[];
 
+  const fallbackBrands = [
+    {title:"JBL", slug:"jbl", description:"Systèmes audio professionnels JBL disponibles à la location."},
+    {title:"Electro-Voice", slug:"electro-voice-ev", description:"Location de matériel Electro-Voice pour concerts et événements."},
+    {title:"Pioneer DJ", slug:"pioneer-dj", description:"Régies DJ, contrôleurs et équipements Pioneer DJ."},
+    {title:"Yamaha", slug:"yamaha", description:"Consoles, enceintes et équipements audio Yamaha."},
+    {title:"NEXO", slug:"nexo", description:"Systèmes de sonorisation NEXO pour événements professionnels."},
+    {title:"L-Acoustics", slug:"l-acoustics", description:"Solutions line array et systèmes live L-Acoustics."},
+    {title:"d&b audiotechnik", slug:"d-b-audiotechnik", description:"Systèmes audio touring et installation d&b audiotechnik."},
+    {title:"Funktion-One", slug:"funktion-one", description:"Sonorisation haut rendement pour clubs, festivals et événements."},
+    {title:"Void Acoustics", slug:"void-acoustics", description:"Systèmes audio premium Void Acoustics disponibles à la location."},
+    {title:"Allen & Heath", slug:"allen-heath", description:"Consoles de mixage numériques et analogiques Allen & Heath."},
+    {title:"Shure", slug:"shure", description:"Microphones, HF et systèmes sans fil professionnels Shure."},
+    {title:"Sennheiser", slug:"sennheiser", description:"Microphones, in-ear monitoring et solutions HF Sennheiser."}
+  ];
+
   function $(id){return document.getElementById(id)}
   function safe(v){return String(v||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
   function clean(v){return String(v||"").replace(/<[^>]*>?/gm,"").replace(/&nbsp;/g," ").trim()}
-  function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim()}
-  function logoUrl(url){ if(!url) return ""; if(url.startsWith("http")) return url; return "https://rentsoundsystem.vercel.app/" + url.replace(/^\/+/,""); }
+  function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g," ").trim()}
+  function slugify(v){return norm(v).replace(/\s+/g,"-").replace(/(^-|-$)/g,"")}
   function firstLetter(title){ return (norm(title).charAt(0) || "#").toUpperCase(); }
+  function getTitle(b){return b.title || b.name || b.brand_name || b.nom || b.marque || "Marque";}
+  function getSlug(b){return b.slug || b.brand_slug || slugify(getTitle(b));}
+  function getDescription(b){return b.description || b.content || b.about || b.presentation || "";}
+  function getLogo(b){return b.logo_url || b.logo || b.image_url || b.image || b.logo_path || "";}
+  function logoUrl(url){
+    if(!url) return "";
+    if(String(url).startsWith("http")) return url;
+    return "https://rentsoundsystem.vercel.app/" + String(url).replace(/^\/+/,"");
+  }
 
-  function card(brand){
-    const desc = clean(brand.description).slice(0,130) || "Découvrez les annonces et équipements disponibles pour cette marque.";
-    const logo = logoUrl(brand.logo_url || "");
-    const img = logo ? '<img src="'+safe(logo)+'" alt="Logo '+safe(brand.title)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'brand-img-fallback\\');this.remove();">' : '<div class="brand-img-fallback w-full h-full"></div>';
-    const url = "/marque.html?slug=" + encodeURIComponent(brand.slug || "");
+  function card(raw){
+    const title = getTitle(raw);
+    const desc = clean(getDescription(raw)).slice(0,130) || "Découvrez les annonces et équipements disponibles pour cette marque.";
+    const logo = logoUrl(getLogo(raw));
+    const img = logo
+      ? '<img src="'+safe(logo)+'" alt="Logo '+safe(title)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'brand-img-fallback\\');this.remove();">'
+      : '<div class="brand-img-fallback w-full h-full"></div>';
+    const url = "/marque-detail.html?slug=" + encodeURIComponent(getSlug(raw));
     return `
-      <article data-brand-card data-title="${safe(norm(brand.title))}" data-letter="${safe(firstLetter(brand.title))}" class="group bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden hover:border-primary transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+      <article data-brand-card data-title="${safe(norm(title))}" data-letter="${safe(firstLetter(title))}" class="group bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden hover:border-primary transition-all duration-300 hover:-translate-y-1 cursor-pointer">
         <a href="${url}" class="block h-full">
           <div class="brand-card-logo-wrap flex items-center justify-center p-8 border-b border-outline-variant">${img}</div>
           <div class="p-6">
             <div class="flex items-center justify-between gap-4 mb-4">
-              <h3 class="font-headline font-bold text-2xl text-on-surface group-hover:text-primary transition-colors">${safe(brand.title)}</h3>
+              <h3 class="font-headline font-bold text-2xl text-on-surface group-hover:text-primary transition-colors">${safe(title)}</h3>
               <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
             </div>
             <p class="font-body text-sm text-on-surface-variant leading-relaxed line-clamp-3">${safe(desc)}</p>
@@ -397,7 +425,7 @@ html,body{overflow-x:hidden!important}
 
     const groups = {};
     brands.forEach(b=>{
-      const l = firstLetter(b.title);
+      const l = firstLetter(getTitle(b));
       if(!groups[l]) groups[l]=[];
       groups[l].push(b);
     });
@@ -435,7 +463,7 @@ html,body{overflow-x:hidden!important}
   function filter(q){
     const query = norm(q);
     const filtered = !query ? allBrands : allBrands.filter(b =>
-      norm(b.title).includes(query) || norm(b.description).includes(query)
+      norm(getTitle(b)).includes(query) || norm(getDescription(b)).includes(query)
     );
     $("brand-count").textContent = filtered.length + " marque" + (filtered.length>1?"s":"") + " disponible" + (filtered.length>1?"s":"");
     render(filtered);
@@ -443,22 +471,22 @@ html,body{overflow-x:hidden!important}
 
   async function load(){
     try{
-      if(!window.supabase){
-        $("brands-loading").textContent = "Supabase JS n’est pas chargé.";
-        return;
+      let data = [];
+      if(window.supabase){
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const res = await client.from("brands").select("*").order("title", {ascending:true});
+        if(res.error){
+          console.warn("Supabase brands error:", res.error.message);
+          data = fallbackBrands;
+        }else{
+          data = res.data || [];
+        }
+      }else{
+        data = fallbackBrands;
       }
-      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      const {data, error} = await client
-        .from("brands")
-        .select("id,title,slug,letter,logo_url,description")
-        .order("title", {ascending:true});
 
-      if(error){
-        $("brands-loading").textContent = "Erreur Supabase : " + error.message;
-        return;
-      }
-
-      allBrands = data || [];
+      allBrands = (data && data.length) ? data : fallbackBrands;
+      allBrands.sort((a,b)=>getTitle(a).localeCompare(getTitle(b), "fr"));
       $("brand-count").textContent = allBrands.length + " marques disponibles";
       render(allBrands);
 
@@ -466,15 +494,18 @@ html,body{overflow-x:hidden!important}
       if(search){
         search.addEventListener("input", () => filter(search.value));
       }
-
     }catch(e){
-      $("brands-loading").textContent = "Erreur JavaScript : " + (e.message || e);
+      console.error(e);
+      allBrands = fallbackBrands;
+      $("brand-count").textContent = allBrands.length + " marques disponibles";
+      render(allBrands);
     }
   }
 
   document.addEventListener("DOMContentLoaded", load);
 })();
 </script>
+
 
 <script src="/components.js"></script>
 </body>
