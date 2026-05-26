@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Nos marques - RentSoundSystem</title>
+<meta content="Découvrez toutes les marques audio professionnelles disponibles sur RentSoundSystem : JBL, Electro-Voice, NEXO, L-Acoustics, Pioneer, Yamaha et plus." name="description"/>
+<meta content="Electro-Voice - Location Audio Professionnel | RentSoundSystem.com" property="og:title"/>
+<meta content="Accédez à la puissance légendaire d'Electro-Voice. Location de systèmes de sonorisation haut de gamme pour concerts et événements." property="og:description"/>
+<meta content="website" property="og:type"/>
+<meta content="https://rentsoundsystem.com/rentals/electro-voice" property="og:url"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Electro-Voice - Location Audio Professionnel | RentSoundSystem.com" name="twitter:title"/>
+<meta content="Location de systèmes de sonorisation Electro-Voice : X-Line, Subwoofers et plus." name="twitter:description"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "error": "#ffb4ab",
+                "surface-container-highest": "#353535",
+                "surface-tint": "#fc036d",
+                "on-surface-variant": "#e6bcc2",
+                "surface-dim": "#131313",
+                "on-tertiary": "#313030",
+                "inverse-primary": "#bc004f",
+                "primary-fixed-dim": "#fc036d",
+                "outline-variant": "#5d3f44",
+                "primary-fixed": "#ffd9de",
+                "tertiary-fixed": "#e5e2e1",
+                "on-secondary-container": "#b4b5b5",
+                "secondary": "#c6c6c7",
+                "on-error-container": "#ffdad6",
+                "on-tertiary-fixed": "#1c1b1b",
+                "secondary-fixed-dim": "#c6c6c7",
+                "primary-container": "#ff4d80",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "on-secondary-fixed": "#1a1c1c",
+                "tertiary-container": "#929090",
+                "on-tertiary-fixed-variant": "#474746",
+                "on-error": "#690005",
+                "surface-variant": "#353535",
+                "surface-container-lowest": "#0e0e0e",
+                "outline": "#ac878d",
+                "surface": "#131313",
+                "inverse-surface": "#e2e2e2",
+                "on-tertiary-container": "#2a2a2a",
+                "error-container": "#93000a",
+                "surface-container": "#1f1f1f",
+                "on-primary-container": "#5a0022",
+                "on-primary-fixed": "#3f0016",
+                "on-secondary": "#2f3131",
+                "surface-bright": "#393939",
+                "on-secondary-fixed-variant": "#454747",
+                "on-primary": "#660028",
+                "inverse-on-surface": "#303030",
+                "surface-container-low": "#1b1b1b",
+                "secondary-container": "#454747",
+                "on-surface": "#e2e2e2",
+                "on-background": "#e2e2e2",
+                "surface-container-high": "#2a2a2a",
+                "tertiary": "#c8c6c5",
+                "on-primary-fixed-variant": "#90003b",
+                "background": "#131313",
+                "primary": "#fc036d",
+                "secondary-fixed": "#e2e2e2"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {},
+        "fontFamily": {
+                "headline": [
+                        "Manrope"
+                ],
+                "display": [
+                        "Manrope"
+                ],
+                "body": [
+                        "Inter"
+                ],
+                "label": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {}
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+    </style>
+<style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style>
+<style id="rss-unified-brand-style">
+  img { max-width: 100%; }
+  .brand-img-fallback {
+    background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.35), transparent 32%), linear-gradient(180deg,#242424,#101010) !important;
+    display:flex !important; align-items:center !important; justify-content:center !important;
+  }
+  .brand-img-fallback::after { content:'image bientôt disponible'; color:rgba(255,255,255,.55); font-size:12px; letter-spacing:.08em; text-transform:uppercase; }
+  @keyframes rss-marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
+  .animate-marquee { animation: rss-marquee 38s linear infinite !important; will-change: transform; }
+  @media (max-width: 768px) {
+    h1 { font-size: 2.4rem !important; line-height: 1.1 !important; }
+    section[class*="h-[60vh]"] { min-height: 560px; }
+    .animate-marquee { animation-duration: 38s !important; }
+  }
+</style>
+<script id="rss-unified-brand-script">
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('img').forEach(function(img){
+      img.setAttribute('referrerpolicy','no-referrer');
+      if(!img.hasAttribute('loading')) img.setAttribute('loading','lazy');
+      img.addEventListener('error', function(){
+        var parent = img.parentElement;
+        if(parent){ parent.classList.add('brand-img-fallback'); }
+        img.remove();
+      });
+    });
+    var btn = document.getElementById('mobile-menu-btn');
+    var menu = document.getElementById('mobile-menu');
+    if(btn && menu){ btn.addEventListener('click', function(){ menu.classList.toggle('hidden'); }); }
+  });
+</script>
+
+<style id="rss-brand-global-compat">
+  #header-container { min-height: auto; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+</style>
+
+
+<style id="rss-filter-hover-fix">
+/* Hover blanc + actif propre */
+button[data-filter],
+.filters button,
+section button {
+  transition: all .25s ease !important;
+}
+
+button:hover {
+  color: #ffffff !important;
+}
+
+button.bg-surface:hover {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+  background: transparent !important;
+}
+
+button.bg-primary {
+  background: #fc036d !important;
+  border-color: #fc036d !important;
+  color: #ffffff !important;
+}
+
+/* Fix images */
+img {
+  display:block !important;
+  max-width:100% !important;
+  height:auto;
+}
+
+/* Evite les images Google cassées */
+img[src*="gstatic"],
+img[src*="googleusercontent"] {
+  object-fit: cover;
+}
+
+/* Placeholder plus propre */
+.brand-img-fallback {
+  min-height: 260px !important;
+  background:
+    radial-gradient(circle at center, rgba(252,3,109,.25), transparent 40%),
+    linear-gradient(180deg,#1b1b1b,#0e0e0e) !important;
+}
+
+/* Hover cartes */
+.group:hover img {
+  transform: scale(1.03);
+}
+
+.group img {
+  transition: transform .5s ease, opacity .4s ease;
+}
+</style>
+
+
+<style id="rss-marque-dynamic-css">
+.line-clamp-2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:767px){
+  .marque-product-card{min-height:420px!important}
+  .marque-product-card .h-\[400px\]{height:420px!important;padding:22px!important}
+  .marque-product-card h3{font-size:24px!important;line-height:30px!important}
+}
+</style>
+
+
+<style id="rss-marques-list-css">
+html,body{overflow-x:hidden!important}
+.brand-card-logo-wrap{
+  min-height:120px;
+  background:
+    radial-gradient(circle at 50% 20%, rgba(252,3,109,.14), transparent 35%),
+    linear-gradient(180deg,#242424,#111);
+}
+.brand-card-logo-wrap img{
+  max-height:72px!important;
+  max-width:180px!important;
+  object-fit:contain!important;
+}
+.brand-letter-pill{
+  position:sticky;
+  top:96px;
+  z-index:10;
+}
+.brand-search-empty{display:none}
+@media(max-width:767px){
+  body{padding-top:72px!important}
+  .marques-hero{
+    min-height:520px!important;
+    padding-top:90px!important;
+  }
+  .brand-letter-pill{
+    position:relative;
+    top:auto;
+  }
+  .brand-card-logo-wrap{
+    min-height:105px;
+  }
+}
+</style>
+
+</head>
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
+
+<main class="flex-grow">
+  <section class="marques-hero relative w-full min-h-[520px] flex items-center justify-center overflow-hidden border-b border-outline-variant bg-surface-container-lowest">
+    <div class="absolute inset-0 z-0">
+      <img alt="Mur de marques audio professionnelles" class="w-full h-full object-cover opacity-30 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida/ADBb0ujZiu7P0lKVrcryW24xnhaup4D0i90MsZNCXaH2RWtvB9DpIp-W3t80grU300o8xb_nYducxN0Ybx0Ff3br1IpgzDd2uIv2JaD-EaiB3YnwCpeZ8R3xVe1RPnBPkcQ48Sn3T4ZzpG2p6wyROl4lmYHj1NN4h7svvCfJIt61mjiod3P4roQSdMw7xcVcdvsgdqLQ27UR918MnW3Qkj4BOMzLmTN8JDgJSQy3a9Rkhllnk7mSsjqcbYnjvhgkyJGtxw1cdO1Nx3a8-Q"/>
+      <div class="absolute inset-0 bg-gradient-to-t from-background via-background/85 to-background/30"></div>
+    </div>
+
+    <div class="relative z-10 max-w-[1280px] mx-auto px-6 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-label font-bold uppercase tracking-widest text-xs mb-6">
+        <span class="material-symbols-outlined text-[18px]">graphic_eq</span>
+        Marques professionnelles
+      </div>
+      <h1 class="font-headline font-bold text-5xl md:text-7xl text-on-surface mb-6 tracking-tight">Toutes les marques</h1>
+      <p class="font-body text-xl md:text-2xl text-on-surface-variant max-w-3xl mx-auto mb-10 leading-relaxed">
+        Explorez les marques audio, DJ, éclairage et événementiel disponibles sur RentSoundSystem.
+      </p>
+
+      <div class="max-w-2xl mx-auto relative group">
+        <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-muted group-focus-within:text-primary transition-colors">search</span>
+        <input id="brand-search" class="w-full bg-surface-container-high/80 backdrop-blur-md border border-outline-variant rounded-full py-5 pl-14 pr-6 font-body text-lg text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 transition-all placeholder:text-on-surface-muted" placeholder="Rechercher une marque : JBL, Pioneer, NEXO..." type="text"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-surface border-b border-outline-variant py-10">
+    <div class="max-w-[1280px] mx-auto px-6">
+      <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+        <div>
+          <h2 class="font-headline font-bold text-2xl text-on-surface">Catalogue des marques</h2>
+          <p id="brand-count" class="font-body text-on-surface-variant mt-1">Chargement des marques...</p>
+        </div>
+        <div id="brand-alpha-nav" class="flex flex-wrap justify-center md:justify-end gap-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="max-w-[1280px] mx-auto px-6 py-16">
+    <div id="brands-loading" class="text-center text-on-surface-variant py-16">Chargement des marques...</div>
+    <div id="brands-empty" class="brand-search-empty text-center py-16">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full border border-outline-variant bg-surface-container mb-4">
+        <span class="material-symbols-outlined text-primary">search_off</span>
+      </div>
+      <h3 class="font-headline font-bold text-2xl text-on-surface mb-2">Aucune marque trouvée</h3>
+      <p class="font-body text-on-surface-variant">Essayez avec un autre nom de marque.</p>
+    </div>
+    <div id="brands-list" class="flex flex-col gap-14"></div>
+  </section>
+</main>
+
+<div id="footer-container"></div>
+
+<script id="rss-marques-list-dynamic">
+(function(){
+  const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+  const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+  let allBrands=[];
+
+  function $(id){return document.getElementById(id)}
+  function safe(v){return String(v||"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
+  function clean(v){return String(v||"").replace(/<[^>]*>?/gm,"").replace(/&nbsp;/g," ").trim()}
+  function norm(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim()}
+  function logoUrl(url){ if(!url) return ""; if(url.startsWith("http")) return url; return "https://rentsoundsystem.vercel.app/" + url.replace(/^\/+/,""); }
+  function firstLetter(title){ return (norm(title).charAt(0) || "#").toUpperCase(); }
+
+  function card(brand){
+    const desc = clean(brand.description).slice(0,130) || "Découvrez les annonces et équipements disponibles pour cette marque.";
+    const logo = logoUrl(brand.logo_url || "");
+    const img = logo ? '<img src="'+safe(logo)+'" alt="Logo '+safe(brand.title)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\\'brand-img-fallback\\');this.remove();">' : '<div class="brand-img-fallback w-full h-full"></div>';
+    const url = "/marque.html?slug=" + encodeURIComponent(brand.slug || "");
+    return `
+      <article data-brand-card data-title="${safe(norm(brand.title))}" data-letter="${safe(firstLetter(brand.title))}" class="group bg-surface-container-low rounded-xl border border-outline-variant overflow-hidden hover:border-primary transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+        <a href="${url}" class="block h-full">
+          <div class="brand-card-logo-wrap flex items-center justify-center p-8 border-b border-outline-variant">${img}</div>
+          <div class="p-6">
+            <div class="flex items-center justify-between gap-4 mb-4">
+              <h3 class="font-headline font-bold text-2xl text-on-surface group-hover:text-primary transition-colors">${safe(brand.title)}</h3>
+              <span class="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">arrow_forward</span>
+            </div>
+            <p class="font-body text-sm text-on-surface-variant leading-relaxed line-clamp-3">${safe(desc)}</p>
+          </div>
+        </a>
+      </article>
+    `;
+  }
+
+  function render(brands){
+    const list = $("brands-list");
+    const loading = $("brands-loading");
+    const empty = $("brands-empty");
+    if(loading) loading.style.display = "none";
+
+    if(!brands.length){
+      if(list) list.innerHTML = "";
+      if(empty) empty.style.display = "block";
+      return;
+    }
+    if(empty) empty.style.display = "none";
+
+    const groups = {};
+    brands.forEach(b=>{
+      const l = firstLetter(b.title);
+      if(!groups[l]) groups[l]=[];
+      groups[l].push(b);
+    });
+
+    const letters = Object.keys(groups).sort();
+    list.innerHTML = letters.map(letter => `
+      <div id="letter-${letter}" data-letter-section="${letter}">
+        <div class="brand-letter-pill mb-6 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-surface-container border border-outline-variant">
+          <span class="font-headline font-bold text-primary text-xl">${letter}</span>
+          <span class="font-body text-sm text-on-surface-variant">${groups[letter].length} marque${groups[letter].length>1?'s':''}</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          ${groups[letter].map(card).join("")}
+        </div>
+      </div>
+    `).join("");
+
+    renderAlpha(letters);
+  }
+
+  function renderAlpha(letters){
+    const nav = $("brand-alpha-nav");
+    if(!nav) return;
+    nav.innerHTML = letters.map(l => `
+      <a href="#letter-${l}" class="w-9 h-9 rounded-full border border-outline-variant text-on-surface-variant hover:text-white hover:border-primary hover:bg-primary/20 transition-all flex items-center justify-center font-label font-bold text-xs">${l}</a>
+    `).join("");
+    nav.querySelectorAll("a").forEach(a=>{
+      a.addEventListener("click", e=>{
+        e.preventDefault();
+        document.querySelector(a.getAttribute("href"))?.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
+  }
+
+  function filter(q){
+    const query = norm(q);
+    const filtered = !query ? allBrands : allBrands.filter(b =>
+      norm(b.title).includes(query) || norm(b.description).includes(query)
+    );
+    $("brand-count").textContent = filtered.length + " marque" + (filtered.length>1?"s":"") + " disponible" + (filtered.length>1?"s":"");
+    render(filtered);
+  }
+
+  async function load(){
+    try{
+      if(!window.supabase){
+        $("brands-loading").textContent = "Supabase JS n’est pas chargé.";
+        return;
+      }
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const {data, error} = await client
+        .from("brands")
+        .select("id,title,slug,letter,logo_url,description")
+        .order("title", {ascending:true});
+
+      if(error){
+        $("brands-loading").textContent = "Erreur Supabase : " + error.message;
+        return;
+      }
+
+      allBrands = data || [];
+      $("brand-count").textContent = allBrands.length + " marques disponibles";
+      render(allBrands);
+
+      const search = $("brand-search");
+      if(search){
+        search.addEventListener("input", () => filter(search.value));
+      }
+
+    }catch(e){
+      $("brands-loading").textContent = "Erreur JavaScript : " + (e.message || e);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", load);
+})();
+</script>
+
+<script src="/components.js"></script>
+</body>
+</html>
