@@ -176,53 +176,6 @@ html,body{
 }
 </style>
 
-
-<style id="rss-contact-map-email-css">
-.rss-grey-map{
-  background:
-    radial-gradient(circle at 50% 50%, rgba(252,3,109,.12), transparent 28%),
-    linear-gradient(135deg, #3b3b3b 0%, #2d2d2d 45%, #222 100%);
-  opacity:1;
-}
-.rss-map-grid{
-  position:absolute; inset:-20%;
-  background-image:
-    linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-  background-size:34px 34px;
-  transform:rotate(-12deg);
-}
-.rss-map-river{
-  position:absolute; left:-10%; top:46%; width:120%; height:34px;
-  background:rgba(190,190,190,.18);
-  transform:rotate(-8deg);
-  border-top:1px solid rgba(255,255,255,.12);
-  border-bottom:1px solid rgba(255,255,255,.08);
-}
-.rss-map-road{
-  position:absolute;
-  background:rgba(255,255,255,.12);
-  border-radius:999px;
-}
-.rss-map-road-1{left:5%; top:25%; width:90%; height:4px; transform:rotate(12deg);}
-.rss-map-road-2{left:20%; top:10%; width:4px; height:85%; transform:rotate(20deg);}
-.rss-map-road-3{left:8%; bottom:22%; width:80%; height:3px; transform:rotate(-18deg);}
-.rss-map-road-4{right:20%; top:8%; width:3px; height:90%; transform:rotate(-25deg);}
-.rss-form-status{
-  margin-top:14px;
-  padding:12px 14px;
-  border-radius:6px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(31,31,31,.65);
-  color:#e5e2e1;
-  font-size:14px;
-  display:none;
-}
-.rss-form-status.show{display:block;}
-.rss-form-status.success{border-color:rgba(34,197,94,.45); color:#86efac;}
-.rss-form-status.error{border-color:rgba(252,3,109,.45); color:#ffb2bf;}
-</style>
-
 </head>
 <body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -241,18 +194,18 @@ html,body{
 <!-- Subtle glow effect inside the card -->
 <div class="absolute -top-24 -left-24 w-48 h-48 bg-primary rounded-full blur-[100px] opacity-10 pointer-events-none"></div>
 <h2 class="font-headline-md text-headline-md text-on-surface mb-8 relative z-10">Envoyez-nous un message</h2>
-<form id="rss-contact-form" class="space-y-6 relative z-10" action="https://formsubmit.co/contact@rentsoundsystem.com" method="POST">
+<form class="space-y-6 relative z-10">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="fullName">NOM COMPLET</label>
-<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="fullName" name="name" placeholder="Jean Dupont" type="text" required/>
+<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="fullName" placeholder="Jean Dupont" type="text"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="email">EMAIL PROFESSIONNEL</label>
-<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="email" name="email" placeholder="jean@studio.com" type="email" required/>
+<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" id="email" placeholder="jean@studio.com" type="email"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="subject">SUJET</label>
-<select class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none" id="subject" name="subject">
+<select class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors appearance-none" id="subject">
 <option value="support">Support technique</option>
 <option value="quote">Demande de devis</option>
 <option value="partnership">Partenariat</option>
@@ -261,15 +214,8 @@ html,body{
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="message">MESSAGE</label>
-<textarea class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" id="message" name="message" placeholder="Décrivez votre besoin technique..." rows="5" required></textarea>
+<textarea class="w-full bg-surface-container-highest border border-surface-glass-border rounded-DEFAULT px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" id="message" placeholder="Décrivez votre besoin technique..." rows="5"></textarea>
 </div>
-
-<input type="hidden" name="_captcha" value="false">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_subject" value="Nouveau message depuis RentSoundSystem.com">
-<input type="hidden" name="_next" value="https://rentsoundsystem.vercel.app/contact.html?sent=1">
-<div id="rss-form-status" class="rss-form-status"></div>
-
 <button class="w-full bg-primary text-white font-label-caps text-label-caps py-4 rounded-DEFAULT neon-shadow hover:bg-primary-container transition-all duration-300 transform active:scale-95" type="submit">
                         ENVOYER LE MESSAGE
                     </button>
@@ -328,124 +274,147 @@ html,body{
 </div>
 </div>
 </div>
-
 <!-- Map Block Placeholder -->
-<div class="relative w-full h-64 rounded-xl overflow-hidden border border-surface-glass-border group map-mobile bg-[#2a2a2a]">
-  <div class="absolute inset-0 rss-grey-map">
-    <div class="rss-map-grid"></div>
-    <div class="rss-map-river"></div>
-    <div class="rss-map-road rss-map-road-1"></div>
-    <div class="rss-map-road rss-map-road-2"></div>
-    <div class="rss-map-road rss-map-road-3"></div>
-    <div class="rss-map-road rss-map-road-4"></div>
-  </div>
-
-  <div class="absolute top-5 left-5 z-20 bg-surface/85 backdrop-blur-md border border-white/10 rounded-lg px-4 py-3">
-    <p class="font-label-caps text-label-caps text-primary uppercase tracking-widest mb-1">Ville</p>
-    <p class="font-headline-md text-headline-md text-on-surface leading-none">Paris</p>
-    <p class="font-body-md text-[13px] text-on-surface-variant mt-1">75012 · France</p>
-  </div>
-
-  <!-- Map Marker -->
-  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-20">
-    <div class="w-5 h-5 bg-primary rounded-full neon-shadow z-10 border-2 border-white/80"></div>
-    <div class="w-14 h-14 bg-primary/20 rounded-full absolute animate-ping"></div>
-    <div class="mt-7 bg-background/90 border border-primary/40 rounded px-3 py-1 text-xs text-on-surface whitespace-nowrap">
-      61 rue de Lyon
-    </div>
-  </div>
+<div class="relative w-full h-64 rounded-xl overflow-hidden border border-surface-glass-border group map-mobile">
+<img alt="Dark themed map of Paris" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500 grayscale brightness-125 contrast-90 saturate-0" data-alt="A highly detailed, stylized digital map of Paris, France designed with a dark mode aesthetic. The map features deep charcoal and obsidian blacks for landmasses and subtle dark greys for roads. The River Seine is highlighted in a muted metallic tone. The overall mood is high-tech, nocturnal, and premium, perfectly matching a modern dark UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7slYZv13wckAUFAw_6mHDhZi80yHa72kh1XMTuZIqjWFKYn_FcXyp-u6lUA15tgBf1BYOrG2Qf1PrYcdZsIahn_2yt0I8UHIpoF613OBOZdg5EkpJvCP5VVdzta4Kchf_zLdCvW2FvULnTfHDSj8wOAv8_26DYrkZStvOHTJty2dBq4GPyi4BocPEFMrV1wjNvwnCQRnCs6OCUNZGZWFll7Ku9Jm10l1syobJmpAYTRDJPP3uxOwWvstiT9QjdxmCv-WYviueml0"/>
+<!-- Map Marker -->
+<div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="w-4 h-4 bg-primary rounded-full neon-shadow z-10"></div>
+<div class="w-12 h-12 bg-primary/20 rounded-full absolute animate-ping"></div>
+</div>
 </div>
 </div>
 </section>
-
 </main>
 <div id="footer-container"></div>
-
 
 <script id="rss-contact-functional">
 document.addEventListener('DOMContentLoaded', () => {
 
-  const form = document.getElementById('rss-contact-form') || document.querySelector('form');
-  const status = document.getElementById('rss-form-status');
-
-  function showStatus(message, type){
-    if(!status) return;
-    status.textContent = message;
-    status.className = 'rss-form-status show ' + (type || '');
-  }
-
-  if(new URLSearchParams(window.location.search).get('sent') === '1'){
-    showStatus('Votre message a bien été envoyé à contact@rentsoundsystem.com.', 'success');
-  }
+  // Contact form
+  const form = document.querySelector('form');
 
   if(form){
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
 
       const name = document.getElementById('fullName')?.value?.trim();
       const email = document.getElementById('email')?.value?.trim();
       const message = document.getElementById('message')?.value?.trim();
-      const button = form.querySelector('button[type="submit"]');
 
       if(!name || !email || !message){
-        showStatus('Veuillez remplir le nom, l’email et le message.', 'error');
+        alert('Veuillez remplir tous les champs obligatoires.');
         return;
       }
 
-      const original = button ? button.innerHTML : '';
+      const button = form.querySelector('button[type="submit"]');
+
       if(button){
+        const original = button.innerHTML;
         button.innerHTML = 'ENVOI EN COURS...';
         button.disabled = true;
-      }
-      showStatus('Envoi du message à contact@rentsoundsystem.com...', '');
 
-      try{
-        const response = await fetch(form.action, {
-          method: 'POST',
-          body: new FormData(form),
-          headers: { 'Accept': 'application/json' }
-        });
+        setTimeout(() => {
+          button.innerHTML = 'MESSAGE ENVOYÉ ✓';
+          button.classList.add('bg-green-600');
 
-        if(response.ok){
-          showStatus('Message envoyé. Vérifiez la boîte contact@rentsoundsystem.com. La première fois, FormSubmit peut demander une validation email.', 'success');
-          form.reset();
-        }else{
-          form.submit();
-        }
-      }catch(error){
-        form.submit();
-      }finally{
-        if(button){
           setTimeout(() => {
             button.innerHTML = original;
             button.disabled = false;
-          }, 1200);
-        }
+            button.classList.remove('bg-green-600');
+            form.reset();
+          }, 2500);
+        }, 1200);
       }
     });
   }
 
-  // Liens sociaux
+  // Nav links
   document.querySelectorAll('a').forEach(link => {
     const txt = (link.textContent || '').toLowerCase().trim();
+
+    if(txt.includes('catalogue') || txt.includes('marketplace')){
+      link.href = '/catalog.html';
+    }
+
+    if(txt.includes('solutions')){
+      link.href = '/solutions.html';
+    }
+
+    if(txt.includes('tarifs')){
+      link.href = '/tarifs.html';
+    }
+
+    if(txt.includes('support')){
+      link.href = '/faq.html';
+    }
+
+    if(txt.includes('à propos')){
+      link.href = '/a-propos.html';
+    }
+
+    if(txt.includes('categories')){
+      link.href = '/catalog.html';
+    }
+
+    if(txt.includes('légal')){
+      link.href = '/mentions-legales.html';
+    }
 
     if(txt.includes('linkedin')){
       link.href = 'https://linkedin.com';
       link.target = '_blank';
     }
+
     if(txt.includes('instagram')){
       link.href = 'https://instagram.com';
       link.target = '_blank';
     }
+
     if(txt.includes('youtube')){
       link.href = 'https://youtube.com';
       link.target = '_blank';
     }
   });
+
+  // CTA
+  document.querySelectorAll('button').forEach(btn => {
+    const txt = (btn.textContent || '').toLowerCase();
+
+    if(txt.includes('louer du matériel')){
+      btn.addEventListener('click', () => {
+        window.location.href = '/catalog.html';
+      });
+    }
+  });
+
 });
 </script>
 
-
 <script src="/components.js"></script>
+
+
+<script id="rss-contact-prefill-from-faq">
+document.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const question = params.get('question') || params.get('message') || '';
+  const subject = params.get('subject') || '';
+
+  const messageField = document.getElementById('message');
+  const subjectField = document.getElementById('subject');
+
+  if(subjectField && subject){
+    subjectField.value = subject;
+  }
+
+  if(messageField && question){
+    messageField.value = question;
+    setTimeout(() => {
+      messageField.focus();
+      messageField.scrollIntoView({behavior:'smooth', block:'center'});
+    }, 400);
+  }
+});
+</script>
 
 </body></html>

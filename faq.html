@@ -535,27 +535,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 <script src="/components.js"></script>
 
-
-<script id="rss-faq-contact-redirect">
+<script id="rss-faq-contact-question-redirect">
 document.addEventListener('DOMContentLoaded', () => {
-  const heroInputs = document.querySelectorAll('input[placeholder*="question"], input[placeholder*="Caution"]');
-  const heroButtons = document.querySelectorAll('button');
-
-  heroInputs.forEach(input => {
-    input.addEventListener('focus', () => {
-      window.location.href = '/contact.html';
-    });
-
-    input.addEventListener('click', () => {
-      window.location.href = '/contact.html';
-    });
+  const questionInput = document.querySelector('input[placeholder*="Posez votre question"], input[placeholder*="question"], input[placeholder*="Caution"]');
+  const arrowButton = Array.from(document.querySelectorAll('button')).find(btn => {
+    const icon = btn.querySelector('.material-symbols-outlined');
+    return icon && icon.textContent.trim() === 'arrow_forward';
   });
 
-  heroButtons.forEach(btn => {
-    const icon = btn.querySelector('.material-symbols-outlined');
-    if(icon && icon.textContent.includes('arrow_forward')){
-      btn.addEventListener('click', () => {
-        window.location.href = '/contact.html';
+  function goToContact(){
+    const question = (questionInput?.value || '').trim();
+    const url = new URL('/contact.html', window.location.origin);
+
+    if(question){
+      url.searchParams.set('question', question);
+      url.searchParams.set('subject', 'support');
+    }
+
+    window.location.href = url.toString();
+  }
+
+  if(questionInput){
+    // Do not redirect on focus/click. Let the client write the question.
+    questionInput.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){
+        e.preventDefault();
+        goToContact();
+      }
+    });
+  }
+
+  if(arrowButton){
+    arrowButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      goToContact();
+    });
+  }
+
+  document.querySelectorAll('a').forEach(link => {
+    const txt = (link.textContent || '').toLowerCase();
+    if(txt.includes('contactez-nous')){
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        goToContact();
       });
     }
   });
