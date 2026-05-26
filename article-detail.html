@@ -210,6 +210,47 @@ body{padding-top:78px!important}
 }
 </style>
 
+
+<style id="rss-article-logical-features-css">
+.rss-toc-active{
+  color:#fc036d!important;
+}
+.rss-bookmarked{
+  color:#fc036d!important;
+  background:rgba(252,3,109,.12)!important;
+  border:1px solid rgba(252,3,109,.35)!important;
+}
+.rss-toast{
+  position:fixed;
+  right:20px;
+  bottom:20px;
+  z-index:9999;
+  background:#201f1f;
+  color:#e5e2e1;
+  border:1px solid rgba(252,3,109,.35);
+  box-shadow:0 0 24px rgba(252,3,109,.18);
+  padding:14px 18px;
+  border-radius:8px;
+  font-family:Inter, sans-serif;
+  font-size:14px;
+  opacity:0;
+  transform:translateY(12px);
+  transition:all .25s ease;
+}
+.rss-toast.show{
+  opacity:1;
+  transform:translateY(0);
+}
+@media(max-width:767px){
+  .rss-toast{
+    left:18px;
+    right:18px;
+    bottom:18px;
+    text-align:center;
+  }
+}
+</style>
+
 </head>
 <body class="bg-background text-on-surface font-body-md antialiased selection:bg-primary selection:text-on-primary">
 <div id="header-container"></div>
@@ -395,74 +436,8 @@ body{padding-top:78px!important}
 </main>
 <div id="footer-container"></div>
 
-<script id="rss-article-functional">
-document.addEventListener('DOMContentLoaded', () => {
 
-  // TOC smooth scroll
-  document.querySelectorAll('aside a').forEach(link => {
-    const txt = (link.textContent || '').toLowerCase();
-
-    if(txt.includes('physique')){
-      link.href = '#section-1';
-    }
-
-    if(txt.includes('subwoofers')){
-      link.href = '#section-2';
-    }
-
-    link.addEventListener('click', (e) => {
-      if(link.getAttribute('href')?.startsWith('#')){
-        e.preventDefault();
-        document.querySelector(link.getAttribute('href'))?.scrollIntoView({
-          behavior:'smooth',
-          block:'start'
-        });
-      }
-    });
-  });
-
-  // CTA button
-  document.querySelectorAll('button').forEach(btn => {
-    const txt = (btn.textContent || '').toLowerCase();
-
-    if(txt.includes('devis')){
-      btn.addEventListener('click', () => {
-        window.location.href = '/contact.html';
-      });
-    }
-
-    if(txt.includes('share')){
-      btn.addEventListener('click', async () => {
-        try{
-          await navigator.share({
-            title: document.title,
-            url: window.location.href
-          });
-        }catch(e){}
-      });
-    }
-  });
-
-  // Related articles
-  document.querySelectorAll('a').forEach(a => {
-    const txt = (a.textContent || '').toLowerCase();
-
-    if(txt.includes('home')) a.href = '/';
-    if(txt.includes('sonic insights')) a.href = '/blog.html';
-
-    if(txt.includes('impact du vent')){
-      a.href = '/article.html?slug=impact-vent-frequences';
-    }
-
-    if(txt.includes('end-fire')){
-      a.href = '/article.html?slug=comprendre-end-fire';
-    }
-  });
-
-});
-</script>
-
-<script id="rss-article-dynamic-content">
+<script id="rss-article-logical-features">
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const slug = params.get('slug') || 'optimisation-couverture-line-array-festivals-plein-air';
@@ -471,6 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
     'optimisation-couverture-line-array-festivals-plein-air': {
       category: 'Étude de Cas',
       badge: 'TECHNICAL REVIEW',
+      icon: 'speaker',
       title: 'Optimisation de la Couverture Line Array pour les Festivals en Plein Air',
       author: 'Jean-Luc Morel',
       role: 'Ingénieur Système Audio',
@@ -482,11 +458,19 @@ document.addEventListener('DOMContentLoaded', () => {
       quote: "Un Line Array bien calé doit être anticipé pour la distance, la météo et les variations de température.",
       h2: '2. Stratégies de Subwoofers : End-Fire vs. Gradient',
       p2: "Le contrôle des basses fréquences permet d’améliorer l’impact public tout en réduisant les nuisances arrière scène et les débordements sonores.",
+      specTitle: 'Paramètres de Configuration Recommandés',
+      specs: [
+        ['Angle Inter-Boîtes Max','5° (Haut) à 10° (Bas)'],
+        ['Crossover Typique Subs','60Hz - 80Hz (LR24)'],
+        ['Compensation Atmosphérique','+1.5dB / 100m > 4kHz'],
+        ['Délai Front-Fill','~15ms mesuré au centre']
+      ],
       tags: ['Line Array','Festival','Acoustique','Subwoofers']
     },
     'la-compression-multibande-sur-les-voix-live-quand-et-comment-l-utiliser': {
       category: "Conseils d’Experts",
       badge: 'EXPERT TIPS',
+      icon: 'graphic_eq',
       title: "La Compression Multibande sur les Voix Live : Quand et Comment l’Utiliser",
       author: 'Équipe RentSoundSystem',
       role: 'Mixage Live',
@@ -498,11 +482,19 @@ document.addEventListener('DOMContentLoaded', () => {
       quote: "L’objectif n’est pas de compresser plus, mais de compresser uniquement la zone qui pose problème.",
       h2: '2. Réglages recommandés en live',
       p2: "Travaillez avec des seuils modérés, des attaques pas trop rapides et vérifiez toujours le rendu dans le système principal plutôt qu’au casque uniquement.",
+      specTitle: 'Réglages de départ recommandés',
+      specs: [
+        ['Low-Mid Control','120Hz - 350Hz'],
+        ['Sibilance','5kHz - 8kHz'],
+        ['Ratio','1.5:1 à 3:1'],
+        ['Gain Reduction','1 à 4 dB max']
+      ],
       tags: ['Mixage Live','Voix','Compression','Console']
     },
     'l-industrie-se-tourne-vers-des-solutions-d-amplification-de-classe-d-plus-vertes': {
       category: 'Actualités Industry',
       badge: 'INDUSTRY NEWS',
+      icon: 'bolt',
       title: "L’Industrie se tourne vers des solutions d’amplification de classe D plus vertes",
       author: 'RentSoundSystem Newsroom',
       role: 'Veille Audio Pro',
@@ -514,11 +506,19 @@ document.addEventListener('DOMContentLoaded', () => {
       quote: "Moins d’énergie consommée, moins de poids transporté, plus d’efficacité opérationnelle.",
       h2: '2. Impact sur les prestataires',
       p2: "Ces solutions permettent de réduire les coûts de transport, simplifier les racks d’amplification et améliorer la fiabilité globale des systèmes.",
+      specTitle: 'Points clés à comparer',
+      specs: [
+        ['Rendement','Très élevé'],
+        ['Poids Rack','Réduit'],
+        ['Chauffe','Faible à modérée'],
+        ['Usage','Touring / installation']
+      ],
       tags: ['Amplification','Classe D','Énergie','Touring']
     },
     'redondance-reseau-au-stade-de-france-architecture-et-deploiement': {
       category: 'Études de Cas',
       badge: 'CASE STUDY',
+      icon: 'lan',
       title: 'Redondance Réseau au Stade de France : Architecture et Déploiement',
       author: 'Équipe Technique',
       role: 'Infrastructure Audio Réseau',
@@ -530,11 +530,19 @@ document.addEventListener('DOMContentLoaded', () => {
       quote: "La redondance n’est pas une option sur un événement critique : c’est une partie du design système.",
       h2: '2. Supervision et tests avant ouverture public',
       p2: "Les tests de charge, la vérification des latences et la documentation des routes audio sont indispensables avant exploitation.",
+      specTitle: 'Architecture recommandée',
+      specs: [
+        ['Réseau primaire','Switch dédié'],
+        ['Réseau secondaire','Chemin séparé'],
+        ['Monitoring','Supervision continue'],
+        ['Tests','Charge + latence']
+      ],
       tags: ['Dante','Réseau Audio','Stade','Redondance']
     },
     'impact-vent-frequences': {
       category: 'Conseils Techniques',
       badge: 'EXPERT TIPS',
+      icon: 'air',
       title: "L’impact du vent sur les hautes fréquences en plein air",
       author: 'RentSoundSystem',
       role: 'Acoustique Outdoor',
@@ -546,11 +554,19 @@ document.addEventListener('DOMContentLoaded', () => {
       quote: "En plein air, la météo fait partie du système audio.",
       h2: '2. Solutions pratiques',
       p2: "Prévoyez des zones de mesure, adaptez les délais/fills et évitez de surcorriger une zone au détriment d’une autre.",
+      specTitle: 'Contrôles terrain',
+      specs: [
+        ['Mesure','Plusieurs zones public'],
+        ['Correction','Modérée'],
+        ['Front-fill','Vérifier délai'],
+        ['Suivi','Contrôle pendant événement']
+      ],
       tags: ['Vent','Outdoor','Acoustique','Festival']
     },
     'comprendre-end-fire': {
       category: 'Guide Technique',
       badge: 'TECHNICAL GUIDE',
+      icon: 'settings_input_component',
       title: 'Comprendre les configurations End-Fire',
       author: 'RentSoundSystem',
       role: 'Systèmes Subwoofers',
@@ -562,33 +578,59 @@ document.addEventListener('DOMContentLoaded', () => {
       quote: "Le grave se contrôle avec le placement, le délai et la cohérence de phase.",
       h2: '2. Mise en œuvre',
       p2: "La distance entre subs, le délai et la fréquence de travail doivent être adaptés au modèle utilisé et à la zone à couvrir.",
+      specTitle: 'Paramètres End-Fire',
+      specs: [
+        ['Espacement','Selon fréquence cible'],
+        ['Délai','Calculé par position'],
+        ['Objectif','Rejet arrière'],
+        ['Contrôle','Mesure phase / SPL']
+      ],
       tags: ['Subwoofers','End-Fire','Basses','Festival']
     }
   };
 
   const data = articles[slug] || articles['optimisation-couverture-line-array-festivals-plein-air'];
 
+  function toast(message){
+    let t = document.querySelector('.rss-toast');
+    if(!t){
+      t = document.createElement('div');
+      t.className = 'rss-toast';
+      document.body.appendChild(t);
+    }
+    t.textContent = message;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2200);
+  }
+
+  function setText(selector, value){
+    const el = document.querySelector(selector);
+    if(el) el.textContent = value;
+  }
+
   document.title = data.title + ' | RentSoundSystem Blog';
 
-  const heroTitle = document.querySelector('h1');
-  if(heroTitle) heroTitle.textContent = data.title;
+  setText('h1', data.title);
 
-  const badge = Array.from(document.querySelectorAll('.font-label-caps')).find(el => (el.textContent || '').includes('TECHNICAL') || (el.textContent || '').includes('REVIEW'));
+  const badge = document.querySelector('.inline-flex .font-label-caps');
   if(badge) badge.textContent = data.badge;
+
+  const badgeIcon = document.querySelector('.inline-flex .material-symbols-outlined');
+  if(badgeIcon) badgeIcon.textContent = data.icon;
 
   const category = document.querySelector('nav span.text-primary');
   if(category) category.textContent = data.category;
 
-  const author = Array.from(document.querySelectorAll('p')).find(p => (p.textContent || '').includes('Jean-Luc'));
+  const author = Array.from(document.querySelectorAll('p')).find(p => (p.textContent || '').includes('Jean-Luc') || (p.textContent || '').includes('Équipe') || (p.textContent || '').includes('RentSoundSystem'));
   if(author) author.textContent = data.author;
 
-  const role = Array.from(document.querySelectorAll('p.text-xs')).find(p => (p.textContent || '').includes('Ingénieur'));
+  const role = Array.from(document.querySelectorAll('p.text-xs')).find(p => (p.textContent || '').trim());
   if(role) role.textContent = data.role;
 
-  const metaSpans = Array.from(document.querySelectorAll('.flex.items-center.gap-2 span:last-child'));
-  metaSpans.forEach(span => {
-    if((span.textContent || '').includes('min')) span.textContent = data.read;
-    if((span.textContent || '').includes('Oct')) span.textContent = data.date;
+  document.querySelectorAll('.flex.items-center.gap-2 span:last-child').forEach(span => {
+    const txt = span.textContent || '';
+    if(txt.includes('min') || txt.includes('lecture')) span.textContent = data.read;
+    if(txt.includes('Oct') || txt.match(/\d{4}/)) span.textContent = data.date;
   });
 
   const articleParagraphs = document.querySelectorAll('article section.prose p');
@@ -603,10 +645,128 @@ document.addEventListener('DOMContentLoaded', () => {
   const quote = document.querySelector('blockquote p');
   if(quote) quote.textContent = '“' + data.quote + '”';
 
+  const specTitle = document.querySelector('.bg-surface-container-high h3');
+  if(specTitle){
+    specTitle.innerHTML = '<span class="material-symbols-outlined">tune</span> ' + data.specTitle;
+  }
+
+  const specGrid = document.querySelector('.bg-surface-container-high .grid');
+  if(specGrid){
+    specGrid.innerHTML = data.specs.map((s, i) => `
+      <div class="${i < 2 ? 'border-b' : 'border-b md:border-b-0'} border-surface-glass-border pb-4 ${i > 1 ? 'md:pb-0' : ''}">
+        <span class="block text-xs font-label-caps text-on-surface-variant mb-1 uppercase tracking-wider">${s[0]}</span>
+        <span class="font-headline-md text-lg text-on-surface">${s[1]}</span>
+      </div>
+    `).join('');
+  }
+
   const tagWrap = document.querySelector('.border-t.border-surface-glass-border.pt-8 .flex.flex-wrap');
   if(tagWrap){
-    tagWrap.innerHTML = data.tags.map(t => '<span class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary transition-colors cursor-pointer">' + t + '</span>').join('');
+    tagWrap.innerHTML = data.tags.map(t =>
+      `<a href="/blog.html?tag=${encodeURIComponent(t)}" class="bg-surface-container px-3 py-1 rounded text-sm text-on-surface-variant border border-surface-glass-border hover:border-primary hover:text-primary transition-colors">${t}</a>`
+    ).join('');
   }
+
+  // Sommaire logique
+  const tocLinks = Array.from(document.querySelectorAll('aside .glass-panel:first-child a'));
+  if(tocLinks[0]) { tocLinks[0].href = '#section-1'; tocLinks[0].innerHTML = '<span class="material-symbols-outlined text-[16px]">arrow_right</span> ' + data.h1; }
+  if(tocLinks[1]) { tocLinks[1].href = '#section-2'; tocLinks[1].innerHTML = '<span class="material-symbols-outlined text-[16px] opacity-0">arrow_right</span> ' + data.h2; }
+  tocLinks.slice(2).forEach((a, i) => {
+    a.href = '#';
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      toast('Cette partie sera ajoutée dans la version complète de l’article.');
+    });
+  });
+
+  tocLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      const href = link.getAttribute('href');
+      if(href && href.startsWith('#') && href !== '#'){
+        e.preventDefault();
+        document.querySelector(href)?.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    });
+  });
+
+  // Highlight du sommaire au scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        tocLinks.forEach(a => a.classList.remove('rss-toc-active'));
+        const active = tocLinks.find(a => a.getAttribute('href') === '#' + entry.target.id);
+        if(active) active.classList.add('rss-toc-active');
+      }
+    });
+  }, {rootMargin:'-35% 0px -55% 0px'});
+  ['section-1','section-2'].forEach(id => {
+    const el = document.getElementById(id);
+    if(el) observer.observe(el);
+  });
+
+  // Liens breadcrumb
+  document.querySelectorAll('nav a').forEach(a => {
+    const txt = (a.textContent || '').toLowerCase();
+    if(txt.includes('home')) a.href = '/';
+    if(txt.includes('sonic')) a.href = '/blog.html';
+  });
+
+  // Articles similaires logiques
+  const relatedLinks = Array.from(document.querySelectorAll('aside .glass-panel:nth-of-type(2) a'));
+  if(relatedLinks[0]) relatedLinks[0].href = '/article-detail.html?slug=impact-vent-frequences';
+  if(relatedLinks[1]) relatedLinks[1].href = '/article-detail.html?slug=comprendre-end-fire';
+
+  // CTA devis
+  document.querySelectorAll('button').forEach(btn => {
+    const txt = (btn.textContent || '').toLowerCase();
+
+    if(txt.includes('devis')){
+      btn.addEventListener('click', () => {
+        window.location.href = '/contact.html?source=article&slug=' + encodeURIComponent(slug);
+      });
+    }
+
+    if(btn.querySelector('.material-symbols-outlined')?.textContent.trim() === 'share'){
+      btn.addEventListener('click', async () => {
+        const shareData = { title: data.title, text: data.intro, url: window.location.href };
+        try{
+          if(navigator.share){
+            await navigator.share(shareData);
+          }else{
+            await navigator.clipboard.writeText(window.location.href);
+            toast('Lien copié dans le presse-papiers.');
+          }
+        }catch(e){
+          try{
+            await navigator.clipboard.writeText(window.location.href);
+            toast('Lien copié dans le presse-papiers.');
+          }catch(err){
+            toast('Partage indisponible sur ce navigateur.');
+          }
+        }
+      });
+    }
+
+    if(btn.querySelector('.material-symbols-outlined')?.textContent.trim() === 'bookmark'){
+      const key = 'rss-bookmark-' + slug;
+      if(localStorage.getItem(key) === '1') btn.classList.add('rss-bookmarked');
+
+      btn.addEventListener('click', () => {
+        const active = localStorage.getItem(key) === '1';
+        if(active){
+          localStorage.removeItem(key);
+          btn.classList.remove('rss-bookmarked');
+          toast('Article retiré des favoris.');
+        }else{
+          localStorage.setItem(key, '1');
+          btn.classList.add('rss-bookmarked');
+          toast('Article ajouté aux favoris.');
+        }
+      });
+    }
+  });
+
+  // Boutons tags déjà reliés à blog.html?tag=
 });
 </script>
 
