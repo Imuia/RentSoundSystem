@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Messagerie - Espace Client RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#131313",surface:"#131313","surface-container-lowest":"#0e0e0e","surface-container-low":"#1b1b1b","surface-container":"#1f1f1f","surface-container-high":"#2a2a2a","surface-container-highest":"#353535",primary:"#fc036d","primary-container":"#ff4d80","on-primary":"#ffffff","on-surface":"#e2e2e2","on-background":"#e2e2e2","on-surface-variant":"#e6bcc2",outline:"#ac878d","outline-variant":"#5d3f44"},spacing:{"container-max":"1280px","margin-mobile":"16px","margin-desktop":"40px"},fontFamily:{headline:["Manrope","sans-serif"],body:["Inter","sans-serif"],label:["Inter","sans-serif"]}}}}
+</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+html,body{overflow-x:hidden}
+body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:74px}
+#header-container,#footer-container{width:100%;max-width:none;margin:0}
+.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.95),rgba(20,20,20,.98));border:1px solid rgba(255,255,255,.07);box-shadow:0 18px 60px rgba(0,0,0,.28)}
+.rss-card:hover{border-color:rgba(252,3,109,.35)}
+.rss-active{background:#fc036d!important;color:#fff!important;border-color:#fc036d!important}
+.client-nav-link{display:flex;align-items:center;gap:12px;padding:13px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.08);color:#e6bcc2;background:rgba(255,255,255,.025);font-weight:800;transition:.22s;white-space:nowrap}
+.client-nav-link:hover{transform:translateX(3px);color:white;border-color:rgba(252,3,109,.65);background:rgba(252,3,109,.10)}
+.client-nav-link.rss-active{color:#fff;background:#fc036d!important;border-color:#fc036d!important;box-shadow:0 0 22px rgba(252,3,109,.32)}
+.client-sidebar{background:linear-gradient(180deg,#0f0f10,#080808);border:1px solid rgba(255,255,255,.08);border-left:3px solid #fc036d;border-radius:14px;padding:18px;height:fit-content;position:sticky;top:104px;box-shadow:0 22px 70px rgba(0,0,0,.42),0 0 35px rgba(252,3,109,.08)}
+.sidebar-nav{display:flex;flex-direction:column;gap:10px}
+.sidebar-logo{color:#fc036d;font-family:Manrope,sans-serif;font-size:18px;font-weight:800;line-height:1;letter-spacing:-.03em}
+.sidebar-kicker{display:block;margin-top:7px;color:#e6bcc2;font-size:11px;text-transform:uppercase;letter-spacing:.15em;font-weight:800}
+.sidebar-user{margin-top:24px;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:12px}
+.sidebar-avatar{width:38px;height:38px;border-radius:10px;background:rgba(252,3,109,.15);border:1px solid rgba(252,3,109,.35);color:#fc036d;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px}
+.sidebar-action{margin-top:18px;width:100%;min-height:52px;border-radius:8px;background:#fc036d;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 0 24px rgba(252,3,109,.25)}
+.chat-scroll{max-height:660px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:#fc036d #1f1f1f}
+.chat-scroll::-webkit-scrollbar{width:8px}.chat-scroll::-webkit-scrollbar-thumb{background:#fc036d;border-radius:20px}.chat-scroll::-webkit-scrollbar-track{background:#1f1f1f}
+.message-bubble{animation:messageIn .22s ease both}
+@keyframes messageIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.rss-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}
+.rss-toast.show{opacity:1;transform:translateY(0)}
+@media(min-width:1024px){.client-shell{max-width:1440px!important}.client-layout-grid{grid-template-columns:290px minmax(0,1fr)!important;gap:36px!important}}
+@media(max-width:1023px){.client-sidebar{position:relative;top:auto;overflow-x:auto}.sidebar-nav{flex-direction:row;overflow-x:auto;padding-bottom:6px}.client-nav-link{flex:0 0 auto}.sidebar-user{display:none}}
+@media(max-width:767px){body{padding-top:72px}.client-shell{padding-left:18px!important;padding-right:18px!important}h1{font-size:36px!important;line-height:44px!important}.chat-scroll{max-height:none}.message-max{max-width:88%!important}}
+</style>
+</head>
+
+<body class="font-body text-body-md bg-background text-on-background min-h-screen flex flex-col">
+<div id="header-container"></div>
+
+<main class="flex-grow client-shell max-w-[1440px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
+<section class="mb-10">
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+<div>
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5">
+<span class="material-symbols-outlined text-[18px]">forum</span> Portail client
+</div>
+<h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-on-surface mb-3">Messagerie</h1>
+<p class="text-on-surface-variant text-lg max-w-2xl">Conversations techniques, fichiers projet et assistance IA pour vos locations en cours.</p>
+</div>
+<div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">smart_toy</span></div>
+<div><p class="text-sm text-on-surface-variant">Assistant IA</p><p class="font-headline font-bold text-on-surface">Actif</p></div>
+</div>
+</div>
+</section>
+
+<section class="client-layout-grid grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-9">
+<aside class="client-sidebar">
+<div class="sidebar-brand pb-4 mb-4 border-b border-white/10">
+<a href="/index.html" class="sidebar-logo">RENTSOUNDSYSTEM</a>
+<span class="sidebar-kicker">Espace Client</span>
+</div>
+<nav class="sidebar-nav">
+<a href="/espace-client.html" class="client-nav-link"><span class="material-symbols-outlined">dashboard</span><span>Tableau de bord</span></a>
+<a href="/espace-client-calendrier.html" class="client-nav-link"><span class="material-symbols-outlined">calendar_month</span><span>Calendrier</span></a>
+<a href="/espace-client-inventaire.html" class="client-nav-link"><span class="material-symbols-outlined">inventory_2</span><span>Inventaire</span></a>
+<a href="/espace-client-messagerie.html" class="client-nav-link rss-active"><span class="material-symbols-outlined">forum</span><span>Messagerie</span></a>
+<a href="/espace-client.html#reservations" class="client-nav-link"><span class="material-symbols-outlined">event_available</span><span>Réservations</span></a>
+<a href="/espace-client.html#orders" class="client-nav-link"><span class="material-symbols-outlined">receipt_long</span><span>Commandes</span></a>
+<a href="/espace-client.html#settings" class="client-nav-link"><span class="material-symbols-outlined">settings</span><span>Paramètres</span></a>
+</nav>
+<button id="new-request-btn" class="sidebar-action"><span class="material-symbols-outlined">add</span> Nouvelle requête</button>
+<div class="sidebar-user">
+<div class="sidebar-avatar">AM</div>
+<div><p class="text-xs text-on-surface-variant">Client du Projet</p><strong class="text-sm text-white">Alex Mercer</strong></div>
+</div>
+</aside>
+
+<div class="min-w-0">
+<div class="grid grid-cols-1 xl:grid-cols-[1fr_330px] gap-8">
+
+<section class="rss-card rounded-xl overflow-hidden">
+<header class="p-5 md:p-6 border-b border-white/10 bg-surface-container-low">
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h2 id="conversation-title" class="font-headline text-2xl font-bold">Festival d'été - Coordination K2</h2>
+<div class="flex items-center gap-2 mt-1"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="text-sm text-on-surface-variant">Actif · Vu il y a 2 min</span></div>
+</div>
+<div class="flex items-center gap-3">
+<button id="call-btn" class="p-3 rounded-lg border border-white/10 hover:border-primary hover:text-primary transition"><span class="material-symbols-outlined">call</span></button>
+<button id="ai-btn" class="p-3 rounded-lg border border-white/10 hover:border-primary hover:text-primary transition"><span class="material-symbols-outlined">auto_awesome</span></button>
+</div>
+</div>
+</header>
+
+<div id="chat-list" class="chat-scroll p-5 md:p-6 space-y-6 bg-surface-container-lowest">
+<div class="flex justify-center"><span class="text-xs uppercase tracking-widest text-on-surface-variant bg-surface-container px-3 py-1 rounded">Aujourd'hui</span></div>
+
+<div class="flex gap-4 message-bubble">
+<div class="w-9 h-9 rounded-full bg-surface-container-high flex items-center justify-center text-primary font-bold shrink-0">S</div>
+<div class="message-max max-w-[70%]">
+<div class="flex items-baseline gap-2 mb-1"><span class="font-bold">Sarah (SoundTech Pro)</span><span class="text-xs text-on-surface-variant">10:42</span></div>
+<div class="bg-surface-container p-4 rounded-lg rounded-tl-none border border-white/10">
+<p>Bonjour, concernant le kit L-Acoustics K2 pour le festival, nous pouvons fournir les 24 boîtes demandées, mais nous sommes un peu justes sur les subs KS28.</p>
+</div>
+</div>
+</div>
+
+<div class="flex gap-4 message-bubble">
+<div class="w-9 shrink-0"></div>
+<div class="message-max max-w-[70%] w-full">
+<div class="bg-surface p-4 rounded-lg border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3"><span class="material-symbols-outlined text-primary">speaker</span><div><p class="font-bold">L-Acoustics KS28 Subwoofer</p><p class="text-sm text-on-surface-variant">Demandé : 12 unités</p></div></div>
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-yellow-300"></span><span class="text-sm text-yellow-300">Vérification...</span></div>
+</div>
+</div>
+</div>
+
+<div class="flex gap-4 flex-row-reverse message-bubble">
+<div class="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-bold shrink-0">AM</div>
+<div class="message-max max-w-[70%] flex flex-col items-end">
+<div class="flex items-baseline gap-2 mb-1 flex-row-reverse"><span class="font-bold">Moi</span><span class="text-xs text-on-surface-variant">10:45</span></div>
+<div class="bg-primary text-white p-4 rounded-lg rounded-tr-none">
+<p>Merci Sarah. 10 KS28 pourraient suffire si nous ajustons le design. Je vous envoie la fiche technique mise à jour pour validation.</p>
+</div>
+</div>
+</div>
+
+<div class="flex gap-4 flex-row-reverse message-bubble">
+<div class="w-9 shrink-0"></div>
+<div class="message-max max-w-[70%]">
+<div class="bg-surface-container p-3 rounded-lg border border-white/10 flex items-center gap-3 hover:bg-surface-container-high transition cursor-pointer">
+<div class="bg-surface p-2 rounded text-primary"><span class="material-symbols-outlined">picture_as_pdf</span></div>
+<div class="flex-1"><p class="font-bold text-sm">Fiche_Technique_K2_v2.pdf</p><p class="text-xs text-on-surface-variant">2.4 MB · PDF Document</p></div>
+<span class="material-symbols-outlined text-on-surface-variant">download</span>
+</div>
+</div>
+</div>
+
+<div class="flex items-center gap-2 ml-12 animate-pulse" id="typing-row">
+<div class="flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span><span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span><span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span></div>
+<p class="text-xs italic text-on-surface-variant">Sarah est en train d'écrire...</p>
+</div>
+</div>
+
+<div class="p-4 border-t border-white/10 bg-surface-container">
+<div class="flex items-center gap-3 bg-surface p-2 rounded-lg border border-white/10 focus-within:border-primary transition">
+<button id="attach-btn" class="p-2 text-on-surface-variant hover:text-primary transition"><span class="material-symbols-outlined">attach_file</span></button>
+<input id="message-input" class="flex-1 bg-transparent border-none text-on-surface placeholder-on-surface-variant focus:ring-0 py-2" placeholder="Écrivez un message ou demandez à l’IA..." type="text"/>
+<button id="send-btn" class="p-2 bg-primary text-white rounded hover:bg-primary-container transition flex items-center justify-center"><span class="material-symbols-outlined" style='font-variation-settings:"FILL" 1;'>send</span></button>
+</div>
+<div class="flex flex-wrap gap-2 mt-3">
+<button data-prompt="Peux-tu confirmer les disponibilités KS28 ?" class="ai-chip text-xs border border-white/10 rounded-full px-3 py-2 text-on-surface-variant hover:text-primary hover:border-primary transition">Confirmer disponibilité</button>
+<button data-prompt="Prépare une réponse professionnelle pour demander une fiche technique." class="ai-chip text-xs border border-white/10 rounded-full px-3 py-2 text-on-surface-variant hover:text-primary hover:border-primary transition">Réponse IA</button>
+<button data-prompt="Résume la conversation en 5 lignes." class="ai-chip text-xs border border-white/10 rounded-full px-3 py-2 text-on-surface-variant hover:text-primary hover:border-primary transition">Résumé IA</button>
+</div>
+</div>
+</section>
+
+<aside class="space-y-6">
+<section class="rss-card rounded-xl p-5">
+<h3 class="font-headline text-xl font-bold mb-4">Conversations actives</h3>
+<div id="conversation-list" class="space-y-3"></div>
+</section>
+
+<section class="rss-card rounded-xl p-5">
+<h3 class="font-headline text-xl font-bold mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">auto_awesome</span> Simulation IA</h3>
+<p class="text-on-surface-variant text-sm mb-4">Saisissez un besoin : l’IA prépare une réponse claire et technique.</p>
+<textarea id="ai-textarea" class="w-full min-h-[120px] bg-surface-container-lowest border border-white/10 rounded-lg p-3 text-on-surface focus:border-primary focus:ring-0" placeholder="Ex: répondre au client pour proposer 10 KS28 au lieu de 12..."></textarea>
+<button id="generate-ai" class="mt-3 w-full bg-primary text-white font-bold rounded-lg px-4 py-3 hover:bg-primary-container transition">Générer une réponse IA</button>
+</section>
+
+<section class="rss-card rounded-xl p-5">
+<h3 class="font-headline text-xl font-bold mb-4">Fichiers projet</h3>
+<div class="space-y-3">
+<div class="flex items-center gap-3 bg-surface-container-lowest rounded-lg border border-white/10 p-3"><span class="material-symbols-outlined text-primary">picture_as_pdf</span><div><p class="font-bold text-sm">Fiche_Technique_K2_v2.pdf</p><p class="text-xs text-on-surface-variant">PDF · 2.4 MB</p></div></div>
+<div class="flex items-center gap-3 bg-surface-container-lowest rounded-lg border border-white/10 p-3"><span class="material-symbols-outlined text-primary">image</span><div><p class="font-bold text-sm">Plan_scène_festival.jpg</p><p class="text-xs text-on-surface-variant">Image · 860 KB</p></div></div>
+</div>
+</section>
+</aside>
+
+</div>
+</div>
+</section>
+</main>
+
+<div id="footer-container"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+function toast(msg){let t=document.querySelector(".rss-toast");if(!t){t=document.createElement("div");t.className="rss-toast";document.body.appendChild(t)}t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
+const conversations=[
+{title:"Festival d'été - K2",msg:"C'est noté. Je vous recontacte...",time:"10:45",active:true},
+{title:"Tournée Club - Shure HF",msg:"Les fréquences sont validées.",time:"Hier"},
+{title:"Gala Annuel - Éclairage",msg:"Devis en attente de signature.",time:"Lun"}
+];
+const convList=document.getElementById("conversation-list");
+convList.innerHTML=conversations.map((c,i)=>`<button data-conv="${i}" class="conversation-btn w-full text-left p-4 rounded-lg border ${c.active?'border-primary bg-primary/10':'border-white/10 bg-surface-container-lowest hover:border-primary'} transition"><div class="flex justify-between gap-2 mb-1"><strong class="text-sm">${c.title}</strong><span class="text-xs text-on-surface-variant">${c.time}</span></div><p class="text-sm text-on-surface-variant truncate">${c.msg}</p></button>`).join("");
+document.querySelectorAll(".conversation-btn").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("conversation-title").textContent=conversations[btn.dataset.conv].title;toast("Conversation ouverte.");}));
+function addMessage(text, mine=true){
+const typing=document.getElementById("typing-row");
+const wrap=document.createElement("div");
+wrap.className="flex gap-4 "+(mine?"flex-row-reverse ":"")+"message-bubble";
+wrap.innerHTML=`<div class="w-9 h-9 rounded-full ${mine?'bg-primary/15 border border-primary/30 text-primary':'bg-surface-container-high text-primary'} flex items-center justify-center font-bold shrink-0">${mine?'AM':'IA'}</div><div class="message-max max-w-[70%] ${mine?'flex flex-col items-end':''}"><div class="${mine?'bg-primary text-white':'bg-surface-container border border-white/10'} p-4 rounded-lg ${mine?'rounded-tr-none':'rounded-tl-none'}"><p>${text}</p></div></div>`;
+typing.parentNode.insertBefore(wrap,typing);
+wrap.scrollIntoView({behavior:"smooth",block:"end"});
+}
+document.getElementById("send-btn").addEventListener("click",()=>{const input=document.getElementById("message-input");const txt=input.value.trim();if(!txt)return;addMessage(txt,true);input.value="";});
+document.getElementById("message-input").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();document.getElementById("send-btn").click();}});
+document.getElementById("attach-btn").addEventListener("click",()=>toast("Ajout de fichier bientôt disponible."));
+document.getElementById("call-btn").addEventListener("click",()=>toast("Appel technique bientôt disponible."));
+document.getElementById("ai-btn").addEventListener("click",()=>document.getElementById("ai-textarea").focus());
+document.querySelectorAll(".ai-chip").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("message-input").value=btn.dataset.prompt;document.getElementById("message-input").focus();}));
+document.getElementById("generate-ai").addEventListener("click",()=>{const t=document.getElementById("ai-textarea").value.trim()||"Réponse technique";addMessage("Suggestion IA : Bonjour, après vérification, nous pouvons proposer une configuration optimisée avec 10 KS28, accompagnée d’un ajustement du design sub pour conserver une pression homogène en façade.",false);toast("Réponse IA générée.");});
+document.getElementById("new-request-btn").addEventListener("click",()=>toast("Nouvelle requête ouverte."));
+});
+</script>
+<script src="/components.js"></script>
+</body>
+</html>
