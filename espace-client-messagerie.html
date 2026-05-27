@@ -195,32 +195,254 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
 <div id="footer-container"></div>
 
 <script>
-document.addEventListener("DOMContentLoaded",()=>{
-function toast(msg){let t=document.querySelector(".rss-toast");if(!t){t=document.createElement("div");t.className="rss-toast";document.body.appendChild(t)}t.textContent=msg;t.classList.add("show");setTimeout(()=>t.classList.remove("show"),2200)}
-const conversations=[
-{title:"Festival d'été - K2",msg:"C'est noté. Je vous recontacte...",time:"10:45",active:true},
-{title:"Tournée Club - Shure HF",msg:"Les fréquences sont validées.",time:"Hier"},
-{title:"Gala Annuel - Éclairage",msg:"Devis en attente de signature.",time:"Lun"}
-];
-const convList=document.getElementById("conversation-list");
-convList.innerHTML=conversations.map((c,i)=>`<button data-conv="${i}" class="conversation-btn w-full text-left p-4 rounded-lg border ${c.active?'border-primary bg-primary/10':'border-white/10 bg-surface-container-lowest hover:border-primary'} transition"><div class="flex justify-between gap-2 mb-1"><strong class="text-sm">${c.title}</strong><span class="text-xs text-on-surface-variant">${c.time}</span></div><p class="text-sm text-on-surface-variant truncate">${c.msg}</p></button>`).join("");
-document.querySelectorAll(".conversation-btn").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("conversation-title").textContent=conversations[btn.dataset.conv].title;toast("Conversation ouverte.");}));
-function addMessage(text, mine=true){
-const typing=document.getElementById("typing-row");
-const wrap=document.createElement("div");
-wrap.className="flex gap-4 "+(mine?"flex-row-reverse ":"")+"message-bubble";
-wrap.innerHTML=`<div class="w-9 h-9 rounded-full ${mine?'bg-primary/15 border border-primary/30 text-primary':'bg-surface-container-high text-primary'} flex items-center justify-center font-bold shrink-0">${mine?'AM':'IA'}</div><div class="message-max max-w-[70%] ${mine?'flex flex-col items-end':''}"><div class="${mine?'bg-primary text-white':'bg-surface-container border border-white/10'} p-4 rounded-lg ${mine?'rounded-tr-none':'rounded-tl-none'}"><p>${text}</p></div></div>`;
-typing.parentNode.insertBefore(wrap,typing);
-wrap.scrollIntoView({behavior:"smooth",block:"end"});
-}
-document.getElementById("send-btn").addEventListener("click",()=>{const input=document.getElementById("message-input");const txt=input.value.trim();if(!txt)return;addMessage(txt,true);input.value="";});
-document.getElementById("message-input").addEventListener("keydown",e=>{if(e.key==="Enter"){e.preventDefault();document.getElementById("send-btn").click();}});
-document.getElementById("attach-btn").addEventListener("click",()=>toast("Ajout de fichier bientôt disponible."));
-document.getElementById("call-btn").addEventListener("click",()=>toast("Appel technique bientôt disponible."));
-document.getElementById("ai-btn").addEventListener("click",()=>document.getElementById("ai-textarea").focus());
-document.querySelectorAll(".ai-chip").forEach(btn=>btn.addEventListener("click",()=>{document.getElementById("message-input").value=btn.dataset.prompt;document.getElementById("message-input").focus();}));
-document.getElementById("generate-ai").addEventListener("click",()=>{const t=document.getElementById("ai-textarea").value.trim()||"Réponse technique";addMessage("Suggestion IA : Bonjour, après vérification, nous pouvons proposer une configuration optimisée avec 10 KS28, accompagnée d’un ajustement du design sub pour conserver une pression homogène en façade.",false);toast("Réponse IA générée.");});
-document.getElementById("new-request-btn").addEventListener("click",()=>toast("Nouvelle requête ouverte."));
+document.addEventListener("DOMContentLoaded", () => {
+  const state = {
+    currentConversation: 0,
+    conversations: [
+      {
+        title: "Festival d'été - K2",
+        status: "Actif · Vu il y a 2 min",
+        msg: "Coordination K2 et KS28",
+        time: "10:45",
+        messages: [
+          { from: "Sarah", mine: false, time: "10:42", text: "Bonjour, concernant le kit L-Acoustics K2 pour le festival, nous pouvons fournir les 24 boîtes demandées, mais nous sommes un peu justes sur les subs KS28." },
+          { type: "equipment", title: "L-Acoustics KS28 Subwoofer", subtitle: "Demandé : 12 unités", status: "Vérification..." },
+          { from: "Moi", mine: true, time: "10:45", text: "Merci Sarah. 10 KS28 pourraient suffire si nous ajustons le design. Je vous envoie la fiche technique mise à jour pour validation." },
+          { type: "file", mine: true, title: "Fiche_Technique_K2_v2.pdf", subtitle: "2.4 MB · PDF Document" }
+        ]
+      },
+      {
+        title: "Tournée Club - Shure HF",
+        status: "Actif · Hier",
+        msg: "Les fréquences sont validées.",
+        time: "Hier",
+        messages: [
+          { from: "Technicien", mine: false, time: "Hier", text: "Les fréquences Shure HF sont validées pour la tournée club." },
+          { from: "Moi", mine: true, time: "Hier", text: "Parfait, merci. Gardez les fréquences en backup dans le dossier projet." }
+        ]
+      },
+      {
+        title: "Gala Annuel - Éclairage",
+        status: "En attente · Lundi",
+        msg: "Devis en attente de signature.",
+        time: "Lun",
+        messages: [
+          { from: "Client", mine: false, time: "Lun", text: "Pouvez-vous confirmer le plan lumière et la disponibilité des lyres ?" },
+          { from: "Moi", mine: true, time: "Lun", text: "Oui, le plan lumière est prêt. Le devis est en attente de signature." }
+        ]
+      }
+    ]
+  };
+
+  const chatList = document.getElementById("chat-list");
+  const conversationTitle = document.getElementById("conversation-title");
+  const conversationList = document.getElementById("conversation-list");
+  const input = document.getElementById("message-input");
+  const aiTextarea = document.getElementById("ai-textarea");
+
+  function toast(msg) {
+    let t = document.querySelector(".rss-toast");
+    if (!t) {
+      t = document.createElement("div");
+      t.className = "rss-toast";
+      document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  function nowTime() {
+    return new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
+  }
+
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
+
+  function messageHtml(message) {
+    if (message.type === "equipment") {
+      return `
+        <div class="flex gap-4 message-bubble">
+          <div class="w-9 shrink-0"></div>
+          <div class="message-max max-w-[70%] w-full">
+            <div class="bg-surface p-4 rounded-lg border border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary">speaker</span>
+                <div>
+                  <p class="font-bold">${escapeHtml(message.title)}</p>
+                  <p class="text-sm text-on-surface-variant">${escapeHtml(message.subtitle)}</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-yellow-300"></span>
+                <span class="text-sm text-yellow-300">${escapeHtml(message.status)}</span>
+              </div>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    if (message.type === "file") {
+      return `
+        <div class="flex gap-4 ${message.mine ? "flex-row-reverse" : ""} message-bubble">
+          <div class="w-9 shrink-0"></div>
+          <div class="message-max max-w-[70%]">
+            <button data-download="${escapeHtml(message.title)}" class="download-file text-left w-full bg-surface-container p-3 rounded-lg border border-white/10 flex items-center gap-3 hover:bg-surface-container-high transition cursor-pointer">
+              <div class="bg-surface p-2 rounded text-primary"><span class="material-symbols-outlined">picture_as_pdf</span></div>
+              <div class="flex-1">
+                <p class="font-bold text-sm">${escapeHtml(message.title)}</p>
+                <p class="text-xs text-on-surface-variant">${escapeHtml(message.subtitle)}</p>
+              </div>
+              <span class="material-symbols-outlined text-on-surface-variant">download</span>
+            </button>
+          </div>
+        </div>`;
+    }
+
+    const mine = !!message.mine;
+    return `
+      <div class="flex gap-4 ${mine ? "flex-row-reverse" : ""} message-bubble">
+        <div class="w-9 h-9 rounded-full ${mine ? "bg-primary/15 border border-primary/30 text-primary" : "bg-surface-container-high text-primary"} flex items-center justify-center font-bold shrink-0">${mine ? "AM" : "S"}</div>
+        <div class="message-max max-w-[70%] ${mine ? "flex flex-col items-end" : ""}">
+          <div class="flex items-baseline gap-2 mb-1 ${mine ? "flex-row-reverse" : ""}">
+            <span class="font-bold">${escapeHtml(message.from || (mine ? "Moi" : "Sarah"))}</span>
+            <span class="text-xs text-on-surface-variant">${escapeHtml(message.time || nowTime())}</span>
+          </div>
+          <div class="${mine ? "bg-primary text-white" : "bg-surface-container border border-white/10"} p-4 rounded-lg ${mine ? "rounded-tr-none" : "rounded-tl-none"}">
+            <p>${escapeHtml(message.text)}</p>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderConversationList() {
+    conversationList.innerHTML = state.conversations.map((c, i) => `
+      <button data-conv="${i}" class="conversation-btn w-full text-left p-4 rounded-lg border ${i === state.currentConversation ? "border-primary bg-primary/10" : "border-white/10 bg-surface-container-lowest hover:border-primary"} transition">
+        <div class="flex justify-between gap-2 mb-1">
+          <strong class="text-sm">${escapeHtml(c.title)}</strong>
+          <span class="text-xs text-on-surface-variant">${escapeHtml(c.time)}</span>
+        </div>
+        <p class="text-sm text-on-surface-variant truncate">${escapeHtml(c.msg)}</p>
+      </button>
+    `).join("");
+
+    document.querySelectorAll(".conversation-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        state.currentConversation = Number(btn.dataset.conv);
+        renderAll();
+        toast("Conversation ouverte.");
+      });
+    });
+  }
+
+  function renderChat() {
+    const conv = state.conversations[state.currentConversation];
+    conversationTitle.textContent = conv.title;
+
+    chatList.innerHTML = `
+      <div class="flex justify-center">
+        <span class="text-xs uppercase tracking-widest text-on-surface-variant bg-surface-container px-3 py-1 rounded">Aujourd'hui</span>
+      </div>
+      ${conv.messages.map(messageHtml).join("")}
+      <div class="flex items-center gap-2 ml-12 animate-pulse" id="typing-row">
+        <div class="flex gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span>
+          <span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span>
+        </div>
+        <p class="text-xs italic text-on-surface-variant">Sarah est en train d'écrire...</p>
+      </div>`;
+
+    document.querySelectorAll(".download-file").forEach(btn => {
+      btn.addEventListener("click", () => toast("Téléchargement simulé : " + btn.dataset.download));
+    });
+
+    chatList.scrollTop = chatList.scrollHeight;
+  }
+
+  function renderAll() {
+    renderConversationList();
+    renderChat();
+  }
+
+  function addMessage(text, mine = true) {
+    const clean = String(text || "").trim();
+    if (!clean) return;
+    const conv = state.conversations[state.currentConversation];
+    conv.messages.push({ from: mine ? "Moi" : "IA", mine, time: nowTime(), text: clean });
+    conv.msg = clean;
+    conv.time = nowTime();
+    renderAll();
+  }
+
+  function generateAiText(prompt) {
+    const p = String(prompt || "").toLowerCase();
+    if (p.includes("résume") || p.includes("resume")) {
+      return "Résumé IA : le client demande une configuration K2 avec subs KS28. Disponibilité partielle des KS28. Proposition recommandée : confirmer 10 KS28, ajuster le design sub et envoyer la fiche technique mise à jour.";
+    }
+    if (p.includes("fiche technique")) {
+      return "Bonjour, pouvez-vous nous transmettre la fiche technique à jour afin de valider les réglages, la puissance admissible, la couverture et les contraintes de câblage avant confirmation finale ?";
+    }
+    return "Bonjour, après vérification, nous pouvons proposer une configuration optimisée avec 10 KS28, accompagnée d’un ajustement du design sub pour conserver une pression homogène en façade. Nous restons disponibles pour valider le plan technique.";
+  }
+
+  document.getElementById("send-btn").addEventListener("click", () => {
+    addMessage(input.value, true);
+    input.value = "";
+  });
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      document.getElementById("send-btn").click();
+    }
+  });
+
+  document.getElementById("attach-btn").addEventListener("click", () => {
+    const conv = state.conversations[state.currentConversation];
+    conv.messages.push({ type: "file", mine: true, title: "Document_projet.pdf", subtitle: "PDF simulé · 1.2 MB" });
+    conv.msg = "Document_projet.pdf";
+    conv.time = nowTime();
+    renderAll();
+    toast("Fichier ajouté à la conversation.");
+  });
+
+  document.getElementById("call-btn").addEventListener("click", () => toast("Appel technique simulé."));
+  document.getElementById("ai-btn").addEventListener("click", () => aiTextarea.focus());
+
+  document.querySelectorAll(".ai-chip").forEach(btn => {
+    btn.addEventListener("click", () => {
+      input.value = btn.dataset.prompt;
+      input.focus();
+    });
+  });
+
+  document.getElementById("generate-ai").addEventListener("click", () => {
+    const suggestion = generateAiText(aiTextarea.value || input.value);
+    addMessage(suggestion, false);
+    toast("Réponse IA générée.");
+  });
+
+  document.getElementById("new-request-btn").addEventListener("click", () => {
+    state.conversations.unshift({
+      title: "Nouvelle requête technique",
+      status: "Brouillon",
+      msg: "Nouvelle conversation créée.",
+      time: nowTime(),
+      messages: [{ from: "Système", mine: false, time: nowTime(), text: "Nouvelle requête créée. Décrivez votre besoin technique dans le champ de message." }]
+    });
+    state.currentConversation = 0;
+    renderAll();
+    toast("Nouvelle requête ouverte.");
+  });
+
+  renderAll();
 });
 </script>
 <script src="/components.js"></script>
