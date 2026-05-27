@@ -6,6 +6,7 @@
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>
@@ -204,6 +205,32 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   }
 }
 
+
+/* Bouton déconnexion Supabase */
+.sidebar-logout{
+  margin-top:12px!important;
+  width:100%!important;
+  min-height:48px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  background:rgba(255,255,255,.025)!important;
+  color:#e6bcc2!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  transition:.22s ease!important;
+}
+.sidebar-logout:hover{
+  color:#fff!important;
+  border-color:rgba(252,3,109,.65)!important;
+  background:rgba(252,3,109,.12)!important;
+}
+.sidebar-logout .material-symbols-outlined{
+  color:inherit!important;
+}
+
 </style>
 </head>
 <body class="font-body text-body-md bg-background text-on-background min-h-screen flex flex-col">
@@ -260,7 +287,13 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
     Nouvelle location
   </button>
 
-  <div class="sidebar-user">
+  
+
+  <button id="logout-btn" type="button" class="sidebar-logout">
+    <span class="material-symbols-outlined">logout</span>
+    Déconnexion
+  </button>
+<div class="sidebar-user">
     <div class="sidebar-avatar">AM</div>
     <div>
       <p>Client du Projet</p>
@@ -301,4 +334,52 @@ document.addEventListener("DOMContentLoaded",()=>{
 });
 </script>
 <script src="/components.js"></script>
+
+<script id="rss-supabase-logout">
+(function(){
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const LOGIN_URL = '/connexion-inscription.html';
+
+  function showLocalToast(message){
+    let toast = document.querySelector('.rss-toast');
+    if(!toast){
+      toast = document.createElement('div');
+      toast.className = 'rss-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    const logoutBtn = document.getElementById('logout-btn');
+    if(!logoutBtn) return;
+
+    const supabaseClient = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      : null;
+
+    logoutBtn.addEventListener('click', async function(){
+      logoutBtn.disabled = true;
+      logoutBtn.classList.add('opacity-60');
+      logoutBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Déconnexion...';
+
+      try{
+        if(supabaseClient){
+          await supabaseClient.auth.signOut();
+        }
+        window.location.href = LOGIN_URL;
+      }catch(error){
+        console.error('Erreur déconnexion Supabase:', error);
+        showLocalToast('Déconnexion impossible. Réessayez.');
+        logoutBtn.disabled = false;
+        logoutBtn.classList.remove('opacity-60');
+        logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Déconnexion';
+      }
+    });
+  });
+})();
+</script>
 </body></html>
