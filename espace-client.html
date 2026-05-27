@@ -50,11 +50,165 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   max-width:none;
   margin:0;
 }
+
+/* Sidebar pro style espace client */
+.client-shell{
+  max-width:1440px!important;
+}
+.client-sidebar{
+  background:linear-gradient(180deg,#0f0f10,#080808)!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-left:3px solid #fc036d!important;
+  border-radius:14px!important;
+  padding:18px!important;
+  height:fit-content!important;
+  position:sticky!important;
+  top:104px!important;
+  box-shadow:0 22px 70px rgba(0,0,0,.42),0 0 35px rgba(252,3,109,.08)!important;
+}
+.sidebar-brand{
+  padding:8px 8px 18px!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  margin-bottom:16px!important;
+}
+.sidebar-logo{
+  display:block!important;
+  color:#fc036d!important;
+  font-family:Manrope, sans-serif!important;
+  font-size:18px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  letter-spacing:-.03em!important;
+}
+.sidebar-kicker{
+  display:block!important;
+  margin-top:7px!important;
+  color:#e6bcc2!important;
+  font-size:11px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.15em!important;
+  font-weight:800!important;
+}
+.sidebar-nav{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+}
+.client-nav-link{
+  min-height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:13px 14px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  color:#e6bcc2!important;
+  background:rgba(255,255,255,.025)!important;
+  font-weight:800!important;
+  font-size:14px!important;
+  white-space:nowrap!important;
+  transition:.22s ease!important;
+}
+.client-nav-link .material-symbols-outlined{
+  color:#e6bcc2!important;
+  font-size:22px!important;
+}
+.client-nav-link:hover{
+  transform:translateX(3px)!important;
+  color:#fff!important;
+  border-color:rgba(252,3,109,.65)!important;
+  background:rgba(252,3,109,.10)!important;
+}
+.client-nav-link:hover .material-symbols-outlined{
+  color:#fc036d!important;
+}
+.client-nav-link.rss-active{
+  color:#fff!important;
+  background:#fc036d!important;
+  border-color:#fc036d!important;
+  box-shadow:0 0 22px rgba(252,3,109,.32)!important;
+}
+.client-nav-link.rss-active .material-symbols-outlined{
+  color:#fff!important;
+  font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24!important;
+}
+.sidebar-action{
+  margin-top:18px!important;
+  width:100%!important;
+  min-height:52px!important;
+  border-radius:8px!important;
+  background:#fc036d!important;
+  color:#fff!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  box-shadow:0 0 24px rgba(252,3,109,.25)!important;
+}
+.sidebar-action:hover{
+  background:#ff4d80!important;
+}
+.sidebar-user{
+  margin-top:24px!important;
+  padding-top:16px!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.sidebar-avatar{
+  width:38px!important;
+  height:38px!important;
+  border-radius:10px!important;
+  background:rgba(252,3,109,.15)!important;
+  border:1px solid rgba(252,3,109,.35)!important;
+  color:#fc036d!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-weight:900!important;
+  font-size:12px!important;
+}
+.sidebar-user p{
+  color:#e6bcc2!important;
+  font-size:11px!important;
+  margin:0!important;
+}
+.sidebar-user strong{
+  color:#fff!important;
+  font-size:13px!important;
+}
+@media(min-width:1024px){
+  .client-layout-grid{
+    grid-template-columns:290px minmax(0,1fr)!important;
+    gap:36px!important;
+  }
+}
+@media(max-width:1023px){
+  .client-sidebar{
+    position:relative!important;
+    top:auto!important;
+    overflow-x:auto!important;
+  }
+  .sidebar-nav{
+    flex-direction:row!important;
+    overflow-x:auto!important;
+    padding-bottom:6px!important;
+  }
+  .client-nav-link{
+    flex:0 0 auto!important;
+  }
+  .sidebar-user{
+    display:none!important;
+  }
+}
+
 </style>
 </head>
 <body class="font-body text-body-md bg-background text-on-background min-h-screen flex flex-col">
 <div id="header-container"></div>
-<main class="flex-grow client-shell max-w-[1280px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
+<main class="flex-grow client-shell max-w-[1440px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
   <section class="mb-10">
     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
       <div>
@@ -65,25 +219,67 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
       <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">person</span></div><div><p class="text-sm text-on-surface-variant">Compte connecté</p><p class="font-headline font-bold text-on-surface" id="client-name">Alex Mercer</p></div></div>
     </div>
   </section>
-  <section class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+  <section class="client-layout-grid grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-9">
     
-<aside class="rss-card rounded-xl p-4 h-fit lg:sticky lg:top-28">
-  <div class="mb-5 px-2">
-    <p class="text-xs uppercase tracking-[0.18em] text-primary font-bold">Portail Client</p>
-    <p class="text-on-surface-variant text-sm mt-1">Navigation espace client</p>
+
+<aside class="client-sidebar">
+  <div class="sidebar-brand">
+    <a href="/index.html" class="sidebar-logo">RENTSOUNDSYSTEM</a>
+    <span class="sidebar-kicker">Espace Client</span>
   </div>
-  <nav class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-1">
-    <a href="/espace-client.html" class="client-nav-link rss-active"><span class="material-symbols-outlined">dashboard</span><span>Tableau de bord</span></a>
-    <a href="/espace-client-calendrier.html" class="client-nav-link"><span class="material-symbols-outlined">calendar_month</span><span>Calendrier</span></a>
-    <a href="/espace-client.html#reservations" class="client-nav-link"><span class="material-symbols-outlined">event_available</span><span>Réservations</span></a>
-    <a href="/espace-client.html#orders" class="client-nav-link"><span class="material-symbols-outlined">receipt_long</span><span>Commandes</span></a>
-    <a href="/espace-client.html#messages" class="client-nav-link"><span class="material-symbols-outlined">mail</span><span>Messages</span></a>
-    <a href="/espace-client.html#settings" class="client-nav-link"><span class="material-symbols-outlined">settings</span><span>Paramètres</span></a>
+
+  <nav class="sidebar-nav">
+    
+        <a href="/espace-client.html" class="client-nav-link rss-active">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Tableau de bord</span>
+        </a>
+    
+        <a href="/espace-client-calendrier.html" class="client-nav-link">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <span>Calendrier</span>
+        </a>
+    
+        <a href="/espace-client-inventaire.html" class="client-nav-link">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventaire</span>
+        </a>
+    
+        <a href="/espace-client.html#reservations" class="client-nav-link">
+          <span class="material-symbols-outlined">event_available</span>
+          <span>Réservations</span>
+        </a>
+    
+        <a href="/espace-client.html#orders" class="client-nav-link">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Commandes</span>
+        </a>
+    
+        <a href="/espace-client.html#messages" class="client-nav-link">
+          <span class="material-symbols-outlined">mail</span>
+          <span>Messages</span>
+        </a>
+    
+        <a href="/espace-client.html#settings" class="client-nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Paramètres</span>
+        </a>
   </nav>
-  <button class="go-catalog mt-5 w-full bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition flex items-center justify-center gap-2">
-    <span class="material-symbols-outlined">add</span> Nouvelle location
+
+  <button class="go-catalog sidebar-action">
+    <span class="material-symbols-outlined">add</span>
+    Nouvelle location
   </button>
+
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">AM</div>
+    <div>
+      <p>Client du Projet</p>
+      <strong>Alex Mercer</strong>
+    </div>
+  </div>
 </aside>
+
 
     <div class="min-w-0">
       <div id="panel-dashboard" class="rss-panel active">
