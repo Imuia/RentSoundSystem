@@ -172,10 +172,10 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
 </section>
 
 <section class="rss-card rounded-xl p-5">
-<h3 class="font-headline text-xl font-bold mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">auto_awesome</span> Simulation IA</h3>
-<p class="text-on-surface-variant text-sm mb-4">Saisissez un besoin : l’IA prépare une réponse claire et technique.</p>
-<textarea id="ai-textarea" class="w-full min-h-[120px] bg-surface-container-lowest border border-white/10 rounded-lg p-3 text-on-surface focus:border-primary focus:ring-0" placeholder="Ex: répondre au client pour proposer 10 KS28 au lieu de 12..."></textarea>
-<button id="generate-ai" class="mt-3 w-full bg-primary text-white font-bold rounded-lg px-4 py-3 hover:bg-primary-container transition">Générer une réponse IA</button>
+<h3 class="font-headline text-xl font-bold mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary">auto_awesome</span> Assistant réponse IA</h3>
+<p class="text-on-surface-variant text-sm mb-4">Optionnel : écrivez un besoin, puis cliquez pour générer une proposition de réponse.</p>
+<textarea id="ai-textarea" class="w-full min-h-[120px] bg-surface-container-lowest border border-white/10 rounded-lg p-3 text-on-surface focus:border-primary focus:ring-0" placeholder="Ex : proposer 10 KS28 au lieu de 12, demander une fiche technique..."></textarea>
+<button id="generate-ai" class="mt-3 w-full bg-primary text-white font-bold rounded-lg px-4 py-3 hover:bg-primary-container transition">Générer une proposition</button>
 </section>
 
 <section class="rss-card rounded-xl p-5">
@@ -363,6 +363,8 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener("click", () => toast("Téléchargement simulé : " + btn.dataset.download));
     });
 
+    const typing = document.getElementById("typing-row");
+    if (typing) typing.style.display = "none";
     chatList.scrollTop = chatList.scrollHeight;
   }
 
@@ -392,9 +394,33 @@ document.addEventListener("DOMContentLoaded", () => {
     return "Bonjour, après vérification, nous pouvons proposer une configuration optimisée avec 10 KS28, accompagnée d’un ajustement du design sub pour conserver une pression homogène en façade. Nous restons disponibles pour valider le plan technique.";
   }
 
+  function simulatePartnerReply(userText) {
+    const text = String(userText || "").toLowerCase();
+    let reply = "Bien reçu. Je vérifie les éléments techniques et je reviens vers vous avec une confirmation.";
+    if (text.includes("ks28") || text.includes("sub")) {
+      reply = "Merci pour votre message. Pour les KS28, je confirme la disponibilité partielle : 10 unités sont possibles. Nous pouvons ajuster le design sub pour conserver une couverture homogène.";
+    } else if (text.includes("fiche") || text.includes("pdf") || text.includes("technique")) {
+      reply = "Oui, je peux vous transmettre la fiche technique mise à jour avec les détails puissance, couverture, câblage et contraintes d’installation.";
+    } else if (text.includes("prix") || text.includes("devis")) {
+      reply = "Je prépare le devis actualisé avec les options de livraison, installation et assistance technique.";
+    }
+
+    const typing = document.getElementById("typing-row");
+    if (typing) typing.style.display = "flex";
+
+    setTimeout(() => {
+      addMessage(reply, false);
+      const typingAfter = document.getElementById("typing-row");
+      if (typingAfter) typingAfter.style.display = "none";
+    }, 900);
+  }
+
   document.getElementById("send-btn").addEventListener("click", () => {
-    addMessage(input.value, true);
+    const text = input.value.trim();
+    if (!text) return;
+    addMessage(text, true);
     input.value = "";
+    simulatePartnerReply(text);
   });
 
   input.addEventListener("keydown", e => {
@@ -425,8 +451,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("generate-ai").addEventListener("click", () => {
     const suggestion = generateAiText(aiTextarea.value || input.value);
-    addMessage(suggestion, false);
-    toast("Réponse IA générée.");
+    input.value = suggestion.replace("Suggestion IA : ", "");
+    input.focus();
+    toast("Proposition IA placée dans le champ message.");
   });
 
   document.getElementById("new-request-btn").addEventListener("click", () => {
