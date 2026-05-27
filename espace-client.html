@@ -1,320 +1,123 @@
 <!DOCTYPE html>
 <html class="dark" lang="fr">
-<head>
+<head><title>Espace Client - RentSoundSystem</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<title>Espace Client - RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>
 tailwind.config = {
   darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        background:"#131313",
-        surface:"#131313",
-        "surface-container-lowest":"#0e0e0e",
-        "surface-container-low":"#1b1b1b",
-        "surface-container":"#1f1f1f",
-        "surface-container-high":"#2a2a2a",
-        "surface-container-highest":"#353535",
-        primary:"#fc036d",
-        "primary-container":"#ff4d80",
-        "on-primary":"#ffffff",
-        "on-surface":"#e2e2e2",
-        "on-background":"#e2e2e2",
-        "on-surface-variant":"#e6bcc2",
-        outline:"#ac878d",
-        "outline-variant":"#5d3f44"
-      },
-      fontFamily:{
-        headline:["Manrope","sans-serif"],
-        body:["Inter","sans-serif"],
-        label:["Inter","sans-serif"]
-      }
-    }
-  }
+  theme: { extend: {
+    colors: {
+      background:"#131313", surface:"#131313",
+      "surface-container-lowest":"#0e0e0e", "surface-container-low":"#1b1b1b",
+      "surface-container":"#1f1f1f", "surface-container-high":"#2a2a2a",
+      "surface-container-highest":"#353535", primary:"#fc036d",
+      "primary-container":"#ff4d80", "on-primary":"#ffffff",
+      "on-surface":"#e2e2e2", "on-background":"#e2e2e2",
+      "on-surface-variant":"#e6bcc2", outline:"#ac878d", "outline-variant":"#5d3f44"
+    },
+    fontFamily:{ headline:["Manrope","sans-serif"], body:["Inter","sans-serif"], label:["Inter","sans-serif"] }
+  }}
 }
 </script>
 <style>
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
 html,body{overflow-x:hidden}
 body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:74px}
-.rss-card{background:linear-gradient(180deg,rgba(31,31,31,.96),rgba(20,20,20,.96));border:1px solid rgba(255,255,255,.07);box-shadow:0 18px 60px rgba(0,0,0,.28)}
+#header-container,#footer-container{width:100vw!important;margin-left:calc(50% - 50vw)!important;margin-right:calc(50% - 50vw)!important}
+#header-container header,#footer-container footer{width:100%!important;max-width:none!important}
+.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.95),rgba(20,20,20,.98));border:1px solid rgba(255,255,255,.07);box-shadow:0 18px 60px rgba(0,0,0,.28)}
 .rss-card:hover{border-color:rgba(252,3,109,.35)}
-.rss-tab-active{background:#fc036d!important;color:#fff!important;border-color:#fc036d!important}
-.rss-panel{display:none}
-.rss-panel.active{display:block}
+.rss-active{background:#fc036d!important;color:#fff!important;border-color:#fc036d!important}
+.rss-panel{display:none}.rss-panel.active{display:block}
+.client-nav-link{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);color:#e6bcc2;font-weight:700;transition:.2s;white-space:nowrap}
+.client-nav-link:hover{color:white;border-color:#fc036d}
+.calendar-day{min-height:112px;background:#1b1b1b;border:1px solid rgba(255,255,255,.04);transition:.2s}
+.calendar-day:hover{background:#2a2a2a;border-color:rgba(252,3,109,.35)}
+.calendar-event{cursor:pointer}
 .rss-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}
 .rss-toast.show{opacity:1;transform:translateY(0)}
-@media(max-width:767px){
-  body{padding-top:72px}
-  .client-shell{padding-left:18px!important;padding-right:18px!important}
-  h1{font-size:38px!important;line-height:46px!important}
-}
+@media(max-width:767px){body{padding-top:72px}.client-shell{padding-left:18px!important;padding-right:18px!important}h1{font-size:36px!important;line-height:44px!important}.calendar-day{min-height:84px;padding:8px!important}.calendar-event{font-size:10px!important}}
 </style>
 </head>
-
 <body class="bg-background text-on-background min-h-screen flex flex-col">
 <div id="header-container"></div>
-
 <main class="flex-grow client-shell max-w-[1280px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
-
   <section class="mb-10">
     <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
       <div>
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5">
-          <span class="material-symbols-outlined text-[18px]">account_circle</span>
-          Portail client
-        </div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5"><span class="material-symbols-outlined text-[18px]">account_circle</span> Portail client</div>
         <h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-on-surface mb-3">Espace Client</h1>
         <p class="text-on-surface-variant text-lg max-w-2xl">Gérez vos locations, commandes, favoris et messages RentSoundSystem depuis un tableau de bord premium.</p>
       </div>
-
-      <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4">
-        <div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center">
-          <span class="material-symbols-outlined text-primary">person</span>
-        </div>
-        <div>
-          <p class="text-sm text-on-surface-variant">Compte connecté</p>
-          <p class="font-headline font-bold text-on-surface" id="client-name">Alex Mercer</p>
-        </div>
-      </div>
+      <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">person</span></div><div><p class="text-sm text-on-surface-variant">Compte connecté</p><p class="font-headline font-bold text-on-surface" id="client-name">Alex Mercer</p></div></div>
     </div>
   </section>
-
   <section class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
-
-    <aside class="rss-card rounded-xl p-4 h-fit lg:sticky lg:top-28">
-      <nav class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-1">
-        <button data-tab="dashboard" class="client-tab rss-tab-active shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
-          <span class="material-symbols-outlined">dashboard</span><span class="font-semibold whitespace-nowrap">Tableau de bord</span>
-        </button>
-        <button data-tab="reservations" class="client-tab shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
-          <span class="material-symbols-outlined">event_available</span><span class="font-semibold whitespace-nowrap">Réservations</span>
-        </button>
-        <button data-tab="orders" class="client-tab shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
-          <span class="material-symbols-outlined">receipt_long</span><span class="font-semibold whitespace-nowrap">Commandes</span>
-        </button>
-        <button data-tab="messages" class="client-tab shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
-          <span class="material-symbols-outlined">mail</span><span class="font-semibold whitespace-nowrap">Messages</span>
-        </button>
-        <button data-tab="settings" class="client-tab shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
-          <span class="material-symbols-outlined">settings</span><span class="font-semibold whitespace-nowrap">Paramètres</span>
-        </button>
-      </nav>
-
-      <button id="new-rental-btn" class="mt-5 w-full bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition flex items-center justify-center gap-2">
-        <span class="material-symbols-outlined">add</span>
-        Nouvelle location
-      </button>
-    </aside>
+    
+<aside class="rss-card rounded-xl p-4 h-fit lg:sticky lg:top-28">
+  <div class="mb-5 px-2">
+    <p class="text-xs uppercase tracking-[0.18em] text-primary font-bold">Portail Client</p>
+    <p class="text-on-surface-variant text-sm mt-1">Navigation espace client</p>
+  </div>
+  <nav class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-1">
+    <a href="/espace-client.html" class="client-nav-link rss-active"><span class="material-symbols-outlined">dashboard</span><span>Tableau de bord</span></a>
+    <a href="/espace-client-calendrier.html" class="client-nav-link"><span class="material-symbols-outlined">calendar_month</span><span>Calendrier</span></a>
+    <a href="/espace-client.html#reservations" class="client-nav-link"><span class="material-symbols-outlined">event_available</span><span>Réservations</span></a>
+    <a href="/espace-client.html#orders" class="client-nav-link"><span class="material-symbols-outlined">receipt_long</span><span>Commandes</span></a>
+    <a href="/espace-client.html#messages" class="client-nav-link"><span class="material-symbols-outlined">mail</span><span>Messages</span></a>
+    <a href="/espace-client.html#settings" class="client-nav-link"><span class="material-symbols-outlined">settings</span><span>Paramètres</span></a>
+  </nav>
+  <button class="go-catalog mt-5 w-full bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition flex items-center justify-center gap-2">
+    <span class="material-symbols-outlined">add</span> Nouvelle location
+  </button>
+</aside>
 
     <div class="min-w-0">
-
       <div id="panel-dashboard" class="rss-panel active">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-          <div class="rss-card rounded-xl p-6 bg-primary">
-            <p class="uppercase tracking-widest text-xs text-white/80 mb-4">Réservations</p>
-            <p class="font-headline text-5xl font-extrabold text-white">12</p>
-          </div>
-          <div class="rss-card rounded-xl p-6">
-            <p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Commandes</p>
-            <p class="font-headline text-5xl font-extrabold">28</p>
-          </div>
-          <div class="rss-card rounded-xl p-6">
-            <p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Messages</p>
-            <p class="font-headline text-5xl font-extrabold">5</p>
-          </div>
-          <div class="rss-card rounded-xl p-6">
-            <p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Favoris</p>
-            <p class="font-headline text-5xl font-extrabold">19</p>
-          </div>
+          <button data-open="reservations" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Réservations</p><p class="font-headline text-5xl font-extrabold">12</p></button>
+          <button data-open="orders" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Commandes</p><p class="font-headline text-5xl font-extrabold">28</p></button>
+          <button data-open="messages" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Messages</p><p class="font-headline text-5xl font-extrabold">5</p></button>
+          <button data-open="settings" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Favoris</p><p class="font-headline text-5xl font-extrabold">19</p></button>
         </div>
-
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
           <section class="xl:col-span-2 rss-card rounded-xl p-6 md:p-8">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7">
-              <h2 class="font-headline text-2xl font-bold">Locations en cours</h2>
-              <button class="go-catalog bg-primary text-white rounded-lg px-5 py-3 font-bold hover:bg-primary-container transition">Nouvelle réservation</button>
-            </div>
-
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7"><h2 class="font-headline text-2xl font-bold">Locations en cours</h2><a href="/espace-client-calendrier.html" class="bg-primary text-white rounded-lg px-5 py-3 font-bold hover:bg-primary-container transition">Voir calendrier</a></div>
             <div class="space-y-4">
-              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                  <div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary">album</span>
-                  </div>
-                  <div>
-                    <h3 class="font-headline font-bold text-xl">Pioneer CDJ 3000 + DJM A9</h3>
-                    <p class="text-on-surface-variant text-sm mt-1">Retour prévu : 28 Mai 2026</p>
-                  </div>
-                </div>
-                <span class="bg-primary/15 text-primary px-4 py-2 rounded-full font-bold text-sm">En cours</span>
-              </article>
-
-              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div class="flex items-center gap-4">
-                  <div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center">
-                    <span class="material-symbols-outlined text-primary">speaker</span>
-                  </div>
-                  <div>
-                    <h3 class="font-headline font-bold text-xl">Line Array JBL VRX</h3>
-                    <p class="text-on-surface-variant text-sm mt-1">Début prévu : 31 Mai 2026</p>
-                  </div>
-                </div>
-                <span class="bg-yellow-500/15 text-yellow-300 px-4 py-2 rounded-full font-bold text-sm">Réservé</span>
-              </article>
+              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">album</span></div><div><h3 class="font-headline font-bold text-xl">Pioneer CDJ 3000 + DJM A9</h3><p class="text-on-surface-variant text-sm mt-1">Retour prévu : 28 Mai 2026</p></div></div><span class="bg-primary/15 text-primary px-4 py-2 rounded-full font-bold text-sm">En cours</span></article>
+              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">speaker</span></div><div><h3 class="font-headline font-bold text-xl">Line Array JBL VRX</h3><p class="text-on-surface-variant text-sm mt-1">Début prévu : 31 Mai 2026</p></div></div><span class="bg-yellow-500/15 text-yellow-300 px-4 py-2 rounded-full font-bold text-sm">Réservé</span></article>
             </div>
           </section>
-
-          <section class="rss-card rounded-xl p-6 md:p-8">
-            <h2 class="font-headline text-2xl font-bold mb-7">Activité récente</h2>
-            <div class="space-y-6">
-              <div class="border-l-2 border-primary pl-4">
-                <p class="font-bold">Nouvelle réservation</p>
-                <p class="text-on-surface-variant text-sm">Aujourd’hui</p>
-              </div>
-              <div class="border-l-2 border-white/20 pl-4">
-                <p class="font-bold">Paiement validé</p>
-                <p class="text-on-surface-variant text-sm">Hier</p>
-              </div>
-              <div class="border-l-2 border-white/20 pl-4">
-                <p class="font-bold">Message reçu</p>
-                <p class="text-on-surface-variant text-sm">Il y a 2 jours</p>
-              </div>
-            </div>
-          </section>
+          <section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-2xl font-bold mb-7">Activité récente</h2><div class="space-y-6"><div class="border-l-2 border-primary pl-4"><p class="font-bold">Nouvelle réservation</p><p class="text-on-surface-variant text-sm">Aujourd’hui</p></div><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Paiement validé</p><p class="text-on-surface-variant text-sm">Hier</p></div><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Message reçu</p><p class="text-on-surface-variant text-sm">Il y a 2 jours</p></div></div></section>
         </div>
       </div>
-
-      <div id="panel-reservations" class="rss-panel">
-        <section class="rss-card rounded-xl p-6 md:p-8">
-          <h2 class="font-headline text-3xl font-bold mb-6">Mes réservations</h2>
-          <div class="space-y-4" id="reservation-list"></div>
-        </section>
-      </div>
-
-      <div id="panel-orders" class="rss-panel">
-        <section class="rss-card rounded-xl p-6 md:p-8 overflow-x-auto">
-          <h2 class="font-headline text-3xl font-bold mb-6">Commandes récentes</h2>
-          <table class="w-full min-w-[700px] text-left">
-            <thead class="text-xs uppercase tracking-widest text-on-surface-variant border-b border-white/10">
-              <tr><th class="py-4">Référence</th><th>Date</th><th>Matériel</th><th>État</th><th class="text-right">Total</th></tr>
-            </thead>
-            <tbody id="orders-body" class="divide-y divide-white/5"></tbody>
-          </table>
-        </section>
-      </div>
-
-      <div id="panel-messages" class="rss-panel">
-        <section class="rss-card rounded-xl p-6 md:p-8">
-          <h2 class="font-headline text-3xl font-bold mb-6">Messages</h2>
-          <div class="space-y-4">
-            <div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5">
-              <p class="font-bold">Loueur : Confirmation de disponibilité</p>
-              <p class="text-on-surface-variant mt-2">Votre pack Pioneer est disponible pour les dates sélectionnées.</p>
-            </div>
-            <div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5">
-              <p class="font-bold">Support RentSoundSystem</p>
-              <p class="text-on-surface-variant mt-2">Votre demande de devis a bien été reçue.</p>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div id="panel-settings" class="rss-panel">
-        <section class="rss-card rounded-xl p-6 md:p-8">
-          <h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2>
-          <form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="Alex Mercer"/>
-            <input class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="alex@email.com"/>
-            <button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button>
-          </form>
-        </section>
-      </div>
-
+      <div id="panel-reservations" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Mes réservations</h2><div id="reservation-list" class="space-y-4"></div></section></div>
+      <div id="panel-orders" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8 overflow-x-auto"><h2 class="font-headline text-3xl font-bold mb-6">Commandes récentes</h2><table class="w-full min-w-[700px] text-left"><thead class="text-xs uppercase tracking-widest text-on-surface-variant border-b border-white/10"><tr><th class="py-4">Référence</th><th>Date</th><th>Matériel</th><th>État</th><th class="text-right">Total</th></tr></thead><tbody id="orders-body" class="divide-y divide-white/5"></tbody></table></section></div>
+      <div id="panel-messages" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Messages</h2><div class="space-y-4"><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Loueur : Confirmation de disponibilité</p><p class="text-on-surface-variant mt-2">Votre pack Pioneer est disponible pour les dates sélectionnées.</p></div><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Support RentSoundSystem</p><p class="text-on-surface-variant mt-2">Votre demande de devis a bien été reçue.</p></div></div></section></div>
+      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="Alex Mercer"/><input class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="alex@email.com"/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
     </div>
   </section>
 </main>
-
 <div id="footer-container"></div>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const tabs = document.querySelectorAll(".client-tab");
-  const panels = document.querySelectorAll(".rss-panel");
-
-  function toast(msg){
-    let t = document.querySelector(".rss-toast");
-    if(!t){ t=document.createElement("div"); t.className="rss-toast"; document.body.appendChild(t); }
-    t.textContent = msg;
-    t.classList.add("show");
-    setTimeout(()=>t.classList.remove("show"),2200);
-  }
-
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      tabs.forEach(t => t.classList.remove("rss-tab-active"));
-      tab.classList.add("rss-tab-active");
-      panels.forEach(p => p.classList.remove("active"));
-      document.getElementById("panel-" + tab.dataset.tab)?.classList.add("active");
-    });
-  });
-
-  document.querySelectorAll(".go-catalog,#new-rental-btn").forEach(btn=>{
-    btn.addEventListener("click",()=>{ window.location.href="/catalog.html"; });
-  });
-
-  const reservations = [
-    ["Pioneer CDJ 3000 + DJM A9","28 Mai 2026","En cours"],
-    ["Line Array JBL VRX","31 Mai 2026","Réservé"],
-    ["Pack micros Shure","04 Juin 2026","En attente"]
-  ];
-  const reservationList = document.getElementById("reservation-list");
-  if(reservationList){
-    reservationList.innerHTML = reservations.map(r => `
-      <div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div>
-          <p class="font-headline font-bold text-xl">${r[0]}</p>
-          <p class="text-on-surface-variant text-sm mt-1">Date : ${r[1]}</p>
-        </div>
-        <span class="text-primary font-bold">${r[2]}</span>
-      </div>
-    `).join("");
-  }
-
-  const orders = [
-    ["#ORD-9021","12 oct. 2024","QSC K12.2 paire","Retourné","150,00 €"],
-    ["#ORD-8845","28 sept. 2024","Sennheiser EW 100 G4","Retourné","45,00 €"],
-    ["#ORD-8712","15 sept. 2024","Allen & Heath SQ-5","Retourné","220,00 €"]
-  ];
-  const body = document.getElementById("orders-body");
-  if(body){
-    body.innerHTML = orders.map(o => `
-      <tr class="hover:bg-surface-container-lowest transition">
-        <td class="py-4 font-mono text-on-surface-variant">${o[0]}</td>
-        <td>${o[1]}</td>
-        <td>${o[2]}</td>
-        <td><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span>${o[3]}</span></td>
-        <td class="text-right font-bold">${o[4]}</td>
-      </tr>
-    `).join("");
-  }
-
-  document.getElementById("settings-form")?.addEventListener("submit",(e)=>{
-    e.preventDefault();
-    const name = document.getElementById("name-input")?.value || "Client";
-    document.getElementById("client-name").textContent = name;
-    toast("Paramètres enregistrés.");
-  });
+  const panels=document.querySelectorAll(".rss-panel");
+  function showPanel(id){panels.forEach(p=>p.classList.remove("active"));document.getElementById("panel-"+id)?.classList.add("active");history.replaceState(null,"","#"+id);}
+  document.querySelectorAll("[data-open]").forEach(btn=>btn.addEventListener("click",()=>showPanel(btn.dataset.open)));
+  document.querySelectorAll(".go-catalog").forEach(btn=>btn.addEventListener("click",()=>location.href="/catalog.html"));
+  const reservations=[["Pioneer CDJ 3000 + DJM A9","28 Mai 2026","En cours"],["Line Array JBL VRX","31 Mai 2026","Réservé"],["Pack micros Shure","04 Juin 2026","En attente"]];
+  document.getElementById("reservation-list").innerHTML=reservations.map(r=>`<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div><p class="font-headline font-bold text-xl">${r[0]}</p><p class="text-on-surface-variant text-sm mt-1">Date : ${r[1]}</p></div><span class="text-primary font-bold">${r[2]}</span></div>`).join("");
+  const orders=[["#ORD-9021","12 oct. 2024","QSC K12.2 paire","Retourné","150,00 €"],["#ORD-8845","28 sept. 2024","Sennheiser EW 100 G4","Retourné","45,00 €"],["#ORD-8712","15 sept. 2024","Allen & Heath SQ-5","Retourné","220,00 €"]];
+  document.getElementById("orders-body").innerHTML=orders.map(o=>`<tr class="hover:bg-surface-container-lowest transition"><td class="py-4 font-mono text-on-surface-variant">${o[0]}</td><td>${o[1]}</td><td>${o[2]}</td><td><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span>${o[3]}</span></td><td class="text-right font-bold">${o[4]}</td></tr>`).join("");
+  document.getElementById("settings-form")?.addEventListener("submit",(e)=>{e.preventDefault();document.getElementById("client-name").textContent=document.getElementById("name-input").value||"Client";});
+  const hash=location.hash.replace("#","");if(["reservations","orders","messages","settings"].includes(hash))showPanel(hash);
 });
 </script>
-
 <script src="/components.js"></script>
-</body>
-</html>
+</body></html>
