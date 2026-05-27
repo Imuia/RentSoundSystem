@@ -261,11 +261,19 @@
 document.addEventListener('DOMContentLoaded', function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const REDIRECT_URL = window.location.origin + '/espace_client_tableau_de_bord.html';
+  const REDIRECT_URL = window.location.origin + '/espace-client.html';
 
   const supabaseClient = window.supabase
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
     : null;
+
+  if (supabaseClient) {
+    supabaseClient.auth.getSession().then(({ data }) => {
+      if (data?.session && !new URLSearchParams(window.location.search).get('force')) {
+        window.location.href = REDIRECT_URL;
+      }
+    });
+  }
 
   const loginTab = document.getElementById('login-tab');
   const registerTab = document.getElementById('register-tab');
@@ -371,7 +379,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const fullName = document.getElementById('full-name').value.trim();
         const company = document.getElementById('company-name').value.trim();
 
-        const { error } = await supabaseClient.auth.signUp({
+        const { data, error } = await supabaseClient.auth.signUp({
           email: email,
           password: pass,
           options: {
@@ -385,7 +393,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (error) throw error;
 
-        showStatus('Compte créé. Vérifiez votre e-mail si Supabase demande une confirmation.', 'success');
+        // Si Supabase renvoie déjà une session, on prépare le profil client.
+        if (data?.user) {
+          await supabaseClient.from('profiles').upsert({
+            id: data.user.id,
+            email: email,
+            full_name: fullName,
+            company_name: company,
+            role: 'client',
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'id' });
+        }
+
+        showStatus('Compte créé. Vérifiez votre e-mail si Supabase demande une confirmation. Sinon redirection...', 'success');
+        if (data?.session) window.location.href = REDIRECT_URL;
       } else {
         const { error } = await supabaseClient.auth.signInWithPassword({
           email: email,
@@ -393,6 +414,18 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (error) throw error;
+
+        const { data: userData } = await supabaseClient.auth.getUser();
+        if (userData?.user) {
+          await supabaseClient.from('profiles').upsert({
+            id: userData.user.id,
+            email: userData.user.email,
+            full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Client',
+            company_name: userData.user.user_metadata?.company_name || '',
+            role: 'client',
+            updated_at: new Date().toISOString()
+          }, { onConflict: 'id' });
+        }
 
         showStatus('Connexion réussie. Redirection...', 'success');
         window.location.href = REDIRECT_URL;
