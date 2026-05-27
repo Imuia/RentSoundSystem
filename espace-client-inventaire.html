@@ -15,14 +15,226 @@ tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#131313",su
 <style>
 .material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
 html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:74px}#header-container,#footer-container{width:100%;max-width:none;margin:0}.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.95),rgba(20,20,20,.98));border:1px solid rgba(255,255,255,.07);box-shadow:0 18px 60px rgba(0,0,0,.28)}.rss-card:hover{border-color:rgba(252,3,109,.35)}.rss-active{background:#fc036d!important;color:#fff!important;border-color:#fc036d!important}.client-nav-link{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.08);color:#e6bcc2;font-weight:700;transition:.2s;white-space:nowrap}.client-nav-link:hover{color:white;border-color:#fc036d}.rss-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}.rss-toast.show{opacity:1;transform:translateY(0)}@media(max-width:767px){body{padding-top:72px}.client-shell{padding-left:18px!important;padding-right:18px!important}h1{font-size:36px!important;line-height:44px!important}}
+
+/* Sidebar pro style espace client */
+.client-shell{
+  max-width:1440px!important;
+}
+.client-sidebar{
+  background:linear-gradient(180deg,#0f0f10,#080808)!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-left:3px solid #fc036d!important;
+  border-radius:14px!important;
+  padding:18px!important;
+  height:fit-content!important;
+  position:sticky!important;
+  top:104px!important;
+  box-shadow:0 22px 70px rgba(0,0,0,.42),0 0 35px rgba(252,3,109,.08)!important;
+}
+.sidebar-brand{
+  padding:8px 8px 18px!important;
+  border-bottom:1px solid rgba(255,255,255,.08)!important;
+  margin-bottom:16px!important;
+}
+.sidebar-logo{
+  display:block!important;
+  color:#fc036d!important;
+  font-family:Manrope, sans-serif!important;
+  font-size:18px!important;
+  font-weight:800!important;
+  line-height:1!important;
+  letter-spacing:-.03em!important;
+}
+.sidebar-kicker{
+  display:block!important;
+  margin-top:7px!important;
+  color:#e6bcc2!important;
+  font-size:11px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.15em!important;
+  font-weight:800!important;
+}
+.sidebar-nav{
+  display:flex!important;
+  flex-direction:column!important;
+  gap:10px!important;
+}
+.client-nav-link{
+  min-height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+  padding:13px 14px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  color:#e6bcc2!important;
+  background:rgba(255,255,255,.025)!important;
+  font-weight:800!important;
+  font-size:14px!important;
+  white-space:nowrap!important;
+  transition:.22s ease!important;
+}
+.client-nav-link .material-symbols-outlined{
+  color:#e6bcc2!important;
+  font-size:22px!important;
+}
+.client-nav-link:hover{
+  transform:translateX(3px)!important;
+  color:#fff!important;
+  border-color:rgba(252,3,109,.65)!important;
+  background:rgba(252,3,109,.10)!important;
+}
+.client-nav-link:hover .material-symbols-outlined{
+  color:#fc036d!important;
+}
+.client-nav-link.rss-active{
+  color:#fff!important;
+  background:#fc036d!important;
+  border-color:#fc036d!important;
+  box-shadow:0 0 22px rgba(252,3,109,.32)!important;
+}
+.client-nav-link.rss-active .material-symbols-outlined{
+  color:#fff!important;
+  font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24!important;
+}
+.sidebar-action{
+  margin-top:18px!important;
+  width:100%!important;
+  min-height:52px!important;
+  border-radius:8px!important;
+  background:#fc036d!important;
+  color:#fff!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  box-shadow:0 0 24px rgba(252,3,109,.25)!important;
+}
+.sidebar-action:hover{
+  background:#ff4d80!important;
+}
+.sidebar-user{
+  margin-top:24px!important;
+  padding-top:16px!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:12px!important;
+}
+.sidebar-avatar{
+  width:38px!important;
+  height:38px!important;
+  border-radius:10px!important;
+  background:rgba(252,3,109,.15)!important;
+  border:1px solid rgba(252,3,109,.35)!important;
+  color:#fc036d!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  font-weight:900!important;
+  font-size:12px!important;
+}
+.sidebar-user p{
+  color:#e6bcc2!important;
+  font-size:11px!important;
+  margin:0!important;
+}
+.sidebar-user strong{
+  color:#fff!important;
+  font-size:13px!important;
+}
+@media(min-width:1024px){
+  .client-layout-grid{
+    grid-template-columns:290px minmax(0,1fr)!important;
+    gap:36px!important;
+  }
+}
+@media(max-width:1023px){
+  .client-sidebar{
+    position:relative!important;
+    top:auto!important;
+    overflow-x:auto!important;
+  }
+  .sidebar-nav{
+    flex-direction:row!important;
+    overflow-x:auto!important;
+    padding-bottom:6px!important;
+  }
+  .client-nav-link{
+    flex:0 0 auto!important;
+  }
+  .sidebar-user{
+    display:none!important;
+  }
+}
+
 </style>
 </head>
 <body class="font-body text-body-md bg-background text-on-background min-h-screen flex flex-col">
 <div id="header-container"></div>
-<main class="flex-grow client-shell max-w-[1280px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
+<main class="flex-grow client-shell max-w-[1440px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
 <section class="mb-10"><div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6"><div><div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5"><span class="material-symbols-outlined text-[18px]">inventory_2</span> Portail client</div><h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-on-surface mb-3">Gestion Technique de l'Inventaire</h1><p class="text-on-surface-variant text-lg max-w-2xl">Suivez les disponibilités, caractéristiques techniques, gains et demandes liées à votre parc matériel.</p></div><div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">verified</span></div><div><p class="text-sm text-on-surface-variant">Système</p><p class="font-headline font-bold text-on-surface">En ligne</p></div></div></div></section>
-<section class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
-<aside class="rss-card rounded-xl p-4 h-fit lg:sticky lg:top-28"><div class="mb-5 px-2"><p class="text-xs uppercase tracking-[0.18em] text-primary font-bold">Portail Client</p><p class="text-on-surface-variant text-sm mt-1">Navigation espace client</p></div><nav class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-1"><a href="/espace-client.html" class="client-nav-link"><span class="material-symbols-outlined">dashboard</span><span>Tableau de bord</span></a><a href="/espace-client-calendrier.html" class="client-nav-link"><span class="material-symbols-outlined">calendar_month</span><span>Calendrier</span></a><a href="/espace-client-inventaire.html" class="client-nav-link rss-active"><span class="material-symbols-outlined">inventory_2</span><span>Inventaire</span></a><a href="/espace-client.html#reservations" class="client-nav-link"><span class="material-symbols-outlined">event_available</span><span>Réservations</span></a><a href="/espace-client.html#orders" class="client-nav-link"><span class="material-symbols-outlined">receipt_long</span><span>Commandes</span></a><a href="/espace-client.html#messages" class="client-nav-link"><span class="material-symbols-outlined">mail</span><span>Messages</span></a><a href="/espace-client.html#settings" class="client-nav-link"><span class="material-symbols-outlined">settings</span><span>Paramètres</span></a></nav><button id="add-equipment-btn" class="mt-5 w-full bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition flex items-center justify-center gap-2"><span class="material-symbols-outlined">add</span> Ajouter équipement</button></aside>
+<section class="client-layout-grid grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-9">
+
+<aside class="client-sidebar">
+  <div class="sidebar-brand">
+    <a href="/index.html" class="sidebar-logo">RENTSOUNDSYSTEM</a>
+    <span class="sidebar-kicker">Espace Client</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    
+        <a href="/espace-client.html" class="client-nav-link">
+          <span class="material-symbols-outlined">dashboard</span>
+          <span>Tableau de bord</span>
+        </a>
+    
+        <a href="/espace-client-calendrier.html" class="client-nav-link">
+          <span class="material-symbols-outlined">calendar_month</span>
+          <span>Calendrier</span>
+        </a>
+    
+        <a href="/espace-client-inventaire.html" class="client-nav-link rss-active">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <span>Inventaire</span>
+        </a>
+    
+        <a href="/espace-client.html#reservations" class="client-nav-link">
+          <span class="material-symbols-outlined">event_available</span>
+          <span>Réservations</span>
+        </a>
+    
+        <a href="/espace-client.html#orders" class="client-nav-link">
+          <span class="material-symbols-outlined">receipt_long</span>
+          <span>Commandes</span>
+        </a>
+    
+        <a href="/espace-client.html#messages" class="client-nav-link">
+          <span class="material-symbols-outlined">mail</span>
+          <span>Messages</span>
+        </a>
+    
+        <a href="/espace-client.html#settings" class="client-nav-link">
+          <span class="material-symbols-outlined">settings</span>
+          <span>Paramètres</span>
+        </a>
+  </nav>
+
+  <button id="add-equipment-btn" class="sidebar-action">
+    <span class="material-symbols-outlined">add</span>
+    Nouvelle location
+  </button>
+
+  <div class="sidebar-user">
+    <div class="sidebar-avatar">AM</div>
+    <div>
+      <p>Client du Projet</p>
+      <strong>Alex Mercer</strong>
+    </div>
+  </div>
+</aside>
+
 <div class="min-w-0 space-y-8"><div class="grid grid-cols-1 lg:grid-cols-12 gap-6"><section class="lg:col-span-4 rss-card rounded-xl p-6 relative overflow-hidden"><div class="absolute -top-20 -right-20 w-44 h-44 bg-primary/10 rounded-full blur-3xl"></div><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4 flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]">monitoring</span> Gains totaux</p><p class="font-headline text-5xl font-extrabold text-on-surface mb-2">12 450 €</p><p class="text-on-surface-variant mb-8">+15% ce mois-ci</p><div class="h-24 w-full flex items-end gap-2"><div class="w-full bg-surface-container-highest rounded-sm h-[30%]"></div><div class="w-full bg-surface-container-highest rounded-sm h-[45%]"></div><div class="w-full bg-surface-container-highest rounded-sm h-[20%]"></div><div class="w-full bg-surface-container-highest rounded-sm h-[60%]"></div><div class="w-full bg-surface-container-highest rounded-sm h-[80%]"></div><div class="w-full bg-primary rounded-sm h-full"></div></div></section><section class="lg:col-span-8 rss-card rounded-xl p-6"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/10 pb-5 mb-5"><h2 class="font-headline text-2xl font-bold">État de l'inventaire</h2><button id="show-all-inventory" class="text-primary font-bold hover:text-white transition flex items-center gap-1">Voir l'inventaire complet <span class="material-symbols-outlined text-[18px]">arrow_forward</span></button></div><div class="grid grid-cols-1 md:grid-cols-2 gap-4"><article class="bg-surface-container-lowest rounded-xl border border-white/5 p-5"><div class="flex justify-between items-start gap-4 mb-4"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">speaker</span></div><div><h3 class="font-headline font-bold">L-Acoustics K2</h3><p class="text-xs uppercase tracking-widest text-on-surface-variant">Line Array Element</p></div></div><div class="text-right text-sm"><p class="text-primary font-bold">4 Dispo</p><p class="text-on-surface-variant">8 Loués</p></div></div><div class="grid grid-cols-2 gap-2 border-t border-white/10 pt-3"><div class="bg-surface-container rounded px-3 py-2"><p class="text-[10px] uppercase text-on-surface-variant">Bandwidth</p><p class="font-mono font-bold">35 Hz - 20 kHz</p></div><div class="bg-surface-container rounded px-3 py-2"><p class="text-[10px] uppercase text-on-surface-variant">Max SPL</p><p class="font-mono font-bold">147 dB</p></div></div></article><article class="bg-surface-container-lowest rounded-xl border border-white/5 p-5"><div class="flex justify-between items-start gap-4 mb-4"><div class="flex items-center gap-3"><div class="w-11 h-11 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">mic</span></div><div><h3 class="font-headline font-bold">Shure Axient Digital</h3><p class="text-xs uppercase tracking-widest text-on-surface-variant">Wireless System</p></div></div><div class="text-right text-sm"><p class="text-primary font-bold">4 Dispo</p><p class="text-on-surface-variant">20 Loués</p></div></div><div class="grid grid-cols-2 gap-2 border-t border-white/10 pt-3"><div class="bg-surface-container rounded px-3 py-2"><p class="text-[10px] uppercase text-on-surface-variant">Freq Band</p><p class="font-mono font-bold">470 - 636 MHz</p></div><div class="bg-surface-container rounded px-3 py-2"><p class="text-[10px] uppercase text-on-surface-variant">Latency</p><p class="font-mono font-bold">2.0 ms</p></div></div></article></div></section></div>
 <section class="rss-card rounded-xl p-6 md:p-8"><div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><div><h2 class="font-headline text-3xl font-bold">Inventaire complet</h2><p class="text-on-surface-variant mt-1">Recherchez, filtrez et gérez le statut technique de chaque équipement.</p></div><div class="flex flex-col sm:flex-row gap-3"><input id="inventory-search" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" placeholder="Rechercher un équipement..."/><select id="inventory-filter" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface"><option value="all">Tous les statuts</option><option value="dispo">Disponible</option><option value="loue">Loué</option><option value="maintenance">Maintenance</option></select></div></div><div class="overflow-x-auto"><table class="w-full min-w-[860px] text-left"><thead class="text-xs uppercase tracking-widest text-on-surface-variant border-b border-white/10"><tr><th class="py-4">Équipement</th><th>Catégorie</th><th>Statut</th><th>Disponibilité</th><th>Prix/jour</th><th class="text-right">Actions</th></tr></thead><tbody id="inventory-body" class="divide-y divide-white/5"></tbody></table></div></section>
 <section class="rss-card rounded-xl p-6 md:p-8"><div class="flex justify-between items-center mb-6"><h2 class="font-headline text-3xl font-bold">Demandes en attente</h2><span class="bg-primary/10 text-primary border border-primary/30 px-3 py-1 rounded text-xs uppercase tracking-widest font-bold">3 nouvelles</span></div><div id="pending-list" class="space-y-4"></div></section></div></section></main><div id="footer-container"></div>
