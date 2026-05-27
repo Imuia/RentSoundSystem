@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Client Premium</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+body{
+font-family:'Manrope',sans-serif;
+background:#0d0d0f;
+color:white;
+}
+</style>
+</head>
+<body>
+
+<div class="min-h-screen flex">
+
+<aside class="w-72 bg-black border-r border-pink-500/20 p-6 hidden lg:flex flex-col">
+<h1 class="text-3xl font-extrabold text-pink-500 mb-10">RENTSOUNDSYSTEM</h1>
+
+<nav class="space-y-4">
+<a href="#" class="block bg-pink-500 text-white px-5 py-4 rounded-xl">Tableau de bord</a>
+<a href="#" class="block bg-white/5 hover:bg-white/10 transition px-5 py-4 rounded-xl">Réservations</a>
+<a href="#" class="block bg-white/5 hover:bg-white/10 transition px-5 py-4 rounded-xl">Commandes</a>
+<a href="#" class="block bg-white/5 hover:bg-white/10 transition px-5 py-4 rounded-xl">Messages</a>
+<a href="#" class="block bg-white/5 hover:bg-white/10 transition px-5 py-4 rounded-xl">Favoris</a>
+<a href="#" class="block bg-white/5 hover:bg-white/10 transition px-5 py-4 rounded-xl">Paramètres</a>
+</nav>
+</aside>
+
+<main class="flex-1 p-6 lg:p-10">
+
+<div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+<div>
+<h2 class="text-5xl font-extrabold mb-3">Espace Client</h2>
+<p class="text-white/60">Gérez vos réservations, commandes et équipements.</p>
+</div>
+
+<div class="bg-white/5 border border-white/10 rounded-2xl px-5 py-4">
+<div class="text-sm text-white/50">Compte connecté</div>
+<div class="font-bold text-lg">Alex Mercer</div>
+</div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-10">
+
+<div class="bg-gradient-to-br from-pink-600 to-pink-500 rounded-3xl p-6">
+<div class="text-sm uppercase opacity-70">Réservations</div>
+<div class="text-5xl font-extrabold mt-4">12</div>
+</div>
+
+<div class="bg-white/5 border border-white/10 rounded-3xl p-6">
+<div class="text-sm uppercase text-white/60">Commandes</div>
+<div class="text-5xl font-extrabold mt-4">28</div>
+</div>
+
+<div class="bg-white/5 border border-white/10 rounded-3xl p-6">
+<div class="text-sm uppercase text-white/60">Messages</div>
+<div class="text-5xl font-extrabold mt-4">5</div>
+</div>
+
+<div class="bg-white/5 border border-white/10 rounded-3xl p-6">
+<div class="text-sm uppercase text-white/60">Favoris</div>
+<div class="text-5xl font-extrabold mt-4">19</div>
+</div>
+
+</div>
+
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
+
+<section class="xl:col-span-2 bg-white/5 border border-white/10 rounded-3xl p-8">
+<div class="flex justify-between items-center mb-8">
+<h3 class="text-2xl font-bold">Locations en cours</h3>
+<button class="bg-pink-500 hover:bg-pink-600 transition px-5 py-3 rounded-xl font-bold">
+Nouvelle réservation
+</button>
+</div>
+
+<div class="space-y-5">
+
+<div class="bg-black/30 rounded-2xl p-5 flex flex-col md:flex-row md:items-center gap-5 justify-between">
+<div>
+<div class="text-xl font-bold">Pioneer CDJ 3000 + DJM A9</div>
+<div class="text-white/50 mt-2">Retour prévu : 28 Mai 2026</div>
+</div>
+
+<div class="bg-pink-500/20 text-pink-400 px-4 py-2 rounded-full font-bold">
+En cours
+</div>
+</div>
+
+<div class="bg-black/30 rounded-2xl p-5 flex flex-col md:flex-row md:items-center gap-5 justify-between">
+<div>
+<div class="text-xl font-bold">Line Array JBL VRX</div>
+<div class="text-white/50 mt-2">Retour prévu : 31 Mai 2026</div>
+</div>
+
+<div class="bg-yellow-500/20 text-yellow-300 px-4 py-2 rounded-full font-bold">
+Réservé
+</div>
+</div>
+
+</div>
+</section>
+
+<section class="bg-white/5 border border-white/10 rounded-3xl p-8">
+<h3 class="text-2xl font-bold mb-8">Activité récente</h3>
+
+<div class="space-y-6">
+
+<div class="border-l-2 border-pink-500 pl-4">
+<div class="font-bold">Nouvelle réservation</div>
+<div class="text-white/50 text-sm">Aujourd'hui</div>
+</div>
+
+<div class="border-l-2 border-white/20 pl-4">
+<div class="font-bold">Paiement validé</div>
+<div class="text-white/50 text-sm">Hier</div>
+</div>
+
+<div class="border-l-2 border-white/20 pl-4">
+<div class="font-bold">Message reçu</div>
+<div class="text-white/50 text-sm">Il y a 2 jours</div>
+</div>
+
+</div>
+</section>
+
+</div>
+
+</main>
+</div>
+
+</body>
+</html>
