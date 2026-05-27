@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Espace Client - Calendrier des Réservations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script>
+tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#131313",surface:"#131313","surface-container-lowest":"#0e0e0e","surface-container-low":"#1b1b1b","surface-container":"#1f1f1f","surface-container-high":"#2a2a2a","surface-container-highest":"#353535",primary:"#fc036d","primary-container":"#ff4d80","on-primary":"#ffffff","on-surface":"#e2e2e2","on-background":"#e2e2e2","on-surface-variant":"#e6bcc2",outline:"#ac878d","outline-variant":"#5d3f44"},fontFamily:{headline:["Manrope","sans-serif"],body:["Inter","sans-serif"],label:["Inter","sans-serif"]}}}}
+</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+html,body{overflow-x:hidden}
+body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:74px}
+.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.95),rgba(20,20,20,.98));border:1px solid rgba(255,255,255,.07);box-shadow:0 18px 60px rgba(0,0,0,.28)}
+.rss-card:hover{border-color:rgba(252,3,109,.35)}
+.client-tab-active{background:#fc036d!important;color:#fff!important;border-color:#fc036d!important}
+.calendar-day{min-height:112px;background:#1b1b1b;border:1px solid rgba(255,255,255,.04);transition:.2s}
+.calendar-day:hover{background:#2a2a2a;border-color:rgba(252,3,109,.35)}
+.calendar-event{cursor:pointer}
+.rss-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}
+.rss-toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:767px){
+ body{padding-top:72px}
+ .client-shell{padding-left:18px!important;padding-right:18px!important}
+ h1{font-size:36px!important;line-height:44px!important}
+ .calendar-day{min-height:84px;padding:8px!important}
+ .calendar-event{font-size:10px!important}
+}
+</style>
+</head>
+
+<body class="bg-background text-on-background min-h-screen flex flex-col">
+<div id="header-container"></div>
+
+<main class="flex-grow client-shell max-w-[1280px] mx-auto w-full px-6 md:px-10 py-10 md:py-14">
+  <section class="mb-10">
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+      <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5">
+          <span class="material-symbols-outlined text-[18px]">calendar_month</span>
+          Portail client
+        </div>
+        <h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-on-surface mb-3">Calendrier des Réservations</h1>
+        <p class="text-on-surface-variant text-lg max-w-2xl">Gérez vos dates de location, suivez vos retraits, retours et disponibilités.</p>
+      </div>
+
+      <div class="flex flex-wrap gap-3">
+        <button id="prev-month" class="rss-card rounded-lg px-4 py-3 font-bold hover:text-primary transition flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">chevron_left</span> Mois préc.
+        </button>
+        <button id="next-month" class="bg-primary text-white rounded-lg px-4 py-3 font-bold hover:bg-primary-container transition flex items-center gap-2">
+          Mois suiv. <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8">
+    <aside class="rss-card rounded-xl p-4 h-fit lg:sticky lg:top-28">
+      <nav class="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-visible pb-1">
+        <a href="/espace-client.html" class="shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
+          <span class="material-symbols-outlined">dashboard</span><span class="font-semibold whitespace-nowrap">Tableau de bord</span>
+        </a>
+        <a href="/espace-client-calendrier.html" class="client-tab-active shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-primary transition">
+          <span class="material-symbols-outlined">calendar_month</span><span class="font-semibold whitespace-nowrap">Calendrier</span>
+        </a>
+        <a href="/catalog.html" class="shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
+          <span class="material-symbols-outlined">inventory_2</span><span class="font-semibold whitespace-nowrap">Inventaire</span>
+        </a>
+        <a href="/contact.html" class="shrink-0 flex items-center gap-3 px-4 py-3 rounded-lg border border-white/10 text-on-surface-variant hover:text-white hover:border-primary transition">
+          <span class="material-symbols-outlined">mail</span><span class="font-semibold whitespace-nowrap">Messages</span>
+        </a>
+      </nav>
+
+      <button id="new-rental-btn" class="mt-5 w-full bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition flex items-center justify-center gap-2">
+        <span class="material-symbols-outlined">add</span>
+        Nouvelle location
+      </button>
+    </aside>
+
+    <div class="min-w-0">
+      <div class="grid grid-cols-1 xl:grid-cols-[1fr_330px] gap-8 items-start">
+        <section class="rss-card rounded-xl p-5 md:p-7">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+            <div>
+              <h2 id="calendar-title" class="font-headline text-3xl font-bold">Mai 2026</h2>
+              <p class="text-on-surface-variant mt-1">Cliquez sur une réservation pour voir le détail.</p>
+            </div>
+            <div class="flex flex-wrap gap-4 text-sm">
+              <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-primary"></span> <span class="text-on-surface-variant">En cours</span></div>
+              <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-yellow-400"></span> <span class="text-on-surface-variant">Réservé</span></div>
+              <div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-secondary"></span> <span class="text-on-surface-variant">Retourné</span></div>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-7 gap-px rounded-xl overflow-hidden border border-white/10">
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Lun</div>
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Mar</div>
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Mer</div>
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Jeu</div>
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Ven</div>
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Sam</div>
+            <div class="bg-surface-container-high p-3 text-center text-xs uppercase tracking-widest text-on-surface-variant">Dim</div>
+            <div id="calendar-grid" class="contents"></div>
+          </div>
+        </section>
+
+        <aside class="space-y-6">
+          <section class="rss-card rounded-xl p-6">
+            <h3 class="font-headline text-2xl font-bold mb-5 flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary">sync</span>
+              Synchronisation
+            </h3>
+            <p class="text-on-surface-variant mb-5">Connectez votre calendrier externe pour suivre vos locations automatiquement.</p>
+            <div class="space-y-3">
+              <button data-sync="Google Agenda" class="sync-btn w-full flex items-center gap-3 bg-surface-container-lowest hover:bg-surface-container-high border border-white/10 p-4 rounded-lg transition">
+                <span class="material-symbols-outlined text-primary">calendar_month</span>
+                <span class="font-semibold">Google Agenda</span>
+                <span class="material-symbols-outlined ml-auto text-sm">open_in_new</span>
+              </button>
+              <button data-sync="Apple iCal" class="sync-btn w-full flex items-center gap-3 bg-surface-container-lowest hover:bg-surface-container-high border border-white/10 p-4 rounded-lg transition">
+                <span class="material-symbols-outlined text-primary">event</span>
+                <span class="font-semibold">Apple iCal</span>
+                <span class="material-symbols-outlined ml-auto text-sm">open_in_new</span>
+              </button>
+              <button data-sync="Outlook" class="sync-btn w-full flex items-center gap-3 bg-surface-container-lowest hover:bg-surface-container-high border border-white/10 p-4 rounded-lg transition">
+                <span class="material-symbols-outlined text-primary">mail</span>
+                <span class="font-semibold">Outlook</span>
+                <span class="material-symbols-outlined ml-auto text-sm">open_in_new</span>
+              </button>
+            </div>
+          </section>
+
+          <section class="rss-card rounded-xl p-6">
+            <h3 class="font-headline text-2xl font-bold mb-5">Prochainement</h3>
+            <ul id="upcoming-list" class="space-y-4"></ul>
+          </section>
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="footer-container"></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const grid = document.getElementById("calendar-grid");
+  const title = document.getElementById("calendar-title");
+  const upcoming = document.getElementById("upcoming-list");
+  let currentMonth = 4; // Mai
+  let currentYear = 2026;
+
+  const events = [
+    {day:3, month:4, title:"Kit L-Acoustics K2", status:"En cours", color:"primary", time:"09:00 - Retrait"},
+    {day:4, month:4, title:"Micros Shure SM58", status:"Réservé", color:"yellow", time:"14:00 - Retour"},
+    {day:8, month:4, title:"Console Yamaha CL5", status:"Retourné", color:"grey", time:"10:30 - Contrôle"},
+    {day:17, month:4, title:"Pack Pioneer DJ", status:"Réservé", color:"yellow", time:"18:00 - Livraison"},
+    {day:24, month:4, title:"JBL VRX System", status:"En cours", color:"primary", time:"11:00 - Installation"}
+  ];
+
+  const months = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
+
+  function toast(msg){
+    let t = document.querySelector(".rss-toast");
+    if(!t){ t=document.createElement("div"); t.className="rss-toast"; document.body.appendChild(t); }
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(()=>t.classList.remove("show"),2200);
+  }
+
+  function eventClass(ev){
+    if(ev.color === "primary") return "bg-primary/20 text-primary border-primary/40";
+    if(ev.color === "yellow") return "bg-yellow-400/15 text-yellow-300 border-yellow-400/30";
+    return "bg-white/10 text-on-surface-variant border-white/10";
+  }
+
+  function render(){
+    title.textContent = months[currentMonth] + " " + currentYear;
+    grid.innerHTML = "";
+
+    const first = new Date(currentYear, currentMonth, 1);
+    const total = new Date(currentYear, currentMonth+1, 0).getDate();
+    const offset = (first.getDay() + 6) % 7;
+
+    for(let i=0;i<offset;i++){
+      grid.insertAdjacentHTML("beforeend", `<div class="calendar-day opacity-40 p-3"></div>`);
+    }
+
+    for(let day=1; day<=total; day++){
+      const dayEvents = events.filter(e => e.day === day && e.month === currentMonth);
+      grid.insertAdjacentHTML("beforeend", `
+        <div class="calendar-day p-3 relative">
+          <span class="${dayEvents.length ? 'text-primary' : 'text-on-surface-variant'} font-bold">${day}</span>
+          <div class="mt-2 space-y-1">
+            ${dayEvents.map(ev => `
+              <div data-title="${ev.title}" data-time="${ev.time}" data-status="${ev.status}" class="calendar-event truncate rounded border px-2 py-1 text-xs ${eventClass(ev)}">
+                ${ev.title}
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `);
+    }
+
+    document.querySelectorAll(".calendar-event").forEach(el=>{
+      el.addEventListener("click",()=>toast(el.dataset.title + " · " + el.dataset.time + " · " + el.dataset.status));
+    });
+
+    renderUpcoming();
+  }
+
+  function renderUpcoming(){
+    const list = events
+      .filter(e => e.month === currentMonth)
+      .sort((a,b)=>a.day-b.day)
+      .slice(0,4);
+
+    upcoming.innerHTML = list.map(e => `
+      <li class="flex items-start gap-3 border-l-2 ${e.color === 'primary' ? 'border-primary' : 'border-white/20'} pl-3">
+        <div>
+          <p class="text-sm font-bold">${e.title}</p>
+          <p class="text-xs ${e.color === 'primary' ? 'text-primary' : 'text-on-surface-variant'}">${e.day} ${months[currentMonth]} · ${e.time}</p>
+        </div>
+      </li>
+    `).join("");
+  }
+
+  document.getElementById("prev-month").addEventListener("click",()=>{
+    currentMonth--;
+    if(currentMonth < 0){currentMonth = 11; currentYear--;}
+    render();
+  });
+
+  document.getElementById("next-month").addEventListener("click",()=>{
+    currentMonth++;
+    if(currentMonth > 11){currentMonth = 0; currentYear++;}
+    render();
+  });
+
+  document.querySelectorAll(".sync-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>toast("Connexion " + btn.dataset.sync + " bientôt disponible."));
+  });
+
+  document.getElementById("new-rental-btn").addEventListener("click",()=>window.location.href="/catalog.html");
+
+  render();
+});
+</script>
+
+<script src="/components.js"></script>
+</body>
+</html>
