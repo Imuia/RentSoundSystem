@@ -250,7 +250,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
         <h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-on-surface mb-3">Espace Client</h1>
         <p class="text-on-surface-variant text-lg max-w-2xl">Gérez vos locations, commandes, favoris et messages RentSoundSystem depuis un tableau de bord premium.</p>
       </div>
-      <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">person</span></div><div><p class="text-sm text-on-surface-variant">Compte connecté</p><p class="font-headline font-bold text-on-surface" id="client-name">Alex Mercer</p><p id="client-email" class="client-email-text">alex@email.com</p></div></div>
+      <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">person</span></div><div><p class="text-sm text-on-surface-variant">Compte connecté</p><p class="font-headline font-bold text-on-surface" id="client-name">Chargement...</p><p id="client-email" class="client-email-text">Connexion au compte...</p></div></div>
     </div>
   </section>
   <section class="client-layout-grid grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-9">
@@ -304,11 +304,11 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   </button>
 
   <div class="sidebar-user">
-    <div class="sidebar-avatar" id="client-avatar">AM</div>
+    <div class="sidebar-avatar" id="client-avatar">...</div>
     <div>
       <p>Client du Projet</p>
-      <strong id="sidebar-client-name">Alex Mercer</strong>
-      <p id="sidebar-client-email" class="client-email-text">alex@email.com</p>
+      <strong id="sidebar-client-name">Chargement...</strong>
+      <p id="sidebar-client-email" class="client-email-text">Connexion au compte...</p>
     </div>
   </div>
 </aside>
@@ -317,7 +317,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
     <div class="min-w-0">
       <div id="panel-dashboard" class="rss-panel active">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-          <button data-open="reservations" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Réservations</p><p id="reservations-count" class="font-headline text-5xl font-extrabold">0</p></button>
+          <button data-open="reservations" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Réservations</p><p class="font-headline text-5xl font-extrabold">12</p></button>
           <button data-open="orders" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Commandes</p><p class="font-headline text-5xl font-extrabold">28</p></button>
           <button data-link="/espace-client-messagerie.html" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Messages</p><p class="font-headline text-5xl font-extrabold">5</p></button>
           <button data-open="settings" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Favoris</p><p class="font-headline text-5xl font-extrabold">19</p></button>
@@ -325,8 +325,9 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
           <section class="xl:col-span-2 rss-card rounded-xl p-6 md:p-8">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7"><h2 class="font-headline text-2xl font-bold">Locations en cours</h2><a href="/espace-client-calendrier.html" class="bg-primary text-white rounded-lg px-5 py-3 font-bold hover:bg-primary-container transition">Voir calendrier</a></div>
-            <div id="current-reservations-list" class="space-y-4">
-              <div class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 text-on-surface-variant">Chargement des réservations...</div>
+            <div class="space-y-4">
+              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">album</span></div><div><h3 class="font-headline font-bold text-xl">Pioneer CDJ 3000 + DJM A9</h3><p class="text-on-surface-variant text-sm mt-1">Retour prévu : 28 Mai 2026</p></div></div><span class="bg-primary/15 text-primary px-4 py-2 rounded-full font-bold text-sm">En cours</span></article>
+              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">speaker</span></div><div><h3 class="font-headline font-bold text-xl">Line Array JBL VRX</h3><p class="text-on-surface-variant text-sm mt-1">Début prévu : 31 Mai 2026</p></div></div><span class="bg-yellow-500/15 text-yellow-300 px-4 py-2 rounded-full font-bold text-sm">Réservé</span></article>
             </div>
           </section>
           <section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-2xl font-bold mb-7">Activité récente</h2><div class="space-y-6"><div class="border-l-2 border-primary pl-4"><p class="font-bold">Nouvelle réservation</p><p class="text-on-surface-variant text-sm">Aujourd’hui</p></div><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Paiement validé</p><p class="text-on-surface-variant text-sm">Hier</p></div><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Message reçu</p><p class="text-on-surface-variant text-sm">Il y a 2 jours</p></div></div></section>
@@ -335,7 +336,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
       <div id="panel-reservations" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Mes réservations</h2><div id="reservation-list" class="space-y-4"></div></section></div>
       <div id="panel-orders" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8 overflow-x-auto"><h2 class="font-headline text-3xl font-bold mb-6">Commandes récentes</h2><table class="w-full min-w-[700px] text-left"><thead class="text-xs uppercase tracking-widest text-on-surface-variant border-b border-white/10"><tr><th class="py-4">Référence</th><th>Date</th><th>Matériel</th><th>État</th><th class="text-right">Total</th></tr></thead><tbody id="orders-body" class="divide-y divide-white/5"></tbody></table></section></div>
       <div id="panel-messages" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Messages</h2><div class="space-y-4"><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Loueur : Confirmation de disponibilité</p><p class="text-on-surface-variant mt-2">Votre pack Pioneer est disponible pour les dates sélectionnées.</p></div><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Support RentSoundSystem</p><p class="text-on-surface-variant mt-2">Votre demande de devis a bien été reçue.</p></div></div></section></div>
-      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="Alex Mercer"/><input id="email-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="alex@email.com" readonly/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
+      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="" placeholder="Chargement du nom..."/><input id="email-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="" placeholder="Chargement de l’e-mail..." readonly/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
     </div>
   </section>
 </main>
@@ -347,7 +348,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("[data-open]").forEach(btn=>btn.addEventListener("click",()=>showPanel(btn.dataset.open)));
   document.querySelectorAll("[data-link]").forEach(btn=>btn.addEventListener("click",()=>{location.href=btn.dataset.link;}));
   document.querySelectorAll(".go-catalog").forEach(btn=>btn.addEventListener("click",()=>location.href="/catalog.html"));
-  // Les réservations sont maintenant chargées depuis Supabase par le script rss-supabase-reservations.
+  const reservations=[["Pioneer CDJ 3000 + DJM A9","28 Mai 2026","En cours"],["Line Array JBL VRX","31 Mai 2026","Réservé"],["Pack micros Shure","04 Juin 2026","En attente"]];
+  document.getElementById("reservation-list").innerHTML=reservations.map(r=>`<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div><p class="font-headline font-bold text-xl">${r[0]}</p><p class="text-on-surface-variant text-sm mt-1">Date : ${r[1]}</p></div><span class="text-primary font-bold">${r[2]}</span></div>`).join("");
   const orders=[["#ORD-9021","12 oct. 2024","QSC K12.2 paire","Retourné","150,00 €"],["#ORD-8845","28 sept. 2024","Sennheiser EW 100 G4","Retourné","45,00 €"],["#ORD-8712","15 sept. 2024","Allen & Heath SQ-5","Retourné","220,00 €"]];
   document.getElementById("orders-body").innerHTML=orders.map(o=>`<tr class="hover:bg-surface-container-lowest transition"><td class="py-4 font-mono text-on-surface-variant">${o[0]}</td><td>${o[1]}</td><td>${o[2]}</td><td><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span>${o[3]}</span></td><td class="text-right font-bold">${o[4]}</td></tr>`).join("");
   document.getElementById("settings-form")?.addEventListener("submit",(e)=>{e.preventDefault();document.getElementById("client-name").textContent=document.getElementById("name-input").value||"Client";});
@@ -474,130 +476,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   });
-})();
-</script>
-
-
-<script id="rss-supabase-reservations">
-(function(){
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-
-  function escapeHtml(value){
-    return String(value ?? '')
-      .replaceAll('&','&amp;')
-      .replaceAll('<','&lt;')
-      .replaceAll('>','&gt;')
-      .replaceAll('"','&quot;')
-      .replaceAll("'",'&#039;');
-  }
-
-  function formatDate(value){
-    if(!value) return '';
-    try{
-      return new Intl.DateTimeFormat('fr-FR', { day:'2-digit', month:'short', year:'numeric' }).format(new Date(value + 'T00:00:00'));
-    }catch(_){
-      return value;
-    }
-  }
-
-  function statusLabel(status){
-    const map = {
-      pending: 'En attente',
-      confirmed: 'Confirmée',
-      cancelled: 'Annulée',
-      completed: 'Terminée'
-    };
-    return map[status] || status || 'En attente';
-  }
-
-  function statusClass(status){
-    if(status === 'confirmed') return 'bg-primary/15 text-primary';
-    if(status === 'pending') return 'bg-yellow-500/15 text-yellow-300';
-    if(status === 'completed') return 'bg-green-500/15 text-green-300';
-    if(status === 'cancelled') return 'bg-red-500/15 text-red-300';
-    return 'bg-white/10 text-on-surface-variant';
-  }
-
-  function emptyCard(message){
-    return `<div class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 text-on-surface-variant">${escapeHtml(message)}</div>`;
-  }
-
-  function reservationCard(item, compact){
-    const name = escapeHtml(item.equipment_name || 'Matériel réservé');
-    const renter = escapeHtml(item.renter_name || 'RentSoundSystem');
-    const start = formatDate(item.start_date);
-    const end = formatDate(item.end_date);
-    const price = Number(item.total_price || 0).toLocaleString('fr-FR', { style:'currency', currency:'EUR' });
-    const label = statusLabel(item.status);
-    const cls = statusClass(item.status);
-
-    if(compact){
-      return `<article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div class="flex items-center gap-4">
-          <div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">album</span></div>
-          <div><h3 class="font-headline font-bold text-xl">${name}</h3><p class="text-on-surface-variant text-sm mt-1">${start} → ${end} · ${renter}</p></div>
-        </div>
-        <span class="${cls} px-4 py-2 rounded-full font-bold text-sm">${label}</span>
-      </article>`;
-    }
-
-    return `<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
-      <div><p class="font-headline font-bold text-xl">${name}</p><p class="text-on-surface-variant text-sm mt-1">Du ${start} au ${end} · ${renter}</p><p class="text-on-surface-variant text-sm mt-1">Total : ${price}</p></div>
-      <span class="${cls} px-4 py-2 rounded-full font-bold text-sm">${label}</span>
-    </div>`;
-  }
-
-  async function loadReservations(){
-    const countEl = document.getElementById('reservations-count');
-    const currentList = document.getElementById('current-reservations-list');
-    const reservationList = document.getElementById('reservation-list');
-
-    if(!window.supabase){
-      if(currentList) currentList.innerHTML = emptyCard('Supabase JS non chargé.');
-      if(reservationList) reservationList.innerHTML = emptyCard('Supabase JS non chargé.');
-      return;
-    }
-
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const { data: sessionData } = await supabaseClient.auth.getSession();
-    const user = sessionData && sessionData.session ? sessionData.session.user : null;
-
-    if(!user){
-      if(countEl) countEl.textContent = '0';
-      if(currentList) currentList.innerHTML = emptyCard('Connectez-vous pour voir vos locations en cours.');
-      if(reservationList) reservationList.innerHTML = emptyCard('Aucune session Supabase active.');
-      return;
-    }
-
-    const { data, error } = await supabaseClient
-      .from('reservations')
-      .select('id, equipment_name, renter_name, start_date, end_date, status, total_price, created_at')
-      .eq('user_id', user.id)
-      .order('start_date', { ascending: true });
-
-    if(error){
-      console.error('Erreur chargement réservations:', error);
-      if(currentList) currentList.innerHTML = emptyCard('Impossible de charger les réservations. Vérifiez les policies RLS Supabase.');
-      if(reservationList) reservationList.innerHTML = emptyCard('Erreur Supabase : ' + error.message);
-      return;
-    }
-
-    const rows = data || [];
-    if(countEl) countEl.textContent = String(rows.length);
-
-    if(!rows.length){
-      if(currentList) currentList.innerHTML = emptyCard('Aucune location en cours pour le moment.');
-      if(reservationList) reservationList.innerHTML = emptyCard('Aucune réservation trouvée pour ce compte.');
-      return;
-    }
-
-    const activeRows = rows.filter(r => ['pending','confirmed'].includes(r.status || 'pending'));
-    if(currentList) currentList.innerHTML = (activeRows.length ? activeRows : rows).slice(0, 3).map(r => reservationCard(r, true)).join('');
-    if(reservationList) reservationList.innerHTML = rows.map(r => reservationCard(r, false)).join('');
-  }
-
-  document.addEventListener('DOMContentLoaded', loadReservations);
 })();
 </script>
 
