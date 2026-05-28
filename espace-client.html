@@ -6,6 +6,7 @@
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>
@@ -204,6 +205,39 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   }
 }
 
+
+/* Profil + Déconnexion Supabase */
+.sidebar-logout{
+  margin-top:12px!important;
+  width:100%!important;
+  min-height:48px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  background:rgba(255,255,255,.025)!important;
+  color:#e6bcc2!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  transition:.22s ease!important;
+}
+.sidebar-logout:hover{
+  color:#fff!important;
+  border-color:rgba(252,3,109,.65)!important;
+  background:rgba(252,3,109,.12)!important;
+}
+.sidebar-logout .material-symbols-outlined{color:inherit!important}
+.client-email-text{
+  margin-top:2px!important;
+  color:#e6bcc2!important;
+  font-size:11px!important;
+  max-width:160px!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
 </style>
 </head>
 <body class="font-body text-body-md bg-background text-on-background min-h-screen flex flex-col">
@@ -216,7 +250,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
         <h1 class="font-headline text-5xl md:text-6xl font-extrabold tracking-tight text-on-surface mb-3">Espace Client</h1>
         <p class="text-on-surface-variant text-lg max-w-2xl">Gérez vos locations, commandes, favoris et messages RentSoundSystem depuis un tableau de bord premium.</p>
       </div>
-      <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">person</span></div><div><p class="text-sm text-on-surface-variant">Compte connecté</p><p class="font-headline font-bold text-on-surface" id="client-name">Alex Mercer</p></div></div>
+      <div class="rss-card rounded-xl px-5 py-4 flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">person</span></div><div><p class="text-sm text-on-surface-variant">Compte connecté</p><p class="font-headline font-bold text-on-surface" id="client-name">Alex Mercer</p><p id="client-email" class="client-email-text">alex@email.com</p></div></div>
     </div>
   </section>
   <section class="client-layout-grid grid grid-cols-1 lg:grid-cols-[290px_1fr] gap-9">
@@ -264,11 +298,17 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
     Nouvelle location
   </button>
 
+  <button id="logout-btn" type="button" class="sidebar-logout">
+    <span class="material-symbols-outlined">logout</span>
+    Déconnexion
+  </button>
+
   <div class="sidebar-user">
-    <div class="sidebar-avatar">AM</div>
+    <div class="sidebar-avatar" id="client-avatar">AM</div>
     <div>
       <p>Client du Projet</p>
-      <strong>Alex Mercer</strong>
+      <strong id="sidebar-client-name">Alex Mercer</strong>
+      <p id="sidebar-client-email" class="client-email-text">alex@email.com</p>
     </div>
   </div>
 </aside>
@@ -296,7 +336,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
       <div id="panel-reservations" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Mes réservations</h2><div id="reservation-list" class="space-y-4"></div></section></div>
       <div id="panel-orders" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8 overflow-x-auto"><h2 class="font-headline text-3xl font-bold mb-6">Commandes récentes</h2><table class="w-full min-w-[700px] text-left"><thead class="text-xs uppercase tracking-widest text-on-surface-variant border-b border-white/10"><tr><th class="py-4">Référence</th><th>Date</th><th>Matériel</th><th>État</th><th class="text-right">Total</th></tr></thead><tbody id="orders-body" class="divide-y divide-white/5"></tbody></table></section></div>
       <div id="panel-messages" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Messages</h2><div class="space-y-4"><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Loueur : Confirmation de disponibilité</p><p class="text-on-surface-variant mt-2">Votre pack Pioneer est disponible pour les dates sélectionnées.</p></div><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Support RentSoundSystem</p><p class="text-on-surface-variant mt-2">Votre demande de devis a bien été reçue.</p></div></div></section></div>
-      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="Alex Mercer"/><input class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="alex@email.com"/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
+      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="Alex Mercer"/><input id="email-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="alex@email.com" readonly/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
     </div>
   </section>
 </main>
@@ -317,4 +357,126 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script src="/components.js"></script>
+
+<script id="rss-supabase-profile-logout">
+(function(){
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const LOGIN_URL = '/connexion-inscription.html';
+
+  function initialsFromName(value){
+    const clean = String(value || '').trim();
+    if(!clean) return 'CL';
+    return clean
+      .split(/\s+/)
+      .slice(0, 2)
+      .map(part => part.charAt(0).toUpperCase())
+      .join('') || 'CL';
+  }
+
+  function setText(selector, value){
+    document.querySelectorAll(selector).forEach(el => {
+      if(el) el.textContent = value;
+    });
+  }
+
+  function showLocalToast(message){
+    let toast = document.querySelector('.rss-toast');
+    if(!toast){
+      toast = document.createElement('div');
+      toast.className = 'rss-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2200);
+  }
+
+  async function initClientArea(){
+    const supabaseClient = window.supabase
+      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+      : null;
+
+    if(!supabaseClient){
+      showLocalToast('Supabase JS non chargé.');
+      return;
+    }
+
+    const { data: sessionData } = await supabaseClient.auth.getSession();
+    const user = sessionData && sessionData.session ? sessionData.session.user : null;
+
+    if(!user){
+      setText('#client-name, #sidebar-client-name', 'Client non connecté');
+      setText('#client-email, #sidebar-client-email', 'Connexion requise');
+      setText('#client-avatar', 'CL');
+      return;
+    }
+
+    const fallbackName =
+      (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) ||
+      user.email ||
+      'Client';
+
+    let displayName = fallbackName;
+    let companyName = '';
+    const email = user.email || '';
+
+    try{
+      const { data: profile, error } = await supabaseClient
+        .from('profiles')
+        .select('full_name, company_name, email')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if(!error && profile){
+        displayName = profile.full_name || fallbackName;
+        companyName = profile.company_name || '';
+      }
+    }catch(error){
+      console.warn('Profil non chargé:', error);
+    }
+
+    const subtitle = companyName ? companyName : email;
+
+    setText('#client-name, #sidebar-client-name', displayName);
+    setText('#client-email, #sidebar-client-email', subtitle);
+    setText('#client-avatar', initialsFromName(displayName));
+    const nameInput = document.getElementById('name-input');
+    const emailInput = document.getElementById('email-input');
+    if(nameInput) nameInput.value = displayName;
+    if(emailInput) emailInput.value = email;
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    initClientArea();
+
+    const logoutBtn = document.getElementById('logout-btn');
+    if(!logoutBtn) return;
+
+    logoutBtn.addEventListener('click', async function(){
+      const supabaseClient = window.supabase
+        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
+        : null;
+
+      logoutBtn.disabled = true;
+      logoutBtn.classList.add('opacity-60');
+      logoutBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Déconnexion...';
+
+      try{
+        if(supabaseClient){
+          await supabaseClient.auth.signOut();
+        }
+        window.location.href = LOGIN_URL;
+      }catch(error){
+        console.error('Erreur déconnexion Supabase:', error);
+        showLocalToast('Déconnexion impossible. Réessayez.');
+        logoutBtn.disabled = false;
+        logoutBtn.classList.remove('opacity-60');
+        logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Déconnexion';
+      }
+    });
+  });
+})();
+</script>
+
 </body></html>
