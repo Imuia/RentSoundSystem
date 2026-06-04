@@ -3,6 +3,9 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Checkout - RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -86,27 +89,16 @@
         .material-symbols-outlined.fill {
             font-variation-settings: 'FILL' 1;
         }
-    </style>
+    
+/* Header/footer global RentSoundSystem */
+#header-container,#footer-container{width:100%;max-width:none;margin:0}
+body{padding-top:74px}
+@media(max-width:767px){body{padding-top:72px}}
+
+</style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
-<!-- TopAppBar -->
-<header class="bg-surface dark:bg-surface w-full top-0 sticky border-b border-outline-variant dark:border-outline-variant z-50">
-<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto z-50">
-<div class="font-headline text-headline-md font-bold tracking-tighter text-on-surface dark:text-on-surface">
-                RentSoundSystem
-            </div>
-<!-- Simplified Nav for Checkout: Intent Linear/Transactional -->
-<div class="flex items-center gap-6">
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="/contact.html">
-<span class="material-symbols-outlined">help</span>
-<span class="font-label text-label-md">Besoin d'aide ?</span>
-</a>
-<button class="text-on-surface-variant hover:text-on-surface active:scale-95 duration-100 flex items-center justify-center p-2 rounded-full hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-</button>
-</div>
-</div>
-</header>
+<div id="header-container"></div>
 <!-- Main Content -->
 <main class="flex-grow w-full max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12">
 <div class="mb-8">
@@ -314,75 +306,7 @@
 </div>
 </div>
 </main>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest border-t border-outline-variant pt-16 pb-8 px-6">
-<div class="max-w-7xl mx-auto">
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-<!-- Brand Section -->
-<div class="flex flex-col gap-6">
-<div class="font-headline text-headline-md text-on-surface font-bold tracking-tighter">
-          RentSoundSystem
-        </div>
-<p class="font-body text-body-md text-on-surface-variant max-w-xs">
-          Solutions de sonorisation haut de gamme pour événements live, tournées et festivals. Précision acoustique sans compromis.
-        </p>
-<div class="flex gap-4">
-<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-lg">public</span>
-</a>
-<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-lg">share</span>
-</a>
-<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center text-on-surface-variant hover:border-primary hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined text-lg">videocam</span>
-</a>
-</div>
-</div>
-<!-- Quick Links -->
-<div>
-<h4 class="font-headline text-title-md text-inverse-surface mb-6">Navigation</h4>
-<ul class="flex flex-col gap-4 font-body text-body-md text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">Location Matériel</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Prestations Audio</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Études Acoustiques</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Notre Parc</a></li>
-</ul>
-</div>
-<!-- Support & Legal -->
-<div>
-<h4 class="font-headline text-title-md text-inverse-surface mb-6">Support</h4>
-<ul class="flex flex-col gap-4 font-body text-body-md text-on-surface-variant">
-<li><a class="hover:text-primary transition-colors" href="#">Conditions de Location</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Assurances</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">FAQ technique</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Contact</a></li>
-</ul>
-</div>
-<!-- Newsletter -->
-<div>
-<h4 class="font-headline text-title-md text-inverse-surface mb-6">Newsletter</h4>
-<p class="font-body text-body-sm text-on-surface-variant mb-4">Recevez nos dernières actualités techniques et offres exclusives.</p>
-<form class="flex flex-col gap-2">
-<input class="bg-surface-container border border-outline-variant rounded px-4 py-2 text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" placeholder="votre@email.com" type="email"/>
-<button class="bg-primary text-on-primary font-headline font-bold py-2 rounded hover:bg-primary-container transition-colors">
-            S'abonner
-          </button>
-</form>
-</div>
-</div>
-<!-- Bottom Bar -->
-<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-<div class="font-body text-body-sm text-on-surface-variant text-center md:text-left">
-        © 2024 RentSoundSystem. Professional Live Event Audio Solutions.
-      </div>
-<div class="flex gap-6 font-label text-label-sm text-on-surface-variant">
-<a class="hover:text-primary" href="#">Mentions Légales</a>
-<a class="hover:text-primary" href="#">Politique de Confidentialité</a>
-<a class="hover:text-primary" href="#">Cookies</a>
-</div>
-</div>
-</div>
-</footer>
+<div id="footer-container"></div>
 
 <script>
 (function(){
@@ -415,4 +339,5 @@
   document.addEventListener('DOMContentLoaded',bind);
 })();
 </script>
+<script src="/components.js"></script>
 </body></html>
