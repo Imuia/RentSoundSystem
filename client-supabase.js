@@ -421,14 +421,60 @@
     });
   }
 
+  function buildAutoReply(body){
+    const text = String(body || '').toLowerCase();
+    const has = (...words) => words.some(w => text.includes(w));
+
+    if (has('prix','tarif','combien','coût','cout','devis')) {
+      return "Merci pour votre message. Pour une location, le prix dépend du matériel choisi, de la durée, de la ville, de la livraison et de l’installation. Envoyez-nous les dates, le lieu et le type de matériel souhaité, et nous vous préparons une estimation rapidement.";
+    }
+    if (has('disponible','disponibilité','disponibilite','date','réserver','reserver','reservation','réservation')) {
+      return "Merci. Nous allons vérifier la disponibilité pour vos dates. Pour confirmer, indiquez la date de début, la date de retour, la ville et le matériel souhaité. Une fois validé, votre demande apparaîtra dans vos réservations.";
+    }
+    if (has('livraison','livrer','transport','installation','installer','montage','technicien')) {
+      return "Oui, la livraison, l’installation et l’assistance technique peuvent être organisées selon la zone et le matériel loué. Précisez l’adresse, les horaires d’accès et les contraintes techniques pour préparer la logistique.";
+    }
+    if (has('caution','garantie','stripe','paiement','payer','carte')) {
+      return "Pour la location, une caution peut être demandée selon le matériel. Le paiement ou la caution seront gérés via un lien sécurisé quand la réservation sera confirmée. Aucun prélèvement manuel n’est demandé par messagerie.";
+    }
+    if (has('annuler','annulation','modifier','changement','changer','reporter')) {
+      return "Votre demande de modification ou d’annulation est bien reçue. Indiquez la référence de réservation, les nouvelles dates souhaitées et la raison du changement pour que nous puissions vérifier les possibilités.";
+    }
+    if (has('facture','commande','reçu','recu')) {
+      return "Les informations de commande et de facturation seront disponibles dans l’espace client dès validation de la réservation. Précisez la réservation concernée si vous souhaitez une vérification manuelle.";
+    }
+    return "Merci pour votre message. Pour vous répondre précisément sur votre location RentSoundSystem, indiquez le matériel souhaité, la ville, les dates de début et de retour, ainsi que si vous avez besoin de livraison ou d’installation.";
+  }
+
+  function localMessageHtml(body, isClient){
+    return `<div class="flex gap-4 ${isClient ? 'flex-row-reverse' : ''} message-bubble">
+      <div class="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-bold shrink-0">${isClient ? 'Moi' : 'RSS'}</div>
+      <div class="message-max max-w-[70%] ${isClient ? 'flex flex-col items-end' : ''}">
+        <div class="${isClient ? 'bg-primary text-white' : 'bg-surface-container'} p-4 rounded-lg border border-white/10"><p>${esc(body)}</p></div>
+      </div>
+    </div>`;
+  }
+
   async function initMessages(user){
     const chat = document.getElementById('chat-list');
     const send = document.getElementById('send-btn');
     const input = document.getElementById('message-input');
+    const aiTextarea = document.getElementById('ai-textarea');
+    const generateAi = document.getElementById('generate-ai');
+    const conversationTitle = document.getElementById('conversation-title');
+    const conversationList = document.getElementById('conversation-list');
     if (!chat) return;
     if (!user) {
       chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Connectez-vous pour afficher vos messages.</div>';
       return;
+    }
+
+    if (conversationTitle) conversationTitle.textContent = 'Assistance location RentSoundSystem';
+    if (conversationList) {
+      conversationList.innerHTML = `<button class="w-full text-left bg-primary/10 border border-primary/30 rounded-lg p-3">
+        <p class="font-bold text-sm">Assistance location</p>
+        <p class="text-xs text-on-surface-variant mt-1">Réponses automatiques sur vos demandes</p>
+      </button>`;
     }
 
     async function load(){
@@ -443,19 +489,51 @@
         if (error) throw error;
 
         if (data && data.length) {
-          chat.innerHTML = data.map(m => `<div class="flex gap-4 ${m.is_client ? 'flex-row-reverse' : ''} message-bubble">
-            <div class="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-bold shrink-0">${m.is_client ? 'Moi' : 'RSS'}</div>
-            <div class="message-max max-w-[70%] ${m.is_client ? 'flex flex-col items-end' : ''}">
-              <div class="${m.is_client ? 'bg-primary text-white' : 'bg-surface-container'} p-4 rounded-lg border border-white/10"><p>${esc(m.body)}</p></div>
-            </div>
-          </div>`).join('');
+          chat.innerHTML = data.map(m => localMessageHtml(m.body, !!m.is_client)).join('');
         } else {
-          chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Aucun message pour le moment.</div>';
+          chat.innerHTML = localMessageHtml('Bonjour, je suis l’assistant RentSoundSystem. Posez votre question sur une location : prix, disponibilité, livraison, caution ou réservation.', false);
         }
         chat.scrollTop = chat.scrollHeight;
       } catch (e) {
         console.warn('Table messages non disponible:', e.message);
-        chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Messagerie prête. Vérifiez la table messages pour sauvegarder les conversations.</div>';
+        chat.innerHTML = localMessageHtml('Messagerie prête. Votre message pourra être affiché ici, mais la sauvegarde nécessite la table messages dans Supabase.', false);
+      }
+    }
+
+    async function insertMessage(body, isClient){
+      const supabase = await sb();
+      const { error } = await supabase.from('messages').insert({
+        user_id: user.id,
+        body,
+        is_client: !!isClient
+      });
+      if (error) throw error;
+    }
+
+    async function submitMessage(rawBody){
+      const body = String(rawBody || '').trim();
+      if (!body) return;
+      if (input) input.value = '';
+
+      try {
+        await insertMessage(body, true);
+        await load();
+
+        chat.insertAdjacentHTML('beforeend', `<div id="rss-auto-typing" class="flex items-center gap-2 ml-12 animate-pulse"><div class="flex gap-1"><span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span><span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span><span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant opacity-60"></span></div><p class="text-xs italic text-on-surface-variant">RentSoundSystem prépare une réponse...</p></div>`);
+        chat.scrollTop = chat.scrollHeight;
+
+        const autoReply = buildAutoReply(body);
+        await new Promise(resolve => setTimeout(resolve, 650));
+        await insertMessage(autoReply, false);
+        await load();
+      } catch (e) {
+        console.error(e);
+        const autoReply = buildAutoReply(body);
+        const typing = document.getElementById('rss-auto-typing');
+        if (typing) typing.remove();
+        chat.insertAdjacentHTML('beforeend', localMessageHtml(body, true) + localMessageHtml(autoReply, false));
+        chat.scrollTop = chat.scrollHeight;
+        toast('Message affiché, mais non sauvegardé : vérifiez la table messages.');
       }
     }
 
@@ -463,30 +541,32 @@
 
     if (send && input && !send.dataset.rssBound) {
       send.dataset.rssBound = '1';
-      const submit = async () => {
-        const body = input.value.trim();
-        if (!body) return;
-        try {
-          const supabase = await sb();
-          const { error } = await supabase.from('messages').insert({
-            user_id: user.id,
-            body,
-            is_client: true
-          });
-          if (error) throw error;
-          input.value = '';
-          await load();
-        } catch (e) {
-          toast('Message non sauvegardé : vérifiez la table messages.');
-          console.error(e);
-        }
-      };
-      send.addEventListener('click', submit);
+      send.addEventListener('click', () => submitMessage(input.value));
       input.addEventListener('keydown', e => {
         if (e.key === 'Enter' && !e.shiftKey) {
           e.preventDefault();
-          submit();
+          submitMessage(input.value);
         }
+      });
+    }
+
+    document.querySelectorAll('.ai-chip').forEach(chip => {
+      if (chip.dataset.rssChipBound) return;
+      chip.dataset.rssChipBound = '1';
+      chip.addEventListener('click', () => {
+        const prompt = chip.getAttribute('data-prompt') || chip.textContent || '';
+        if (input) {
+          input.value = prompt;
+          input.focus();
+        }
+      });
+    });
+
+    if (generateAi && aiTextarea && !generateAi.dataset.rssBound) {
+      generateAi.dataset.rssBound = '1';
+      generateAi.addEventListener('click', () => {
+        const suggestion = buildAutoReply(aiTextarea.value || 'location');
+        aiTextarea.value = suggestion;
       });
     }
   }
