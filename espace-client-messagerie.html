@@ -7,7 +7,6 @@
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Messagerie - Espace Client RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>
@@ -41,7 +40,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
 @media(max-width:1023px){.client-sidebar{position:relative;top:auto;overflow-x:auto}.sidebar-nav{flex-direction:row;overflow-x:auto;padding-bottom:6px}.client-nav-link{flex:0 0 auto}.sidebar-user{display:none}}
 @media(max-width:767px){body{padding-top:72px}.client-shell{padding-left:18px!important;padding-right:18px!important}h1{font-size:36px!important;line-height:44px!important}.chat-scroll{max-height:none}.message-max{max-width:88%!important}}
 
-/* Bouton déconnexion Supabase */
+/* Profil + Déconnexion Supabase */
 .sidebar-logout{
   margin-top:12px!important;
   width:100%!important;
@@ -57,14 +56,9 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   gap:10px!important;
   transition:.22s ease!important;
 }
-.sidebar-logout:hover{
-  color:#fff!important;
-  border-color:rgba(252,3,109,.65)!important;
-  background:rgba(252,3,109,.12)!important;
-}
-.sidebar-logout .material-symbols-outlined{
-  color:inherit!important;
-}
+.sidebar-logout:hover{color:#fff!important;border-color:rgba(252,3,109,.65)!important;background:rgba(252,3,109,.12)!important}
+.sidebar-logout .material-symbols-outlined{color:inherit!important}
+.client-email-text{margin-top:2px!important;color:#e6bcc2!important;font-size:11px!important;max-width:160px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 
 </style>
 </head>
@@ -112,30 +106,33 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
           <span class="material-symbols-outlined">forum</span>
           <span>Messagerie</span>
         </a>
-        <a href="/espace-client.html#reservations" class="client-nav-link">
+        <a href="/espace-client-reservations.html" class="client-nav-link">
           <span class="material-symbols-outlined">event_available</span>
           <span>Réservations</span>
         </a>
-        <a href="/espace-client.html#orders" class="client-nav-link">
+        <a href="/espace-client-commandes.html" class="client-nav-link">
           <span class="material-symbols-outlined">receipt_long</span>
           <span>Commandes</span>
         </a>
-        <a href="/espace-client.html#settings" class="client-nav-link">
+        <a href="/espace-client-parametres.html" class="client-nav-link">
           <span class="material-symbols-outlined">settings</span>
           <span>Paramètres</span>
         </a>
       </nav>
 <button id="new-request-btn" class="sidebar-action"><span class="material-symbols-outlined">add</span> Nouvelle requête</button>
 
-
   <button id="logout-btn" type="button" class="sidebar-logout">
     <span class="material-symbols-outlined">logout</span>
     Déconnexion
   </button>
 <div class="sidebar-user">
-<div class="sidebar-avatar">AM</div>
-<div><p class="text-xs text-on-surface-variant">Client du Projet</p><strong class="text-sm text-white">Alex Mercer</strong></div>
-</div>
+    <div class="sidebar-avatar" id="client-avatar">...</div>
+    <div>
+      <p>Client du Projet</p>
+      <strong id="sidebar-client-name">Chargement...</strong>
+      <p id="sidebar-client-email" class="client-email-text">Connexion au compte...</p>
+    </div>
+  </div>
 </aside>
 
 <div class="min-w-0">
@@ -179,7 +176,7 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
 </div>
 
 <div class="flex gap-4 flex-row-reverse message-bubble">
-<div class="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-bold shrink-0">AM</div>
+<div class="w-9 h-9 rounded-full bg-primary/15 border border-primary/30 flex items-center justify-center text-primary font-bold shrink-0">...</div>
 <div class="message-max max-w-[70%] flex flex-col items-end">
 <div class="flex items-baseline gap-2 mb-1 flex-row-reverse"><span class="font-bold">Moi</span><span class="text-xs text-on-surface-variant">10:45</span></div>
 <div class="bg-primary text-white p-4 rounded-lg rounded-tr-none">
@@ -527,53 +524,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
 <script src="/components.js"></script>
-
-<script id="rss-supabase-logout">
-(function(){
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const LOGIN_URL = '/connexion-inscription.html';
-
-  function showLocalToast(message){
-    let toast = document.querySelector('.rss-toast');
-    if(!toast){
-      toast = document.createElement('div');
-      toast.className = 'rss-toast';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2200);
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    const logoutBtn = document.getElementById('logout-btn');
-    if(!logoutBtn) return;
-
-    const supabaseClient = window.supabase
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-      : null;
-
-    logoutBtn.addEventListener('click', async function(){
-      logoutBtn.disabled = true;
-      logoutBtn.classList.add('opacity-60');
-      logoutBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Déconnexion...';
-
-      try{
-        if(supabaseClient){
-          await supabaseClient.auth.signOut();
-        }
-        window.location.href = LOGIN_URL;
-      }catch(error){
-        console.error('Erreur déconnexion Supabase:', error);
-        showLocalToast('Déconnexion impossible. Réessayez.');
-        logoutBtn.disabled = false;
-        logoutBtn.classList.remove('opacity-60');
-        logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Déconnexion';
-      }
-    });
-  });
-})();
-</script>
+<script src="/client-supabase.js"></script>
 </body>
 </html>

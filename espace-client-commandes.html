@@ -205,6 +205,27 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   }
 }
 
+
+/* Profil + Déconnexion Supabase */
+.sidebar-logout{
+  margin-top:12px!important;
+  width:100%!important;
+  min-height:48px!important;
+  border-radius:8px!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  background:rgba(255,255,255,.025)!important;
+  color:#e6bcc2!important;
+  font-weight:900!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:10px!important;
+  transition:.22s ease!important;
+}
+.sidebar-logout:hover{color:#fff!important;border-color:rgba(252,3,109,.65)!important;background:rgba(252,3,109,.12)!important}
+.sidebar-logout .material-symbols-outlined{color:inherit!important}
+.client-email-text{margin-top:2px!important;color:#e6bcc2!important;font-size:11px!important;max-width:160px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
+
 </style>
 </head>
 
@@ -248,15 +269,15 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
           <span class="material-symbols-outlined">forum</span>
           <span>Messagerie</span>
         </a>
-        <a href="/espace-client.html#reservations" class="client-nav-link">
+        <a href="/espace-client-reservations.html" class="client-nav-link">
           <span class="material-symbols-outlined">event_available</span>
           <span>Réservations</span>
         </a>
-        <a href="/espace-client.html#orders" class="client-nav-link">
+        <a href="/espace-client-commandes.html" class="client-nav-link">
           <span class="material-symbols-outlined">receipt_long</span>
           <span>Commandes</span>
         </a>
-        <a href="/espace-client.html#settings" class="client-nav-link">
+        <a href="/espace-client-parametres.html" class="client-nav-link">
           <span class="material-symbols-outlined">settings</span>
           <span>Paramètres</span>
         </a>
@@ -273,10 +294,11 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   </button>
 
   <div class="sidebar-user">
-    <div class="sidebar-avatar">AM</div>
+    <div class="sidebar-avatar" id="client-avatar">...</div>
     <div>
       <p>Client du Projet</p>
-      <strong>Alex Mercer</strong>
+      <strong id="sidebar-client-name">Chargement...</strong>
+      <p id="sidebar-client-email" class="client-email-text">Connexion au compte...</p>
     </div>
   </div>
 </aside>

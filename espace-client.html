@@ -6,7 +6,6 @@
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>
@@ -222,21 +221,9 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
   gap:10px!important;
   transition:.22s ease!important;
 }
-.sidebar-logout:hover{
-  color:#fff!important;
-  border-color:rgba(252,3,109,.65)!important;
-  background:rgba(252,3,109,.12)!important;
-}
+.sidebar-logout:hover{color:#fff!important;border-color:rgba(252,3,109,.65)!important;background:rgba(252,3,109,.12)!important}
 .sidebar-logout .material-symbols-outlined{color:inherit!important}
-.client-email-text{
-  margin-top:2px!important;
-  color:#e6bcc2!important;
-  font-size:11px!important;
-  max-width:160px!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  white-space:nowrap!important;
-}
+.client-email-text{margin-top:2px!important;color:#e6bcc2!important;font-size:11px!important;max-width:160px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 
 </style>
 </head>
@@ -279,15 +266,15 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
           <span class="material-symbols-outlined">forum</span>
           <span>Messagerie</span>
         </a>
-        <a href="/espace-client.html#reservations" class="client-nav-link">
+        <a href="/espace-client-reservations.html" class="client-nav-link">
           <span class="material-symbols-outlined">event_available</span>
           <span>Réservations</span>
         </a>
-        <a href="/espace-client.html#orders" class="client-nav-link">
+        <a href="/espace-client-commandes.html" class="client-nav-link">
           <span class="material-symbols-outlined">receipt_long</span>
           <span>Commandes</span>
         </a>
-        <a href="/espace-client.html#settings" class="client-nav-link">
+        <a href="/espace-client-parametres.html" class="client-nav-link">
           <span class="material-symbols-outlined">settings</span>
           <span>Paramètres</span>
         </a>
@@ -298,12 +285,12 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
     Nouvelle location
   </button>
 
+  
   <button id="logout-btn" type="button" class="sidebar-logout">
     <span class="material-symbols-outlined">logout</span>
     Déconnexion
   </button>
-
-  <div class="sidebar-user">
+<div class="sidebar-user">
     <div class="sidebar-avatar" id="client-avatar">...</div>
     <div>
       <p>Client du Projet</p>
@@ -317,26 +304,23 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
     <div class="min-w-0">
       <div id="panel-dashboard" class="rss-panel active">
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5 mb-8">
-          <button data-open="reservations" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Réservations</p><p class="font-headline text-5xl font-extrabold">12</p></button>
-          <button data-open="orders" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Commandes</p><p class="font-headline text-5xl font-extrabold">28</p></button>
-          <button data-link="/espace-client-messagerie.html" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Messages</p><p class="font-headline text-5xl font-extrabold">5</p></button>
-          <button data-open="settings" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Favoris</p><p class="font-headline text-5xl font-extrabold">19</p></button>
+          <button data-link="/espace-client-reservations.html" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Réservations</p><p id="count-reservations" class="font-headline text-5xl font-extrabold">...</p></button>
+          <button data-link="/espace-client-commandes.html" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Commandes</p><p id="count-orders" class="font-headline text-5xl font-extrabold">...</p></button>
+          <button data-link="/espace-client-messagerie.html" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Messages</p><p id="count-messages" class="font-headline text-5xl font-extrabold">...</p></button>
+          <button data-link="/espace-client-parametres.html" class="rss-card rounded-xl p-6 text-left"><p class="uppercase tracking-widest text-xs text-on-surface-variant mb-4">Favoris</p><p id="count-favorites" class="font-headline text-5xl font-extrabold">0</p></button>
         </div>
         <div class="grid grid-cols-1 xl:grid-cols-3 gap-8">
           <section class="xl:col-span-2 rss-card rounded-xl p-6 md:p-8">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-7"><h2 class="font-headline text-2xl font-bold">Locations en cours</h2><a href="/espace-client-calendrier.html" class="bg-primary text-white rounded-lg px-5 py-3 font-bold hover:bg-primary-container transition">Voir calendrier</a></div>
-            <div class="space-y-4">
-              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">album</span></div><div><h3 class="font-headline font-bold text-xl">Pioneer CDJ 3000 + DJM A9</h3><p class="text-on-surface-variant text-sm mt-1">Retour prévu : 28 Mai 2026</p></div></div><span class="bg-primary/15 text-primary px-4 py-2 rounded-full font-bold text-sm">En cours</span></article>
-              <article class="bg-surface-container-lowest rounded-xl p-5 border border-white/5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-14 h-14 rounded-lg bg-primary/15 border border-primary/30 flex items-center justify-center"><span class="material-symbols-outlined text-primary">speaker</span></div><div><h3 class="font-headline font-bold text-xl">Line Array JBL VRX</h3><p class="text-on-surface-variant text-sm mt-1">Début prévu : 31 Mai 2026</p></div></div><span class="bg-yellow-500/15 text-yellow-300 px-4 py-2 rounded-full font-bold text-sm">Réservé</span></article>
-            </div>
+            <div id="dashboard-reservations-list" class="space-y-4"><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 text-on-surface-variant">Chargement des réservations...</div></div>
           </section>
-          <section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-2xl font-bold mb-7">Activité récente</h2><div class="space-y-6"><div class="border-l-2 border-primary pl-4"><p class="font-bold">Nouvelle réservation</p><p class="text-on-surface-variant text-sm">Aujourd’hui</p></div><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Paiement validé</p><p class="text-on-surface-variant text-sm">Hier</p></div><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Message reçu</p><p class="text-on-surface-variant text-sm">Il y a 2 jours</p></div></div></section>
+          <section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-2xl font-bold mb-7">Activité récente</h2><div id="activity-list" class="space-y-6"><div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Chargement...</p><p class="text-on-surface-variant text-sm">Synchronisation Supabase</p></div></div></section>
         </div>
       </div>
       <div id="panel-reservations" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Mes réservations</h2><div id="reservation-list" class="space-y-4"></div></section></div>
       <div id="panel-orders" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8 overflow-x-auto"><h2 class="font-headline text-3xl font-bold mb-6">Commandes récentes</h2><table class="w-full min-w-[700px] text-left"><thead class="text-xs uppercase tracking-widest text-on-surface-variant border-b border-white/10"><tr><th class="py-4">Référence</th><th>Date</th><th>Matériel</th><th>État</th><th class="text-right">Total</th></tr></thead><tbody id="orders-body" class="divide-y divide-white/5"></tbody></table></section></div>
       <div id="panel-messages" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Messages</h2><div class="space-y-4"><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Loueur : Confirmation de disponibilité</p><p class="text-on-surface-variant mt-2">Votre pack Pioneer est disponible pour les dates sélectionnées.</p></div><div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5"><p class="font-bold">Support RentSoundSystem</p><p class="text-on-surface-variant mt-2">Votre demande de devis a bien été reçue.</p></div></div></section></div>
-      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="" placeholder="Chargement du nom..."/><input id="email-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="" placeholder="Chargement de l’e-mail..." readonly/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
+      <div id="panel-settings" class="rss-panel"><section class="rss-card rounded-xl p-6 md:p-8"><h2 class="font-headline text-3xl font-bold mb-6">Paramètres</h2><form id="settings-form" class="grid grid-cols-1 md:grid-cols-2 gap-5"><input id="name-input" class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="Alex Mercer"/><input class="bg-surface-container-lowest border border-white/10 rounded-lg px-4 py-3 text-on-surface" value="alex@email.com"/><button class="md:col-span-2 bg-primary text-white font-bold rounded-lg px-5 py-4 hover:bg-primary-container transition">Enregistrer</button></form></section></div>
     </div>
   </section>
 </main>
@@ -347,136 +331,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function showPanel(id){panels.forEach(p=>p.classList.remove("active"));document.getElementById("panel-"+id)?.classList.add("active");history.replaceState(null,"","#"+id);}
   document.querySelectorAll("[data-open]").forEach(btn=>btn.addEventListener("click",()=>showPanel(btn.dataset.open)));
   document.querySelectorAll("[data-link]").forEach(btn=>btn.addEventListener("click",()=>{location.href=btn.dataset.link;}));
-  document.querySelectorAll(".go-catalog").forEach(btn=>btn.addEventListener("click",()=>location.href="/catalog.html"));
-  const reservations=[["Pioneer CDJ 3000 + DJM A9","28 Mai 2026","En cours"],["Line Array JBL VRX","31 Mai 2026","Réservé"],["Pack micros Shure","04 Juin 2026","En attente"]];
-  document.getElementById("reservation-list").innerHTML=reservations.map(r=>`<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4"><div><p class="font-headline font-bold text-xl">${r[0]}</p><p class="text-on-surface-variant text-sm mt-1">Date : ${r[1]}</p></div><span class="text-primary font-bold">${r[2]}</span></div>`).join("");
-  const orders=[["#ORD-9021","12 oct. 2024","QSC K12.2 paire","Retourné","150,00 €"],["#ORD-8845","28 sept. 2024","Sennheiser EW 100 G4","Retourné","45,00 €"],["#ORD-8712","15 sept. 2024","Allen & Heath SQ-5","Retourné","220,00 €"]];
-  document.getElementById("orders-body").innerHTML=orders.map(o=>`<tr class="hover:bg-surface-container-lowest transition"><td class="py-4 font-mono text-on-surface-variant">${o[0]}</td><td>${o[1]}</td><td>${o[2]}</td><td><span class="inline-flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-primary"></span>${o[3]}</span></td><td class="text-right font-bold">${o[4]}</td></tr>`).join("");
-  document.getElementById("settings-form")?.addEventListener("submit",(e)=>{e.preventDefault();document.getElementById("client-name").textContent=document.getElementById("name-input").value||"Client";});
-  const hash=location.hash.replace("#","");if(hash==="messages"){location.href="/espace-client-messagerie.html";return;}if(["reservations","orders","settings"].includes(hash))showPanel(hash);
 });
 </script>
 <script src="/components.js"></script>
-
-<script id="rss-supabase-profile-logout">
-(function(){
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const LOGIN_URL = '/connexion-inscription.html';
-
-  function initialsFromName(value){
-    const clean = String(value || '').trim();
-    if(!clean) return 'CL';
-    return clean
-      .split(/\s+/)
-      .slice(0, 2)
-      .map(part => part.charAt(0).toUpperCase())
-      .join('') || 'CL';
-  }
-
-  function setText(selector, value){
-    document.querySelectorAll(selector).forEach(el => {
-      if(el) el.textContent = value;
-    });
-  }
-
-  function showLocalToast(message){
-    let toast = document.querySelector('.rss-toast');
-    if(!toast){
-      toast = document.createElement('div');
-      toast.className = 'rss-toast';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2200);
-  }
-
-  async function initClientArea(){
-    const supabaseClient = window.supabase
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-      : null;
-
-    if(!supabaseClient){
-      showLocalToast('Supabase JS non chargé.');
-      return;
-    }
-
-    const { data: sessionData } = await supabaseClient.auth.getSession();
-    const user = sessionData && sessionData.session ? sessionData.session.user : null;
-
-    if(!user){
-      setText('#client-name, #sidebar-client-name', 'Client non connecté');
-      setText('#client-email, #sidebar-client-email', 'Connexion requise');
-      setText('#client-avatar', 'CL');
-      return;
-    }
-
-    const fallbackName =
-      (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) ||
-      user.email ||
-      'Client';
-
-    let displayName = fallbackName;
-    let companyName = '';
-    const email = user.email || '';
-
-    try{
-      const { data: profile, error } = await supabaseClient
-        .from('profiles')
-        .select('full_name, company_name, email')
-        .eq('id', user.id)
-        .maybeSingle();
-
-      if(!error && profile){
-        displayName = profile.full_name || fallbackName;
-        companyName = profile.company_name || '';
-      }
-    }catch(error){
-      console.warn('Profil non chargé:', error);
-    }
-
-    const subtitle = companyName ? companyName : email;
-
-    setText('#client-name, #sidebar-client-name', displayName);
-    setText('#client-email, #sidebar-client-email', subtitle);
-    setText('#client-avatar', initialsFromName(displayName));
-    const nameInput = document.getElementById('name-input');
-    const emailInput = document.getElementById('email-input');
-    if(nameInput) nameInput.value = displayName;
-    if(emailInput) emailInput.value = email;
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    initClientArea();
-
-    const logoutBtn = document.getElementById('logout-btn');
-    if(!logoutBtn) return;
-
-    logoutBtn.addEventListener('click', async function(){
-      const supabaseClient = window.supabase
-        ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-        : null;
-
-      logoutBtn.disabled = true;
-      logoutBtn.classList.add('opacity-60');
-      logoutBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Déconnexion...';
-
-      try{
-        if(supabaseClient){
-          await supabaseClient.auth.signOut();
-        }
-        window.location.href = LOGIN_URL;
-      }catch(error){
-        console.error('Erreur déconnexion Supabase:', error);
-        showLocalToast('Déconnexion impossible. Réessayez.');
-        logoutBtn.disabled = false;
-        logoutBtn.classList.remove('opacity-60');
-        logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Déconnexion';
-      }
-    });
-  });
-})();
-</script>
-
+<script src="/client-supabase.js"></script>
 </body></html>

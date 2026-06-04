@@ -7,7 +7,6 @@
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Gestion Technique de l'Inventaire - RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script>
@@ -171,7 +170,7 @@ html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313
 }
 
 
-/* Bouton déconnexion Supabase */
+/* Profil + Déconnexion Supabase */
 .sidebar-logout{
   margin-top:12px!important;
   width:100%!important;
@@ -187,14 +186,9 @@ html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313
   gap:10px!important;
   transition:.22s ease!important;
 }
-.sidebar-logout:hover{
-  color:#fff!important;
-  border-color:rgba(252,3,109,.65)!important;
-  background:rgba(252,3,109,.12)!important;
-}
-.sidebar-logout .material-symbols-outlined{
-  color:inherit!important;
-}
+.sidebar-logout:hover{color:#fff!important;border-color:rgba(252,3,109,.65)!important;background:rgba(252,3,109,.12)!important}
+.sidebar-logout .material-symbols-outlined{color:inherit!important}
+.client-email-text{margin-top:2px!important;color:#e6bcc2!important;font-size:11px!important;max-width:160px!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
 
 </style>
 </head>
@@ -227,15 +221,15 @@ html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313
           <span class="material-symbols-outlined">forum</span>
           <span>Messagerie</span>
         </a>
-        <a href="/espace-client.html#reservations" class="client-nav-link">
+        <a href="/espace-client-reservations.html" class="client-nav-link">
           <span class="material-symbols-outlined">event_available</span>
           <span>Réservations</span>
         </a>
-        <a href="/espace-client.html#orders" class="client-nav-link">
+        <a href="/espace-client-commandes.html" class="client-nav-link">
           <span class="material-symbols-outlined">receipt_long</span>
           <span>Commandes</span>
         </a>
-        <a href="/espace-client.html#settings" class="client-nav-link">
+        <a href="/espace-client-parametres.html" class="client-nav-link">
           <span class="material-symbols-outlined">settings</span>
           <span>Paramètres</span>
         </a>
@@ -247,16 +241,16 @@ html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313
   </button>
 
   
-
   <button id="logout-btn" type="button" class="sidebar-logout">
     <span class="material-symbols-outlined">logout</span>
     Déconnexion
   </button>
 <div class="sidebar-user">
-    <div class="sidebar-avatar">AM</div>
+    <div class="sidebar-avatar" id="client-avatar">...</div>
     <div>
       <p>Client du Projet</p>
-      <strong>Alex Mercer</strong>
+      <strong id="sidebar-client-name">Chargement...</strong>
+      <p id="sidebar-client-email" class="client-email-text">Connexion au compte...</p>
     </div>
   </div>
 </aside>
@@ -267,52 +261,5 @@ html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313
 <script>
 document.addEventListener('DOMContentLoaded',()=>{function toast(msg){let t=document.querySelector('.rss-toast');if(!t){t=document.createElement('div');t.className='rss-toast';document.body.appendChild(t)}t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)}const equipment=[{name:'L-Acoustics K2',cat:'Line Array',status:'dispo',dispo:'4 / 12',price:'450 €'},{name:'Shure Axient Digital',cat:'Wireless',status:'loue',dispo:'4 / 24',price:'95 €'},{name:'Pioneer CDJ 3000 + DJM A9',cat:'DJ Gear',status:'dispo',dispo:'2 / 4',price:'220 €'},{name:'Yamaha CL5',cat:'Console',status:'maintenance',dispo:'0 / 1',price:'350 €'},{name:'JBL VRX System',cat:'Sonorisation',status:'loue',dispo:'1 / 3',price:'299 €'}];const statusLabel={dispo:['Disponible','text-primary'],loue:['Loué','text-yellow-300'],maintenance:['Maintenance','text-red-300']};function renderInventory(){const q=(document.getElementById('inventory-search').value||'').toLowerCase();const f=document.getElementById('inventory-filter').value;const rows=equipment.filter(item=>(item.name.toLowerCase().includes(q)||item.cat.toLowerCase().includes(q))&&(f==='all'||item.status===f));document.getElementById('inventory-body').innerHTML=rows.map(item=>{const s=statusLabel[item.status];return `<tr class="hover:bg-surface-container-lowest transition"><td class="py-4 font-headline font-bold">${item.name}</td><td class="text-on-surface-variant">${item.cat}</td><td><span class="${s[1]} font-bold">${s[0]}</span></td><td>${item.dispo}</td><td class="font-bold">${item.price}</td><td class="text-right"><button data-action="edit" data-name="${item.name}" class="text-primary hover:text-white font-bold mr-4">Modifier</button><button data-action="calendar" class="text-on-surface-variant hover:text-primary font-bold">Calendrier</button></td></tr>`}).join('')||`<tr><td colspan="6" class="py-8 text-center text-on-surface-variant">Aucun équipement trouvé.</td></tr>`;document.querySelectorAll('[data-action="edit"]').forEach(btn=>btn.addEventListener('click',()=>toast('Modification : '+btn.dataset.name)));document.querySelectorAll('[data-action="calendar"]').forEach(btn=>btn.addEventListener('click',()=>location.href='/espace-client-calendrier.html'))}document.getElementById('inventory-search').addEventListener('input',renderInventory);document.getElementById('inventory-filter').addEventListener('change',renderInventory);document.getElementById('show-all-inventory').addEventListener('click',()=>document.getElementById('inventory-search').focus());document.getElementById('add-equipment-btn').addEventListener('click',()=>toast('Ouverture du formulaire d’ajout d’équipement.'));const pending=[["Festival d'Été",'12 - 15 Août 2024','2x L-Acoustics K2, 4x KS28','4 200 €'],['Gala Corporatif','22 Sept 2024','8x Shure Axient Digital, 1x QL1','1 150 €'],['Tournée Indé','01 - 14 Oct 2024','Pack complet microphones batterie','850 €']];document.getElementById('pending-list').innerHTML=pending.map((p,i)=>`<article class="bg-surface-container-lowest rounded-xl border border-white/5 p-5 flex flex-col xl:flex-row xl:items-center justify-between gap-4"><div class="flex items-center gap-4"><div class="w-10 h-10 rounded-full bg-primary/15 border border-primary/30 text-primary flex items-center justify-center font-bold">${p[0][0]}</div><div><p class="font-headline font-bold text-xl">${p[0]}</p><p class="text-on-surface-variant text-sm">${p[1]} · ${p[2]}</p></div></div><div class="flex flex-col sm:flex-row sm:items-center gap-3"><span class="font-bold text-on-surface">${p[3]}</span><button data-approve="${i}" class="bg-primary text-white px-4 py-2 rounded font-bold hover:bg-primary-container transition">Approuver</button><button data-refuse="${i}" class="border border-white/15 text-on-surface px-4 py-2 rounded font-bold hover:border-primary hover:text-primary transition">Refuser</button></div></article>`).join('');document.querySelectorAll('[data-approve]').forEach(btn=>btn.addEventListener('click',()=>toast('Demande approuvée.')));document.querySelectorAll('[data-refuse]').forEach(btn=>btn.addEventListener('click',()=>toast('Demande refusée.')));renderInventory()});
 </script><script src="/components.js"></script>
-
-<script id="rss-supabase-logout">
-(function(){
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const LOGIN_URL = '/connexion-inscription.html';
-
-  function showLocalToast(message){
-    let toast = document.querySelector('.rss-toast');
-    if(!toast){
-      toast = document.createElement('div');
-      toast.className = 'rss-toast';
-      document.body.appendChild(toast);
-    }
-    toast.textContent = message;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2200);
-  }
-
-  document.addEventListener('DOMContentLoaded', function(){
-    const logoutBtn = document.getElementById('logout-btn');
-    if(!logoutBtn) return;
-
-    const supabaseClient = window.supabase
-      ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
-      : null;
-
-    logoutBtn.addEventListener('click', async function(){
-      logoutBtn.disabled = true;
-      logoutBtn.classList.add('opacity-60');
-      logoutBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Déconnexion...';
-
-      try{
-        if(supabaseClient){
-          await supabaseClient.auth.signOut();
-        }
-        window.location.href = LOGIN_URL;
-      }catch(error){
-        console.error('Erreur déconnexion Supabase:', error);
-        showLocalToast('Déconnexion impossible. Réessayez.');
-        logoutBtn.disabled = false;
-        logoutBtn.classList.remove('opacity-60');
-        logoutBtn.innerHTML = '<span class="material-symbols-outlined">logout</span> Déconnexion';
-      }
-    });
-  });
-})();
-</script>
+<script src="/client-supabase.js"></script>
 </body></html>
