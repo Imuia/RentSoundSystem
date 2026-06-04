@@ -3,8 +3,9 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Checkout - Sonic Precision</title>
+<title>Checkout - RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -92,11 +93,11 @@
 <header class="bg-surface dark:bg-surface w-full top-0 sticky border-b border-outline-variant dark:border-outline-variant z-50">
 <div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto z-50">
 <div class="font-headline text-headline-md font-bold tracking-tighter text-on-surface dark:text-on-surface">
-                Sonic Precision
+                RentSoundSystem
             </div>
 <!-- Simplified Nav for Checkout: Intent Linear/Transactional -->
 <div class="flex items-center gap-6">
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="#">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-2" href="/contact.html">
 <span class="material-symbols-outlined">help</span>
 <span class="font-label text-label-md">Besoin d'aide ?</span>
 </a>
@@ -124,23 +125,23 @@
 <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Prénom</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Jean" type="text"/>
+<input autocomplete="given-name" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="first-name" name="first-name" placeholder="Jean" required="required" type="text"/>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Nom</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Dupont" type="text"/>
+<input autocomplete="family-name" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="last-name" name="last-name" placeholder="Dupont" required="required" type="text"/>
 </div>
 <div class="flex flex-col gap-1 md:col-span-2">
 <label class="font-label text-label-caps text-on-surface-variant">Société / Production (Optionnel)</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Nom de l'entreprise" type="text"/>
+<input autocomplete="organization" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="company-name" name="company-name" placeholder="Nom de l'entreprise" type="text"/>
 </div>
 <div class="flex flex-col gap-1 md:col-span-2">
 <label class="font-label text-label-caps text-on-surface-variant">Email</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="jean.dupont@example.com" type="email"/>
+<input autocomplete="email" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="email" name="email" placeholder="jean.dupont@example.com" required="required" type="email"/>
 </div>
 <div class="flex flex-col gap-1 md:col-span-2">
 <label class="font-label text-label-caps text-on-surface-variant">Téléphone</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="+33 6 00 00 00 00" type="tel"/>
+<input autocomplete="tel" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="phone" name="phone" placeholder="+33 6 00 00 00 00" required="required" type="tel"/>
 </div>
 </form>
 </section>
@@ -150,21 +151,25 @@
 <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold">2</div>
 <h2 class="font-headline text-headline-md text-inverse-surface">Services &amp; Logistique</h2>
 </div>
-<div class="flex flex-col gap-4">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<div class="flex flex-col gap-1"><label class="font-label text-label-caps text-on-surface-variant">Date de début</label><input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="rental-start" required="" type="date"/></div>
+<div class="flex flex-col gap-1"><label class="font-label text-label-caps text-on-surface-variant">Date de retour</label><input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="rental-end" required="" type="date"/></div>
+<div class="flex flex-col gap-1"><label class="font-label text-label-caps text-on-surface-variant">Ville / lieu</label><input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="event-city" placeholder="Paris, Nice, Cannes..." required="" type="text"/></div>
+</div><div class="flex flex-col gap-4">
 <!-- Option 1 -->
-<label class="flex items-start gap-4 p-4 border border-outline-variant rounded cursor-pointer hover:border-primary hover:bg-surface-container-high transition-colors relative">
-<input checked="" class="mt-1 text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" name="delivery" type="radio"/>
+<label class="flex items-start gap-4 p-4 border border-outline-variant rounded cursor-pointer hover:border-primary hover:bg-surface-container-high transition-colors relative" data-option="delivery-pickup">
+<input checked="" class="mt-1 text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" id="delivery-pickup" name="delivery" type="radio" value="pickup"/>
 <div class="flex-grow">
 <div class="flex justify-between items-center mb-1">
-<span class="font-headline font-semibold text-inverse-surface">Retrait en Entrepôt</span>
+<span class="font-headline font-semibold text-inverse-surface" id="label-delivery">Retrait en Entrepôt</span>
 <span class="font-body text-body-md font-bold text-inverse-surface">Gratuit</span>
 </div>
 <p class="font-body text-body-sm text-on-surface-variant">Retrait par vos soins à notre entrepôt de Paris Nord. Véhicule adapté requis pour le système K2.</p>
 </div>
 </label>
 <!-- Option 2 -->
-<label class="flex items-start gap-4 p-4 border border-outline-variant rounded cursor-pointer hover:border-primary hover:bg-surface-container-high transition-colors relative">
-<input class="mt-1 text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" name="delivery" type="radio"/>
+<label class="flex items-start gap-4 p-4 border border-outline-variant rounded cursor-pointer hover:border-primary hover:bg-surface-container-high transition-colors relative" data-option="delivery-transport">
+<input class="mt-1 text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" id="delivery-transport" name="delivery" type="radio" value="delivery"/>
 <div class="flex-grow">
 <div class="flex justify-between items-center mb-1">
 <span class="font-headline font-semibold text-inverse-surface">Livraison &amp; Reprise</span>
@@ -176,7 +181,7 @@
 <!-- Add-on -->
 <div class="mt-4 pt-4 border-t border-outline-variant">
 <label class="flex items-start gap-4 p-4 bg-surface rounded border border-surface-container-highest cursor-pointer hover:border-primary transition-colors">
-<input class="mt-1 rounded text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" type="checkbox"/>
+<input class="mt-1 rounded text-primary focus:ring-primary bg-surface border-outline-variant w-5 h-5" id="technician" name="technician" type="checkbox"/>
 <div class="flex-grow">
 <div class="flex justify-between items-center mb-1">
 <div class="flex items-center gap-2">
@@ -221,23 +226,23 @@
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Numéro de carte</label>
 <div class="relative">
-<input class="w-full bg-surface border border-outline-variant rounded px-4 py-3 pl-12 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="0000 0000 0000 0000" type="text"/>
+<input autocomplete="cc-number" class="w-full bg-surface border border-outline-variant rounded px-4 py-3 pl-12 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="card-number" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" type="text"/>
 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="credit_card">credit_card</span>
 </div>
 </div>
 <div class="grid grid-cols-2 gap-4">
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Date d'expiration</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="MM/AA" type="text"/>
+<input autocomplete="cc-exp" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="card-expiry" inputmode="numeric" maxlength="5" placeholder="MM/AA" type="text"/>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">CVC</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="123" type="text"/>
+<input autocomplete="cc-csc" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="card-cvc" inputmode="numeric" maxlength="4" placeholder="123" type="text"/>
 </div>
 </div>
 <div class="flex flex-col gap-1 mt-2">
 <label class="font-label text-label-caps text-on-surface-variant">Nom sur la carte</label>
-<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" placeholder="Jean Dupont" type="text"/>
+<input autocomplete="cc-name" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="card-name" placeholder="Jean Dupont" type="text"/>
 </div>
 </form>
 </section>
@@ -253,51 +258,51 @@
 </div>
 <div class="flex flex-col justify-between">
 <div>
-<h4 class="font-headline font-semibold text-inverse-surface text-base">L-Acoustics K2 System</h4>
-<p class="font-body text-body-sm text-on-surface-variant">Pack Complet (8 Boîtes + Subs)</p>
+<h4 class="font-headline font-semibold text-inverse-surface text-base" id="summary-item-name">L-Acoustics K2 System</h4>
+<p class="font-body text-body-sm text-on-surface-variant" id="summary-item-desc">Pack Complet (8 Boîtes + Subs)</p>
 </div>
-<div class="font-body text-body-sm text-primary font-medium">1 200 € / jour</div>
+<div class="font-body text-body-sm text-primary font-medium" id="summary-price-day">1 200 € / jour</div>
 </div>
 </div>
 <!-- Rental Details -->
 <div class="bg-surface rounded p-4 mb-6 border border-surface-container-highest">
 <div class="flex justify-between items-center mb-2">
 <span class="font-body text-body-sm text-on-surface-variant">Dates</span>
-<span class="font-body text-body-sm font-medium text-inverse-surface">15 Oct - 17 Oct (3 Jours)</span>
+<span class="font-body text-body-sm font-medium text-inverse-surface" id="summary-dates">15 Oct - 17 Oct (3 Jours)</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="font-body text-body-sm text-on-surface-variant">Quantité</span>
-<span class="font-body text-body-sm font-medium text-inverse-surface">1 Système</span>
+<span class="font-body text-body-sm font-medium text-inverse-surface" id="summary-quantity">1 Système</span>
 </div>
 </div>
 <!-- Breakdown -->
 <div class="flex flex-col gap-3 mb-6 border-b border-outline-variant pb-6">
 <div class="flex justify-between items-center">
-<span class="font-body text-body-md text-on-surface-variant">Location (3 jours)</span>
-<span class="font-body text-body-md text-inverse-surface">3 600,00 €</span>
+<span class="font-body text-body-md text-on-surface-variant" id="label-rental-days">Location (3 jours)</span>
+<span class="font-body text-body-md text-inverse-surface" id="amount-rental">3 600,00 €</span>
 </div>
 <div class="flex justify-between items-center">
-<span class="font-body text-body-md text-on-surface-variant">Retrait en Entrepôt</span>
-<span class="font-body text-body-md text-inverse-surface">0,00 €</span>
+<span class="font-body text-body-md text-on-surface-variant" id="label-delivery">Retrait en Entrepôt</span>
+<span class="font-body text-body-md text-inverse-surface" id="amount-delivery">0,00 €</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="font-body text-body-md text-on-surface-variant">Assurance (Optionnelle)</span>
-<span class="font-body text-body-md text-inverse-surface">--</span>
+<span class="font-body text-body-md text-inverse-surface" id="amount-insurance">--</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="font-body text-body-md text-on-surface-variant">Caution (Dépôt de garantie)</span>
-<span class="font-body text-body-md text-inverse-surface">5 000,00 €</span>
+<span class="font-body text-body-md text-inverse-surface" id="amount-deposit">5 000,00 €</span>
 </div><div class="flex justify-between items-center mt-2">
 <span class="font-body text-body-sm text-on-surface-variant">TVA (20%)</span>
-<span class="font-body text-body-sm text-on-surface-variant">720,00 €</span>
+<span class="font-body text-body-sm text-on-surface-variant" id="amount-tax">720,00 €</span>
 </div>
 </div>
 <!-- Total -->
 <div class="flex justify-between items-center mb-8">
 <span class="font-headline text-headline-md text-inverse-surface">Total TTC</span>
-<span class="font-headline text-headline-lg text-primary font-bold">4 320,00 €</span>
+<span class="font-headline text-headline-lg text-primary font-bold" id="amount-total">4 320,00 €</span>
 </div>
-<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-headline font-bold text-lg py-4 px-6 rounded transition-colors active:scale-95 duration-100 flex items-center justify-center gap-2">
+<div class="hidden mb-4 rounded border border-error/40 bg-error-container/20 text-error px-4 py-3 text-sm" id="checkout-message"></div><button class="w-full bg-primary hover:bg-primary-container text-on-primary font-headline font-bold text-lg py-4 px-6 rounded transition-colors active:scale-95 duration-100 flex items-center justify-center gap-2" id="confirm-order-btn" type="button">
 <span class="material-symbols-outlined" data-icon="lock">lock</span>
                         Confirmer et Payer
                     </button>
@@ -316,7 +321,7 @@
 <!-- Brand Section -->
 <div class="flex flex-col gap-6">
 <div class="font-headline text-headline-md text-on-surface font-bold tracking-tighter">
-          Sonic Precision
+          RentSoundSystem
         </div>
 <p class="font-body text-body-md text-on-surface-variant max-w-xs">
           Solutions de sonorisation haut de gamme pour événements live, tournées et festivals. Précision acoustique sans compromis.
@@ -368,7 +373,7 @@
 <!-- Bottom Bar -->
 <div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
 <div class="font-body text-body-sm text-on-surface-variant text-center md:text-left">
-        © 2024 Sonic Precision. Professional Live Event Audio Solutions.
+        © 2024 RentSoundSystem. Professional Live Event Audio Solutions.
       </div>
 <div class="flex gap-6 font-label text-label-sm text-on-surface-variant">
 <a class="hover:text-primary" href="#">Mentions Légales</a>
@@ -378,11 +383,36 @@
 </div>
 </div>
 </footer>
+
 <script>
-fetch('header.html')
-.then(response => response.text())
-.then(data => {
-document.getElementById('header').innerHTML = data;
-});
+(function(){
+  'use strict';
+  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const CONFIRMATION_URL='/confirmation-de-commande.html';
+  const DEFAULT_PRODUCT={name:'L-Acoustics K2 System',description:'Pack complet audio professionnel',dailyPrice:1200,deposit:5000,quantity:1,image:''};
+  let selectedPayment='card';
+  function qs(s){return document.querySelector(s)}
+  function qsa(s){return Array.from(document.querySelectorAll(s))}
+  function money(v){return Number(v||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});}
+  function dateFR(v){if(!v)return 'À confirmer';const d=new Date(v+'T00:00:00');return Number.isNaN(d.getTime())?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+  function setText(s,v){const el=qs(s); if(el) el.textContent=v;}
+  function showMessage(text,type='error'){const el=qs('#checkout-message'); if(!el)return; el.textContent=text; el.classList.remove('hidden','text-error','text-primary','border-error/40','border-primary/40','bg-error-container/20','bg-primary/10'); if(type==='success'){el.classList.add('text-primary','border-primary/40','bg-primary/10')}else{el.classList.add('text-error','border-error/40','bg-error-container/20')}}
+  function hideMessage(){qs('#checkout-message')?.classList.add('hidden')}
+  function todayPlus(days){const d=new Date(); d.setDate(d.getDate()+days); return d.toISOString().slice(0,10)}
+  function initDates(){const start=qs('#rental-start'), end=qs('#rental-end'); if(start&&!start.value) start.value=todayPlus(7); if(end&&!end.value) end.value=todayPlus(9); if(start&&end){start.min=todayPlus(0); end.min=start.value; start.addEventListener('change',()=>{if(end.value<start.value)end.value=start.value; end.min=start.value; updateSummary();}); end.addEventListener('change',updateSummary);} }
+  function days(){const s=qs('#rental-start')?.value, e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'), ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd)||Number.isNaN(ed)) return 1; return Math.max(1, Math.round((ed-sd)/(1000*60*60*24))+1);}
+  function getProduct(){try{const stored=JSON.parse(localStorage.getItem('rssSelectedProduct')||'null');return Object.assign({},DEFAULT_PRODUCT,stored||{});}catch{return DEFAULT_PRODUCT}}
+  function totals(){const product=getProduct(), d=days(); const delivery=qs('#delivery-transport')?.checked?250:0; const technician=qs('#technician')?.checked?450*d:0; const rental=product.dailyPrice*d*product.quantity; const subtotal=rental+delivery+technician; const tax=subtotal*.20; const total=subtotal+tax; return {product,d,rental,delivery,technician,tax,total,deposit:product.deposit};}
+  function updatePaymentUI(){qsa('.payment-method').forEach(btn=>{const active=btn.dataset.method===selectedPayment; btn.classList.toggle('border-2',active); btn.classList.toggle('border-primary',active); btn.classList.toggle('bg-surface-container-high',active);}); const cardFields=['#card-number','#card-expiry','#card-cvc','#card-name']; cardFields.forEach(s=>{const el=qs(s); if(el){el.disabled=selectedPayment!=='card'; el.closest('.flex')?.classList.toggle('opacity-50',selectedPayment!=='card')}});}
+  function updateSummary(){const t=totals(); setText('#summary-item-name',t.product.name); setText('#summary-item-desc',t.product.description); setText('#summary-price-day',money(t.product.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',t.product.quantity+' système'); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total)); }
+  function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} return true;}
+  async function getSupabase(){if(!window.supabase)return null; return window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);}
+  async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return; const {data:{session}}=await sb.auth.getSession(); if(!session?.user)return; const {error}=await sb.from('reservations').insert({user_id:session.user.id,equipment_name:order.item.name,renter_name:'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:'pending',total_price:order.amounts.total}); if(error)console.warn('Reservation Supabase:',error);}catch(e){console.warn('Reservation non sauvegardée:',e)}}
+  function buildOrder(){const t=totals(); return {id:'RSS-'+Date.now().toString().slice(-6),createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request'},item:{name:t.product.name,description:t.product.description,dailyPrice:t.product.dailyPrice,quantity:t.product.quantity,deposit:t.deposit},amounts:{rental:t.rental,delivery:t.delivery,technician:t.technician,tax:t.tax,total:t.total,deposit:t.deposit}};}
+  async function submit(){if(!validate())return; const btn=qs('#confirm-order-btn'); btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Validation...'; const order=buildOrder(); localStorage.setItem('rssLastOrder',JSON.stringify(order)); await saveReservation(order); showMessage('Commande enregistrée. Redirection vers la confirmation...','success'); setTimeout(()=>{window.location.href=CONFIRMATION_URL+'?order='+encodeURIComponent(order.id)},450);}
+  function bind(){initDates(); qsa('input').forEach(el=>el.addEventListener('input',updateSummary)); qsa('input[name="delivery"],#technician').forEach(el=>el.addEventListener('change',updateSummary)); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary();}
+  document.addEventListener('DOMContentLoaded',bind);
+})();
 </script>
 </body></html>
