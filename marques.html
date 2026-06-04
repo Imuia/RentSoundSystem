@@ -406,12 +406,56 @@ html,body{overflow-x:hidden!important}
   function getTitle(b){return b.title || b.name || b.brand_name || b.nom || b.marque || "Marque"}
   function getSlug(b){return b.slug || b.brand_slug || slugify(getTitle(b))}
   function getDescription(b){return b.description || b.content || b.about || b.presentation || ""}
-  function getLogo(b){return b.logo_url || b.logo || b.image_url || b.image || b.logo_path || ""}
+  function getLogo(b){
+    return b.logo_url || b.logo || b.image_url || b.image || b.logo_path || b.image_path || b.logo_filename || b.filename || b.file_name || b.public_url || b.url || b.src || "";
+  }
   function firstLetter(b){return (b.letter || norm(getTitle(b)).charAt(0) || "#").toUpperCase()}
+
+  const ABOUTS_DIR = "/uploads/abouts/";
+  const LOGO_EXTENSIONS = ["webp","png","jpg","jpeg","svg"];
+  const LOGO_ALIASES = {
+    "electro-voice-ev": ["electro-voice", "electrovoice", "ev"],
+    "l-acoustics": ["l-acoustics", "lacoustics", "l-acoustic"],
+    "pioneer-dj": ["pioneer-dj", "pioneer", "pioneer-dj-logo"],
+    "jbl": ["jbl", "jbl-professional"],
+    "nexo": ["nexo"],
+    "yamaha": ["yamaha"],
+    "denon": ["denon"],
+    "bose": ["bose"],
+    "cameo": ["cameo"],
+    "celestion": ["celestion"]
+  };
+
   function logoUrl(url){
     if(!url) return "";
-    if(String(url).startsWith("http")) return url;
-    return "https://rentsoundsystem.vercel.app/" + String(url).replace(/^\/+/,"");
+    let value = String(url).trim();
+    if(!value) return "";
+    if(value.startsWith("http") || value.startsWith("data:") || value.startsWith("blob:")) return value;
+    value = value.replace(/^public\//, "").replace(/^\.\//, "").replace(/^\/+/, "");
+    if(value.startsWith("uploads/abouts/")) return "/" + value;
+    if(value.startsWith("abouts/")) return "/uploads/" + value;
+    if(value.includes("/")) return "/" + value;
+    if(/\.(webp|png|jpe?g|svg)$/i.test(value)) return ABOUTS_DIR + value;
+    return ABOUTS_DIR + value;
+  }
+
+  function addCandidate(list, value){
+    const url = logoUrl(value);
+    if(url && !list.includes(url)) list.push(url);
+  }
+
+  function logoCandidates(raw){
+    const list = [];
+    const explicitKeys = ["logo_url","logo","image_url","image","logo_path","image_path","logo_filename","filename","file_name","public_url","url","src"];
+    explicitKeys.forEach(function(key){ if(raw && raw[key]) addCandidate(list, raw[key]); });
+
+    const slug = getSlug(raw);
+    const titleSlug = slugify(getTitle(raw));
+    const baseNames = [slug, titleSlug].concat(LOGO_ALIASES[slug] || []).filter(Boolean);
+    Array.from(new Set(baseNames)).forEach(function(name){
+      LOGO_EXTENSIONS.forEach(function(ext){ addCandidate(list, ABOUTS_DIR + name + "." + ext); });
+    });
+    return list;
   }
 
   function card(raw){
@@ -514,6 +558,22 @@ html,body{overflow-x:hidden!important}
       console.warn("Supabase loading failed:", e);
     }
   }
+
+
+  window.rssTryNextBrandLogo = function(img){
+    try{
+      const candidates = JSON.parse(img.getAttribute('data-logo-candidates') || '[]');
+      let index = Number(img.getAttribute('data-logo-index') || 0) + 1;
+      if(index < candidates.length){
+        img.setAttribute('data-logo-index', String(index));
+        img.src = candidates[index];
+        return;
+      }
+    }catch(e){}
+    const parent = img.parentElement;
+    if(parent) parent.classList.add('brand-img-fallback');
+    img.remove();
+  };
 
   function init(){
     setBrands(fallbackBrands);
