@@ -9,6 +9,8 @@
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
@@ -136,6 +138,20 @@
 .void-product-empty{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(31,31,31,.6),rgba(19,19,19,.8));}
 @media(max-width:767px){.void-product-card{min-height:430px}.void-product-card .void-product-content{min-height:430px;padding:24px!important}}
 </style>
+
+<style id="rss-void-map-css">
+#void-map-wrap{height:520px!important;min-height:520px!important}
+#void-map{width:100%!important;height:520px!important;min-height:520px!important;display:block!important;position:relative!important;z-index:1!important;background:#111!important}
+#void-map.leaflet-container{font-family:Inter,sans-serif!important;background:#111!important}
+#void-map .leaflet-tile{filter:grayscale(100%) brightness(.45) contrast(1.2);max-width:none!important;max-height:none!important}
+#void-map .leaflet-control-attribution{background:rgba(19,19,19,.75)!important;color:#aaa!important}
+#void-map .leaflet-control-attribution a{color:#FC036D!important}
+.void-map-marker{background:transparent!important;border:0!important}
+.void-map-pin{color:#FC036D;font-size:38px;line-height:38px;filter:drop-shadow(0 0 10px rgba(252,3,109,.9))}
+.void-map-popup .leaflet-popup-content-wrapper{background:#1f1f1f;color:#e2e2e2;border:1px solid rgba(255,255,255,.12);border-radius:12px}
+.void-map-popup .leaflet-popup-tip{background:#1f1f1f}
+@media(max-width:767px){#void-map-wrap,#void-map,#void-map.leaflet-container{height:420px!important;min-height:420px!important}}
+</style>
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -168,25 +184,20 @@
 </div>
 </section>
 <!-- Geolocalisation Section -->
-<section class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
+<section id="void-map-section" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
 <div class="max-w-container-max mx-auto px-gutter-x">
-<div class="mb-12 text-center">
-<h2 class="text-headline-lg font-headline-lg mb-4">Disponibilité RentSoundSystem</h2>
-<p class="text-body-md font-body-md text-on-surface-variant">Trouvez des systèmes Void près de chez vous</p>
-</div>
-<div class="glass-panel rounded-xl overflow-hidden h-[500px] relative">
-<img alt="Map of available systems" class="w-full h-full object-cover opacity-60" data-alt="A dark, stylized map interface with a modern, high-contrast aesthetic. The map is rendered in deep charcoal and black tones, with subtle grid lines. Across the map, several glowing neon fuchsia (#FC036D) markers or pins indicate locations. The overall look is technical, premium, and aligns with a dark-mode, nightclub-focused application design." data-location="Europe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClPILbk1OSyLA7WT0dUmnE7Xm7bm7EDsn4IlvacvShFg7ffh6-I_00X_1xywBKefNaGHH26U0ZkkpBoXVQiTXx4iDB7TYLRvxx-iWfjWWuOXF3sk8rk7FK6V7zqcm5D4uZeFBmPLkhcwDU4qdHNRA-2QoJrLQnBE4KXb8MuZVOM9oV-uj2KLTh-5Z7RkkPp-e0BfgEHDtyQxC2axjteg2DWmb593gGMPkekk3qFMLUY97-W-sFiD_rbj5UwiuHnpqH5PN97TGqz4M"/>
-<!-- Simulated Map Markers -->
-<div class="absolute top-1/4 left-1/3">
-<span class="material-symbols-outlined text-[#FC036D] text-4xl neon-text-glow" style="font-variation-settings: 'FILL' 1;">location_on</span>
-</div>
-<div class="absolute top-1/2 left-1/2">
-<span class="material-symbols-outlined text-[#FC036D] text-4xl neon-text-glow" style="font-variation-settings: 'FILL' 1;">location_on</span>
-</div>
-<div class="absolute bottom-1/3 right-1/4">
-<span class="material-symbols-outlined text-[#FC036D] text-4xl neon-text-glow" style="font-variation-settings: 'FILL' 1;">location_on</span>
-</div>
-</div>
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <div class="text-center md:text-left">
+      <h2 class="text-headline-lg font-headline-lg mb-4">Disponibilité RentSoundSystem</h2>
+      <p id="void-map-label" class="text-body-md font-body-md text-on-surface-variant">Les annonces Void Acoustics s’affichent sur la carte dès leur chargement.</p>
+    </div>
+    <button id="void-use-location" type="button" class="self-center md:self-auto bg-surface-container-high border border-white/10 text-on-surface px-4 py-3 rounded-lg hover:text-[#FC036D] hover:border-[#FC036D] transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined">my_location</span> Utiliser ma position
+    </button>
+  </div>
+  <div id="void-map-wrap" class="glass-panel rounded-xl overflow-hidden relative">
+    <div id="void-map" aria-label="Carte des annonces Void Acoustics disponibles"></div>
+  </div>
 </div>
 </section>
 <!-- Catalogue Section (Bento Grid) -->
@@ -369,62 +380,51 @@
 </main>
 <div id="footer-container"></div>
 
-<script>
-(function(){
-  function scrollToSection(text){
-    const target = Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.toLowerCase().includes(text));
-    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
-  }
-  document.addEventListener('DOMContentLoaded', function(){
-    document.querySelectorAll('button').forEach(function(btn){
-      const t = btn.textContent.trim().toLowerCase();
-      if(t.includes('explorer le catalogue') || t.includes('voir les offres') || t.includes('explorer')){
-        btn.addEventListener('click', function(){ scrollToSection('catalogue location'); });
-      }
-      if(t.includes('voir les installations')){
-        btn.addEventListener('click', function(){ scrollToSection('installations'); });
-      }
-    });
-  });
-})();
-</script>
-\n<script id="rss-void-products-dynamic">
+
+<script id="rss-void-products-dynamic">
 (function(){
   'use strict';
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   let allVoidProducts = [];
   let currentFilter = 'all';
+  let map = null;
+  let productMarkers = [];
+  let userMarker = null;
 
   const $ = (s) => document.querySelector(s);
   const $$ = (s) => Array.from(document.querySelectorAll(s));
-  const safe = (v) => String(v ?? '').replace(/[&<>\"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  const safe = (v) => String(v ?? '').replace(/[&<>\"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m] || m));
   const clean = (v) => String(v ?? '').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
-  const norm = (v) => String(v ?? '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+  const norm = (v) => String(v ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+
+  const CITY_COORDS = {
+    'paris':[48.8566,2.3522], 'saint denis':[48.9362,2.3574], 'boulogne':[48.8397,2.2399], 'lyon':[45.764,4.8357],
+    'marseille':[43.2965,5.3698], 'nice':[43.7102,7.262], 'cannes':[43.5528,7.0174], 'bordeaux':[44.8378,-0.5792],
+    'lille':[50.6292,3.0573], 'nantes':[47.2184,-1.5536], 'toulouse':[43.6047,1.4442], 'strasbourg':[48.5734,7.7521],
+    'montpellier':[43.6119,3.8772], 'rennes':[48.1173,-1.6778], 'bruxelles':[50.8503,4.3517], 'geneve':[46.2044,6.1432],
+    'lausanne':[46.5197,6.6323], 'zurich':[47.3769,8.5417], 'monaco':[43.7384,7.4246], 'ibiza':[38.9067,1.4206]
+  };
 
   function firstImage(item){
     const imgs = Array.isArray(item.listing_images) ? item.listing_images.slice() : [];
     imgs.sort((a,b) => Number(a.position || 0) - Number(b.position || 0));
     return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
   }
-
   function price(item){
     const value = item.price_per_day ?? item.daily_price ?? item.price ?? item.prix ?? 0;
     const n = Number(value || 0);
     return n ? n.toLocaleString('fr-FR', {maximumFractionDigits:0}) + '€' : 'Sur devis';
   }
-
   function productUrl(item){
     if(item.original_id !== undefined && item.original_id !== null) return '/product.html?original_id=' + encodeURIComponent(item.original_id);
     if(item.id) return '/product.html?id=' + encodeURIComponent(item.id);
     return '/catalog.html?brand=void';
   }
-
   function matchesVoid(item){
     const text = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
-    return text.includes('void') || text.includes('air motion') || text.includes('nexus') || text.includes('stasys') || text.includes('incubus');
+    return text.includes('void') || text.includes('air motion') || text.includes('nexus') || text.includes('stasys') || text.includes('incubus') || text.includes('airten');
   }
-
   function typeOf(item){
     const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
     if(text.includes('nexus')) return 'nexus';
@@ -433,10 +433,24 @@
     if(text.includes('tour') || text.includes('festival') || text.includes('incubus')) return 'touring';
     return 'all';
   }
+  function itemCity(item){ return clean(item.city || item.location || item.ville || item.address_city || item.locality || 'Disponible'); }
+  function itemCoords(item, index){
+    const lat = Number(item.latitude ?? item.lat ?? item.geo_lat ?? item.location_lat);
+    const lng = Number(item.longitude ?? item.lng ?? item.lon ?? item.geo_lng ?? item.location_lng);
+    if(Number.isFinite(lat) && Number.isFinite(lng)) return [lat, lng];
+    const city = norm(itemCity(item));
+    for(const key of Object.keys(CITY_COORDS)){ if(city.includes(key)) return CITY_COORDS[key]; }
+    const base = CITY_COORDS.paris;
+    const offsets = [[.012,.010],[-.010,.014],[.008,-.016],[-.014,-.012],[.018,.002],[-.018,-.006],[.004,.022],[-.006,-.024]];
+    const o = offsets[index % offsets.length];
+    return [base[0]+o[0], base[1]+o[1]];
+  }
 
   function setCount(n){
     const el = $('#void-products-count');
     if(el) el.textContent = n + ' annonce' + (n > 1 ? 's' : '') + ' Void Acoustics trouvée' + (n > 1 ? 's' : '');
+    const label = $('#void-map-label');
+    if(label) label.textContent = n ? (n + ' annonce' + (n>1?'s':'') + ' Void Acoustics affichée' + (n>1?'s':'') + ' sur la carte') : 'Aucune annonce Void Acoustics à afficher sur la carte.';
   }
 
   function render(filter='all'){
@@ -445,6 +459,7 @@
     if(!grid) return;
     const list = filter === 'all' ? allVoidProducts : allVoidProducts.filter(p => typeOf(p) === filter);
     setCount(list.length);
+    renderMapMarkers(list);
     if(!list.length){
       grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Ajoutez une annonce avec la marque Void Acoustics dans Supabase pour l’afficher ici.</p></div>';
       return;
@@ -454,46 +469,80 @@
       const desc = safe(clean(item.description || item.short_description || '').slice(0, 160) || 'Annonce Void Acoustics disponible à la location sur RentSoundSystem.');
       const img = firstImage(item);
       const tag = safe(item.category || item.model || 'Void Acoustics');
-      const location = safe(item.city || item.location || item.ville || 'Disponible');
+      const location = safe(itemCity(item));
       const url = productUrl(item);
-      const imgHtml = img ? '<img src="'+safe(img)+'" alt="'+title+'" class="absolute inset-0 w-full h-full object-cover opacity-60" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove();">' : '';
+      const eager = index < 3;
+      const imgHtml = img ? '<img src="'+safe(img)+'" alt="'+title+'" class="absolute inset-0 w-full h-full object-cover opacity-60" loading="'+(eager?'eager':'lazy')+'" '+(eager?'fetchpriority="high"':'')+' decoding="async" referrerpolicy="no-referrer" onerror="this.remove();">' : '';
       return '<article data-url="'+safe(url)+'" class="void-product-card '+(index===0?'lg:col-span-2 ':'')+'group relative overflow-hidden rounded-xl glass-panel cursor-pointer border border-surface-glass-border hover:border-[#FC036D] transition-all">' +
         '<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>' + imgHtml +
         '<div class="void-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8">' +
-        '<div class="flex flex-wrap items-center gap-3 mb-4"><span class="bg-background/80 border border-outline-variant text-on-surface text-xs uppercase tracking-widest font-bold px-3 py-1 rounded">'+tag+'</span><span class="text-[#FC036D] text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">fiber_manual_record</span>'+location+'</span></div>' +
+        '<div class="flex flex-wrap items-center gap-3 mb-4"><span class="bg-background/80 border border-outline-variant text-on-surface text-xs uppercase tracking-widest font-bold px-3 py-1 rounded">'+tag+'</span><span class="text-[#FC036D] text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span>'+location+'</span></div>' +
         '<h3 class="text-headline-md font-headline-md mb-3 group-hover:text-[#FC036D] transition-colors">'+title+'</h3>' +
         '<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-2xl">'+desc+'</p>' +
         '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-auto"><span class="text-headline-md font-headline-md text-on-surface">'+price(item)+' <span class="text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="w-fit bg-transparent border border-[#FC036D] text-[#FC036D] px-5 py-2 rounded text-label-caps font-label-caps uppercase hover:bg-[#FC036D] hover:text-white transition-all">Voir l’annonce</button></div>' +
         '</div></article>';
     }).join('');
-    $$('#void-products-grid .void-product-card').forEach(card => {
-      card.addEventListener('click', (event) => {
-        if(event.target.closest('a')) return;
-        window.location.href = card.dataset.url || '/catalog.html?brand=void';
-      });
-    });
+    $$('#void-products-grid .void-product-card').forEach(card => card.addEventListener('click', () => { window.location.href = card.dataset.url || '/catalog.html?brand=void'; }));
+  }
+
+  function renderFastPlaceholders(){
+    const grid = $('#void-products-grid');
+    if(!grid) return;
+    grid.innerHTML = Array.from({length:3}).map(()=>'<article class="void-product-card group relative overflow-hidden rounded-xl glass-panel border border-surface-glass-border min-h-[390px]"><div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div><div class="void-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8"><span class="w-32 h-5 bg-white/10 rounded mb-4 animate-pulse"></span><span class="w-3/4 h-8 bg-white/10 rounded mb-3 animate-pulse"></span><span class="w-full h-4 bg-white/10 rounded mb-2 animate-pulse"></span><span class="w-2/3 h-4 bg-white/10 rounded animate-pulse"></span></div></article>').join('');
   }
 
   async function loadVoidProducts(){
-    const grid = $('#void-products-grid');
+    renderFastPlaceholders();
     try{
       if(!window.supabase) throw new Error('Supabase JS non chargé');
       const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      const { data, error } = await client
+      let { data, error } = await client
         .from('listings')
         .select('*, listing_images(image_url, position)')
-        .or('status.eq.publish,status.eq.published,status.is.null')
-        .limit(700);
-      if(error) throw error;
+        .or('brand.ilike.%Void%,title.ilike.%Void%,model.ilike.%Void%,description.ilike.%Void%,title.ilike.%Nexus%,title.ilike.%Stasys%,title.ilike.%Air Motion%,title.ilike.%Incubus%,title.ilike.%Airten%,model.ilike.%Nexus%,model.ilike.%Stasys%,model.ilike.%Air Motion%,model.ilike.%Incubus%,model.ilike.%Airten%')
+        .limit(80);
+      if(error){
+        const fallback = await client.from('listings').select('*, listing_images(image_url, position)').limit(180);
+        if(fallback.error) throw fallback.error;
+        data = fallback.data || [];
+      }
       allVoidProducts = (data || []).filter(matchesVoid);
       render(currentFilter);
     }catch(error){
       console.warn('Void listings loading error:', error.message || error);
+      const grid = $('#void-products-grid');
       if(grid){
         grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">warning</span><h3 class="text-headline-md font-headline-md mb-2">Impossible de charger les annonces Void</h3><p class="text-body-md font-body-md text-on-surface-variant">Vérifiez les colonnes Supabase et les politiques RLS de la table listings.</p></div>';
       }
       setCount(0);
+      renderMapMarkers([]);
     }
+  }
+
+  function initMap(){
+    if(typeof L === 'undefined') return;
+    const mapEl = $('#void-map');
+    if(!mapEl || map) return;
+    if(mapEl._leaflet_id){ mapEl._leaflet_id = null; mapEl.innerHTML = ''; }
+    map = L.map(mapEl, { zoomControl:false, scrollWheelZoom:true, maxZoom:18 }).setView([48.8566,2.3522], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { minZoom:2, maxZoom:18, tileSize:256, attribution:'&copy; OpenStreetMap' }).addTo(map);
+    L.control.zoom({ position:'bottomright' }).addTo(map);
+    setTimeout(fixMapSize, 80); setTimeout(fixMapSize, 450); window.addEventListener('resize', fixMapSize);
+  }
+  function fixMapSize(){ if(map){ const el = $('#void-map'); if(el) el.style.height = '520px'; map.invalidateSize(true); } }
+  function markerIcon(){ return L.divIcon({ className:'void-map-marker', html:'<span class="material-symbols-outlined void-map-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>', iconSize:[38,38], iconAnchor:[19,38], popupAnchor:[0,-38] }); }
+  function userIcon(){ return L.divIcon({ className:'void-map-marker', html:'<div style="width:20px;height:20px;background:#FC036D;border:3px solid #fff;border-radius:999px;box-shadow:0 0 0 8px rgba(252,3,109,.22),0 0 16px rgba(252,3,109,.8)"></div>', iconSize:[20,20], iconAnchor:[10,10] }); }
+  function renderMapMarkers(items){
+    if(!map) return;
+    productMarkers.forEach(m => map.removeLayer(m)); productMarkers = [];
+    const list = items.slice(0,80);
+    const icon = markerIcon();
+    productMarkers = list.map((item,index)=>{
+      const [lat,lng] = itemCoords(item,index);
+      return L.marker([lat,lng], {icon}).addTo(map).bindPopup('<strong style="color:#fff">'+safe(item.title||item.model||'Void Acoustics')+'</strong><br><span style="color:#b4b5b5">'+safe(itemCity(item))+'</span><br><strong style="color:#FC036D">'+price(item)+' / jour</strong><br><a style="color:#FC036D" href="'+productUrl(item)+'">Voir l’annonce</a>', {className:'void-map-popup'});
+    });
+    if(productMarkers.length){ const group = L.featureGroup(productMarkers); map.fitBounds(group.getBounds().pad(0.25), {maxZoom:10}); } else { map.setView([48.8566,2.3522], 6); }
+    setTimeout(fixMapSize, 80);
   }
 
   function bindFilters(){
@@ -505,12 +554,29 @@
       });
     });
   }
+  function bindButtons(){
+    document.querySelectorAll('button').forEach(function(btn){
+      const t = btn.textContent.trim().toLowerCase();
+      if(t.includes('explorer le catalogue') || t.includes('voir les offres') || t === 'explorer'){
+        btn.addEventListener('click', function(){ document.getElementById('annonces-void')?.scrollIntoView({behavior:'smooth', block:'start'}); });
+      }
+      if(t.includes('voir les installations')){
+        btn.addEventListener('click', function(){ document.getElementById('installations-void')?.scrollIntoView({behavior:'smooth', block:'start'}); });
+      }
+    });
+    $('#void-use-location')?.addEventListener('click', function(){
+      if(!navigator.geolocation){ alert('Géolocalisation non disponible.'); return; }
+      navigator.geolocation.getCurrentPosition(function(pos){
+        if(!map) return;
+        if(userMarker) map.removeLayer(userMarker);
+        userMarker = L.marker([pos.coords.latitude,pos.coords.longitude], {icon:userIcon(), zIndexOffset:1000}).addTo(map).bindPopup('Votre position', {className:'void-map-popup'});
+        map.setView([pos.coords.latitude,pos.coords.longitude], 12, {animate:true});
+      }, function(){ alert('Position refusée.'); }, {enableHighAccuracy:true, timeout:10000, maximumAge:60000});
+    });
+  }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    bindFilters();
-    loadVoidProducts();
-  });
+  document.addEventListener('DOMContentLoaded', () => { bindButtons(); bindFilters(); initMap(); loadVoidProducts(); });
 })();
-</script>\n
+</script>
 <script src="/components.js"></script>
 </body></html>
