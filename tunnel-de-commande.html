@@ -90,8 +90,28 @@
             font-variation-settings: 'FILL' 1;
         }
     
+/* Header/footer alignés comme la page d'accueil */
+#header-container,
+#footer-container{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:16px;
+  padding-right:16px;
+  box-sizing:border-box;
+}
+
 body{
   padding-top:74px;
+}
+
+@media(min-width:768px){
+  #header-container,
+  #footer-container{
+    padding-left:40px;
+    padding-right:40px;
+  }
 }
 
 @media(max-width:767px){
@@ -99,8 +119,6 @@ body{
     padding-top:72px;
   }
 }
-body{padding-top:74px}
-@media(max-width:767px){body{padding-top:72px}}
 
 </style>
 </head>
