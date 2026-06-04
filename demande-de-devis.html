@@ -1,146 +1,508 @@
 <!DOCTYPE html>
+
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Demande de Devis - RentSoundSystem</title>
-<meta name="description" content="Demandez un devis personnalisé pour la location de matériel audio, éclairage, DJ, scène ou silent disco avec RentSoundSystem."/>
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Demande de Devis | RentSoundSystem</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<!-- Tailwind Config -->
 <script id="tailwind-config">
-tailwind.config={darkMode:'class',theme:{extend:{colors:{background:'#131313',surface:'#131313','surface-container-lowest':'#0e0e0e','surface-container-low':'#1b1b1b','surface-container':'#1f1f1f','surface-container-high':'#2a2a2a','surface-container-highest':'#353535',primary:'#FC036D','primary-container':'#c40254','on-primary':'#ffffff','on-surface':'#e2e2e2','on-background':'#e2e2e2','on-surface-variant':'#e6bcc2',outline:'#ac878d','outline-variant':'#5d3f44'},spacing:{'container-max':'1280px','margin-mobile':'16px','margin-desktop':'40px','gutter':'24px','stack-sm':'12px','stack-md':'24px','stack-lg':'48px'},fontFamily:{headline:['Manrope','sans-serif'],display:['Manrope','sans-serif'],body:['Inter','sans-serif'],label:['Inter','sans-serif']}}}}
-</script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#393939",
+                    "surface-container-high": "#2a2a2a",
+                    "inverse-primary": "#bc004f",
+                    "surface-dim": "#131313",
+                    "outline": "#ac878d",
+                    "on-surface-muted": "#E6BCC2",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#454748",
+                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                    "surface-glass": "rgba(31, 31, 31, 0.6)",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-primary-fixed-variant": "#90003b",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-fixed": "#e3e2e3",
+                    "on-surface": "#e5e2e1",
+                    "error": "#ffb4ab",
+                    "on-tertiary": "#303030",
+                    "surface-container-highest": "#353534",
+                    "neon-glow": "rgba(252, 3, 109, 0.3)",
+                    "tertiary": "#c8c6c5",
+                    "inverse-on-surface": "#313030",
+                    "background": "#131313",
+                    "surface-variant": "#353534",
+                    "on-error": "#690005",
+                    "on-primary-container": "#5a0022",
+                    "on-primary": "#660028",
+                    "outline-variant": "#5d3f44",
+                    "surface": "#131313",
+                    "on-secondary-container": "#b5b5b6",
+                    "on-secondary": "#2f3132",
+                    "on-tertiary-fixed": "#1b1b1c",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container": "#201f1f",
+                    "secondary-container": "#454748",
+                    "primary-fixed": "#ffd9de",
+                    "error-container": "#93000a",
+                    "surface-tint": "#ffb2bf",
+                    "primary-fixed-dim": "#ffb2bf",
+                    "on-secondary-fixed": "#1a1c1d",
+                    "primary-container": "#ff4d80",
+                    "on-surface-variant": "#e6bcc2",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-container": "#929090",
+                    "on-primary-fixed": "#3f0016",
+                    "primary": "#ffb2bf",
+                    "surface-container-lowest": "#0e0e0e",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-tertiary-container": "#2a2a2a",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "secondary": "#c6c6c7",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "electric-magenta": "#FC036D"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "container-max": "1280px",
+                    "card-gap": "1.5rem",
+                    "section-padding-y": "6rem",
+                    "gutter-x": "2.5rem",
+                    "component-padding-x": "1.5rem",
+                    "component-padding-y": "0.625rem"
+            },
+            "fontFamily": {
+                    "display-hero-mobile": ["Manrope"],
+                    "display-hero": ["Manrope"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        }
+      }
+    </script>
 <style>
-.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
-html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:74px}.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.95),rgba(20,20,20,.98));border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 60px rgba(0,0,0,.28)}.rss-card:hover{border-color:rgba(252,3,109,.35)}.rss-hero-bg{position:absolute;inset:0;background:radial-gradient(circle at 15% 10%,rgba(252,3,109,.26),transparent 32%),radial-gradient(circle at 85% 20%,rgba(255,77,128,.15),transparent 30%),linear-gradient(180deg,rgba(19,19,19,.15),#131313 82%);pointer-events:none}.quote-option{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.025);transition:.22s}.quote-option:hover{border-color:rgba(252,3,109,.65);background:rgba(252,3,109,.08)}.quote-option.active{border-color:#FC036D;background:rgba(252,3,109,.14);box-shadow:0 0 24px rgba(252,3,109,.15)}.quote-step{display:none}.quote-step.active{display:block}.quote-dot.active{background:#FC036D;color:#fff;border-color:#FC036D;box-shadow:0 0 24px rgba(252,3,109,.28)}.rss-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}.rss-toast.show{opacity:1;transform:translateY(0)}input,select,textarea{background:#0e0e0e!important;border:1px solid rgba(255,255,255,.12)!important;color:#e2e2e2!important;border-radius:.5rem!important}input:focus,select:focus,textarea:focus{border-color:#FC036D!important;box-shadow:0 0 0 1px #FC036D!important}.range-accent{accent-color:#FC036D}@media(max-width:767px){body{padding-top:72px}h1{font-size:38px!important;line-height:44px!important}.quote-mobile-bottom{padding-bottom:72px}}
-</style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-surface');
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, theme('colors.surface-glass'), rgba(19,19,19,0.4));
+            backdrop-filter: blur(12px);
+            border: 1px solid theme('colors.surface-glass-border');
+        }
+        .glow-primary {
+            box-shadow: 0 0 25px theme('colors.neon-glow');
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-active {
+            border-color: theme('colors.electric-magenta');
+            background-color: rgba(252, 3, 109, 0.1);
+        }
+        
+        /* Form inputs styling */
+        input[type="number"], input[type="text"], input[type="email"], input[type="date"], select, textarea {
+            background-color: theme('colors.surface-container-highest');
+            border: 1px solid theme('colors.outline-variant');
+            color: theme('colors.on-surface');
+            border-radius: theme('borderRadius.DEFAULT');
+        }
+        input:focus, select:focus, textarea:focus {
+            border-color: theme('colors.electric-magenta');
+            ring: 1px theme('colors.electric-magenta');
+            outline: none;
+        }
+
+        /* Fond cohérent RentSoundSystem sans changer le style original */
+        body::before {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: -2;
+          background:
+            radial-gradient(circle at 15% 10%, rgba(252,3,109,.22), transparent 32%),
+            radial-gradient(circle at 85% 20%, rgba(255,77,128,.12), transparent 30%),
+            linear-gradient(180deg, rgba(19,19,19,.2), #131313 78%);
+          pointer-events: none;
+        }
+        body::after {
+          content: "";
+          position: fixed;
+          inset: 0;
+          z-index: -1;
+          background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBMiGU28hdqafXqdQxg8L3-yOK3NoGBcEglo3AAk0QNSlIlrNK9FjX5XkS4CC0sreZdct4OzDGSeC4sxIHo6XbrJQoaDRKd7fFNJy8dimiFCMAIG49ndIKwBxf3Ia0HZYxs6LvjS9CP4lBJ7WtFpYaxRIh36F9dXWC5RuQAQxKZKv4iiQIjqaBkl6cKSiYd0Iax7QwLkqykPB271U0pLl-lx9TArmEYHOcyst25f8yJKDPzpAz1ucYV7r7_F84vJw8jgg7SUEJhKDc');
+          background-size: cover;
+          background-position: center;
+          opacity: .12;
+          filter: grayscale(100%);
+          pointer-events: none;
+        }
+        .quote-step-panel { display: none; }
+        .quote-step-panel.active { display: block; }
+        .quote-alert { display:none; }
+        .quote-alert.show { display:block; }
+        .quote-toast{position:fixed;right:18px;bottom:84px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}
+        .quote-toast.show{opacity:1;transform:translateY(0)}
+        @media(min-width:768px){.quote-toast{bottom:18px}}
+    </style>
 </head>
-<body class="font-body bg-background text-on-background min-h-screen flex flex-col">
-<div id="header-container"></div>
-<main class="flex-grow quote-mobile-bottom relative">
-  <div class="rss-hero-bg"></div>
-  <section class="relative w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-12 md:pt-16 pb-10">
-    <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
-      <div>
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5">
-          <span class="material-symbols-outlined text-[18px]">request_quote</span> Devis personnalisé
-        </div>
-        <h1 class="font-headline text-[58px] leading-[66px] font-extrabold tracking-tight text-on-background mb-5">Demande de Devis</h1>
-        <p class="text-on-surface-variant text-lg md:text-xl leading-relaxed max-w-2xl">Configurez votre besoin en sonorisation, éclairage, DJ, scène ou silent disco. RentSoundSystem prépare une réponse claire avec matériel, logistique et estimation.</p>
-      </div>
-      <div class="rss-card rounded-xl p-6 hidden lg:block">
-        <div class="aspect-[16/10] rounded-lg overflow-hidden relative bg-surface-container-lowest">
-          <img alt="Location matériel audio professionnel RentSoundSystem" class="w-full h-full object-cover opacity-70 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMiGU28hdqafXqdQxg8L3-yOK3NoGBcEglo3AAk0QNSlIlrNK9FjX5XkS4CC0sreZdct4OzDGSeC4sxIHo6XbrJQoaDRKd7fFNJy8dimiFCMAIG49ndIKwBxf3Ia0HZYxs6LvjS9CP4lBJ7WtFpYaxRIh36F9dXWC5RuQAQxKZKv4iiQIjqaBkl6cKSiYd0Iax7QwLkqykPB271U0pLl-lx9TArmEYHOcyst25f8yJKDPzpAz1ucYV7r7_F84vJw8jgg7SUEJhKDc"/>
-          <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
-          <div class="absolute bottom-4 left-4 right-4"><p class="text-primary font-bold uppercase tracking-widest text-xs">Réponse rapide</p><p class="font-headline text-2xl font-bold">Projet audio & événementiel</p></div>
-        </div>
-      </div>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant dark:border-outline-variant flat no shadows z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto hidden md:flex">
+<div class="flex items-center gap-8">
+<a class="text-headline-md font-headline-md font-bold text-primary dark:text-primary tracking-tighter hover:text-white transition-colors" href="#">
+                    RentSoundSystem
+                </a>
+<nav class="flex gap-6">
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Inventory</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Venues</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Logistique</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+<!-- Mobile Header (simplified) -->
+<div class="flex justify-between items-center w-full px-4 py-4 md:hidden">
+<a class="text-headline-md font-headline-md font-bold text-primary dark:text-primary tracking-tighter" href="#">
+                RentSoundSystem
+            </a>
+<button class="text-on-surface-variant">
+<span class="material-symbols-outlined">menu</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow w-full max-w-[1280px] mx-auto px-4 md:px-gutter-x py-12">
+<!-- Page Header -->
+<div class="mb-12 text-center md:text-left flex flex-col md:flex-row gap-8 items-end justify-between border-b border-surface-glass-border pb-8">
+<div class="max-w-2xl">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-container/20 border border-primary-container/30 text-primary mb-4">
+<span class="material-symbols-outlined text-sm" data-icon="headset_mic">headset_mic</span>
+<span class="font-label-caps text-label-caps tracking-widest text-electric-magenta">DEVIS LOCATION</span>
+</div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-4">Demande de Devis</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Configurez votre besoin de location : sonorisation, DJ, éclairage, scène ou silent disco. Nous préparons un devis clair avec matériel, dates, logistique et services.</p>
+</div>
+<div class="hidden md:block w-48 h-48 rounded-xl overflow-hidden glass-panel flex-shrink-0 relative">
+<img alt="Audio7 Halo 1 Headphones glowing magenta" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs0KX8vZjUoKGGtAcdza5mqZfDPHfazZPY2dVpak3QIK6lHJ12gg7ree9qKSNrrA2ZPvN9aF0pqgsVsE0vVZZPevVSKN8nWm0x5AEr8SHTh4D2TB8dtAfbrflP0Cwe_V-saGNoD_a9i_h5MyQOfqDKZ66Lv8Mms8tAZIhpMH6xQXvI_c8AC6xaUgvjtAZsuajJ05_OhswjO71lj875e_tu_2yTA7m6ql1tOeaVo5DURieO1EocffIbJgYg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex items-end p-4">
+<span class="font-label-caps text-label-caps text-white tracking-wider">RENTSOUNDSYSTEM</span>
+</div>
+</div>
+</div>
+<!-- Layout Container -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-card-gap">
+<!-- Main Form Area (Left) -->
+<div class="lg:col-span-8 space-y-8">
+<!-- Progress Indicator -->
+<div class="flex justify-between relative mb-8">
+<div class="absolute top-1/2 left-0 w-full h-0.5 bg-surface-container-highest -z-10 -translate-y-1/2"></div>
+<div class="flex flex-col items-center gap-2 bg-background px-2">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-electric-magenta bg-surface-container-low text-electric-magenta glow-primary">
+<span class="font-headline-md text-sm">1</span>
+</div>
+<span class="font-label-caps text-[10px] text-electric-magenta uppercase">Matériel</span>
+</div>
+<div class="flex flex-col items-center gap-2 bg-background px-2">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant bg-surface-container-low text-on-surface-variant">
+<span class="font-headline-md text-sm">2</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Événement</span>
+</div>
+<div class="flex flex-col items-center gap-2 bg-background px-2">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant bg-surface-container-low text-on-surface-variant">
+<span class="font-headline-md text-sm">3</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Services</span>
+</div>
+<div class="flex flex-col items-center gap-2 bg-background px-2">
+<div class="w-10 h-10 rounded-full flex items-center justify-center border-2 border-outline-variant bg-surface-container-low text-on-surface-variant">
+<span class="font-headline-md text-sm">4</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Envoi</span>
+</div>
+</div>
+<!-- Step 1: Matériel Selection -->
+<section class="glass-panel rounded-xl p-6 md:p-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-electric-magenta text-3xl" data-icon="headphones">headphones</span>
+<h2 class="font-headline-lg text-headline-md text-on-surface">Matériel Configuration</h2>
+</div>
+<div class="space-y-8">
+<!-- Headphones Count -->
+<div>
+<label class="block font-headline-md text-sm mb-2 text-on-surface">Quantité / unités</label>
+<div class="flex items-center gap-4">
+<input class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-[#FC036D]" id="quote-quantity-range" max="1000" min="1" step="1" type="range" value="50"/>
+<input id="quote-quantity" class="w-24 text-center py-2 px-3" type="number" min="1" value="50"/>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mt-2">Indiquez une quantité approximative : enceintes, casques, packs DJ, projecteurs ou éléments de scène.</p>
+</div>
+<!-- Transmitter Channels -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="col-span-full">
+<label class="block font-headline-md text-sm mb-2 text-on-surface">Catégorie principale</label>
+<p class="font-body-md text-sm text-on-surface-variant mb-4">Choisissez le type de matériel souhaité. Vous pourrez préciser le besoin dans le message final.</p>
+</div>
+<label class="relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-colors bg-surface-container-low group">
+<input class="absolute opacity-0" name="equipment" type="radio" value="Sonorisation"/>
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-lg text-on-surface">Sonorisation</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">radio</span>
+</div>
+<span class="font-body-md text-sm text-on-surface-variant">Enceintes, line array, caissons, retours, microphones.</span>
+</label>
+<label class="relative flex flex-col p-4 rounded-lg border border-electric-magenta bg-electric-magenta/10 cursor-pointer transition-colors">
+<input checked="" class="absolute opacity-0" name="equipment" type="radio" value="DJ / Régie"/>
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-lg text-electric-magenta">DJ / Régie</span>
+<span class="material-symbols-outlined text-electric-magenta" data-weight="fill">radio</span>
+</div>
+<span class="font-body-md text-sm text-on-surface-muted">CDJ, DJM, consoles, packs DJ, micros HF.</span>
+</label>
+<label class="relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-primary cursor-pointer transition-colors bg-surface-container-low group">
+<input class="absolute opacity-0" name="equipment" type="radio" value="Silent Disco"/>
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-lg text-on-surface">Silent Disco</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">sensors</span>
+</div>
+<span class="font-body-md text-sm text-on-surface-variant">Casques, émetteurs, multi-canaux, événements silencieux.</span>
+</label>
+</div>
+<!-- Accessories -->
+<div>
+<label class="block font-headline-md text-sm mb-4 text-on-surface">Options complémentaires</label>
+<div class="space-y-3">
+<label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors">
+<input id="need-delivery" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/>
+<div class="flex-grow">
+<span class="block font-headline-md text-sm text-on-surface">Livraison / reprise</span>
+<span class="block font-body-md text-xs text-on-surface-variant">Transport aller-retour du matériel sur le lieu de l’événement.</span>
+</div>
+</label>
+<label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors">
+<input id="need-tech" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/>
+<div class="flex-grow">
+<span class="block font-headline-md text-sm text-on-surface">Technicien / installation</span>
+<span class="block font-body-md text-xs text-on-surface-variant">Montage, réglage, assistance technique et démontage.</span>
+</div>
+</label>
+</div>
+</div>
+<div class="flex justify-end pt-4 border-t border-surface-glass-border">
+<button id="next-step" type="button" class="bg-[#FC036D] text-white font-label-caps text-label-caps px-8 py-3 rounded uppercase tracking-wider glow-primary hover:bg-white hover:text-black transition-all flex items-center gap-2">
+                                Continue to Événement
+                                <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+
+<!-- Step 2: Event Details -->
+<section class="glass-panel rounded-xl p-6 md:p-8 quote-step-panel" data-step="2">
+  <div class="flex items-center gap-3 mb-6">
+    <span class="material-symbols-outlined text-electric-magenta text-3xl">event</span>
+    <h2 class="font-headline-lg text-headline-md text-on-surface">Détails de l’événement</h2>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <label class="block font-headline-md text-sm text-on-surface">Date de début
+      <input id="event-start" class="mt-2 w-full py-3 px-3" type="date" required>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface">Date de retour
+      <input id="event-end" class="mt-2 w-full py-3 px-3" type="date" required>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface">Ville / lieu
+      <input id="event-city" class="mt-2 w-full py-3 px-3" type="text" placeholder="Paris, Nice, Cannes..." required>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface">Type d’événement
+      <select id="event-type" class="mt-2 w-full py-3 px-3">
+        <option>Concert / Festival</option><option>Entreprise / Corporate</option><option>Mariage / privé</option><option>DJ set / Club</option><option>Conférence</option><option>Autre</option>
+      </select>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface md:col-span-2">Nombre de personnes
+      <input id="guest-count" class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-[#FC036D] mt-4" type="range" min="20" max="5000" step="10" value="150">
+      <span id="guest-count-label" class="block mt-3 text-electric-magenta font-bold">150 personnes</span>
+    </label>
+  </div>
+  <div class="flex justify-between pt-6 mt-6 border-t border-surface-glass-border">
+    <button id="prev-step-2" type="button" class="border border-outline-variant text-on-surface px-6 py-3 rounded uppercase tracking-wider hover:border-electric-magenta transition">Retour</button>
+    <button id="next-step-2" type="button" class="bg-[#FC036D] text-white font-label-caps text-label-caps px-8 py-3 rounded uppercase tracking-wider glow-primary hover:bg-white hover:text-black transition-all flex items-center gap-2">Continuer <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+  </div>
+</section>
+
+<!-- Step 3: Contact -->
+<section class="glass-panel rounded-xl p-6 md:p-8 quote-step-panel" data-step="3">
+  <div class="flex items-center gap-3 mb-6">
+    <span class="material-symbols-outlined text-electric-magenta text-3xl">contact_mail</span>
+    <h2 class="font-headline-lg text-headline-md text-on-surface">Contact & message</h2>
+  </div>
+  <form id="quote-form" class="grid grid-cols-1 md:grid-cols-2 gap-4" novalidate>
+    <label class="block font-headline-md text-sm text-on-surface">Nom complet
+      <input id="client-name" class="mt-2 w-full py-3 px-3" type="text" placeholder="Votre nom" required>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface">Téléphone
+      <input id="client-phone" class="mt-2 w-full py-3 px-3" type="tel" placeholder="+33 6 00 00 00 00" required>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface md:col-span-2">Email
+      <input id="client-email" class="mt-2 w-full py-3 px-3" type="email" placeholder="vous@email.com" required>
+    </label>
+    <label class="block font-headline-md text-sm text-on-surface md:col-span-2">Précisions matériel / message
+      <textarea id="quote-message" class="mt-2 w-full py-3 px-3" rows="5" placeholder="Décrivez le matériel souhaité, horaires, accès, contraintes techniques..."></textarea>
+    </label>
+    <div id="quote-alert" class="quote-alert md:col-span-2 rounded border border-error/40 bg-error-container/20 text-error px-4 py-3 text-sm"></div>
+    <div class="md:col-span-2 flex justify-between pt-6 mt-2 border-t border-surface-glass-border">
+      <button id="prev-step-3" type="button" class="border border-outline-variant text-on-surface px-6 py-3 rounded uppercase tracking-wider hover:border-electric-magenta transition">Retour</button>
+      <button id="submit-quote" type="submit" class="bg-[#FC036D] text-white font-label-caps text-label-caps px-8 py-3 rounded uppercase tracking-wider glow-primary hover:bg-white hover:text-black transition-all flex items-center gap-2"><span class="material-symbols-outlined text-sm">send</span> Envoyer</button>
     </div>
-  </section>
+  </form>
+</section>
 
-  <section class="relative w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-16">
-    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-8">
-      <form id="quote-form" class="rss-card rounded-xl p-5 md:p-8 min-w-0" novalidate>
-        <div class="flex items-center justify-between gap-3 mb-8">
-          <div class="flex items-center gap-3">
-            <span class="quote-dot active w-10 h-10 rounded-full border border-white/15 bg-surface-container-high flex items-center justify-center font-bold" data-dot="1">1</span>
-            <span class="quote-dot w-10 h-10 rounded-full border border-white/15 bg-surface-container-high flex items-center justify-center font-bold" data-dot="2">2</span>
-            <span class="quote-dot w-10 h-10 rounded-full border border-white/15 bg-surface-container-high flex items-center justify-center font-bold" data-dot="3">3</span>
-          </div>
-          <p id="step-label" class="text-on-surface-variant font-bold text-sm">Étape 1 / 3</p>
-        </div>
-
-        <section class="quote-step active" data-step="1">
-          <h2 class="font-headline text-3xl font-bold mb-2">1. Matériel souhaité</h2>
-          <p class="text-on-surface-variant mb-6">Choisissez une catégorie principale. Vous pourrez détailler votre besoin ensuite.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="equipment-options">
-            <button type="button" class="quote-option active text-left rounded-lg p-5" data-equipment="Sonorisation"><span class="material-symbols-outlined text-primary text-3xl mb-3">speaker</span><h3 class="font-headline font-bold text-xl">Sonorisation</h3><p class="text-sm text-on-surface-variant">Enceintes, line array, caissons, retours.</p></button>
-            <button type="button" class="quote-option text-left rounded-lg p-5" data-equipment="DJ / Régie"><span class="material-symbols-outlined text-primary text-3xl mb-3">graphic_eq</span><h3 class="font-headline font-bold text-xl">DJ / Régie</h3><p class="text-sm text-on-surface-variant">CDJ, DJM, consoles, micros, HF.</p></button>
-            <button type="button" class="quote-option text-left rounded-lg p-5" data-equipment="Éclairage"><span class="material-symbols-outlined text-primary text-3xl mb-3">light_mode</span><h3 class="font-headline font-bold text-xl">Éclairage</h3><p class="text-sm text-on-surface-variant">Lyres, wash, barres LED, ambiance.</p></button>
-            <button type="button" class="quote-option text-left rounded-lg p-5" data-equipment="Silent Disco"><span class="material-symbols-outlined text-primary text-3xl mb-3">headphones</span><h3 class="font-headline font-bold text-xl">Silent Disco</h3><p class="text-sm text-on-surface-variant">Casques, émetteurs, multi-canaux.</p></button>
-          </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <label class="block"><span class="text-sm font-bold text-on-surface-variant">Quantité estimée</span><input id="quote-quantity" type="number" min="1" value="1" class="mt-2 w-full px-4 py-3"/></label>
-            <label class="block md:col-span-2"><span class="text-sm font-bold text-on-surface-variant">Précision matériel</span><input id="quote-equipment-detail" type="text" class="mt-2 w-full px-4 py-3" placeholder="Ex : JBL VRX, CDJ-3000, 100 casques..."/></label>
-          </div>
-        </section>
-
-        <section class="quote-step" data-step="2">
-          <h2 class="font-headline text-3xl font-bold mb-2">2. Événement & logistique</h2>
-          <p class="text-on-surface-variant mb-6">Ces informations permettent d’évaluer la disponibilité et le transport.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-            <label><span class="text-sm font-bold text-on-surface-variant">Date début</span><input id="event-start" type="date" required class="mt-2 w-full px-4 py-3"/></label>
-            <label><span class="text-sm font-bold text-on-surface-variant">Date retour</span><input id="event-end" type="date" required class="mt-2 w-full px-4 py-3"/></label>
-            <label><span class="text-sm font-bold text-on-surface-variant">Ville / lieu</span><input id="event-city" type="text" required class="mt-2 w-full px-4 py-3" placeholder="Paris, Nice, Cannes..."/></label>
-            <label><span class="text-sm font-bold text-on-surface-variant">Type d’événement</span><select id="event-type" class="mt-2 w-full px-4 py-3"><option>Concert / Festival</option><option>Entreprise / Corporate</option><option>Mariage / privé</option><option>DJ set / Club</option><option>Conférence</option><option>Autre</option></select></label>
-          </div>
-          <label class="block mb-5"><span class="text-sm font-bold text-on-surface-variant">Nombre de personnes</span><input id="guest-count" type="range" min="20" max="5000" step="10" value="150" class="range-accent w-full mt-4"><span id="guest-count-label" class="block mt-2 text-primary font-bold">150 personnes</span></label>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label class="quote-option rounded-lg p-4 flex items-start gap-3"><input id="need-delivery" type="checkbox" class="mt-1 text-primary" checked><span><strong>Livraison / reprise</strong><br><small class="text-on-surface-variant">Transport du matériel sur site.</small></span></label>
-            <label class="quote-option rounded-lg p-4 flex items-start gap-3"><input id="need-tech" type="checkbox" class="mt-1 text-primary"><span><strong>Technicien / installation</strong><br><small class="text-on-surface-variant">Montage, réglage, assistance.</small></span></label>
-          </div>
-        </section>
-
-        <section class="quote-step" data-step="3">
-          <h2 class="font-headline text-3xl font-bold mb-2">3. Contact & message</h2>
-          <p class="text-on-surface-variant mb-6">Votre demande sera enregistrée et pourra être reprise depuis l’espace client.</p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
-            <label><span class="text-sm font-bold text-on-surface-variant">Nom complet</span><input id="client-name" type="text" required class="mt-2 w-full px-4 py-3" placeholder="Votre nom"/></label>
-            <label><span class="text-sm font-bold text-on-surface-variant">Téléphone</span><input id="client-phone" type="tel" required class="mt-2 w-full px-4 py-3" placeholder="+33 6 00 00 00 00"/></label>
-            <label class="md:col-span-2"><span class="text-sm font-bold text-on-surface-variant">Email</span><input id="client-email" type="email" required class="mt-2 w-full px-4 py-3" placeholder="vous@email.com"/></label>
-            <label class="md:col-span-2"><span class="text-sm font-bold text-on-surface-variant">Message</span><textarea id="quote-message" rows="5" class="mt-2 w-full px-4 py-3" placeholder="Décrivez votre besoin, horaires, contraintes techniques, accès, puissance électrique..."></textarea></label>
-          </div>
-          <div id="quote-alert" class="hidden mb-5 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 px-4 py-3 text-sm"></div>
-        </section>
-
-        <div class="flex flex-col sm:flex-row justify-between gap-3 mt-8 pt-6 border-t border-white/10">
-          <button id="prev-step" type="button" class="hidden border border-outline text-on-surface font-bold rounded-lg px-6 py-3 hover:border-primary hover:text-primary transition">Retour</button>
-          <div class="flex-1"></div>
-          <button id="next-step" type="button" class="bg-primary text-white font-bold rounded-lg px-7 py-3 hover:bg-primary-container transition flex items-center justify-center gap-2">Continuer <span class="material-symbols-outlined">arrow_forward</span></button>
-          <button id="submit-quote" type="submit" class="hidden bg-primary text-white font-bold rounded-lg px-7 py-3 hover:bg-primary-container transition flex items-center justify-center gap-2"><span class="material-symbols-outlined">send</span> Envoyer la demande</button>
-        </div>
-      </form>
-
-      <aside class="rss-card rounded-xl p-5 md:p-6 h-fit lg:sticky lg:top-24">
-        <h3 class="font-headline text-2xl font-bold mb-5">Résumé du devis</h3>
-        <div class="space-y-4 text-sm" id="quote-summary">
-          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Matériel</span><strong id="sum-equipment">Sonorisation</strong></div>
-          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Quantité</span><strong id="sum-quantity">1</strong></div>
-          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Date</span><strong id="sum-dates">À confirmer</strong></div>
-          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Ville</span><strong id="sum-city">À confirmer</strong></div>
-          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Public</span><strong id="sum-guests">150 personnes</strong></div>
-          <div class="pt-4 border-t border-white/10"><p class="text-on-surface-variant mb-2">Services</p><div id="sum-services" class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full bg-primary/15 text-primary font-bold">Livraison</span></div></div>
-        </div>
-        <div class="mt-6 bg-surface-container-lowest rounded-lg border border-white/10 p-4"><div class="flex gap-3"><span class="material-symbols-outlined text-primary">info</span><p class="text-on-surface-variant text-sm">Après envoi, la demande est sauvegardée localement et tentera une insertion Supabase dans `quote_requests` si la table existe.</p></div></div>
-      </aside>
-    </div>
-  </section>
+</div>
+<!-- Sticky Summary Sidebar (Right) -->
+<div class="lg:col-span-4 hidden lg:block">
+<div class="sticky top-24 glass-panel rounded-xl p-6">
+<h3 class="font-headline-md text-lg text-on-surface mb-6 border-b border-surface-glass-border pb-4">Résumé du devis</h3>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">headphones</span>
+<span class="font-body-md text-sm">Quantité</span>
+</div>
+<span id="sum-quantity" class="font-headline-md text-sm text-on-surface">50</span>
+</div>
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">sensors</span>
+<span class="font-body-md text-sm">Catégorie</span>
+</div>
+<span class="font-headline-md text-sm text-on-surface">DJ / Régie</span>
+</div>
+<div class="flex justify-between items-start opacity-50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+<span class="font-body-md text-sm">Dates</span>
+</div>
+<span id="sum-dates" class="font-body-md text-sm italic">À confirmer</span>
+</div>
+<div class="flex justify-between items-start opacity-50">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+<span class="font-body-md text-sm">Logistique</span>
+</div>
+<span id="sum-logistics" class="font-body-md text-sm italic">À confirmer</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-surface-glass-border">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-electric-magenta text-xl mt-1">info</span>
+<p class="font-body-md text-xs text-on-surface-variant leading-relaxed">
+                                L’équipe RentSoundSystem vérifie les disponibilités, la logistique et les contraintes techniques avant de confirmer votre devis.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </main>
-<div id="footer-container"></div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="bg-surface-container-high dark:bg-surface-container-high fixed bottom-0 w-full z-50 border-t border-outline-variant dark:border-outline-variant shadow-lg flex justify-around items-center h-16 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="search">search</span>
+<span class="font-label-caps text-[10px] font-medium">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-caps text-[10px] font-medium text-electric-magenta">My Rentals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="shopping_bag">shopping_bag</span>
+<span class="font-label-caps text-[10px] font-medium">Cart</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
+<span class="font-label-caps text-[10px] font-medium">Profile</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full mt-auto border-t border-outline-variant dark:border-outline-variant flat no shadows pb-20 md:pb-0">
+<div class="flex flex-col md:flex-row justify-between items-center w-full px-8 py-12 max-w-[1280px] mx-auto space-y-4 md:space-y-0">
+<div class="font-headline-md text-lg font-bold text-on-surface tracking-tighter">
+                RentSoundSystem
+            </div>
+<nav class="flex flex-wrap justify-center gap-6">
+<a class="font-body-md text-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors" href="#">Matériel</a>
+<a class="font-body-md text-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors" href="#">Conditions</a>
+<a class="font-body-md text-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors" href="#">Assurance</a>
+<a class="font-body-md text-sm text-on-surface-variant dark:text-on-surface-variant hover:text-on-surface dark:hover:text-on-surface transition-colors" href="#">Support</a>
+</nav>
+<div class="font-body-md text-xs text-on-surface-variant text-center md:text-right">
+                © 2024 RentSoundSystem. Precision Audio Logistique for Professional Events.
+            </div>
+</div>
+</footer>
 
 <script>
 (function(){
-'use strict';
-const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
-const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-let step=1, equipment='Sonorisation';
-const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
-function toast(msg){let t=$('.rss-toast'); if(!t){t=document.createElement('div');t.className='rss-toast';document.body.appendChild(t)}t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
-function todayPlus(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
-function dateFR(v){if(!v)return 'À confirmer';const d=new Date(v+'T00:00:00');return isNaN(d)?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}
-function initDates(){const s=$('#event-start'),e=$('#event-end');if(s&&!s.value)s.value=todayPlus(7);if(e&&!e.value)e.value=todayPlus(8);if(s&&e){s.min=todayPlus(0);e.min=s.value;s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value;e.min=s.value;updateSummary()});e.addEventListener('change',updateSummary)}}
-function setStep(n){step=Math.max(1,Math.min(3,n));$$('.quote-step').forEach(x=>x.classList.toggle('active',Number(x.dataset.step)===step));$$('.quote-dot').forEach(x=>x.classList.toggle('active',Number(x.dataset.dot)<=step));$('#step-label').textContent='Étape '+step+' / 3';$('#prev-step').classList.toggle('hidden',step===1);$('#next-step').classList.toggle('hidden',step===3);$('#submit-quote').classList.toggle('hidden',step!==3);window.scrollTo({top:0,behavior:'smooth'});}
-function updateSummary(){const q=$('#quote-quantity')?.value||'1', detail=$('#quote-equipment-detail')?.value.trim();$('#sum-equipment').textContent=detail||equipment;$('#sum-quantity').textContent=q;$('#sum-dates').textContent=dateFR($('#event-start')?.value)+' → '+dateFR($('#event-end')?.value);$('#sum-city').textContent=$('#event-city')?.value.trim()||'À confirmer';const guests=$('#guest-count')?.value||150;$('#guest-count-label').textContent=guests+' personnes';$('#sum-guests').textContent=guests+' personnes';let chips=[];if($('#need-delivery')?.checked)chips.push('Livraison');if($('#need-tech')?.checked)chips.push('Technicien');$('#sum-services').innerHTML=chips.length?chips.map(c=>'<span class="px-3 py-1 rounded-full bg-primary/15 text-primary font-bold">'+c+'</span>').join(''):'<span class="text-on-surface-variant">Aucun service ajouté</span>';}
-function validateStep(){const alert=$('#quote-alert'); if(alert)alert.classList.add('hidden'); if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s);if(el&&!el.value.trim()){el.focus();toast('Complétez la date et le lieu.');return false}}} if(step===3){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s);if(el&&!el.value.trim()){el.focus();showAlert('Merci de compléter nom, téléphone et email.');return false}}const email=$('#client-email').value.trim();if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.');$('#client-email').focus();return false}const phone=$('#client-phone').value.replace(/\s/g,'');if(phone.length<8){showAlert('Téléphone invalide.');$('#client-phone').focus();return false}}return true;}
-function showAlert(msg){const el=$('#quote-alert');if(!el)return;el.textContent=msg;el.classList.remove('hidden')}
-function buildRequest(){return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),equipment_category:equipment,equipment_detail:$('#quote-equipment-detail')?.value.trim()||equipment,quantity:Number($('#quote-quantity')?.value||1),event_start:$('#event-start')?.value,event_end:$('#event-end')?.value,event_city:$('#event-city')?.value.trim(),event_type:$('#event-type')?.value,guest_count:Number($('#guest-count')?.value||0),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,client_name:$('#client-name')?.value.trim(),client_phone:$('#client-phone')?.value.trim(),client_email:$('#client-email')?.value.trim(),message:$('#quote-message')?.value.trim(),status:'new'}}
-async function saveToSupabase(req){try{if(!window.supabase)return false;const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const {data:{session}}=await sb.auth.getSession();const payload=Object.assign({},req,{user_id:session?.user?.id||null});const {error}=await sb.from('quote_requests').insert(payload);if(error)throw error;return true}catch(e){console.warn('quote_requests Supabase non disponible:',e.message);return false}}
-function bind(){initDates();$$('#equipment-options .quote-option').forEach(btn=>btn.addEventListener('click',()=>{$$('#equipment-options .quote-option').forEach(b=>b.classList.remove('active'));btn.classList.add('active');equipment=btn.dataset.equipment;updateSummary()}));$$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary));$$('#need-delivery,#need-tech').forEach(el=>el.addEventListener('change',updateSummary));$('#prev-step')?.addEventListener('click',()=>setStep(step-1));$('#next-step')?.addEventListener('click',()=>{if(validateStep())setStep(step+1)});$('#quote-form')?.addEventListener('submit',async e=>{e.preventDefault();if(!validateStep())return;const btn=$('#submit-quote');btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Envoi...';const req=buildRequest();localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req));const saved=await saveToSupabase(req);toast(saved?'Demande envoyée et sauvegardée.':'Demande enregistrée localement. Table Supabase quote_requests à créer si besoin.');btn.innerHTML='<span class="material-symbols-outlined">check_circle</span> Demande envoyée';setTimeout(()=>{window.location.href='/confirmation-de-commande.html?quote='+encodeURIComponent(req.id)},750)});updateSummary();setStep(1)}
-document.addEventListener('DOMContentLoaded',bind);
+  'use strict';
+  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  let currentStep=1;
+  const $=s=>document.querySelector(s);
+  const $$=s=>Array.from(document.querySelectorAll(s));
+  function toast(msg){let t=$('.quote-toast');if(!t){t=document.createElement('div');t.className='quote-toast';document.body.appendChild(t)}t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800)}
+  function todayPlus(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+  function dateFR(v){if(!v)return 'À confirmer';const d=new Date(v+'T00:00:00');return Number.isNaN(d.getTime())?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+  function equipment(){return $('input[name="equipment"]:checked')?.value || 'DJ / Régie'}
+  function services(){const s=[]; if($('#need-delivery')?.checked)s.push('Livraison'); if($('#need-tech')?.checked)s.push('Technicien'); return s;}
+  function setStep(n){currentStep=Math.max(1,Math.min(3,n));$$('.quote-step-panel').forEach(p=>p.classList.toggle('active',Number(p.dataset.step)===currentStep));const dots=$$('.flex.flex-col.items-center.gap-2 > div.w-10');dots.forEach((d,i)=>{const active=i<currentStep;d.classList.toggle('border-electric-magenta',active);d.classList.toggle('text-electric-magenta',active);d.classList.toggle('glow-primary',active);d.classList.toggle('border-outline-variant',!active);d.classList.toggle('text-on-surface-variant',!active);});window.scrollTo({top:0,behavior:'smooth'});updateSummary()}
+  function updateSummary(){const q=$('#quote-quantity')?.value || '50';const eq=equipment();if($('#sum-quantity'))$('#sum-quantity').textContent=q;if($('#sum-equipment'))$('#sum-equipment').textContent=eq;if($('#guest-count-label'))$('#guest-count-label').textContent=($('#guest-count')?.value||150)+' personnes';if($('#sum-dates'))$('#sum-dates').textContent=dateFR($('#event-start')?.value)+' → '+dateFR($('#event-end')?.value);if($('#sum-logistics')){const city=$('#event-city')?.value.trim()||'À confirmer';const sv=services();$('#sum-logistics').textContent=city+(sv.length?' · '+sv.join(' + '):'');}}
+  function showAlert(msg){const a=$('#quote-alert'); if(a){a.textContent=msg;a.classList.add('show')}else toast(msg)}
+  function validateStep(){if(currentStep===2){for(const id of ['#event-start','#event-end','#event-city']){const el=$(id); if(el && !el.value.trim()){el.focus();toast('Complétez la date et le lieu.');return false}}} if(currentStep===3){for(const id of ['#client-name','#client-phone','#client-email']){const el=$(id); if(el && !el.value.trim()){el.focus();showAlert('Merci de compléter nom, téléphone et email.');return false}}const email=$('#client-email').value.trim();if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.');$('#client-email').focus();return false}const phone=$('#client-phone').value.replace(/\s/g,'');if(phone.length<8){showAlert('Téléphone invalide.');$('#client-phone').focus();return false}}return true}
+  function buildRequest(){return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),equipment_category:equipment(),equipment_detail:$('#quote-message')?.value.trim()||equipment(),quantity:Number($('#quote-quantity')?.value||1),event_start:$('#event-start')?.value,event_end:$('#event-end')?.value,event_city:$('#event-city')?.value.trim(),event_type:$('#event-type')?.value,guest_count:Number($('#guest-count')?.value||0),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,client_name:$('#client-name')?.value.trim(),client_phone:$('#client-phone')?.value.trim(),client_email:$('#client-email')?.value.trim(),message:$('#quote-message')?.value.trim(),status:'new'}}
+  async function saveToSupabase(req){try{if(!window.supabase)return false;const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const {data:{session}}=await sb.auth.getSession();const payload={user_id:session?.user?.id||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{delivery:req.need_delivery,technician:req.need_technician,guests:req.guest_count,category:req.equipment_category},message:req.message,status:'new'};const {error}=await sb.from('quote_requests').insert(payload);if(error)throw error;return true}catch(e){console.warn('quote_requests:',e.message);return false}}
+  function bind(){const r=$('#quote-quantity-range'), n=$('#quote-quantity'); if(r&&n){r.addEventListener('input',()=>{n.value=r.value;updateSummary()});n.addEventListener('input',()=>{r.value=n.value;updateSummary()})}const s=$('#event-start'),e=$('#event-end');if(s&&!s.value)s.value=todayPlus(7);if(e&&!e.value)e.value=todayPlus(8);if(s&&e){s.min=todayPlus(0);e.min=s.value;s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value;e.min=s.value;updateSummary()});e.addEventListener('change',updateSummary)}$$('input[name="equipment"]').forEach(el=>el.addEventListener('change',()=>{const labels=$$('input[name="equipment"]').map(x=>x.closest('label'));labels.forEach(l=>{l.classList.remove('border-electric-magenta','bg-electric-magenta/10');l.classList.add('border-outline-variant')});const lab=el.closest('label');if(lab){lab.classList.add('border-electric-magenta','bg-electric-magenta/10');lab.classList.remove('border-outline-variant')}updateSummary()}));$$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary));$$('#need-delivery,#need-tech').forEach(el=>el.addEventListener('change',updateSummary));$('#next-step')?.addEventListener('click',()=>{if(validateStep())setStep(2)});$('#next-step-2')?.addEventListener('click',()=>{if(validateStep())setStep(3)});$('#prev-step-2')?.addEventListener('click',()=>setStep(1));$('#prev-step-3')?.addEventListener('click',()=>setStep(2));$('#quote-form')?.addEventListener('submit',async e=>{e.preventDefault();if(!validateStep())return;const btn=$('#submit-quote');btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';const req=buildRequest();localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req));const saved=await saveToSupabase(req);toast(saved?'Demande envoyée et sauvegardée.':'Demande enregistrée localement. Vérifiez la table quote_requests dans Supabase.');btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';setTimeout(()=>{window.location.href='/confirmation-de-commande.html?quote='+encodeURIComponent(req.id)},700)});setStep(1);updateSummary()}
+  document.addEventListener('DOMContentLoaded',bind);
 })();
 </script>
-<script src="/components.js"></script>
 </body></html>
