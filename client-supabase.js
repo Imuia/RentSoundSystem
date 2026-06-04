@@ -133,6 +133,28 @@
     });
   }
 
+
+  function primeDynamicPlaceholders(){
+    setText('#client-name,#sidebar-client-name', 'Chargement...');
+    setText('#client-email,#sidebar-client-email', 'Connexion au compte...');
+    setText('#client-avatar', '...');
+    setText('#count-reservations,#count-orders,#count-messages,#count-favorites,#total-revenue', '...');
+    const dash = document.getElementById('dashboard-reservations-list');
+    if (dash) dash.innerHTML = '<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 text-on-surface-variant">Chargement des réservations...</div>';
+    const res = document.getElementById('reservation-list');
+    if (res) res.innerHTML = '<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 text-on-surface-variant">Chargement des réservations...</div>';
+    const orders = document.getElementById('orders-body');
+    if (orders) orders.innerHTML = '<tr><td colspan="5" class="py-5 text-on-surface-variant">Chargement des commandes...</td></tr>';
+    const activity = document.getElementById('activity-list');
+    if (activity) activity.innerHTML = '<div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Chargement...</p><p class="text-on-surface-variant text-sm">Synchronisation Supabase</p></div>';
+    const inventory = document.getElementById('inventory-body');
+    if (inventory) inventory.innerHTML = '<tr><td colspan="6" class="py-5 text-on-surface-variant">Chargement de l’inventaire...</td></tr>';
+    const chat = document.getElementById('chat-list');
+    if (chat) chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Chargement des messages...</div>';
+    const title = document.getElementById('conversation-title');
+    if (title) title.textContent = 'Chargement de la conversation...';
+  }
+
   async function loadProfile(user){
     if (!user) {
       setText('#client-name,#sidebar-client-name', 'Client non connecté');
@@ -403,7 +425,11 @@
     const chat = document.getElementById('chat-list');
     const send = document.getElementById('send-btn');
     const input = document.getElementById('message-input');
-    if (!chat || !user) return;
+    if (!chat) return;
+    if (!user) {
+      chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Connectez-vous pour afficher vos messages.</div>';
+      return;
+    }
 
     async function load(){
       try {
@@ -423,10 +449,13 @@
               <div class="${m.is_client ? 'bg-primary text-white' : 'bg-surface-container'} p-4 rounded-lg border border-white/10"><p>${esc(m.body)}</p></div>
             </div>
           </div>`).join('');
-          chat.scrollTop = chat.scrollHeight;
+        } else {
+          chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Aucun message pour le moment.</div>';
         }
+        chat.scrollTop = chat.scrollHeight;
       } catch (e) {
         console.warn('Table messages non disponible:', e.message);
+        chat.innerHTML = '<div class="bg-surface-container border border-white/10 rounded-lg p-4 text-on-surface-variant">Messagerie prête. Vérifiez la table messages pour sauvegarder les conversations.</div>';
       }
     }
 
@@ -502,6 +531,7 @@
   async function init(){
     setActiveSidebar();
     bindLogout();
+    primeDynamicPlaceholders();
 
     const user = await getUser();
     await loadProfile(user);
