@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Demande de Devis - RentSoundSystem</title>
+<meta name="description" content="Demandez un devis personnalisé pour la location de matériel audio, éclairage, DJ, scène ou silent disco avec RentSoundSystem."/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config={darkMode:'class',theme:{extend:{colors:{background:'#131313',surface:'#131313','surface-container-lowest':'#0e0e0e','surface-container-low':'#1b1b1b','surface-container':'#1f1f1f','surface-container-high':'#2a2a2a','surface-container-highest':'#353535',primary:'#FC036D','primary-container':'#c40254','on-primary':'#ffffff','on-surface':'#e2e2e2','on-background':'#e2e2e2','on-surface-variant':'#e6bcc2',outline:'#ac878d','outline-variant':'#5d3f44'},spacing:{'container-max':'1280px','margin-mobile':'16px','margin-desktop':'40px','gutter':'24px','stack-sm':'12px','stack-md':'24px','stack-lg':'48px'},fontFamily:{headline:['Manrope','sans-serif'],display:['Manrope','sans-serif'],body:['Inter','sans-serif'],label:['Inter','sans-serif']}}}}
+</script>
+<style>
+.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+html,body{overflow-x:hidden}body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:74px}.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.95),rgba(20,20,20,.98));border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 60px rgba(0,0,0,.28)}.rss-card:hover{border-color:rgba(252,3,109,.35)}.rss-hero-bg{position:absolute;inset:0;background:radial-gradient(circle at 15% 10%,rgba(252,3,109,.26),transparent 32%),radial-gradient(circle at 85% 20%,rgba(255,77,128,.15),transparent 30%),linear-gradient(180deg,rgba(19,19,19,.15),#131313 82%);pointer-events:none}.quote-option{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.025);transition:.22s}.quote-option:hover{border-color:rgba(252,3,109,.65);background:rgba(252,3,109,.08)}.quote-option.active{border-color:#FC036D;background:rgba(252,3,109,.14);box-shadow:0 0 24px rgba(252,3,109,.15)}.quote-step{display:none}.quote-step.active{display:block}.quote-dot.active{background:#FC036D;color:#fff;border-color:#FC036D;box-shadow:0 0 24px rgba(252,3,109,.28)}.rss-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#1f1f1f;border:1px solid rgba(252,3,109,.35);color:#e2e2e2;padding:13px 16px;border-radius:8px;opacity:0;transform:translateY(12px);transition:.25s}.rss-toast.show{opacity:1;transform:translateY(0)}input,select,textarea{background:#0e0e0e!important;border:1px solid rgba(255,255,255,.12)!important;color:#e2e2e2!important;border-radius:.5rem!important}input:focus,select:focus,textarea:focus{border-color:#FC036D!important;box-shadow:0 0 0 1px #FC036D!important}.range-accent{accent-color:#FC036D}@media(max-width:767px){body{padding-top:72px}h1{font-size:38px!important;line-height:44px!important}.quote-mobile-bottom{padding-bottom:72px}}
+</style>
+</head>
+<body class="font-body bg-background text-on-background min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow quote-mobile-bottom relative">
+  <div class="rss-hero-bg"></div>
+  <section class="relative w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pt-12 md:pt-16 pb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-[1.1fr_.9fr] gap-10 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/10 text-primary font-bold uppercase tracking-widest text-xs mb-5">
+          <span class="material-symbols-outlined text-[18px]">request_quote</span> Devis personnalisé
+        </div>
+        <h1 class="font-headline text-[58px] leading-[66px] font-extrabold tracking-tight text-on-background mb-5">Demande de Devis</h1>
+        <p class="text-on-surface-variant text-lg md:text-xl leading-relaxed max-w-2xl">Configurez votre besoin en sonorisation, éclairage, DJ, scène ou silent disco. RentSoundSystem prépare une réponse claire avec matériel, logistique et estimation.</p>
+      </div>
+      <div class="rss-card rounded-xl p-6 hidden lg:block">
+        <div class="aspect-[16/10] rounded-lg overflow-hidden relative bg-surface-container-lowest">
+          <img alt="Location matériel audio professionnel RentSoundSystem" class="w-full h-full object-cover opacity-70 mix-blend-luminosity" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMiGU28hdqafXqdQxg8L3-yOK3NoGBcEglo3AAk0QNSlIlrNK9FjX5XkS4CC0sreZdct4OzDGSeC4sxIHo6XbrJQoaDRKd7fFNJy8dimiFCMAIG49ndIKwBxf3Ia0HZYxs6LvjS9CP4lBJ7WtFpYaxRIh36F9dXWC5RuQAQxKZKv4iiQIjqaBkl6cKSiYd0Iax7QwLkqykPB271U0pLl-lx9TArmEYHOcyst25f8yJKDPzpAz1ucYV7r7_F84vJw8jgg7SUEJhKDc"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+          <div class="absolute bottom-4 left-4 right-4"><p class="text-primary font-bold uppercase tracking-widest text-xs">Réponse rapide</p><p class="font-headline text-2xl font-bold">Projet audio & événementiel</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="relative w-full max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-16">
+    <div class="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px] gap-8">
+      <form id="quote-form" class="rss-card rounded-xl p-5 md:p-8 min-w-0" novalidate>
+        <div class="flex items-center justify-between gap-3 mb-8">
+          <div class="flex items-center gap-3">
+            <span class="quote-dot active w-10 h-10 rounded-full border border-white/15 bg-surface-container-high flex items-center justify-center font-bold" data-dot="1">1</span>
+            <span class="quote-dot w-10 h-10 rounded-full border border-white/15 bg-surface-container-high flex items-center justify-center font-bold" data-dot="2">2</span>
+            <span class="quote-dot w-10 h-10 rounded-full border border-white/15 bg-surface-container-high flex items-center justify-center font-bold" data-dot="3">3</span>
+          </div>
+          <p id="step-label" class="text-on-surface-variant font-bold text-sm">Étape 1 / 3</p>
+        </div>
+
+        <section class="quote-step active" data-step="1">
+          <h2 class="font-headline text-3xl font-bold mb-2">1. Matériel souhaité</h2>
+          <p class="text-on-surface-variant mb-6">Choisissez une catégorie principale. Vous pourrez détailler votre besoin ensuite.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8" id="equipment-options">
+            <button type="button" class="quote-option active text-left rounded-lg p-5" data-equipment="Sonorisation"><span class="material-symbols-outlined text-primary text-3xl mb-3">speaker</span><h3 class="font-headline font-bold text-xl">Sonorisation</h3><p class="text-sm text-on-surface-variant">Enceintes, line array, caissons, retours.</p></button>
+            <button type="button" class="quote-option text-left rounded-lg p-5" data-equipment="DJ / Régie"><span class="material-symbols-outlined text-primary text-3xl mb-3">graphic_eq</span><h3 class="font-headline font-bold text-xl">DJ / Régie</h3><p class="text-sm text-on-surface-variant">CDJ, DJM, consoles, micros, HF.</p></button>
+            <button type="button" class="quote-option text-left rounded-lg p-5" data-equipment="Éclairage"><span class="material-symbols-outlined text-primary text-3xl mb-3">light_mode</span><h3 class="font-headline font-bold text-xl">Éclairage</h3><p class="text-sm text-on-surface-variant">Lyres, wash, barres LED, ambiance.</p></button>
+            <button type="button" class="quote-option text-left rounded-lg p-5" data-equipment="Silent Disco"><span class="material-symbols-outlined text-primary text-3xl mb-3">headphones</span><h3 class="font-headline font-bold text-xl">Silent Disco</h3><p class="text-sm text-on-surface-variant">Casques, émetteurs, multi-canaux.</p></button>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <label class="block"><span class="text-sm font-bold text-on-surface-variant">Quantité estimée</span><input id="quote-quantity" type="number" min="1" value="1" class="mt-2 w-full px-4 py-3"/></label>
+            <label class="block md:col-span-2"><span class="text-sm font-bold text-on-surface-variant">Précision matériel</span><input id="quote-equipment-detail" type="text" class="mt-2 w-full px-4 py-3" placeholder="Ex : JBL VRX, CDJ-3000, 100 casques..."/></label>
+          </div>
+        </section>
+
+        <section class="quote-step" data-step="2">
+          <h2 class="font-headline text-3xl font-bold mb-2">2. Événement & logistique</h2>
+          <p class="text-on-surface-variant mb-6">Ces informations permettent d’évaluer la disponibilité et le transport.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <label><span class="text-sm font-bold text-on-surface-variant">Date début</span><input id="event-start" type="date" required class="mt-2 w-full px-4 py-3"/></label>
+            <label><span class="text-sm font-bold text-on-surface-variant">Date retour</span><input id="event-end" type="date" required class="mt-2 w-full px-4 py-3"/></label>
+            <label><span class="text-sm font-bold text-on-surface-variant">Ville / lieu</span><input id="event-city" type="text" required class="mt-2 w-full px-4 py-3" placeholder="Paris, Nice, Cannes..."/></label>
+            <label><span class="text-sm font-bold text-on-surface-variant">Type d’événement</span><select id="event-type" class="mt-2 w-full px-4 py-3"><option>Concert / Festival</option><option>Entreprise / Corporate</option><option>Mariage / privé</option><option>DJ set / Club</option><option>Conférence</option><option>Autre</option></select></label>
+          </div>
+          <label class="block mb-5"><span class="text-sm font-bold text-on-surface-variant">Nombre de personnes</span><input id="guest-count" type="range" min="20" max="5000" step="10" value="150" class="range-accent w-full mt-4"><span id="guest-count-label" class="block mt-2 text-primary font-bold">150 personnes</span></label>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label class="quote-option rounded-lg p-4 flex items-start gap-3"><input id="need-delivery" type="checkbox" class="mt-1 text-primary" checked><span><strong>Livraison / reprise</strong><br><small class="text-on-surface-variant">Transport du matériel sur site.</small></span></label>
+            <label class="quote-option rounded-lg p-4 flex items-start gap-3"><input id="need-tech" type="checkbox" class="mt-1 text-primary"><span><strong>Technicien / installation</strong><br><small class="text-on-surface-variant">Montage, réglage, assistance.</small></span></label>
+          </div>
+        </section>
+
+        <section class="quote-step" data-step="3">
+          <h2 class="font-headline text-3xl font-bold mb-2">3. Contact & message</h2>
+          <p class="text-on-surface-variant mb-6">Votre demande sera enregistrée et pourra être reprise depuis l’espace client.</p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-5">
+            <label><span class="text-sm font-bold text-on-surface-variant">Nom complet</span><input id="client-name" type="text" required class="mt-2 w-full px-4 py-3" placeholder="Votre nom"/></label>
+            <label><span class="text-sm font-bold text-on-surface-variant">Téléphone</span><input id="client-phone" type="tel" required class="mt-2 w-full px-4 py-3" placeholder="+33 6 00 00 00 00"/></label>
+            <label class="md:col-span-2"><span class="text-sm font-bold text-on-surface-variant">Email</span><input id="client-email" type="email" required class="mt-2 w-full px-4 py-3" placeholder="vous@email.com"/></label>
+            <label class="md:col-span-2"><span class="text-sm font-bold text-on-surface-variant">Message</span><textarea id="quote-message" rows="5" class="mt-2 w-full px-4 py-3" placeholder="Décrivez votre besoin, horaires, contraintes techniques, accès, puissance électrique..."></textarea></label>
+          </div>
+          <div id="quote-alert" class="hidden mb-5 rounded-lg border border-red-500/30 bg-red-500/10 text-red-300 px-4 py-3 text-sm"></div>
+        </section>
+
+        <div class="flex flex-col sm:flex-row justify-between gap-3 mt-8 pt-6 border-t border-white/10">
+          <button id="prev-step" type="button" class="hidden border border-outline text-on-surface font-bold rounded-lg px-6 py-3 hover:border-primary hover:text-primary transition">Retour</button>
+          <div class="flex-1"></div>
+          <button id="next-step" type="button" class="bg-primary text-white font-bold rounded-lg px-7 py-3 hover:bg-primary-container transition flex items-center justify-center gap-2">Continuer <span class="material-symbols-outlined">arrow_forward</span></button>
+          <button id="submit-quote" type="submit" class="hidden bg-primary text-white font-bold rounded-lg px-7 py-3 hover:bg-primary-container transition flex items-center justify-center gap-2"><span class="material-symbols-outlined">send</span> Envoyer la demande</button>
+        </div>
+      </form>
+
+      <aside class="rss-card rounded-xl p-5 md:p-6 h-fit lg:sticky lg:top-24">
+        <h3 class="font-headline text-2xl font-bold mb-5">Résumé du devis</h3>
+        <div class="space-y-4 text-sm" id="quote-summary">
+          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Matériel</span><strong id="sum-equipment">Sonorisation</strong></div>
+          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Quantité</span><strong id="sum-quantity">1</strong></div>
+          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Date</span><strong id="sum-dates">À confirmer</strong></div>
+          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Ville</span><strong id="sum-city">À confirmer</strong></div>
+          <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Public</span><strong id="sum-guests">150 personnes</strong></div>
+          <div class="pt-4 border-t border-white/10"><p class="text-on-surface-variant mb-2">Services</p><div id="sum-services" class="flex flex-wrap gap-2"><span class="px-3 py-1 rounded-full bg-primary/15 text-primary font-bold">Livraison</span></div></div>
+        </div>
+        <div class="mt-6 bg-surface-container-lowest rounded-lg border border-white/10 p-4"><div class="flex gap-3"><span class="material-symbols-outlined text-primary">info</span><p class="text-on-surface-variant text-sm">Après envoi, la demande est sauvegardée localement et tentera une insertion Supabase dans `quote_requests` si la table existe.</p></div></div>
+      </aside>
+    </div>
+  </section>
+</main>
+<div id="footer-container"></div>
+
+<script>
+(function(){
+'use strict';
+const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+let step=1, equipment='Sonorisation';
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
+function toast(msg){let t=$('.rss-toast'); if(!t){t=document.createElement('div');t.className='rss-toast';document.body.appendChild(t)}t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
+function todayPlus(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
+function dateFR(v){if(!v)return 'À confirmer';const d=new Date(v+'T00:00:00');return isNaN(d)?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'})}
+function initDates(){const s=$('#event-start'),e=$('#event-end');if(s&&!s.value)s.value=todayPlus(7);if(e&&!e.value)e.value=todayPlus(8);if(s&&e){s.min=todayPlus(0);e.min=s.value;s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value;e.min=s.value;updateSummary()});e.addEventListener('change',updateSummary)}}
+function setStep(n){step=Math.max(1,Math.min(3,n));$$('.quote-step').forEach(x=>x.classList.toggle('active',Number(x.dataset.step)===step));$$('.quote-dot').forEach(x=>x.classList.toggle('active',Number(x.dataset.dot)<=step));$('#step-label').textContent='Étape '+step+' / 3';$('#prev-step').classList.toggle('hidden',step===1);$('#next-step').classList.toggle('hidden',step===3);$('#submit-quote').classList.toggle('hidden',step!==3);window.scrollTo({top:0,behavior:'smooth'});}
+function updateSummary(){const q=$('#quote-quantity')?.value||'1', detail=$('#quote-equipment-detail')?.value.trim();$('#sum-equipment').textContent=detail||equipment;$('#sum-quantity').textContent=q;$('#sum-dates').textContent=dateFR($('#event-start')?.value)+' → '+dateFR($('#event-end')?.value);$('#sum-city').textContent=$('#event-city')?.value.trim()||'À confirmer';const guests=$('#guest-count')?.value||150;$('#guest-count-label').textContent=guests+' personnes';$('#sum-guests').textContent=guests+' personnes';let chips=[];if($('#need-delivery')?.checked)chips.push('Livraison');if($('#need-tech')?.checked)chips.push('Technicien');$('#sum-services').innerHTML=chips.length?chips.map(c=>'<span class="px-3 py-1 rounded-full bg-primary/15 text-primary font-bold">'+c+'</span>').join(''):'<span class="text-on-surface-variant">Aucun service ajouté</span>';}
+function validateStep(){const alert=$('#quote-alert'); if(alert)alert.classList.add('hidden'); if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s);if(el&&!el.value.trim()){el.focus();toast('Complétez la date et le lieu.');return false}}} if(step===3){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s);if(el&&!el.value.trim()){el.focus();showAlert('Merci de compléter nom, téléphone et email.');return false}}const email=$('#client-email').value.trim();if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.');$('#client-email').focus();return false}const phone=$('#client-phone').value.replace(/\s/g,'');if(phone.length<8){showAlert('Téléphone invalide.');$('#client-phone').focus();return false}}return true;}
+function showAlert(msg){const el=$('#quote-alert');if(!el)return;el.textContent=msg;el.classList.remove('hidden')}
+function buildRequest(){return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),equipment_category:equipment,equipment_detail:$('#quote-equipment-detail')?.value.trim()||equipment,quantity:Number($('#quote-quantity')?.value||1),event_start:$('#event-start')?.value,event_end:$('#event-end')?.value,event_city:$('#event-city')?.value.trim(),event_type:$('#event-type')?.value,guest_count:Number($('#guest-count')?.value||0),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,client_name:$('#client-name')?.value.trim(),client_phone:$('#client-phone')?.value.trim(),client_email:$('#client-email')?.value.trim(),message:$('#quote-message')?.value.trim(),status:'new'}}
+async function saveToSupabase(req){try{if(!window.supabase)return false;const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const {data:{session}}=await sb.auth.getSession();const payload=Object.assign({},req,{user_id:session?.user?.id||null});const {error}=await sb.from('quote_requests').insert(payload);if(error)throw error;return true}catch(e){console.warn('quote_requests Supabase non disponible:',e.message);return false}}
+function bind(){initDates();$$('#equipment-options .quote-option').forEach(btn=>btn.addEventListener('click',()=>{$$('#equipment-options .quote-option').forEach(b=>b.classList.remove('active'));btn.classList.add('active');equipment=btn.dataset.equipment;updateSummary()}));$$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary));$$('#need-delivery,#need-tech').forEach(el=>el.addEventListener('change',updateSummary));$('#prev-step')?.addEventListener('click',()=>setStep(step-1));$('#next-step')?.addEventListener('click',()=>{if(validateStep())setStep(step+1)});$('#quote-form')?.addEventListener('submit',async e=>{e.preventDefault();if(!validateStep())return;const btn=$('#submit-quote');btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Envoi...';const req=buildRequest();localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req));const saved=await saveToSupabase(req);toast(saved?'Demande envoyée et sauvegardée.':'Demande enregistrée localement. Table Supabase quote_requests à créer si besoin.');btn.innerHTML='<span class="material-symbols-outlined">check_circle</span> Demande envoyée';setTimeout(()=>{window.location.href='/confirmation-de-commande.html?quote='+encodeURIComponent(req.id)},750)});updateSummary();setStep(1)}
+document.addEventListener('DOMContentLoaded',bind);
+})();
+</script>
+<script src="/components.js"></script>
+</body></html>
