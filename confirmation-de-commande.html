@@ -124,7 +124,14 @@
         }
     
 /* Header/footer global RentSoundSystem */
-#header-container,#footer-container{width:100%;max-width:none;margin:0}
+#header-container,#footer-container{
+  width:100vw!important;
+  max-width:100vw!important;
+  margin-left:calc(50% - 50vw)!important;
+  margin-right:calc(50% - 50vw)!important;
+}
+#header-container > *,#footer-container > *{width:100%!important;max-width:none!important;}
+html,body{overflow-x:hidden;}
 body{padding-top:74px}
 @media(max-width:767px){body{padding-top:72px}}
 

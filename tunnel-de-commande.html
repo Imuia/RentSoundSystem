@@ -91,7 +91,14 @@
         }
     
 /* Header/footer global RentSoundSystem */
-#header-container,#footer-container{width:100%;max-width:none;margin:0}
+#header-container,#footer-container{
+  width:100vw!important;
+  max-width:100vw!important;
+  margin-left:calc(50% - 50vw)!important;
+  margin-right:calc(50% - 50vw)!important;
+}
+#header-container > *,#footer-container > *{width:100%!important;max-width:none!important;}
+html,body{overflow-x:hidden;}
 body{padding-top:74px}
 @media(max-width:767px){body{padding-top:72px}}
 
@@ -194,27 +201,29 @@ body{padding-top:74px}
 <div class="w-8 h-8 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-on-surface-variant font-headline font-bold">3</div>
 <h2 class="font-headline text-headline-md text-inverse-surface">Méthode de Paiement</h2>
 </div>
-<div class="grid gap-4 mb-6 grid-cols-2 md:grid-cols-5">
-<button class="p-4 border-2 border-primary rounded flex flex-col items-center justify-center gap-2 bg-surface-container-high transition-colors">
+<div class="grid gap-4 mb-6 grid-cols-2 md:grid-cols-5" id="payment-methods">
+<button type="button" data-method="card" class="payment-method p-4 border-2 border-primary rounded flex flex-col items-center justify-center gap-2 bg-surface-container-high transition-colors" aria-pressed="true">
 <span class="material-symbols-outlined text-inverse-surface text-3xl" data-icon="credit_card">credit_card</span>
 <span class="font-label text-label-md text-inverse-surface">Carte Bancaire</span>
 </button>
-<button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<button type="button" data-method="paypal" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
 <span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
 <span class="font-label text-label-md text-on-surface-variant">PayPal</span>
 </button>
-<button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<button type="button" data-method="apple_pay" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
 <span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="payments">payments</span>
 <span class="font-label text-label-md text-on-surface-variant">Apple Pay</span>
 </button>
-<button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+<button type="button" data-method="crypto" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
 <span class="material-symbols-outlined text-on-surface-variant text-3xl">currency_bitcoin</span>
 <span class="font-label text-label-md text-on-surface-variant">Crypto</span>
-</button><button class="p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors">
+</button>
+<button type="button" data-method="bank_transfer" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
 <span class="material-symbols-outlined text-on-surface-variant text-3xl">account_balance</span>
 <span class="font-label text-label-md text-on-surface-variant text-center">Virement Bancaire</span>
 </button></div>
-<form class="flex flex-col gap-4">
+<div id="payment-note" class="mb-5 rounded border border-primary/30 bg-primary/10 text-primary px-4 py-3 text-sm">Carte bancaire sélectionnée.</div>
+<form class="flex flex-col gap-4" id="card-payment-fields">
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Numéro de carte</label>
 <div class="relative">
@@ -328,7 +337,26 @@ body{padding-top:74px}
   function days(){const s=qs('#rental-start')?.value, e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'), ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd)||Number.isNaN(ed)) return 1; return Math.max(1, Math.round((ed-sd)/(1000*60*60*24))+1);}
   function getProduct(){try{const stored=JSON.parse(localStorage.getItem('rssSelectedProduct')||'null');return Object.assign({},DEFAULT_PRODUCT,stored||{});}catch{return DEFAULT_PRODUCT}}
   function totals(){const product=getProduct(), d=days(); const delivery=qs('#delivery-transport')?.checked?250:0; const technician=qs('#technician')?.checked?450*d:0; const rental=product.dailyPrice*d*product.quantity; const subtotal=rental+delivery+technician; const tax=subtotal*.20; const total=subtotal+tax; return {product,d,rental,delivery,technician,tax,total,deposit:product.deposit};}
-  function updatePaymentUI(){qsa('.payment-method').forEach(btn=>{const active=btn.dataset.method===selectedPayment; btn.classList.toggle('border-2',active); btn.classList.toggle('border-primary',active); btn.classList.toggle('bg-surface-container-high',active);}); const cardFields=['#card-number','#card-expiry','#card-cvc','#card-name']; cardFields.forEach(s=>{const el=qs(s); if(el){el.disabled=selectedPayment!=='card'; el.closest('.flex')?.classList.toggle('opacity-50',selectedPayment!=='card')}});}
+  function updatePaymentUI(){
+    const labels={card:'Carte bancaire sélectionnée.',paypal:'PayPal sélectionné. La réservation sera enregistrée et le paiement PayPal pourra être branché ensuite.',apple_pay:'Apple Pay sélectionné. La réservation sera enregistrée et le paiement Apple Pay pourra être branché ensuite.',crypto:'Crypto sélectionné. La réservation sera enregistrée pour validation manuelle.',bank_transfer:'Virement bancaire sélectionné. Les instructions de virement seront envoyées après validation.'};
+    qsa('.payment-method').forEach(btn=>{
+      const active=btn.dataset.method===selectedPayment;
+      btn.classList.toggle('border-2',active);
+      btn.classList.toggle('border-primary',active);
+      btn.classList.toggle('border-outline-variant',!active);
+      btn.classList.toggle('bg-surface-container-high',active);
+      btn.setAttribute('aria-pressed',active?'true':'false');
+      btn.querySelectorAll('span').forEach(span=>{
+        span.classList.toggle('text-inverse-surface',active);
+        span.classList.toggle('text-on-surface-variant',!active);
+      });
+    });
+    const note=qs('#payment-note');
+    if(note) note.textContent=labels[selectedPayment]||labels.card;
+    const cardFields=qs('#card-payment-fields');
+    if(cardFields) cardFields.classList.toggle('hidden',selectedPayment!=='card');
+    ['#card-number','#card-expiry','#card-cvc','#card-name'].forEach(s=>{const el=qs(s); if(el) el.disabled=selectedPayment!=='card';});
+  }
   function updateSummary(){const t=totals(); setText('#summary-item-name',t.product.name); setText('#summary-item-desc',t.product.description); setText('#summary-price-day',money(t.product.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',t.product.quantity+' système'); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total)); }
   function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} return true;}
   async function getSupabase(){if(!window.supabase)return null; return window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);}
