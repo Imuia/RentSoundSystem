@@ -519,7 +519,29 @@
   .eq('status', 'publish')
   .limit(50);
       if(error){
-        const fallback = await client.from('listings').select('*, listing_images(image_url, position)').limit(180);
+        const fallback = await client
+  .from('listings')
+  .select(`
+    id,
+    original_id,
+    title,
+    description,
+    city,
+    location,
+    lat,
+    lng,
+    price,
+    price_day,
+    price_per_day,
+    model,
+    brand,
+    category,
+    status,
+    listing_images(image_url, position)
+  `)
+  .eq('brand', 'Void Acoustics')
+  .eq('status', 'publish')
+  .limit(50);
         if(fallback.error) throw fallback.error;
         data = fallback.data || [];
       }
