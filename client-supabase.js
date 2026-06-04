@@ -462,6 +462,35 @@
     }
   }
 
+
+  function setActiveSidebar(){
+    const currentPath = window.location.pathname.replace(/\/$/, '');
+    const pageMap = {
+      '/espace-client': '/espace-client.html',
+      '/espace-client.html': '/espace-client.html',
+      '/espace-client-calendrier': '/espace-client-calendrier.html',
+      '/espace-client-calendrier.html': '/espace-client-calendrier.html',
+      '/espace-client-inventaire': '/espace-client-inventaire.html',
+      '/espace-client-inventaire.html': '/espace-client-inventaire.html',
+      '/espace-client-messagerie': '/espace-client-messagerie.html',
+      '/espace-client-messagerie.html': '/espace-client-messagerie.html',
+      '/espace-client-reservations': '/espace-client-reservations.html',
+      '/espace-client-reservations.html': '/espace-client-reservations.html',
+      '/espace-client-commandes': '/espace-client-commandes.html',
+      '/espace-client-commandes.html': '/espace-client-commandes.html',
+      '/espace-client-parametres': '/espace-client-parametres.html',
+      '/espace-client-parametres.html': '/espace-client-parametres.html'
+    };
+    const activeHref = pageMap[currentPath] || '/espace-client.html';
+
+    document.querySelectorAll('.client-nav-link').forEach(link => {
+      const href = link.getAttribute('href');
+      if (!href) return;
+      const normalizedHref = href.split('#')[0];
+      link.classList.toggle('rss-active', normalizedHref === activeHref);
+    });
+  }
+
   function bindCatalogButtons(){
     document.querySelectorAll('.go-catalog,#add-equipment-btn,#new-request-btn').forEach(btn => {
       if (btn.dataset.rssCatalogBound) return;
@@ -471,6 +500,7 @@
   }
 
   async function init(){
+    setActiveSidebar();
     bindLogout();
 
     const user = await getUser();
