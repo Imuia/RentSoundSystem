@@ -497,16 +497,33 @@
       if(!window.supabase) throw new Error('Supabase JS non chargé');
       const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
       let { data, error } = await client
-        .from('listings')
-        .select('*, listing_images(image_url, position)')
-        .or('brand.ilike.%Void%,title.ilike.%Void%,model.ilike.%Void%,description.ilike.%Void%,title.ilike.%Nexus%,title.ilike.%Stasys%,title.ilike.%Air Motion%,title.ilike.%Incubus%,title.ilike.%Airten%,model.ilike.%Nexus%,model.ilike.%Stasys%,model.ilike.%Air Motion%,model.ilike.%Incubus%,model.ilike.%Airten%')
-        .limit(80);
+  .from('listings')
+  .select(`
+      id,
+      original_id,
+      title,
+      description,
+      city,
+      location,
+      lat,
+      lng,
+      price,
+      price_day,
+      price_per_day,
+      model,
+      brand,
+      category,
+      listing_images(image_url, position)
+  `)
+  .eq('brand', 'Void Acoustics')
+  .eq('status', 'publish')
+  .limit(50);
       if(error){
         const fallback = await client.from('listings').select('*, listing_images(image_url, position)').limit(180);
         if(fallback.error) throw fallback.error;
         data = fallback.data || [];
       }
-      allVoidProducts = (data || []).filter(matchesVoid);
+      allVoidProducts = data || [];
       render(currentFilter);
     }catch(error){
       console.warn('Void listings loading error:', error.message || error);
