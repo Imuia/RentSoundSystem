@@ -4,6 +4,8 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Demande de Devis Silent Disco | RentSoundSystem</title>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <!-- Fonts -->
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
@@ -162,42 +164,17 @@
         .quote-bg-layer{position:fixed;inset:0;z-index:-1;pointer-events:none}.quote-bg-layer::before{content:"";position:absolute;inset:0;background:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhTfFrDiWe2n0LZk3-IRsFYx1hh0-G-Cy80lw-g27GnYLnervVI4k_JUZtuhK4ygn2U1_q_u28v3JXzixnfHq9-UFz6tef26_rDIoZnbC37kS5tzdZaycnIycMklOcoOnasx7x7WXAS1cVpYqmHbmeR3x6_9pDMAS0H1kOiR0AOFMbAKiH4jWSebClwLIjIvArcxRrzNe42ZUrW6p-y33UWa0ZxEG7i0ya6T0dlUCGWzkR1MQ1vhiaMk4dcKY6mWJDzFdIVvPWFw8') center/cover no-repeat;opacity:.18;filter:grayscale(100%)}.quote-bg-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,19,.78),#131313 70%),radial-gradient(circle at 20% 0%,rgba(252,3,109,.22),transparent 35%)}
 
     </style>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
 </head>
 <body class="flex flex-col min-h-screen bg-surface-container-lowest">
 <div class="quote-bg-layer"></div>
-<!-- TopAppBar -->
-<header class="bg-surface dark:bg-surface text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant dark:border-outline-variant flat no shadows z-50">
-<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1280px] mx-auto hidden md:flex">
-<div class="flex items-center gap-8">
-<a class="text-headline-md font-headline-md font-bold text-electric-magenta dark:text-electric-magenta tracking-tighter hover:text-white transition-colors" href="#">
-                    RentSoundSystem
-                </a>
-<nav class="flex gap-6">
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-electric-magenta dark:hover:text-electric-magenta transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Inventaire</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-electric-magenta dark:hover:text-electric-magenta transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Lieux</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-electric-magenta dark:hover:text-electric-magenta transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Logistique</a>
-<a class="text-on-surface-variant dark:text-on-surface-variant hover:text-electric-magenta dark:hover:text-electric-magenta transition-colors duration-200 font-headline-md text-sm font-semibold" href="#">Support</a>
-</nav>
-</div>
-<div class="flex items-center gap-4">
-<button class="text-on-surface-variant hover:text-electric-magenta transition-colors">
-<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-</button>
-<button class="text-on-surface-variant hover:text-electric-magenta transition-colors">
-<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
-</button>
-</div>
-</div>
-<!-- Mobile Header (simplified) -->
-<div class="flex justify-between items-center w-full px-4 py-4 md:hidden">
-<a class="text-headline-md font-headline-md font-bold text-electric-magenta dark:text-electric-magenta tracking-tighter" href="#">
-                RentSoundSystem
-            </a>
-<button class="text-on-surface-variant">
-<span class="material-symbols-outlined">menu</span>
-</button>
-</div>
-</header>
+<div id="header-container"></div>
 <!-- Main Content Canvas -->
 <main class="flex-grow w-full max-w-[1280px] mx-auto px-4 md:px-gutter-x py-12">
 <!-- Page Header -->
@@ -352,71 +329,7 @@
 </div>
 </div>
 </form></main>
-<!-- BottomNavBar (Mobile Only) -->
-<nav class="bg-surface-container-high dark:bg-surface-container-high fixed bottom-0 w-full z-50 border-t border-outline-variant dark:border-outline-variant shadow-lg flex justify-around items-center h-16 md:hidden">
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="search">search</span>
-<span class="font-label-caps text-[10px] font-medium">Explorer</span>
-</a>
-<a class="flex flex-col items-center justify-center text-electric-magenta dark:text-electric-magenta hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full scale-90 transition-transform duration-150" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="calendar_month">calendar_month</span>
-<span class="font-label-caps text-[10px] font-medium text-electric-magenta">Mes Locations</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="shopping_bag">shopping_bag</span>
-<span class="font-label-caps text-[10px] font-medium">Panier</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-highest dark:hover:bg-surface-container-highest w-full h-full" href="#">
-<span class="material-symbols-outlined mb-1" data-icon="person">person</span>
-<span class="font-label-caps text-[10px] font-medium">Profil</span>
-</a>
-</nav>
-<!-- Footer -->
-<footer class="bg-surface-container-lowest text-on-surface-variant py-12 border-t border-surface-container-low mt-24">
-<div class="max-w-[1280px] mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
-<div>
-<h4 class="font-display-hero-mobile text-lg text-electric-magenta mb-4">Marketplace</h4>
-<ul class="space-y-2">
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Rechercher du Matériel</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Devenir Fournisseur</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Assurance Qualité</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-display-hero-mobile text-lg text-on-surface mb-4">Catégories</h4>
-<ul class="space-y-2">
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Sonorisation Concert</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">DJ &amp; Clubbing</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Conférences</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Silent Disco</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-display-hero-mobile text-lg text-on-surface mb-4">Support</h4>
-<ul class="space-y-2">
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Centre d'Aide</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Contactez-nous</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Garantie du Matériel</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-display-hero-mobile text-lg text-on-surface mb-4">Informations</h4>
-<ul class="space-y-2">
-<li><a class="hover:text-electric-magenta transition-colors" href="#">À Propos</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Conditions Générales</a></li>
-<li><a class="hover:text-electric-magenta transition-colors" href="#">Politique de Confidentialité</a></li>
-</ul>
-</div>
-</div>
-<div class="max-w-[1280px] mx-auto px-6 mt-12 pt-8 border-t border-surface-container-low flex flex-col md:flex-row justify-between items-center">
-<div class="text-electric-magenta font-display-hero-mobile font-bold text-xl mb-4 md:mb-0">
-                RentSoundSystem
-            </div>
-<div class="text-sm">
-                © 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.
-            </div>
-</div>
-</footer>
+<div id="footer-container"></div>
 
 <script>
 (function(){
@@ -440,7 +353,7 @@
   }
   function showAlert(msg){const el=$('#quote-alert'); if(!el){toast(msg);return} el.textContent=msg; el.classList.remove('hidden');}
   function hideAlert(){ $('#quote-alert')?.classList.add('hidden'); }
-  function validateStep(step){hideAlert(); if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s); if(!el?.value?.trim()){el?.focus(); toast('Complétez la date et le lieu.'); return false;}}} if(step===4){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s); if(!el?.value?.trim()){el?.focus(); showAlert('Merci de compléter nom, téléphone et email.'); return false;}} const email=$('#client-email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.'); $('#client-email')?.focus(); return false;} const phone=($('#client-phone')?.value||'').replace(/\s/g,''); if(phone.length<8){showAlert('Téléphone invalide.'); $('#client-phone')?.focus(); return false;}} return true;}
+  function validateStep(step){hideAlert(); if(step===1){const q=Number($('#headphones-count')?.value||0); if(!q||q<10){$('#headphones-count')?.focus(); toast('Indiquez au moins 10 casques.'); return false;}} if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s); if(!el?.value?.trim()){el?.focus(); toast('Complétez la date et le lieu.'); return false;}} const start=$('#event-start')?.value, end=$('#event-end')?.value; if(start&&end&&end<start){$('#event-end')?.focus(); toast('La date de retour doit être après la date de début.'); return false;}} if(step===4){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s); if(!el?.value?.trim()){el?.focus(); showAlert('Merci de compléter nom, téléphone et email.'); return false;}} const email=$('#client-email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.'); $('#client-email')?.focus(); return false;} const phone=($('#client-phone')?.value||'').replace(/\s/g,''); if(phone.length<8){showAlert('Téléphone invalide.'); $('#client-phone')?.focus(); return false;}} return true;}
   function goStep(n, bypass=false){n=Math.max(1,Math.min(4,Number(n)||1)); if(n>currentStep && !bypass){for(let i=currentStep;i<n;i++){if(!validateStep(i)) return;}} currentStep=n; maxStep=Math.max(maxStep,n); $$('.quote-step').forEach(sec=>sec.classList.toggle('active',Number(sec.dataset.step)===currentStep)); $$('.quote-tab').forEach(tab=>{const t=Number(tab.dataset.step); tab.classList.toggle('active',t===currentStep); tab.classList.toggle('done',t<currentStep);}); $('#prev-step')?.classList.toggle('hidden',currentStep===1); $('#next-step')?.classList.toggle('hidden',currentStep===4); const submit=$('#submit-quote'); if(submit){submit.classList.toggle('hidden',currentStep!==4); submit.classList.toggle('flex',currentStep===4);} window.scrollTo({top:0,behavior:'smooth'});}
   function buildRequest(){return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),equipment_category:'Silent Disco',equipment_detail:'Audio7 Halo 1',quantity:Number($('#headphones-count')?.value||50),channels:Number(activeChannel()),led_color:ledColor,accessories:{charging_racks:!!$('#accessory-racks')?.checked,led_rings:!!$('#accessory-led')?.checked},event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Silent Disco',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',status:'new'};}
   async function saveSupabase(req){try{if(!window.supabase)return false; const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY); const {data:{session}}=await sb.auth.getSession(); const payload={user_id:session?.user?.id||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{channels:req.channels,led_color:req.led_color,accessories:req.accessories,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes},message:req.message,status:'new'}; const {error}=await sb.from('quote_requests').insert(payload); if(error)throw error; return true;}catch(e){console.warn('quote_requests Supabase:',e.message); return false;}}
@@ -449,8 +362,9 @@
     $$('input[name="channels"]').forEach(i=>i.addEventListener('change',()=>{updateChannelCards();updateSummary();})); $$('.channel-card').forEach(c=>c.addEventListener('click',()=>{const i=c.querySelector('input'); if(i){i.checked=true; i.dispatchEvent(new Event('change',{bubbles:true}));}}));
     $$('.led-color').forEach(btn=>btn.addEventListener('click',()=>{$$('.led-color').forEach(b=>{b.classList.remove('border-white','ring-2','ring-[#FC036D]'); b.classList.add('border-transparent');}); btn.classList.remove('border-transparent'); btn.classList.add('border-white','ring-2','ring-[#FC036D]'); ledColor=btn.dataset.color||'Fuchsia'; updateSummary();}));
     $$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary)); ['#need-delivery','#need-tech','#need-insurance'].forEach(s=>$(s)?.addEventListener('change',updateSummary));
-    $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1)); $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req)); const saved=await saveSupabase(req); toast(saved?'Demande de devis envoyée.':'Demande enregistrée localement. Vérifie la table Supabase quote_requests.'); if(btn)btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé'; setTimeout(()=>{window.location.href='/confirmation-de-commande.html?quote='+encodeURIComponent(req.id)},800);}); updateChannelCards(); updateSummary(); goStep(1,true); }
+    $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1)); $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req)); const saved=await saveSupabase(req); const message=saved?'Demande de devis envoyée. Notre équipe revient vers vous rapidement.':'Demande enregistrée sur cette page. Vérifie la table Supabase quote_requests pour l’envoi serveur.'; toast(message); showAlert(message); const alert=$('#quote-alert'); if(alert){alert.classList.remove('border-error/40','bg-error-container/20','text-error'); alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');} if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';} }); updateChannelCards(); updateSummary(); goStep(1,true); }
   document.addEventListener('DOMContentLoaded',bind);
 })();
 </script>
+<script src="/components.js"></script>
 </body></html>
