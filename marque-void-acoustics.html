@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Void Acoustics - Location Sonorisation Professionnelle | RentSoundSystem</title>
+<meta name="description" content="Découvrez Void Acoustics sur RentSoundSystem : systèmes Air Motion, Stasys et Nexus pour clubs, festivals, événements premium et installations immersives."/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-tint": "#ffb2bf",
+                      "surface-container-low": "#1c1b1b",
+                      "secondary-container": "#454748",
+                      "on-tertiary-container": "#2a2a2a",
+                      "on-surface-variant": "#e6bcc2",
+                      "tertiary-container": "#929090",
+                      "surface-bright": "#393939",
+                      "on-secondary-fixed": "#1a1c1d",
+                      "on-surface-muted": "#E6BCC2",
+                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                      "on-secondary": "#2f3132",
+                      "surface-container-lowest": "#0e0e0e",
+                      "outline": "#ac878d",
+                      "surface": "#131313",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "on-surface": "#e5e2e1",
+                      "surface-container": "#201f1f",
+                      "inverse-primary": "#bc004f",
+                      "on-error": "#690005",
+                      "on-background": "#e5e2e1",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "error-container": "#93000a",
+                      "secondary-fixed": "#e3e2e3",
+                      "on-primary-container": "#5a0022",
+                      "on-primary-fixed": "#3f0016",
+                      "surface-dim": "#131313",
+                      "surface-container-high": "#2a2a2a",
+                      "primary-fixed-dim": "#ffb2bf",
+                      "tertiary": "#c8c6c5",
+                      "secondary": "#c6c6c7",
+                      "neon-glow": "rgba(252, 3, 109, 0.3)",
+                      "surface-glass": "rgba(31, 31, 31, 0.6)",
+                      "primary-container": "#ff4d80",
+                      "primary": "#ffb2bf",
+                      "on-secondary-container": "#b5b5b6",
+                      "inverse-on-surface": "#313030",
+                      "background": "#131313",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "on-primary": "#660028",
+                      "on-primary-fixed-variant": "#90003b",
+                      "inverse-surface": "#e5e2e1",
+                      "outline-variant": "#5d3f44",
+                      "on-secondary-fixed-variant": "#454748",
+                      "primary-fixed": "#ffd9de",
+                      "error": "#ffb4ab",
+                      "surface-container-highest": "#353534",
+                      "surface-variant": "#353534",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "on-tertiary": "#303030",
+                      "fuchsia": "#FC036D"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter-x": "2.5rem",
+                      "container-max": "1280px",
+                      "component-padding-x": "1.5rem",
+                      "component-padding-y": "0.625rem",
+                      "section-padding-y": "6rem",
+                      "card-gap": "1.5rem"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Manrope"],
+                      "body-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Manrope"],
+                      "display-hero-mobile": ["Manrope"],
+                      "body-md": ["Inter"],
+                      "display-hero": ["Manrope"]
+              },
+              "fontSize": {
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+        }
+    </style>
+
+<style id="rss-void-page-fix">
+  #header-container{position:relative;z-index:9999;min-height:73px}
+  #footer-container{min-height:320px}
+  #header-container header,#footer-container footer{display:block}
+  @media(max-width:767px){body{padding-top:0!important}.text-display-hero-mobile{font-size:42px!important;line-height:1.15!important}}
+</style>
+
+<style id="rss-void-products-css">
+.void-product-card{min-height:390px}
+.void-product-card img{transition:transform .55s ease,opacity .35s ease}
+.void-product-card:hover img{transform:scale(1.04);opacity:.82}
+.void-filter-active{background:#FC036D!important;color:#fff!important;border-color:#FC036D!important}
+.void-product-empty{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(31,31,31,.6),rgba(19,19,19,.8));}
+@media(max-width:767px){.void-product-card{min-height:430px}.void-product-card .void-product-content{min-height:430px;padding:24px!important}}
+</style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center overflow-hidden py-section-padding-y">
+<div class="absolute inset-0 z-0">
+<img alt="Void Acoustics Club Installation" class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A massive, high-end Void Acoustics sound system installed in a premium, dimly lit nightclub. The iconic red fiberglass horns of the Air Motion speakers are prominently featured against a dark, moody background. Atmospheric lighting casts deep shadows and highlights the sleek, alien-like curves of the equipment. The scene exudes exclusivity, raw acoustic power, and cutting-edge electronic music culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv3KYTPSkIiYDMRc8KGfV9_gz9VU3jra-Ank5JdLm_JZwNKW9B_vjGrYn2Ct4WaAPFBp6BI5ubdOCAdnooSrLa9GBv90nUdHfuRp1GqKjtXiOW9fwQ1oIOBech2Oeav3LSQkLeY3NP5DcLP3DHLPFDnDgD6KkitSpXRE7KSeQc7bmffHQTPfTrrry1xZvJmBJ5QacHkvLPKv72d1jdp7OgT3nLj8MFvnckomdUEMZWa8eNZ3Jma1QPOkZdB83W-wFSPGX2jqHl4Ms"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 text-center max-w-container-max mx-auto px-gutter-x">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-8">
+<span class="material-symbols-outlined text-primary text-sm">campaign</span>
+<span class="text-primary text-label-caps font-label-caps uppercase tracking-widest">Partenaire Officiel RentSoundSystem</span>
+</div>
+<h1 class="text-display-hero-mobile md:text-display-hero font-display-hero mb-6 neon-text-glow">
+                    Sonic <span class="text-[#FC036D]">Architecture</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    L'excellence acoustique rencontre le design visionnaire. Louez les systèmes Void Acoustics pour des expériences immersives inoubliables.
+                </p>
+<div class="flex gap-4 justify-center">
+<button class="bg-[#FC036D] text-white px-8 py-4 rounded text-label-caps font-label-caps uppercase neon-shadow hover:bg-opacity-90 transition-all">
+                        Explorer le Catalogue
+                    </button>
+<button class="bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded text-label-caps font-label-caps uppercase hover:bg-surface-container transition-all">
+                        Voir les Installations
+                    </button>
+</div>
+</div>
+</section>
+<!-- Geolocalisation Section -->
+<section class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
+<div class="max-w-container-max mx-auto px-gutter-x">
+<div class="mb-12 text-center">
+<h2 class="text-headline-lg font-headline-lg mb-4">Disponibilité RentSoundSystem</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Trouvez des systèmes Void près de chez vous</p>
+</div>
+<div class="glass-panel rounded-xl overflow-hidden h-[500px] relative">
+<img alt="Map of available systems" class="w-full h-full object-cover opacity-60" data-alt="A dark, stylized map interface with a modern, high-contrast aesthetic. The map is rendered in deep charcoal and black tones, with subtle grid lines. Across the map, several glowing neon fuchsia (#FC036D) markers or pins indicate locations. The overall look is technical, premium, and aligns with a dark-mode, nightclub-focused application design." data-location="Europe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClPILbk1OSyLA7WT0dUmnE7Xm7bm7EDsn4IlvacvShFg7ffh6-I_00X_1xywBKefNaGHH26U0ZkkpBoXVQiTXx4iDB7TYLRvxx-iWfjWWuOXF3sk8rk7FK6V7zqcm5D4uZeFBmPLkhcwDU4qdHNRA-2QoJrLQnBE4KXb8MuZVOM9oV-uj2KLTh-5Z7RkkPp-e0BfgEHDtyQxC2axjteg2DWmb593gGMPkekk3qFMLUY97-W-sFiD_rbj5UwiuHnpqH5PN97TGqz4M"/>
+<!-- Simulated Map Markers -->
+<div class="absolute top-1/4 left-1/3">
+<span class="material-symbols-outlined text-[#FC036D] text-4xl neon-text-glow" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="absolute top-1/2 left-1/2">
+<span class="material-symbols-outlined text-[#FC036D] text-4xl neon-text-glow" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="absolute bottom-1/3 right-1/4">
+<span class="material-symbols-outlined text-[#FC036D] text-4xl neon-text-glow" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Catalogue Section (Bento Grid) -->
+<section id="catalogue-void" class="py-section-padding-y max-w-container-max mx-auto px-gutter-x">
+<div class="mb-12">
+<h2 class="text-headline-lg font-headline-lg mb-4">Catalogue Location</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Séries emblématiques disponibles sur RentSoundSystem</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Air Motion (Spans 8 cols) -->
+<div class="md:col-span-8 glass-panel rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img alt="Air Motion Series" class="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500" data-alt="A close-up studio shot of a Void Acoustics Air Motion speaker in striking neon fuchsia. The three distinct conical horns are perfectly lit to highlight their smooth, glossy fiberglass finish against a pure black background. The lighting creates a dramatic, premium product photography aesthetic, emphasizing the futuristic and sculptural design of the audio equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDR2YHhNGQHya0mWQy8jWGxVbeeTRuv3IequcdBjI8GBDoTeLuN8BEEAJpzS5A1B-KxIr-Yp0XCW4qeGJ7YgWHHTmeAlOB_I10DkMTn-mMjOtsmvvkiM2NpF9H8Jfr7k6BvAp6sGp2hdEiAR_uLkjUP-DFaM8WKA8kHrs8m4aUaYpqAJlW4ILEnqXhaZqROv_boCljKPeaJcdPl3SuHKnfkzm4_3jXURhcm5IggNoDmKIBMPdOWLP_BRjBfazroivTOld9-RgsVUQ8"/>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-end min-h-[300px]">
+<h3 class="text-headline-md font-headline-md mb-2">Air Motion Séries</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-md">L'icône du design acoustique. Tri-amplifié, dispersion précise, impact visuel maximal.</p>
+<button class="w-fit bg-transparent border border-[#FC036D] text-[#FC036D] px-6 py-2 rounded text-label-caps font-label-caps uppercase hover:bg-[#FC036D] hover:text-white transition-all">
+                            Voir les offres
+                        </button>
+</div>
+</div>
+<!-- Stasys (Spans 4 cols) -->
+<div class="md:col-span-4 glass-panel rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img alt="Stasys Subwoofers" class="w-full h-full object-cover opacity-30 group-hover:opacity-50 transition-opacity duration-500" data-alt="A heavy-duty Void Acoustics Stasys subwoofer enclosure rendered in dark, matte textured paint. The speaker is positioned in a shadowy environment with a subtle magenta rim light catching the edge of its massive grill. The image conveys raw sub-bass power, durability, and professional touring-grade construction in a dark, high-contrast style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmrR5fhsZXJ8MsA6bH18I04KGDu5VmEwnGuC6Yjoi4hxEfdAYrfN_q-atHBbrnQhFjDEvowiY_ctfsXWqPbEJh6gfGNm2jaljwBEBOGuyGmoRIBvWVjNmsGBOXw5yz_BqVG2cbGk-6zhTXZfU9dZlp1LOK4-CislOspxLJzmCkVfvycIHt7mhu8dw5oR0YIAjmF0SfEzRnYDvRkDnWpXEGoAYbl--_WqjBCS9f8Xgywt_2Da-Vw8x_0ZFHZFYS5ByjvYub8AhM4c4"/>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-end min-h-[300px]">
+<h3 class="text-headline-md font-headline-md mb-2">Stasys Subs</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">Basses fréquences d'une puissance dévastatrice.</p>
+<button class="w-fit bg-transparent border border-outline-variant text-on-surface px-6 py-2 rounded text-label-caps font-label-caps uppercase hover:bg-surface-container transition-all">
+                            Explorer
+                        </button>
+</div>
+</div>
+<!-- Nexus (Spans 12 cols) -->
+<div class="md:col-span-12 glass-panel rounded-xl p-8 flex flex-col md:flex-row items-center gap-8 relative overflow-hidden">
+<div class="flex-1 z-10">
+<h3 class="text-headline-md font-headline-md mb-2 text-[#FC036D]">Nexus X</h3>
+<p class="text-body-lg font-body-lg text-on-surface-variant mb-6">Le summum de la technologie basse fréquence pour les clubs virtuels et physiques.</p>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">speed</span>
+<span class="text-label-caps font-label-caps">8000W AES</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">waves</span>
+<span class="text-label-caps font-label-caps">30Hz - 150Hz</span>
+</div>
+</div>
+</div>
+<div class="flex-1 w-full h-[250px] relative z-10 rounded-lg overflow-hidden border border-surface-glass-border">
+<img alt="Nexus Series" class="w-full h-full object-cover" data-alt="A colossal Void Acoustics Nexus X subwoofer array stacked in a high-end DJ booth. The massive, complex geometric shapes of the speakers are highlighted by dynamic club lighting in deep purples and fuchsia. The environment is dark, pulsating with energy, capturing the essence of top-tier electronic dance music events." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDb702FibCaLWjlzqeTaYpNLfRVBxWzcWqCbsqt08dqRFX0pewGHozLuXuI8OENN6GLigAb8haIs50OV3dmiRtY-9TKWDyucE-SyC2ghX_GfD0uy9bHQ52u-CGgFnCSTRaxq2LI6YpMLSkZUuz9FgBdC4hdW_FigurlcCqzY-hGZMtUsbFPiLf3zROvDIov8e-_D61mC6t-6KuP7B-Bz2NutHEF1_UuWknaFqa8ECria1PIHUMuj6CFP8iwC0r9Ng_LpmFzwBrrQss"/>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Dynamic Void Acoustics Listings -->
+<section id="annonces-void" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
+  <div class="max-w-container-max mx-auto px-gutter-x">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div>
+        <h2 class="text-headline-lg font-headline-lg mb-4">Annonces Void Acoustics disponibles</h2>
+        <p id="void-products-count" class="text-body-md font-body-md text-on-surface-variant">Chargement des annonces Void Acoustics...</p>
+      </div>
+      <div id="void-products-filters" class="flex flex-wrap gap-3">
+        <button type="button" data-void-filter="all" class="void-filter-active border border-[#FC036D] bg-[#FC036D] text-white px-4 py-2 rounded text-label-caps font-label-caps uppercase">Tout</button>
+        <button type="button" data-void-filter="air" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Air</button>
+        <button type="button" data-void-filter="sub" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Subs</button>
+        <button type="button" data-void-filter="nexus" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Nexus</button>
+        <button type="button" data-void-filter="touring" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Touring</button>
+      </div>
+    </div>
+    <div id="void-products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap">
+      <div class="col-span-full text-center text-on-surface-variant py-16">Chargement des annonces...</div>
+    </div>
+  </div>
+</section>
+
+<!-- Video Case Studies -->
+<section id="installations-void" class="py-section-padding-y bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto px-gutter-x">
+<div class="mb-12">
+<h2 class="text-headline-lg font-headline-lg mb-4">Installations &amp; Case Studies</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">L'expérience Void en action.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-card-gap">
+<!-- Video Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden group cursor-pointer">
+<div class="relative h-[300px]">
+<img alt="Club Installation" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A wide shot of a packed, high-end underground nightclub in Ibiza, illuminated by sweeping lasers and deep magenta spotlights. The crowd is a blur of motion, but the focal point is the DJ booth flanked by imposing, futuristic Void Acoustics sound systems. The atmosphere is intense, energetic, and premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHLdSD38p_FbaQ3Hiv734z0dJFC3s7ZnFjAYdcD5ZIoDGJJw5ieG5-OEpSxIq2sbaMx_vN0k0TGF-THQ25watFj-TcbOYP7CLavGeOBGgXE3VlaE7I2eQG_WUdvK5F7gz2wj4yWO7ojRjPKEOkjLCEWcg2OHewBfatrIM0uNie8I_pFClnmlA4q50dQe77-Se4AeNVm0MY1pEVu-Z1EU9Jxm6Z__Iym6OLVAzLwJsmdqXH4T0zO2-Q38zMiLP_x3sxLSDMX0u155M"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full bg-background/80 backdrop-blur border border-surface-glass-border flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[#FC036D] text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-surface-glass-border">
+<h4 class="text-headline-md font-headline-md mb-2">Amnesia, Ibiza</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Intégration complète du système Incubus.</p>
+</div>
+</div>
+<!-- Video Card 2 -->
+<div class="glass-panel rounded-xl overflow-hidden group cursor-pointer">
+<div class="relative h-[300px]">
+<img alt="Festival Installation" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A sleek, modern outdoor beach club setting at dusk. Stylish cabanas and a pool area are visible, but the main feature is a set of white Void Acoustics Air Vantage speakers mounted on metallic trusses. The scene is lit by subtle ambient light and a warm sunset glow, contrasting with the dark, chic aesthetic of the sound equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm6cjGw5YNi9AzEf5R8JsCUjkGX2e2N9ny0wezlZ2uaJXSnlPmFAzTE7j0LZ6u2EOCDC385kuwTo1h1NHouy73n3El6ouxPz2pvDrWAweBdGFBLgv_7jDx7ao-7Yxue4zC3iA_QZx3p04yRYOWpdrxBwAdNEPdEP0ASGe0OQca-JjzJfAdjRzBFSszhF2oLO4copSQWD3CtPxPmB6-9P-Ex8RviT0hrdtWF9DB2HZVpe5fzpdtLFC7Rnlm6pkSSLxzmzllr5raSzU"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full bg-background/80 backdrop-blur border border-surface-glass-border flex items-center justify-center group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[#FC036D] text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+</div>
+<div class="p-6 border-t border-surface-glass-border">
+<h4 class="text-headline-md font-headline-md mb-2">Festival Plein Air</h4>
+<p class="text-body-md font-body-md text-on-surface-variant">Déploiement modulaire Air Motion.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Expert Reviews -->
+<section class="py-section-padding-y max-w-container-max mx-auto px-gutter-x">
+<div class="mb-12 text-center">
+<h2 class="text-headline-lg font-headline-lg mb-4">Avis d'Experts</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Retours des utilisateurs RentSoundSystem</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Review 1 -->
+<div class="glass-panel p-6 rounded-xl">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Profile picture of a professional sound engineer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm094eLAfCaAdcoC6mIhviqvT_I1qrWlXZIUZLY4KRIDGC9xMvxTtPdrtt_RX3eQg5EtWMSKJNIvNgJ1E-Z-ajaW23QYEypuEqBz8yPVhqIwrwdSJcr1GuWBY9q6wG9z7LAX0meJWWJ0hOz-rmJ_UZO5udLLDpOJswKEhngCpnx9q_rPxOmA_G9z3sbEzTTjeo6H2lgWlJAelAnFYtMSAYZIhcAPbapf8n4FUpTLVuoLHfRx7vrhts8t3bhIkj0_sC8IoeotPzghM"/>
+</div>
+<div>
+<div class="font-bold">Julien M.</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Loueur Vérifié
+                            </div>
+</div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-muted italic">"Le système Air Motion loué via RentSoundSystem a transformé notre événement. Qualité sonore cristalline et un look qui a impressionné tout le monde."</p>
+</div>
+<!-- Review 2 -->
+<div class="glass-panel p-6 rounded-xl border border-[#FC036D]/30 relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-[#FC036D]/10 text-[#FC036D] text-[10px] px-2 py-1 rounded-bl-lg font-bold">TOP AVIS</div>
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Profile picture of a female DJ." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUXl376bqJNGO6K0lPuzDrVyNSnpb5AyEG354V9xAr8d7AHLOqyJ9SII_mU_hKPdugG_qB1-46na5ZiccJuv_tXGj_3DEohkExjsTO6tHgc0Jn0qYuZkqbOqmoeRxgeth8Ex2sKuWQbYjikCDL1bOi5m69bq4qhYa9K7je5fooumqAgV3KHxje18qZmWMOYc4VUdLIj5wRUNa0uG91bkWZZEhnZWZJtA8DBmGILBGBQ_0pP4gOqIXSdsWDCmOiJAYZTLJ9r3o3ZOs"/>
+</div>
+<div>
+<div class="font-bold">Sarah T. (DJ)</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Loueur Vérifié
+                            </div>
+</div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-muted italic">"Les subs Stasys fournissent une pression acoustique incroyable. Le processus de location sur la plateforme est fluide et pro."</p>
+</div>
+<!-- Review 3 -->
+<div class="glass-panel p-6 rounded-xl">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="Profile picture of an event organizer." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmPFxJX5tDZ3XYVqu_VXvdMyjyq3H4kpwBd_-wv8BzoJU4mC0T6zBuWr8g1zjYLu6c5VxzZ_3Fu_G3yXqA4WIK37h8OksdgrSnlh8PbQUpt25m4q0hgoEhpravPSKmoPje7wpvpbSeCNKLTxD9qiUuoKttWZZtY_cyepdzsi6F2G0aXG_DdagMIPx6rIHm9MujvtMD26VPNpPFCcc_wz8qT9vwv9RiDJrsNRkrasqgI8RnbOE8AHuzijs4AnSdozi-f18Zauq6iAI"/>
+</div>
+<div>
+<div class="font-bold">Marc D.</div>
+<div class="text-xs text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-[14px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                Loueur Vérifié
+                            </div>
+</div>
+</div>
+<p class="text-body-md font-body-md text-on-surface-muted italic">"Void Acoustics ne déçoit jamais. Avoir accès à ce matériel haut de gamme via RentSoundSystem est un atout majeur pour nos productions."</p>
+</div>
+</div>
+</section>
+</main>
+<div id="footer-container"></div>
+
+<script>
+(function(){
+  function scrollToSection(text){
+    const target = Array.from(document.querySelectorAll('section')).find(sec => sec.textContent.toLowerCase().includes(text));
+    if(target) target.scrollIntoView({behavior:'smooth', block:'start'});
+  }
+  document.addEventListener('DOMContentLoaded', function(){
+    document.querySelectorAll('button').forEach(function(btn){
+      const t = btn.textContent.trim().toLowerCase();
+      if(t.includes('explorer le catalogue') || t.includes('voir les offres') || t.includes('explorer')){
+        btn.addEventListener('click', function(){ scrollToSection('catalogue location'); });
+      }
+      if(t.includes('voir les installations')){
+        btn.addEventListener('click', function(){ scrollToSection('installations'); });
+      }
+    });
+  });
+})();
+</script>
+\n<script id="rss-void-products-dynamic">
+(function(){
+  'use strict';
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  let allVoidProducts = [];
+  let currentFilter = 'all';
+
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+  const safe = (v) => String(v ?? '').replace(/[&<>\"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));
+  const clean = (v) => String(v ?? '').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+  const norm = (v) => String(v ?? '').toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+
+  function firstImage(item){
+    const imgs = Array.isArray(item.listing_images) ? item.listing_images.slice() : [];
+    imgs.sort((a,b) => Number(a.position || 0) - Number(b.position || 0));
+    return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+  }
+
+  function price(item){
+    const value = item.price_per_day ?? item.daily_price ?? item.price ?? item.prix ?? 0;
+    const n = Number(value || 0);
+    return n ? n.toLocaleString('fr-FR', {maximumFractionDigits:0}) + '€' : 'Sur devis';
+  }
+
+  function productUrl(item){
+    if(item.original_id !== undefined && item.original_id !== null) return '/product.html?original_id=' + encodeURIComponent(item.original_id);
+    if(item.id) return '/product.html?id=' + encodeURIComponent(item.id);
+    return '/catalog.html?brand=void';
+  }
+
+  function matchesVoid(item){
+    const text = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
+    return text.includes('void') || text.includes('air motion') || text.includes('nexus') || text.includes('stasys') || text.includes('incubus');
+  }
+
+  function typeOf(item){
+    const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
+    if(text.includes('nexus')) return 'nexus';
+    if(text.includes('sub') || text.includes('stasys') || text.includes('bass') || text.includes('caisson')) return 'sub';
+    if(text.includes('air') || text.includes('motion') || text.includes('vantage') || text.includes('airten')) return 'air';
+    if(text.includes('tour') || text.includes('festival') || text.includes('incubus')) return 'touring';
+    return 'all';
+  }
+
+  function setCount(n){
+    const el = $('#void-products-count');
+    if(el) el.textContent = n + ' annonce' + (n > 1 ? 's' : '') + ' Void Acoustics trouvée' + (n > 1 ? 's' : '');
+  }
+
+  function render(filter='all'){
+    currentFilter = filter;
+    const grid = $('#void-products-grid');
+    if(!grid) return;
+    const list = filter === 'all' ? allVoidProducts : allVoidProducts.filter(p => typeOf(p) === filter);
+    setCount(list.length);
+    if(!list.length){
+      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Ajoutez une annonce avec la marque Void Acoustics dans Supabase pour l’afficher ici.</p></div>';
+      return;
+    }
+    grid.innerHTML = list.map((item, index) => {
+      const title = safe(item.title || item.name || item.model || 'Matériel Void Acoustics');
+      const desc = safe(clean(item.description || item.short_description || '').slice(0, 160) || 'Annonce Void Acoustics disponible à la location sur RentSoundSystem.');
+      const img = firstImage(item);
+      const tag = safe(item.category || item.model || 'Void Acoustics');
+      const location = safe(item.city || item.location || item.ville || 'Disponible');
+      const url = productUrl(item);
+      const imgHtml = img ? '<img src="'+safe(img)+'" alt="'+title+'" class="absolute inset-0 w-full h-full object-cover opacity-60" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove();">' : '';
+      return '<article data-url="'+safe(url)+'" class="void-product-card '+(index===0?'lg:col-span-2 ':'')+'group relative overflow-hidden rounded-xl glass-panel cursor-pointer border border-surface-glass-border hover:border-[#FC036D] transition-all">' +
+        '<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>' + imgHtml +
+        '<div class="void-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8">' +
+        '<div class="flex flex-wrap items-center gap-3 mb-4"><span class="bg-background/80 border border-outline-variant text-on-surface text-xs uppercase tracking-widest font-bold px-3 py-1 rounded">'+tag+'</span><span class="text-[#FC036D] text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">fiber_manual_record</span>'+location+'</span></div>' +
+        '<h3 class="text-headline-md font-headline-md mb-3 group-hover:text-[#FC036D] transition-colors">'+title+'</h3>' +
+        '<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-2xl">'+desc+'</p>' +
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-auto"><span class="text-headline-md font-headline-md text-on-surface">'+price(item)+' <span class="text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="w-fit bg-transparent border border-[#FC036D] text-[#FC036D] px-5 py-2 rounded text-label-caps font-label-caps uppercase hover:bg-[#FC036D] hover:text-white transition-all">Voir l’annonce</button></div>' +
+        '</div></article>';
+    }).join('');
+    $$('#void-products-grid .void-product-card').forEach(card => {
+      card.addEventListener('click', (event) => {
+        if(event.target.closest('a')) return;
+        window.location.href = card.dataset.url || '/catalog.html?brand=void';
+      });
+    });
+  }
+
+  async function loadVoidProducts(){
+    const grid = $('#void-products-grid');
+    try{
+      if(!window.supabase) throw new Error('Supabase JS non chargé');
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const { data, error } = await client
+        .from('listings')
+        .select('*, listing_images(image_url, position)')
+        .or('status.eq.publish,status.eq.published,status.is.null')
+        .limit(700);
+      if(error) throw error;
+      allVoidProducts = (data || []).filter(matchesVoid);
+      render(currentFilter);
+    }catch(error){
+      console.warn('Void listings loading error:', error.message || error);
+      if(grid){
+        grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">warning</span><h3 class="text-headline-md font-headline-md mb-2">Impossible de charger les annonces Void</h3><p class="text-body-md font-body-md text-on-surface-variant">Vérifiez les colonnes Supabase et les politiques RLS de la table listings.</p></div>';
+      }
+      setCount(0);
+    }
+  }
+
+  function bindFilters(){
+    $$('#void-products-filters [data-void-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('#void-products-filters [data-void-filter]').forEach(b => b.classList.remove('void-filter-active'));
+        btn.classList.add('void-filter-active');
+        render(btn.dataset.voidFilter || 'all');
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    bindFilters();
+    loadVoidProducts();
+  });
+})();
+</script>\n
+<script src="/components.js"></script>
+</body></html>
