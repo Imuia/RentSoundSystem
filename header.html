@@ -1,54 +1,127 @@
 <!-- TopNavBar -->
-<header class="bg-surface/80 backdrop-blur-md border-b border-white/10 fixed top-0 z-50 w-full transition-all">
+<style id="rss-header-self-contained-style">
+/* Header RentSoundSystem autonome : même rendu sur toutes les pages */
+:root{
+  --rss-pink:#fc036d;
+  --rss-bg:#131313;
+  --rss-bg-soft:rgba(19,19,19,.84);
+  --rss-text:#e2e2e2;
+  --rss-muted:#e6bcc2;
+  --rss-border:rgba(255,255,255,.10);
+}
+.rss-site-header{
+  position:fixed!important;top:0!important;left:0!important;right:0!important;width:100%!important;z-index:9999!important;
+  background:var(--rss-bg-soft)!important;backdrop-filter:blur(14px)!important;-webkit-backdrop-filter:blur(14px)!important;
+  border-bottom:1px solid var(--rss-border)!important;box-sizing:border-box!important;
+  font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif!important;
+}
+.rss-site-header *{box-sizing:border-box!important}
+.rss-header-inner{
+  max-width:1280px!important;margin:0 auto!important;padding:16px 40px!important;min-height:72px!important;
+  display:flex!important;align-items:center!important;justify-content:space-between!important;gap:24px!important;
+}
+.rss-header-left,.rss-header-actions{display:flex!important;align-items:center!important;gap:14px!important}
+.rss-header-left{gap:24px!important}
+.rss-header-logo{
+  color:var(--rss-pink)!important;font-family:Manrope,Inter,sans-serif!important;font-size:15px!important;line-height:1!important;
+  font-weight:900!important;letter-spacing:-.02em!important;text-decoration:none!important;white-space:nowrap!important;
+}
+.rss-desktop-nav{display:flex!important;align-items:center!important;gap:30px!important}
+.rss-desktop-nav a,.rss-mobile-nav a{
+  color:var(--rss-muted)!important;text-decoration:none!important;font-size:14px!important;line-height:20px!important;font-weight:700!important;
+  transition:color .2s ease,border-color .2s ease,background .2s ease,transform .2s ease!important;
+}
+.rss-desktop-nav a:hover,.rss-mobile-nav a:hover{color:var(--rss-pink)!important}
+.rss-header-icon{
+  display:flex!important;align-items:center!important;justify-content:center!important;width:36px!important;height:36px!important;
+  color:var(--rss-text)!important;border-radius:8px!important;text-decoration:none!important;
+}
+.rss-header-icon:hover{color:var(--rss-pink)!important;background:rgba(252,3,109,.08)!important}
+.rss-auth-button{
+  min-height:34px!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;
+  padding:8px 14px!important;border-radius:4px!important;border:1px solid rgba(252,3,109,.70)!important;color:var(--rss-text)!important;
+  background:transparent!important;text-decoration:none!important;font-size:13px!important;line-height:16px!important;font-weight:800!important;white-space:nowrap!important;
+}
+.rss-auth-button:hover{color:#fff!important;border-color:var(--rss-pink)!important;background:rgba(252,3,109,.10)!important;box-shadow:0 0 18px rgba(252,3,109,.18)!important}
+.rss-auth-button.bg-\[\#fc036d\]{background:var(--rss-pink)!important;color:#fff!important;box-shadow:0 0 18px rgba(252,3,109,.35)!important}
+.rss-auth-button .material-symbols-outlined{font-size:18px!important}
+.rss-mobile-trigger{
+  display:none!important;align-items:center!important;justify-content:center!important;width:40px!important;height:40px!important;
+  border:1px solid var(--rss-border)!important;border-radius:8px!important;color:var(--rss-text)!important;cursor:pointer!important;
+}
+.rss-mobile-trigger:hover{color:var(--rss-pink)!important;border-color:rgba(252,3,109,.5)!important}
+.rss-mobile-nav{display:none!important;border-top:1px solid var(--rss-border)!important;background:rgba(19,19,19,.97)!important;backdrop-filter:blur(12px)!important}
+.rss-mobile-nav-inner{max-width:1280px!important;margin:0 auto!important;padding:16px!important;display:flex!important;flex-direction:column!important;gap:12px!important}
+.rss-mobile-nav a{padding:8px 0!important}
+.rss-mobile-actions{display:grid!important;grid-template-columns:1fr 1fr!important;gap:12px!important;padding-top:12px!important;border-top:1px solid var(--rss-border)!important}
+.rss-catalog-button{
+  display:flex!important;align-items:center!important;justify-content:center!important;text-align:center!important;min-height:42px!important;border-radius:4px!important;
+  background:var(--rss-pink)!important;color:#fff!important;font-size:13px!important;font-weight:800!important;text-decoration:none!important;
+}
+#rss-mobile-menu-toggle:checked ~ .rss-mobile-nav{display:block!important}
+@media(max-width:900px){
+  .rss-header-inner{padding:14px 16px!important;min-height:68px!important}
+  .rss-desktop-nav{display:none!important}
+  .rss-header-icon{display:none!important}
+  .rss-auth-button[data-rss-auth-link="desktop"]{display:none!important}
+  .rss-mobile-trigger{display:flex!important}
+}
+@media(max-width:480px){
+  .rss-header-logo{font-size:14px!important}
+  .rss-mobile-actions{grid-template-columns:1fr!important}
+}
+</style>
+
+<header class="rss-site-header bg-surface/80 backdrop-blur-md border-b border-white/10 fixed top-0 z-50 w-full transition-all">
   <input id="rss-mobile-menu-toggle" type="checkbox" class="hidden peer" />
 
-  <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
-    <div class="flex items-center gap-stack-md">
-      <a class="font-headline-md text-headline-md font-bold text-[#fc036d] tracking-tight" href="/index.html">
+  <div class="rss-header-inner flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+    <div class="rss-header-left flex items-center gap-stack-md">
+      <a class="rss-header-logo font-headline-md text-headline-md font-bold text-[#fc036d] tracking-tight" href="/index.html">
         RENTSOUNDSYSTEM
       </a>
     </div>
 
-    <nav class="hidden md:flex items-center gap-8">
+    <nav class="rss-desktop-nav hidden md:flex items-center gap-8">
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/catalog.html">Louer du matériel</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/demande-de-devis">Demande de Devis</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/marques.html">Nos marques</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/centre-assistance.html">Assistance</a>
     </nav>
 
-    <div class="flex items-center gap-stack-sm">
-      <a href="/centre-assistance.html" class="hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Notifications">
+    <div class="rss-header-actions flex items-center gap-stack-sm">
+      <a href="/centre-assistance.html" class="rss-header-icon hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Notifications">
         <span class="material-symbols-outlined">notifications</span>
       </a>
 
-      <a href="/catalog.html" class="hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Panier">
+      <a href="/catalog.html" class="rss-header-icon hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Panier">
         <span class="material-symbols-outlined">shopping_cart</span>
       </a>
 
-      <a id="rss-auth-link" data-rss-auth-link="desktop" href="/connexion-inscription.html" class="hidden md:flex items-center gap-2 border border-[#fc036d]/70 text-on-surface px-4 py-2 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors">
+      <a id="rss-auth-link" data-rss-auth-link="desktop" href="/connexion-inscription.html" class="rss-auth-button hidden md:flex items-center gap-2 border border-[#fc036d]/70 text-on-surface px-4 py-2 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors">
         <span id="rss-auth-icon" data-rss-auth-icon="desktop" class="material-symbols-outlined text-[18px]">login</span>
         <span id="rss-auth-label" data-rss-auth-label="desktop">S'inscrire / Connexion</span>
       </a>
 
-      <label for="rss-mobile-menu-toggle" class="md:hidden text-on-surface hover:text-primary transition-colors duration-200 p-2 border border-white/10 rounded cursor-pointer" aria-label="Ouvrir le menu">
+      <label for="rss-mobile-menu-toggle" class="rss-mobile-trigger md:hidden text-on-surface hover:text-primary transition-colors duration-200 p-2 border border-white/10 rounded cursor-pointer" aria-label="Ouvrir le menu">
         <span class="material-symbols-outlined peer-checked:hidden">menu</span>
       </label>
     </div>
   </div>
 
-  <nav class="hidden peer-checked:block md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-md">
-    <div class="px-margin-mobile py-4 flex flex-col gap-3">
+  <nav class="rss-mobile-nav hidden peer-checked:block md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-md">
+    <div class="rss-mobile-nav-inner px-margin-mobile py-4 flex flex-col gap-3">
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/catalog.html">Louer du matériel</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/demande-de-devis">Demande de Devis</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/marques.html">Nos marques</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/centre-assistance.html">Assistance</a>
 
-      <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
-        <a id="rss-auth-link-mobile" data-rss-auth-link="mobile" href="/connexion-inscription.html" class="text-center border border-[#fc036d]/70 text-on-surface px-4 py-3 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
+      <div class="rss-mobile-actions grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
+        <a id="rss-auth-link-mobile" data-rss-auth-link="mobile" href="/connexion-inscription.html" class="rss-auth-button text-center border border-[#fc036d]/70 text-on-surface px-4 py-3 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
           <span id="rss-auth-icon-mobile" data-rss-auth-icon="mobile" class="material-symbols-outlined text-[18px]">login</span>
           <span id="rss-auth-label-mobile" data-rss-auth-label="mobile">S'inscrire / Connexion</span>
         </a>
-        <a href="/catalog.html" class="text-center bg-primary text-on-primary px-4 py-3 rounded font-label-md text-label-md hover:bg-primary-container transition-colors">
+        <a href="/catalog.html" class="rss-catalog-button text-center bg-primary text-on-primary px-4 py-3 rounded font-label-md text-label-md hover:bg-primary-container transition-colors">
           Catalogue
         </a>
       </div>
