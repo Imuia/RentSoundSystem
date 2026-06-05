@@ -261,7 +261,21 @@
 document.addEventListener('DOMContentLoaded', function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const REDIRECT_URL = window.location.origin + '/espace-client.html';
+  const DEFAULT_REDIRECT_URL = window.location.origin + '/espace-client.html';
+
+  function safeRedirect(value) {
+    if (!value) return DEFAULT_REDIRECT_URL;
+    try {
+      const url = new URL(value, window.location.origin);
+      if (url.origin !== window.location.origin) return DEFAULT_REDIRECT_URL;
+      return url.href;
+    } catch (e) {
+      return DEFAULT_REDIRECT_URL;
+    }
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const REDIRECT_URL = safeRedirect(params.get('redirect'));
 
   const supabaseClient = window.supabase
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -291,6 +305,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const statusBox = document.createElement('div');
 
   let mode = 'login';
+
+  if (params.get('redirect')) {
+    const info = document.createElement('div');
+    info.className = 'mb-5 text-sm rounded border px-4 py-3 text-primary border-primary/30 bg-primary/10';
+    info.textContent = 'Connectez-vous pour finaliser votre commande. Vous serez automatiquement renvoyé vers le tunnel de commande.';
+    document.querySelector('.bg-surface-container')?.prepend(info);
+  }
 
   statusBox.className = 'hidden mt-4 text-sm rounded border px-4 py-3';
   form.parentElement.insertBefore(statusBox, form.nextSibling);
@@ -340,7 +361,6 @@ document.addEventListener('DOMContentLoaded', function () {
   loginTab.addEventListener('click', () => activateTab('login'));
   registerTab.addEventListener('click', () => activateTab('register'));
 
-  const params = new URLSearchParams(window.location.search);
   if (params.get('mode') === 'register') activateTab('register');
 
   togglePassword.addEventListener('click', function () {
