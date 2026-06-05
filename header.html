@@ -5,8 +5,8 @@
   <div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
     <div class="flex items-center gap-stack-md">
       <a class="font-headline-md text-headline-md font-bold text-[#fc036d] tracking-tight" href="/index.html">
-  RENTSOUNDSYSTEM
-</a>
+        RENTSOUNDSYSTEM
+      </a>
     </div>
 
     <nav class="hidden md:flex items-center gap-8">
@@ -25,8 +25,9 @@
         <span class="material-symbols-outlined">shopping_cart</span>
       </a>
 
-      <a href="/connexion-inscription.html" class="hidden md:block border border-on-surface text-on-surface px-4 py-2 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors">
-        Mon Compte
+      <a id="rss-auth-link" href="/connexion-inscription.html" class="hidden md:flex items-center gap-2 border border-[#fc036d]/70 text-on-surface px-4 py-2 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors">
+        <span id="rss-auth-icon" class="material-symbols-outlined text-[18px]">login</span>
+        <span id="rss-auth-label">S'inscrire / Connexion</span>
       </a>
 
       <label for="rss-mobile-menu-toggle" class="md:hidden text-on-surface hover:text-primary transition-colors duration-200 p-2 border border-white/10 rounded cursor-pointer" aria-label="Ouvrir le menu">
@@ -38,13 +39,14 @@
   <nav class="hidden peer-checked:block md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-md">
     <div class="px-margin-mobile py-4 flex flex-col gap-3">
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/catalog.html">Louer du matériel</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/devenir-partenaire.html">Devenir Partenaire</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/tarifs.html">Nos tarifs</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/demande-de-devis">Demande de Devis</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/marques.html">Nos marques</a>
       <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/centre-assistance.html">Assistance</a>
 
       <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
-        <a href="/connexion-inscription.html" class="text-center border border-on-surface text-on-surface px-4 py-3 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors">
-          Mon Compte
+        <a id="rss-auth-link-mobile" href="/connexion-inscription.html" class="text-center border border-[#fc036d]/70 text-on-surface px-4 py-3 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
+          <span id="rss-auth-icon-mobile" class="material-symbols-outlined text-[18px]">login</span>
+          <span id="rss-auth-label-mobile">S'inscrire / Connexion</span>
         </a>
         <a href="/catalog.html" class="text-center bg-primary text-on-primary px-4 py-3 rounded font-label-md text-label-md hover:bg-primary-container transition-colors">
           Catalogue
@@ -53,3 +55,75 @@
     </div>
   </nav>
 </header>
+
+<script>
+(function(){
+  'use strict';
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const ACCOUNT_URL = '/espace-client.html';
+  const LOGIN_URL = '/connexion-inscription.html';
+
+  function setAuthButton(isConnected, user){
+    const label = isConnected ? 'Mon compte' : "S'inscrire / Connexion";
+    const icon = isConnected ? 'account_circle' : 'login';
+    const href = isConnected ? ACCOUNT_URL : LOGIN_URL;
+
+    ['','-mobile'].forEach(function(suffix){
+      const link = document.getElementById('rss-auth-link' + suffix);
+      const text = document.getElementById('rss-auth-label' + suffix);
+      const ic = document.getElementById('rss-auth-icon' + suffix);
+      if(link){
+        link.href = href;
+        link.setAttribute('aria-label', label);
+        link.title = isConnected && user?.email ? user.email : label;
+        link.classList.toggle('bg-[#fc036d]', isConnected);
+        link.classList.toggle('text-white', isConnected);
+        link.classList.toggle('shadow-[0_0_18px_rgba(252,3,109,0.35)]', isConnected);
+      }
+      if(text) text.textContent = label;
+      if(ic) ic.textContent = icon;
+    });
+  }
+
+  function loadSupabaseSdk(){
+    return new Promise(function(resolve){
+      if(window.supabase) return resolve(true);
+      const existing = document.querySelector('script[data-rss-supabase-sdk]');
+      if(existing){ existing.addEventListener('load', function(){ resolve(!!window.supabase); }); return; }
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      s.async = true;
+      s.dataset.rssSupabaseSdk = 'true';
+      s.onload = function(){ resolve(!!window.supabase); };
+      s.onerror = function(){ resolve(false); };
+      document.head.appendChild(s);
+    });
+  }
+
+  async function updateHeaderAuth(){
+    try{
+      const ok = await loadSupabaseSdk();
+      if(!ok || !window.supabase){ setAuthButton(false); return; }
+      if(!window.__rssHeaderSupabase){
+        window.__rssHeaderSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      }
+      const client = window.__rssHeaderSupabase;
+      const { data } = await client.auth.getSession();
+      setAuthButton(!!data?.session, data?.session?.user || null);
+      if(!window.__rssHeaderAuthListener){
+        window.__rssHeaderAuthListener = true;
+        client.auth.onAuthStateChange(function(_event, session){
+          setAuthButton(!!session, session?.user || null);
+        });
+      }
+    }catch(e){
+      setAuthButton(false);
+    }
+  }
+
+  if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', updateHeaderAuth);
+  else updateHeaderAuth();
+  window.rssUpdateHeaderAuth = updateHeaderAuth;
+})();
+</script>
