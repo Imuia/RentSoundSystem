@@ -837,31 +837,7 @@
     const city = item.city || item.location || 'Votre ville';
     const country = item.country || 'France';
     const category = item.category || 'Matériel audio';
-    const dailyPrice = Number(item.price_day ?? item.price_per_day ?? item.price ?? item.daily_price ?? 0);
-    const deposit = Number(item.caution ?? item.deposit ?? item.security_deposit ?? 0);
-    const productImage = firstImage || images[0] || item.image_url || item.image || '';
-    const price = money(dailyPrice || 0);
-
-    window.RSS_CURRENT_PRODUCT = {
-      id: item.id || '',
-      original_id: item.original_id ?? null,
-      name: title,
-      title: title,
-      description: cleanDescription(item.description || ''),
-      dailyPrice: dailyPrice || 0,
-      price: dailyPrice || 0,
-      deposit: deposit || Math.max(0, Math.round((dailyPrice || 0) * 5)),
-      quantity: 1,
-      image: productImage,
-      city: city,
-      country: country,
-      category: category,
-      brand: item.brand || '',
-      model: item.model || '',
-      url: window.location.pathname + window.location.search
-    };
-
-    try { localStorage.setItem('rssViewedProduct', JSON.stringify(window.RSS_CURRENT_PRODUCT)); } catch(e) {}
+    const price = money(item.price || 0);
 
     document.title = title + ' - RentSoundSystem.com';
 
@@ -1124,64 +1100,25 @@
       window.open('https://twitter.com/intent/tweet?url=' + encodeURIComponent(location.href) + '&text=' + encodeURIComponent(title), '_blank');
     });
 
-    // Réservation/devis synchronisés avec le tunnel de commande
-    function selectedDateRange(){
-      const list = selectedDates.slice().sort();
-      return {
-        startDate: list[0] || '',
-        endDate: list[list.length - 1] || list[0] || '',
-        dates: list,
-        days: Math.max(1, list.length)
-      };
-    }
+    // Réservation/devis avec quantité + dates + options
+    function buildBookingBody(type) {
+      const title = document.querySelector('.lg\\:col-span-5 h1')?.textContent?.trim() || document.title;
+      const total = totalPriceEl?.textContent?.trim() || '';
+      const delivery = document.getElementById('rss-option-delivery')?.checked ? 'Oui' : 'Non';
+      const install = document.getElementById('rss-option-install')?.checked ? 'Oui' : 'Non';
 
-    function buildCheckoutDraft(){
-      const product = Object.assign({
-        id: '',
-        original_id: null,
-        name: document.querySelector('.lg\\:col-span-5 h1')?.textContent?.trim() || document.title,
-        description: document.querySelector('#rss-tab-overview p')?.textContent?.trim() || 'Matériel professionnel RentSoundSystem',
-        dailyPrice: getBasePrice(),
-        price: getBasePrice(),
-        deposit: Math.max(0, Math.round(getBasePrice() * 5)),
-        quantity: qty,
-        image: document.querySelector('.aspect-square.md\\:aspect-\\[4\\/3\\] img')?.src || '',
-        url: window.location.pathname + window.location.search
-      }, window.RSS_CURRENT_PRODUCT || {});
-
-      product.quantity = qty;
-      product.dailyPrice = Number(product.dailyPrice || product.price || getBasePrice() || 0);
-      product.price = product.dailyPrice;
-
-      const range = selectedDateRange();
-      return {
-        source: 'product-page',
-        createdAt: new Date().toISOString(),
-        product: product,
-        rental: {
-          startDate: range.startDate,
-          endDate: range.endDate,
-          selectedDates: range.dates,
-          days: range.days,
-          city: product.city || '',
-          delivery: document.getElementById('rss-option-delivery')?.checked ? 'delivery' : 'pickup',
-          technician: !!document.getElementById('rss-option-install')?.checked
-        },
-        options: {
-          delivery: !!document.getElementById('rss-option-delivery')?.checked,
-          installation: !!document.getElementById('rss-option-install')?.checked
-        },
-        estimatedTotalLabel: totalPriceEl?.textContent?.trim() || ''
-      };
-    }
-
-    function saveCheckoutDraft(){
-      const draft = buildCheckoutDraft();
-      try {
-        localStorage.setItem('rssSelectedProduct', JSON.stringify(draft.product));
-        localStorage.setItem('rssCheckoutDraft', JSON.stringify(draft));
-      } catch(e) { console.warn('Impossible de sauvegarder le panier local', e); }
-      return draft;
+      return encodeURIComponent(
+        'Bonjour,\n\n' +
+        'Je souhaite faire une ' + type + ' pour :\n\n' +
+        title + '\n' +
+        'Quantité : ' + qty + '\n' +
+        'Dates sélectionnées : ' + (selectedDates.length ? selectedDates.map(prettyDate).join(', ') : 'Non précisées') + '\n' +
+        'Nombre de jours : ' + Math.max(1, selectedDates.length) + '\n' +
+        'Livraison : ' + delivery + '\n' +
+        'Installation technique : ' + install + '\n' +
+        'Total estimé : ' + total + '\n\n' +
+        'Lien annonce : ' + location.href
+      );
     }
 
     const reserveBtn = Array.from(document.querySelectorAll('button')).find(function (btn) {
@@ -1194,18 +1131,15 @@
 
     if (reserveBtn) {
       reserveBtn.addEventListener('click', function () {
-        const draft = saveCheckoutDraft();
-        const params = new URLSearchParams();
-        if (draft.product.original_id !== undefined && draft.product.original_id !== null) params.set('original_id', draft.product.original_id);
-        else if (draft.product.id) params.set('id', draft.product.id);
-        window.location.href = '/tunnel-de-commande.html' + (params.toString() ? '?' + params.toString() : '');
+        const subject = encodeURIComponent('Réservation RentSoundSystem');
+        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + buildBookingBody('réservation');
       });
     }
 
     if (quoteBtn) {
       quoteBtn.addEventListener('click', function () {
-        saveCheckoutDraft();
-        window.location.href = '/demande-de-devis.html';
+        const subject = encodeURIComponent('Demande de devis RentSoundSystem');
+        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + buildBookingBody('demande de devis');
       });
     }
 
@@ -1243,6 +1177,95 @@
 })();
 </script>
 
+
+
+<script id="rss-product-to-checkout-sync">
+(function(){
+  'use strict';
+  function ready(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  function txt(sel){ return (document.querySelector(sel)?.textContent || '').trim(); }
+  function val(sel){ return document.querySelector(sel)?.value || ''; }
+  function numFromText(v){
+    const n = String(v || '').replace(/[^0-9,.]/g,'').replace(/\s/g,'').replace(',', '.');
+    return Number(n) || 0;
+  }
+  function firstImage(){
+    const img = document.querySelector('.aspect-square img:not(.hidden), .aspect-\\[4\\/3\\] img:not(.hidden), img[alt="Image produit"]');
+    return img?.src || '';
+  }
+  function selectedDates(){
+    return Array.from(document.querySelectorAll('.rss-selected-day[data-date]')).map(b => b.dataset.date).filter(Boolean).sort();
+  }
+  function productIdFromUrl(){
+    const p = new URLSearchParams(window.location.search);
+    return { id:p.get('id') || '', original_id:p.get('original_id') || '' };
+  }
+  function currentProductDraft(){
+    const ids = productIdFromUrl();
+    const name = txt('.lg\\:col-span-5 h1') || document.title.replace(' - RentSoundSystem.com','');
+    const desc = txt('#rss-tab-overview p') || txt('#rss-tab-included li') || 'Location de matériel RentSoundSystem';
+    const priceText = txt('#rss-base-price') || txt('#rss-total-price');
+    const basePrice = Number(document.querySelector('#rss-base-price')?.dataset.price || 0) || numFromText(priceText) || 0;
+    const qty = Math.max(1, Number(txt('#rss-qty-value')) || 1);
+    const dates = selectedDates();
+    const startDate = dates[0] || '';
+    const endDate = dates[dates.length - 1] || startDate || '';
+    const delivery = !!document.querySelector('#rss-option-delivery')?.checked;
+    const install = !!document.querySelector('#rss-option-install')?.checked;
+    const city = txt('.font-headline.text-body-md.font-bold.text-on-surface.uppercase') || '';
+    return {
+      product:{
+        id:ids.id,
+        original_id:ids.original_id,
+        name:name,
+        description:desc,
+        dailyPrice:basePrice,
+        quantity:qty,
+        image:firstImage(),
+        url:location.href
+      },
+      rental:{
+        startDate:startDate,
+        endDate:endDate,
+        city:city,
+        delivery:delivery ? 'delivery' : 'pickup',
+        technician:install
+      },
+      options:{ delivery:delivery, technician:install },
+      source:'product-page',
+      updatedAt:new Date().toISOString()
+    };
+  }
+  function goCheckout(){
+    const draft = currentProductDraft();
+    try{
+      localStorage.setItem('rssCheckoutDraft', JSON.stringify(draft));
+      localStorage.setItem('rssSelectedProduct', JSON.stringify(draft.product));
+    }catch(e){}
+    const params = new URLSearchParams();
+    if(draft.product.original_id) params.set('original_id', draft.product.original_id);
+    if(draft.product.id) params.set('id', draft.product.id);
+    window.location.href = '/tunnel-de-commande.html' + (params.toString() ? '?' + params.toString() : '');
+  }
+  ready(function(){
+    document.addEventListener('click', function(e){
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      const label = (btn.textContent || '').toLowerCase();
+      if(label.includes('réserver maintenant')){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        goCheckout();
+      }
+      if(label.includes('faire une demande de devis')){
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        window.location.href = '/demande-de-devis.html';
+      }
+    }, true);
+  });
+})();
+</script>
 
 <script src="/components.js"></script>
 </body></html>
