@@ -461,7 +461,7 @@
     setCount(list.length);
     renderMapMarkers(list);
     if(!list.length){
-      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces dont la colonne brand est exactement Void Acoustics sont affichées ici.</p></div>';
+      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces dont la colonne brand correspond à Void Acoustics sont affichées ici.</p></div>';
       return;
     }
     grid.innerHTML = list.map((item, index) => {
@@ -516,13 +516,12 @@
           status,
           listing_images(image_url, position)
         `)
-        .ilike('brand', 'Void Acoustics')
-        .eq('status', 'publish')
+        .ilike('brand', '%Void Acoustics%')
         .limit(50);
 
       if(error) throw error;
 
-      allVoidProducts = data || [];
+      allVoidProducts = (data || []).filter(item => norm(item.brand) === 'void acoustics');
       render(currentFilter);
     }catch(error){
       console.warn('Void listings loading error:', error.message || error);
