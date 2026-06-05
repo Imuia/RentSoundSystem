@@ -261,7 +261,7 @@
   <div class="max-w-container-max mx-auto px-gutter-x">
     <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
       <div>
-        <h2 class="text-headline-lg font-headline-lg mb-4">Annonces Void Acoustics disponibles</h2>
+        <h2 class="text-headline-lg font-headline-lg mb-4">Annonces Marque Void Acoustics disponibles</h2>
         <p id="void-products-count" class="text-body-md font-body-md text-on-surface-variant">Chargement des annonces Void Acoustics...</p>
       </div>
       <div id="void-products-filters" class="flex flex-wrap gap-3">
@@ -461,7 +461,7 @@
     setCount(list.length);
     renderMapMarkers(list);
     if(!list.length){
-      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Ajoutez une annonce avec la marque Void Acoustics dans Supabase pour l’afficher ici.</p></div>';
+      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces dont la colonne brand est exactement Void Acoustics sont affichées ici.</p></div>';
       return;
     }
     grid.innerHTML = list.map((item, index) => {
@@ -496,33 +496,32 @@
     try{
       if(!window.supabase) throw new Error('Supabase JS non chargé');
       const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      let { data, error } = await client
-  .from('listings')
-  .select(`
-      id,
-      original_id,
-      title,
-      description,
-      city,
-      location,
-      lat,
-      lng,
-      price,
-      price_day,
-      price_per_day,
-      model,
-      brand,
-      category,
-      listing_images(image_url, position)
-  `)
-  .eq('brand', 'Void Acoustics')
-  .eq('status', 'publish')
-  .limit(50);
-      if(error){
-        const fallback = await client.from('listings').select('*, listing_images(image_url, position)').limit(180);
-        if(fallback.error) throw fallback.error;
-        data = fallback.data || [];
-      }
+      const { data, error } = await client
+        .from('listings')
+        .select(`
+          id,
+          original_id,
+          title,
+          description,
+          city,
+          location,
+          lat,
+          lng,
+          price,
+          price_day,
+          price_per_day,
+          model,
+          brand,
+          category,
+          status,
+          listing_images(image_url, position)
+        `)
+        .ilike('brand', 'Void Acoustics')
+        .eq('status', 'publish')
+        .limit(50);
+
+      if(error) throw error;
+
       allVoidProducts = data || [];
       render(currentFilter);
     }catch(error){
