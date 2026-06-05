@@ -24,26 +24,26 @@
                       "surface-bright": "#393939",
                       "on-tertiary-container": "#2a2a2a",
                       "surface-container-highest": "#353535",
-                      "outline-variant": "#5d3f44",
+                      "outline-variant": "#3A1A2A",
                       "surface-container-high": "#2a2a2a",
                       "on-tertiary-fixed-variant": "#474746",
                       "secondary-container": "#454747",
-                      "on-primary": "#660028",
-                      "surface-tint": "#ffb2bf",
+                      "on-primary": "#ffffff",
+                      "surface-tint": "#FC036D",
                       "on-surface": "#e2e2e2",
                       "inverse-surface": "#e2e2e2",
                       "inverse-on-surface": "#303030",
                       "surface-container-lowest": "#0e0e0e",
                       "tertiary-fixed-dim": "#c8c6c5",
-                      "primary-container": "#ff4d80",
+                      "primary-container": "#FC036D",
                       "on-secondary-container": "#b4b5b5",
                       "tertiary": "#c8c6c5",
                       "surface-container-low": "#1b1b1b",
                       "on-secondary-fixed-variant": "#454747",
                       "primary-fixed": "#ffd9de",
                       "on-error-container": "#ffdad6",
-                      "primary": "#ffb2bf",
-                      "primary-fixed-dim": "#ffb2bf",
+                      "primary": "#FC036D",
+                      "primary-fixed-dim": "#FC036D",
                       "surface-container": "#1f1f1f",
                       "on-error": "#690005",
                       "secondary-fixed-dim": "#c6c6c7",
@@ -56,13 +56,13 @@
                       "tertiary-fixed": "#e5e2e1",
                       "surface-variant": "#353535",
                       "on-background": "#e2e2e2",
-                      "inverse-primary": "#bc004f",
+                      "inverse-primary": "#FC036D",
                       "on-primary-fixed": "#3f0016",
                       "on-secondary-fixed": "#1a1c1c",
-                      "on-primary-container": "#5a0022",
+                      "on-primary-container": "#ffffff",
                       "secondary-fixed": "#e2e2e2",
-                      "on-surface-variant": "#e6bcc2",
-                      "outline": "#ac878d",
+                      "on-surface-variant": "#C9A5B5",
+                      "outline": "#B83274",
                       "on-tertiary": "#313030",
                       "error-container": "#93000a"
               },
@@ -134,6 +134,77 @@ html,body{overflow-x:hidden;}
 body{padding-top:74px}
 @media(max-width:767px){body{padding-top:72px}}
 
+
+
+/* RentSoundSystem fuchsia premium checkout */
+:root{
+  --rss-fuchsia:#FC036D;
+  --rss-fuchsia-soft:#ff4d9a;
+  --rss-fuchsia-dark:#7a0038;
+  --rss-card:rgba(31,31,31,.82);
+  --rss-border:rgba(252,3,109,.22);
+  --rss-glow:0 0 24px rgba(252,3,109,.34),0 0 54px rgba(252,3,109,.18);
+}
+body{
+  background:
+    radial-gradient(circle at 14% 8%, rgba(252,3,109,.18), transparent 34%),
+    radial-gradient(circle at 85% 22%, rgba(252,3,109,.12), transparent 30%),
+    linear-gradient(180deg,#0e0e0e 0%,#131313 42%,#0e0e0e 100%)!important;
+}
+main h1{
+  color:#fff!important;
+  text-shadow:0 0 22px rgba(252,3,109,.25);
+}
+.bg-primary,button.bg-primary{
+  background:linear-gradient(135deg,#FC036D 0%,#ff2f8c 100%)!important;
+  color:#fff!important;
+}
+.text-primary{color:#FC036D!important;}
+.border-primary{border-color:#FC036D!important;}
+.focus\:border-primary:focus{border-color:#FC036D!important;}
+.focus\:ring-primary:focus{--tw-ring-color:#FC036D!important;}
+.bg-primary\/10{background-color:rgba(252,3,109,.10)!important;}
+.border-primary\/30{border-color:rgba(252,3,109,.30)!important;}
+.border-primary\/40{border-color:rgba(252,3,109,.40)!important;}
+section.bg-surface-container, .bg-surface-container-low{
+  background:linear-gradient(145deg,rgba(31,31,31,.92),rgba(14,14,14,.96))!important;
+  border-color:rgba(252,3,109,.14)!important;
+  box-shadow:0 18px 60px rgba(0,0,0,.32);
+}
+section:hover{border-color:rgba(252,3,109,.32)!important;}
+.rounded-full.bg-primary, section .w-8.h-8.bg-primary{
+  box-shadow:var(--rss-glow)!important;
+}
+.payment-method[aria-pressed="true"]{
+  background:linear-gradient(145deg,rgba(252,3,109,.18),rgba(31,31,31,.95))!important;
+  border-color:#FC036D!important;
+  box-shadow:0 0 0 1px rgba(252,3,109,.35), var(--rss-glow);
+}
+.payment-method:hover{
+  border-color:#FC036D!important;
+  box-shadow:0 0 22px rgba(252,3,109,.22);
+}
+#payment-note{
+  border-color:rgba(252,3,109,.35)!important;
+  background:rgba(252,3,109,.10)!important;
+  color:#ff77ad!important;
+}
+#amount-total{
+  color:#FC036D!important;
+  text-shadow:0 0 18px rgba(252,3,109,.55);
+}
+#confirm-order-btn{
+  background:linear-gradient(135deg,#FC036D 0%,#ff2f8c 50%,#FC036D 100%)!important;
+  color:#fff!important;
+  box-shadow:0 0 22px rgba(252,3,109,.48),0 18px 36px rgba(0,0,0,.35)!important;
+}
+#confirm-order-btn:hover{
+  background:linear-gradient(135deg,#ff2f8c 0%,#FC036D 100%)!important;
+  transform:translateY(-1px);
+}
+input[type=radio],input[type=checkbox]{accent-color:#FC036D!important;}
+label:hover{border-color:rgba(252,3,109,.45)!important;}
+input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;}
 </style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
