@@ -319,6 +319,36 @@ document.addEventListener('DOMContentLoaded', function () {
     );
   }
 
+  function isDuplicateEmailError(err) {
+    const msg = String(err && (err.message || err.error_description || err) || '').toLowerCase();
+    return msg.includes('already registered') ||
+      msg.includes('already been registered') ||
+      msg.includes('user already registered') ||
+      msg.includes('email already') ||
+      msg.includes('duplicate') ||
+      msg.includes('unique');
+  }
+
+  async function emailAlreadyExists(email) {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    if (!cleanEmail || !supabaseClient) return false;
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('profiles')
+        .select('id,email')
+        .ilike('email', cleanEmail)
+        .limit(1)
+        .maybeSingle();
+
+      if (!error && data) return true;
+    } catch (e) {
+      // Si la table profiles n'est pas lisible côté public, Supabase Auth fera quand même le contrôle.
+    }
+
+    return false;
+  }
+
   function setLoading(isLoading) {
     submitBtn.disabled = isLoading;
     submitBtn.classList.toggle('opacity-60', isLoading);
@@ -393,6 +423,16 @@ document.addEventListener('DOMContentLoaded', function () {
         const fullName = document.getElementById('full-name').value.trim();
         const company = document.getElementById('company-name').value.trim();
 
+        const exists = await emailAlreadyExists(email);
+        if (exists) {
+          showStatus('Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou utilisez “Mot de passe oublié”.', 'error');
+          activateTab('login');
+          emailInput.value = email;
+          emailInput.focus();
+          setLoading(false);
+          return;
+        }
+
         const { data, error } = await supabaseClient.auth.signUp({
           email: email,
           password: pass,
@@ -405,7 +445,26 @@ document.addEventListener('DOMContentLoaded', function () {
           }
         });
 
-        if (error) throw error;
+        if (error) {
+          if (isDuplicateEmailError(error)) {
+            showStatus('Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou utilisez “Mot de passe oublié”.', 'error');
+            activateTab('login');
+            emailInput.value = email;
+            emailInput.focus();
+            setLoading(false);
+            return;
+          }
+          throw error;
+        }
+
+        if (data?.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+          showStatus('Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou utilisez “Mot de passe oublié”.', 'error');
+          activateTab('login');
+          emailInput.value = email;
+          emailInput.focus();
+          setLoading(false);
+          return;
+        }
 
         // Si Supabase renvoie déjà une session, on prépare le profil client.
         if (data?.user) {
@@ -445,7 +504,14 @@ document.addEventListener('DOMContentLoaded', function () {
         window.location.href = LOCAL_REDIRECT_URL;
       }
     } catch (err) {
-      showStatus(err.message || 'Erreur de connexion.', 'error');
+      if (mode === 'register' && isDuplicateEmailError(err)) {
+        showStatus('Un compte existe déjà avec cette adresse e-mail. Connectez-vous ou utilisez “Mot de passe oublié”.', 'error');
+        activateTab('login');
+        emailInput.value = email;
+        emailInput.focus();
+      } else {
+        showStatus(err.message || 'Erreur de connexion.', 'error');
+      }
     }
 
     setLoading(false);
