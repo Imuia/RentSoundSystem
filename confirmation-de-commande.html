@@ -232,7 +232,7 @@
     set('#order-location', deliveryLabel);
     set('#order-total', money(amounts.total));
     set('#order-deposit', money(amounts.deposit)+' (Non débité)');
-    const title=qs('title'); if(title) title.textContent='Commande '+orderId+' validée - RentSoundSystem';
+    const title=qs('title'); if(title) title.textContent='Commande '+orderId+' validée - RentSoundSystem'; try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const normalized=Object.assign({},order,{id:orderId,status:order.status||'confirmed'}); const next=[normalized].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(orderId))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next)); localStorage.setItem('rssLastOrder',JSON.stringify(normalized));}catch(e){}
   }
   document.addEventListener('DOMContentLoaded',sync);
 })();

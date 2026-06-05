@@ -327,4 +327,122 @@ body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2;padding-top:7
 <div id="footer-container"></div>
 <script src="/components.js"></script>
 <script src="/client-supabase.js"></script>
+<script id="rss-client-orders-sync">
+(function(){
+  'use strict';
+  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  let calendarMonth=new Date();
+  function $(s){return document.querySelector(s)}
+  function money(v){const n=Number(v||0);return n?n.toLocaleString('fr-FR',{style:'currency',currency:'EUR'}):'Sur devis'}
+  function dateFR(v){if(!v)return 'À confirmer'; const d=new Date(String(v).slice(0,10)+'T00:00:00'); return isNaN(d)?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+  function escape(v){return String(v??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]||m));}
+  function readJSON(k,fallback){try{return JSON.parse(localStorage.getItem(k)||'null') ?? fallback}catch{return fallback}}
+  function saveHistory(order){
+    if(!order||!order.id)return;
+    const list=readJSON('rssOrders',[]).filter(Boolean);
+    const key=String(order.id);
+    const next=[order].concat(list.filter(o=>String(o.id)!==key)).slice(0,50);
+    localStorage.setItem('rssOrders',JSON.stringify(next));
+    localStorage.setItem('rssLastOrder',JSON.stringify(order));
+  }
+  function normalize(row){
+    if(!row)return null;
+    if(row.item||row.rental||row.amounts){
+      return {
+        id:row.id||('RSS-'+Date.now()), createdAt:row.createdAt||row.created_at||new Date().toISOString(), status:row.status||'pending',
+        equipment:row.item?.name||row.equipment_name||'Matériel réservé', description:row.item?.description||'',
+        startDate:row.rental?.startDate||row.start_date||row.startDate||'', endDate:row.rental?.endDate||row.end_date||row.endDate||'',
+        city:row.rental?.city||row.city||row.event_city||'', delivery:row.rental?.delivery||row.delivery||'pickup',
+        total:Number(row.amounts?.total ?? row.total_price ?? row.total ?? 0), deposit:Number(row.amounts?.deposit ?? row.deposit ?? row.item?.deposit ?? 0),
+        payment:row.payment?.method||row.payment_method||'', raw:row
+      };
+    }
+    return {
+      id:row.id||row.reference||('RSS-'+Date.now()), createdAt:row.created_at||row.createdAt||new Date().toISOString(), status:row.status||'pending',
+      equipment:row.equipment_name||row.product_name||row.item_name||row.title||'Matériel réservé', description:row.description||'',
+      startDate:row.start_date||row.rental_start||row.startDate||'', endDate:row.end_date||row.rental_end||row.endDate||'',
+      city:row.city||row.event_city||row.location||'', delivery:row.delivery||'pickup',
+      total:Number(row.total_price ?? row.total ?? row.amount_total ?? 0), deposit:Number(row.deposit ?? row.deposit_amount ?? 0),
+      payment:row.payment_method||'', raw:row
+    };
+  }
+  function dedupe(list){const seen=new Set(); return list.map(normalize).filter(Boolean).filter(o=>{const k=String(o.id||'')+'|'+o.equipment+'|'+o.startDate; if(seen.has(k))return false; seen.add(k); return true;});}
+  async function fetchSupabaseReservations(){
+    try{
+      if(!window.supabase)return [];
+      const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      const {data:{session}}=await sb.auth.getSession();
+      if(!session?.user)return [];
+      const {data,error}=await sb.from('reservations').select('*').order('created_at',{ascending:false}).limit(100);
+      if(error){console.warn('Reservations Supabase:',error); return []}
+      return data||[];
+    }catch(e){console.warn('Synchronisation réservations impossible:',e); return []}
+  }
+  async function getOrders(){
+    const local=[]; const last=readJSON('rssLastOrder',null); const hist=readJSON('rssOrders',[]);
+    if(last)local.push(last); if(Array.isArray(hist))local.push(...hist);
+    const remote=await fetchSupabaseReservations();
+    const orders=dedupe([...local,...remote]).sort((a,b)=>String(b.createdAt).localeCompare(String(a.createdAt)));
+    if(last) saveHistory(last);
+    return orders;
+  }
+  function statusLabel(s){const v=String(s||'pending').toLowerCase(); if(v.includes('confirm'))return 'Confirmée'; if(v.includes('paid')||v.includes('pay'))return 'Payée'; if(v.includes('cancel'))return 'Annulée'; if(v.includes('return'))return 'Retournée'; return 'En attente';}
+  function statusClass(s){const v=String(s||'').toLowerCase(); if(v.includes('cancel'))return 'bg-red-500/10 text-red-300 border-red-500/30'; if(v.includes('confirm')||v.includes('paid'))return 'bg-primary/10 text-primary border-primary/30'; return 'bg-yellow-400/10 text-yellow-300 border-yellow-400/30';}
+  function renderReservationList(orders){
+    const box=$('#reservation-list'); if(!box)return;
+    if(!orders.length){box.innerHTML='<div class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 text-on-surface-variant">Aucune réservation pour le moment. Lancez une réservation depuis une fiche produit.</div>'; return;}
+    box.innerHTML=orders.map(o=>`<article class="bg-surface-container-lowest border border-white/5 rounded-xl p-5 hover:border-primary/40 transition">
+      <div class="flex flex-col md:flex-row md:items-start justify-between gap-4">
+        <div><div class="flex flex-wrap items-center gap-2 mb-2"><span class="text-xs uppercase tracking-widest text-primary font-bold">${escape(o.id)}</span><span class="text-xs px-2 py-1 rounded border ${statusClass(o.status)}">${statusLabel(o.status)}</span></div>
+        <h3 class="font-headline text-xl font-bold text-on-surface">${escape(o.equipment)}</h3>
+        <p class="text-on-surface-variant text-sm mt-1">${dateFR(o.startDate)} → ${dateFR(o.endDate)}${o.city?' · '+escape(o.city):''}</p></div>
+        <div class="text-right"><p class="font-headline text-xl font-bold text-primary">${money(o.total)}</p><p class="text-xs text-on-surface-variant">Caution : ${money(o.deposit)}</p></div>
+      </div>
+    </article>`).join('');
+  }
+  function renderOrdersBody(orders){
+    const body=$('#orders-body'); if(!body)return;
+    if(!orders.length){body.innerHTML='<tr><td colspan="5" class="py-5 text-on-surface-variant">Aucune commande synchronisée.</td></tr>'; return;}
+    body.innerHTML=orders.map(o=>`<tr class="hover:bg-white/5 transition"><td class="py-4 font-bold text-primary">${escape(o.id)}</td><td>${dateFR(o.createdAt?.slice?o.createdAt.slice(0,10):o.createdAt)}</td><td>${escape(o.equipment)}</td><td><span class="text-xs px-2 py-1 rounded border ${statusClass(o.status)}">${statusLabel(o.status)}</span></td><td class="text-right font-bold">${money(o.total)}</td></tr>`).join('');
+  }
+  function renderActivity(orders){
+    const box=$('#activity-list'); if(!box)return;
+    if(!orders.length){box.innerHTML='<div class="border-l-2 border-white/20 pl-4"><p class="font-bold">Aucune activité</p><p class="text-on-surface-variant text-sm">Vos réservations apparaîtront ici.</p></div>'; return;}
+    box.innerHTML=orders.slice(0,5).map(o=>`<div class="border-l-2 border-primary pl-4"><p class="font-bold">${escape(o.equipment)}</p><p class="text-on-surface-variant text-sm">${dateFR(o.startDate)} · ${statusLabel(o.status)} · ${money(o.total)}</p></div>`).join('');
+  }
+  function sameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+  function inRange(day,o){if(!o.startDate)return false; const s=new Date(o.startDate+'T00:00:00'), e=new Date((o.endDate||o.startDate)+'T00:00:00'); return day>=s&&day<=e;}
+  function renderCalendar(orders){
+    const grid=$('#calendar-grid'), title=$('#calendar-title'), up=$('#upcoming-list'); if(!grid&&!up)return;
+    const m=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth(),1);
+    if(title) title.textContent=m.toLocaleDateString('fr-FR',{month:'long',year:'numeric'}).replace(/^./,c=>c.toUpperCase());
+    if(grid){
+      const start=(m.getDay()+6)%7; const daysInMonth=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(); let html='';
+      for(let i=0;i<start;i++) html+='<div class="calendar-day opacity-20 p-2"></div>';
+      for(let d=1;d<=daysInMonth;d++){
+        const day=new Date(m.getFullYear(),m.getMonth(),d); const items=orders.filter(o=>inRange(day,o));
+        html+=`<div class="calendar-day p-2"><div class="text-xs text-on-surface-variant mb-2">${d}</div>${items.slice(0,2).map(o=>`<div class="calendar-event bg-primary/15 border border-primary/30 text-primary rounded px-2 py-1 mb-1 text-xs truncate" title="${escape(o.equipment)}">${escape(o.equipment)}</div>`).join('')}${items.length>2?`<div class="text-xs text-on-surface-variant">+${items.length-2}</div>`:''}</div>`;
+      }
+      grid.innerHTML=html;
+    }
+    if(up){
+      const today=new Date(); today.setHours(0,0,0,0);
+      const upcoming=orders.filter(o=>o.startDate && new Date(o.startDate+'T00:00:00')>=today).sort((a,b)=>String(a.startDate).localeCompare(String(b.startDate))).slice(0,6);
+      up.innerHTML=upcoming.length?upcoming.map(o=>`<li class="border border-white/10 rounded-lg p-3"><p class="font-bold text-on-surface">${escape(o.equipment)}</p><p class="text-sm text-on-surface-variant">${dateFR(o.startDate)}${o.city?' · '+escape(o.city):''}</p></li>`).join(''):'<li class="text-on-surface-variant text-sm">Aucune réservation à venir.</li>';
+    }
+  }
+  function bindCalendarNav(orders){
+    $('#prev-month')?.addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()-1,1); renderCalendar(orders);});
+    $('#next-month')?.addEventListener('click',()=>{calendarMonth=new Date(calendarMonth.getFullYear(),calendarMonth.getMonth()+1,1); renderCalendar(orders);});
+  }
+  async function init(){
+    const orders=await getOrders();
+    renderReservationList(orders); renderOrdersBody(orders); renderActivity(orders); renderCalendar(orders); bindCalendarNav(orders);
+    window.RSSClientOrders={orders,refresh:init,saveHistory};
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init); else init();
+})();
+</script>
+
 </body></html>
