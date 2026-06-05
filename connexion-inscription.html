@@ -130,8 +130,15 @@
   }
 </style>
 
+
+<style id="rss-auth-no-flash">
+body.rss-checking-session main{opacity:0;pointer-events:none;transition:opacity .15s ease;}
+</style>
+<script>
+document.documentElement.classList.add('rss-auth-precheck');
+</script>
 </head>
-<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body antialiased pt-20">
+<body class="bg-surface text-on-surface min-h-screen flex flex-col font-body antialiased pt-20 rss-checking-session">
 <div id="header-container"></div>
 <!-- Main Content Canvas -->
 <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
@@ -261,21 +268,11 @@
 document.addEventListener('DOMContentLoaded', function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const DEFAULT_REDIRECT_URL = window.location.origin + '/espace-client.html';
-
-  function safeRedirect(value) {
-    if (!value) return DEFAULT_REDIRECT_URL;
-    try {
-      const url = new URL(value, window.location.origin);
-      if (url.origin !== window.location.origin) return DEFAULT_REDIRECT_URL;
-      return url.href;
-    } catch (e) {
-      return DEFAULT_REDIRECT_URL;
-    }
-  }
-
   const params = new URLSearchParams(window.location.search);
-  const REDIRECT_URL = safeRedirect(params.get('redirect'));
+  const rawRedirect = params.get('redirect') || '/espace-client.html';
+  const safeRedirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/espace-client.html';
+  const REDIRECT_URL = window.location.origin + safeRedirect;
+  const LOCAL_REDIRECT_URL = safeRedirect;
 
   const supabaseClient = window.supabase
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -284,9 +281,13 @@ document.addEventListener('DOMContentLoaded', function () {
   if (supabaseClient) {
     supabaseClient.auth.getSession().then(({ data }) => {
       if (data?.session && !new URLSearchParams(window.location.search).get('force')) {
-        window.location.href = REDIRECT_URL;
+        window.location.replace(LOCAL_REDIRECT_URL);
+        return;
       }
-    });
+      document.body.classList.remove('rss-checking-session');
+    }).catch(() => document.body.classList.remove('rss-checking-session'));
+  } else {
+    document.body.classList.remove('rss-checking-session');
   }
 
   const loginTab = document.getElementById('login-tab');
@@ -305,13 +306,6 @@ document.addEventListener('DOMContentLoaded', function () {
   const statusBox = document.createElement('div');
 
   let mode = 'login';
-
-  if (params.get('redirect')) {
-    const info = document.createElement('div');
-    info.className = 'mb-5 text-sm rounded border px-4 py-3 text-primary border-primary/30 bg-primary/10';
-    info.textContent = 'Connectez-vous pour finaliser votre commande. Vous serez automatiquement renvoyé vers le tunnel de commande.';
-    document.querySelector('.bg-surface-container')?.prepend(info);
-  }
 
   statusBox.className = 'hidden mt-4 text-sm rounded border px-4 py-3';
   form.parentElement.insertBefore(statusBox, form.nextSibling);
@@ -426,7 +420,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         showStatus('Compte créé. Vérifiez votre e-mail si Supabase demande une confirmation. Sinon redirection...', 'success');
-        if (data?.session) window.location.href = REDIRECT_URL;
+        if (data?.session) window.location.href = LOCAL_REDIRECT_URL;
       } else {
         const { error } = await supabaseClient.auth.signInWithPassword({
           email: email,
@@ -448,7 +442,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         showStatus('Connexion réussie. Redirection...', 'success');
-        window.location.href = REDIRECT_URL;
+        window.location.href = LOCAL_REDIRECT_URL;
       }
     } catch (err) {
       showStatus(err.message || 'Erreur de connexion.', 'error');
