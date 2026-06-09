@@ -257,7 +257,7 @@ html, body {
 <h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements à proximité</h2>
 <div class="flex items-center gap-2 text-primary">
 <span class="material-symbols-outlined text-[24px]">location_on</span>
-<span class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
+<span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
 </div>
 </div>
 <a class="text-primary hover:underline font-label-md text-[14px] uppercase tracking-wide flex items-center gap-1" href="/catalog.html">Voir tout <span class="material-symbols-outlined text-[20px]">arrow_forward</span></a>
@@ -461,10 +461,28 @@ html, body {
 <div id="footer-container"></div>
 
 
-<script>
+<script id="rss-geo-products-map">
 (function () {
+  'use strict';
+
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
+  const DEFAULT_RADIUS_KM = 150;
+
+  let supabaseClient = null;
+  let map = null;
+  let userMarker = null;
+  let productMarkers = [];
+  let allListings = [];
+  let currentCenter = DEFAULT_CITY;
+  let mapReady = false;
+  let listingsReady = false;
+
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
 
   function escapeHtml(value) {
     return String(value || '')
@@ -488,6 +506,23 @@ html, body {
     return Math.round(n) + '€';
   }
 
+  function toNumber(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function getLat(item) {
+    return toNumber(item.lat ?? item.latitude);
+  }
+
+  function getLng(item) {
+    return toNumber(item.lng ?? item.lon ?? item.longitude);
+  }
+
+  function hasCoordinates(item) {
+    return getLat(item) !== null && getLng(item) !== null;
+  }
+
   function getImage(item) {
     const imgs = Array.isArray(item.listing_images) ? [...item.listing_images] : [];
     imgs.sort((a, b) => Number(a.position || 0) - Number(b.position || 0));
@@ -497,7 +532,25 @@ html, body {
   function productUrl(item) {
     const originalId = encodeURIComponent(item.original_id || item.id || '');
     const slug = encodeURIComponent(slugify(item.title));
-    return `product.html?original_id=${originalId}&slug=${slug}`;
+    return `/product.html?original_id=${originalId}&slug=${slug}`;
+  }
+
+  function haversineKm(aLat, aLng, bLat, bLng) {
+    const R = 6371;
+    const dLat = (bLat - aLat) * Math.PI / 180;
+    const dLng = (bLng - aLng) * Math.PI / 180;
+    const x = Math.sin(dLat / 2) ** 2 +
+      Math.cos(aLat * Math.PI / 180) * Math.cos(bLat * Math.PI / 180) *
+      Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+
+  function distanceText(item) {
+    if (typeof item._distanceKm === 'number') {
+      if (item._distanceKm < 1) return Math.round(item._distanceKm * 1000) + ' m';
+      return item._distanceKm.toFixed(item._distanceKm < 10 ? 1 : 0) + ' km';
+    }
+    return '';
   }
 
   function productCard(item, badge) {
@@ -507,6 +560,8 @@ html, body {
     const image = getImage(item);
     const price = formatPrice(item.price);
     const href = productUrl(item);
+    const distance = distanceText(item);
+    const locationLine = distance ? `${escapeHtml(distance)} • ${city}` : city;
 
     return `
       <a href="${href}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
@@ -520,7 +575,7 @@ html, body {
           <h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md line-clamp-2">${title}</h3>
           <div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
             <span class="material-symbols-outlined text-[18px]">near_me</span>
-            <span>${city}</span>
+            <span>${locationLine}</span>
           </div>
           <div class="pt-3 border-t border-white/20 flex justify-between items-center">
             <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
@@ -530,45 +585,203 @@ html, body {
       </a>`;
   }
 
-  async function loadSupabaseProducts() {
+  function showLoading() {
+    const nearestGrid = document.getElementById('nearest-products-grid');
+    if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-loading-products col-span-full">Recherche des équipements proches de votre position...</div>';
+  }
+
+  function setLabels(label) {
+    const clean = label || 'Autour de vous';
+    const nearby = document.getElementById('nearby-city-label');
+    const mapLabel = document.getElementById('map-city-label');
+    if (nearby) nearby.textContent = clean + ' • Autour de vous';
+    if (mapLabel) mapLabel.textContent = clean + ' • Autour de vous';
+    document.querySelectorAll('a[href^="/catalog.html"]').forEach(function (a) {
+      if (clean && clean !== 'Votre position' && clean !== 'Autour de vous') {
+        a.href = '/catalog.html?city=' + encodeURIComponent(clean.replace(/\s*•.*$/, ''));
+      }
+    });
+  }
+
+  function setHeroCityInput(label) {
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    if (cityInput && label && !cityInput.value) cityInput.value = label.replace(', FR', '');
+  }
+
+  async function reverseCity(lat, lng) {
+    try {
+      const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng));
+      const data = await res.json();
+      const a = data && data.address ? data.address : {};
+      return a.city || a.town || a.village || a.municipality || a.county || 'Votre position';
+    } catch (e) {
+      return 'Votre position';
+    }
+  }
+
+  async function geocodeCity(query) {
+    const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query));
+    const data = await res.json();
+    if (!data || !data.length) return null;
+    return { name: query, lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), zoom: 13 };
+  }
+
+  function enrichByDistance(items, center) {
+    return (items || []).map(function (item) {
+      const lat = getLat(item);
+      const lng = getLng(item);
+      const copy = Object.assign({}, item);
+      if (lat !== null && lng !== null && center) copy._distanceKm = haversineKm(center.lat, center.lng, lat, lng);
+      return copy;
+    }).sort(function (a, b) {
+      const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
+      const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
+      return da - db;
+    });
+  }
+
+  function nearbyItems(center, limit) {
+    const sorted = enrichByDistance(allListings, center).filter(hasCoordinates);
+    const inRadius = sorted.filter(item => item._distanceKm <= DEFAULT_RADIUS_KM);
+    return (inRadius.length >= Math.min(limit, 4) ? inRadius : sorted).slice(0, limit);
+  }
+
+  function newestItems(limit) {
+    return [...allListings].sort(function (a, b) {
+      return new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0);
+    }).slice(0, limit);
+  }
+
+  function renderProductGrids(center) {
+    const nearestGrid = document.getElementById('nearest-products-grid');
+    const newestGrid = document.getElementById('newest-products-grid');
+    const nearest = nearbyItems(center || currentCenter, 4);
+    const newest = newestItems(4);
+
+    if (nearestGrid) {
+      nearestGrid.innerHTML = nearest.length
+        ? nearest.map(item => productCard(item, null)).join('')
+        : '<div class="rss-loading-products col-span-full">Aucun équipement géolocalisé trouvé autour de cette zone.</div>';
+    }
+    if (newestGrid && newest.length) newestGrid.innerHTML = newest.map(item => productCard(item, 'Nouveau')).join('');
+  }
+
+  function productPopupHtml(item) {
+    return '<div style="min-width:190px">' +
+      '<strong style="color:#fff">' + escapeHtml(item.title || 'Matériel professionnel') + '</strong><br>' +
+      '<span style="color:#b4b5b5">' + escapeHtml(item.city || item.location || '') + '</span><br>' +
+      '<strong style="color:#FC036D">' + escapeHtml(formatPrice(item.price)) + ' / jour</strong><br>' +
+      '<a style="color:#FC036D;text-decoration:underline" href="' + productUrl(item) + '">Voir l’annonce</a>' +
+      '</div>';
+  }
+
+  function clearProductMarkers() {
+    if (!map) return;
+    productMarkers.forEach(marker => map.removeLayer(marker));
+    productMarkers = [];
+  }
+
+  function renderMapMarkers(center) {
+    if (!mapReady || !map) return;
+    clearProductMarkers();
+
+    const productIcon = L.divIcon({
+      className: 'rss-product-marker',
+      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
+      popupAnchor: [0, -38]
+    });
+
+    const items = nearbyItems(center || currentCenter, 30);
+    productMarkers = items.map(function (item) {
+      const lat = getLat(item);
+      const lng = getLng(item);
+      if (lat === null || lng === null) return null;
+      return L.marker([lat, lng], { icon: productIcon })
+        .addTo(map)
+        .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
+    }).filter(Boolean);
+
+    if (productMarkers.length) {
+      const layers = userMarker ? productMarkers.concat([userMarker]) : productMarkers;
+      const group = L.featureGroup(layers);
+      map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 13, animate: true });
+    } else {
+      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 12);
+    }
+
+    setTimeout(fixMapSize, 50);
+    setTimeout(fixMapSize, 300);
+  }
+
+  function fixMapSize() {
+    const mapEl = document.getElementById('rss-map');
+    const mapWrap = document.getElementById('rss-map-wrap');
+    if (!mapEl || !mapWrap || !map) return;
+    const h = window.innerWidth < 768 ? '420px' : '600px';
+    mapEl.style.height = h;
+    mapEl.style.minHeight = h;
+    mapWrap.style.height = h;
+    mapWrap.style.minHeight = h;
+    map.invalidateSize(true);
+  }
+
+  function updateCenter(center, options) {
+    currentCenter = Object.assign({}, DEFAULT_CITY, center || {});
+    setLabels(currentCenter.name || 'Votre position');
+    setHeroCityInput(currentCenter.name || '');
+
+    if (mapReady && map) {
+      const userIcon = L.divIcon({
+        className: 'rss-user-marker',
+        html: '<div class="rss-user-dot"></div>',
+        iconSize: [20, 20],
+        iconAnchor: [10, 10],
+        popupAnchor: [0, -10]
+      });
+
+      if (userMarker) map.removeLayer(userMarker);
+      userMarker = L.marker([currentCenter.lat, currentCenter.lng], { icon: userIcon, zIndexOffset: 1000 })
+        .addTo(map)
+        .bindPopup(options && options.isSearch ? currentCenter.name : 'Votre position', { className: 'rss-popup' });
+
+      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 13, { animate: true });
+    }
+
+    if (listingsReady) {
+      renderProductGrids(currentCenter);
+      renderMapMarkers(currentCenter);
+    }
+  }
+
+  async function loadListings() {
     if (!window.supabase) {
       console.error('Supabase JS non chargé');
       return;
     }
 
-    const nearestGrid = document.getElementById('nearest-products-grid');
-    const newestGrid = document.getElementById('newest-products-grid');
-    if (!nearestGrid && !newestGrid) return;
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let { data, error } = await client
+    let { data, error } = await supabaseClient
       .from('listings')
-      .select(`
-        *,
-        listing_images (
-          image_url,
-          position
-        )
-      `)
+      .select(`*, listing_images ( image_url, position )`)
       .eq('status', 'publish')
       .order('featured', { ascending: false })
       .order('published_at', { ascending: false })
-      .limit(8);
+      .limit(120);
 
     if (error) {
       console.error('Erreur chargement produits Supabase:', error);
       return;
     }
 
-    if (!data || !data.length) return;
+    data = Array.isArray(data) ? data : [];
 
-    // Fallback : si les images ne sont pas encore connectées à listing_images,
-    // on essaie de les lire depuis listing_images_staging avec original_id.
     const missingImages = data.every(item => !Array.isArray(item.listing_images) || !item.listing_images.length);
-    if (missingImages) {
+    if (missingImages && data.length) {
       const originalIds = data.map(item => item.original_id).filter(Boolean);
-      const staging = await client
+      const staging = await supabaseClient
         .from('listing_images_staging')
         .select('listing_original_id,image_url,position')
         .in('listing_original_id', originalIds);
@@ -580,36 +793,17 @@ html, body {
           if (!byOriginalId[key]) byOriginalId[key] = [];
           byOriginalId[key].push({ image_url: img.image_url, position: img.position });
         });
-        data = data.map(item => ({
-          ...item,
-          listing_images: byOriginalId[String(item.original_id)] || item.listing_images || []
-        }));
+        data = data.map(item => ({ ...item, listing_images: byOriginalId[String(item.original_id)] || item.listing_images || [] }));
       }
     }
 
-    const firstFour = data.slice(0, 4);
-    const nextFour = data.slice(4, 8).length ? data.slice(4, 8) : data.slice(0, 4);
-
-    if (nearestGrid) nearestGrid.innerHTML = firstFour.map(item => productCard(item, null)).join('');
-    if (newestGrid) newestGrid.innerHTML = nextFour.map(item => productCard(item, 'Nouveau')).join('');
+    allListings = data;
+    listingsReady = true;
+    renderProductGrids(currentCenter);
+    renderMapMarkers(currentCenter);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadSupabaseProducts);
-  } else {
-    loadSupabaseProducts();
-  }
-})();
-</script>
-
-<script>
-(function () {
-  function ready(fn) {
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
-  }
-
-  ready(function () {
+  function initMap() {
     if (typeof L === 'undefined') {
       console.error('Leaflet non chargé');
       return;
@@ -619,31 +813,12 @@ html, body {
     const mapWrap = document.getElementById('rss-map-wrap');
     if (!mapEl || !mapWrap) return;
 
-    // Sécurité anti double-initialisation sur Vercel / hot reload
     if (mapEl._leaflet_id) {
       mapEl._leaflet_id = null;
       mapEl.innerHTML = '';
     }
 
-    const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
-
-    const productIcon = L.divIcon({
-      className: 'rss-product-marker',
-      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
-      iconSize: [38, 38],
-      iconAnchor: [19, 38],
-      popupAnchor: [0, -38]
-    });
-
-    const userIcon = L.divIcon({
-      className: 'rss-user-marker',
-      html: '<div class="rss-user-dot"></div>',
-      iconSize: [20, 20],
-      iconAnchor: [10, 10],
-      popupAnchor: [0, -10]
-    });
-
-    const map = L.map(mapEl, {
+    map = L.map(mapEl, {
       zoomControl: false,
       scrollWheelZoom: true,
       preferCanvas: false,
@@ -658,169 +833,118 @@ html, body {
     }).addTo(map);
 
     L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-    const products = [
-      { title: 'L-Acoustics K2', price: '450€ / jour', city: 'Saint-Denis', lat: 48.9362, lng: 2.3574 },
-      { title: 'Pioneer CDJ-3000', price: '85€ / jour', city: 'Paris 11e', lat: 48.8577, lng: 2.3819 },
-      { title: 'Yamaha Rivage PM7', price: '1200€ / jour', city: 'Boulogne', lat: 48.8397, lng: 2.2399 },
-      { title: 'Shure AD4D Axient', price: '150€ / jour', city: 'Paris 15e', lat: 48.8412, lng: 2.3003 }
-    ];
-
-    let productMarkers = [];
-    let userMarker = null;
-
-    function addProductMarkers(items) {
-      productMarkers.forEach(marker => map.removeLayer(marker));
-      productMarkers = items.map(item => {
-        return L.marker([item.lat, item.lng], { icon: productIcon })
-          .addTo(map)
-          .bindPopup(
-            '<strong style="color:#fff">' + item.title + '</strong><br>' +
-            '<span style="color:#b4b5b5">' + item.city + '</span><br>' +
-            '<strong style="color:#FC036D">' + item.price + '</strong>',
-            { className: 'rss-popup' }
-          );
-      });
-    }
-
-    function fixMapSize() {
-      mapEl.style.height = '600px';
-      mapEl.style.minHeight = '600px';
-      mapWrap.style.height = '600px';
-      mapWrap.style.minHeight = '600px';
-      map.invalidateSize(true);
-    }
-
-    function setLabel(label) {
-      const cityLabel = document.getElementById('map-city-label');
-      if (cityLabel) cityLabel.textContent = label + ' • Autour de vous';
-    }
-
-    function setUserPosition(lat, lng, label, zoom) {
-      const safeZoom = Math.min(zoom || 14, 16);
-
-      if (userMarker) map.removeLayer(userMarker);
-
-      userMarker = L.marker([lat, lng], { icon: userIcon, zIndexOffset: 1000 })
-        .addTo(map)
-        .bindPopup('Votre position', { className: 'rss-popup' });
-
-      map.setView([lat, lng], safeZoom, { animate: true });
-      setLabel(label || 'Votre position');
-
-      // Si l’utilisateur est loin de Paris, on place aussi 4 exemples autour de sa position.
-      const localProducts = [
-        { title: 'L-Acoustics K2', price: '450€ / jour', city: 'À proximité', lat: lat + 0.012, lng: lng + 0.010 },
-        { title: 'Pioneer CDJ-3000', price: '85€ / jour', city: 'À proximité', lat: lat - 0.010, lng: lng + 0.014 },
-        { title: 'Yamaha Rivage PM7', price: '1200€ / jour', city: 'À proximité', lat: lat + 0.008, lng: lng - 0.016 },
-        { title: 'Shure AD4D Axient', price: '150€ / jour', city: 'À proximité', lat: lat - 0.014, lng: lng - 0.012 }
-      ];
-      addProductMarkers(localProducts);
-
-      setTimeout(fixMapSize, 50);
-      setTimeout(fixMapSize, 300);
-    }
-
-    function locateUser(showError) {
-      if (!navigator.geolocation) {
-        if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
-        return;
-      }
-
-      navigator.geolocation.getCurrentPosition(
-        function (pos) {
-          setUserPosition(pos.coords.latitude, pos.coords.longitude, 'Votre position', 14);
-        },
-        function () {
-          if (showError) alert('Position refusée. Tapez une ville dans le champ de recherche.');
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
-      );
-    }
-
-    async function searchCity() {
-      const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-      const q = cityInput && cityInput.value ? cityInput.value.trim() : '';
-      if (!q) return;
-
-      try {
-        const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(q));
-        const data = await res.json();
-
-        if (!data || !data.length) {
-          alert('Ville introuvable.');
-          return;
-        }
-
-        setUserPosition(parseFloat(data[0].lat), parseFloat(data[0].lon), q, 13);
-        mapEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } catch (e) {
-        alert('Erreur de recherche de ville.');
-      }
-    }
-
-    addProductMarkers(products);
-
-    document.getElementById('use-my-location')?.addEventListener('click', function () {
-      locateUser(true);
-    });
-
-    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-    const searchButton = Array.from(document.querySelectorAll('button')).find(function (button) {
-      return button.textContent.trim().toLowerCase() === 'rechercher';
-    });
-
-    searchButton?.addEventListener('click', searchCity);
-    cityInput?.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') searchCity();
-    });
-
-    // Recalcul forcé : corrige la carte coupée / tuiles au centre / bandes noires.
+    mapReady = true;
     fixMapSize();
     setTimeout(fixMapSize, 100);
     setTimeout(fixMapSize, 500);
     setTimeout(fixMapSize, 1000);
     window.addEventListener('load', fixMapSize);
     window.addEventListener('resize', fixMapSize);
+  }
 
-    // Géolocalisation automatique douce.
-    setTimeout(function () {
-      locateUser(false);
-    }, 800);
-  });
-})();
-</script>
+  async function locateUser(showError) {
+    if (!navigator.geolocation) {
+      if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
+      updateCenter(DEFAULT_CITY, { isFallback: true });
+      return;
+    }
 
+    navigator.geolocation.getCurrentPosition(
+      async function (pos) {
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const city = await reverseCity(lat, lng);
+        updateCenter({ name: city, lat, lng, zoom: 13 }, { isGeolocation: true });
+      },
+      function () {
+        if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
+        updateCenter(DEFAULT_CITY, { isFallback: true });
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }
 
-<script id="rss-home-search-to-catalog">
-(function () {
-  function ready(fn) {
-    if (document.readyState !== 'loading') fn();
-    else document.addEventListener('DOMContentLoaded', fn);
+  async function searchAroundCity() {
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const query = cityInput && cityInput.value ? cityInput.value.trim() : '';
+    const equipment = equipmentInput && equipmentInput.value ? equipmentInput.value.trim().toLowerCase() : '';
+
+    if (!query) {
+      await locateUser(true);
+      return;
+    }
+
+    try {
+      const city = await geocodeCity(query);
+      if (!city) {
+        alert('Ville introuvable.');
+        return;
+      }
+
+      const baseListings = allListings;
+      if (equipment && baseListings.length) {
+        allListings = baseListings.filter(function (item) {
+          const haystack = [item.title, item.description, item.category, item.brand, item.city, item.location].join(' ').toLowerCase();
+          return haystack.includes(equipment);
+        });
+      }
+
+      updateCenter(city, { isSearch: true });
+
+      if (equipment && !allListings.length) {
+        const nearestGrid = document.getElementById('nearest-products-grid');
+        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-loading-products col-span-full">Aucun équipement trouvé pour cette recherche autour de cette ville.</div>';
+      }
+
+      allListings = baseListings;
+      document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (e) {
+      console.error(e);
+      alert('Erreur de recherche de ville.');
+    }
   }
 
   ready(function () {
-    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    showLoading();
+    initMap();
+    loadListings();
+
+    document.getElementById('use-my-location')?.addEventListener('click', function () {
+      locateUser(true);
+    });
+
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
     const searchButton = Array.from(document.querySelectorAll('button')).find(function (button) {
       return button.textContent.trim().toLowerCase() === 'rechercher';
     });
 
-    function goCatalog() {
-      const params = new URLSearchParams();
-      if (equipmentInput && equipmentInput.value.trim()) params.set('q', equipmentInput.value.trim());
-      if (cityInput && cityInput.value.trim()) params.set('city', cityInput.value.trim());
-      const qs = params.toString();
-      window.location.href = '/catalog.html' + (qs ? '?' + qs : '');
-    }
-
-    searchButton?.addEventListener('click', goCatalog);
-    equipmentInput?.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') goCatalog();
+    searchButton?.addEventListener('click', function (e) {
+      e.preventDefault();
+      searchAroundCity();
     });
+
+    cityInput?.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchAroundCity();
+      }
+    });
+
+    equipmentInput?.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchAroundCity();
+      }
+    });
+
+    setLabels(DEFAULT_CITY.name);
+    setTimeout(function () { locateUser(false); }, 700);
   });
 })();
 </script>
+
 <script src="/components.js"></script>
 
 
