@@ -475,6 +475,7 @@ html, body {
   let userMarker = null;
   let productMarkers = [];
   let allListings = [];
+  let activeListings = [];
   let currentCenter = DEFAULT_CITY;
   let mapReady = false;
   let listingsReady = false;
@@ -511,17 +512,9 @@ html, body {
     return Number.isFinite(n) ? n : null;
   }
 
-  function getLat(item) {
-    return toNumber(item.lat ?? item.latitude);
-  }
-
-  function getLng(item) {
-    return toNumber(item.lng ?? item.lon ?? item.longitude);
-  }
-
-  function hasCoordinates(item) {
-    return getLat(item) !== null && getLng(item) !== null;
-  }
+  function getLat(item) { return toNumber(item.lat ?? item.latitude); }
+  function getLng(item) { return toNumber(item.lng ?? item.lon ?? item.longitude); }
+  function hasCoordinates(item) { return getLat(item) !== null && getLng(item) !== null; }
 
   function getImage(item) {
     const imgs = Array.isArray(item.listing_images) ? [...item.listing_images] : [];
@@ -559,12 +552,11 @@ html, body {
     const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
     const image = getImage(item);
     const price = formatPrice(item.price);
-    const href = productUrl(item);
     const distance = distanceText(item);
     const locationLine = distance ? `${escapeHtml(distance)} • ${city}` : city;
 
     return `
-      <a href="${href}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
+      <a href="${productUrl(item)}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
         <div class="rss-card-placeholder"></div>
         ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
         <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
@@ -586,26 +578,59 @@ html, body {
   }
 
   function showLoading() {
-    const nearestGrid = document.getElementById('nearest-products-grid');
-    if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-loading-products col-span-full">Recherche des équipements proches de votre position...</div>';
+    const grid = document.getElementById('nearest-products-grid');
+    if (grid) grid.innerHTML = '<div class="rss-loading-products col-span-full">Recherche des équipements proches de votre position...</div>';
+  }
+
+  function cleanCityName(label) {
+    return String(label || '').replace(/\s*•.*$/, '').replace(', FR', '').trim();
+  }
+
+  function currentCatalogUrl() {
+    const params = new URLSearchParams();
+    const city = cleanCityName(currentCenter.name || '');
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const q = equipmentInput && equipmentInput.value ? equipmentInput.value.trim() : '';
+    if (q) params.set('q', q);
+    if (city && city !== 'Votre position' && city !== 'Autour de vous') params.set('city', city);
+    if (currentCenter.lat && currentCenter.lng) {
+      params.set('lat', String(currentCenter.lat));
+      params.set('lng', String(currentCenter.lng));
+      params.set('radius', String(DEFAULT_RADIUS_KM));
+    }
+    return '/catalog.html' + (params.toString() ? '?' + params.toString() : '');
   }
 
   function setLabels(label) {
     const clean = label || 'Autour de vous';
+    const text = clean + ' • Autour de vous';
     const nearby = document.getElementById('nearby-city-label');
     const mapLabel = document.getElementById('map-city-label');
-    if (nearby) nearby.textContent = clean + ' • Autour de vous';
-    if (mapLabel) mapLabel.textContent = clean + ' • Autour de vous';
-    document.querySelectorAll('a[href^="/catalog.html"]').forEach(function (a) {
-      if (clean && clean !== 'Votre position' && clean !== 'Autour de vous') {
-        a.href = '/catalog.html?city=' + encodeURIComponent(clean.replace(/\s*•.*$/, ''));
-      }
-    });
+    if (nearby) nearby.textContent = text;
+    if (mapLabel) mapLabel.textContent = text;
+    document.querySelectorAll('a[href^="/catalog.html"]').forEach(a => { a.href = currentCatalogUrl(); });
   }
 
   function setHeroCityInput(label) {
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-    if (cityInput && label && !cityInput.value) cityInput.value = label.replace(', FR', '');
+    const clean = cleanCityName(label);
+    if (cityInput && clean && !cityInput.value) cityInput.value = clean;
+  }
+
+  function saveLocation(center) {
+    try {
+      localStorage.setItem('rssUserLocation', JSON.stringify({
+        name: center.name, lat: center.lat, lng: center.lng, zoom: center.zoom || 13, savedAt: Date.now()
+      }));
+    } catch (e) {}
+  }
+
+  function loadSavedLocation() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
+      if (!saved || !saved.lat || !saved.lng) return null;
+      return saved;
+    } catch (e) { return null; }
   }
 
   async function reverseCity(lat, lng) {
@@ -614,9 +639,7 @@ html, body {
       const data = await res.json();
       const a = data && data.address ? data.address : {};
       return a.city || a.town || a.village || a.municipality || a.county || 'Votre position';
-    } catch (e) {
-      return 'Votre position';
-    }
+    } catch (e) { return 'Votre position'; }
   }
 
   async function geocodeCity(query) {
@@ -626,14 +649,24 @@ html, body {
     return { name: query, lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), zoom: 13 };
   }
 
+  function equipmentFilter(items) {
+    const input = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const q = input && input.value ? input.value.trim().toLowerCase() : '';
+    if (!q) return items;
+    return items.filter(item => {
+      const haystack = [item.title, item.description, item.category, item.brand, item.city, item.location].join(' ').toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
   function enrichByDistance(items, center) {
-    return (items || []).map(function (item) {
+    return (items || []).map(item => {
       const lat = getLat(item);
       const lng = getLng(item);
       const copy = Object.assign({}, item);
       if (lat !== null && lng !== null && center) copy._distanceKm = haversineKm(center.lat, center.lng, lat, lng);
       return copy;
-    }).sort(function (a, b) {
+    }).sort((a, b) => {
       const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
       const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
       return da - db;
@@ -641,15 +674,15 @@ html, body {
   }
 
   function nearbyItems(center, limit) {
-    const sorted = enrichByDistance(allListings, center).filter(hasCoordinates);
+    const source = activeListings.length ? activeListings : allListings;
+    const filtered = equipmentFilter(source);
+    const sorted = enrichByDistance(filtered, center).filter(hasCoordinates);
     const inRadius = sorted.filter(item => item._distanceKm <= DEFAULT_RADIUS_KM);
-    return (inRadius.length >= Math.min(limit, 4) ? inRadius : sorted).slice(0, limit);
+    return (inRadius.length ? inRadius : sorted).slice(0, limit);
   }
 
   function newestItems(limit) {
-    return [...allListings].sort(function (a, b) {
-      return new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0);
-    }).slice(0, limit);
+    return equipmentFilter(allListings).sort((a, b) => new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0)).slice(0, limit);
   }
 
   function renderProductGrids(center) {
@@ -663,7 +696,11 @@ html, body {
         ? nearest.map(item => productCard(item, null)).join('')
         : '<div class="rss-loading-products col-span-full">Aucun équipement géolocalisé trouvé autour de cette zone.</div>';
     }
-    if (newestGrid && newest.length) newestGrid.innerHTML = newest.map(item => productCard(item, 'Nouveau')).join('');
+    if (newestGrid) {
+      newestGrid.innerHTML = newest.length
+        ? newest.map(item => productCard(item, 'Nouveau')).join('')
+        : '<div class="rss-loading-products col-span-full">Aucun nouvel équipement trouvé.</div>';
+    }
   }
 
   function productPopupHtml(item) {
@@ -694,7 +731,7 @@ html, body {
     });
 
     const items = nearbyItems(center || currentCenter, 30);
-    productMarkers = items.map(function (item) {
+    productMarkers = items.map(item => {
       const lat = getLat(item);
       const lng = getLng(item);
       if (lat === null || lng === null) return null;
@@ -729,6 +766,7 @@ html, body {
 
   function updateCenter(center, options) {
     currentCenter = Object.assign({}, DEFAULT_CITY, center || {});
+    saveLocation(currentCenter);
     setLabels(currentCenter.name || 'Votre position');
     setHeroCityInput(currentCenter.name || '');
 
@@ -765,11 +803,26 @@ html, body {
 
     let { data, error } = await supabaseClient
       .from('listings')
-      .select(`*, listing_images ( image_url, position )`)
+      .select('*, listing_images ( image_url, position )')
       .eq('status', 'publish')
+      .not('lat', 'is', null)
+      .not('lng', 'is', null)
       .order('featured', { ascending: false })
       .order('published_at', { ascending: false })
-      .limit(120);
+      .limit(200);
+
+    if (error) {
+      console.warn('Chargement avec filtre lat/lng impossible, fallback sans filtre:', error);
+      const fallback = await supabaseClient
+        .from('listings')
+        .select('*, listing_images ( image_url, position )')
+        .eq('status', 'publish')
+        .order('featured', { ascending: false })
+        .order('published_at', { ascending: false })
+        .limit(200);
+      data = fallback.data || [];
+      error = fallback.error;
+    }
 
     if (error) {
       console.error('Erreur chargement produits Supabase:', error);
@@ -797,7 +850,8 @@ html, body {
       }
     }
 
-    allListings = data;
+    allListings = data.filter(hasCoordinates);
+    activeListings = allListings;
     listingsReady = true;
     renderProductGrids(currentCenter);
     renderMapMarkers(currentCenter);
@@ -857,18 +911,21 @@ html, body {
         updateCenter({ name: city, lat, lng, zoom: 13 }, { isGeolocation: true });
       },
       function () {
+        const saved = loadSavedLocation();
+        if (saved) {
+          updateCenter(saved, { isSaved: true });
+        } else {
+          updateCenter(DEFAULT_CITY, { isFallback: true });
+        }
         if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
-        updateCenter(DEFAULT_CITY, { isFallback: true });
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
   }
 
   async function searchAroundCity() {
-    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
     const query = cityInput && cityInput.value ? cityInput.value.trim() : '';
-    const equipment = equipmentInput && equipmentInput.value ? equipmentInput.value.trim().toLowerCase() : '';
 
     if (!query) {
       await locateUser(true);
@@ -882,22 +939,15 @@ html, body {
         return;
       }
 
-      const baseListings = allListings;
-      if (equipment && baseListings.length) {
-        allListings = baseListings.filter(function (item) {
-          const haystack = [item.title, item.description, item.category, item.brand, item.city, item.location].join(' ').toLowerCase();
-          return haystack.includes(equipment);
-        });
-      }
-
+      activeListings = allListings;
       updateCenter(city, { isSearch: true });
 
-      if (equipment && !allListings.length) {
+      const nearest = nearbyItems(city, 4);
+      if (!nearest.length) {
         const nearestGrid = document.getElementById('nearest-products-grid');
-        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-loading-products col-span-full">Aucun équipement trouvé pour cette recherche autour de cette ville.</div>';
+        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-loading-products col-span-full">Aucun équipement trouvé autour de cette ville.</div>';
       }
 
-      allListings = baseListings;
       document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (e) {
       console.error(e);
@@ -910,37 +960,41 @@ html, body {
     initMap();
     loadListings();
 
+    const saved = loadSavedLocation();
+    if (saved) updateCenter(saved, { isSaved: true });
+
     document.getElementById('use-my-location')?.addEventListener('click', function () {
       locateUser(true);
     });
 
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
     const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
-    const searchButton = Array.from(document.querySelectorAll('button')).find(function (button) {
-      return button.textContent.trim().toLowerCase() === 'rechercher';
-    });
+    const searchButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim().toLowerCase() === 'rechercher');
 
     searchButton?.addEventListener('click', function (e) {
       e.preventDefault();
       searchAroundCity();
     });
 
-    cityInput?.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchAroundCity();
+    [cityInput, equipmentInput].forEach(function (input) {
+      input?.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          searchAroundCity();
+        }
+      });
+    });
+
+    equipmentInput?.addEventListener('input', function () {
+      if (listingsReady) {
+        setLabels(currentCenter.name || DEFAULT_CITY.name);
+        renderProductGrids(currentCenter);
+        renderMapMarkers(currentCenter);
       }
     });
 
-    equipmentInput?.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        searchAroundCity();
-      }
-    });
-
-    setLabels(DEFAULT_CITY.name);
-    setTimeout(function () { locateUser(false); }, 700);
+    setLabels(saved?.name || DEFAULT_CITY.name);
+    setTimeout(function () { locateUser(false); }, saved ? 1200 : 700);
   });
 })();
 </script>
