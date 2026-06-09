@@ -546,6 +546,35 @@ html, body {
     return '';
   }
 
+
+  function normalizeText(value) {
+    return String(value || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim();
+  }
+
+  function listingDateValue(item) {
+    return new Date(item.published_at || item.created_at || item.updated_at || 0).getTime() || 0;
+  }
+
+  function uniqueListings(items) {
+    const seen = new Set();
+    return (items || []).filter(function (item) {
+      const key = String(item.id || item.original_id || item.title || Math.random());
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function sameCountryItems(center) {
+    const country = normalizeText(center && center.country);
+    if (!country) return [];
+    return allListings.filter(function (item) {
+      return normalizeText(item.country) === country;
+    });
+  }
+
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
     const city = escapeHtml(item.city || item.location || 'France');
@@ -620,7 +649,13 @@ html, body {
   function saveLocation(center) {
     try {
       localStorage.setItem('rssUserLocation', JSON.stringify({
-        name: center.name, lat: center.lat, lng: center.lng, zoom: center.zoom || 13, savedAt: Date.now()
+        name: center.name,
+        country: center.country || '',
+        countryCode: center.countryCode || '',
+        lat: center.lat,
+        lng: center.lng,
+        zoom: center.zoom || 13,
+        savedAt: Date.now()
       }));
     } catch (e) {}
   }
@@ -633,20 +668,34 @@ html, body {
     } catch (e) { return null; }
   }
 
-  async function reverseCity(lat, lng) {
+  async function reversePlace(lat, lng) {
     try {
-      const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng));
+      const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng));
       const data = await res.json();
       const a = data && data.address ? data.address : {};
-      return a.city || a.town || a.village || a.municipality || a.county || 'Votre position';
-    } catch (e) { return 'Votre position'; }
+      return {
+        name: a.city || a.town || a.village || a.municipality || a.county || 'Votre position',
+        country: a.country || '',
+        countryCode: a.country_code || ''
+      };
+    } catch (e) {
+      return { name: 'Votre position', country: '', countryCode: '' };
+    }
   }
 
   async function geocodeCity(query) {
-    const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(query));
+    const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=' + encodeURIComponent(query));
     const data = await res.json();
     if (!data || !data.length) return null;
-    return { name: query, lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon), zoom: 13 };
+    const a = data[0].address || {};
+    return {
+      name: query,
+      country: a.country || '',
+      countryCode: a.country_code || '',
+      lat: parseFloat(data[0].lat),
+      lng: parseFloat(data[0].lon),
+      zoom: 13
+    };
   }
 
   function equipmentFilter(items) {
@@ -682,14 +731,34 @@ html, body {
   }
 
   function newestItems(limit) {
-    return equipmentFilter(allListings).sort((a, b) => new Date(b.published_at || b.created_at || 0) - new Date(a.published_at || a.created_at || 0)).slice(0, limit);
+    return equipmentFilter(allListings)
+      .sort((a, b) => listingDateValue(b) - listingDateValue(a))
+      .slice(0, limit);
+  }
+
+  function newestNearbyItems(center, limit) {
+    const source = activeListings.length ? activeListings : allListings;
+    const filtered = equipmentFilter(source);
+    const withDistance = enrichByDistance(filtered, center || currentCenter);
+    const inRadius = withDistance
+      .filter(item => hasCoordinates(item) && typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
+      .sort((a, b) => listingDateValue(b) - listingDateValue(a));
+
+    const country = normalizeText((center || currentCenter).country);
+    const sameCountry = country
+      ? filtered.filter(item => normalizeText(item.country) === country).sort((a, b) => listingDateValue(b) - listingDateValue(a))
+      : [];
+
+    const closest = withDistance.filter(hasCoordinates);
+
+    return uniqueListings(inRadius.concat(sameCountry, closest, newestItems(limit))).slice(0, limit);
   }
 
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
     const nearest = nearbyItems(center || currentCenter, 4);
-    const newest = newestItems(4);
+    const newest = newestNearbyItems(center || currentCenter, 4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
@@ -699,7 +768,7 @@ html, body {
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-loading-products col-span-full">Aucun nouvel équipement trouvé.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée autour de votre ville ou pays.</div>';
     }
   }
 
@@ -765,7 +834,7 @@ html, body {
   }
 
   function updateCenter(center, options) {
-    currentCenter = Object.assign({}, DEFAULT_CITY, center || {});
+    currentCenter = Object.assign({}, DEFAULT_CITY, { country: '', countryCode: '' }, center || {});
     saveLocation(currentCenter);
     setLabels(currentCenter.name || 'Votre position');
     setHeroCityInput(currentCenter.name || '');
@@ -907,8 +976,8 @@ html, body {
       async function (pos) {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
-        const city = await reverseCity(lat, lng);
-        updateCenter({ name: city, lat, lng, zoom: 13 }, { isGeolocation: true });
+        const place = await reversePlace(lat, lng);
+        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13 }, { isGeolocation: true });
       },
       function () {
         const saved = loadSavedLocation();
