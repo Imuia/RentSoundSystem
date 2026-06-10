@@ -110,6 +110,23 @@
         .animate-marquee {
             animation: marquee 30s linear infinite;
         }
+		.brand-card-logo-wrap img.brand-logo-img{
+  max-width:172px!important;
+  max-height:76px!important;
+  width:auto!important;
+  height:auto!important;
+  object-fit:contain!important;
+  display:block!important;
+  filter: grayscale(1) contrast(1.12) brightness(.96)!important;
+  opacity:.86;
+  mix-blend-mode:multiply;
+  transition: all .3s ease;
+}
+
+.group:hover .brand-card-logo-wrap img.brand-logo-img{
+  filter: grayscale(0) contrast(1.05) brightness(1)!important;
+  opacity:1;
+}
     </style>
 <style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style>
 <style id="rss-unified-brand-style">
