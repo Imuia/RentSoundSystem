@@ -166,6 +166,7 @@
 
     
 .line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.quote-listing-option{border:1px solid rgba(255,255,255,.08);background:rgba(32,31,31,.75);transition:.22s ease}.quote-listing-option:hover{border-color:#FC036D;background:rgba(252,3,109,.08)}.quote-listing-option.active{border-color:#FC036D;background:rgba(252,3,109,.12);box-shadow:0 0 25px rgba(252,3,109,.18)}
 </style>
 
 <style id="rss-global-component-fix">
@@ -242,6 +243,21 @@
         <span id="selected-product-price" class="px-3 py-1 rounded bg-surface-container-highest text-on-surface-variant text-xs font-bold">Prix sur demande</span>
       </div>
     </div>
+  </div>
+
+  <div id="listing-picker-section" class="rounded-xl border border-surface-glass-border bg-surface-container-low p-5">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-4">
+      <div>
+        <h3 class="font-headline-md text-lg text-on-surface">Choisir une annonce</h3>
+        <p class="font-body-md text-sm text-on-surface-variant">Recherchez et sélectionnez le matériel concerné par la demande de devis.</p>
+      </div>
+      <div class="relative w-full md:w-80">
+        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-xl">search</span>
+        <input id="listing-search" type="text" class="w-full py-3 pl-10 pr-4" placeholder="Rechercher une annonce, marque, ville...">
+      </div>
+    </div>
+    <div id="listing-picker-loading" class="text-on-surface-variant text-sm py-4">Chargement des annonces disponibles...</div>
+    <div id="listing-picker-list" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[420px] overflow-y-auto pr-1"></div>
   </div>
 
   <div>
@@ -328,6 +344,7 @@
   const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   let currentStep=1;
   let currentListing=null;
+  let allQuoteListings=[];
   const $=s=>document.querySelector(s);
   const $$=s=>Array.from(document.querySelectorAll(s));
 
@@ -340,23 +357,64 @@
   function params(){return new URLSearchParams(window.location.search)}
   function formatPrice(v){const n=Number(v||0); return n ? Math.round(n)+'€ / jour' : 'Prix sur demande';}
   function getImage(item){const imgs=Array.isArray(item?.listing_images)?[...item.listing_images]:[]; imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0)); return imgs[0]?.image_url || item?.image_url || item?.featured_image || item?.thumbnail || '/images/categories/electrovoice.jpg';}
+  function listingKey(item){return String(item?.original_id || item?.id || '');}
+  function listingMatches(item, q){
+    if(!q) return true;
+    const hay=[item?.title,item?.brand,item?.category,item?.city,item?.location,item?.description].join(' ').toLowerCase();
+    return hay.includes(q.toLowerCase());
+  }
+  function renderListingPicker(filter){
+    const box=$('#listing-picker-list'); const loading=$('#listing-picker-loading');
+    if(!box) return;
+    const items=(allQuoteListings||[]).filter(item=>listingMatches(item, filter||'')).slice(0,40);
+    if(loading) loading.style.display='none';
+    if(!items.length){box.innerHTML='<div class="text-on-surface-variant text-sm py-4 md:col-span-2">Aucune annonce trouvée. Essayez un autre mot-clé.</div>';return;}
+    box.innerHTML=items.map(item=>{
+      const img=getImage(item); const title=esc(item.title||'Matériel professionnel'); const cat=esc((item.category||item.brand||'Annonce').replace(/-/g,' ')); const city=esc(item.city||item.location||'Ville à confirmer'); const key=esc(listingKey(item)); const active=listingKey(currentListing)===listingKey(item);
+      return '<button type="button" class="quote-listing-option '+(active?'active':'')+' rounded-lg p-3 text-left flex gap-3 items-center" data-listing-key="'+key+'">'+
+        '<img src="'+esc(img)+'" onerror="this.src=\'/logo.png\'" class="w-20 h-16 object-cover rounded bg-surface-container-highest flex-shrink-0" alt="">'+
+        '<span class="min-w-0 flex-1"><span class="block text-on-surface font-bold text-sm line-clamp-2">'+title+'</span><span class="block text-electric-magenta text-xs font-bold mt-1">'+cat+'</span><span class="block text-on-surface-variant text-xs mt-1">'+city+' • '+esc(formatPrice(item.price))+'</span></span>'+
+      '</button>';
+    }).join('');
+    box.querySelectorAll('[data-listing-key]').forEach(btn=>btn.addEventListener('click',()=>{
+      const item=allQuoteListings.find(x=>listingKey(x)===btn.dataset.listingKey);
+      if(item){currentListing=item; applyListing(item,false); renderListingPicker($('#listing-search')?.value||''); toast('Annonce sélectionnée : '+(item.title||'Matériel'))}
+    }));
+  }
+  async function loadListingChoices(sb){
+    try{
+      const {data,error}=await sb.from('listings').select('*, listing_images ( image_url, position )').eq('status','publish').order('published_at',{ascending:false}).limit(120);
+      if(error) throw error;
+      allQuoteListings=Array.isArray(data)?data:[];
+      renderListingPicker('');
+    }catch(e){
+      const loading=$('#listing-picker-loading'); if(loading) loading.textContent='Impossible de charger la liste des annonces. La demande peut quand même être envoyée.';
+      console.warn('Liste annonces devis:', e.message);
+    }
+  }
+
   function fallbackListing(){const p=params();return {id:null,original_id:p.get('original_id')||p.get('listing_original_id')||'',title:p.get('title')||'Matériel professionnel',category:p.get('category')||'Demande de devis',city:p.get('city')||'',price:p.get('price')||'',description:p.get('description')||'Indiquez vos dates, votre lieu et les services souhaités. Notre équipe vous répondra rapidement.',listing_images:[]};}
   function cleanText(v,n){v=String(v||'').replace(/\s+/g,' ').trim(); return v.length>n?v.slice(0,n-1)+'…':v;}
 
   async function loadListing(){
     currentListing=fallbackListing();
-    applyListing(currentListing, true);
+    applyListing(currentListing, false);
     const p=params();
     const originalId=p.get('original_id')||p.get('listing_original_id');
     const id=p.get('id')||p.get('listing_id');
-    if(!window.supabase || (!originalId && !id)) return;
+    if(!window.supabase){ renderListingPicker(''); return; }
     try{
       const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      await loadListingChoices(sb);
+      if(!originalId && !id){
+        setText('#quote-hero-description','Choisissez une annonce ci-dessous, puis indiquez vos dates et vos besoins.');
+        return;
+      }
       let q=sb.from('listings').select('*, listing_images ( image_url, position )').limit(1);
       if(originalId) q=q.eq('original_id', originalId); else q=q.eq('id', id);
       const {data,error}=await q;
       if(error) throw error;
-      if(data && data[0]){ currentListing=data[0]; applyListing(currentListing, false); }
+      if(data && data[0]){ currentListing=data[0]; applyListing(currentListing, false); renderListingPicker($('#listing-search')?.value||''); }
     }catch(e){ console.warn('Chargement annonce devis:', e.message); }
   }
 
@@ -400,7 +458,7 @@
 
   function validateStep(step){
     hideAlert();
-    if(step===1){const q=Number($('#quantity-count')?.value||0); if(!q||q<1){$('#quantity-count')?.focus(); toast('Indiquez une quantité valide.'); return false;}}
+    if(step===1){const q=Number($('#quantity-count')?.value||0); if(!q||q<1){$('#quantity-count')?.focus(); toast('Indiquez une quantité valide.'); return false;} if(allQuoteListings.length && !listingKey(currentListing)){toast('Sélectionnez une annonce avant de continuer.'); $('#listing-search')?.focus(); return false;}}
     if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s); if(!el?.value?.trim()){el?.focus(); toast('Complétez la date et le lieu.'); return false;}} const start=$('#event-start')?.value, end=$('#event-end')?.value; if(start&&end&&end<start){$('#event-end')?.focus(); toast('La date de retour doit être après la date de début.'); return false;}}
     if(step===4){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s); if(!el?.value?.trim()){el?.focus(); showAlert('Merci de compléter nom, téléphone et email.'); return false;}} const email=$('#client-email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.'); $('#client-email')?.focus(); return false;} const phone=($('#client-phone')?.value||'').replace(/\s/g,''); if(phone.length<8){showAlert('Téléphone invalide.'); $('#client-phone')?.focus(); return false;}}
     return true;
@@ -419,7 +477,8 @@
     const s=$('#event-start'), e=$('#event-end');
     if(s&&!s.value)s.value=todayPlus(7); if(e&&!e.value)e.value=todayPlus(8); if(s&&e){s.min=todayPlus(0); e.min=s.value; s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value; e.min=s.value; updateSummary();});}
     const range=$('#quantity-range'), count=$('#quantity-count'); if(range&&count){range.addEventListener('input',()=>{count.value=range.value;updateSummary();}); count.addEventListener('input',()=>{range.value=count.value;updateSummary();});}
-    $$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary)); ['#need-delivery','#need-tech','#need-insurance'].forEach(s=>$(s)?.addEventListener('change',updateSummary));
+    $$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary));
+    $('#listing-search')?.addEventListener('input', function(){ renderListingPicker(this.value||''); }); ['#need-delivery','#need-tech','#need-insurance'].forEach(s=>$(s)?.addEventListener('change',updateSummary));
     $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1));
     $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); saveLocalRequest(req); const result=await saveSupabase(req); const message=result.ok?'Demande de devis envoyée. Notre équipe revient vers vous rapidement.':'Demande enregistrée sur cette page. Supabase indique : '+result.error; toast(message); showAlert(message); const alert=$('#quote-alert'); if(alert){alert.classList.remove('border-error/40','bg-error-container/20','text-error'); alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');} if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';} });
     updateSummary(); goStep(1,true); loadListing();
