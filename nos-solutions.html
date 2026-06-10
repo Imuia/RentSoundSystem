@@ -1,428 +1,86 @@
-<!DOCTYPE html><html class="dark" lang="fr"><head>
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
 <meta charset="utf-8">
-<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nos solutions | RentSoundSystem</title>
+<meta name="description" content="Solutions RentSoundSystem pour louer du matériel de sonorisation, éclairage, DJ, studio, instruments et services événementiels entre particuliers, passionnés et professionnels.">
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<title>Solutions - RentSoundSystem</title>
-<!-- Material Symbols -->
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<!-- Google Fonts: Manrope (Headlines) & Inter (Body) -->
-<link href="https://fonts.googleapis.com" rel="preconnect">
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
-<!-- Tailwind CSS -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<!-- Tailwind Configuration -->
-<script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "surface-bright": "#393939",
-                    "on-secondary-container": "#b4b5b5",
-                    "on-background": "#e2e2e2",
-                    "primary-fixed": "#ffd9de",
-                    "primary-fixed-dim": "#FC036D",
-                    "surface-container-highest": "#353535",
-                    "tertiary-container": "#929090",
-                    "surface": "#131313",
-                    "secondary-fixed": "#e2e2e2",
-                    "primary": "#FC036D",
-                    "surface-container-lowest": "#0e0e0e",
-                    "outline": "#ac878d",
-                    "on-secondary-fixed": "#1a1c1c",
-                    "on-primary": "#ffffff",
-                    "surface-tint": "#FC036D",
-                    "outline-variant": "#5d3f44",
-                    "on-primary-container": "#ffffff",
-                    "surface-variant": "#353535",
-                    "background": "#131313",
-                    "on-primary-fixed": "#ffffff",
-                    "secondary-container": "#454747",
-                    "error": "#ffb4ab",
-                    "surface-dim": "#131313",
-                    "on-error": "#690005",
-                    "primary-container": "#b0004b",
-                    "surface-container": "#1f1f1f",
-                    "tertiary": "#c8c6c5",
-                    "on-primary-fixed-variant": "#ffffff",
-                    "on-secondary": "#2f3131",
-                    "tertiary-fixed-dim": "#c8c6c5",
-                    "inverse-on-surface": "#303030",
-                    "error-container": "#93000a",
-                    "on-surface-variant": "#e6bcc2",
-                    "tertiary-fixed": "#e5e2e1",
-                    "on-secondary-fixed-variant": "#454747",
-                    "on-tertiary-fixed-variant": "#474746",
-                    "on-tertiary-fixed": "#1c1b1b",
-                    "on-tertiary": "#313030",
-                    "surface-container-low": "#1b1b1b",
-                    "secondary-fixed-dim": "#c6c6c7",
-                    "on-surface": "#e2e2e2",
-                    "on-error-container": "#ffdad6",
-                    "secondary": "#c6c6c7",
-                    "inverse-surface": "#e2e2e2",
-                    "inverse-primary": "#bc004f",
-                    "on-tertiary-container": "#2a2a2a",
-                    "surface-container-high": "#2a2a2a"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "fontFamily": {
-                    "headline": ["Manrope", "sans-serif"],
-                    "display": ["Manrope", "sans-serif"],
-                    "body": ["Inter", "sans-serif"],
-                    "label": ["Inter", "sans-serif"]
-            }
-          }
-        }
-      }
-    </script>
+<script>
+tailwind.config={darkMode:'class',theme:{extend:{colors:{background:'#131313',surface:'#131313','surface-container':'#1f1f1f','surface-container-low':'#1b1b1b','surface-container-lowest':'#0e0e0e','surface-container-high':'#2a2a2a','surface-container-highest':'#353535',primary:'#FC036D','primary-container':'#c40254','on-background':'#e2e2e2','on-surface':'#e2e2e2','on-surface-variant':'#e6bcc2','on-primary':'#ffffff',outline:'#ac878d','outline-variant':'#5d3f44'},fontFamily:{headline:['Manrope','sans-serif'],body:['Inter','sans-serif'],label:['Inter','sans-serif']},borderRadius:{DEFAULT:'0.125rem',lg:'0.25rem',xl:'0.5rem',full:'0.75rem'}}}}
+</script>
 <style>
-        /* Base styles enforced by design system */
-        body {
-            background-color: #131313;
-            color: #e2e2e2;
-        }
-    </style>
-
-<style id="rss-solutions-global-compat">
-  #header-container { min-height: 73px; }
-  #footer-container { min-height: 320px; }
-
-  #header-container header,
-  #footer-container footer { display:block; }
-
-  #header-container .max-w-container-max,
-  #footer-container .max-w-container-max { max-width: 1280px; }
-
-  #header-container .px-margin-mobile,
-  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
-
-  #header-container .gap-stack-sm { gap: 12px; }
-  #header-container .gap-stack-md { gap: 24px; }
-
-  #header-container .font-headline-md,
-  #footer-container .font-headline { font-family: Manrope, sans-serif; }
-
-  #header-container .font-body-md,
-  #footer-container .font-body { font-family: Inter, sans-serif; }
-
-  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
-  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
-  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
-
-  @media (min-width: 768px) {
-    #header-container .md\:px-margin-desktop,
-    #footer-container .md\:px-margin-desktop { padding-left: 40px; padding-right: 40px; }
-  }
-
-  #header-container header {
-    background: rgba(19,19,19,.80);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid rgba(255,255,255,.10);
-  }
-
-  #footer-container footer {
-    background: #0e0e0e;
-    border-top: 1px solid rgba(255,255,255,.05);
-  }
-
-  .rss-solutions-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    padding: 24px;
-    background: rgba(0,0,0,.72);
-    backdrop-filter: blur(8px);
-  }
-
-  .rss-solutions-modal.is-open { display: flex; }
+body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headline{font-family:Manrope,sans-serif}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}#header-container{min-height:73px}#footer-container{min-height:320px}#header-container header,#footer-container footer{display:block}.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.94),rgba(19,19,19,.88));border:1px solid rgba(255,255,255,.08)}.rss-card:hover{border-color:rgba(252,3,109,.5);box-shadow:0 0 35px rgba(252,3,109,.10)}.rss-chip{background:rgba(252,3,109,.10);border:1px solid rgba(252,3,109,.28);color:#FC036D}.rss-img{filter:grayscale(80%) brightness(.8);transition:.35s}.rss-card:hover .rss-img{filter:grayscale(10%) brightness(1)}
 </style>
-
 </head>
-<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
+<body class="bg-background text-on-background min-h-screen flex flex-col">
 <div id="header-container"></div>
-<!-- Main Content -->
 <main class="flex-grow">
-<!-- 1. Hero Section -->
-<section class="relative pt-24 pb-32 px-6 md:px-10 max-w-[1280px] mx-auto flex flex-col lg:flex-row items-center gap-16 overflow-hidden">
-<!-- Background subtle glow -->
-<div class="absolute top-1/4 left-0 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] -z-10 pointer-events-none"></div>
-<div class="flex-1 w-full relative z-10">
-<div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container border border-outline-variant/20 mb-8">
-<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
-<span class="text-label-caps font-label text-on-surface uppercase tracking-widest">L'Écosystème Pro</span>
-</div>
-<h1 class="text-[40px] md:text-headline-xl font-headline font-bold text-on-surface leading-tight mb-6 tracking-tight">La Puissance au Cœur de <br class="hidden md:block">vos <span class="text-primary">Productions Live</span>.</h1>
-<p class="text-body-lg text-on-surface-variant font-body mb-10 max-w-2xl">
-                    Une plateforme ergonomique conçue pour les professionnels de l'audio. De la location de matériel à la gestion logistique, automatisez vos processus avec une précision clinique et sécurisez chaque événement.
-                </p>
-<div class="flex flex-col sm:flex-row gap-4">
-<a href="/catalog.html" class="text-label-caps font-label uppercase tracking-widest bg-primary text-on-primary px-8 py-4 rounded hover:bg-primary-container transition-all duration-200 text-center">Louer du matériel</a>
-<button id="rss-demo-button" type="button" class="text-label-caps font-label uppercase tracking-widest bg-surface-container text-on-surface px-8 py-4 rounded border border-outline-variant/30 hover:border-outline hover:bg-surface-container-high transition-all duration-200 flex items-center justify-center gap-2">
-<span class="material-symbols-outlined text-[18px]">play_arrow</span>
-                        Voir la Démo
-                    </button>
-</div>
-</div>
-<div class="flex-1 w-full relative">
-<div class="relative w-full aspect-[4/3] rounded-lg overflow-hidden border border-outline-variant/20 bg-surface-container shadow-[0_0_40px_rgba(0,0,0,0.8)]">
-<img alt="Professional Audio Console" class="w-full h-full object-cover opacity-90 mix-blend-luminosity hover:mix-blend-normal transition-all duration-700" data-alt="A dramatic, high-end photograph of a professional digital audio mixing console in a dimly lit concert environment. The scene embodies a Minimalist-Corporate dark mode aesthetic with deep pitch-black backgrounds and subtle charcoal greys. Vibrant vivid pink LED indicator lights dot the surface of the console, creating a striking technical contrast. The focus is sharp on the faders and knobs, conveying precision, reliability, and the raw nocturnal energy of live event production." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3oTn2fviZp8Ufs-ieEbANKRYn8XDtay56aJrCXQwvcbZK7DihntPl5pFuF51lB7i70BExs4Ds3DditHN261vRVUqLaQO3bC-FHGuAshSsbBkHGoLaMdzM0wQfQjQotW1pRdO7hL4wPjETzNv78J44MauEYieQEBh-eOTGLidEJE2r4rLdqAsI-5BfNOn16z1_P6JiEgJ2VWQDdTW6sVM8BimrTmBOax8zwDHFouC5QmxI7vf6uDIYuthm5SZAIxzJDU0o37Z6ayM">
-<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-</div>
-</div>
+<section class="relative pt-28 pb-24 px-6 md:px-10 overflow-hidden border-b border-white/5">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,rgba(252,3,109,.18),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)] -z-10"></div>
+  <div class="max-w-[1280px] mx-auto grid lg:grid-cols-2 gap-12 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full rss-chip mb-6"><span class="material-symbols-outlined text-lg">hub</span><span class="text-xs uppercase tracking-[.18em] font-bold">Nos solutions</span></div>
+      <h1 class="font-headline text-4xl md:text-6xl font-extrabold leading-tight mb-6">Location de matériel son, lumière et instruments <span class="text-primary">entre passionnés et professionnels</span>.</h1>
+      <p class="text-lg md:text-xl text-on-surface-variant max-w-2xl">RentSoundSystem facilite la location de sonorisation, éclairage, DJ gear, studio, instruments de musique et matériel événementiel pour soirées, mariages, concerts et productions.</p>
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-8">
+        <span class="rss-chip rounded px-3 py-2 text-sm text-center">Sonorisation</span><span class="rss-chip rounded px-3 py-2 text-sm text-center">Éclairage</span><span class="rss-chip rounded px-3 py-2 text-sm text-center">Deejay</span><span class="rss-chip rounded px-3 py-2 text-sm text-center">Studio</span>
+      </div>
+    </div>
+    <div class="rss-card rounded-2xl overflow-hidden">
+      <img src="/images/categories/electrovoice.jpg" alt="Sonorisation professionnelle" class="rss-img w-full h-[420px] object-cover" onerror="this.src='/logo.png'">
+    </div>
+  </div>
 </section>
-<!-- 2. Marketplace Mondiale (Bento Grid) -->
-<section class="py-24 bg-surface-container-lowest border-y border-outline-variant/10">
-<div class="max-w-[1280px] mx-auto px-6 md:px-10">
-<div class="mb-16 text-center max-w-3xl mx-auto">
-<h2 class="text-headline-lg font-headline font-bold text-on-surface mb-4">Marketplace Mondiale</h2>
-<p class="text-body-md text-on-surface-variant font-body">Accédez instantanément à un inventaire global de systèmes de diffusion, consoles et périphériques haut de gamme, validés par notre réseau de partenaires certifiés.</p>
-</div>
-<!-- Bento Grid Layout -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 auto-rows-[280px]">
-<!-- Main Card -->
-<div class="md:col-span-2 md:row-span-2 bg-surface-container rounded-lg p-8 border border-outline-variant/10 hover:border-outline-variant/30 transition-colors relative overflow-hidden group">
-<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px] -translate-y-1/2 translate-x-1/4"></div>
-<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA01Hbht8Db3HQiE8B87Zg1ljgf5B3jPmtxlpRMCDss2ONRnDhx7VEntdFHfSy4nSraz5jjdjExcDmkzrnfywYphLZlRucUrd-fc3ym6cvrwWXrnfiy52e766ZM4QeqOzpAroRL6WCDNH57dJecHOa4k4-QGrcQTrEQn2dkvPvLQ1HyvaH__xQJL6lormQbbC99RY6vztVtxfvbUwjDRCwhY1w-UbtZ-pOhZv_8E0Q2fkR5H7U38kHCQcTeaZkHHXeCEo6w1zyJ020" alt="Tableau de bord d'inventaire en temps r�el" class="w-full aspect-video object-cover rounded-lg mb-6 border border-primary/20 shadow-[0_0_15px_rgba(252,3,109,0.1)]">
-<h3 class="text-headline-md font-headline font-bold text-on-surface mb-4">Inventaire Temps Réel</h3>
-<p class="text-body-md text-on-surface-variant font-body max-w-md relative z-10">
-                            Consultez la disponibilité des parcs matériels de nos loueurs partenaires en temps réel. Systèmes Line Array, retours, amplificateurs : tout est synchronisé avec les plannings de production pour éviter les doubles réservations.
-                        </p>
-<!-- Abstract UI element -->
-<div class="mt-8 flex gap-2">
-<div class="h-2 w-16 bg-primary rounded-full"></div>
-<div class="h-2 w-8 bg-surface-variant rounded-full"></div>
-<div class="h-2 w-8 bg-surface-variant rounded-full"></div>
-</div>
-</div>
-<!-- Secondary Card 1 -->
-<div class="bg-surface-container rounded-lg p-6 border border-outline-variant/10 hover:border-outline-variant/30 transition-colors flex flex-col justify-between"><div>
-<div class="w-full h-[160px] rounded-lg overflow-hidden border border-outline-variant/30 bg-surface-container-lowest mb-4">
-  <img src="https://lh3.googleusercontent.com/aida/ADBb0ug_kQBR0Hc2FKxdT15ZoU7DtVUByhu9K18wjTTEtOfAumJxAKvhWDZhn34PgzUL0aK94zFysvt5-1hi1CWukWm6jcC3NQSZqMbETMA6uKY58nmDASboMLlv1u0HVgbQIis8UUZe-w4df1RodQdTjG-4uZ-e9r9Umx3OLt46lv2pFpt8UjqtPktslHPNojzBkxFhk6AvM2HUcGubH2lXsipHzUu0tPZKs2ky7ohlAYUFic3mHhyzdqCcPg" alt="Advanced Filtering Interface" class="w-full h-full object-cover opacity-90">
-</div>
-<h3 class="text-[20px] font-headline font-bold text-on-surface mb-2">Filtrage Précis</h3>
-<p class="text-body-sm text-on-surface-variant font-body mb-6">Recherche par rider technique, marque, protocole réseau (Dante, MADI) ou puissance de crête.</p>
-</div>
-<div class="mt-auto">
-<img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkKnD90ZCVlvHxv5v9I7BbdZaH84iPKkdvs8_EiHStTN2kItQR_OFMN5B26HLNCh-eDcqTkB0LftDS3MFTHwb7scbOVQFq-UUUjhxCLvilqjEoCEpSx6D36IYgypV-29us2xhNK6fgQFNjl9ZPI7lSjUdjb4EzUUuShz6DlYSEAwIt2SVIOelvzv4BYQbNILs7f_hFXrspmT975iRXR4P0sL7LMfAFLFdSuDODcMC1D0vh6qjw0bIPJR77Uu_pA_j_qiXx8FBvrks" alt="Advanced filtering UI for professional audio equipment" class="w-full h-auto rounded-xl border border-outline-variant/20 shadow-lg">
-</div></div>
-<!-- Secondary Card 2 -->
-<div class="bg-surface-container rounded-lg p-6 border border-outline-variant/10 hover:border-outline-variant/30 transition-colors flex flex-col justify-between">
-<div>
-<span class="material-symbols-outlined text-3xl text-primary mb-4" style="font-variation-settings: &quot;FILL&quot; 1;">verified</span>
-<h3 class="text-[20px] font-headline font-bold text-on-surface mb-2">Partenaires Certifiés</h3>
-<p class="text-body-sm text-on-surface-variant font-body">Chaque loueur est audité pour garantir un entretien irréprochable du matériel proposé.</p>
-</div>
-</div>
-</div>
-</div>
+<section class="py-20 px-6 md:px-10 bg-surface-container-lowest">
+  <div class="max-w-[1280px] mx-auto">
+    <div class="text-center max-w-3xl mx-auto mb-14"><h2 class="font-headline text-3xl md:text-5xl font-bold mb-4">Une marketplace complète</h2><p class="text-on-surface-variant text-lg">Le site officiel met en avant la location d’instruments de musique et de matériels de sonorisation entre particuliers, passionnés et professionnels.</p></div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="rss-card rounded-xl p-8"><span class="material-symbols-outlined text-primary text-4xl mb-5">travel_explore</span><h3 class="font-headline text-2xl font-bold mb-3">Recherche géolocalisée</h3><p class="text-on-surface-variant">Trouvez du matériel près d’une ville ou d’un lieu précis, avec une logique de proximité et de disponibilité.</p></div>
+      <div class="rss-card rounded-xl p-8"><span class="material-symbols-outlined text-primary text-4xl mb-5">tune</span><h3 class="font-headline text-2xl font-bold mb-3">Filtres adaptés</h3><p class="text-on-surface-variant">Affinez par catégorie, sous-catégorie, prix, options et type de matériel afin de gagner du temps.</p></div>
+      <div class="rss-card rounded-xl p-8"><span class="material-symbols-outlined text-primary text-4xl mb-5">payments</span><h3 class="font-headline text-2xl font-bold mb-3">Location en ligne</h3><p class="text-on-surface-variant">Le parcours officiel prévoit la sélection du matériel, la location et le paiement en ligne, puis la récupération chez le loueur.</p></div>
+    </div>
+  </div>
 </section>
-<!-- 3. IA Social Agent -->
-<section class="py-24 relative overflow-hidden">
-<div class="max-w-[1280px] mx-auto px-6 md:px-10 flex flex-col lg:flex-row items-center gap-16">
-<div class="flex-1 w-full order-2 lg:order-1">
-<!-- Glassmorphism Abstract Visual -->
-<div class="relative w-full aspect-square max-w-[500px] mx-auto">
-<div class="absolute inset-0 bg-gradient-to-br from-primary-container/20 to-transparent rounded-full blur-[60px]"></div>
-<div class="absolute inset-10 border border-outline-variant/30 rounded-full border-dashed animate-[spin_60s_linear_infinite]"></div>
-<div class="absolute inset-20 border border-primary/20 rounded-full animate-[spin_40s_linear_infinite_reverse]"></div>
-<!-- Floating Glass Cards -->
-<div class="absolute top-1/4 -left-4 bg-surface-container-high/80 backdrop-blur-md border border-outline-variant/20 p-4 rounded-lg shadow-2xl flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: &quot;FILL&quot; 1;">campaign</span>
-</div>
-<div>
-<p class="text-label-md text-on-surface font-label uppercase tracking-wider">Post Généré</p>
-<p class="text-[10px] text-on-surface-variant">Engagement +42%</p>
-</div>
-</div>
-<div class="absolute bottom-1/3 -right-8 bg-surface-container-high/80 backdrop-blur-md border border-outline-variant/20 p-4 rounded-lg shadow-2xl flex items-center gap-3">
-<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center">
-<span class="material-symbols-outlined text-on-surface text-sm">bar_chart</span>
-</div>
-<div>
-<p class="text-label-md text-on-surface font-label uppercase tracking-wider">Lead Acquis</p>
-<p class="text-[10px] text-on-surface-variant">Tournée Été 2024</p>
-</div>
-</div>
-<div class="absolute inset-0 flex items-center justify-center">
-<div class="w-24 h-24 bg-surface-container rounded-full border border-primary/30 flex items-center justify-center shadow-[0_0_30px_rgba(252,3,109,0.15)] z-10">
-<span class="material-symbols-outlined text-4xl text-primary">smart_toy</span>
-</div>
-</div>
-</div>
-</div>
-<div class="flex-1 w-full order-1 lg:order-2">
-<div class="inline-flex items-center gap-2 mb-6">
-<span class="material-symbols-outlined text-primary text-xl">auto_awesome</span>
-<span class="text-label-caps font-label text-primary uppercase tracking-widest">Automation Marketing</span>
-</div>
-<h2 class="text-headline-lg font-headline font-bold text-on-surface mb-6">Agent Social IA Intégré</h2>
-<p class="text-body-md text-on-surface-variant font-body mb-8">
-                        Ne laissez pas votre équipement prendre la poussière numérique. Notre Agent IA se connecte à votre inventaire et génère automatiquement des publications ciblées pour vos réseaux sociaux (LinkedIn, Instagram).
-                    </p>
-<ul class="space-y-4 mb-10">
-<li class="flex items-start gap-3">
-<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
-<span class="text-body-sm text-on-surface font-body">Génération de contenu basée sur la disponibilité du matériel.</span>
-</li>
-<li class="flex items-start gap-3">
-<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
-<span class="text-body-sm text-on-surface font-body">Ciblage algorithmique des directeurs techniques et producteurs.</span>
-</li>
-<li class="flex items-start gap-3">
-<span class="material-symbols-outlined text-primary mt-0.5">check_circle</span>
-<span class="text-body-sm text-on-surface font-body">Analyse des performances et ajustement des mots-clés.</span>
-</li>
-</ul>
-<a href="/centre-assistance.html" class="inline-flex text-label-caps font-label uppercase tracking-widest text-on-surface border border-outline-variant/50 px-6 py-3 rounded hover:bg-surface-container hover:border-outline transition-all duration-200">
-                        Découvrir l'Agent IA
-                    </a>
-</div>
-</div>
+<section class="py-20 px-6 md:px-10 bg-background">
+  <div class="max-w-[1280px] mx-auto">
+    <div class="mb-12"><h2 class="font-headline text-3xl md:text-5xl font-bold mb-4">Catégories couvertes</h2><p class="text-on-surface-variant text-lg max-w-3xl">Le site officiel présente plusieurs univers de location : casque, deejay, événementiel & production, mobilier, keyboards, multimédia digital, sonorisation & éclairage, instruments à cordes, studio et instruments de musique.</p></div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <a href="/catalog.html?category=casque" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">headphones</span><h3 class="font-bold mt-3">Casque</h3></a>
+      <a href="/catalog.html?category=deejay" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">album</span><h3 class="font-bold mt-3">Deejay</h3></a>
+      <a href="/catalog.html?category=sonorisation" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">speaker</span><h3 class="font-bold mt-3">Sonorisation</h3></a>
+      <a href="/catalog.html?category=eclairage" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">light_mode</span><h3 class="font-bold mt-3">Éclairage</h3></a>
+      <a href="/catalog.html?category=studio" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">graphic_eq</span><h3 class="font-bold mt-3">Studio</h3></a>
+      <a href="/catalog.html?category=instruments" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">piano</span><h3 class="font-bold mt-3">Instruments</h3></a>
+      <a href="/catalog.html?category=keyboard" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">keyboard</span><h3 class="font-bold mt-3">Keyboards</h3></a>
+      <a href="/catalog.html?category=multimedia" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">settings_input_component</span><h3 class="font-bold mt-3">Multimédia</h3></a>
+      <a href="/catalog.html?category=production" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">festival</span><h3 class="font-bold mt-3">Production</h3></a>
+      <a href="/catalog.html?category=mobilier" class="rss-card rounded-xl p-5"><span class="material-symbols-outlined text-primary">chair</span><h3 class="font-bold mt-3">Mobilier</h3></a>
+    </div>
+  </div>
 </section>
-<!-- 4. Logistique & Support -->
-<section class="py-24 bg-surface-container-lowest border-y border-outline-variant/10">
-<div class="max-w-[1280px] mx-auto px-6 md:px-10">
-<div class="mb-16 text-center max-w-3xl mx-auto">
-<h2 class="text-headline-lg font-headline font-bold text-on-surface mb-4">Logistique &amp; Support Technique</h2>
-<p class="text-body-md text-on-surface-variant font-body">Une infrastructure invisible mais infaillible. Nous assurons la liaison entre l'entrepôt et la scène pour que vous puissiez vous concentrer sur le mixage.</p>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- Feature 1 -->
-<div class="bg-surface p-8 rounded-lg border border-outline-variant/10 hover:border-outline-variant/30 transition-all">
-<div class="w-12 h-12 bg-surface-container rounded flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">local_shipping</span>
-</div>
-<h4 class="text-[20px] font-headline font-bold text-on-surface mb-3">Transport Spécialisé</h4>
-<p class="text-body-sm text-on-surface-variant font-body">Réseau de transporteurs équipés pour le fret fragile et volumineux. Suivi GPS en temps réel et livraison sur site (backstage).</p>
-</div>
-<!-- Feature 2 -->
-<div class="bg-surface p-8 rounded-lg border border-outline-variant/10 hover:border-outline-variant/30 transition-all">
-<div class="w-12 h-12 bg-surface-container rounded flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">handyman</span>
-</div>
-<h4 class="text-[20px] font-headline font-bold text-on-surface mb-3">Maintenance Préventive</h4>
-<p class="text-body-sm text-on-surface-variant font-body">Carnet d'entretien numérique certifié par la blockchain pour chaque équipement. Alertes de révision et historique des pannes.</p>
-</div>
-<!-- Feature 3 -->
-<div class="bg-surface p-8 rounded-lg border border-outline-variant/10 hover:border-outline-variant/30 transition-all">
-<div class="w-12 h-12 bg-surface-container rounded flex items-center justify-center mb-6">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: &quot;FILL&quot; 1;">support_agent</span>
-</div>
-<h4 class="text-[20px] font-headline font-bold text-on-surface mb-3">Hotline Techniciens 24/7</h4>
-<p class="text-body-sm text-on-surface-variant font-body">Assistance téléphonique assurée par des ingénieurs du son confirmés en cas de problème de patching ou de configuration réseau.</p>
-</div>
-</div>
-</div>
+<section class="py-20 px-6 md:px-10 bg-surface-container-lowest">
+  <div class="max-w-[1280px] mx-auto grid lg:grid-cols-3 gap-6">
+    <div class="rss-card rounded-xl p-8"><div class="text-primary text-sm font-bold uppercase tracking-widest mb-3">01</div><h3 class="font-headline text-2xl font-bold mb-3">Choisir votre sonorisation ou instrument</h3><p class="text-on-surface-variant">Parcourez les annonces, comparez les fiches matériel, les villes et les prix selon votre besoin événementiel.</p></div>
+    <div class="rss-card rounded-xl p-8"><div class="text-primary text-sm font-bold uppercase tracking-widest mb-3">02</div><h3 class="font-headline text-2xl font-bold mb-3">Louer et payer en ligne</h3><p class="text-on-surface-variant">Centralisez votre demande avec dates, horaires, quantité, options et coordonnées complètes.</p></div>
+    <div class="rss-card rounded-xl p-8"><div class="text-primary text-sm font-bold uppercase tracking-widest mb-3">03</div><h3 class="font-headline text-2xl font-bold mb-3">Récupérer chez le loueur</h3><p class="text-on-surface-variant">Organisez la remise, l’état du matériel, l’utilisation et la restitution avec le propriétaire.</p></div>
+  </div>
 </section>
-<!-- 5. Sécurité & Assurance -->
-<section class="py-24 relative bg-surface-container-low overflow-hidden">
-<!-- Diagonal abstract background pattern -->
-<div class="absolute inset-0 opacity-5" style="background-image: repeating-linear-gradient(45deg, #e2e2e2 0, #e2e2e2 1px, transparent 0, transparent 50%); background-size: 20px 20px;"></div>
-<div class="max-w-[1280px] mx-auto px-6 md:px-10 relative z-10 text-center">
-<span class="material-symbols-outlined text-5xl text-primary mb-6" style="font-variation-settings: &quot;FILL&quot; 1;">shield</span>
-<h2 class="text-headline-lg font-headline font-bold text-on-surface mb-6">Sécurité &amp; Assurance Totale</h2>
-<p class="text-body-lg text-on-surface-variant font-body max-w-2xl mx-auto mb-10">
-                    Le matériel de sonorisation représente un investissement massif. Notre plateforme intègre par défaut une couverture d'assurance casse, vol et détérioration pour chaque location effectuée via RentSoundSystem.
-                </p>
-<div class="inline-flex flex-col sm:flex-row gap-8 justify-center border-t border-outline-variant/20 pt-8 mt-4">
-<div class="text-left">
-<p class="text-[32px] font-headline font-bold text-on-surface leading-none">Jusqu'à 1M€</p>
-<p class="text-label-caps font-label text-on-surface-variant uppercase tracking-widest mt-2">Jusqu' 1M€ de couverture par sinistre</p>
-</div>
-<div class="hidden sm:block w-px bg-outline-variant/30"></div>
-<div class="text-left">
-<p class="text-[32px] font-headline font-bold text-on-surface leading-none">&lt; 48h</p>
-<p class="text-label-caps font-label text-on-surface-variant uppercase tracking-widest mt-2">&lt; 48h Dlai de remplacement</p>
-</div>
-</div>
-</div>
+<section class="py-20 px-6 md:px-10 bg-background">
+  <div class="max-w-[1000px] mx-auto text-center rss-card rounded-2xl p-8 md:p-12">
+    <h2 class="font-headline text-3xl md:text-4xl font-bold mb-5">Une solution pour les événements dans le monde</h2>
+    <p class="text-on-surface-variant text-lg mb-8">RentSoundSystem se positionne comme une plateforme de location pour soirées, mariages, concerts et événements, avec des liens de recherche dans de nombreuses villes et pays.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="/catalog.html" class="bg-primary text-white px-8 py-4 rounded uppercase font-bold tracking-wider text-sm">Explorer le catalogue</a><a href="/devenir-partenaire.html" class="border border-white/15 px-8 py-4 rounded uppercase font-bold tracking-wider text-sm hover:border-primary hover:text-primary">Devenir partenaire</a></div>
+  </div>
 </section>
 </main>
 <div id="footer-container"></div>
-
-
-
-
-
-
-
-
-
-<div id="rss-demo-modal" class="rss-solutions-modal" aria-hidden="true">
-  <div class="bg-surface-container border border-outline-variant/30 rounded-xl max-w-2xl w-full p-8 relative shadow-[0_0_40px_rgba(252,3,109,0.18)]">
-    <button id="rss-demo-close" type="button" class="absolute top-4 right-4 text-on-surface-variant hover:text-primary transition-colors">
-      <span class="material-symbols-outlined">close</span>
-    </button>
-    <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-6">
-      <span class="material-symbols-outlined text-primary">play_arrow</span>
-      <span class="text-label-caps font-label text-primary uppercase tracking-widest">Démo RentSoundSystem</span>
-    </div>
-    <h3 class="text-headline-md font-headline font-bold text-on-surface mb-4">Fonctionnement de la plateforme</h3>
-    <p class="text-body-md text-on-surface-variant mb-6">
-      Le catalogue permet de trouver du matériel disponible, de filtrer par ville/catégorie, puis d’ouvrir une annonce pour sélectionner les dates, options, quantité et envoyer une demande de devis.
-    </p>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-      <div class="bg-surface p-4 rounded border border-outline-variant/20">
-        <span class="material-symbols-outlined text-primary mb-2">search</span>
-        <p class="text-sm text-on-surface">Recherche catalogue</p>
-      </div>
-      <div class="bg-surface p-4 rounded border border-outline-variant/20">
-        <span class="material-symbols-outlined text-primary mb-2">calendar_month</span>
-        <p class="text-sm text-on-surface">Dates de location</p>
-      </div>
-      <div class="bg-surface p-4 rounded border border-outline-variant/20">
-        <span class="material-symbols-outlined text-primary mb-2">request_quote</span>
-        <p class="text-sm text-on-surface">Devis rapide</p>
-      </div>
-    </div>
-    <a href="/catalog.html" class="inline-flex bg-primary text-on-primary px-6 py-3 rounded font-label uppercase tracking-widest hover:bg-primary-container transition-colors">
-      Ouvrir le catalogue
-    </a>
-  </div>
-</div>
-
 <script src="/components.js"></script>
-<script id="rss-solutions-functional">
-document.addEventListener('DOMContentLoaded', () => {
-  const modal = document.getElementById('rss-demo-modal');
-  const openBtn = document.getElementById('rss-demo-button');
-  const closeBtn = document.getElementById('rss-demo-close');
-
-  function openModal() {
-    if (!modal) return;
-    modal.classList.add('is-open');
-    modal.setAttribute('aria-hidden', 'false');
-  }
-
-  function closeModal() {
-    if (!modal) return;
-    modal.classList.remove('is-open');
-    modal.setAttribute('aria-hidden', 'true');
-  }
-
-  openBtn?.addEventListener('click', openModal);
-  closeBtn?.addEventListener('click', closeModal);
-  modal?.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal();
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
-});
-</script>
-
-</body></html>
+</body>
+</html>
