@@ -218,6 +218,12 @@ input[type="checkbox"], input[type="radio"]{
   #quantity-count{width:82px!important;}
 }
 
+
+.quantity-control{display:flex;align-items:center;gap:12px;}
+.qty-btn{width:42px;height:42px;border-radius:10px;border:1px solid rgba(252,3,109,.45);background:rgba(252,3,109,.10);color:#fff;font-weight:800;font-size:20px;transition:.2s ease;}
+.qty-btn:hover{background:#FC036D;color:#fff;box-shadow:0 0 18px rgba(252,3,109,.25);}
+#quantity-count{width:92px!important;text-align:center!important;font-weight:800!important;font-size:18px!important;}
+.service-card input[type="checkbox"]{width:22px!important;height:22px!important;flex-shrink:0!important;}
 </style>
 
 <style id="rss-global-component-fix">
@@ -313,9 +319,10 @@ input[type="checkbox"], input[type="radio"]{
 
   <div>
     <label class="block font-headline-md text-sm mb-2 text-on-surface">Quantité souhaitée</label>
-    <div class="flex items-center gap-4">
-      <input id="quantity-range" class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-[#FC036D]" max="100" min="1" step="1" type="range" value="1"/>
-      <input id="quantity-count" class="w-24 text-center py-2 px-3" type="number" min="1" max="100" step="1" value="1"/>
+    <div class="quantity-control">
+      <button type="button" id="qty-minus" class="qty-btn" aria-label="Diminuer la quantité">−</button>
+      <input id="quantity-count" class="py-2 px-3" type="number" min="1" max="100" step="1" value="1"/>
+      <button type="button" id="qty-plus" class="qty-btn" aria-label="Augmenter la quantité">+</button>
     </div>
     <p class="font-body-md text-sm text-on-surface-variant mt-2">Indiquez le nombre d’unités ou de packs souhaités pour cet équipement.</p>
   </div>
@@ -380,6 +387,9 @@ input[type="checkbox"], input[type="radio"]{
 <h3 class="font-headline-md text-lg text-on-surface mb-6 border-b border-surface-glass-border pb-4">Résumé du Devis</h3>
 <div class="space-y-4 mb-8">
 <div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">inventory_2</span><span class="font-body-md text-sm">Matériel</span></div><span id="summary-equipment" class="font-headline-md text-sm text-on-surface text-right">Annonce</span></div>
+<div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">category</span><span class="font-body-md text-sm">Catégorie</span></div><span id="summary-category" class="font-body-md text-sm italic text-right">À confirmer</span></div>
+<div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">sell</span><span class="font-body-md text-sm">Marque</span></div><span id="summary-brand" class="font-body-md text-sm italic text-right">À confirmer</span></div>
+<div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">payments</span><span class="font-body-md text-sm">Prix indicatif</span></div><span id="summary-price" class="font-body-md text-sm italic text-right">Prix sur demande</span></div>
 <div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">tag</span><span class="font-body-md text-sm">Quantité</span></div><span id="summary-quantity" class="font-headline-md text-sm text-on-surface">1</span></div>
 <div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">calendar_month</span><span class="font-body-md text-sm">Dates</span></div><span id="summary-dates" class="font-body-md text-sm italic">En attente</span></div>
 <div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">location_on</span><span class="font-body-md text-sm">Ville</span></div><span id="summary-city" class="font-body-md text-sm italic">En attente</span></div>
@@ -561,6 +571,9 @@ input[type="checkbox"], input[type="radio"]{
   function updateSummary(){
     const qty=$('#quantity-count')?.value||1;
     setText('#summary-equipment', cleanText(currentListing?.title || 'Matériel professionnel', 42));
+    setText('#summary-category', (currentListing?.category || 'À confirmer').replace(/-/g,' '));
+    setText('#summary-brand', currentListing?.brand || 'À confirmer');
+    setText('#summary-price', formatPrice(currentListing?.price));
     setText('#summary-quantity', qty);
     const s=$('#event-start')?.value, e=$('#event-end')?.value;
     setText('#summary-dates',s||e?dateFR(s)+' → '+dateFR(e):'En attente');
@@ -594,7 +607,7 @@ input[type="checkbox"], input[type="radio"]{
 
   function buildRequest(){
     const item=currentListing||fallbackListing();
-    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:$('#equipment-notes')?.value?.trim()||'',smart_fields:collectSmartFields(),event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
+    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:'',smart_fields:collectSmartFields(),event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
   }
   function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,listing_id:req.listing_id,listing_original_id:req.listing_original_id,equipment_category:req.equipment_category,equipment_brand:req.equipment_brand,equipment_city:req.equipment_city,equipment_notes:req.equipment_notes,smart_fields:req.smart_fields,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes,source_url:req.source_url},message:req.message,status:'new'};}
   function saveLocalRequest(req){localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req)); const list=JSON.parse(localStorage.getItem('rssQuoteRequests')||'[]'); list.unshift(req); localStorage.setItem('rssQuoteRequests',JSON.stringify(list.slice(0,30)));}
@@ -603,7 +616,7 @@ input[type="checkbox"], input[type="radio"]{
   function bind(){
     const s=$('#event-start'), e=$('#event-end');
     if(s&&!s.value)s.value=todayPlus(7); if(e&&!e.value)e.value=todayPlus(8); if(s&&e){s.min=todayPlus(0); e.min=s.value; s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value; e.min=s.value; updateSummary();});}
-    const range=$('#quantity-range'), count=$('#quantity-count'); if(range&&count){range.addEventListener('input',()=>{count.value=range.value;updateSummary();}); count.addEventListener('input',()=>{range.value=count.value;updateSummary();});}
+    const count=$('#quantity-count'); const clampQty=()=>{if(!count)return; let v=Math.max(1,Math.min(100,Number(count.value||1))); count.value=v; updateSummary();}; if(count){count.addEventListener('input',clampQty);} $('#qty-minus')?.addEventListener('click',()=>{if(count){count.value=Math.max(1,Number(count.value||1)-1); updateSummary();}}); $('#qty-plus')?.addEventListener('click',()=>{if(count){count.value=Math.min(100,Number(count.value||1)+1); updateSummary();}});
     $$('input[name="channels"]').forEach(i=>i.addEventListener('change',()=>{updateChannelCards();updateSummary();}));
     $$('.channel-card').forEach(c=>c.addEventListener('click',()=>{const i=c.querySelector('input'); if(i){i.checked=true; i.dispatchEvent(new Event('change',{bubbles:true}));}}));
     $$('.led-color').forEach(btn=>btn.addEventListener('click',()=>{$$('.led-color').forEach(b=>{b.classList.remove('border-white','ring-2','ring-[#FC036D]'); b.classList.add('border-transparent');}); btn.classList.remove('border-transparent'); btn.classList.add('border-white','ring-2','ring-[#FC036D]'); ledColor=btn.dataset.color||'Fuchsia'; updateSummary();}));
