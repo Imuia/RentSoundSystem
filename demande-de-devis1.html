@@ -3,7 +3,7 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Demande de Devis | RentSoundSystem</title>
+<title>Demande de Devis Silent Disco | RentSoundSystem</title>
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <!-- Fonts -->
@@ -164,9 +164,7 @@
         .rss-quote-toast{position:fixed;right:18px;bottom:18px;z-index:9999;background:#201f1f;border:1px solid rgba(252,3,109,.4);color:#e5e2e1;padding:14px 16px;border-radius:8px;box-shadow:0 20px 50px rgba(0,0,0,.35);opacity:0;transform:translateY(12px);transition:.25s ease}.rss-quote-toast.show{opacity:1;transform:translateY(0)}
         .quote-bg-layer{position:fixed;inset:0;z-index:-1;pointer-events:none}.quote-bg-layer::before{content:"";position:absolute;inset:0;background:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAhTfFrDiWe2n0LZk3-IRsFYx1hh0-G-Cy80lw-g27GnYLnervVI4k_JUZtuhK4ygn2U1_q_u28v3JXzixnfHq9-UFz6tef26_rDIoZnbC37kS5tzdZaycnIycMklOcoOnasx7x7WXAS1cVpYqmHbmeR3x6_9pDMAS0H1kOiR0AOFMbAKiH4jWSebClwLIjIvArcxRrzNe42ZUrW6p-y33UWa0ZxEG7i0ya6T0dlUCGWzkR1MQ1vhiaMk4dcKY6mWJDzFdIVvPWFw8') center/cover no-repeat;opacity:.18;filter:grayscale(100%)}.quote-bg-layer::after{content:"";position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,19,.78),#131313 70%),radial-gradient(circle at 20% 0%,rgba(252,3,109,.22),transparent 35%)}
 
-    
-.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-</style>
+    </style>
 
 <style id="rss-global-component-fix">
   #header-container { min-height: 73px; }
@@ -184,16 +182,16 @@
 <div class="mb-12 text-center md:text-left flex flex-col md:flex-row gap-8 items-end justify-between border-b border-surface-glass-border pb-8">
 <div class="max-w-2xl">
 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FC036D]/10 border border-[#FC036D]/30 text-electric-magenta mb-4">
-<span class="material-symbols-outlined text-sm" id="quote-category-icon">inventory_2</span>
-<span id="quote-category-label" class="font-label-caps text-label-caps tracking-widest text-electric-magenta">DEMANDE DE DEVIS</span>
+<span class="material-symbols-outlined text-sm" data-icon="headset_mic">headset_mic</span>
+<span class="font-label-caps text-label-caps tracking-widest text-electric-magenta">SYSTÈMES SILENT DISCO</span>
 </div>
 <h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-4">Demander un Devis</h1>
-<p id="quote-hero-description" class="font-body-lg text-body-lg text-on-surface-variant">Indiquez vos dates, votre lieu et vos besoins afin que notre équipe vous confirme la disponibilité et le tarif adapté.</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Configurez votre système Audio7 Halo 1. Audio sans fil multicanal de précision pour des événements immersifs sans faille.</p>
 </div>
 <div class="hidden md:block w-48 h-48 rounded-xl overflow-hidden glass-panel flex-shrink-0 relative">
-<img id="quote-product-image" alt="Matériel demandé" class="w-full h-full object-cover" src="/images/categories/electrovoice.jpg" onerror="this.src='/logo.png'"/>
+<img alt="Casques Audio7 Halo 1 s'illuminant en magenta" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AP1WRLs0KX8vZjUoKGGtAcdza5mqZfDPHfazZPY2dVpak3QIK6lHJ12gg7ree9qKSNrrA2ZPvN9aF0pqgsVsE0vVZZPevVSKN8nWm0x5AEr8SHTh4D2TB8dtAfbrflP0Cwe_V-saGNoD_a9i_h5MyQOfqDKZ66Lv8Mms8tAZIhpMH6xQXvI_c8AC6xaUgvjtAZsuajJ05_OhswjO71lj875e_tu_2yTA7m6ql1tOeaVo5DURieO1EocffIbJgYg"/>
 <div class="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent flex items-end p-4">
-<span id="quote-product-image-label" class="font-label-caps text-label-caps text-white tracking-wider">MATÉRIEL SÉLECTIONNÉ</span>
+<span class="font-label-caps text-label-caps text-white tracking-wider">AUDIO7 HALO 1</span>
 </div>
 </div>
 </div>
@@ -225,38 +223,50 @@
 <!-- Step 1: Equipment Selection -->
 <section class="quote-step active glass-panel rounded-xl p-6 md:p-8" data-step="1">
 <div class="flex items-center gap-3 mb-6">
-<span class="material-symbols-outlined text-electric-magenta text-3xl">inventory_2</span>
-<h2 class="font-headline-lg text-headline-md text-on-surface">Matériel demandé</h2>
+<span class="material-symbols-outlined text-electric-magenta text-3xl" data-icon="headphones">headphones</span>
+<h2 class="font-headline-lg text-headline-md text-on-surface">Configuration de l'Équipement</h2>
 </div>
-<div class="space-y-6">
-  <div class="rounded-xl border border-surface-glass-border bg-surface-container-low p-5 flex flex-col md:flex-row gap-5 items-start">
-    <div class="w-full md:w-44 h-36 rounded-lg overflow-hidden bg-surface-container-highest flex-shrink-0">
-      <img id="selected-product-image" src="/images/categories/electrovoice.jpg" alt="Annonce sélectionnée" class="w-full h-full object-cover" onerror="this.src='/logo.png'">
-    </div>
-    <div class="flex-1 min-w-0">
-      <p id="selected-product-category" class="font-label-caps text-label-caps text-electric-magenta tracking-widest mb-2">Annonce sélectionnée</p>
-      <h3 id="selected-product-title" class="font-headline-md text-2xl text-on-surface mb-2">Chargement de l’annonce...</h3>
-      <p id="selected-product-description" class="font-body-md text-sm text-on-surface-variant line-clamp-3">La demande de devis sera rattachée automatiquement au matériel choisi.</p>
-      <div class="flex flex-wrap gap-2 mt-4">
-        <span id="selected-product-city" class="px-3 py-1 rounded bg-electric-magenta/10 text-electric-magenta text-xs font-bold">Ville à confirmer</span>
-        <span id="selected-product-price" class="px-3 py-1 rounded bg-surface-container-highest text-on-surface-variant text-xs font-bold">Prix sur demande</span>
-      </div>
-    </div>
-  </div>
-
-  <div>
-    <label class="block font-headline-md text-sm mb-2 text-on-surface">Quantité souhaitée</label>
-    <div class="flex items-center gap-4">
-      <input id="quantity-range" class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-[#FC036D]" max="100" min="1" step="1" type="range" value="1"/>
-      <input id="quantity-count" class="w-24 text-center py-2 px-3" type="number" min="1" max="100" step="1" value="1"/>
-    </div>
-    <p class="font-body-md text-sm text-on-surface-variant mt-2">Indiquez le nombre d’unités ou de packs souhaités pour cet équipement.</p>
-  </div>
-
-  <div>
-    <label class="block font-headline-md text-sm mb-2 text-on-surface">Besoin précis</label>
-    <textarea id="equipment-notes" rows="4" class="w-full py-3 px-4" placeholder="Exemple : quantité exacte, accessoires nécessaires, puissance souhaitée, configuration, contraintes techniques..."></textarea>
-  </div>
+<div class="space-y-8">
+<div>
+<label class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de Casques</label>
+<div class="flex items-center gap-4">
+<input id="headphones-range" class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-[#FC036D]" max="1000" min="10" step="10" type="range" value="50"/>
+<input id="headphones-count" class="w-24 text-center py-2 px-3" type="number" min="10" max="1000" step="10" value="50"/>
+</div>
+<p class="font-body-md text-sm text-on-surface-variant mt-2">Unités Audio7 Halo 1. Inclut des housses hygiéniques et des câbles de charge standard.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="channels-options">
+<div class="col-span-full">
+<label class="block font-headline-md text-sm mb-2 text-on-surface">Canaux d'Émetteurs UHF</label>
+<p class="font-body-md text-sm text-on-surface-variant mb-4">Sélectionnez combien de flux audio simultanés vous avez besoin (ex: 3 DJs jouant en même temps).</p>
+</div>
+<label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
+<input class="absolute opacity-0" name="channels" type="radio" value="1"/>
+<div class="flex justify-between items-start mb-2"><span class="font-headline-md text-lg text-on-surface">1 Canal</span><span class="material-symbols-outlined text-on-surface-variant group-hover:text-electric-magenta">radio</span></div>
+<span class="font-body-md text-sm text-on-surface-variant">Diffusion simple. Idéal pour visites guidées ou cinéma en plein air.</span>
+</label>
+<label class="channel-card relative flex flex-col p-4 rounded-lg border border-electric-magenta bg-electric-magenta/10 cursor-pointer transition-colors">
+<input checked class="absolute opacity-0" name="channels" type="radio" value="2"/>
+<div class="flex justify-between items-start mb-2"><span class="font-headline-md text-lg text-electric-magenta">2 Canaux</span><span class="material-symbols-outlined text-electric-magenta" data-weight="fill">radio</span></div>
+<span class="font-body-md text-sm text-on-surface-muted">Parfait pour conférences multilingues ou double DJ.</span>
+</label>
+<label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
+<input class="absolute opacity-0" name="channels" type="radio" value="3"/>
+<div class="flex justify-between items-start mb-2"><span class="font-headline-md text-lg text-on-surface">3 Canaux</span><span class="material-symbols-outlined text-on-surface-variant group-hover:text-electric-magenta">sensors</span></div>
+<span class="font-body-md text-sm text-on-surface-variant">La norme pour soirées Silent Disco et battles DJ.</span>
+</label>
+</div>
+<div>
+<label class="block font-headline-md text-sm mb-4 text-on-surface">Accessoires Optionnels</label>
+<div class="space-y-3">
+<label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-racks" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><div class="flex-grow"><span class="block font-headline-md text-sm text-on-surface">Racks de Charge Haute Capacité (50 emplacements)</span><span class="block font-body-md text-xs text-on-surface-variant">Recommandé pour événements de plus de 8 heures.</span></div></label>
+<label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-led" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><div class="flex-grow"><span class="block font-headline-md text-sm text-on-surface">Anneaux Lumineux LED Personnalisables</span><span class="block font-body-md text-xs text-on-surface-variant">Programmation de couleurs sur mesure.</span></div></label>
+</div>
+</div>
+<div class="space-y-4 pt-4 border-t border-surface-glass-border">
+<label class="block font-headline-md text-sm text-on-surface">Personnalisation Avancée</label>
+<div class="flex flex-col gap-3"><span class="font-body-md text-sm text-on-surface-variant">Choisir les Couleurs des LED</span><div class="flex gap-4" id="led-colors"><button type="button" data-color="Fuchsia" class="led-color w-8 h-8 rounded-full bg-[#FC036D] border-2 border-white ring-2 ring-[#FC036D]" title="Fuchsia"></button><button type="button" data-color="Cyan" class="led-color w-8 h-8 rounded-full bg-[#00FFFF] border-2 border-transparent hover:border-white transition-all" title="Cyan"></button><button type="button" data-color="Lime Green" class="led-color w-8 h-8 rounded-full bg-[#32CD32] border-2 border-transparent hover:border-white transition-all" title="Lime Green"></button><button type="button" data-color="Electric Blue" class="led-color w-8 h-8 rounded-full bg-[#7DF9FF] border-2 border-transparent hover:border-white transition-all" title="Electric Blue"></button></div></div>
+</div>
 </div>
 </section>
 
@@ -267,7 +277,7 @@
 <label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Date de début</span><input id="event-start" required type="date" class="w-full py-3 px-4"/></label>
 <label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Date de retour</span><input id="event-end" required type="date" class="w-full py-3 px-4"/></label>
 <label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Ville / lieu</span><input id="event-city" required type="text" class="w-full py-3 px-4" placeholder="Paris, Nice, Cannes..."/></label>
-<label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type d’événement</span><select id="event-type" class="w-full py-3 px-4"><option>Événement privé</option><option>Festival</option><option>Entreprise / Corporate</option><option>Mariage / Privé</option><option>Conférence multilingue</option><option>Autre</option></select></label>
+<label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type d’événement</span><select id="event-type" class="w-full py-3 px-4"><option>Silent Disco</option><option>Festival</option><option>Entreprise / Corporate</option><option>Mariage / Privé</option><option>Conférence multilingue</option><option>Autre</option></select></label>
 <label class="md:col-span-2 block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de participants estimé</span><input id="guest-count" type="range" min="20" max="5000" step="10" value="150" class="w-full h-2 bg-surface-container-highest rounded-lg appearance-none cursor-pointer accent-[#FC036D]"/><span id="guest-count-label" class="block mt-2 text-electric-magenta font-headline-md">150 personnes</span></label>
 </div>
 </section>
@@ -308,14 +318,15 @@
 <div class="sticky top-24 glass-panel rounded-xl p-6">
 <h3 class="font-headline-md text-lg text-on-surface mb-6 border-b border-surface-glass-border pb-4">Résumé du Devis</h3>
 <div class="space-y-4 mb-8">
-<div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">inventory_2</span><span class="font-body-md text-sm">Matériel</span></div><span id="summary-equipment" class="font-headline-md text-sm text-on-surface text-right">Annonce</span></div>
-<div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">tag</span><span class="font-body-md text-sm">Quantité</span></div><span id="summary-quantity" class="font-headline-md text-sm text-on-surface">1</span></div>
+<div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">headphones</span><span class="font-body-md text-sm">Unités Audio7 Halo 1</span></div><span id="summary-headphones" class="font-headline-md text-sm text-on-surface">50</span></div>
+<div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">sensors</span><span class="font-body-md text-sm">Émetteurs UHF</span></div><span id="summary-channels" class="font-headline-md text-sm text-on-surface">2 Canaux</span></div>
+<div class="flex justify-between items-start"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">palette</span><span class="font-body-md text-sm">LED</span></div><span id="summary-led" class="font-headline-md text-sm text-on-surface">Fuchsia</span></div>
 <div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">calendar_month</span><span class="font-body-md text-sm">Dates</span></div><span id="summary-dates" class="font-body-md text-sm italic">En attente</span></div>
 <div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">location_on</span><span class="font-body-md text-sm">Ville</span></div><span id="summary-city" class="font-body-md text-sm italic">En attente</span></div>
 <div class="flex justify-between items-start opacity-80"><div class="flex items-center gap-2 text-on-surface-variant"><span class="material-symbols-outlined text-sm">groups</span><span class="font-body-md text-sm">Public</span></div><span id="summary-guests" class="font-body-md text-sm italic">150 personnes</span></div>
 <div class="pt-4 border-t border-surface-glass-border"><div class="flex items-center gap-2 text-on-surface-variant mb-2"><span class="material-symbols-outlined text-sm">done_all</span><span class="font-body-md text-sm">Services</span></div><div id="summary-services" class="flex flex-wrap gap-2"><span class="px-2 py-1 rounded bg-electric-magenta/10 text-electric-magenta text-xs font-bold">Livraison</span></div></div>
 </div>
-<div class="bg-surface-container-lowest p-4 rounded-lg border border-surface-glass-border"><div class="flex items-start gap-3"><span class="material-symbols-outlined text-electric-magenta text-xl mt-1">info</span><p class="font-body-md text-xs text-on-surface-variant leading-relaxed">Notre équipe commerciale vérifie la disponibilité, les conditions de location, la caution éventuelle et les services nécessaires avant de finaliser le devis.</p></div></div>
+<div class="bg-surface-container-lowest p-4 rounded-lg border border-surface-glass-border"><div class="flex items-start gap-3"><span class="material-symbols-outlined text-electric-magenta text-xl mt-1">info</span><p class="font-body-md text-xs text-on-surface-variant leading-relaxed">Notre équipe commerciale examine toutes les spécifications techniques pour garantir la compatibilité RF avant de finaliser le devis.</p></div></div>
 </div>
 </div>
 </form></main>
@@ -326,104 +337,35 @@
   'use strict';
   const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  let currentStep=1;
-  let currentListing=null;
-  const $=s=>document.querySelector(s);
-  const $$=s=>Array.from(document.querySelectorAll(s));
-
+  let currentStep=1; let maxStep=1; let ledColor='Fuchsia';
+  const $=s=>document.querySelector(s); const $$=s=>Array.from(document.querySelectorAll(s));
   function toast(msg){let t=$('.rss-quote-toast'); if(!t){t=document.createElement('div');t.className='rss-quote-toast';document.body.appendChild(t)} t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)}
-  function esc(v){return String(v||'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#039;','"':'&quot;'}[c]));}
   function dateFR(v){if(!v)return 'En attente'; const d=new Date(v+'T00:00:00'); return Number.isNaN(d.getTime())?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
   function todayPlus(n){const d=new Date();d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)}
-  function setText(sel,val){const el=$(sel); if(el) el.textContent=val;}
-  function setImg(sel,src){const el=$(sel); if(el && src) el.src=src;}
-  function params(){return new URLSearchParams(window.location.search)}
-  function formatPrice(v){const n=Number(v||0); return n ? Math.round(n)+'€ / jour' : 'Prix sur demande';}
-  function getImage(item){const imgs=Array.isArray(item?.listing_images)?[...item.listing_images]:[]; imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0)); return imgs[0]?.image_url || item?.image_url || item?.featured_image || item?.thumbnail || '/images/categories/electrovoice.jpg';}
-  function fallbackListing(){const p=params();return {id:null,original_id:p.get('original_id')||p.get('listing_original_id')||'',title:p.get('title')||'Matériel professionnel',category:p.get('category')||'Demande de devis',city:p.get('city')||'',price:p.get('price')||'',description:p.get('description')||'Indiquez vos dates, votre lieu et les services souhaités. Notre équipe vous répondra rapidement.',listing_images:[]};}
-  function cleanText(v,n){v=String(v||'').replace(/\s+/g,' ').trim(); return v.length>n?v.slice(0,n-1)+'…':v;}
-
-  async function loadListing(){
-    currentListing=fallbackListing();
-    applyListing(currentListing, true);
-    const p=params();
-    const originalId=p.get('original_id')||p.get('listing_original_id');
-    const id=p.get('id')||p.get('listing_id');
-    if(!window.supabase || (!originalId && !id)) return;
-    try{
-      const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-      let q=sb.from('listings').select('*, listing_images ( image_url, position )').limit(1);
-      if(originalId) q=q.eq('original_id', originalId); else q=q.eq('id', id);
-      const {data,error}=await q;
-      if(error) throw error;
-      if(data && data[0]){ currentListing=data[0]; applyListing(currentListing, false); }
-    }catch(e){ console.warn('Chargement annonce devis:', e.message); }
-  }
-
-  function applyListing(item, loading){
-    const title=item?.title || 'Matériel professionnel';
-    const category=(item?.category || item?.brand || 'Demande de devis').replace(/-/g,' ');
-    const img=getImage(item);
-    document.title='Demande de Devis - '+title+' | RentSoundSystem';
-    setText('#quote-category-label', category.toUpperCase());
-    setText('#quote-hero-description', loading ? 'Chargement de l’annonce sélectionnée...' : 'Demande de devis pour : '+title);
-    setText('#quote-product-image-label', cleanText(title.toUpperCase(), 28));
-    setImg('#quote-product-image', img);
-    setImg('#selected-product-image', img);
-    setText('#selected-product-category', category);
-    setText('#selected-product-title', title);
-    setText('#selected-product-description', cleanText(item?.description || 'Matériel sélectionné pour votre demande de devis.', 220));
-    setText('#selected-product-city', item?.city || item?.location || 'Lieu à confirmer');
-    setText('#selected-product-price', formatPrice(item?.price));
-    updateSummary();
-  }
-
+  function setText(id,val){const el=$(id); if(el) el.textContent=val;}
+  function activeChannel(){return ($('input[name="channels"]:checked')?.value||'2');}
+  function updateChannelCards(){ $$('.channel-card').forEach(card=>{const input=card.querySelector('input'); const active=input && input.checked; card.classList.toggle('border-electric-magenta',active); card.classList.toggle('bg-electric-magenta/10',active); card.classList.toggle('border-outline-variant',!active); card.querySelectorAll('span').forEach(sp=>{ if(sp.classList.contains('material-symbols-outlined')||sp.className.includes('font-headline')){ sp.classList.toggle('text-electric-magenta',active); sp.classList.toggle('text-on-surface',!active && !sp.classList.contains('material-symbols-outlined')); }}); }); }
   function updateSummary(){
-    const qty=$('#quantity-count')?.value||1;
-    setText('#summary-equipment', cleanText(currentListing?.title || 'Matériel professionnel', 42));
-    setText('#summary-quantity', qty);
-    const s=$('#event-start')?.value, e=$('#event-end')?.value;
-    setText('#summary-dates',s||e?dateFR(s)+' → '+dateFR(e):'En attente');
-    setText('#summary-city',$('#event-city')?.value?.trim()||currentListing?.city||'En attente');
-    const guests=$('#guest-count')?.value||150;
-    setText('#guest-count-label',guests+' personnes');
-    setText('#summary-guests',guests+' personnes');
-    const services=[];
-    if($('#need-delivery')?.checked) services.push('Livraison');
-    if($('#need-tech')?.checked) services.push('Technicien');
-    if($('#need-insurance')?.checked) services.push('Assurance');
-    const box=$('#summary-services');
-    if(box) box.innerHTML=services.length?services.map(s=>'<span class="px-2 py-1 rounded bg-electric-magenta/10 text-electric-magenta text-xs font-bold">'+esc(s)+'</span>').join(''):'<span class="text-on-surface-variant text-xs">Aucun service</span>';
+    const hp=$('#headphones-count')?.value||50; setText('#summary-headphones',hp); setText('#summary-channels',activeChannel()+' Canal'+(activeChannel()==='1'?'':'x'));
+    setText('#summary-led',ledColor); const s=$('#event-start')?.value, e=$('#event-end')?.value; setText('#summary-dates',s||e?dateFR(s)+' → '+dateFR(e):'En attente');
+    setText('#summary-city',$('#event-city')?.value?.trim()||'En attente'); const guests=$('#guest-count')?.value||150; setText('#guest-count-label',guests+' personnes'); setText('#summary-guests',guests+' personnes');
+    const services=[]; if($('#need-delivery')?.checked) services.push('Livraison'); if($('#need-tech')?.checked) services.push('Technicien'); if($('#need-insurance')?.checked) services.push('Assurance');
+    const box=$('#summary-services'); if(box) box.innerHTML=services.length?services.map(s=>'<span class="px-2 py-1 rounded bg-electric-magenta/10 text-electric-magenta text-xs font-bold">'+s+'</span>').join(''):'<span class="text-on-surface-variant text-xs">Aucun service</span>';
   }
   function showAlert(msg){const el=$('#quote-alert'); if(!el){toast(msg);return} el.textContent=msg; el.classList.remove('hidden');}
   function hideAlert(){ $('#quote-alert')?.classList.add('hidden'); }
-
-  function validateStep(step){
-    hideAlert();
-    if(step===1){const q=Number($('#quantity-count')?.value||0); if(!q||q<1){$('#quantity-count')?.focus(); toast('Indiquez une quantité valide.'); return false;}}
-    if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s); if(!el?.value?.trim()){el?.focus(); toast('Complétez la date et le lieu.'); return false;}} const start=$('#event-start')?.value, end=$('#event-end')?.value; if(start&&end&&end<start){$('#event-end')?.focus(); toast('La date de retour doit être après la date de début.'); return false;}}
-    if(step===4){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s); if(!el?.value?.trim()){el?.focus(); showAlert('Merci de compléter nom, téléphone et email.'); return false;}} const email=$('#client-email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.'); $('#client-email')?.focus(); return false;} const phone=($('#client-phone')?.value||'').replace(/\s/g,''); if(phone.length<8){showAlert('Téléphone invalide.'); $('#client-phone')?.focus(); return false;}}
-    return true;
-  }
-  function goStep(n,bypass=false){n=Math.max(1,Math.min(4,Number(n)||1)); if(n>currentStep&&!bypass){for(let i=currentStep;i<n;i++){if(!validateStep(i))return;}} currentStep=n; $$('.quote-step').forEach(sec=>sec.classList.toggle('active',Number(sec.dataset.step)===currentStep)); $$('.quote-tab').forEach(tab=>{const t=Number(tab.dataset.step); tab.classList.toggle('active',t===currentStep); tab.classList.toggle('done',t<currentStep);}); $('#prev-step')?.classList.toggle('hidden',currentStep===1); $('#next-step')?.classList.toggle('hidden',currentStep===4); const submit=$('#submit-quote'); if(submit){submit.classList.toggle('hidden',currentStep!==4); submit.classList.toggle('flex',currentStep===4);} window.scrollTo({top:0,behavior:'smooth'});}
-
-  function buildRequest(){
-    const item=currentListing||fallbackListing();
-    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:$('#equipment-notes')?.value?.trim()||'',event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
-  }
-  function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,listing_id:req.listing_id,listing_original_id:req.listing_original_id,equipment_category:req.equipment_category,equipment_brand:req.equipment_brand,equipment_city:req.equipment_city,equipment_notes:req.equipment_notes,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes,source_url:req.source_url},message:req.message,status:'new'};}
+  function validateStep(step){hideAlert(); if(step===1){const q=Number($('#headphones-count')?.value||0); if(!q||q<10){$('#headphones-count')?.focus(); toast('Indiquez au moins 10 casques.'); return false;}} if(step===2){for(const s of ['#event-start','#event-end','#event-city']){const el=$(s); if(!el?.value?.trim()){el?.focus(); toast('Complétez la date et le lieu.'); return false;}} const start=$('#event-start')?.value, end=$('#event-end')?.value; if(start&&end&&end<start){$('#event-end')?.focus(); toast('La date de retour doit être après la date de début.'); return false;}} if(step===4){for(const s of ['#client-name','#client-phone','#client-email']){const el=$(s); if(!el?.value?.trim()){el?.focus(); showAlert('Merci de compléter nom, téléphone et email.'); return false;}} const email=$('#client-email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){showAlert('Email invalide.'); $('#client-email')?.focus(); return false;} const phone=($('#client-phone')?.value||'').replace(/\s/g,''); if(phone.length<8){showAlert('Téléphone invalide.'); $('#client-phone')?.focus(); return false;}} return true;}
+  function goStep(n, bypass=false){n=Math.max(1,Math.min(4,Number(n)||1)); if(n>currentStep && !bypass){for(let i=currentStep;i<n;i++){if(!validateStep(i)) return;}} currentStep=n; maxStep=Math.max(maxStep,n); $$('.quote-step').forEach(sec=>sec.classList.toggle('active',Number(sec.dataset.step)===currentStep)); $$('.quote-tab').forEach(tab=>{const t=Number(tab.dataset.step); tab.classList.toggle('active',t===currentStep); tab.classList.toggle('done',t<currentStep);}); $('#prev-step')?.classList.toggle('hidden',currentStep===1); $('#next-step')?.classList.toggle('hidden',currentStep===4); const submit=$('#submit-quote'); if(submit){submit.classList.toggle('hidden',currentStep!==4); submit.classList.toggle('flex',currentStep===4);} window.scrollTo({top:0,behavior:'smooth'});}
+  function buildRequest(){return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),equipment_category:'Silent Disco',equipment_detail:'Audio7 Halo 1',quantity:Number($('#headphones-count')?.value||50),channels:Number(activeChannel()),led_color:ledColor,accessories:{charging_racks:!!$('#accessory-racks')?.checked,led_rings:!!$('#accessory-led')?.checked},event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Silent Disco',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',status:'new'};}
+  function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,channels:req.channels,led_color:req.led_color,accessories:req.accessories,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes},message:req.message,status:'new'};}
   function saveLocalRequest(req){localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req)); const list=JSON.parse(localStorage.getItem('rssQuoteRequests')||'[]'); list.unshift(req); localStorage.setItem('rssQuoteRequests',JSON.stringify(list.slice(0,30)));}
   async function saveSupabase(req){try{if(!window.supabase)return {ok:false,error:'Librairie Supabase non chargée'}; const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY); const {data:{session}}=await sb.auth.getSession(); const payload=buildSupabasePayload(req,session?.user?.id); console.info('[RentSoundSystem] Données envoyées à Supabase quote_requests:', payload); const {error}=await sb.from('quote_requests').insert(payload); if(error)throw error; return {ok:true,error:null};}catch(e){console.warn('quote_requests Supabase:',e.message); return {ok:false,error:e.message||'Erreur Supabase'};}}
-
-  function bind(){
-    const s=$('#event-start'), e=$('#event-end');
-    if(s&&!s.value)s.value=todayPlus(7); if(e&&!e.value)e.value=todayPlus(8); if(s&&e){s.min=todayPlus(0); e.min=s.value; s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value; e.min=s.value; updateSummary();});}
-    const range=$('#quantity-range'), count=$('#quantity-count'); if(range&&count){range.addEventListener('input',()=>{count.value=range.value;updateSummary();}); count.addEventListener('input',()=>{range.value=count.value;updateSummary();});}
+  function bind(){ const s=$('#event-start'), e=$('#event-end'); if(s&&!s.value)s.value=todayPlus(7); if(e&&!e.value)e.value=todayPlus(8); if(s&&e){s.min=todayPlus(0); e.min=s.value; s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value; e.min=s.value; updateSummary();});}
+    const range=$('#headphones-range'), count=$('#headphones-count'); if(range&&count){range.addEventListener('input',()=>{count.value=range.value;updateSummary();}); count.addEventListener('input',()=>{range.value=count.value;updateSummary();});}
+    $$('input[name="channels"]').forEach(i=>i.addEventListener('change',()=>{updateChannelCards();updateSummary();})); $$('.channel-card').forEach(c=>c.addEventListener('click',()=>{const i=c.querySelector('input'); if(i){i.checked=true; i.dispatchEvent(new Event('change',{bubbles:true}));}}));
+    $$('.led-color').forEach(btn=>btn.addEventListener('click',()=>{$$('.led-color').forEach(b=>{b.classList.remove('border-white','ring-2','ring-[#FC036D]'); b.classList.add('border-transparent');}); btn.classList.remove('border-transparent'); btn.classList.add('border-white','ring-2','ring-[#FC036D]'); ledColor=btn.dataset.color||'Fuchsia'; updateSummary();}));
     $$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary)); ['#need-delivery','#need-tech','#need-insurance'].forEach(s=>$(s)?.addEventListener('change',updateSummary));
-    $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1));
-    $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); saveLocalRequest(req); const result=await saveSupabase(req); const message=result.ok?'Demande de devis envoyée. Notre équipe revient vers vous rapidement.':'Demande enregistrée sur cette page. Supabase indique : '+result.error; toast(message); showAlert(message); const alert=$('#quote-alert'); if(alert){alert.classList.remove('border-error/40','bg-error-container/20','text-error'); alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');} if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';} });
-    updateSummary(); goStep(1,true); loadListing();
-  }
+    $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1)); $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); saveLocalRequest(req); const result=await saveSupabase(req); const successPanel=$('#quote-success-panel'); const saveStatus=$('#quote-save-status'); setText('#quote-reference',req.id); if(successPanel) successPanel.classList.remove('hidden'); const message=result.ok?'Demande de devis envoyée. Notre équipe revient vers vous rapidement.':'Demande enregistrée sur cette page. Supabase indique : '+result.error; if(saveStatus) saveStatus.textContent=result.ok?'Sauvegarde Supabase confirmée + copie locale enregistrée.':'Copie locale enregistrée. Vérifier Supabase : '+result.error; toast(message); showAlert(message); const alert=$('#quote-alert'); if(alert){alert.classList.remove('border-error/40','bg-error-container/20','text-error'); alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');} if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';} }); updateChannelCards(); updateSummary(); goStep(1,true); }
   document.addEventListener('DOMContentLoaded',bind);
 })();
 </script>
