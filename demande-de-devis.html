@@ -166,6 +166,7 @@
 
     
 .line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.quote-listing-option{border:1px solid rgba(255,255,255,.06);background:rgba(31,31,31,.55);transition:.22s ease}.quote-listing-option:hover,.quote-listing-option.active{border-color:#FC036D;background:rgba(252,3,109,.10);box-shadow:0 0 18px rgba(252,3,109,.18)}
 .quote-listing-option{border:1px solid rgba(255,255,255,.08);background:rgba(32,31,31,.75);transition:.22s ease}.quote-listing-option:hover{border-color:#FC036D;background:rgba(252,3,109,.08)}.quote-listing-option.active{border-color:#FC036D;background:rgba(252,3,109,.12);box-shadow:0 0 25px rgba(252,3,109,.18)}
 </style>
 
@@ -273,6 +274,67 @@
     <label class="block font-headline-md text-sm mb-2 text-on-surface">Besoin précis</label>
     <textarea id="equipment-notes" rows="4" class="w-full py-3 px-4" placeholder="Exemple : quantité exacte, accessoires nécessaires, puissance souhaitée, configuration, contraintes techniques..."></textarea>
   </div>
+
+  <div class="rounded-xl border border-surface-glass-border bg-surface-container-low p-5 space-y-5">
+    <div>
+      <h3 class="font-headline-md text-lg text-on-surface">Informations complémentaires</h3>
+      <p class="font-body-md text-sm text-on-surface-variant mt-1">Cette partie reprend les informations techniques utiles de l'ancien formulaire : sources audio, accessoires, LED et options de configuration. Elle reste facultative et s'adapte à tout type d'annonce.</p>
+    </div>
+
+    <label class="block">
+      <span class="block font-headline-md text-sm mb-2 text-on-surface">Configuration souhaitée</span>
+      <select id="technical-config" class="w-full py-3 px-4">
+        <option value="Standard">Standard / location simple</option>
+        <option value="Système audio complet">Système audio complet</option>
+        <option value="Plusieurs sources audio">Plusieurs sources audio / DJs</option>
+        <option value="Éclairage personnalisé">Éclairage personnalisé</option>
+        <option value="Installation complète">Installation complète avec technicien</option>
+        <option value="Autre">Autre besoin technique</option>
+      </select>
+    </label>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="channels-options">
+      <div class="md:col-span-3">
+        <label class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de sources / canaux audio</label>
+        <p class="font-body-md text-sm text-on-surface-variant mb-3">Utile pour DJ, conférence, traduction, silent disco ou plusieurs flux audio.</p>
+      </div>
+      <label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
+        <input class="absolute opacity-0" name="channels" type="radio" value="1" checked/>
+        <span class="font-headline-md text-lg text-on-surface">1 source</span>
+        <span class="font-body-md text-sm text-on-surface-variant mt-1">Diffusion simple.</span>
+      </label>
+      <label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
+        <input class="absolute opacity-0" name="channels" type="radio" value="2"/>
+        <span class="font-headline-md text-lg text-on-surface">2 sources</span>
+        <span class="font-body-md text-sm text-on-surface-variant mt-1">Double DJ ou conférence.</span>
+      </label>
+      <label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
+        <input class="absolute opacity-0" name="channels" type="radio" value="3"/>
+        <span class="font-headline-md text-lg text-on-surface">3 sources</span>
+        <span class="font-body-md text-sm text-on-surface-variant mt-1">Multicanal / silent disco.</span>
+      </label>
+    </div>
+
+    <div>
+      <label class="block font-headline-md text-sm mb-3 text-on-surface">Accessoires / options à prévoir</label>
+      <div class="space-y-3">
+        <label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-cables" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><span><strong class="text-on-surface">Câblage / adaptateurs</strong><br><small class="text-on-surface-variant">XLR, secteur, multiprises, adaptateurs audio.</small></span></label>
+        <label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-stands" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><span><strong class="text-on-surface">Pieds / supports / structures</strong><br><small class="text-on-surface-variant">Supports d'enceintes, pieds lumière, racks.</small></span></label>
+        <label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-led" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><span><strong class="text-on-surface">LED / personnalisation lumineuse</strong><br><small class="text-on-surface-variant">Couleurs, ambiance, éclairage événementiel.</small></span></label>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3">
+      <span class="font-body-md text-sm text-on-surface-variant">Couleur dominante souhaitée</span>
+      <div class="flex gap-4" id="led-colors">
+        <button type="button" data-color="Fuchsia" class="led-color w-8 h-8 rounded-full bg-[#FC036D] border-2 border-white ring-2 ring-[#FC036D]" title="Fuchsia"></button>
+        <button type="button" data-color="Cyan" class="led-color w-8 h-8 rounded-full bg-[#00FFFF] border-2 border-transparent hover:border-white transition-all" title="Cyan"></button>
+        <button type="button" data-color="Vert" class="led-color w-8 h-8 rounded-full bg-[#32CD32] border-2 border-transparent hover:border-white transition-all" title="Vert"></button>
+        <button type="button" data-color="Bleu" class="led-color w-8 h-8 rounded-full bg-[#3867ff] border-2 border-transparent hover:border-white transition-all" title="Bleu"></button>
+        <button type="button" data-color="Blanc chaud" class="led-color w-8 h-8 rounded-full bg-[#ffd9a3] border-2 border-transparent hover:border-white transition-all" title="Blanc chaud"></button>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
 
@@ -344,6 +406,7 @@
   const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   let currentStep=1;
   let currentListing=null;
+  let ledColor='Fuchsia';
   let allQuoteListings=[];
   const $=s=>document.querySelector(s);
   const $$=s=>Array.from(document.querySelectorAll(s));
@@ -395,6 +458,23 @@
 
   function fallbackListing(){const p=params();return {id:null,original_id:p.get('original_id')||p.get('listing_original_id')||'',title:p.get('title')||'Matériel professionnel',category:p.get('category')||'Demande de devis',city:p.get('city')||'',price:p.get('price')||'',description:p.get('description')||'Indiquez vos dates, votre lieu et les services souhaités. Notre équipe vous répondra rapidement.',listing_images:[]};}
   function cleanText(v,n){v=String(v||'').replace(/\s+/g,' ').trim(); return v.length>n?v.slice(0,n-1)+'…':v;}
+
+  function activeChannel(){return ($('input[name="channels"]:checked')?.value || '1');}
+  function updateChannelCards(){
+    $$('.channel-card').forEach(card=>{
+      const input=card.querySelector('input');
+      const active=!!(input && input.checked);
+      card.classList.toggle('border-electric-magenta', active);
+      card.classList.toggle('bg-electric-magenta/10', active);
+      card.classList.toggle('border-outline-variant', !active);
+      card.querySelectorAll('span').forEach(sp=>{
+        if(sp.className.includes('font-headline')){
+          sp.classList.toggle('text-electric-magenta', active);
+          sp.classList.toggle('text-on-surface', !active);
+        }
+      });
+    });
+  }
 
   async function loadListing(){
     currentListing=fallbackListing();
@@ -450,6 +530,11 @@
     if($('#need-delivery')?.checked) services.push('Livraison');
     if($('#need-tech')?.checked) services.push('Technicien');
     if($('#need-insurance')?.checked) services.push('Assurance');
+    const config=$('#technical-config')?.value;
+    if(config && config !== 'Standard') services.push(config);
+    if($('#accessory-cables')?.checked) services.push('Câblage');
+    if($('#accessory-stands')?.checked) services.push('Supports');
+    if($('#accessory-led')?.checked) services.push('LED '+ledColor);
     const box=$('#summary-services');
     if(box) box.innerHTML=services.length?services.map(s=>'<span class="px-2 py-1 rounded bg-electric-magenta/10 text-electric-magenta text-xs font-bold">'+esc(s)+'</span>').join(''):'<span class="text-on-surface-variant text-xs">Aucun service</span>';
   }
@@ -467,9 +552,9 @@
 
   function buildRequest(){
     const item=currentListing||fallbackListing();
-    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:$('#equipment-notes')?.value?.trim()||'',event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
+    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:$('#equipment-notes')?.value?.trim()||'',technical_config:$('#technical-config')?.value||'Standard',channels:Number(activeChannel()),led_color:ledColor,accessories:{cables:!!$('#accessory-cables')?.checked,stands:!!$('#accessory-stands')?.checked,led:!!$('#accessory-led')?.checked},event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
   }
-  function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,listing_id:req.listing_id,listing_original_id:req.listing_original_id,equipment_category:req.equipment_category,equipment_brand:req.equipment_brand,equipment_city:req.equipment_city,equipment_notes:req.equipment_notes,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes,source_url:req.source_url},message:req.message,status:'new'};}
+  function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,listing_id:req.listing_id,listing_original_id:req.listing_original_id,equipment_category:req.equipment_category,equipment_brand:req.equipment_brand,equipment_city:req.equipment_city,equipment_notes:req.equipment_notes,technical_config:req.technical_config,channels:req.channels,led_color:req.led_color,accessories:req.accessories,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes,source_url:req.source_url},message:req.message,status:'new'};}
   function saveLocalRequest(req){localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req)); const list=JSON.parse(localStorage.getItem('rssQuoteRequests')||'[]'); list.unshift(req); localStorage.setItem('rssQuoteRequests',JSON.stringify(list.slice(0,30)));}
   async function saveSupabase(req){try{if(!window.supabase)return {ok:false,error:'Librairie Supabase non chargée'}; const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY); const {data:{session}}=await sb.auth.getSession(); const payload=buildSupabasePayload(req,session?.user?.id); console.info('[RentSoundSystem] Données envoyées à Supabase quote_requests:', payload); const {error}=await sb.from('quote_requests').insert(payload); if(error)throw error; return {ok:true,error:null};}catch(e){console.warn('quote_requests Supabase:',e.message); return {ok:false,error:e.message||'Erreur Supabase'};}}
 
@@ -477,11 +562,14 @@
     const s=$('#event-start'), e=$('#event-end');
     if(s&&!s.value)s.value=todayPlus(7); if(e&&!e.value)e.value=todayPlus(8); if(s&&e){s.min=todayPlus(0); e.min=s.value; s.addEventListener('change',()=>{if(e.value<s.value)e.value=s.value; e.min=s.value; updateSummary();});}
     const range=$('#quantity-range'), count=$('#quantity-count'); if(range&&count){range.addEventListener('input',()=>{count.value=range.value;updateSummary();}); count.addEventListener('input',()=>{range.value=count.value;updateSummary();});}
+    $$('input[name="channels"]').forEach(i=>i.addEventListener('change',()=>{updateChannelCards();updateSummary();}));
+    $$('.channel-card').forEach(c=>c.addEventListener('click',()=>{const i=c.querySelector('input'); if(i){i.checked=true; i.dispatchEvent(new Event('change',{bubbles:true}));}}));
+    $$('.led-color').forEach(btn=>btn.addEventListener('click',()=>{$$('.led-color').forEach(b=>{b.classList.remove('border-white','ring-2','ring-[#FC036D]'); b.classList.add('border-transparent');}); btn.classList.remove('border-transparent'); btn.classList.add('border-white','ring-2','ring-[#FC036D]'); ledColor=btn.dataset.color||'Fuchsia'; updateSummary();}));
     $$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary));
     $('#listing-search')?.addEventListener('input', function(){ renderListingPicker(this.value||''); }); ['#need-delivery','#need-tech','#need-insurance'].forEach(s=>$(s)?.addEventListener('change',updateSummary));
     $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1));
     $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); saveLocalRequest(req); const result=await saveSupabase(req); const message=result.ok?'Demande de devis envoyée. Notre équipe revient vers vous rapidement.':'Demande enregistrée sur cette page. Supabase indique : '+result.error; toast(message); showAlert(message); const alert=$('#quote-alert'); if(alert){alert.classList.remove('border-error/40','bg-error-container/20','text-error'); alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');} if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';} });
-    updateSummary(); goStep(1,true); loadListing();
+    updateChannelCards(); updateSummary(); goStep(1,true); loadListing();
   }
   document.addEventListener('DOMContentLoaded',bind);
 })();
