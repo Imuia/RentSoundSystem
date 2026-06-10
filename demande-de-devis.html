@@ -275,65 +275,12 @@
     <textarea id="equipment-notes" rows="4" class="w-full py-3 px-4" placeholder="Exemple : quantité exacte, accessoires nécessaires, puissance souhaitée, configuration, contraintes techniques..."></textarea>
   </div>
 
-  <div class="rounded-xl border border-surface-glass-border bg-surface-container-low p-5 space-y-5">
+  <div id="smart-fields-panel" class="rounded-xl border border-surface-glass-border bg-surface-container-low p-5 space-y-5">
     <div>
-      <h3 class="font-headline-md text-lg text-on-surface">Informations complémentaires</h3>
-      <p class="font-body-md text-sm text-on-surface-variant mt-1">Cette partie reprend les informations techniques utiles de l'ancien formulaire : sources audio, accessoires, LED et options de configuration. Elle reste facultative et s'adapte à tout type d'annonce.</p>
+      <h3 id="smart-fields-title" class="font-headline-md text-lg text-on-surface">Informations complémentaires adaptées</h3>
+      <p id="smart-fields-description" class="font-body-md text-sm text-on-surface-variant mt-1">Sélectionnez une annonce : les questions techniques s’adaptent automatiquement au matériel choisi.</p>
     </div>
-
-    <label class="block">
-      <span class="block font-headline-md text-sm mb-2 text-on-surface">Configuration souhaitée</span>
-      <select id="technical-config" class="w-full py-3 px-4">
-        <option value="Standard">Standard / location simple</option>
-        <option value="Système audio complet">Système audio complet</option>
-        <option value="Plusieurs sources audio">Plusieurs sources audio / DJs</option>
-        <option value="Éclairage personnalisé">Éclairage personnalisé</option>
-        <option value="Installation complète">Installation complète avec technicien</option>
-        <option value="Autre">Autre besoin technique</option>
-      </select>
-    </label>
-
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="channels-options">
-      <div class="md:col-span-3">
-        <label class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de sources / canaux audio</label>
-        <p class="font-body-md text-sm text-on-surface-variant mb-3">Utile pour DJ, conférence, traduction, silent disco ou plusieurs flux audio.</p>
-      </div>
-      <label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
-        <input class="absolute opacity-0" name="channels" type="radio" value="1" checked/>
-        <span class="font-headline-md text-lg text-on-surface">1 source</span>
-        <span class="font-body-md text-sm text-on-surface-variant mt-1">Diffusion simple.</span>
-      </label>
-      <label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
-        <input class="absolute opacity-0" name="channels" type="radio" value="2"/>
-        <span class="font-headline-md text-lg text-on-surface">2 sources</span>
-        <span class="font-body-md text-sm text-on-surface-variant mt-1">Double DJ ou conférence.</span>
-      </label>
-      <label class="channel-card relative flex flex-col p-4 rounded-lg border border-outline-variant hover:border-electric-magenta cursor-pointer transition-colors bg-surface-container-low group">
-        <input class="absolute opacity-0" name="channels" type="radio" value="3"/>
-        <span class="font-headline-md text-lg text-on-surface">3 sources</span>
-        <span class="font-body-md text-sm text-on-surface-variant mt-1">Multicanal / silent disco.</span>
-      </label>
-    </div>
-
-    <div>
-      <label class="block font-headline-md text-sm mb-3 text-on-surface">Accessoires / options à prévoir</label>
-      <div class="space-y-3">
-        <label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-cables" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><span><strong class="text-on-surface">Câblage / adaptateurs</strong><br><small class="text-on-surface-variant">XLR, secteur, multiprises, adaptateurs audio.</small></span></label>
-        <label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-stands" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><span><strong class="text-on-surface">Pieds / supports / structures</strong><br><small class="text-on-surface-variant">Supports d'enceintes, pieds lumière, racks.</small></span></label>
-        <label class="flex items-center gap-4 p-3 border border-surface-glass-border rounded-lg bg-surface-container-low hover:bg-surface-container-highest cursor-pointer transition-colors"><input id="accessory-led" class="w-5 h-5 rounded border-outline-variant text-electric-magenta focus:ring-electric-magenta bg-transparent" type="checkbox"/><span><strong class="text-on-surface">LED / personnalisation lumineuse</strong><br><small class="text-on-surface-variant">Couleurs, ambiance, éclairage événementiel.</small></span></label>
-      </div>
-    </div>
-
-    <div class="flex flex-col gap-3">
-      <span class="font-body-md text-sm text-on-surface-variant">Couleur dominante souhaitée</span>
-      <div class="flex gap-4" id="led-colors">
-        <button type="button" data-color="Fuchsia" class="led-color w-8 h-8 rounded-full bg-[#FC036D] border-2 border-white ring-2 ring-[#FC036D]" title="Fuchsia"></button>
-        <button type="button" data-color="Cyan" class="led-color w-8 h-8 rounded-full bg-[#00FFFF] border-2 border-transparent hover:border-white transition-all" title="Cyan"></button>
-        <button type="button" data-color="Vert" class="led-color w-8 h-8 rounded-full bg-[#32CD32] border-2 border-transparent hover:border-white transition-all" title="Vert"></button>
-        <button type="button" data-color="Bleu" class="led-color w-8 h-8 rounded-full bg-[#3867ff] border-2 border-transparent hover:border-white transition-all" title="Bleu"></button>
-        <button type="button" data-color="Blanc chaud" class="led-color w-8 h-8 rounded-full bg-[#ffd9a3] border-2 border-transparent hover:border-white transition-all" title="Blanc chaud"></button>
-      </div>
-    </div>
+    <div id="smart-fields-container" class="space-y-5"></div>
   </div>
 </div>
 </section>
@@ -498,6 +445,54 @@
     }catch(e){ console.warn('Chargement annonce devis:', e.message); }
   }
 
+
+  function normalizeKindText(item){
+    return String([item?.title,item?.category,item?.brand,item?.description].join(' ')).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+  }
+  function listingKind(item){
+    const t=normalizeKindText(item);
+    if(/silent|casque|headphone|audio7|halo|uhf|conference|traduction/.test(t)) return 'silent';
+    if(/eclair|light|lyre|projecteur|dmx|led|laser|wash|beam|spot/.test(t)) return 'lighting';
+    if(/dj|cdj|platine|table de mixage|mixer|controleur|pioneer|denon dj/.test(t)) return 'dj';
+    if(/scene|structure|pont|truss|praticable|podium|stand/.test(t)) return 'stage';
+    if(/micro|microphone|shure|sennheiser|hf|wireless/.test(t)) return 'microphone';
+    if(/sonorisation|enceinte|speaker|sub|caisson|line array|ampli|console|nexo|l-acoustics|jbl|d&b|dbaudio|meyer/.test(t)) return 'sound';
+    return 'generic';
+  }
+  function smartFieldHtml(kind){
+    const common = `
+      <label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Niveau d'accompagnement souhaité</span><select data-smart-field="accompagnement" class="w-full py-3 px-4"><option>Location seule</option><option>Livraison uniquement</option><option>Installation par technicien</option><option>Exploitation complète pendant l’événement</option><option>À conseiller</option></select></label>
+      <label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Contraintes importantes</span><textarea data-smart-field="contraintes_materiel" rows="3" class="w-full py-3 px-4" placeholder="Accès, étage, horaires, extérieur/intérieur, besoin de puissance, sécurité..."></textarea></label>`;
+    const templates={
+      silent:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de casques souhaité</span><input data-smart-field="nombre_casques" type="number" min="10" class="w-full py-3 px-4" placeholder="Ex : 150"></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de sources / canaux</span><select data-smart-field="canaux_audio" class="w-full py-3 px-4"><option>1 canal</option><option>2 canaux</option><option>3 canaux</option><option>Plus de 3 canaux</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Utilisation</span><select data-smart-field="usage_silent" class="w-full py-3 px-4"><option>Silent disco</option><option>Conférence multilingue</option><option>Cinéma / projection</option><option>Visite guidée</option><option>Autre</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Gestion recharge</span><select data-smart-field="recharge" class="w-full py-3 px-4"><option>Standard</option><option>Racks de charge nécessaires</option><option>Événement longue durée</option></select></label></div>${common}`,
+      sound:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type de système recherché</span><select data-smart-field="type_sonorisation" class="w-full py-3 px-4"><option>Façade / public</option><option>Retours scène</option><option>Line array</option><option>Subwoofers / basses</option><option>Système complet</option><option>À conseiller</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Taille du public</span><select data-smart-field="taille_public_audio" class="w-full py-3 px-4"><option>Moins de 100 personnes</option><option>100 à 300 personnes</option><option>300 à 800 personnes</option><option>800 à 2000 personnes</option><option>Plus de 2000 personnes</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Sources audio</span><select data-smart-field="sources_audio" class="w-full py-3 px-4"><option>DJ</option><option>Live / groupe</option><option>Micro conférence</option><option>DJ + micros</option><option>Autre</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Console / régie</span><select data-smart-field="console_regie" class="w-full py-3 px-4"><option>Non nécessaire</option><option>Console demandée</option><option>Régisseur son demandé</option><option>À conseiller</option></select></label></div>${common}`,
+      lighting:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type d’éclairage</span><select data-smart-field="type_eclairage" class="w-full py-3 px-4"><option>Ambiance déco</option><option>Scène / concert</option><option>Lyres / moving heads</option><option>Architecture / mise en lumière</option><option>Pack complet</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Contrôle DMX</span><select data-smart-field="dmx" class="w-full py-3 px-4"><option>Pas nécessaire</option><option>Console DMX demandée</option><option>Programmation lumière demandée</option><option>À conseiller</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Couleur / ambiance</span><input data-smart-field="couleur_ambiance" type="text" class="w-full py-3 px-4" placeholder="Ex : rose, blanc chaud, corporate..."></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Utilisation extérieur</span><select data-smart-field="exterieur" class="w-full py-3 px-4"><option>Intérieur</option><option>Extérieur couvert</option><option>Extérieur non couvert</option><option>À confirmer</option></select></label></div>${common}`,
+      dj:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Configuration DJ</span><select data-smart-field="configuration_dj" class="w-full py-3 px-4"><option>2 platines + mixer</option><option>4 platines + mixer</option><option>Contrôleur DJ</option><option>Platine seule</option><option>À conseiller</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Besoin câblage audio</span><select data-smart-field="cablage_dj" class="w-full py-3 px-4"><option>Oui</option><option>Non</option><option>À conseiller</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Régie DJ</span><select data-smart-field="regie_dj" class="w-full py-3 px-4"><option>Table/régie déjà prévue</option><option>Besoin table/régie</option><option>Besoin installation complète</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Monitoring DJ</span><select data-smart-field="monitoring_dj" class="w-full py-3 px-4"><option>Non nécessaire</option><option>Retour DJ demandé</option><option>À conseiller</option></select></label></div>${common}`,
+      microphone:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Nombre de micros</span><input data-smart-field="nombre_micros" type="number" min="1" class="w-full py-3 px-4" placeholder="Ex : 4"></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type de micro</span><select data-smart-field="type_micro" class="w-full py-3 px-4"><option>Main HF</option><option>Cravate</option><option>Serre-tête</option><option>Filaire</option><option>À conseiller</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Utilisation</span><select data-smart-field="usage_micro" class="w-full py-3 px-4"><option>Conférence</option><option>Concert</option><option>Mariage / discours</option><option>Tournage</option><option>Autre</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Récepteur / console</span><select data-smart-field="recepteur_console" class="w-full py-3 px-4"><option>Déjà prévu</option><option>À fournir</option><option>À conseiller</option></select></label></div>${common}`,
+      stage:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Dimensions souhaitées</span><input data-smart-field="dimensions_scene" type="text" class="w-full py-3 px-4" placeholder="Ex : 6m x 4m, hauteur 60cm"></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type de sol</span><select data-smart-field="type_sol" class="w-full py-3 px-4"><option>Sol plat intérieur</option><option>Sol extérieur</option><option>Terrain irrégulier</option><option>À confirmer</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Besoin couverture</span><select data-smart-field="couverture" class="w-full py-3 px-4"><option>Non</option><option>Oui</option><option>À conseiller</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Charge / utilisation</span><input data-smart-field="charge_utilisation" type="text" class="w-full py-3 px-4" placeholder="DJ, groupe, public, décor..."></label></div>${common}`,
+      generic:`<div class="grid grid-cols-1 md:grid-cols-2 gap-4"><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Type de besoin</span><select data-smart-field="type_besoin" class="w-full py-3 px-4"><option>Location simple</option><option>Pack complet</option><option>Installation</option><option>Conseil technique</option><option>Autre</option></select></label><label class="block"><span class="block font-headline-md text-sm mb-2 text-on-surface">Utilisation prévue</span><input data-smart-field="utilisation_prevue" type="text" class="w-full py-3 px-4" placeholder="Ex : concert, conférence, mariage..."></label></div>${common}`
+    };
+    return templates[kind] || templates.generic;
+  }
+  function renderSmartFields(item){
+    const kind=listingKind(item);
+    const titles={silent:'Informations Silent Disco / casques',sound:'Informations sonorisation',lighting:'Informations éclairage',dj:'Informations matériel DJ',microphone:'Informations microphones',stage:'Informations scène / structure',generic:'Informations complémentaires'};
+    const desc={silent:'Questions adaptées aux casques, émetteurs, canaux audio et recharge.',sound:'Questions adaptées aux enceintes, subs, consoles, sources audio et taille du public.',lighting:'Questions adaptées aux lyres, projecteurs, DMX, couleurs et usage extérieur.',dj:'Questions adaptées aux platines, mixers, régie DJ et monitoring.',microphone:'Questions adaptées aux micros HF, cravates, récepteurs et usages voix.',stage:'Questions adaptées aux dimensions, sol, couverture et contraintes de structure.',generic:'Questions générales lorsque la catégorie de l’annonce ne permet pas une spécialisation.'};
+    setText('#smart-fields-title', titles[kind]||titles.generic);
+    setText('#smart-fields-description', desc[kind]||desc.generic);
+    const c=$('#smart-fields-container'); if(c){c.innerHTML=smartFieldHtml(kind);}
+    $$('[data-smart-field]').forEach(el=>el.addEventListener('input',updateSummary));
+  }
+  function collectSmartFields(){
+    const out={};
+    $$('[data-smart-field]').forEach(el=>{
+      const key=el.getAttribute('data-smart-field');
+      if(!key) return;
+      if(el.type==='checkbox') out[key]=!!el.checked;
+      else out[key]=el.value||'';
+    });
+    return out;
+  }
   function applyListing(item, loading){
     const title=item?.title || 'Matériel professionnel';
     const category=(item?.category || item?.brand || 'Demande de devis').replace(/-/g,' ');
@@ -513,6 +508,7 @@
     setText('#selected-product-description', cleanText(item?.description || 'Matériel sélectionné pour votre demande de devis.', 220));
     setText('#selected-product-city', item?.city || item?.location || 'Lieu à confirmer');
     setText('#selected-product-price', formatPrice(item?.price));
+    renderSmartFields(item);
     updateSummary();
   }
 
@@ -552,9 +548,9 @@
 
   function buildRequest(){
     const item=currentListing||fallbackListing();
-    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:$('#equipment-notes')?.value?.trim()||'',technical_config:$('#technical-config')?.value||'Standard',channels:Number(activeChannel()),led_color:ledColor,accessories:{cables:!!$('#accessory-cables')?.checked,stands:!!$('#accessory-stands')?.checked,led:!!$('#accessory-led')?.checked},event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
+    return {id:'DEVIS-'+Date.now().toString().slice(-6),created_at:new Date().toISOString(),listing_id:item.id||null,listing_original_id:item.original_id||'',equipment_category:item.category||item.brand||'Annonce',equipment_detail:item.title||'Matériel professionnel',equipment_brand:item.brand||'',equipment_city:item.city||item.location||'',quantity:Number($('#quantity-count')?.value||1),equipment_notes:$('#equipment-notes')?.value?.trim()||'',smart_fields:collectSmartFields(),event_start:$('#event-start')?.value||null,event_end:$('#event-end')?.value||null,event_city:$('#event-city')?.value?.trim()||'',event_type:$('#event-type')?.value||'Événement',guest_count:Number($('#guest-count')?.value||150),need_delivery:!!$('#need-delivery')?.checked,need_technician:!!$('#need-tech')?.checked,need_insurance:!!$('#need-insurance')?.checked,technical_notes:$('#technical-notes')?.value?.trim()||'',client_name:$('#client-name')?.value?.trim()||'',client_phone:$('#client-phone')?.value?.trim()||'',client_email:$('#client-email')?.value?.trim()||'',message:$('#client-message')?.value?.trim()||'',source_url:location.href,status:'new'};
   }
-  function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,listing_id:req.listing_id,listing_original_id:req.listing_original_id,equipment_category:req.equipment_category,equipment_brand:req.equipment_brand,equipment_city:req.equipment_city,equipment_notes:req.equipment_notes,technical_config:req.technical_config,channels:req.channels,led_color:req.led_color,accessories:req.accessories,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes,source_url:req.source_url},message:req.message,status:'new'};}
+  function buildSupabasePayload(req,userId){return {user_id:userId||null,full_name:req.client_name,email:req.client_email,phone:req.client_phone,company_name:null,event_type:req.event_type,event_city:req.event_city,event_date:req.event_start,return_date:req.event_end,equipment:req.equipment_detail,quantity:req.quantity,services:{quote_reference:req.id,listing_id:req.listing_id,listing_original_id:req.listing_original_id,equipment_category:req.equipment_category,equipment_brand:req.equipment_brand,equipment_city:req.equipment_city,equipment_notes:req.equipment_notes,smart_fields:req.smart_fields,delivery:req.need_delivery,technician:req.need_technician,insurance:req.need_insurance,guest_count:req.guest_count,technical_notes:req.technical_notes,source_url:req.source_url},message:req.message,status:'new'};}
   function saveLocalRequest(req){localStorage.setItem('rssLastQuoteRequest',JSON.stringify(req)); const list=JSON.parse(localStorage.getItem('rssQuoteRequests')||'[]'); list.unshift(req); localStorage.setItem('rssQuoteRequests',JSON.stringify(list.slice(0,30)));}
   async function saveSupabase(req){try{if(!window.supabase)return {ok:false,error:'Librairie Supabase non chargée'}; const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY); const {data:{session}}=await sb.auth.getSession(); const payload=buildSupabasePayload(req,session?.user?.id); console.info('[RentSoundSystem] Données envoyées à Supabase quote_requests:', payload); const {error}=await sb.from('quote_requests').insert(payload); if(error)throw error; return {ok:true,error:null};}catch(e){console.warn('quote_requests Supabase:',e.message); return {ok:false,error:e.message||'Erreur Supabase'};}}
 
