@@ -431,7 +431,7 @@ html, body {
 <section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col gap-2 ">
 <h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux équipements à louer</h2>
-<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières pépites techniques fraîchement arrivées sur notre marketplace.</p>
+<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées sur la marketplace, toutes villes et tous pays confondus.</p>
 </div>
 <div id="newest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <!-- New Product Card 1 -->
@@ -820,34 +820,18 @@ html, body {
   }
 
   function newestItems(limit) {
+    // Section "Nouveaux équipements" = dernières annonces publiées globalement.
+    // Elle ne dépend pas de la ville, de la géolocalisation ou du rayon.
     return equipmentFilter(allListings)
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
-  }
-
-  function newestNearbyItems(center, limit) {
-    const source = activeListings.length ? activeListings : allListings;
-    const filtered = equipmentFilter(source);
-    const withDistance = enrichByDistance(filtered, center || currentCenter);
-    const inRadius = withDistance
-      .filter(item => hasCoordinates(item) && typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
-      .sort((a, b) => listingDateValue(b) - listingDateValue(a));
-
-    const country = normalizeText((center || currentCenter).country);
-    const sameCountry = country
-      ? filtered.filter(item => normalizeText(item.country) === country).sort((a, b) => listingDateValue(b) - listingDateValue(a))
-      : [];
-
-    const closest = withDistance.filter(hasCoordinates);
-
-    return uniqueListings(inRadius.concat(sameCountry, closest, newestItems(limit))).slice(0, limit);
   }
 
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
     const nearest = nearbyItems(center || currentCenter, 4);
-    const newest = newestNearbyItems(center || currentCenter, 4);
+    const newest = newestItems(8);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
@@ -857,7 +841,7 @@ html, body {
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée autour de votre ville ou pays.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée pour le moment.</div>';
     }
   }
 
