@@ -123,10 +123,7 @@
   transition: all .3s ease;
 }
 
-.group:hover .brand-card-logo-wrap img.brand-logo-img{
-  filter: grayscale(0) contrast(1.05) brightness(1)!important;
-  opacity:1;
-}
+
     </style>
 <style data-stitch-cursor=""></style><style data-stitch-scroll-lock=""></style>
 <style id="rss-unified-brand-style">
@@ -321,7 +318,13 @@ html,body{overflow-x:hidden!important}
 
 <style id="rss-marques-logo-uniform-css">
   .brand-card-logo-wrap{height:140px!important;min-height:140px!important;background:#ffffff!important;display:flex!important;align-items:center!important;justify-content:center!important;padding:22px!important;overflow:hidden!important;}
-  .brand-card-logo-wrap img.brand-logo-img{max-width:172px!important;max-height:76px!important;width:auto!important;height:auto!important;object-fit:contain!important;display:block!important;filter:contrast(1.06) saturate(.94)!important;mix-blend-mode:multiply;}
+  .brand-card-logo-wrap img.brand-logo-img{max-width:172px!important;max-height:76px!important;width:auto!important;height:auto!important;object-fit:contain!important;display:block!important;filter: grayscale(1) contrast(1.12) brightness(.96)!important;
+opacity:.86;
+transition: all .3s ease;mix-blend-mode:multiply;}
+.group:hover .brand-card-logo-wrap img.brand-logo-img{
+  filter: grayscale(0) contrast(1.05) brightness(1)!important;
+  opacity:1!important;
+}
   .brand-card-logo-wrap.brand-img-fallback{background:radial-gradient(circle at 50% 20%, rgba(252,3,109,.16), transparent 36%), linear-gradient(180deg,#242424,#111)!important;}
   .brand-card-logo-wrap.brand-img-fallback::after{content:'logo bientôt disponible';color:rgba(255,255,255,.58);font-size:12px;letter-spacing:.08em;text-transform:uppercase;}
   .brand-card-logo-wrap.brand-img-fallback img{display:none!important;}
