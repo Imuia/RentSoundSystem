@@ -467,7 +467,7 @@ html, body {
 
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
+  const DEFAULT_CITY = { name: 'Paris, FR', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 12 };
   const DEFAULT_RADIUS_KM = 150;
 
   let supabaseClient = null;
@@ -551,6 +551,32 @@ html, body {
     return String(value || '')
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .toLowerCase().trim();
+  }
+
+  function countryCodeOf(item) {
+    return normalizeText(item && (item.country_code || item.countryCode || item.iso_country || item.country_iso));
+  }
+
+  function countryNameOf(item) {
+    return normalizeText(item && (item.country || item.country_name || item.pays));
+  }
+
+  function sameCountryOnly(item, center) {
+    const centerCountry = normalizeText(center && center.country);
+    const centerCode = normalizeText(center && center.countryCode);
+
+    // Pour la proximité, on ne mélange jamais les pays.
+    // Si le pays de l'utilisateur est connu, une annonce sans pays ou dans un autre pays est exclue,
+    // même si ses coordonnées GPS sont proches par erreur dans la base.
+    if (!centerCountry && !centerCode) return true;
+
+    const itemCountry = countryNameOf(item);
+    const itemCode = countryCodeOf(item);
+
+    if (centerCode && itemCode) return itemCode === centerCode;
+    if (centerCountry && itemCountry) return itemCountry === centerCountry;
+
+    return false;
   }
 
   function listingDateValue(item) {
@@ -664,6 +690,9 @@ html, body {
     try {
       const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
       if (!saved || !saved.lat || !saved.lng) return null;
+      // Anciennes positions sauvegardées sans pays : on les ignore pour éviter d'afficher
+      // des annonces d'autres pays autour d'une coordonnée approximative.
+      if (!saved.country && !saved.countryCode) return null;
       return saved;
     } catch (e) { return null; }
   }
@@ -723,9 +752,10 @@ html, body {
   }
 
   function nearbyItems(center, limit) {
+    const current = center || currentCenter || DEFAULT_CITY;
     const source = activeListings.length ? activeListings : allListings;
-    const filtered = equipmentFilter(source);
-    const sorted = enrichByDistance(filtered, center).filter(hasCoordinates);
+    const filtered = equipmentFilter(source).filter(item => sameCountryOnly(item, current));
+    const sorted = enrichByDistance(filtered, current).filter(hasCoordinates);
     const inRadius = sorted.filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
     return inRadius.slice(0, limit);
   }
@@ -754,7 +784,7 @@ html, body {
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée autour de votre ville ou pays.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce publiée pour le moment.</div>';
     }
   }
 
