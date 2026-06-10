@@ -467,7 +467,7 @@ html, body {
 
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const DEFAULT_CITY = { name: 'Paris, FR', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 12 };
+  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
   const DEFAULT_RADIUS_KM = 150;
 
   let supabaseClient = null;
@@ -553,32 +553,6 @@ html, body {
       .toLowerCase().trim();
   }
 
-  function countryCodeOf(item) {
-    return normalizeText(item && (item.country_code || item.countryCode || item.iso_country || item.country_iso));
-  }
-
-  function countryNameOf(item) {
-    return normalizeText(item && (item.country || item.country_name || item.pays));
-  }
-
-  function sameCountryOnly(item, center) {
-    const centerCountry = normalizeText(center && center.country);
-    const centerCode = normalizeText(center && center.countryCode);
-
-    // Pour la proximité, on ne mélange jamais les pays.
-    // Si le pays de l'utilisateur est connu, une annonce sans pays ou dans un autre pays est exclue,
-    // même si ses coordonnées GPS sont proches par erreur dans la base.
-    if (!centerCountry && !centerCode) return true;
-
-    const itemCountry = countryNameOf(item);
-    const itemCode = countryCodeOf(item);
-
-    if (centerCode && itemCode) return itemCode === centerCode;
-    if (centerCountry && itemCountry) return itemCountry === centerCountry;
-
-    return false;
-  }
-
   function listingDateValue(item) {
     return new Date(item.published_at || item.created_at || item.updated_at || 0).getTime() || 0;
   }
@@ -595,10 +569,33 @@ html, body {
 
   function sameCountryItems(center) {
     const country = normalizeText(center && center.country);
-    if (!country) return [];
+    const countryCode = normalizeText(center && center.countryCode);
+    if (!country && !countryCode) return [];
     return allListings.filter(function (item) {
-      return normalizeText(item.country) === country;
+      return listingCountryMatchesCenter(item, center);
     });
+  }
+
+  function listingCountryMatchesCenter(item, center) {
+    const centerCode = normalizeText(center && center.countryCode);
+    const centerCountry = normalizeText(center && center.country);
+    const itemCode = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
+    const itemCountry = normalizeText(item && item.country);
+
+    /*
+      Règle stricte anti-faux positifs :
+      - Pour la section proximité et la carte, une annonce doit avoir un pays renseigné.
+      - Si le pays de l'utilisateur est connu, on exige le même pays.
+      - Une annonce avec seulement des coordonnées GPS mais sans pays n'est PAS affichée en proximité.
+      Cela évite d'afficher des annonces importées avec coordonnées incohérentes autour d'Antananarivo.
+    */
+    if (!centerCode && !centerCountry) return false;
+    if (!itemCode && !itemCountry) return false;
+
+    if (centerCode && itemCode) return itemCode === centerCode;
+    if (centerCountry && itemCountry) return itemCountry === centerCountry;
+
+    return false;
   }
 
   function productCard(item, badge) {
@@ -690,9 +687,6 @@ html, body {
     try {
       const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
       if (!saved || !saved.lat || !saved.lng) return null;
-      // Anciennes positions sauvegardées sans pays : on les ignore pour éviter d'afficher
-      // des annonces d'autres pays autour d'une coordonnée approximative.
-      if (!saved.country && !saved.countryCode) return null;
       return saved;
     } catch (e) { return null; }
   }
@@ -752,11 +746,18 @@ html, body {
   }
 
   function nearbyItems(center, limit) {
-    const current = center || currentCenter || DEFAULT_CITY;
+    const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
-    const filtered = equipmentFilter(source).filter(item => sameCountryOnly(item, current));
-    const sorted = enrichByDistance(filtered, current).filter(hasCoordinates);
-    const inRadius = sorted.filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+    const filtered = equipmentFilter(source)
+      .filter(item => hasCoordinates(item))
+      .filter(item => listingCountryMatchesCenter(item, safeCenter));
+
+    const sorted = enrichByDistance(filtered, safeCenter);
+    const inRadius = sorted.filter(item =>
+      typeof item._distanceKm === 'number' &&
+      item._distanceKm <= DEFAULT_RADIUS_KM
+    );
+
     return inRadius.slice(0, limit);
   }
 
@@ -779,12 +780,12 @@ html, body {
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
         ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-loading-products col-span-full">Aucun équipement géolocalisé trouvé dans un rayon de 150 km autour de cette position.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucun équipement disponible dans votre pays et dans un rayon de 150 km autour de cette position.</div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce publiée pour le moment.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée autour de votre ville ou pays.</div>';
     }
   }
 
