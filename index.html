@@ -121,74 +121,6 @@
 
   .rss-loading-products { color:#e6bcc2; font-size:14px; padding:18px 0; }
   .rss-card-placeholder { position:absolute; inset:0; background:radial-gradient(circle at 35% 20%, rgba(252,3,109,.22), transparent 35%), linear-gradient(135deg,#242424,#111); opacity:.9; }
-
-  .rss-map-status {
-    position:absolute;
-    left:16px;
-    top:16px;
-    z-index:500;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    max-width:calc(100% - 32px);
-    padding:10px 12px;
-    border-radius:10px;
-    background:rgba(19,19,19,.86);
-    color:#e2e2e2;
-    border:1px solid rgba(255,255,255,.12);
-    backdrop-filter:blur(10px);
-    box-shadow:0 14px 38px rgba(0,0,0,.32);
-    font-size:13px;
-  }
-  .rss-map-status .material-symbols-outlined{color:#FC036D;font-size:18px}
-  .rss-card-actions{
-    display:flex;
-    gap:8px;
-    align-items:center;
-    margin-top:10px;
-    opacity:0;
-    transform:translateY(6px);
-    transition:.25s ease;
-  }
-  .rss-product-card:hover .rss-card-actions{opacity:1;transform:translateY(0)}
-  .rss-btn-mini{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:5px;
-    padding:8px 10px;
-    border-radius:8px;
-    font-size:11px;
-    line-height:1;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-    border:1px solid rgba(255,255,255,.14);
-    background:rgba(19,19,19,.72);
-    color:#fff;
-  }
-  .rss-btn-mini.primary{background:#FC036D;color:#fff;border-color:#FC036D}
-  .rss-btn-mini:hover{filter:brightness(1.1)}
-  .rss-popup-card{min-width:230px;max-width:270px}
-  .rss-popup-card img{width:100%;height:110px;object-fit:cover;border-radius:10px;margin-bottom:10px;background:#353535}
-  .rss-popup-actions{display:flex;gap:8px;margin-top:10px}
-  .rss-popup-actions a{flex:1;text-align:center;padding:8px 9px;border-radius:8px;text-decoration:none!important;font-size:12px;font-weight:800}
-  .rss-popup-actions a:first-child{background:#FC036D;color:#fff!important}
-  .rss-popup-actions a:last-child{background:rgba(255,255,255,.08);color:#fff!important;border:1px solid rgba(255,255,255,.12)}
-  .rss-loading-products{
-    min-height:120px;
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:12px;
-    background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(252,3,109,.08),rgba(255,255,255,.04));
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-  @media(max-width:768px){
-    .rss-map-status{left:10px;right:10px;top:10px;font-size:12px}
-    .rss-card-actions{opacity:1;transform:none}
-  }
-
 </style>
 
 <script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
@@ -322,7 +254,7 @@ html, body {
 </section><section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Équipements à proximité</h2>
+<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements à proximité</h2>
 <div class="flex items-center gap-2 text-primary">
 <span class="material-symbols-outlined text-[24px]">location_on</span>
 <span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
@@ -422,7 +354,6 @@ html, body {
   </div>
 
   <div id="rss-map-wrap" class="relative w-full h-[600px] min-h-[600px] rounded-xl overflow-hidden border border-white/10 bg-surface-container">
-    <div id="rss-map-status" class="rss-map-status"><span class="material-symbols-outlined">travel_explore</span><span>Carte prête • recherchez une ville ou utilisez votre position.</span></div>
     <div id="rss-map" aria-label="Carte des équipements disponibles autour de vous"></div>
   </div>
 </section>
@@ -597,12 +528,6 @@ html, body {
     return `/product.html?original_id=${originalId}&slug=${slug}`;
   }
 
-  function quoteUrl(item) {
-    const originalId = encodeURIComponent(item.original_id || item.id || '');
-    const slug = encodeURIComponent(slugify(item.title));
-    return `/demande-de-devis.html?original_id=${originalId}&slug=${slug}`;
-  }
-
   function haversineKm(aLat, aLng, bLat, bLng) {
     const R = 6371;
     const dLat = (bLat - aLat) * Math.PI / 180;
@@ -653,27 +578,23 @@ html, body {
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
     const city = escapeHtml(item.city || item.location || 'France');
-    const category = escapeHtml(item.category || item.brand || 'Audio Pro').replace(/-/g, ' ');
+    const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
     const image = getImage(item);
     const price = formatPrice(item.price);
     const distance = distanceText(item);
     const locationLine = distance ? `${escapeHtml(distance)} • ${city}` : city;
-    const url = productUrl(item);
-    const quote = quoteUrl(item);
 
     return `
-      <article class="rss-product-card group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all block">
-        <a href="${url}" aria-label="Voir l’annonce ${title}" class="absolute inset-0 z-20"></a>
+      <a href="${productUrl(item)}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
         <div class="rss-card-placeholder"></div>
-        ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
-        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/45 to-transparent opacity-92 group-hover:opacity-100 transition-opacity"></div>
-        <div class="absolute top-4 left-4 right-4 z-30 flex items-start justify-between gap-2 pointer-events-none">
+        ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+        <div class="absolute top-4 left-4 z-10">
           <span class="${badge === 'Nouveau' ? 'bg-primary text-on-primary' : 'bg-background/80 text-on-surface'} backdrop-blur-md text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">${badge || category}</span>
-          ${distance ? `<span class="bg-background/80 backdrop-blur-md text-on-surface text-[11px] font-bold px-2.5 py-1.5 rounded border border-white/10">${escapeHtml(distance)}</span>` : ''}
         </div>
-        <div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-30 translate-y-1 group-hover:translate-y-0 transition-transform pointer-events-none">
+        <div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
           <h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md line-clamp-2">${title}</h3>
-          <div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-1 drop-shadow">
+          <div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
             <span class="material-symbols-outlined text-[18px]">near_me</span>
             <span>${locationLine}</span>
           </div>
@@ -681,23 +602,13 @@ html, body {
             <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
             <span class="text-primary font-bold text-2xl drop-shadow">${price}</span>
           </div>
-          <div class="rss-card-actions pointer-events-auto">
-            <a href="${quote}" class="rss-btn-mini primary relative z-40">Devis</a>
-            <a href="${url}" class="rss-btn-mini relative z-40">Voir</a>
-          </div>
         </div>
-      </article>`;
+      </a>`;
   }
 
   function showLoading() {
     const grid = document.getElementById('nearest-products-grid');
     if (grid) grid.innerHTML = '<div class="rss-loading-products col-span-full">Recherche des équipements proches de votre position...</div>';
-  }
-
-  function setMapStatus(message, icon) {
-    const status = document.getElementById('rss-map-status');
-    if (!status) return;
-    status.innerHTML = '<span class="material-symbols-outlined">' + escapeHtml(icon || 'travel_explore') + '</span><span>' + escapeHtml(message || '') + '</span>';
   }
 
   function cleanCityName(label) {
@@ -815,49 +726,44 @@ html, body {
     const source = activeListings.length ? activeListings : allListings;
     const filtered = equipmentFilter(source);
     const sorted = enrichByDistance(filtered, center).filter(hasCoordinates);
-    const inRadius = sorted.filter(item => item._distanceKm <= DEFAULT_RADIUS_KM);
-    return (inRadius.length ? inRadius : sorted).slice(0, limit);
+    const inRadius = sorted.filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+    return inRadius.slice(0, limit);
   }
 
   function newestItems(limit) {
-    // Section "Nouveaux équipements" = dernières annonces publiées globalement.
-    // Elle ne dépend pas de la ville, de la géolocalisation ou du rayon.
     return equipmentFilter(allListings)
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
+  }
+
+  function newestNearbyItems(center, limit) {
+    return newestItems(limit);
   }
 
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
     const nearest = nearbyItems(center || currentCenter, 4);
-    const newest = newestItems(8);
+    const newest = newestNearbyItems(center || currentCenter, 8);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
         ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-loading-products col-span-full">Aucun équipement géolocalisé trouvé autour de cette zone.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucun équipement géolocalisé trouvé dans un rayon de 150 km autour de cette position.</div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée pour le moment.</div>';
+        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée autour de votre ville ou pays.</div>';
     }
   }
 
   function productPopupHtml(item) {
-    const title = escapeHtml(item.title || 'Matériel professionnel');
-    const city = escapeHtml(item.city || item.location || '');
-    const image = getImage(item);
-    return '<div class="rss-popup-card">' +
-      (image ? '<img src="' + escapeHtml(image) + '" alt="' + title + '" onerror="this.remove()">' : '') +
-      '<strong style="color:#fff;display:block;line-height:1.25;margin-bottom:4px">' + title + '</strong>' +
-      '<span style="color:#b4b5b5;display:block;margin-bottom:4px">' + city + '</span>' +
-      '<strong style="color:#FC036D;display:block">' + escapeHtml(formatPrice(item.price)) + ' / jour</strong>' +
-      '<div class="rss-popup-actions">' +
-      '<a href="' + quoteUrl(item) + '">Demander devis</a>' +
-      '<a href="' + productUrl(item) + '">Voir</a>' +
-      '</div>' +
+    return '<div style="min-width:190px">' +
+      '<strong style="color:#fff">' + escapeHtml(item.title || 'Matériel professionnel') + '</strong><br>' +
+      '<span style="color:#b4b5b5">' + escapeHtml(item.city || item.location || '') + '</span><br>' +
+      '<strong style="color:#FC036D">' + escapeHtml(formatPrice(item.price)) + ' / jour</strong><br>' +
+      '<a style="color:#FC036D;text-decoration:underline" href="' + productUrl(item) + '">Voir l’annonce</a>' +
       '</div>';
   }
 
@@ -880,7 +786,6 @@ html, body {
     });
 
     const items = nearbyItems(center || currentCenter, 30);
-    setMapStatus(items.length ? (items.length + ' annonce(s) affichée(s) sur la carte') : 'Aucune annonce géolocalisée dans cette zone', items.length ? 'location_on' : 'info');
     productMarkers = items.map(item => {
       const lat = getLat(item);
       const lng = getLng(item);
@@ -976,7 +881,6 @@ html, body {
 
     if (error) {
       console.error('Erreur chargement produits Supabase:', error);
-      setMapStatus('Impossible de charger les annonces. Vérifiez Supabase.', 'error');
       return;
     }
 
@@ -1003,7 +907,6 @@ html, body {
 
     allListings = data.filter(hasCoordinates);
     activeListings = allListings;
-    setMapStatus(allListings.length ? (allListings.length + ' annonces géolocalisées chargées') : 'Aucune annonce géolocalisée disponible', allListings.length ? 'database' : 'info');
     listingsReady = true;
     renderProductGrids(currentCenter);
     renderMapMarkers(currentCenter);
@@ -1051,14 +954,12 @@ html, body {
   async function locateUser(showError) {
     if (!navigator.geolocation) {
       if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
-      setMapStatus('Géolocalisation non disponible. Recherche par ville possible.', 'info');
       updateCenter(DEFAULT_CITY, { isFallback: true });
       return;
     }
 
     navigator.geolocation.getCurrentPosition(
       async function (pos) {
-        setMapStatus('Position détectée, chargement des annonces proches...', 'my_location');
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const place = await reversePlace(lat, lng);
@@ -1071,7 +972,6 @@ html, body {
         } else {
           updateCenter(DEFAULT_CITY, { isFallback: true });
         }
-        setMapStatus('Position refusée. Tapez une ville ou un code postal.', 'info');
         if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
@@ -1088,10 +988,8 @@ html, body {
     }
 
     try {
-      setMapStatus('Recherche de la ville : ' + query + '...', 'search');
       const city = await geocodeCity(query);
       if (!city) {
-        setMapStatus('Ville introuvable. Essayez une autre orthographe.', 'info');
         alert('Ville introuvable.');
         return;
       }
@@ -1108,7 +1006,6 @@ html, body {
       document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } catch (e) {
       console.error(e);
-      setMapStatus('Erreur pendant la recherche de ville.', 'error');
       alert('Erreur de recherche de ville.');
     }
   }
@@ -1152,7 +1049,7 @@ html, body {
     });
 
     setLabels(saved?.name || DEFAULT_CITY.name);
-    if (!saved) setMapStatus('Carte prête • recherchez une ville ou cliquez sur « Utiliser ma position ».', 'travel_explore');
+    setTimeout(function () { locateUser(false); }, saved ? 1200 : 700);
   });
 })();
 </script>
