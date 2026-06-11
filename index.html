@@ -610,20 +610,43 @@ html, body {
     const itemCode = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
     const itemCountry = normalizeText(item && item.country);
 
-    /*
-      Règle stricte anti-faux positifs :
-      - Pour la section proximité et la carte, une annonce doit avoir un pays renseigné.
-      - Si le pays de l'utilisateur est connu, on exige le même pays.
-      - Une annonce avec seulement des coordonnées GPS mais sans pays n'est PAS affichée en proximité.
-      Cela évite d'afficher des annonces importées avec coordonnées incohérentes autour d'Antananarivo.
-    */
+    // Si l'annonce possède un pays, il doit correspondre au pays détecté/recherché.
+    // Si le pays de l'annonce est absent, on ne bloque pas ici : la ville + la distance
+    // seront obligatoires dans listingCityMatchesCenter() et nearbyItems().
     if (!centerCode && !centerCountry) return false;
-    if (!itemCode && !itemCountry) return false;
+    if (!itemCode && !itemCountry) return true;
 
     if (centerCode && itemCode) return itemCode === centerCode;
     if (centerCountry && itemCountry) return itemCountry === centerCountry;
 
     return false;
+  }
+
+  function centerCityName(center) {
+    return cleanCityName((center && center.name) || '')
+      .replace(/france|madagascar|maroc|usa|uk/gi, '')
+      .replace(/[,•]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function listingCityMatchesCenter(item, center) {
+    const city = normalizeText(centerCityName(center));
+    if (!city || city === 'votre position' || city === 'autour de vous') return false;
+
+    const candidates = [item && item.city, item && item.location, item && item.address]
+      .map(normalizeText)
+      .filter(Boolean);
+
+    if (!candidates.length) return false;
+
+    // Règle volontairement stricte : on n'affiche pas une annonce simplement parce que
+    // ses coordonnées GPS tombent près de l'utilisateur. Le nom de ville doit aussi
+    // correspondre. Cela évite les faux affichages autour d'Antananarivo si des
+    // annonces importées ont des coordonnées erronées.
+    return candidates.some(function (value) {
+      return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
+    });
   }
 
   function productCard(item, badge) {
@@ -778,7 +801,8 @@ html, body {
     const source = activeListings.length ? activeListings : allListings;
     const filtered = equipmentFilter(source)
       .filter(item => hasCoordinates(item))
-      .filter(item => listingCountryMatchesCenter(item, safeCenter));
+      .filter(item => listingCountryMatchesCenter(item, safeCenter))
+      .filter(item => listingCityMatchesCenter(item, safeCenter));
 
     const sorted = enrichByDistance(filtered, safeCenter);
     const inRadius = sorted.filter(item =>
@@ -808,7 +832,7 @@ html, body {
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
         ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible autour de votre ville.</strong><p>Il n’existe pas encore d’annonce disponible autour de votre ville ou dans votre pays. Vous pouvez essayer une autre ville ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible autour de votre ville.</strong><p>Aucune annonce n’est actuellement disponible autour de votre ville. Vous pouvez essayer une autre ville ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
@@ -919,8 +943,6 @@ html, body {
       .from('listings')
       .select('*, listing_images ( image_url, position )')
       .eq('status', 'publish')
-      .not('lat', 'is', null)
-      .not('lng', 'is', null)
       .order('featured', { ascending: false })
       .order('published_at', { ascending: false })
       .limit(200);
@@ -964,7 +986,7 @@ html, body {
       }
     }
 
-    allListings = data.filter(hasCoordinates);
+    allListings = uniqueListings(data);
     activeListings = allListings;
     listingsReady = true;
     renderProductGrids(currentCenter);
