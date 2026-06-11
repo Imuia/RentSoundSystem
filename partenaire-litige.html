@@ -1,62 +1,324 @@
-<!DOCTYPE html><html class="dark" lang="fr"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script>
-tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#131313",surface:"#131313","surface-container":"#1f1f1f","surface-container-low":"#1b1b1b","surface-container-lowest":"#0e0e0e","surface-container-high":"#2a2a2a","surface-container-highest":"#353535",primary:"#FC036D","primary-container":"#c40254","on-background":"#e2e2e2","on-surface":"#e2e2e2","on-surface-variant":"#e6bcc2","on-primary":"#ffffff",outline:"#ac878d","outline-variant":"#5d3f44"},fontFamily:{headline:["Manrope","sans-serif"],body:["Inter","sans-serif"],label:["Inter","sans-serif"]}}}}
-</script>
-<style>
-body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headline{font-family:Manrope,sans-serif}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
-#header-container{min-height:73px}#footer-container{min-height:320px}#header-container header,#footer-container footer{display:block}
-.glass{background:linear-gradient(145deg,rgba(31,31,31,.92),rgba(14,14,14,.9));border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
-.input{background:#fff!important;color:#111!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:10px!important;padding:12px 14px!important;width:100%}
-.input::placeholder{color:#6b7280!important}.select{background:#fff!important;color:#111!important;border-radius:10px!important;padding:12px 14px!important;width:100%}
-.label{display:block;color:#e6bcc2;font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:8px}
-.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#FC036D;color:white;padding:14px 22px;border-radius:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
-.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#2a2a2a;color:#e2e2e2;padding:14px 22px;border-radius:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px;border:1px solid rgba(255,255,255,.12)}
-.step-active{border-color:rgba(252,3,109,.65)!important;box-shadow:0 0 28px rgba(252,3,109,.18)}
-.card{background:#1f1f1f;border:1px solid rgba(255,255,255,.08);border-radius:16px}
-.alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
-@media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
-</style>
-<title>Litige partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="pt-28 pb-20 px-6 md:px-10 max-w-5xl mx-auto">
- <div class="glass rounded-2xl p-8">
-  <h1 class="font-headline text-4xl font-extrabold mb-4">Gestion des litiges</h1>
-  <p class="text-on-surface-variant mb-8">Centralisez les informations en cas de matériel non restitué, casse, caution ou désaccord client.</p>
-  <form class="grid md:grid-cols-2 gap-5">
-   <div><label class="label">Référence location</label><input class="input" placeholder="RSS-..."></div>
-   <div><label class="label">Type de litige</label><select class="select"><option>Caution</option><option>Retard retour</option><option>Matériel endommagé</option><option>Autre</option></select></div>
-   <div class="md:col-span-2"><label class="label">Description</label><textarea class="input" rows="6"></textarea></div>
-   <div class="md:col-span-2"><button class="btn-primary" type="button">Enregistrer le dossier</button></div>
-  </form>
- </div>
-</section></main><div id="footer-container"></div>
-<script src="/components.js"></script>
-<script>
-const RSS_SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
-const RSS_SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
-const rssSupabase = window.supabase ? window.supabase.createClient(RSS_SUPABASE_URL, RSS_SUPABASE_KEY) : null;
+<!DOCTYPE html>
 
-function getDraft(){try{return JSON.parse(localStorage.getItem("rss_partner_draft")||"{}")}catch(e){return {}}}
-function setDraft(data){localStorage.setItem("rss_partner_draft", JSON.stringify(Object.assign(getDraft(), data||{})))}
-function setPartnerSession(email){if(email)localStorage.setItem("rss_partner_email", String(email).toLowerCase().trim())}
-function getPartnerEmail(){return (localStorage.getItem("rss_partner_email")||getDraft().email||"").toLowerCase().trim()}
-function val(id){const el=document.getElementById(id);return el?el.value.trim():""}
-function checkedValues(name){return Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(e=>e.value)}
-function fillFromDraft(){const d=getDraft();Object.keys(d).forEach(k=>{const el=document.getElementById(k);if(el && typeof d[k]==="string") el.value=d[k]})}
-function showMsg(id,type,msg){const el=document.getElementById(id); if(!el)return; el.className= type==="ok" ? "alert border-green-500/30 bg-green-500/10" : "alert"; el.innerHTML=msg; el.classList.remove("hidden")}
-async function fetchPartnerByEmail(email){
-  if(!rssSupabase || !email) return null;
-  const {data,error}=await rssSupabase.from("partner_requests").select("*").eq("email",email).order("created_at",{ascending:false}).limit(1).maybeSingle();
-  if(error){console.warn("partner fetch",error);return null}
-  return data;
-}
-function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
-</script>
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gestion de Litige #RSS-992 - RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-muted": "#E6BCC2",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-variant": "#353534",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed": "#3f0016",
+                        "secondary-container": "#454748",
+                        "surface-bright": "#393939",
+                        "outline": "#ac878d",
+                        "tertiary-container": "#929090",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "background": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-surface": "#e5e2e1",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#bc004f",
+                        "surface": "#131313",
+                        "on-secondary": "#2f3132",
+                        "secondary-fixed": "#e3e2e3",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#454748",
+                        "on-secondary-container": "#b5b5b6",
+                        "primary": "#ffb2bf",
+                        "tertiary": "#c8c6c5",
+                        "surface-tint": "#ffb2bf",
+                        "primary-container": "#ff4d80",
+                        "on-tertiary": "#303030",
+                        "on-primary-container": "#5a0022",
+                        "on-primary": "#660028",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "outline-variant": "#5d3f44",
+                        "on-tertiary-container": "#2a2a2a",
+                        "surface-dim": "#131313"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-x": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "container-max": "1280px",
+                        "component-padding-y": "0.625rem",
+                        "card-gap": "1.5rem",
+                        "gutter-x": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .shadow-neon-glow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .bg-glass {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6) 0%, rgba(20, 20, 20, 0.8) 100%);
+            backdrop-filter: blur(12px);
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-background flex flex-col min-h-screen font-body-md text-body-md">
+<!-- TopNavBar -->
+<nav class="bg-surface-glass dark:bg-surface-glass backdrop-blur-md font-body-md text-body-md border-b border-surface-glass-border shadow-neon-glow w-full top-0 z-50 fixed">
+<div class="flex justify-between items-center w-full px-component-padding-x max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tighter">RentSoundSystem</span>
+<div class="hidden md:flex gap-6">
+<a class="text-on-surface-muted hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform px-3 py-2 rounded-md" href="javascript:void(0)">Dashboard</a>
+<a class="text-on-surface-muted hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform px-3 py-2 rounded-md" href="javascript:void(0)">Analytics</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 px-3 py-2" href="javascript:void(0)">Disputes</a>
+<a class="text-on-surface-muted hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform px-3 py-2 rounded-md" href="javascript:void(0)">Inventory</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-primary-container text-on-primary-container px-4 py-2 rounded-full font-label-caps text-label-caps uppercase shadow-neon-glow hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform">New Listing</button>
+<button aria-label="notifications" class="text-primary dark:text-primary hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button aria-label="settings" class="text-primary dark:text-primary hover:bg-surface-container-highest transition-colors duration-200 active:scale-95 transition-transform p-2 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<img alt="Partner Profile" class="w-8 h-8 rounded-full border border-surface-glass-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCceuVYT2SCGy6lbIAuVKXaEHDVrZBhYbUDMVSos5Y5bKAjkVctNu4JWMOLvpndogYrbeLXhgc05FNCk-CG0c4sVZaSFbXhzakb4sOisuvLvuLKiZC87pYZrnxnAWctVbJXHeyXmwfS2G6D4Ot9cNYLIXE-iD_YD2FwL2YWWjmW35gxxiPyFSiZ8ElAcWvDPGsprgeoDyVM7YzM9-XrJ5mOzR55N5pqVxYdGWoNxZw_WG8wFQE0MSsZ_nim-5ZIuMhs9wJ0eoCv5wU"/>
+</div>
+</div>
+</nav>
+<div class="flex flex-1 pt-16 h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low dark:bg-surface-container-low font-label-caps text-label-caps border-r border-surface-glass-border hidden lg:flex flex-col h-full sticky top-0 p-4 gap-4 w-64 z-40">
+<div class="flex items-center gap-3 mb-6 px-2">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full border border-surface-glass-border" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCg44Rs8xVrgT2BJ2GZcF5njm2TCCrqONn1wGtVeVk37i2i5LzJEubWjHSfRHjxt2wZ3St3qaIwYor1d3PWyRWzBxEt5SHNSn76WdnomjKWzOMaZUe0zmTlMWyyZf9gyosQN2C4t36eIFecIq1ls80h7IXLr10_X06lfvssMvku_AgFIss1kE81HDMQdfFNsyscKeg0u6ovG1Xbt0bcPQd9rfeNg4nKTFP4Dsou3fAI2dBMwdlAmbKplA1gxWy1PhDNjbd0p4jpilQ"/>
+<div>
+<div class="font-headline-sm text-headline-sm text-primary">Admin Portal</div>
+<div class="text-on-surface-muted text-xs">Global Insights</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer active:opacity-80 flex items-center gap-3 px-3 py-2 rounded-lg" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> Overview
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer active:opacity-80 flex items-center gap-3 px-3 py-2 rounded-lg" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span> Performance
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer active:opacity-80 flex items-center gap-3 px-3 py-2 rounded-lg" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="speaker">speaker</span> Equipment
+                </a>
+<a class="text-primary bg-surface-container-highest rounded-lg font-bold flex items-center gap-3 px-3 py-2" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="gavel" style="font-variation-settings: 'FILL' 1;">gavel</span> Disputes
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer active:opacity-80 flex items-center gap-3 px-3 py-2 rounded-lg" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="chat">chat</span> Messages
+                </a>
+</nav>
+<div class="mt-auto flex flex-col gap-2">
+<button class="w-full bg-primary-container text-on-primary-container py-2 rounded-lg font-label-caps uppercase shadow-neon-glow hover:opacity-90 transition-opacity mb-4">Generate Report</button>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer active:opacity-80 flex items-center gap-3 px-3 py-2 rounded-lg" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="help">help</span> Support
+                </a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container transition-all cursor-pointer active:opacity-80 flex items-center gap-3 px-3 py-2 rounded-lg" href="javascript:void(0)">
+<span class="material-symbols-outlined" data-icon="logout">logout</span> Logout
+                </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto p-component-padding-x md:p-gutter-x">
+<div class="max-w-container-max mx-auto space-y-8">
+<!-- Header -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full font-label-caps text-label-caps flex items-center gap-1 border border-primary">
+<span class="material-symbols-outlined text-[14px]">warning</span> Action Requise
+                            </span>
+<span class="text-on-surface-muted font-label-caps text-label-caps">Créé le 12 Oct 2023</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Litige #RSS-992</h1>
+<p class="text-on-surface-variant mt-1">Dommage matériel signalé post-location.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-surface-container text-primary border border-outline-variant px-6 py-3 rounded-lg font-label-caps text-label-caps uppercase hover:bg-surface-container-highest transition-colors">Contacter Admin</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-3 rounded-lg font-label-caps text-label-caps uppercase shadow-neon-glow hover:bg-surface-container-highest transition-colors">Clôturer Dossier</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-card-gap">
+<!-- Equipment Details (Span 4) -->
+<div class="lg:col-span-4 bg-glass border border-surface-glass-border rounded-xl p-8 flex flex-col gap-6">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="speaker">speaker</span> Équipement
+                        </h2>
+<div class="aspect-square rounded-lg overflow-hidden border border-surface-glass-border">
+<img class="w-full h-full object-cover" data-alt="A massive, professional L-Acoustics K2 line array speaker stack resting in a dimly lit, high-tech warehouse. The scene is illuminated by dramatic, deep blue and vibrant neon magenta lighting, highlighting the rugged texture of the speaker grilles and heavy-duty casing. The aesthetic is extremely premium, nocturnal, and industrial, conveying the high value of professional audio equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7-XkVD72usO_wB3ITTQY9j_nE7Ei2aSaDH5BIORFDnEmeDut-XqLV_F1MoaPefqhbRt5EW_E_HGV02rw0bphcAnrZSIlBxJa7SX0UQzCXBt5sBcweXlOc4xWSMnI3H3xI6R-9CoIXozhNVEHf6ehDBFboRTzDXZUZbAeIvoVVVNMBbc8f5rd5ags8cTZqv7Leo9Lql2eRHJDfX9AP4nb4CQep3ZXOoC-ilGSZAJURb8VKWE1qg9m6YCPxt1C6U0pRhFp6rhVJquQ"/>
+</div>
+<div class="space-y-4">
+<div>
+<div class="text-on-surface-muted text-sm mb-1">Modèle</div>
+<div class="font-bold text-lg">L-Acoustics K2</div>
+</div>
+<div>
+<div class="text-on-surface-muted text-sm mb-1">Propriétaire</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high rounded-full flex items-center justify-center text-xs">JP</div>
+<span>Jean-Pierre Audio</span>
+</div>
+</div>
+<div>
+<div class="text-on-surface-muted text-sm mb-1">Locataire</div>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-surface-container-high rounded-full flex items-center justify-center text-xs">MV</div>
+<span>Marc V. (DJ Setup)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Evidence & Chat (Span 8) -->
+<div class="lg:col-span-8 flex flex-col gap-card-gap">
+<!-- Evidence Gallery -->
+<div class="bg-glass border border-surface-glass-border rounded-xl p-8">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="photo_camera">photo_camera</span> Preuves Photographiques
+                            </h2>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+<div class="aspect-video rounded-lg overflow-hidden border border-surface-glass-border relative group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A close-up, high-detail macro shot of a severely scratched and dented black metal casing of a professional audio speaker. The lighting is harsh and directional, emphasizing the depth of the damage against the matte black surface. The surrounding environment is dark, focusing entirely on the structural impact, fitting the nocturnal premium style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEmzPxgyfWIbrRsrPtVzDUSHyIztlSmP7UD0lbzUIXR0DNbtj39dWJo4S-VnO_j3RodeNB5FD2B86JYr-92ZzBWSn9Dym2mxbKUsBV19lywe0XElz5wfHMlHS1pQsrsjcycscKjiLYqRfJy-q5JRv5CH9sCDUy4CVxr2cX4TuOWeSe0boEgpffMi49ihykzwJAcpVSY5ZGAqGzAOZ8rv_CJFtMTOegdimplqcfSJRhXv1bF6gDhChceAFRdtpm5WnuR8-33hsoeQ8"/>
+<div class="absolute inset-0 bg-surface-glass flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-xs font-bold text-white">Impact coin supérieur</span>
+</div>
+</div>
+<div class="aspect-video rounded-lg overflow-hidden border border-surface-glass-border relative group cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="Detailed macro photography of a torn speaker cone mesh, illuminated by stark white light cutting through a dark, moody background. The tear is central, showing frayed synthetic fibers. The overall tone is serious and forensic, highlighting the expensive nature of the broken professional audio gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdwpMlAzQAWM2hD8x9DsLJ80m0Jtwud183cOFe9ykTeXsLG-g9EnRm_9DzDtGERJyuDmfqFa8vYRYdG2WmxInU4t9Iyyu7o4PDyuz66F21KhXDvfC6Zbl0HYxa2eO2Nsgb2eXogEjzeWC0U-7sDndOlV1zMXLd_IjKorvVPv5lwiYZi0HMkEOuf--wNY6gmHOhAd9t5MreQu2QgROixprsUq9m5LuB06NeH7Iqwbos_8f8Mcx4OH0QNHVz3HiFa7NE6q94TevlmlM"/>
+<div class="absolute inset-0 bg-surface-glass flex flex-col justify-end p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="text-xs font-bold text-white">Déchirure grille frontale</span>
+</div>
+</div>
+<div class="aspect-video rounded-lg bg-surface-container flex items-center justify-center border border-dashed border-outline-variant cursor-pointer hover:bg-surface-container-high transition-colors">
+<div class="flex flex-col items-center text-on-surface-muted">
+<span class="material-symbols-outlined mb-2 text-2xl">add_photo_alternate</span>
+<span class="text-xs font-label-caps uppercase">Ajouter preuve</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chat History -->
+<div class="bg-glass border border-surface-glass-border rounded-xl p-8 flex-1 flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="forum">forum</span> Historique des Échanges
+                            </h2>
+<div class="flex-1 space-y-6 mb-6 overflow-y-auto pr-2" style="max-height: 300px;">
+<!-- Owner Message -->
+<div class="flex gap-4">
+<div class="w-8 h-8 bg-surface-container-highest rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold border border-primary">JP</div>
+<div class="bg-surface-container p-4 rounded-r-xl rounded-bl-xl border border-surface-glass-border">
+<div class="flex justify-between items-center mb-1 gap-4">
+<span class="font-bold text-sm text-primary">Jean-Pierre (Propriétaire)</span>
+<span class="text-xs text-on-surface-muted">13 Oct, 09:45</span>
+</div>
+<p class="text-sm text-on-surface">Le caisson a été rendu avec un impact majeur sur le coin supérieur gauche et la grille est enfoncée. J'estime les réparations à 450€ chez un technicien agréé.</p>
+</div>
+</div>
+<!-- Renter Message -->
+<div class="flex gap-4 flex-row-reverse">
+<div class="w-8 h-8 bg-secondary-container rounded-full flex-shrink-0 flex items-center justify-center text-sm font-bold">MV</div>
+<div class="bg-surface-container-high p-4 rounded-l-xl rounded-br-xl border border-surface-glass-border">
+<div class="flex justify-between items-center mb-1 gap-4 flex-row-reverse">
+<span class="font-bold text-sm text-secondary">Marc V. (Locataire)</span>
+<span class="text-xs text-on-surface-muted">13 Oct, 11:20</span>
+</div>
+<p class="text-sm text-on-surface text-right">Je conteste formellement. Le matériel a été transporté dans des flycases renforcés. Les rayures étaient déjà présentes lors du retrait. Je refuse de payer pour une usure normale.</p>
+</div>
+</div>
+</div>
+<!-- Reply Box -->
+<div class="mt-auto flex gap-3">
+<input class="flex-1 bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all" placeholder="Rédiger une réponse..." type="text"/>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-bold hover:bg-primary-container transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Arbitration Actions -->
+<div class="bg-surface-container-low border border-surface-glass-border rounded-xl p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Décision d'Arbitrage</h3>
+<p class="text-on-surface-muted text-sm max-w-md">Sélectionnez une action pour faire avancer le dossier. Les fonds sont actuellement bloqués en attente de résolution.</p>
+</div>
+<div class="flex flex-wrap gap-4 justify-end">
+<button class="bg-surface-container text-on-surface border border-outline-variant px-6 py-3 rounded-lg font-label-caps text-label-caps uppercase hover:bg-surface-container-highest transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">admin_panel_settings</span> Appel Admin
+                        </button>
+<button class="bg-error-container text-on-error-container border border-error px-6 py-3 rounded-lg font-label-caps text-label-caps uppercase hover:bg-error/20 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">gavel</span> Contester
+                        </button>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-caps text-label-caps uppercase shadow-neon-glow hover:bg-primary-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">handshake</span> Accepter Devis (450€)
+                        </button>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<script>window.RSS_PARTNER_PAGE="partenaire-litige.html";</script>
+<script src="/partner-sync.js"></script>
 </body></html>

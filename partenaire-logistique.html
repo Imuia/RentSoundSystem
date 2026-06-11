@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RentSoundSystem - Inscription Partenaire Étape 3 : Logistique</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffffff",
+                    "surface-container": "#201f1f",
+                    "on-tertiary": "#303030",
+                    "on-secondary-fixed": "#1a1c1d",
+                    "on-secondary": "#2f3132",
+                    "primary": "#FC036D",
+                    "inverse-on-surface": "#313030",
+                    "surface-container-low": "#1c1b1b",
+                    "tertiary-container": "#929090",
+                    "surface-bright": "#393939",
+                    "surface-tint": "#FC036D",
+                    "primary-fixed": "#ffb2cf",
+                    "on-secondary-fixed-variant": "#454748",
+                    "surface-variant": "#353534",
+                    "inverse-primary": "#bc004f",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary": "#c8c6c5",
+                    "primary-fixed-dim": "#ff8ab2",
+                    "on-surface-variant": "#e6bcc2",
+                    "on-primary-fixed": "#3f0016",
+                    "error": "#ffb4ab",
+                    "on-primary-fixed-variant": "#90003b",
+                    "on-surface": "#e5e2e1",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-surface-muted": "#E6BCC2",
+                    "on-tertiary-container": "#2a2a2a",
+                    "secondary-fixed": "#e3e2e3",
+                    "on-secondary-container": "#b5b5b6",
+                    "inverse-surface": "#e5e2e1",
+                    "on-background": "#e5e2e1",
+                    "on-primary-container": "#ffb2cf",
+                    "surface-container-highest": "#353534",
+                    "primary-container": "#90003b",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "outline-variant": "#5d3f44",
+                    "secondary": "#c6c6c7",
+                    "background": "#131313",
+                    "neon-glow": "rgba(252, 3, 109, 0.3)",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-tertiary-fixed": "#1b1b1c",
+                    "surface-glass": "rgba(31, 31, 31, 0.6)",
+                    "secondary-container": "#454748",
+                    "surface": "#131313",
+                    "surface-dim": "#131313",
+                    "outline": "#ac878d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "component-padding-y": "0.625rem",
+                    "card-gap": "1.5rem",
+                    "section-padding-y": "6rem",
+                    "container-max": "1280px",
+                    "gutter-x": "2.5rem",
+                    "component-padding-x": "1.5rem"
+            },
+            "fontFamily": {
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "display-hero-mobile": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "label-caps": ["Inter"],
+                    "display-hero": ["Manrope"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                    "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--surface-glass-border, rgba(255, 255, 255, 0.05));
+        }
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+        }
+        /* Custom scrollbar for regions list */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: rgba(252, 3, 109, 0.5);
+        }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter-x h-20 max-w-container-max mx-auto bg-surface-glass dark:bg-surface-glass backdrop-blur-xl border-b border-surface-glass-border shadow-md">
+<div class="flex items-center gap-8">
+<a class="font-headline-md text-headline-md font-bold text-primary tracking-tight" href="javascript:void(0)">RentSoundSystem</a>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-muted hover:text-primary transition-colors font-label-caps text-label-caps" href="javascript:void(0)">Catalogue</a>
+<a class="text-on-surface-muted hover:text-primary transition-colors font-label-caps text-label-caps" href="javascript:void(0)">Comment ça marche</a>
+<a class="text-on-surface hover:text-primary transition-colors font-label-caps text-label-caps font-bold" href="javascript:void(0)">Pour les partenaires</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:block text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-caps text-label-caps">Se connecter</button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-caps text-label-caps uppercase hover:bg-primary/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)]">Inscription</button>
+</div>
+</header>
+<main class="flex-grow pt-28 pb-section-padding-y px-gutter-x max-w-container-max mx-auto w-full flex flex-col md:flex-row gap-8 lg:gap-16">
+<!-- Left Column: Progress & Context -->
+<aside class="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-8">
+<!-- Progress Tracker -->
+<div class="glass-panel p-6 rounded-xl flex flex-col gap-6 sticky top-28">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Progression de la configuration</h2>
+<p class="text-on-surface-muted text-sm">Étape 3 sur 4</p>
+</div>
+<div class="flex flex-col gap-4 relative">
+<!-- Connecting Line -->
+<div class="absolute left-4 top-4 bottom-4 w-0.5 bg-surface-container-high -z-10"></div>
+<!-- Step 1 -->
+<div class="flex items-start gap-4">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<div class="pt-1">
+<p class="font-label-caps text-label-caps text-on-surface">Configuration du compte</p>
+</div>
+</div>
+<!-- Step 2 -->
+<div class="flex items-start gap-4">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</div>
+<div class="pt-1">
+<p class="font-label-caps text-label-caps text-on-surface">Détails de l'entreprise</p>
+</div>
+</div>
+<!-- Step 3 (Active) -->
+<div class="flex items-start gap-4">
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-surface flex items-center justify-center shrink-0 neon-shadow relative">
+<!-- Inner glow dot -->
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="pt-1">
+<p class="font-label-caps text-label-caps text-primary font-bold">Logistique et couverture</p>
+<p class="text-xs text-on-surface-muted mt-1">Zones de livraison &amp; taille de la flotte</p>
+</div>
+</div>
+<!-- Step 4 -->
+<div class="flex items-start gap-4 opacity-50">
+<div class="w-8 h-8 rounded-full border-2 border-surface-container-high bg-surface flex items-center justify-center shrink-0">
+<span class="text-xs font-bold text-on-surface-muted">4</span>
+</div>
+<div class="pt-1">
+<p class="font-label-caps text-label-caps text-on-surface">Vérification</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Right Column: Form Area -->
+<div class="w-full md:w-2/3 lg:w-3/4 flex flex-col gap-8">
+<div class="flex flex-col gap-2 border-b border-surface-glass-border pb-6">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Logistique et couverture</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted">Définissez votre territoire opérationnel et vos capacités de livraison pour correspondre aux demandes de location locales.</p>
+</div>
+<form class="flex flex-col gap-8">
+<!-- Section: Fleet & Capacity -->
+<section class="glass-panel p-6 lg:p-8 rounded-xl flex flex-col gap-6">
+<div class="flex items-center gap-3 border-b border-surface-glass-border pb-4">
+<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Capacité de la flotte</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-muted">Taille moyenne de la flotte</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
+<option disabled="" selected="" value="">Sélectionnez la catégorie de flotte...</option>
+<option value="boutique">Boutique (1-10 systèmes)</option>
+<option value="medium">Moyenne (11-50 systèmes)</option>
+<option value="large">Grande (50+ systèmes)</option>
+<option value="enterprise">Entreprise / Tournée</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-muted pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-muted">Type d'équipement principal</label>
+<div class="relative">
+<select class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
+<option value="pa">Systèmes de sonorisation live</option>
+<option value="dj">Équipement DJ</option>
+<option value="studio">Studio / Matériel d'enregistrement</option>
+<option value="lighting">Éclairage &amp; Visuels</option>
+<option value="mixed">Inventaire mixte</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-muted pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Delivery Methods -->
+<section class="glass-panel p-6 lg:p-8 rounded-xl flex flex-col gap-6">
+<div class="flex items-center gap-3 border-b border-surface-glass-border pb-4">
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Méthodes de livraison</h3>
+</div>
+<p class="text-sm text-on-surface-muted">Sélectionnez toutes les façons dont les clients peuvent recevoir de l'équipement de votre part.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Option 1 -->
+<label class="relative flex flex-col gap-3 p-5 rounded-lg border border-surface-glass-border bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors group">
+<input checked="" class="peer sr-only" name="delivery_method" type="checkbox" value="pickup"/>
+<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-primary transition-colors pointer-events-none"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-muted peer-checked:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+</div>
+<div class="w-5 h-5 rounded border border-surface-glass-border flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-colors">
+<span class="material-symbols-outlined text-xs text-on-primary opacity-0 peer-checked:opacity-100" data-icon="check">check</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-1">Retrait local</h4>
+<p class="text-xs text-on-surface-muted">Les clients récupèrent à votre dépôt enregistré.</p>
+</div>
+</label>
+<!-- Option 2 -->
+<label class="relative flex flex-col gap-3 p-5 rounded-lg border border-surface-glass-border bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors group">
+<input class="peer sr-only" name="delivery_method" type="checkbox" value="delivery"/>
+<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-primary transition-colors pointer-events-none"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-muted peer-checked:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+</div>
+<div class="w-5 h-5 rounded border border-surface-glass-border flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-colors">
+<span class="material-symbols-outlined text-xs text-on-primary opacity-0 peer-checked:opacity-100" data-icon="check">check</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-1">Livraison directe</h4>
+<p class="text-xs text-on-surface-muted">Vous transportez l'équipement directement sur le lieu de l'événement.</p>
+</div>
+</label>
+<!-- Option 3 -->
+<label class="relative flex flex-col gap-3 p-5 rounded-lg border border-surface-glass-border bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors group">
+<input class="peer sr-only" name="delivery_method" type="checkbox" value="shipping"/>
+<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-primary transition-colors pointer-events-none"></div>
+<div class="flex justify-between items-start">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-muted peer-checked:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
+</div>
+<div class="w-5 h-5 rounded border border-surface-glass-border flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-colors">
+<span class="material-symbols-outlined text-xs text-on-primary opacity-0 peer-checked:opacity-100" data-icon="check">check</span>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-1">Transporteur</h4>
+<p class="text-xs text-on-surface-muted">Expédiez les articles légers via des transporteurs tiers.</p>
+</div>
+</label>
+</div>
+</section>
+<!-- Section: Service Regions (Bento Layout) -->
+<section class="glass-panel rounded-xl overflow-hidden flex flex-col">
+<div class="p-6 lg:p-8 flex items-center justify-between border-b border-surface-glass-border bg-surface-container-low/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="map">map</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Zones de couverture</h3>
+<p class="text-sm text-on-surface-muted mt-1">Sélectionnez les zones où vous proposez la livraison ou le retrait.</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 h-[400px]">
+<!-- Region List -->
+<div class="col-span-1 border-r border-surface-glass-border bg-surface-container-highest/30 p-4 overflow-y-auto custom-scrollbar flex flex-col gap-2">
+<!-- Search -->
+<div class="relative mb-4">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-muted text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-surface-glass-border rounded-lg pl-9 pr-4 py-2 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Rechercher des zones..." type="text"/>
+</div>
+<!-- Checkbox List -->
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Région du Grand Londres</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border-l-2 border-primary cursor-pointer transition-colors group">
+<input checked="" class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="text-sm text-on-surface font-semibold text-primary">Manchester &amp; Nord-Ouest</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Birmingham &amp; Midlands</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Écosse (Ceinture centrale)</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Pays de Galles (Sud)</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
+<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
+<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Yorkshire</span>
+</label>
+</div>
+<!-- Map Visualizer (Placeholder using a dark styled map image) -->
+<div class="col-span-2 relative bg-surface-container-lowest h-full min-h-[300px] flex items-center justify-center overflow-hidden">
+<!-- In a real implementation, this would be an interactive map canvas (e.g., Mapbox with dark theme) -->
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1200&amp;q=80')] bg-cover bg-center opacity-20 mix-blend-luminosity grayscale" data-alt="A dark, high-contrast, stylized geographical map interface showing a region of the United Kingdom, specifically highlighting the North West area."></div>
+<!-- Overlay Gradient -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-surface-container-lowest/50"></div>
+<!-- Fake Map Pins -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="w-24 h-24 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center animate-[pulse_3s_ease-in-out_infinite]">
+<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+<div class="w-4 h-4 rounded-full bg-primary neon-shadow"></div>
+</div>
+</div>
+<div class="mt-2 px-3 py-1 bg-surface-container-high/80 backdrop-blur border border-surface-glass-border rounded text-xs text-on-surface font-semibold">
+                                    Hub de Manchester sélectionné
+                                </div>
+</div>
+</div>
+</div>
+</section>
+<!-- Action Buttons -->
+<div class="flex justify-between items-center pt-4 border-t border-surface-glass-border mt-4">
+<button class="px-6 py-3 rounded-lg text-on-surface-muted hover:text-on-surface hover:bg-surface-container transition-colors font-label-caps text-label-caps flex items-center gap-2" type="button">
+<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
+                        Retour aux détails de l'entreprise
+                    </button>
+<button class="px-8 py-3 rounded-lg bg-primary text-on-primary font-label-caps text-label-caps uppercase hover:bg-primary/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)] flex items-center gap-2 group" type="button">
+                        Enregistrer et continuer
+                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+</main>
+<!-- SEO-optimized Mega Footer -->
+<footer class="w-full bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-surface-glass-border pt-16 pb-8 px-gutter-x font-body-md text-body-md mt-auto">
+<div class="max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+<div class="lg:col-span-2">
+<div class="font-headline-md text-headline-md font-bold text-primary mb-6 tracking-tight">RentSoundSystem</div>
+<p class="text-on-surface-muted mb-6 max-w-sm">La première plateforme de location de matériel de sonorisation et d'éclairage. Connectez-vous avec des fournisseurs locaux et des professionnels de l'événementiel.</p>
+<div class="flex items-center gap-4">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:text-primary transition-colors border border-surface-glass-border" href="javascript:void(0)"><span class="material-symbols-outlined" data-icon="public">public</span></a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:text-primary transition-colors border border-surface-glass-border" href="javascript:void(0)"><span class="material-symbols-outlined" data-icon="share">share</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-sm">Équipement</h4>
+<ul class="flex flex-col gap-4 text-on-surface-muted">
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Sonorisation Live</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Équipement DJ</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Éclairage</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Studio &amp; Enregistrement</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-sm">Entreprise</h4>
+<ul class="flex flex-col gap-4 text-on-surface-muted">
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">À propos</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Devenir partenaire</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Carrières</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-6 uppercase tracking-wider text-sm">Légal</h4>
+<ul class="flex flex-col gap-4 text-on-surface-muted">
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Politique de confidentialité</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Conditions d'utilisation</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Politique de remboursement</a></li>
+<li><a class="hover:text-primary transition-colors" href="javascript:void(0)">Centre d'aide</a></li>
+</ul>
+</div>
+</div>
+<div class="pt-8 border-t border-surface-glass-border flex flex-col md:flex-row justify-between items-center gap-4 text-on-surface-muted text-sm">
+<div>
+            © 2024 RentSoundSystem. Tous droits réservés.
+        </div>
+<div class="flex items-center gap-6">
+<span>Sélection de la région : France (FR)</span>
+<span>Devise : EUR (€)</span>
+</div>
+</div>
+</div>
+</footer>
+
+<script>window.RSS_PARTNER_PAGE="partenaire-logistique.html";</script>
+<script src="/partner-sync.js"></script>
+</body></html>

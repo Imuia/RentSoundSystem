@@ -1,70 +1,206 @@
-<!DOCTYPE html><html class="dark" lang="fr"><head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RentSoundSystem - Inscription Partenaire Professionnel</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script>
-tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#131313",surface:"#131313","surface-container":"#1f1f1f","surface-container-low":"#1b1b1b","surface-container-lowest":"#0e0e0e","surface-container-high":"#2a2a2a","surface-container-highest":"#353535",primary:"#FC036D","primary-container":"#c40254","on-background":"#e2e2e2","on-surface":"#e2e2e2","on-surface-variant":"#e6bcc2","on-primary":"#ffffff",outline:"#ac878d","outline-variant":"#5d3f44"},fontFamily:{headline:["Manrope","sans-serif"],body:["Inter","sans-serif"],label:["Inter","sans-serif"]}}}}
-</script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <style>
-body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headline{font-family:Manrope,sans-serif}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
-#header-container{min-height:73px}#footer-container{min-height:320px}#header-container header,#footer-container footer{display:block}
-.glass{background:linear-gradient(145deg,rgba(31,31,31,.92),rgba(14,14,14,.9));border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
-.input{background:#fff!important;color:#111!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:10px!important;padding:12px 14px!important;width:100%}
-.input::placeholder{color:#6b7280!important}.select{background:#fff!important;color:#111!important;border-radius:10px!important;padding:12px 14px!important;width:100%}
-.label{display:block;color:#e6bcc2;font-size:12px;text-transform:uppercase;letter-spacing:.12em;font-weight:700;margin-bottom:8px}
-.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#FC036D;color:white;padding:14px 22px;border-radius:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px}
-.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#2a2a2a;color:#e2e2e2;padding:14px 22px;border-radius:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px;border:1px solid rgba(255,255,255,.12)}
-.step-active{border-color:rgba(252,3,109,.65)!important;box-shadow:0 0 28px rgba(252,3,109,.18)}
-.card{background:#1f1f1f;border:1px solid rgba(255,255,255,.08);border-radius:16px}
-.alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
-@media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
-</style>
-<title>Connexion partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="pt-32 pb-24 px-6 max-w-xl mx-auto">
- <div class="glass rounded-2xl p-8">
-  <h1 class="font-headline text-4xl font-extrabold mb-4">Connexion partenaire</h1>
-  <p class="text-on-surface-variant mb-8">Entrez l’email utilisé lors de votre inscription partenaire.</p>
-  <form id="login-form" class="space-y-5">
-   <div><label class="label">Email partenaire</label><input id="login_email" type="email" class="input" required placeholder="email@domaine.com"></div>
-   <div id="login-message" class="hidden"></div>
-   <button class="btn-primary w-full" type="submit">Accéder</button>
-  </form>
- </div>
-</section></main><div id="footer-container"></div>
-<script src="/components.js"></script>
-<script>
-const RSS_SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
-const RSS_SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
-const rssSupabase = window.supabase ? window.supabase.createClient(RSS_SUPABASE_URL, RSS_SUPABASE_KEY) : null;
-
-function getDraft(){try{return JSON.parse(localStorage.getItem("rss_partner_draft")||"{}")}catch(e){return {}}}
-function setDraft(data){localStorage.setItem("rss_partner_draft", JSON.stringify(Object.assign(getDraft(), data||{})))}
-function setPartnerSession(email){if(email)localStorage.setItem("rss_partner_email", String(email).toLowerCase().trim())}
-function getPartnerEmail(){return (localStorage.getItem("rss_partner_email")||getDraft().email||"").toLowerCase().trim()}
-function val(id){const el=document.getElementById(id);return el?el.value.trim():""}
-function checkedValues(name){return Array.from(document.querySelectorAll('input[name="'+name+'"]:checked')).map(e=>e.value)}
-function fillFromDraft(){const d=getDraft();Object.keys(d).forEach(k=>{const el=document.getElementById(k);if(el && typeof d[k]==="string") el.value=d[k]})}
-function showMsg(id,type,msg){const el=document.getElementById(id); if(!el)return; el.className= type==="ok" ? "alert border-green-500/30 bg-green-500/10" : "alert"; el.innerHTML=msg; el.classList.remove("hidden")}
-async function fetchPartnerByEmail(email){
-  if(!rssSupabase || !email) return null;
-  const {data,error}=await rssSupabase.from("partner_requests").select("*").eq("email",email).order("created_at",{ascending:false}).limit(1).maybeSingle();
-  if(error){console.warn("partner fetch",error);return null}
-  return data;
-}
-function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
-</script>
-
-<script>
-document.getElementById("login-form").addEventListener("submit",async function(e){
- e.preventDefault();
- const email=val("login_email").toLowerCase(); setPartnerSession(email);
- const partner=await fetchPartnerByEmail(email);
- if(partner){localStorage.setItem("rss_partner_status",partner.status||"pending"); location.href="/tableau-de-bord-partenaire.html";}
- else {showMsg("login-message","err","Aucun dossier trouvé avec cet email. Vous pouvez continuer, mais créez d’abord une demande partenaire.");}
-});
-</script></body></html>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-effect {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#ffffff",
+                      "surface-container": "#201f1f",
+                      "on-tertiary": "#303030",
+                      "on-secondary-fixed": "#1a1c1d",
+                      "on-secondary": "#2f3132",
+                      "primary": "#FC036D",
+                      "inverse-on-surface": "#313030",
+                      "surface-container-low": "#1c1b1b",
+                      "tertiary-container": "#929090",
+                      "surface-bright": "#393939",
+                      "surface-tint": "#FC036D",
+                      "primary-fixed": "#ffd9de",
+                      "on-secondary-fixed-variant": "#454748",
+                      "surface-variant": "#353534",
+                      "inverse-primary": "#bc004f",
+                      "surface-container-high": "#2a2a2a",
+                      "tertiary": "#c8c6c5",
+                      "primary-fixed-dim": "#ffb2bf",
+                      "on-surface-variant": "#e6bcc2",
+                      "on-primary-fixed": "#3f0016",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#90003b",
+                      "on-surface": "#e5e2e1",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "on-surface-muted": "#E6BCC2",
+                      "on-tertiary-container": "#2a2a2a",
+                      "secondary-fixed": "#e3e2e3",
+                      "on-secondary-container": "#b5b5b6",
+                      "inverse-surface": "#e5e2e1",
+                      "on-background": "#e5e2e1",
+                      "on-primary-container": "#ffffff",
+                      "surface-container-highest": "#353534",
+                      "primary-container": "#FC036D",
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                      "error-container": "#93000a",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "outline-variant": "#5d3f44",
+                      "secondary": "#c6c6c7",
+                      "background": "#131313",
+                      "neon-glow": "rgba(252, 3, 109, 0.3)",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "surface-glass": "rgba(31, 31, 31, 0.6)",
+                      "secondary-container": "#454748",
+                      "surface": "#131313",
+                      "surface-dim": "#131313",
+                      "outline": "#ac878d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "component-padding-y": "0.625rem",
+                      "card-gap": "1.5rem",
+                      "section-padding-y": "6rem",
+                      "container-max": "1280px",
+                      "gutter-x": "2.5rem",
+                      "component-padding-x": "1.5rem"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Manrope"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "display-hero-mobile": [
+                              "Manrope"
+                      ],
+                      "headline-lg": [
+                              "Manrope"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "display-hero": [
+                              "Manrope"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "display-hero-mobile": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.15em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-hero": [
+                              "72px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen">
+<div class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(252,3,109,.20),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)]"></div>
+  <div class="relative z-10 w-full max-w-[520px] glass-panel rounded-2xl p-8 md:p-10">
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 border border-primary/30 text-primary mb-5">
+        <span class="material-symbols-outlined text-3xl">lock</span>
+      </div>
+      <h1 class="font-headline text-3xl md:text-4xl font-bold text-white">Connexion partenaire</h1>
+      <p class="text-on-surface-variant mt-3">Connectez-vous pour accéder à votre espace partenaire RentSoundSystem.</p>
+    </div>
+    <form id="rss-login-form" class="space-y-5">
+      <div>
+        <label class="text-sm text-on-surface-variant mb-2 block">Email professionnel</label>
+        <input id="login-email" type="email" required class="w-full bg-surface-container-highest border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-primary" placeholder="vous@societe.com">
+      </div>
+      <div>
+        <label class="text-sm text-on-surface-variant mb-2 block">Mot de passe</label>
+        <input id="login-password" type="password" required class="w-full bg-surface-container-highest border border-white/10 rounded-lg px-4 py-3 text-white focus:border-primary focus:ring-primary" placeholder="••••••••">
+      </div>
+      <button type="submit" class="w-full bg-primary text-on-primary py-4 rounded-lg uppercase tracking-widest font-bold hover:bg-primary-container transition">
+        Se connecter
+      </button>
+      <div id="rss-login-message" class="text-sm text-on-surface-variant text-center"></div>
+    </form>
+    <div class="text-center mt-6 text-sm text-on-surface-variant">
+      Pas encore partenaire ?
+      <a href="/inscription-partenaire.html" class="text-primary hover:underline">Créer un compte</a>
+    </div>
+  </div>
+</div>
+<script>window.RSS_PARTNER_PAGE="connexion-partenaire.html";</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/partner-sync.js"></script>
+</body></html>

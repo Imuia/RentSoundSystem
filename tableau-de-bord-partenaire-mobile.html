@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RentSoundSystem - Tableau de bord Partenaire (Mobile)</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-muted": "#E6BCC2",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-variant": "#353534",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed": "#3f0016",
+                        "secondary-container": "#454748",
+                        "surface-bright": "#393939",
+                        "outline": "#ac878d",
+                        "tertiary-container": "#929090",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "background": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-surface": "#e5e2e1",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#bc004f",
+                        "surface": "#131313",
+                        "on-secondary": "#2f3132",
+                        "secondary-fixed": "#e3e2e3",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#454748",
+                        "on-secondary-container": "#b5b5b6",
+                        "primary": "#ffb2bf",
+                        "tertiary": "#c8c6c5",
+                        "surface-tint": "#ffb2bf",
+                        "primary-container": "#ff4d80",
+                        "on-tertiary": "#303030",
+                        "on-primary-container": "#5a0022",
+                        "on-primary": "#660028",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "outline-variant": "#5d3f44",
+                        "on-tertiary-container": "#2a2a2a",
+                        "surface-dim": "#131313"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-x": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "container-max": "1280px",
+                        "component-padding-y": "0.625rem",
+                        "card-gap": "1.5rem",
+                        "gutter-x": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+            font-variation-settings: 'FILL' 1;
+        }
+        .glass-card {
+            background: rgba(31, 31, 31, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pb-20">
+<!-- Header (Mobile Top AppBar) -->
+<header class="sticky top-0 z-40 bg-surface-glass backdrop-blur-md border-b border-surface-glass-border px-4 py-3 flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-sm">music_note</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">RentSoundSystem</h1>
+</div>
+<div class="flex gap-4">
+<button class="relative">
+<span class="material-symbols-outlined text-on-surface-muted">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full shadow-neon-glow"></span>
+</button>
+<img alt="Partner Profile" class="w-8 h-8 rounded-full object-cover border border-surface-glass-border" data-alt="A close-up portrait of a professional male DJ or sound engineer in a dimly lit studio environment. He wears modern, dark clothing and has a confident expression. The lighting features deep shadows with vibrant Electric Magenta neon accents highlighting the contours of his face, embodying a nocturnal, high-tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4y1JDZ4t_iuqhpMsMUL8TxQrkEe13hzWhe3PgMDX-prdr78avpwwHn7HBLmk-no0ZwBaDKQ0RTJaIDl_nAlLbJKJGj3f4T_TBDSACAQ9Eq9VVIfwFk4LT45lCObJP3O8Zh9JZQa06vcIWfpWlKAeS21CHeyZqXPQS1_1UaKE7tF7dz5EX8JbEoG-k60tYk1ZyBtJ0QdFWiRMrxtNk5ZBeP2umE7q84Ng7fo28KgV3yamTG73xrJROv4wPKjzoM0sRItdco3rpyhU"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-4 py-6 space-y-6">
+<!-- Page Title -->
+<div>
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background mb-1">Dashboard</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Welcome back, DJ Vertex.</p>
+</div>
+<!-- Total Earnings Card (Bento Style) -->
+<section class="glass-card rounded-xl p-5 shadow-neon-glow relative overflow-hidden">
+<!-- Decorative gradient bg -->
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary-container rounded-full blur-[50px] opacity-20"></div>
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider mb-1">Gains Totaux</h3>
+<div class="font-headline-lg-mobile text-headline-lg-mobile text-primary neon-text-glow">$4,250.00</div>
+</div>
+<div class="bg-surface-container-high rounded-full px-2 py-1 flex items-center gap-1">
+<span class="material-symbols-outlined text-primary text-sm">trending_up</span>
+<span class="font-label-caps text-[10px] text-primary">+12%</span>
+</div>
+</div>
+<!-- Simplified Chart Placeholder -->
+<div class="h-24 w-full flex items-end gap-2 mt-4 relative">
+<!-- Grid lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-px bg-surface-glass-border"></div>
+<div class="w-full h-px bg-surface-glass-border"></div>
+<div class="w-full h-px bg-surface-glass-border"></div>
+</div>
+<!-- Bars -->
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-8 relative z-10"></div>
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-12 relative z-10"></div>
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-10 relative z-10"></div>
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-16 relative z-10"></div>
+<div class="w-1/6 bg-surface-variant rounded-t-sm h-14 relative z-10"></div>
+<div class="w-1/6 bg-primary-container rounded-t-sm h-20 relative z-10 shadow-neon-glow"></div>
+</div>
+<div class="flex justify-between mt-2 font-label-caps text-[10px] text-on-surface-muted">
+<span>Lun</span>
+<span>Mar</span>
+<span>Mer</span>
+<span>Jeu</span>
+<span>Ven</span>
+<span class="text-primary font-bold">Auj</span>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="flex gap-4">
+<button class="flex-1 bg-primary text-on-primary font-label-caps text-label-caps uppercase py-3 px-4 rounded-xl shadow-neon-glow flex items-center justify-center gap-2 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_circle</span>
+                New Listing
+            </button>
+<button class="flex-1 border border-outline-variant text-on-background font-label-caps text-label-caps uppercase py-3 px-4 rounded-xl hover:bg-surface-container flex items-center justify-center gap-2 active:scale-95 transition-transform bg-surface-container-low">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+                Scan Eqpt
+            </button>
+</section>
+<!-- Inventory Status (Compact Cards) -->
+<section>
+<div class="flex justify-between items-end mb-4">
+<h3 class="font-headline-md text-headline-md text-on-background">Inventory</h3>
+<a class="font-label-caps text-label-caps text-primary uppercase hover:underline" href="javascript:void(0)">View All</a>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl">speaker</span>
+<div class="font-headline-md text-headline-md text-on-background">12</div>
+<div class="font-label-caps text-[10px] text-on-surface-muted uppercase mt-1">Active Rents</div>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-tertiary mb-2 text-3xl">inventory_2</span>
+<div class="font-headline-md text-headline-md text-on-background">8</div>
+<div class="font-label-caps text-[10px] text-on-surface-muted uppercase mt-1">Available</div>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-error mb-2 text-3xl">build</span>
+<div class="font-headline-md text-headline-md text-on-background">2</div>
+<div class="font-label-caps text-[10px] text-on-surface-muted uppercase mt-1">Maintenance</div>
+</div>
+<div class="glass-card rounded-xl p-4 flex flex-col items-center justify-center text-center">
+<span class="material-symbols-outlined text-primary-container mb-2 text-3xl">star</span>
+<div class="font-headline-md text-headline-md text-on-background">4.9</div>
+<div class="font-label-caps text-[10px] text-on-surface-muted uppercase mt-1">Avg Rating</div>
+</div>
+</div>
+</section>
+<!-- Recent Reservations (Quick Approvals) -->
+<section>
+<div class="flex justify-between items-end mb-4">
+<h3 class="font-headline-md text-headline-md text-on-background">Pending Requests</h3>
+<span class="bg-primary-container text-on-primary-container text-[10px] font-bold px-2 py-0.5 rounded-full">3 NEW</span>
+</div>
+<div class="space-y-4">
+<!-- Reservation Item 1 -->
+<div class="glass-card rounded-xl p-4">
+<div class="flex gap-3 mb-3">
+<img alt="Equipment" class="w-12 h-12 rounded-lg object-cover" data-alt="A sleek, modern DJ controller mixer sitting on a dark studio desk. The metallic finish gleams subtly under moody, low-key lighting. Electric Magenta LED lights from the buttons provide a striking contrast against the deep obsidian background, emphasizing premium high-end audio gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2QfBDo4oOGr0BJZAEafPVtmUYlt8zeXtUJCHPTdDnFJB7vkro3oVCcXYkRlKvaZ8qhhvTjddYTnPWmBQ1bLUlGvEiNXraODIwd7q1L4RP_qHOA_OMejA4gqQnJbdCWxz_PLXIe3kTiFdsUR-AItsFlYnn4dK9xxlvpmhf4qypqi_yR3Tf0woeGWvRoFEhrWpFQjtbLTR79tSAxjgYUrW5Gbustqt0PEo9NW9Q34p5pIVeR-iEk7Oz3qArdtovCO8ImmRvWZcsosM"/>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md font-bold text-on-background leading-tight">Pioneer CDJ-3000</h4>
+<p class="font-label-caps text-[10px] text-on-surface-muted uppercase mt-1">Req by: Sarah M. • 2 Days</p>
+<p class="font-body-md text-sm text-primary mt-1">$240.00</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-container-high border border-outline-variant text-on-background font-label-caps text-label-caps py-2 rounded-lg hover:bg-surface-variant active:scale-95 transition-all">Refuser</button>
+<button class="flex-1 bg-primary text-on-primary font-label-caps text-label-caps py-2 rounded-lg shadow-neon-glow active:scale-95 transition-all">Approuver</button>
+</div>
+</div>
+<!-- Reservation Item 2 -->
+<div class="glass-card rounded-xl p-4">
+<div class="flex gap-3 mb-3">
+<img alt="Equipment" class="w-12 h-12 rounded-lg object-cover" data-alt="A pair of massive, professional PA speakers standing tall in a dark, atmospheric warehouse space. The textured black casing of the speakers absorbs the low light, while faint rays of Electric Magenta light cut through a light haze in the background, creating a concert-ready, nocturnal vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1DiG7fsrTIceigTh5CKMlWvI_z5m9v-Xf-B5OmqC2bh2dhvwgqTfgN9-UGwx8A_5s8bZKfw4CgLnO3lUlUPTOsumRwuvxHHcdzk8uDttbyGswr704uBmY82EUG1vWO1Cm_bbSroPw_ovFlDNVnk6OY0I5YZO-LnKUiPz3rLlTM2XbBusggMqJhgQ8GfFTGtTVf73Tozr_LCVRgimJZRTf5jaPHpKJGzsEIDuyJJ6wcC23MpeQ7C0iGyo7lweCamV6IKAlv1Cc05A"/>
+<div class="flex-1">
+<h4 class="font-body-md text-body-md font-bold text-on-background leading-tight">QSC K12.2 PA System</h4>
+<p class="font-label-caps text-[10px] text-on-surface-muted uppercase mt-1">Req by: Club Matrix • 1 Night</p>
+<p class="font-body-md text-sm text-primary mt-1">$150.00</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-container-high border border-outline-variant text-on-background font-label-caps text-label-caps py-2 rounded-lg hover:bg-surface-variant active:scale-95 transition-all">Refuser</button>
+<button class="flex-1 bg-primary text-on-primary font-label-caps text-label-caps py-2 rounded-lg shadow-neon-glow active:scale-95 transition-all">Approuver</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component) -->
+<nav class="bg-surface-glass dark:bg-surface-glass backdrop-blur-xl border-t border-surface-glass-border shadow-neon-glow docked full-width bottom-0 rounded-t-xl fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 py-3 lg:hidden">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:bg-surface-container-high scale-110 transition-transform duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined filled">dashboard</span>
+<span class="font-label-caps text-label-caps mt-1">Dashboard</span>
+</a>
+<!-- Analytics (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-muted active:bg-surface-container-high transition-transform duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps mt-1">Analytics</span>
+</a>
+<!-- Disputes (Inactive) -->
+<a class="flex flex-col items-center justify-center text-on-surface-muted active:bg-surface-container-high transition-transform duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-label-caps text-label-caps mt-1">Disputes</span>
+</a>
+<!-- Inventory (Inactive - substituting Profile based on JSON nav links intent for this role) -->
+<a class="flex flex-col items-center justify-center text-on-surface-muted active:bg-surface-container-high transition-transform duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Inventory</span>
+</a>
+</nav>
+
+<script>window.RSS_PARTNER_PAGE="tableau-de-bord-partenaire-mobile.html";</script>
+<script src="/partner-sync.js"></script>
+</body></html>

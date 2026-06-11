@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RentSoundSystem Onboarding Partenaire - Étape 2</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#FC036D",
+                        "primary-container": "#FC036D",
+                        "inverse-primary": "#d9025e",
+                        "surface-dim": "#131313",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "error-container": "#93000a",
+                        "secondary-container": "#454748",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "surface-bright": "#393939",
+                        "error": "#ffb4ab",
+                        "surface-container": "#201f1f",
+                        "on-tertiary": "#303030",
+                        "on-secondary": "#2f3132",
+                        "surface-container-highest": "#353534",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#929090",
+                        "inverse-on-surface": "#313030",
+                        "on-error": "#690005",
+                        "outline": "#ac878d",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-secondary-container": "#b5b5b6",
+                        "surface-variant": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#c6c6c7",
+                        "surface": "#131313",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-secondary-fixed-variant": "#454748",
+                        "tertiary": "#c8c6c5",
+                        "on-tertiary-container": "#2a2a2a",
+                        "inverse-surface": "#e5e2e1",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "on-error-container": "#ffdad6",
+                        "on-surface-variant": "#e6bcc2",
+                        "outline-variant": "#5d3f44",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed": "#e3e2e3",
+                        "on-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "on-background": "#e5e2e1",
+                        "surface-tint": "#FC036D",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "on-surface-muted": "#E6BCC2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-x": "1.5rem",
+                        "card-gap": "1.5rem",
+                        "container-max": "1280px",
+                        "gutter-x": "2.5rem",
+                        "component-padding-y": "0.625rem",
+                        "section-padding-y": "6rem"
+                    },
+                    "fontFamily": {
+                        "display-hero": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "display-hero-mobile": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #131313; color: #e5e2e1; }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31,31,31,0.6) 0%, rgba(20,20,20,0.8) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-shadow { box-shadow: 0 0 30px rgba(252, 3, 109, 0.3); }
+        .input-dark {
+            background-color: #353534;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #e5e2e1;
+        }
+        .input-dark:focus {
+            border-color: #FC036D;
+            box-shadow: 0 0 10px rgba(252, 3, 109, 0.2);
+            outline: none;
+        }
+        
+        /* Tooltip */
+        .tooltip-container { position: relative; display: inline-block; }
+        .tooltip-text {
+            visibility: hidden;
+            width: 250px;
+            background-color: #2a2a2a;
+            color: #e5e2e1;
+            text-align: left;
+            border-radius: 0.25rem;
+            padding: 12px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border: 1px solid rgba(255,255,255,0.05);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+        }
+        .tooltip-text::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2a2a2a transparent transparent transparent;
+        }
+        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="font-body-md antialiased min-h-screen flex flex-col">
+<!-- Standard RentSoundSystem Header -->
+<header class="w-full bg-surface-container-lowest border-b border-surface-glass-border py-4 px-gutter-x">
+<div class="max-w-container-max mx-auto flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-3xl">speaker</span>
+<span class="font-headline-md text-headline-md text-on-surface">RentSoundSystem</span>
+</div>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Accueil</a>
+<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Équipement</a>
+<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Devenir Partenaire</a>
+</nav>
+<div>
+<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Connexion</a>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center py-section-padding-y px-gutter-x">
+<div class="max-w-[800px] w-full">
+<!-- Header Area -->
+<div class="text-center mb-12">
+<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-4">Intégration Partenaire</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted">Établissez votre identité technique sur la plateforme.</p>
+</div>
+<!-- Progress Bar (Step 2/4) -->
+<div class="mb-12">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">Étape 2 : Détails de l'entreprise</span>
+<span class="font-body-md text-body-md text-on-surface-muted">50%</span>
+</div>
+<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
+<div class="bg-primary-container h-full rounded-full neon-shadow" style="width: 50%"></div>
+</div>
+</div>
+<!-- Form Container -->
+<div class="glass-panel rounded-xl p-8 md:p-12">
+<form action="#" class="space-y-8" method="POST">
+<!-- Form Section: Identity -->
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-surface-glass-border pb-2">Identité de l'entreprise</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Company Name -->
+<div class="col-span-1 md:col-span-2">
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="company_name">Nom légal *</label>
+<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="company_name" name="company_name" placeholder="ex. Sonic Solutions SARL" required="" type="text"/>
+</div>
+<!-- Registration Number -->
+<div>
+<div class="flex items-center gap-2 mb-2">
+<label class="block font-label-caps text-label-caps text-on-surface" for="reg_number">Numéro de SIRET/SIREN *</label>
+<div class="tooltip-container">
+<span class="material-symbols-outlined text-on-surface-muted text-[16px] cursor-help" data-icon="info">info</span>
+<span class="tooltip-text">Requis pour la vérification commerciale dans l'UE. Généralement 9 ou 14 chiffres selon le format d'incorporation régional.</span>
+</div>
+</div>
+<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="reg_number" name="reg_number" placeholder="000 000 000" required="" type="text"/>
+</div>
+<!-- VAT Number -->
+<div>
+<div class="flex items-center gap-2 mb-2">
+<label class="block font-label-caps text-label-caps text-on-surface" for="vat_number">Numéro de TVA</label>
+<div class="tooltip-container">
+<span class="material-symbols-outlined text-on-surface-muted text-[16px] cursor-help" data-icon="info">info</span>
+<span class="tooltip-text">Obligatoire pour les transactions B2B afin de permettre l'autoliquidation transfrontalière. Laissez vide si non enregistré.</span>
+</div>
+</div>
+<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="vat_number" name="vat_number" placeholder="ex. FR00000000000" type="text"/>
+</div>
+</div>
+</div>
+<!-- Form Section: Location -->
+<div class="pt-6">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-surface-glass-border pb-2">Siège Social</h2>
+<div class="space-y-6">
+<!-- Address Line 1 -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="address_1">Adresse du siège *</label>
+<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="address_1" name="address_1" placeholder="123 rue de la Musique, Suite 4B" required="" type="text"/>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- City -->
+<div class="md:col-span-1">
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="city">Ville *</label>
+<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="city" name="city" placeholder="Paris" required="" type="text"/>
+</div>
+<!-- Postal Code -->
+<div class="md:col-span-1">
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="postal_code">Code postal *</label>
+<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="postal_code" name="postal_code" placeholder="75001" required="" type="text"/>
+</div>
+<!-- Country -->
+<div class="md:col-span-1">
+<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="country">Pays *</label>
+<select class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200 appearance-none" id="country" name="country" required="">
+<option disabled="" selected="" value="">Sélectionner le pays</option>
+<option value="FR">France</option>
+<option value="DE">Allemagne</option>
+<option value="UK">Royaume-Uni</option>
+<option value="US">États-Unis</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="pt-8 flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-surface-glass-border">
+<button class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface font-label-caps text-label-caps hover:bg-surface-container transition-colors w-full sm:w-auto" type="button">
+                        Retour
+                    </button>
+<button class="px-8 py-3 rounded-lg bg-primary-container text-white font-label-caps text-label-caps uppercase tracking-widest neon-shadow hover:bg-inverse-primary transition-colors w-full sm:w-auto" type="submit">
+                        Continuer
+                    </button>
+</div>
+</form>
+</div>
+</div>
+</main>
+<!-- SEO-optimized Mega Footer -->
+<footer class="bg-surface-container-lowest border-t border-surface-glass-border pt-16 pb-8 px-gutter-x mt-auto">
+<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+<div class="col-span-1 md:col-span-1">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary text-3xl">speaker</span>
+<span class="font-headline-md text-headline-md text-on-surface">RentSoundSystem</span>
+</div>
+<p class="text-on-surface-muted font-body-md mb-4">La première plateforme de location de matériel audio professionnel. Connecter les créateurs avec le meilleur équipement.</p>
+</div>
+<div>
+<h3 class="font-headline-md text-lg text-on-surface mb-4">Équipement</h3>
+<ul class="space-y-2">
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Haut-parleurs &amp; PA</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Microphones</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Tables de mixage</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Éclairage</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-headline-md text-lg text-on-surface mb-4">Partenaires</h3>
+<ul class="space-y-2">
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Devenir Loueur</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Portail Partenaire</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Ressources &amp; Guides</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Support Partenaire</a></li>
+</ul>
+</div>
+<div>
+<h3 class="font-headline-md text-lg text-on-surface mb-4">Entreprise</h3>
+<ul class="space-y-2">
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">À Propos</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Contact</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Politique de Confidentialité</a></li>
+<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="javascript:void(0)">Conditions de Service</a></li>
+</ul>
+</div>
+</div>
+<div class="max-w-container-max mx-auto pt-8 border-t border-surface-glass-border flex flex-col md:flex-row justify-between items-center gap-4">
+<span class="text-on-surface-muted font-body-md">© 2024 RentSoundSystem. Tous droits réservés.</span>
+<div class="flex gap-4">
+<a class="text-on-surface-muted hover:text-primary transition-colors" href="javascript:void(0)">
+<span class="material-symbols-outlined">language</span>
+</a>
+<a class="text-on-surface-muted hover:text-primary transition-colors" href="javascript:void(0)">
+<span class="material-symbols-outlined">share</span>
+</a>
+</div>
+</div>
+</footer>
+
+<script>window.RSS_PARTNER_PAGE="partenaire-societe.html";</script>
+<script src="/partner-sync.js"></script>
+</body></html>

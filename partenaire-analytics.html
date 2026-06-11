@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dashboard Analytique | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-muted": "#E6BCC2",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-variant": "#353534",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed": "#3f0016",
+                        "secondary-container": "#454748",
+                        "surface-bright": "#393939",
+                        "outline": "#ac878d",
+                        "tertiary-container": "#929090",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "background": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-surface": "#e5e2e1",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#bc004f",
+                        "surface": "#131313",
+                        "on-secondary": "#2f3132",
+                        "secondary-fixed": "#e3e2e3",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#454748",
+                        "on-secondary-container": "#b5b5b6",
+                        "primary": "#ffb2bf",
+                        "tertiary": "#c8c6c5",
+                        "surface-tint": "#ffb2bf",
+                        "primary-container": "#ff4d80",
+                        "on-tertiary": "#303030",
+                        "on-primary-container": "#5a0022",
+                        "on-primary": "#660028",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "outline-variant": "#5d3f44",
+                        "on-tertiary-container": "#2a2a2a",
+                        "surface-dim": "#131313"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "component-padding-x": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "container-max": "1280px",
+                        "component-padding-y": "0.625rem",
+                        "card-gap": "1.5rem",
+                        "gutter-x": "2.5rem"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    fontSize: {
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.4));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .text-magenta {
+            color: #FC036D;
+        }
+        .bg-magenta {
+            background-color: #FC036D;
+        }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-background text-on-background font-body-lg min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+<!-- SideNavBar (Hidden on mobile, visible on lg) -->
+<aside class="hidden lg:flex flex-col h-screen sticky top-0 p-4 gap-4 bg-surface-container-low border-r border-surface-glass-border w-64 z-40 shrink-0">
+<div class="flex items-center gap-3 mb-8 px-2 pt-2">
+<span class="material-symbols-outlined text-primary text-3xl">graphic_eq</span>
+<span class="font-headline-sm text-headline-sm text-primary tracking-tighter font-bold">Admin Portal</span>
+</div>
+<div class="px-2 pb-4 mb-4 border-b border-surface-glass-border flex items-center gap-3">
+<img alt="Admin Avatar" class="w-10 h-10 rounded-full object-cover border border-surface-glass-border" data-alt="Close up portrait of a professional system administrator in a dark, high-tech server room setting. The lighting is dim with subtle magenta neon reflections highlighting facial features. Professional, focused demeanor. Modern corporate technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCaKlLiqXDEjB49cupvoBuMfM2f2vHnbKcMRCFxItq-gFHBjG_MI2_sxgY_BCNKlKz7Chm5rUjUDDB_VehSADfAHp2Sl73w34Hzhtyl6v3XRgTVliZbu4IQ9JiIbUyw6CPRjgAsqzxk3PiqZ1nselgDLxBQ7ZOcBqDnw2GDeM1LGPrJwgeIOxOhYyiXRWNrIXuJ5gHv2RdB3UVaz5rHtXr-Rqh4sNMhtK7LTb4gdmrc1e3VJoQY856oogtmBkcHfJMmEjCM3IphLRs"/>
+<div>
+<p class="font-body-md text-body-md font-semibold">Global Insights</p>
+<p class="font-label-caps text-label-caps text-on-surface-muted mt-1">Super Admin</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary bg-surface-container-highest font-bold font-label-caps text-label-caps transition-all active:opacity-80" href="javascript:void(0)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-caps text-label-caps transition-all cursor-pointer active:opacity-80" href="javascript:void(0)">
+<span class="material-symbols-outlined">monitoring</span>
+                Performance
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-caps text-label-caps transition-all cursor-pointer active:opacity-80" href="javascript:void(0)">
+<span class="material-symbols-outlined">speaker</span>
+                Equipment
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-caps text-label-caps transition-all cursor-pointer active:opacity-80" href="javascript:void(0)">
+<span class="material-symbols-outlined">gavel</span>
+                Disputes
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container font-label-caps text-label-caps transition-all cursor-pointer active:opacity-80" href="javascript:void(0)">
+<span class="material-symbols-outlined">chat</span>
+                Messages
+            </a>
+</nav>
+<button class="w-full py-3 px-4 bg-magenta text-white font-label-caps text-label-caps uppercase rounded-lg neon-shadow hover:bg-opacity-90 transition-colors mt-auto mb-4 font-bold tracking-widest">
+            Generate Report
+        </button>
+<div class="flex flex-col gap-2 mt-auto border-t border-surface-glass-border pt-4">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps transition-colors" href="javascript:void(0)">
+<span class="material-symbols-outlined">help</span>
+                Support
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface font-label-caps text-label-caps transition-colors" href="javascript:void(0)">
+<span class="material-symbols-outlined">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopNavBar (Web) -->
+<header class="hidden md:flex justify-between items-center w-full px-component-padding-x max-w-container-max mx-auto h-16 bg-surface-glass backdrop-blur-md sticky top-0 z-30 shadow-neon-glow shrink-0 border-b border-surface-glass-border">
+<div class="flex items-center gap-8">
+<!-- Hide brand logo on desktop if SideNav is present, or show if needed. Keeping it for structural compliance. -->
+<div class="font-headline-md text-headline-md font-bold text-primary tracking-tighter lg:hidden">
+                    RentSoundSystem
+                </div>
+<!-- Search on Left -->
+<div class="relative w-64 hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-muted">search</span>
+<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-full py-2 pl-10 pr-4 text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Search network..." type="text"/>
+</div>
+</div>
+<nav class="flex items-center gap-6 font-body-md text-body-md h-full">
+<a class="text-primary font-bold border-b-2 border-primary h-full flex items-center pt-[2px] transition-transform active:scale-95 hover:bg-surface-container-highest px-3" href="javascript:void(0)">Dashboard</a>
+<a class="text-on-surface-muted hover:text-on-surface h-full flex items-center transition-all duration-200 hover:bg-surface-container-highest px-3 active:scale-95" href="javascript:void(0)">Analytics</a>
+<a class="text-on-surface-muted hover:text-on-surface h-full flex items-center transition-all duration-200 hover:bg-surface-container-highest px-3 active:scale-95" href="javascript:void(0)">Disputes</a>
+<a class="text-on-surface-muted hover:text-on-surface h-full flex items-center transition-all duration-200 hover:bg-surface-container-highest px-3 active:scale-95" href="javascript:void(0)">Inventory</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-magenta text-white px-4 py-2 rounded-full font-label-caps text-label-caps uppercase neon-shadow hover:bg-opacity-90 transition-all active:scale-95 tracking-widest font-bold hidden xl:block">
+                    New Listing
+                </button>
+<div class="flex items-center gap-2 text-on-surface-muted">
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest rounded-full transition-colors active:scale-95">
+<span class="material-symbols-outlined">settings</span>
+</button>
+</div>
+<img alt="Partner Profile" class="w-8 h-8 rounded-full border border-surface-glass-border object-cover lg:hidden" data-alt="Small circular profile picture of an administrator in a dark studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-Afm6laotibxcEkLhEgh5vbA3AwYRpOx4wAanrmHTaUJvtlZvUT18-0bh1cvNgY6RUUcj9VEMnwQcBbliaALMdVRzT2BA2E_jScPmhXK8UqFMmL6oumHzaeWYkrVuJCw0qM51qEYJCbBhGuo5BqOr7FeCn07dOlmXY5BArR6d2tFt-gnNnM62GReOxVnj1-w_zeQjAyVoxeqo5FBIlGGz9GXoNxwD7j9F4QjoQPi7Ag90TX-CdXa0K3xWvW0QQ9pJXKig0TnGlTo"/>
+</div>
+</header>
+<!-- TopAppBar (Mobile) -->
+<header class="md:hidden flex justify-between items-center w-full px-4 h-16 bg-surface-glass backdrop-blur-md sticky top-0 z-30 shadow-neon-glow shrink-0 border-b border-surface-glass-border">
+<div class="font-headline-md text-headline-md font-extrabold text-primary tracking-tighter">
+                RentSoundSystem
+            </div>
+<div class="flex items-center gap-3 text-on-surface-muted">
+<button class="p-2"><span class="material-symbols-outlined">search</span></button>
+<button class="p-2"><span class="material-symbols-outlined">notifications</span></button>
+</div>
+</header>
+<!-- Main Dashboard Content -->
+<main class="flex-1 p-4 md:p-8 max-w-container-max mx-auto w-full pb-24 md:pb-8">
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-2">Network Hub</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted">Global operations overview for current fiscal quarter.</p>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest py-2 px-4 rounded-full border border-surface-glass-border">
+<span class="w-2 h-2 rounded-full bg-magenta animate-pulse neon-shadow"></span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-widest">Live Sync Active</span>
+</div>
+</div>
+<!-- KPIs Macro Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-card-gap mb-section-padding-y">
+<!-- KPI 1 -->
+<div class="glass-panel rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl text-primary">payments</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-muted uppercase tracking-widest mb-2">Revenus Réseau (MTD)</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mb-1">€2.4M</p>
+<div class="flex items-center gap-1 text-emerald-400 font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+14.2% vs last month</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="glass-panel rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl text-primary">equalizer</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-muted uppercase tracking-widest mb-2">Taux d'Occupation Flotte</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mb-1">78.4%</p>
+<div class="w-full bg-surface-container h-2 rounded-full mt-2 overflow-hidden">
+<div class="bg-magenta h-full rounded-full neon-shadow" style="width: 78.4%"></div>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="glass-panel rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl text-primary">group</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-muted uppercase tracking-widest mb-2">Partenaires Actifs</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mb-1">1,428</p>
+<div class="flex items-center gap-1 text-emerald-400 font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+<span>+54 new this week</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="glass-panel rounded-xl p-6 relative overflow-hidden group border-l-4 border-l-magenta">
+<div class="absolute -right-4 -top-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl text-primary">gavel</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-muted uppercase tracking-widest mb-2">Litiges en Cours</p>
+<p class="font-headline-lg text-headline-lg text-on-surface mb-1">12</p>
+<div class="flex items-center gap-1 text-on-surface-muted font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm text-magenta">warning</span>
+<span class="text-magenta">3 require immediate action</span>
+</div>
+</div>
+</div>
+<!-- Charts Section (Bento Grid) -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap mb-section-padding-y">
+<!-- Brand Performance -->
+<div class="glass-panel rounded-xl p-8 lg:col-span-2 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Performance by Brand</h3>
+<button class="text-on-surface-muted hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_horiz</span>
+</button>
+</div>
+<div class="flex-1 min-h-[300px] relative flex items-end gap-8 pt-10">
+<!-- Simulated Bar Chart -->
+<div class="flex-1 flex flex-col justify-end group">
+<div class="w-full bg-surface-container-highest rounded-t-lg relative h-[80%] hover:bg-surface-bright transition-colors">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container px-3 py-1 rounded font-label-caps text-label-caps border border-surface-glass-border">45%</div>
+</div>
+<div class="mt-4 text-center font-label-caps text-label-caps text-on-surface-muted">L-Acoustics</div>
+</div>
+<div class="flex-1 flex flex-col justify-end group">
+<div class="w-full bg-magenta rounded-t-lg relative h-[60%] neon-shadow hover:brightness-110 transition-all">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container px-3 py-1 rounded font-label-caps text-label-caps border border-surface-glass-border">30%</div>
+</div>
+<div class="mt-4 text-center font-label-caps text-label-caps text-primary font-bold">Meyer Sound</div>
+</div>
+<div class="flex-1 flex flex-col justify-end group">
+<div class="w-full bg-surface-container-highest rounded-t-lg relative h-[45%] hover:bg-surface-bright transition-colors">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-surface-container px-3 py-1 rounded font-label-caps text-label-caps border border-surface-glass-border">25%</div>
+</div>
+<div class="mt-4 text-center font-label-caps text-label-caps text-on-surface-muted">JBL Pro</div>
+</div>
+</div>
+</div>
+<!-- Growth Trends -->
+<div class="glass-panel rounded-xl p-8 flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Monthly Growth</h3>
+<span class="material-symbols-outlined text-on-surface-muted">trending_up</span>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary">public</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Global Reach</p>
+<p class="font-label-caps text-label-caps text-emerald-400">+8.2% expansion</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">Inventory Volume</p>
+<p class="font-label-caps text-label-caps text-emerald-400">+12.5% items added</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-primary-container bg-opacity-20 flex items-center justify-center border border-magenta border-opacity-50 neon-shadow">
+<span class="material-symbols-outlined text-magenta">bolt</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface">High-Tier Rentals</p>
+<p class="font-label-caps text-label-caps text-magenta">+24% YoY spike</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Revenue Heatmap (Map Representation) -->
+<div class="glass-panel rounded-xl p-8 relative overflow-hidden h-[400px] flex flex-col">
+<div class="flex justify-between items-center mb-4 relative z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface font-semibold">Revenue Heatmap by City</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-surface-container rounded font-label-caps text-label-caps border border-surface-glass-border hover:bg-surface-bright">EU</button>
+<button class="px-3 py-1 bg-primary text-on-primary font-bold rounded font-label-caps text-label-caps">Global</button>
+</div>
+</div>
+<!-- Map Background (Placeholder using div and data-location) -->
+<div class="absolute inset-0 top-16 bg-surface-container-low opacity-50 z-0 bg-cover bg-center" data-alt="A stylized, dark-themed geographic world map visualization. The map is minimalist, composed of small dots or grid lines on a deep black background, resembling high-tech radar or command center displays. Subtle glowing magenta nodes indicate major city hubs." data-location="World Map" style="background-image: url('https://www.gstatic.com/labs-code/stitch/stitch-placeholder-300x300.svg');"></div>
+<!-- Heatmap Overlay Nodes -->
+<div class="absolute inset-0 z-10">
+<!-- Paris Node -->
+<div class="absolute top-[40%] left-[52%] flex flex-col items-center">
+<div class="w-4 h-4 bg-magenta rounded-full neon-shadow animate-ping absolute opacity-75"></div>
+<div class="w-4 h-4 bg-magenta rounded-full relative z-10 border-2 border-background"></div>
+<span class="mt-1 font-label-caps text-label-caps font-bold text-on-surface bg-background bg-opacity-80 px-2 py-0.5 rounded">Paris</span>
+<span class="font-label-caps text-label-caps text-magenta text-[10px]">High Volume</span>
+</div>
+<!-- London Node -->
+<div class="absolute top-[35%] left-[48%] flex flex-col items-center">
+<div class="w-3 h-3 bg-primary rounded-full relative z-10 border-2 border-background"></div>
+<span class="mt-1 font-label-caps text-label-caps font-bold text-on-surface bg-background bg-opacity-80 px-2 py-0.5 rounded">London</span>
+</div>
+<!-- New York Node -->
+<div class="absolute top-[42%] left-[28%] flex flex-col items-center">
+<div class="w-5 h-5 bg-magenta rounded-full neon-shadow animate-ping absolute opacity-50"></div>
+<div class="w-5 h-5 bg-magenta rounded-full relative z-10 border-2 border-background"></div>
+<span class="mt-1 font-label-caps text-label-caps font-bold text-on-surface bg-background bg-opacity-80 px-2 py-0.5 rounded">New York</span>
+<span class="font-label-caps text-label-caps text-magenta text-[10px]">Surging</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-6 py-3 lg:hidden bg-surface-glass backdrop-blur-xl rounded-t-xl shadow-neon-glow border-t border-surface-glass-border">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 scale-110 transition-transform duration-300" href="javascript:void(0)">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-muted active:bg-surface-container-high transition-transform duration-300 rounded-lg p-2" href="javascript:void(0)">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps mt-1">Analytics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-muted active:bg-surface-container-high transition-transform duration-300 rounded-lg p-2" href="javascript:void(0)">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-label-caps text-label-caps mt-1">Disputes</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-muted active:bg-surface-container-high transition-transform duration-300 rounded-lg p-2" href="javascript:void(0)">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</a>
+</nav>
+
+<script>window.RSS_PARTNER_PAGE="partenaire-analytics.html";</script>
+<script src="/partner-sync.js"></script>
+</body></html>

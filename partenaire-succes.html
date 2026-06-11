@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Dossier Soumis avec Succès - RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-surface-variant": "#e6bcc2",
+                        "secondary-fixed": "#e3e2e3",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-tint": "#ffb2bf",
+                        "on-error": "#690005",
+                        "surface-variant": "#353534",
+                        "surface-bright": "#393939",
+                        "inverse-primary": "#bc004f",
+                        "surface-container": "#201f1f",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "surface": "#131313",
+                        "on-primary-fixed": "#3f0016",
+                        "on-background": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "primary-fixed": "#ffd9de",
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary": "#2f3132",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary-container": "#2a2a2a",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "primary-container": "#ff4d80",
+                        "secondary-container": "#454748",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-primary-container": "#5a0022",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "inverse-on-surface": "#313030",
+                        "outline-variant": "#5d3f44",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-container": "#b5b5b6",
+                        "primary": "#ffb2bf",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "on-surface": "#e5e2e1",
+                        "on-primary": "#660028",
+                        "background": "#131313",
+                        "outline": "#ac878d",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#90003b",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary": "#303030",
+                        "on-secondary-fixed-variant": "#454748",
+                        "tertiary-container": "#929090",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface-muted": "#E6BCC2",
+                        "secondary": "#c6c6c7"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "component-padding-x": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "card-gap": "1.5rem",
+                        "component-padding-y": "0.625rem",
+                        "gutter-x": "2.5rem",
+                        "container-max": "1280px"
+                    },
+                    fontFamily: {
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "display-hero": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Manrope"]
+                    },
+                    fontSize: {
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .neon-shadow { box-shadow: 0 0 30px rgba(252, 3, 109, 0.3); }
+        .glass-panel { background: linear-gradient(145deg, rgba(31,31,31,0.6), rgba(20,20,20,0.8)); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); }
+    </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col antialiased">
+<!-- TopNavBar Omitted: Task-focused transaction completion screen. Shell visibility rule applies. -->
+<!-- Main Content -->
+<main class="flex-grow flex items-center justify-center py-section-padding-y px-component-padding-x md:px-gutter-x relative overflow-hidden">
+<!-- Ambient Background Glows -->
+<div class="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-container rounded-full mix-blend-screen filter blur-[128px] opacity-20 animate-pulse"></div>
+<div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-primary rounded-full mix-blend-screen filter blur-[128px] opacity-10"></div>
+<div class="max-w-3xl w-full relative z-10 glass-panel rounded-xl p-8 md:p-12 text-center shadow-2xl">
+<!-- Success Icon -->
+<div class="mx-auto w-24 h-24 bg-surface-container-high rounded-full flex items-center justify-center mb-8 neon-shadow border border-primary/20">
+<span class="material-symbols-outlined text-[64px] text-primary" style="color: #FC036D; font-variation-settings: 'FILL' 1;">
+                    check_circle
+                </span>
+</div>
+<!-- Headers -->
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-4">
+                Dossier Soumis avec Succès !
+            </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-xl mx-auto">
+                Votre demande est en cours de révision par nos équipes techniques. Merci de faire partie de la communauté RentSoundSystem.
+            </p>
+<!-- Next Steps Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12 text-left">
+<!-- Step 1 -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-surface-glass-border">
+<div class="w-10 h-10 rounded-full border-2 border-primary flex items-center justify-center mb-4 text-primary bg-primary/10">
+<span class="material-symbols-outlined text-[20px]">verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px] mb-2">1. Vérification</h3>
+<p class="font-body-md text-body-md text-on-surface-muted text-sm">
+                        Notre équipe examinera vos documents dans un délai de 24 à 48 heures.
+                    </p>
+</div>
+<!-- Step 2 -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-surface-glass-border">
+<div class="w-10 h-10 rounded-full border border-secondary/30 flex items-center justify-center mb-4 text-secondary">
+<span class="material-symbols-outlined text-[20px]">inventory_2</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px] mb-2">2. Configuration</h3>
+<p class="font-body-md text-body-md text-on-surface-muted text-sm">
+                        Commencez à préparer votre inventaire dans votre tableau de bord.
+                    </p>
+</div>
+<!-- Step 3 -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-surface-glass-border">
+<div class="w-10 h-10 rounded-full border border-secondary/30 flex items-center justify-center mb-4 text-secondary">
+<span class="material-symbols-outlined text-[20px]">rocket_launch</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-[18px] mb-2">3. Lancement</h3>
+<p class="font-body-md text-body-md text-on-surface-muted text-sm">
+                        Une fois validées, vos annonces seront visibles sur le marché global.
+                    </p>
+</div>
+</div>
+<!-- Actions -->
+<div class="flex flex-col items-center space-y-6">
+<button class="bg-[#FC036D] hover:bg-[#d9005a] text-white font-label-caps text-label-caps uppercase tracking-widest py-4 px-10 rounded-full neon-shadow transition-all duration-300 transform hover:scale-105 active:scale-95 flex items-center gap-2">
+                    Accéder à mon tableau de bord
+                    <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+<div class="flex flex-col sm:flex-row gap-4 sm:gap-8 mt-4">
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors flex items-center gap-2" href="javascript:void(0)">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+                        Consulter le guide du partenaire
+                    </a>
+<a class="font-body-md text-body-md text-secondary hover:text-primary transition-colors flex items-center gap-2" href="javascript:void(0)">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+                        Contacter le support technique
+                    </a>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Omitted: Suppressed on transactional success screens to maintain focus on the completion state and next immediate action. -->
+
+<script>window.RSS_PARTNER_PAGE="partenaire-succes.html";</script>
+<script src="/partner-sync.js"></script>
+</body></html>
