@@ -622,15 +622,121 @@ html, body {
     return false;
   }
 
-  function centerCityName(center) {
-    return cleanCityName((center && center.name) || '')
-      .replace(/france|madagascar|maroc|usa|uk/gi, '')
+  const COUNTRY_ALIASES = {
+    ma: ['ma', 'maroc', 'morocco', 'المغرب', 'morroco'],
+    mg: ['mg', 'madagascar', 'madagasikara'],
+    fr: ['fr', 'france'],
+    es: ['es', 'espagne', 'spain'],
+    be: ['be', 'belgique', 'belgium'],
+    ch: ['ch', 'suisse', 'switzerland'],
+    us: ['us', 'usa', 'etats unis', 'états unis', 'united states'],
+    gb: ['gb', 'uk', 'royaume uni', 'united kingdom']
+  };
+
+  const COUNTRY_DISPLAY = {
+    ma: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6 },
+    mg: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6 },
+    fr: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6 },
+    es: { name: 'Espagne', country: 'Espagne', countryCode: 'es', lat: 40.4637, lng: -3.7492, zoom: 6 },
+    be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7 },
+    ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7 },
+    us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4 },
+    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 }
+  };
+
+  const CITY_COUNTRY_HINTS = {
+    ma: ['agadir','casablanca','marrakech','marrakesh','essaouira','rabat','tanger','tangier','fes','fès','meknes','meknès','ouarzazate','taghazout','tamraght','tetouan','tétouan'],
+    mg: ['antananarivo','tananarive','tana','tanà','nosy be','nosy-be','hell ville','hell-ville','toamasina','tamatave','mahajanga','majunga','fianarantsoa','antsiranana','diego suarez','diego-suarez'],
+    fr: ['paris','lyon','marseille','nice','cannes','toulouse','bordeaux','lille','nantes','strasbourg','montpellier']
+  };
+
+  function compactWords(value) {
+    return normalizeText(value)
+      .replace(/\b(location|sono|son|ville|pays|autour|pres|près|de|du|des|le|la|les|a|à|en|au|aux)\b/g, ' ')
       .replace(/[,•]/g, ' ')
       .replace(/\s+/g, ' ')
       .trim();
   }
 
+  function countryCodeFromText(value) {
+    const text = compactWords(value);
+    if (!text) return '';
+    for (const code in COUNTRY_ALIASES) {
+      if (COUNTRY_ALIASES[code].some(alias => text === alias || text.indexOf(alias) !== -1)) return code;
+    }
+    return '';
+  }
+
+  function inferCountryCodeFromListing(item) {
+    const explicit = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
+    if (explicit) {
+      if (explicit === 'morocco') return 'ma';
+      if (explicit === 'madagascar') return 'mg';
+      if (explicit === 'france') return 'fr';
+      return explicit.slice(0, 2);
+    }
+
+    const country = normalizeText(item && item.country);
+    const fromCountry = countryCodeFromText(country);
+    if (fromCountry) return fromCountry;
+
+    const text = compactWords([item && item.city, item && item.location, item && item.address].join(' '));
+    for (const code in CITY_COUNTRY_HINTS) {
+      if (CITY_COUNTRY_HINTS[code].some(city => text === normalizeText(city) || text.indexOf(normalizeText(city)) !== -1)) return code;
+    }
+
+    return '';
+  }
+
+  function isCountryCenter(center) {
+    return Boolean(center && (center.searchType === 'country' || countryCodeFromText(center.name) || (center.countryCode && normalizeText(center.name) === normalizeText(center.country))));
+  }
+
+  function centerCountryCode(center) {
+    return normalizeText(center && center.countryCode) || countryCodeFromText(center && (center.country || center.name));
+  }
+
+  function itemMatchesCountry(item, center) {
+    const code = centerCountryCode(center);
+    if (!code) return false;
+    return inferCountryCodeFromListing(item) === code;
+  }
+
+  function centerCityName(center) {
+    const countryCode = centerCountryCode(center);
+    const countryWords = [];
+    if (countryCode && COUNTRY_ALIASES[countryCode]) countryWords.push(...COUNTRY_ALIASES[countryCode]);
+    if (center && center.country) countryWords.push(center.country);
+
+    let city = cleanCityName((center && center.name) || '');
+    countryWords.forEach(word => {
+      if (!word) return;
+      city = city.replace(new RegExp('\\b' + String(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi'), ' ');
+    });
+
+    return city
+      .replace(/\b(france|madagascar|maroc|morocco|usa|uk|royaume uni|états unis|etats unis)\b/gi, ' ')
+      .replace(/[,•]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function listingCountryMatchesCenter(item, center) {
+    const centerCode = centerCountryCode(center);
+    if (!centerCode) return false;
+    const itemCode = inferCountryCodeFromListing(item);
+
+    // Si le pays est connu côté annonce ou déductible par ville, il doit correspondre.
+    // Si aucun pays n'est détectable, on laisse passer uniquement pour les recherches ville,
+    // puis listingCityMatchesCenter() + rayon filtrent. Pour une recherche pays, l'annonce doit
+    // obligatoirement être rattachable à ce pays.
+    if (itemCode) return itemCode === centerCode;
+    return !isCountryCenter(center);
+  }
+
   function listingCityMatchesCenter(item, center) {
+    if (isCountryCenter(center)) return true;
+
     const city = normalizeText(centerCityName(center));
     if (!city || city === 'votre position' || city === 'autour de vous') return false;
 
@@ -640,10 +746,7 @@ html, body {
 
     if (!candidates.length) return false;
 
-    // Règle volontairement stricte : on n'affiche pas une annonce simplement parce que
-    // ses coordonnées GPS tombent près de l'utilisateur. Le nom de ville doit aussi
-    // correspondre. Cela évite les faux affichages autour d'Antananarivo si des
-    // annonces importées ont des coordonnées erronées.
+    // Recherche ville : la ville doit correspondre ET le rayon GPS s'applique ensuite.
     return candidates.some(function (value) {
       return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
     });
@@ -758,17 +861,26 @@ html, body {
   }
 
   async function geocodeCity(query) {
+    const countryCode = countryCodeFromText(query);
+    if (countryCode && COUNTRY_DISPLAY[countryCode]) {
+      return Object.assign({ searchType: 'country' }, COUNTRY_DISPLAY[countryCode]);
+    }
+
     const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=' + encodeURIComponent(query));
     const data = await res.json();
     if (!data || !data.length) return null;
     const a = data[0].address || {};
+    const foundCountryCode = normalizeText(a.country_code || '');
+    const foundCountry = a.country || '';
+    const isCountryResult = Boolean(data[0].type === 'country' || data[0].class === 'boundary' && (a.country && !a.city && !a.town && !a.village));
     return {
       name: query,
-      country: a.country || '',
-      countryCode: a.country_code || '',
+      country: foundCountry,
+      countryCode: foundCountryCode,
       lat: parseFloat(data[0].lat),
       lng: parseFloat(data[0].lon),
-      zoom: 13
+      zoom: isCountryResult ? 6 : 13,
+      searchType: isCountryResult ? 'country' : 'city'
     };
   }
 
@@ -799,11 +911,21 @@ html, body {
   function nearbyItems(center, limit) {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
-    const filtered = equipmentFilter(source)
-      .filter(item => hasCoordinates(item))
+
+    let filtered = equipmentFilter(source)
       .filter(item => listingCountryMatchesCenter(item, safeCenter))
       .filter(item => listingCityMatchesCenter(item, safeCenter));
 
+    // Logique officielle :
+    // - recherche pays (ex: Maroc) : toutes les annonces du pays, même sans rayon ville ;
+    // - recherche ville (ex: Agadir) : ville + pays + rayon autour de la ville.
+    if (isCountryCenter(safeCenter)) {
+      return uniqueListings(filtered)
+        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
+        .slice(0, limit);
+    }
+
+    filtered = filtered.filter(item => hasCoordinates(item));
     const sorted = enrichByDistance(filtered, safeCenter);
     const inRadius = sorted.filter(item =>
       typeof item._distanceKm === 'number' &&
@@ -883,7 +1005,7 @@ html, body {
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
         ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible autour de votre ville.</strong><p>Aucune annonce n’est actuellement disponible autour de votre ville. Vous pouvez essayer une autre ville ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Aucune annonce n’est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
@@ -1132,7 +1254,7 @@ html, body {
       const nearest = nearbyItems(city, 4);
       if (!nearest.length) {
         const nearestGrid = document.getElementById('nearest-products-grid');
-        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible autour de cette ville.</strong><p>Il n’existe pas encore d’annonce disponible autour de votre ville ou dans votre pays. Essayez une autre ville ou consultez les dernières annonces publiées dans le monde.</p></div></div>';
+        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Il n’existe pas encore d’annonce disponible pour cette ville ou ce pays. Essayez une autre destination ou consultez les dernières annonces publiées dans le monde.</p></div></div>';
       }
 
       document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
