@@ -4,6 +4,7 @@
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Devenir Partenaire - RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
@@ -27,6 +28,16 @@
   #footer-container footer { display:block; }
 </style>
 
+
+<style id="rss-partner-form-style">
+  .partner-check{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(31,31,31,.75);cursor:pointer;transition:.2s;color:#e2e2e2}
+  .partner-check:hover{border-color:rgba(252,3,109,.55);background:rgba(252,3,109,.08)}
+  .partner-check input{width:18px;height:18px;border-radius:4px;background:#131313;border-color:#5d3f44;color:#FC036D}
+  .partner-check input:checked + span{color:#FC036D;font-weight:700}
+  #partner-form-alert.success{display:block;background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.4);color:#bbf7d0}
+  #partner-form-alert.error{display:block;background:rgba(239,68,68,.12);border-color:rgba(239,68,68,.4);color:#fecaca}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased selection:bg-primary selection:text-on-primary">
 <div id="header-container"></div>
@@ -43,7 +54,7 @@
 <p class="text-xl text-on-surface-variant font-body max-w-2xl mx-auto mb-10 leading-relaxed">Transformez vos équipements dormants en source de revenus continue. Notre plateforme propulsée par l'intelligence artificielle optimise la location de votre matériel audio professionnel.</p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
 <a 
-  href="/catalog.html"
+  href="#partner-form-section"
   class="inline-flex items-center justify-center bg-primary text-on-primary px-10 py-5 rounded-lg text-label-caps font-label tracking-widest uppercase hover:bg-primary-fixed transition-all hover:scale-105 duration-200 shadow-[0_0_30px_rgba(252,3,109,0.4)]"
 >
   COMMENCER L'AVENTURE
@@ -69,23 +80,23 @@
 <div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 transition-transform group-hover:scale-150 duration-700"></div>
 <span class="material-symbols-outlined text-4xl text-primary mb-6 block" data-icon="trending_up">trending_up</span>
 <h3 class="text-2xl font-headline font-semibold text-white mb-3">Visibilité boostée par l'IA</h3>
-<p class="text-on-surface-variant leading-relaxed max-w-md">Une infrastructure conçue pour maximiser votre rentabilité tout en minimisant la charge opérationnelle.</p>
+<p class="text-on-surface-variant leading-relaxed max-w-md">Votre matériel est présenté dans une marketplace géolocalisée, avec des annonces optimisées et une visibilité renforcée auprès des organisateurs d’événements.</p>
 </div>
 <div class="glass-panel p-8 rounded-xl relative group">
 <span class="material-symbols-outlined text-3xl text-secondary mb-6 block" data-icon="route">route</span>
 <h3 class="text-xl font-headline font-semibold text-white mb-3">Gestion Technique</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Une infrastructure conçue pour maximiser votre rentabilité tout en minimisant la charge opérationnelle.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Ajoutez vos équipements, gérez vos disponibilités et suivez vos demandes depuis un espace partenaire dédié.</p>
 </div>
 <div class="glass-panel p-8 rounded-xl">
 <span class="material-symbols-outlined text-3xl text-secondary mb-6 block" data-icon="shield">shield</span>
 <h3 class="text-xl font-headline font-semibold text-white mb-3">Sécurité &amp; Assurance</h3>
-<p class="text-on-surface-variant text-sm leading-relaxed">Une infrastructure conçue pour maximiser votre rentabilité tout en minimisant la charge opérationnelle.</p>
+<p class="text-on-surface-variant text-sm leading-relaxed">Les partenaires sont vérifiés avant publication afin de sécuriser les locations, les cautions et la relation client.</p>
 </div>
 <div class="md:col-span-2 glass-panel p-8 rounded-xl flex flex-col md:flex-row items-start md:items-center gap-8">
 <div class="flex-1">
 <span class="material-symbols-outlined text-3xl text-primary mb-6 block" data-icon="payments">payments</span>
 <h3 class="text-2xl font-headline font-semibold text-white mb-3">Paiements Sécurisés</h3>
-<p class="text-on-surface-variant leading-relaxed">Une infrastructure conçue pour maximiser votre rentabilité tout en minimisant la charge opérationnelle.</p>
+<p class="text-on-surface-variant leading-relaxed">Les paiements, cautions et commissions peuvent être traités via Stripe selon le modèle validé avec votre compte partenaire.</p>
 </div>
 <div class="w-full md:w-1/3 bg-surface-container-highest p-4 rounded-lg border border-outline-variant/30 flex items-center justify-between">
 <div>
@@ -102,7 +113,7 @@
 <div class="max-w-7xl mx-auto px-6 md:px-10">
 <div class="text-center mb-16">
 <h2 class="text-3xl md:text-4xl font-headline font-bold text-white mb-4">Processus d'Intégration</h2>
-<p class="text-on-surface-variant text-lg">Devenez partenaire opérationnel en quatre étapes simples.</p>
+<p class="text-on-surface-variant text-lg">Créez votre demande partenaire avec vos coordonnées, votre société et le type de matériel proposé.</p>
 </div>
 <div class="relative">
 <!-- Progress Line -->
@@ -114,7 +125,7 @@
 <span class="material-symbols-outlined text-primary" data-icon="app_registration">app_registration</span>
 </div>
 <h4 class="text-lg font-headline font-semibold text-white mb-2">Inscription</h4>
-<p class="text-sm text-on-surface-variant">Devenez partenaire opérationnel en quatre étapes simples.</p>
+<p class="text-sm text-on-surface-variant">Notre équipe vérifie votre profil, votre zone d’intervention et la qualité du parc matériel.</p>
 </div>
 <!-- Step 2 -->
 <div class="text-center">
@@ -122,7 +133,7 @@
 <span class="material-symbols-outlined text-secondary" data-icon="fact_check">fact_check</span>
 </div>
 <h4 class="text-lg font-headline font-semibold text-white mb-2">Validation</h4>
-<p class="text-sm text-on-surface-variant">Devenez partenaire opérationnel en quatre étapes simples.</p>
+<p class="text-sm text-on-surface-variant">Après validation, vous pouvez publier vos annonces et recevoir des demandes qualifiées.</p>
 </div>
 <!-- Step 3 -->
 <div class="text-center">
@@ -130,7 +141,7 @@
 <span class="material-symbols-outlined text-secondary" data-icon="publish">publish</span>
 </div>
 <h4 class="text-lg font-headline font-semibold text-white mb-2">Mise en ligne</h4>
-<p class="text-sm text-on-surface-variant">Devenez partenaire opérationnel en quatre étapes simples.</p>
+<p class="text-sm text-on-surface-variant">Vos locations, cautions et paiements sont suivis dans votre espace partenaire.</p>
 </div>
 <!-- Step 4 -->
 <div class="text-center">
@@ -144,6 +155,105 @@
 </div>
 </div>
 </section>
+
+<!-- Partner Registration Form -->
+<section id="partner-form-section" class="py-24 px-6 md:px-10 bg-surface-container-lowest border-y border-outline-variant/10">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+    <div class="lg:col-span-1 glass-panel p-8 rounded-2xl sticky top-24">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-label-caps font-label uppercase tracking-widest mb-6">
+        <span class="material-symbols-outlined text-sm">verified_user</span> Demande partenaire
+      </div>
+      <h2 class="text-3xl md:text-4xl font-headline font-bold text-white mb-4">Inscription partenaire</h2>
+      <p class="text-on-surface-variant leading-relaxed mb-6">Remplissez ce formulaire pour proposer votre matériel à la location. Votre demande sera enregistrée avec le statut <strong class="text-white">pending</strong>, puis validée par l’équipe RentSoundSystem.</p>
+      <div class="space-y-4 text-sm text-on-surface-variant">
+        <div class="flex gap-3"><span class="material-symbols-outlined text-primary">lock</span><span>Un partenaire non validé ne peut pas publier directement.</span></div>
+        <div class="flex gap-3"><span class="material-symbols-outlined text-primary">payments</span><span>Stripe pourra être activé après validation : abonnement, frais d’activation ou commission.</span></div>
+        <div class="flex gap-3"><span class="material-symbols-outlined text-primary">dashboard</span><span>Après approbation, accès à l’espace partenaire, annonces, demandes, paiements et cautions.</span></div>
+      </div>
+    </div>
+
+    <form id="partner-request-form" class="lg:col-span-2 glass-panel p-6 md:p-8 rounded-2xl space-y-6" novalidate>
+      <div id="partner-form-alert" class="hidden rounded-xl border p-4 text-sm"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Nom de la société *</span>
+          <input name="company_name" required class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="Nom commercial ou société">
+        </label>
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Nom du responsable *</span>
+          <input name="contact_name" required class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="Prénom et nom">
+        </label>
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Email *</span>
+          <input name="email" type="email" required class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="email@exemple.com">
+        </label>
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Téléphone *</span>
+          <input name="phone" required class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="+33 / +212 / +261 ...">
+        </label>
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Pays *</span>
+          <input name="country" required class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="France, Maroc, Madagascar...">
+        </label>
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Ville *</span>
+          <input name="city" required class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="Paris, Agadir, Antananarivo...">
+        </label>
+      </div>
+
+      <div>
+        <span class="text-sm text-on-surface-variant block mb-3">Type de matériel proposé *</span>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <label class="partner-check"><input type="checkbox" name="equipment_types" value="Sonorisation"><span>Sonorisation</span></label>
+          <label class="partner-check"><input type="checkbox" name="equipment_types" value="Éclairage"><span>Éclairage</span></label>
+          <label class="partner-check"><input type="checkbox" name="equipment_types" value="DJ / Deejay"><span>DJ / Deejay</span></label>
+          <label class="partner-check"><input type="checkbox" name="equipment_types" value="Studio"><span>Studio</span></label>
+          <label class="partner-check"><input type="checkbox" name="equipment_types" value="Instruments"><span>Instruments</span></label>
+          <label class="partner-check"><input type="checkbox" name="equipment_types" value="Scène / Structure"><span>Scène / Structure</span></label>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Taille du parc matériel</span>
+          <select name="equipment_count" class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary">
+            <option value="">Sélectionner</option>
+            <option>1 à 5 équipements</option>
+            <option>6 à 20 équipements</option>
+            <option>21 à 50 équipements</option>
+            <option>Plus de 50 équipements</option>
+          </select>
+        </label>
+        <label class="block">
+          <span class="text-sm text-on-surface-variant">Documents éventuels</span>
+          <input name="documents" type="file" multiple class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" accept=".pdf,.jpg,.jpeg,.png,.webp">
+          <span class="text-xs text-on-surface-variant block mt-2">KBIS, carte société, assurance, photos du parc. Optionnel.</span>
+        </label>
+      </div>
+
+      <label class="block">
+        <span class="text-sm text-on-surface-variant">Message / informations complémentaires</span>
+        <textarea name="message" rows="5" class="mt-2 w-full bg-white text-black border border-outline-variant rounded-lg px-4 py-3 focus:border-primary focus:ring-primary" placeholder="Décrivez votre parc, vos zones d’intervention, vos prestations, vos conditions de livraison..."></textarea>
+      </label>
+
+      <label class="flex items-start gap-3 text-sm text-on-surface-variant">
+        <input required type="checkbox" name="accept_terms" class="mt-1 rounded bg-surface border-outline-variant text-primary focus:ring-primary">
+        <span>Je confirme que les informations transmises sont exactes et j’accepte d’être contacté par RentSoundSystem pour la validation partenaire.</span>
+      </label>
+
+      <div class="flex flex-col sm:flex-row gap-4 pt-2">
+        <button id="partner-submit-button" type="submit" class="inline-flex items-center justify-center bg-primary text-on-primary px-8 py-4 rounded-lg text-label-caps font-label tracking-widest uppercase hover:bg-primary-container transition-all disabled:opacity-60 disabled:cursor-not-allowed">
+          Envoyer ma demande
+        </button>
+        <a href="/connexion.html" class="inline-flex items-center justify-center border border-outline-variant text-on-surface px-8 py-4 rounded-lg text-label-caps font-label tracking-widest uppercase hover:border-primary hover:text-primary transition-colors">
+          Déjà partenaire ? Connexion
+        </a>
+      </div>
+    </form>
+  </div>
+</section>
+
 <!-- CTA Section -->
 <section class="py-32 px-6 relative overflow-hidden">
 <div class="absolute inset-0 bg-primary/5"></div>
@@ -151,7 +261,7 @@
 <h2 class="text-4xl md:text-5xl font-headline font-bold text-white mb-6">Prêt à optimiser votre parc ?</h2>
 <p class="text-xl text-on-surface-variant mb-10">Rejoignez le réseau des professionnels de l'audio et maximisez le rendement de chaque équipement.</p>
 <a 
-  href="/catalog.html"
+  href="#partner-form-section"
   class="inline-flex items-center justify-center bg-primary text-on-primary px-10 py-5 rounded-lg text-label-caps font-label tracking-widest uppercase hover:bg-primary-fixed transition-all hover:scale-105 duration-200 shadow-[0_0_30px_rgba(252,3,109,0.4)]"
 >
   COMMENCER L'AVENTURE
@@ -161,6 +271,97 @@
 </main>
 <div id="footer-container"></div>
 
+
+
+<script id="rss-partner-request-functional">
+(function(){
+  'use strict';
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const DOCUMENT_BUCKET = 'partner-documents';
+
+  function ready(fn){ if(document.readyState !== 'loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+  function alertBox(type, message){
+    const box = document.getElementById('partner-form-alert');
+    if(!box) return;
+    box.className = type === 'success' ? 'success rounded-xl border p-4 text-sm' : 'error rounded-xl border p-4 text-sm';
+    box.textContent = message;
+    box.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function clean(value){ return String(value || '').trim(); }
+  function safeFileName(name){ return String(name || 'document').normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9._-]+/g,'-'); }
+
+  async function uploadDocuments(client, files){
+    const urls = [];
+    if(!files || !files.length) return urls;
+    for(const file of files){
+      const path = Date.now() + '-' + Math.random().toString(16).slice(2) + '-' + safeFileName(file.name);
+      const { data, error } = await client.storage.from(DOCUMENT_BUCKET).upload(path, file, { upsert:false });
+      if(error){
+        urls.push({ name:file.name, status:'not_uploaded', reason:error.message });
+      } else {
+        urls.push({ name:file.name, path:data.path, bucket:DOCUMENT_BUCKET, status:'uploaded' });
+      }
+    }
+    return urls;
+  }
+
+  ready(function(){
+    const form = document.getElementById('partner-request-form');
+    const btn = document.getElementById('partner-submit-button');
+    if(!form) return;
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      if(!window.supabase){ alertBox('error', 'Supabase JS n’est pas chargé. Vérifiez la connexion internet ou le script Supabase.'); return; }
+      if(!form.reportValidity()) return;
+
+      const types = Array.from(form.querySelectorAll('input[name="equipment_types"]:checked')).map(el => el.value);
+      if(!types.length){ alertBox('error', 'Sélectionnez au moins un type de matériel proposé.'); return; }
+
+      btn.disabled = true;
+      const originalText = btn.textContent;
+      btn.textContent = 'Envoi en cours...';
+
+      try{
+        const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const { data: authData } = await client.auth.getUser();
+        const user = authData && authData.user ? authData.user : null;
+        const files = form.documents && form.documents.files ? Array.from(form.documents.files) : [];
+        const document_urls = await uploadDocuments(client, files);
+
+        const payload = {
+          user_id: user ? user.id : null,
+          company_name: clean(form.company_name.value),
+          contact_name: clean(form.contact_name.value),
+          email: clean(form.email.value).toLowerCase(),
+          phone: clean(form.phone.value),
+          country: clean(form.country.value),
+          city: clean(form.city.value),
+          equipment_types: types,
+          equipment_count: clean(form.equipment_count.value),
+          message: clean(form.message.value),
+          document_urls: document_urls,
+          status: 'pending',
+          stripe_status: 'not_started'
+        };
+
+        const { error } = await client.from('partner_requests').insert([payload]);
+        if(error) throw error;
+
+        form.reset();
+        alertBox('success', 'Votre demande partenaire a bien été envoyée. Elle est maintenant en attente de validation par RentSoundSystem.');
+      } catch(err){
+        console.error('Partner request error:', err);
+        alertBox('error', 'Impossible d’envoyer la demande. Vérifiez que la table Supabase partner_requests existe et que les politiques RLS sont bien configurées. Détail : ' + (err && err.message ? err.message : err));
+      } finally {
+        btn.disabled = false;
+        btn.textContent = originalText;
+      }
+    });
+  });
+})();
+</script>
 
 <script src="/components.js"></script>
 </body></html>
