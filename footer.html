@@ -1,127 +1,232 @@
-<!-- Footer -->
-<style>
-footer{
-  background:#0e0e0e;
-  border-top:1px solid rgba(255,255,255,.05);
-}
-
-footer .footer-container{
-  max-width:1280px;
-  margin:auto;
-  padding-left:40px;
-  padding-right:40px;
-}
-
-footer .footer-link{
-  color:#e6bcc2;
-  transition:.3s;
-  text-decoration:none;
-}
-
-footer .footer-link:hover{
-  color:#FC036D;
-}
-
-footer .footer-title{
-  color:#ffffff;
-  font-size:12px;
-  font-weight:700;
-  text-transform:uppercase;
-  letter-spacing:.12em;
-}
-
-footer .footer-text{
-  color:#b4b5b5;
-}
-
-footer .footer-social{
-  width:40px;
-  height:40px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:999px;
-  background:#1f1f1f;
-  transition:.3s;
-}
-
-footer .footer-social:hover{
-  background:#FC036D;
-}
-
-@media(max-width:768px){
-  footer .footer-container{
-    padding-left:16px;
-    padding-right:16px;
+<!-- Footer RentSoundSystem - CSS centralisé -->
+<style id="rss-footer-centralized-style">
+  #rss-footer,
+  #rss-footer * {
+    box-sizing: border-box;
   }
-}
+
+  #rss-footer {
+    width: 100%;
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+    padding: 64px 0 32px;
+    color: #e2e2e2;
+    font-family: Inter, Arial, sans-serif;
+  }
+
+  #rss-footer .rss-footer-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  #rss-footer .rss-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+
+  #rss-footer .rss-footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  #rss-footer .rss-footer-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  #rss-footer .rss-footer-logo img {
+    width: 150px;
+    height: auto;
+    display: block;
+  }
+
+  #rss-footer .rss-footer-text {
+    margin: 0;
+    max-width: 320px;
+    color: #e6bcc2;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  #rss-footer .rss-footer-socials {
+    display: flex;
+    gap: 16px;
+  }
+
+  #rss-footer .rss-footer-social {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: #1f1f1f;
+    color: #e2e2e2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: .2s ease;
+  }
+
+  #rss-footer .rss-footer-social:hover {
+    background: #FC036D;
+    color: #ffffff;
+  }
+
+  #rss-footer .rss-footer-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  #rss-footer .rss-footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #rss-footer .rss-footer-link {
+    color: #e6bcc2;
+    font-size: 14px;
+    line-height: 20px;
+    text-decoration: none;
+    transition: .2s ease;
+  }
+
+  #rss-footer .rss-footer-link:hover {
+    color: #FC036D;
+  }
+
+  #rss-footer .rss-footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  #rss-footer .rss-footer-copy,
+  #rss-footer .rss-footer-legal a {
+    color: #b4b5b5;
+    font-size: 14px;
+    line-height: 20px;
+    text-decoration: none;
+  }
+
+  #rss-footer .rss-footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  #rss-footer .rss-footer-legal a:hover {
+    color: #FC036D;
+  }
+
+  @media (max-width: 1024px) {
+    #rss-footer .rss-footer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    #rss-footer {
+      padding-top: 48px;
+      padding-bottom: 28px;
+    }
+
+    #rss-footer .rss-footer-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    #rss-footer .rss-footer-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-bottom: 48px;
+    }
+
+    #rss-footer .rss-footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #rss-footer .rss-footer-legal {
+      justify-content: flex-start;
+      gap: 16px;
+    }
+  }
 </style>
-<footer class="pt-16 pb-8">
-  <div class="mmax-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-      <!-- Brand Column -->
-      <div class="flex flex-col gap-6">
-        <a class="font-headline text-[24px] font-bold text-[#fc036d] tracking-tight" href="/">
-		  <img alt="logo-rentsound" src="/images/categories/logo.png" width="150">
-		</a>
-        <p class="font-body text-[14px] text-on-surface-variant max-w-xs">
+
+<footer id="rss-footer">
+  <div class="rss-footer-container">
+    <div class="rss-footer-grid">
+      <div class="rss-footer-col">
+        <a class="rss-footer-logo" href="/">
+          <img alt="RentSoundSystem" src="/images/categories/logo.png" width="150">
+        </a>
+        <p class="rss-footer-text">
           La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.
         </p>
-        <div class="flex gap-4">
-          <a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-            <span class="material-symbols-outlined text-[20px]">share</span>
-          </a>
-          <a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-            <span class="material-symbols-outlined text-[20px]">public</span>
-          </a>
-          <a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-on-surface hover:bg-primary hover:text-on-primary transition-all" href="#">
-            <span class="material-symbols-outlined text-[20px]">mail</span>
-          </a>
+        <div class="rss-footer-socials">
+          <a class="rss-footer-social" href="#" aria-label="Partager"><span class="material-symbols-outlined">share</span></a>
+          <a class="rss-footer-social" href="#" aria-label="Site"><span class="material-symbols-outlined">public</span></a>
+          <a class="rss-footer-social" href="/contact.html" aria-label="Email"><span class="material-symbols-outlined">mail</span></a>
         </div>
       </div>
-      <!-- Marketplace Column -->
-      <div class="flex flex-col gap-6">
-        <h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Marketplace</h4>
-        <nav class="flex flex-col gap-3">
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/catalog.html">Louer du matériel</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/devenir-partenaire.html">Devenir Partenaire</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/comment-ca-marche.html">Comment ça marche</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/centre-assistance.html">Assurance &amp; Protection</a>
-		  <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/notre-processus.html">Notre Processus</a>
-		  <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/nos-solutions.html">Nos Solutions</a>
+
+      <div class="rss-footer-col">
+        <h4 class="rss-footer-title">Marketplace</h4>
+        <nav class="rss-footer-nav">
+          <a class="rss-footer-link" href="/catalog.html">Louer du matériel</a>
+          <a class="rss-footer-link" href="/devenir-partenaire.html">Devenir Partenaire</a>
+          <a class="rss-footer-link" href="/comment-ca-marche.html">Comment ça marche</a>
+          <a class="rss-footer-link" href="/centre-assistance.html">Assurance &amp; Protection</a>
+          <a class="rss-footer-link" href="/notre-processus.html">Notre Processus</a>
+          <a class="rss-footer-link" href="/nos-solutions.html">Nos Solutions</a>
         </nav>
       </div>
-      <!-- Categories Column -->
-      <div class="flex flex-col gap-6">
-        <h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Catégories</h4>
-        <nav class="flex flex-col gap-3">
-		  <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">DJ Gear</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Sonorisation</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Éclairage</a>     
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="#">Scène &amp; Structures</a>
-		  <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/tarifs.html">Nos tarifs</a>
+
+      <div class="rss-footer-col">
+        <h4 class="rss-footer-title">Catégories</h4>
+        <nav class="rss-footer-nav">
+          <a class="rss-footer-link" href="/catalog.html?category=dj">DJ Gear</a>
+          <a class="rss-footer-link" href="/catalog.html?category=sonorisation">Sonorisation</a>
+          <a class="rss-footer-link" href="/catalog.html?category=eclairage">Éclairage</a>
+          <a class="rss-footer-link" href="/catalog.html?category=scene-structures">Scène &amp; Structures</a>
+          <a class="rss-footer-link" href="/tarifs.html">Nos tarifs</a>
         </nav>
       </div>
-      <!-- Support Column -->
-      <div class="flex flex-col gap-6">
-        <h4 class="font-label text-[12px] text-on-surface uppercase tracking-widest font-bold">Support</h4>
-        <nav class="flex flex-col gap-3">
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/centre-assistance.html">Centre d'aide</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="contact.html">Contactez-nous</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/blog.html">Blog</a>
-          <a class="font-body text-[14px] text-on-surface-variant hover:text-primary transition-colors" href="/faq.html">FAQ</a>
+
+      <div class="rss-footer-col">
+        <h4 class="rss-footer-title">Support</h4>
+        <nav class="rss-footer-nav">
+          <a class="rss-footer-link" href="/centre-assistance.html">Centre d'aide</a>
+          <a class="rss-footer-link" href="/contact.html">Contactez-nous</a>
+          <a class="rss-footer-link" href="/blog.html">Blog</a>
+          <a class="rss-footer-link" href="/faq.html">FAQ</a>
         </nav>
       </div>
     </div>
-    <!-- Bottom Bar -->
-    <div class="pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-      <span class="font-body text-[14px] text-on-secondary-container text-center md:text-left">
-        © 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.
-      </span>
-      <nav class="flex flex-wrap justify-center gap-6">
-        <a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Conditions d'utilisation</a>
-        <a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="#">Politique de confidentialité</a>
-        <a class="font-body text-[14px] text-on-secondary-container hover:text-primary transition-colors" href="/mentions-legales.html">Mentions légales</a>
+
+    <div class="rss-footer-bottom">
+      <span class="rss-footer-copy">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+      <nav class="rss-footer-legal">
+        <a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+        <a href="/politique-confidentialite.html">Politique de confidentialité</a>
+        <a href="/mentions-legales.html">Mentions légales</a>
       </nav>
     </div>
   </div>
