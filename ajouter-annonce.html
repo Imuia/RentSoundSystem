@@ -149,6 +149,14 @@
         .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
     </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body min-h-screen">
 <div class="min-h-screen flex">
@@ -157,7 +165,7 @@
     <nav class="space-y-2 text-on-surface-variant">
       <a href="/tableau-de-bord-partenaire.html" class="block px-4 py-3 rounded-lg hover:bg-surface-container hover:text-primary">Tableau de bord</a>
       <a href="/ajouter-annonce.html" class="block px-4 py-3 rounded-lg bg-primary/10 text-primary border border-primary/30">Ajouter une annonce</a>
-      <a href="/tableau-de-bord-partenaire.html" class="block px-4 py-3 rounded-lg hover:bg-surface-container hover:text-primary">Optimisation IA</a>
+      <a href="/ajouter-annonce.html" class="block px-4 py-3 rounded-lg hover:bg-surface-container hover:text-primary">Optimisation IA</a>
       <a href="/partenaire-paiement.html" class="block px-4 py-3 rounded-lg hover:bg-surface-container hover:text-primary">Paiements</a>
     </nav>
   </aside>
@@ -208,4 +216,6 @@
 <script>window.RSS_PARTNER_PAGE="ajouter-annonce.html";</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/assets/js/partner-flow.js"></script>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body></html>

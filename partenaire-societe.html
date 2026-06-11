@@ -149,8 +149,17 @@
         .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
     </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
+
 </head>
 <body class="font-body-md antialiased min-h-screen flex flex-col">
+<div id="header-container"></div>
 <!-- Standard RentSoundSystem Header -->
 <header class="w-full bg-surface-container-lowest border-b border-surface-glass-border py-4 px-gutter-x">
 <div class="max-w-container-max mx-auto flex justify-between items-center">
@@ -188,7 +197,7 @@
 </div>
 <!-- Form Container -->
 <div class="glass-panel rounded-xl p-8 md:p-12">
-<form action="#" class="space-y-8" method="POST">
+<form action="#" class="space-y-8" method="GET">
 <!-- Form Section: Identity -->
 <div>
 <h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-surface-glass-border pb-2">Identité de l'entreprise</h2>
@@ -270,56 +279,10 @@
 </div>
 </main>
 <!-- SEO-optimized Mega Footer -->
-<footer class="bg-surface-container-lowest border-t border-surface-glass-border pt-16 pb-8 px-gutter-x mt-auto">
-<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-<div class="col-span-1 md:col-span-1">
-<div class="flex items-center gap-2 mb-4">
-<span class="material-symbols-outlined text-primary text-3xl">speaker</span>
-<span class="font-headline-md text-headline-md text-on-surface">RentSoundSystem</span>
-</div>
-<p class="text-on-surface-muted font-body-md mb-4">La première plateforme de location de matériel audio professionnel. Connecter les créateurs avec le meilleur équipement.</p>
-</div>
-<div>
-<h3 class="font-headline-md text-lg text-on-surface mb-4">Équipement</h3>
-<ul class="space-y-2">
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Haut-parleurs &amp; PA</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Microphones</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Tables de mixage</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Éclairage</a></li>
-</ul>
-</div>
-<div>
-<h3 class="font-headline-md text-lg text-on-surface mb-4">Partenaires</h3>
-<ul class="space-y-2">
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Devenir Loueur</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Portail Partenaire</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Ressources &amp; Guides</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Support Partenaire</a></li>
-</ul>
-</div>
-<div>
-<h3 class="font-headline-md text-lg text-on-surface mb-4">Entreprise</h3>
-<ul class="space-y-2">
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">À Propos</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Contact</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Politique de Confidentialité</a></li>
-<li><a class="text-on-surface-muted hover:text-primary transition-colors font-body-md" href="#">Conditions de Service</a></li>
-</ul>
-</div>
-</div>
-<div class="max-w-container-max mx-auto pt-8 border-t border-surface-glass-border flex flex-col md:flex-row justify-between items-center gap-4">
-<span class="text-on-surface-muted font-body-md">© 2024 RentSoundSystem. Tous droits réservés.</span>
-<div class="flex gap-4">
-<a class="text-on-surface-muted hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">language</span>
-</a>
-<a class="text-on-surface-muted hover:text-primary transition-colors" href="#">
-<span class="material-symbols-outlined">share</span>
-</a>
-</div>
-</div>
-</footer>
+
 
 <script>window.RSS_PARTNER_PAGE="partenaire-societe.html";</script>
 <script src="/assets/js/partner-flow.js"></script>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body></html>

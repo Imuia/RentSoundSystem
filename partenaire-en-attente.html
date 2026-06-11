@@ -104,8 +104,17 @@
       }
     </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
+
 </head>
 <body class="bg-surface-dim text-on-surface font-body-md antialiased py-8">
+<div id="header-container"></div>
 <!-- Main Container simulating Email Client -->
 <main class="max-w-2xl mx-auto w-full bg-surface-container-lowest rounded-xl overflow-hidden border border-surface-glass-border shadow-neon-glow">
 <!-- Header -->
@@ -150,20 +159,11 @@
 </div>
 </section>
 <!-- Footer -->
-<footer class="bg-surface-container-highest py-6 px-8 text-center border-t border-surface-glass-border">
-<p class="font-label-caps text-label-caps text-secondary mb-4 uppercase">© 2024 RentSoundSystem Global Audio Marketplace. Professional Partner Network.</p>
-<div class="flex justify-center gap-4 text-sm text-on-surface-variant">
-<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
-<span>•</span>
-<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
-<span>•</span>
-<a class="hover:text-primary transition-colors" href="#">System Status</a>
-<span>•</span>
-<a class="hover:text-primary transition-colors" href="#">Technical Documentation</a>
-</div>
-</footer>
+
 </main>
 
 <script>window.RSS_PARTNER_PAGE="partenaire-en-attente.html";</script>
 <script src="/assets/js/partner-flow.js"></script>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body></html>

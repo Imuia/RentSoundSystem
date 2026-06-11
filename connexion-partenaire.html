@@ -1,26 +1,32 @@
 <!DOCTYPE html><html class="dark" lang="fr"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="preload" href="/header.html" as="fetch" crossorigin><link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Connexion partenaire | RentSoundSystem</title>
+<link rel="preload" href="/header.html" as="fetch" crossorigin><link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-<script>tailwind.config={darkMode:"class",theme:{extend:{colors:{background:"#131313",surface:"#131313","surface-container":"#1f1f1f","surface-container-low":"#1b1b1b","surface-container-lowest":"#0e0e0e","surface-container-high":"#2a2a2a","surface-container-highest":"#353535",primary:"#FC036D","primary-container":"#c40254","on-background":"#e2e2e2","on-surface":"#e2e2e2","on-surface-variant":"#e6bcc2","on-primary":"#ffffff",outline:"#ac878d","outline-variant":"#5d3f44"},fontFamily:{headline:["Manrope","sans-serif"],body:["Inter","sans-serif"],label:["Inter","sans-serif"]}}}}</script>
-<style>body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headline{font-family:Manrope,sans-serif}.glass{background:linear-gradient(145deg,rgba(31,31,31,.92),rgba(14,14,14,.9));border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}.input{background:#fff!important;color:#111!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:10px!important;padding:12px 14px!important;width:100%}.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#FC036D;color:white;padding:14px 22px;border-radius:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px}.btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#2a2a2a;color:#e2e2e2;padding:14px 22px;border-radius:10px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;font-size:13px;border:1px solid rgba(255,255,255,.12)}#header-container{min-height:73px}#footer-container{min-height:320px}</style>
-</head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div>
-<main class="pt-28 pb-20 px-6 md:px-10 max-w-4xl mx-auto">
-  <section class="glass rounded-2xl p-8 md:p-12">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs uppercase tracking-widest mb-6"><span class="material-symbols-outlined text-sm">login</span> Connexion partenaire</div>
-    <h1 class="font-headline text-4xl md:text-5xl font-bold text-white mb-4">Accéder à mon espace partenaire</h1>
-    <p class="text-on-surface-variant mb-8">Entrez l’email utilisé pendant votre inscription partenaire. Si votre dossier est validé, vous accéderez au tableau de bord. Sinon, vous verrez la page d’attente.</p>
-    <form id="partner-login-form" class="space-y-5">
-      <label class="block"><span class="text-sm text-on-surface-variant">Email partenaire</span><input id="partner-login-email" type="email" required class="input mt-2" placeholder="email@exemple.com"></label>
-      <div id="partner-login-message" class="hidden rounded-xl p-4 text-sm border border-outline-variant text-on-surface-variant"></div>
-      <div class="flex flex-col sm:flex-row gap-4">
-        <button class="btn-primary" type="submit">Connexion</button>
-        <a class="btn-secondary" href="/inscription-partenaire.html">Créer une demande partenaire</a>
-      </div>
-    </form>
-  </section>
-</main><div id="footer-container"></div><script src="/components.js"></script><script src="/assets/js/partner-flow.js"></script></body></html>
+<script>tailwind.config={darkMode:'class',theme:{extend:{colors:{background:'#131313',surface:'#131313','surface-container':'#1f1f1f','surface-container-lowest':'#0e0e0e','surface-container-high':'#2a2a2a','surface-container-highest':'#353535',primary:'#FC036D','primary-container':'#c40254','on-background':'#e2e2e2','on-surface':'#e2e2e2','on-surface-variant':'#e6bcc2','on-primary':'#fff',outline:'#ac878d','outline-variant':'#5d3f44'},fontFamily:{headline:['Manrope','sans-serif'],body:['Inter','sans-serif']}}}}</script>
+<style>body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headline{font-family:Manrope,sans-serif}.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.94),rgba(14,14,14,.96));border:1px solid rgba(255,255,255,.08)}input{color:#111!important}#header-container{min-height:73px}#footer-container{min-height:320px}</style>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
+
+</head><body class="min-h-screen flex flex-col bg-background text-on-background"><div id="header-container"></div><main class="flex-grow pt-28 pb-20 px-6 md:px-10">
+<section class="max-w-4xl mx-auto text-center mb-10"><span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary text-xs uppercase tracking-[.18em] font-bold"><span class="material-symbols-outlined text-lg">verified_user</span> Accès partenaire</span><h1 class="font-headline text-4xl md:text-6xl font-extrabold mt-6 mb-4">Connexion partenaire</h1><p class="text-on-surface-variant text-lg">Entrez l’email utilisé lors de votre inscription partenaire pour accéder à votre statut et à votre tableau de bord.</p></section>
+<section class="max-w-2xl mx-auto rss-card rounded-2xl p-6 md:p-8">
+<form id="partner-login-form" class="space-y-5">
+<label class="block"><span class="text-sm font-bold uppercase tracking-widest text-on-surface-variant">Email partenaire</span><input id="partner-email" type="email" required placeholder="exemple@societe.com" class="mt-2 w-full rounded-lg border border-white/10 bg-white px-4 py-4"></label>
+<button id="partner-login-submit" type="submit" class="w-full bg-primary text-white rounded-lg px-6 py-4 font-bold uppercase tracking-wider hover:bg-primary-container transition">Accéder à mon espace</button>
+</form>
+<div id="partner-login-message" class="mt-6 hidden rounded-xl p-5 border"></div>
+<div class="mt-8 text-center text-sm text-on-surface-variant">Pas encore partenaire ? <a href="/devenir-partenaire.html" class="text-primary hover:underline">Faire une demande</a></div>
+</section>
+</main><div id="footer-container"></div><script src="/components.js"></script>
+<script>
+(function(){const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const form=document.getElementById('partner-login-form');const msg=document.getElementById('partner-login-message');function show(type,html){msg.className='mt-6 rounded-xl p-5 border '+(type==='ok'?'border-primary/40 bg-primary/10':'border-yellow-500/30 bg-yellow-500/10');msg.innerHTML=html;msg.classList.remove('hidden')}form.addEventListener('submit',async(e)=>{e.preventDefault();const email=document.getElementById('partner-email').value.trim().toLowerCase();localStorage.setItem('rssPartnerEmail',email);show('wait','Vérification du statut partenaire...');const {data,error}=await client.from('partner_requests').select('*').ilike('email',email).order('created_at',{ascending:false}).limit(1);if(error){show('warn','Impossible de vérifier votre compte pour le moment. Réessayez plus tard.');return}const request=data&&data[0];if(!request){show('warn','Aucune demande partenaire trouvée avec cet email. <a class="text-primary underline" href="/devenir-partenaire.html">Créer une demande partenaire</a>.');return}localStorage.setItem('rssPartnerRequestId',request.id);localStorage.setItem('rssPartnerStatus',request.status||'pending');if(request.status==='approved'){window.location.href='/tableau-de-bord-partenaire.html';return}if(request.status==='rejected'){show('warn','Votre demande n’a pas été validée. Contactez l’équipe RentSoundSystem pour plus d’informations.');return}show('ok','Votre demande est bien enregistrée et en cours de validation. Vous pourrez accéder au tableau de bord après approbation.');});})();
+</script></body></html>

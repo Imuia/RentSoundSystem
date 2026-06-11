@@ -168,8 +168,17 @@
         }
       </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style id="rss-global-component-fix">
+  #header-container { min-height: 73px; }
+  #footer-container { min-height: 320px; }
+  #header-container header { display:block; }
+  #footer-container footer { display:block; }
+</style>
+
 </head>
 <body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<div id="header-container"></div>
 <!-- TopNavBar -->
 <header class="w-full bg-surface-container border-b border-surface-glass-border py-4 px-gutter-x flex justify-between items-center sticky top-0 z-50">
 <div class="font-headline-md text-headline-md text-primary flex items-center gap-2">
@@ -200,7 +209,7 @@
 <div class="bg-surface-glass backdrop-blur-xl border border-surface-glass-border rounded-xl p-8 shadow-2xl relative">
 <!-- Subtle Glow Accent -->
 <div class="absolute -top-10 -left-10 w-32 h-32 bg-primary/20 blur-[60px] rounded-full pointer-events-none"></div>
-<form action="/partenaire-societe.html" class="space-y-6 relative z-10" method="POST">
+<form action="/partenaire-societe.html" class="space-y-6 relative z-10" method="GET">
 <!-- Full Name -->
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="fullName">Nom Personnel</label>
@@ -235,7 +244,7 @@
 </div>
 </form>
 <div class="mt-6 text-center">
-<p class="font-body-md text-on-surface-variant text-sm">Vous avez déjà un compte ? <a class="text-primary hover:underline transition-all" href="#">Se connecter</a></p>
+<p class="font-body-md text-on-surface-variant text-sm">Vous avez déjà un compte ? <a class="text-primary hover:underline transition-all" href="/connexion-partenaire.html">Se connecter</a></p>
 </div>
 </div>
 </div>
@@ -286,44 +295,10 @@
 </div>
 </main>
 <!-- SEO-optimized Mega Footer -->
-<footer class="bg-surface-container-lowest border-t border-surface-glass-border w-full py-12 px-gutter-x mt-auto">
-<div class="max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-<div>
-<div class="font-headline-md text-headline-md text-primary flex items-center gap-2 mb-4">
-<span class="material-symbols-outlined">speaker</span>
-                RentSoundSystem
-            </div>
-<p class="text-on-surface-muted font-body-md text-sm">La plateforme de location d'équipement audio professionnel n°1.</p>
-</div>
-<div>
-<h4 class="font-headline-md text-lg text-on-surface mb-4">Explorer</h4>
-<ul class="space-y-2 text-on-surface-muted font-body-md text-sm">
-<li><a class="hover:text-primary transition-colors" href="#">Sonorisation</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Microphones</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Mixage</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-headline-md text-lg text-on-surface mb-4">Partenaires</h4>
-<ul class="space-y-2 text-on-surface-muted font-body-md text-sm">
-<li><a class="hover:text-primary transition-colors" href="#">Comment ça marche</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Inscription</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Support Partenaire</a></li>
-</ul>
-</div>
-<div>
-<h4 class="font-headline-md text-lg text-on-surface mb-4">Légal</h4>
-<ul class="space-y-2 text-on-surface-muted font-body-md text-sm">
-<li><a class="hover:text-primary transition-colors" href="#">Politique de confidentialité</a></li>
-<li><a class="hover:text-primary transition-colors" href="#">Conditions d'utilisation</a></li>
-</ul>
-</div>
-</div>
-<div class="max-w-container-max mx-auto border-t border-surface-glass-border pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-on-surface-muted">
-<p>© 2024 RentSoundSystem. Tous droits réservés.</p>
-</div>
-</footer>
+
 
 <script>window.RSS_PARTNER_PAGE="inscription-partenaire.html";</script>
 <script src="/assets/js/partner-flow.js"></script>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body></html>
