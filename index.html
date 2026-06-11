@@ -813,14 +813,65 @@ html, body {
     return inRadius.slice(0, limit);
   }
 
-  function newestItems(limit) {
-    return uniqueListings(allListings)
+  function canonicalCity(value) {
+    const v = normalizeText(value)
+      .replace(/\bville\b/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // Alias utiles pour éviter les faux affichages :
+    // Antananarivo et Tananarive désignent la même zone.
+    if (v === 'tananarive' || v === 'antananarivo') return 'antananarivo';
+    if (v === 'tanà' || v === 'tana') return 'antananarivo';
+    return v;
+  }
+
+  function listingLooksLikeCurrentCity(item, center) {
+    const current = canonicalCity(centerCityName(center));
+    if (!current || current === 'votre position' || current === 'autour de vous') return false;
+
+    const candidates = [item && item.city, item && item.location, item && item.address]
+      .map(canonicalCity)
+      .filter(Boolean);
+
+    return candidates.some(function (value) {
+      return value === current;
+    });
+  }
+
+  function uniqueNewestListings(items) {
+    const seen = new Set();
+    return (items || []).filter(function (item) {
+      const title = normalizeText(item && item.title);
+      const city = canonicalCity((item && (item.city || item.location)) || '');
+      const price = String(item && (item.price || ''));
+      const key = [title, city, price].join('|');
+      if (!title || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function newestItems(limit, center) {
+    /*
+      Section “Nouveaux équipements” :
+      - affiche les dernières annonces monde entier ;
+      - limite stricte à 4 ;
+      - évite les doublons visuels ;
+      - n'affiche pas ici les annonces qui ressemblent à la ville actuelle.
+        Si elles sont réellement autour de l'utilisateur, elles doivent apparaître
+        dans “Équipements à proximité”. Cela évite de montrer “Tananarive” dans
+        les nouveautés quand la proximité n'a aucune annonce validée.
+    */
+    const safeCenter = center || currentCenter;
+    return uniqueNewestListings(allListings)
+      .filter(function (item) { return !listingLooksLikeCurrentCity(item, safeCenter); })
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
   }
 
   function newestNearbyItems(center, limit) {
-    return newestItems(limit);
+    return newestItems(limit, center || currentCenter);
   }
 
   function renderProductGrids(center) {
