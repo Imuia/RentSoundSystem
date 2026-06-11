@@ -1,6 +1,63 @@
 <!-- Footer -->
-<footer class="bg-surface-container-lowest border-t border-white/5 pt-16 pb-8">
-  <div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<style>
+footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05);
+}
+
+footer .footer-container{
+  max-width:1280px;
+  margin:auto;
+  padding-left:40px;
+  padding-right:40px;
+}
+
+footer .footer-link{
+  color:#e6bcc2;
+  transition:.3s;
+  text-decoration:none;
+}
+
+footer .footer-link:hover{
+  color:#FC036D;
+}
+
+footer .footer-title{
+  color:#ffffff;
+  font-size:12px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+footer .footer-text{
+  color:#b4b5b5;
+}
+
+footer .footer-social{
+  width:40px;
+  height:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:#1f1f1f;
+  transition:.3s;
+}
+
+footer .footer-social:hover{
+  background:#FC036D;
+}
+
+@media(max-width:768px){
+  footer .footer-container{
+    padding-left:16px;
+    padding-right:16px;
+  }
+}
+</style>
+<footer class="pt-16 pb-8">
+  <div class="mmax-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
       <!-- Brand Column -->
       <div class="flex flex-col gap-6">
