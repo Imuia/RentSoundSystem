@@ -24,26 +24,24 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
 .alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
 @media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
 </style>
-<title>Devenir partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="relative min-h-[760px] flex items-center justify-center overflow-hidden px-6 pt-24 pb-20">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(252,3,109,.18),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)]"></div>
-  <div class="relative z-10 max-w-5xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-8"><span class="material-symbols-outlined text-sm">auto_awesome</span> Programme partenaire</div>
-    <h1 class="hero-title font-headline text-5xl md:text-7xl font-extrabold mb-6 text-white">Monétisez votre parc matériel avec <span class="text-primary">RentSoundSystem</span></h1>
-    <p class="text-xl text-on-surface-variant max-w-3xl mx-auto mb-10">Inscription, validation, publication d’annonces, paiement sécurisé et tableau de bord partenaire : un parcours complet inspiré de la logique officielle RentSoundSystem.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/inscription-partenaire.html" class="btn-primary">Commencer l’inscription</a>
-      <a href="/connexion-partenaire.html" class="btn-secondary">Connexion partenaire</a>
-    </div>
-  </div>
-</section>
-<section class="py-20 px-6 md:px-10 max-w-7xl mx-auto">
-  <div class="grid md:grid-cols-4 gap-6">
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">app_registration</span><h3 class="font-headline text-xl font-bold mt-4">1. Inscription</h3><p class="text-on-surface-variant mt-2">Société, contact, pays, ville et activité.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">inventory_2</span><h3 class="font-headline text-xl font-bold mt-4">2. Matériel</h3><p class="text-on-surface-variant mt-2">Catégories officielles, quantité et état du parc.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">local_shipping</span><h3 class="font-headline text-xl font-bold mt-4">3. Logistique</h3><p class="text-on-surface-variant mt-2">Retrait, livraison, caution, technicien.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">verified_user</span><h3 class="font-headline text-xl font-bold mt-4">4. Validation</h3><p class="text-on-surface-variant mt-2">Dossier en pending, puis approved avant publication.</p></div>
-  </div>
+<title>Ajouter annonce partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
+<section class="pt-28 pb-20 px-6 md:px-10 max-w-5xl mx-auto">
+ <div class="glass rounded-2xl p-8">
+  <h1 class="font-headline text-4xl font-extrabold mb-3">Ajouter une annonce</h1>
+  <p class="text-on-surface-variant mb-8">La publication directe est réservée aux partenaires validés.</p>
+  <div id="ad-message" class="hidden mb-6"></div>
+  <form id="ad-form" class="grid md:grid-cols-2 gap-5">
+   <div><label class="label">Titre annonce</label><input id="ad_title" class="input" required placeholder="Ex : Pioneer CDJ-3000"></div>
+   <div><label class="label">Catégorie</label><select id="ad_category" class="select"><option>Deejay</option><option>Event & production</option><option>Furniture</option><option>Headphone</option><option>Keyboards</option><option>Multimedia</option><option>Sound & lighting</option><option>String instruments</option><option>Studio</option><option>Wind instruments</option></select></div>
+   <div><label class="label">Prix / jour</label><input id="ad_price" type="number" class="input" required placeholder="150"></div>
+   <div><label class="label">Caution</label><input id="ad_deposit" type="number" class="input" placeholder="800"></div>
+   <div><label class="label">Ville</label><input id="ad_city" class="input" required></div>
+   <div><label class="label">Pays</label><input id="ad_country" class="input" required></div>
+   <div class="md:col-span-2"><label class="label">URL image</label><input id="ad_image_url" class="input" placeholder="https://..."></div>
+   <div class="md:col-span-2"><label class="label">Description</label><textarea id="ad_description" class="input" rows="6" required></textarea></div>
+   <div class="md:col-span-2"><button class="btn-primary" type="submit">Enregistrer en attente</button></div>
+  </form>
+ </div>
 </section></main><div id="footer-container"></div>
 <script src="/components.js"></script>
 <script>
@@ -67,4 +65,27 @@ async function fetchPartnerByEmail(email){
 }
 function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
 </script>
-</body></html>
+
+<script>
+let currentPartner=null;
+async function initAd(){
+ const email=getPartnerEmail(); currentPartner=await fetchPartnerByEmail(email);
+ if(!currentPartner || currentPartner.status!=="approved"){
+   document.getElementById("ad-form").classList.add("hidden");
+   showMsg("ad-message","err","Votre compte partenaire doit être validé avant de publier une annonce.");
+   return;
+ }
+ document.getElementById("ad_city").value=currentPartner.city||"";
+ document.getElementById("ad_country").value=currentPartner.country||"";
+}
+document.addEventListener("DOMContentLoaded",initAd);
+document.getElementById("ad-form").addEventListener("submit",async function(e){
+ e.preventDefault();
+ if(!rssSupabase || !currentPartner)return;
+ const payload={partner_request_id:currentPartner.id,title:val("ad_title"),category:val("ad_category"),price:Number(val("ad_price")||0),deposit:Number(val("ad_deposit")||0),city:val("ad_city"),country:val("ad_country"),image_url:val("ad_image_url"),description:val("ad_description"),status:"pending"};
+ const {error}=await rssSupabase.from("partner_listings").insert(payload);
+ if(error){showMsg("ad-message","err","Erreur : "+error.message);return}
+ showMsg("ad-message","ok","Annonce enregistrée. Elle est maintenant en attente de validation.");
+ this.reset();
+});
+</script></body></html>

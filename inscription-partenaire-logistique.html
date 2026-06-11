@@ -24,26 +24,25 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
 .alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
 @media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
 </style>
-<title>Devenir partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="relative min-h-[760px] flex items-center justify-center overflow-hidden px-6 pt-24 pb-20">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(252,3,109,.18),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)]"></div>
-  <div class="relative z-10 max-w-5xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-8"><span class="material-symbols-outlined text-sm">auto_awesome</span> Programme partenaire</div>
-    <h1 class="hero-title font-headline text-5xl md:text-7xl font-extrabold mb-6 text-white">Monétisez votre parc matériel avec <span class="text-primary">RentSoundSystem</span></h1>
-    <p class="text-xl text-on-surface-variant max-w-3xl mx-auto mb-10">Inscription, validation, publication d’annonces, paiement sécurisé et tableau de bord partenaire : un parcours complet inspiré de la logique officielle RentSoundSystem.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/inscription-partenaire.html" class="btn-primary">Commencer l’inscription</a>
-      <a href="/connexion-partenaire.html" class="btn-secondary">Connexion partenaire</a>
-    </div>
-  </div>
-</section>
-<section class="py-20 px-6 md:px-10 max-w-7xl mx-auto">
-  <div class="grid md:grid-cols-4 gap-6">
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">app_registration</span><h3 class="font-headline text-xl font-bold mt-4">1. Inscription</h3><p class="text-on-surface-variant mt-2">Société, contact, pays, ville et activité.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">inventory_2</span><h3 class="font-headline text-xl font-bold mt-4">2. Matériel</h3><p class="text-on-surface-variant mt-2">Catégories officielles, quantité et état du parc.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">local_shipping</span><h3 class="font-headline text-xl font-bold mt-4">3. Logistique</h3><p class="text-on-surface-variant mt-2">Retrait, livraison, caution, technicien.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">verified_user</span><h3 class="font-headline text-xl font-bold mt-4">4. Validation</h3><p class="text-on-surface-variant mt-2">Dossier en pending, puis approved avant publication.</p></div>
-  </div>
+<title>Logistique partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
+<section class="pt-28 pb-20 px-6 md:px-10 max-w-6xl mx-auto">
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 grid-steps">
+  <div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 1</div><div class="font-headline font-bold mt-1">Inscription</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 2</div><div class="font-headline font-bold mt-1">Matériel</div></div><div class="card p-4 step-active"><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 3</div><div class="font-headline font-bold mt-1">Logistique</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 4</div><div class="font-headline font-bold mt-1">KYC</div></div>
+</div>
+<div class="glass rounded-2xl p-8">
+<h1 class="font-headline text-4xl font-extrabold mb-3">Logistique et couverture</h1>
+<form id="form-step3" class="grid md:grid-cols-2 gap-5 mt-8">
+  <div><label class="label">Zone couverte</label><input id="coverage_area" class="input" placeholder="Ville, région, pays"></div>
+  <div><label class="label">Rayon de livraison</label><input id="delivery_radius" class="input" placeholder="Ex : 50 km"></div>
+  <div><label class="label">Mode de remise</label><select id="handover_mode" class="select"><option>Retrait chez le partenaire</option><option>Livraison possible</option><option>Retrait + livraison</option></select></div>
+  <div><label class="label">Technicien disponible</label><select id="technician_available" class="select"><option>Oui</option><option>Non</option><option>Selon disponibilité</option></select></div>
+  <div><label class="label">Caution souhaitée</label><input id="deposit_policy" class="input" placeholder="Ex : Stripe caution 800 €"></div>
+  <div><label class="label">Assurance</label><select id="insurance_status" class="select"><option>Assurance professionnelle</option><option>Assurance à compléter</option><option>À discuter</option></select></div>
+  <div class="md:col-span-2"><label class="label">Notes logistiques</label><textarea id="logistics_notes" class="input" rows="5" placeholder="Horaires, conditions de remise, contraintes..."></textarea></div>
+  <div class="md:col-span-2 flex flex-col sm:flex-row justify-between gap-3"><a class="btn-secondary" href="/inscription-partenaire-materiel.html">Retour</a><button class="btn-primary" type="submit">Continuer</button></div>
+</form>
+</div>
 </section></main><div id="footer-container"></div>
 <script src="/components.js"></script>
 <script>
@@ -67,4 +66,12 @@ async function fetchPartnerByEmail(email){
 }
 function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
 </script>
-</body></html>
+
+<script>
+document.addEventListener("DOMContentLoaded", fillFromDraft);
+document.getElementById("form-step3").addEventListener("submit",function(e){
+ e.preventDefault();
+ setDraft({coverage_area:val("coverage_area"),delivery_radius:val("delivery_radius"),handover_mode:val("handover_mode"),technician_available:val("technician_available"),deposit_policy:val("deposit_policy"),insurance_status:val("insurance_status"),logistics_notes:val("logistics_notes")});
+ location.href="/inscription-partenaire-kyc.html";
+});
+</script></body></html>

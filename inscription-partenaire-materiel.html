@@ -24,26 +24,28 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
 .alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
 @media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
 </style>
-<title>Devenir partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="relative min-h-[760px] flex items-center justify-center overflow-hidden px-6 pt-24 pb-20">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(252,3,109,.18),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)]"></div>
-  <div class="relative z-10 max-w-5xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-8"><span class="material-symbols-outlined text-sm">auto_awesome</span> Programme partenaire</div>
-    <h1 class="hero-title font-headline text-5xl md:text-7xl font-extrabold mb-6 text-white">Monétisez votre parc matériel avec <span class="text-primary">RentSoundSystem</span></h1>
-    <p class="text-xl text-on-surface-variant max-w-3xl mx-auto mb-10">Inscription, validation, publication d’annonces, paiement sécurisé et tableau de bord partenaire : un parcours complet inspiré de la logique officielle RentSoundSystem.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/inscription-partenaire.html" class="btn-primary">Commencer l’inscription</a>
-      <a href="/connexion-partenaire.html" class="btn-secondary">Connexion partenaire</a>
-    </div>
+<title>Matériel partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
+<section class="pt-28 pb-20 px-6 md:px-10 max-w-6xl mx-auto">
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 grid-steps">
+  <div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 1</div><div class="font-headline font-bold mt-1">Inscription</div></div><div class="card p-4 step-active"><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 2</div><div class="font-headline font-bold mt-1">Matériel</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 3</div><div class="font-headline font-bold mt-1">Logistique</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 4</div><div class="font-headline font-bold mt-1">KYC</div></div>
+</div>
+<div class="glass rounded-2xl p-8">
+<h1 class="font-headline text-4xl font-extrabold mb-3">Votre parc matériel</h1>
+<p class="text-on-surface-variant mb-8">Sélectionnez les catégories officielles proposées sur RentSoundSystem.</p>
+<form id="form-step2" class="space-y-6">
+  <div class="grid md:grid-cols-3 gap-4">
+    <label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Deejay" class="mr-2 text-primary"> Deejay</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Event & production" class="mr-2 text-primary"> Event & production</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Furniture" class="mr-2 text-primary"> Furniture</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Headphone" class="mr-2 text-primary"> Headphone</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Keyboards" class="mr-2 text-primary"> Keyboards</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Multimedia" class="mr-2 text-primary"> Multimedia</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Sound & lighting" class="mr-2 text-primary"> Sound & lighting</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="String instruments" class="mr-2 text-primary"> String instruments</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Studio" class="mr-2 text-primary"> Studio</label><label class="card p-4 cursor-pointer"><input type="checkbox" name="categories" value="Wind instruments" class="mr-2 text-primary"> Wind instruments</label>
   </div>
-</section>
-<section class="py-20 px-6 md:px-10 max-w-7xl mx-auto">
-  <div class="grid md:grid-cols-4 gap-6">
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">app_registration</span><h3 class="font-headline text-xl font-bold mt-4">1. Inscription</h3><p class="text-on-surface-variant mt-2">Société, contact, pays, ville et activité.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">inventory_2</span><h3 class="font-headline text-xl font-bold mt-4">2. Matériel</h3><p class="text-on-surface-variant mt-2">Catégories officielles, quantité et état du parc.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">local_shipping</span><h3 class="font-headline text-xl font-bold mt-4">3. Logistique</h3><p class="text-on-surface-variant mt-2">Retrait, livraison, caution, technicien.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">verified_user</span><h3 class="font-headline text-xl font-bold mt-4">4. Validation</h3><p class="text-on-surface-variant mt-2">Dossier en pending, puis approved avant publication.</p></div>
+  <div class="grid md:grid-cols-3 gap-5">
+    <div><label class="label">Nombre d’équipements</label><input id="equipment_count" type="number" min="1" class="input" placeholder="Ex : 25"></div>
+    <div><label class="label">Valeur estimée du parc</label><input id="fleet_value" class="input" placeholder="Ex : 45000 €"></div>
+    <div><label class="label">État général</label><select id="equipment_condition" class="select"><option>Excellent</option><option>Bon</option><option>À vérifier</option></select></div>
   </div>
+  <div><label class="label">Description rapide du parc</label><textarea id="equipment_description" class="input" rows="5" placeholder="Marques, modèles, quantités, prestations possibles..."></textarea></div>
+  <div class="flex flex-col sm:flex-row justify-between gap-3"><a class="btn-secondary" href="/inscription-partenaire.html">Retour</a><button class="btn-primary" type="submit">Continuer</button></div>
+</form>
+</div>
 </section></main><div id="footer-container"></div>
 <script src="/components.js"></script>
 <script>
@@ -67,4 +69,12 @@ async function fetchPartnerByEmail(email){
 }
 function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
 </script>
-</body></html>
+
+<script>
+document.addEventListener("DOMContentLoaded", fillFromDraft);
+document.getElementById("form-step2").addEventListener("submit",function(e){
+ e.preventDefault();
+ setDraft({categories:checkedValues("categories"),equipment_count:val("equipment_count"),fleet_value:val("fleet_value"),equipment_condition:val("equipment_condition"),equipment_description:val("equipment_description")});
+ location.href="/inscription-partenaire-logistique.html";
+});
+</script></body></html>

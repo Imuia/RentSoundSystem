@@ -24,26 +24,27 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
 .alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
 @media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
 </style>
-<title>Devenir partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="relative min-h-[760px] flex items-center justify-center overflow-hidden px-6 pt-24 pb-20">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(252,3,109,.18),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)]"></div>
-  <div class="relative z-10 max-w-5xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-8"><span class="material-symbols-outlined text-sm">auto_awesome</span> Programme partenaire</div>
-    <h1 class="hero-title font-headline text-5xl md:text-7xl font-extrabold mb-6 text-white">Monétisez votre parc matériel avec <span class="text-primary">RentSoundSystem</span></h1>
-    <p class="text-xl text-on-surface-variant max-w-3xl mx-auto mb-10">Inscription, validation, publication d’annonces, paiement sécurisé et tableau de bord partenaire : un parcours complet inspiré de la logique officielle RentSoundSystem.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/inscription-partenaire.html" class="btn-primary">Commencer l’inscription</a>
-      <a href="/connexion-partenaire.html" class="btn-secondary">Connexion partenaire</a>
-    </div>
-  </div>
-</section>
-<section class="py-20 px-6 md:px-10 max-w-7xl mx-auto">
-  <div class="grid md:grid-cols-4 gap-6">
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">app_registration</span><h3 class="font-headline text-xl font-bold mt-4">1. Inscription</h3><p class="text-on-surface-variant mt-2">Société, contact, pays, ville et activité.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">inventory_2</span><h3 class="font-headline text-xl font-bold mt-4">2. Matériel</h3><p class="text-on-surface-variant mt-2">Catégories officielles, quantité et état du parc.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">local_shipping</span><h3 class="font-headline text-xl font-bold mt-4">3. Logistique</h3><p class="text-on-surface-variant mt-2">Retrait, livraison, caution, technicien.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">verified_user</span><h3 class="font-headline text-xl font-bold mt-4">4. Validation</h3><p class="text-on-surface-variant mt-2">Dossier en pending, puis approved avant publication.</p></div>
-  </div>
+<title>KYC partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
+<section class="pt-28 pb-20 px-6 md:px-10 max-w-6xl mx-auto">
+
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 grid-steps">
+  <div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 1</div><div class="font-headline font-bold mt-1">Inscription</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 2</div><div class="font-headline font-bold mt-1">Matériel</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 3</div><div class="font-headline font-bold mt-1">Logistique</div></div><div class="card p-4 step-active"><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 4</div><div class="font-headline font-bold mt-1">KYC</div></div>
+</div>
+<div class="grid lg:grid-cols-3 gap-8">
+<div class="lg:col-span-2 glass rounded-2xl p-8">
+<h1 class="font-headline text-4xl font-extrabold mb-3">Vérification & KYC</h1>
+<p class="text-on-surface-variant mb-8">Ajoutez les informations de vérification. Les documents peuvent être ajoutés en URL pour commencer.</p>
+<form id="form-kyc" class="grid md:grid-cols-2 gap-5">
+  <div><label class="label">Numéro société / ICE / SIRET</label><input id="registration_number" class="input" placeholder="Identifiant société"></div>
+  <div><label class="label">TVA / Tax ID</label><input id="tax_id" class="input" placeholder="Optionnel"></div>
+  <div class="md:col-span-2"><label class="label">Liens documents</label><textarea id="document_urls" class="input" rows="4" placeholder="Lien Google Drive, PDF, RIB, assurance, pièce société..."></textarea></div>
+  <div class="md:col-span-2"><label class="flex items-start gap-3 text-on-surface-variant"><input id="accept_terms" type="checkbox" required class="mt-1 text-primary"> J’atteste que les informations transmises sont exactes et j’accepte d’être contacté par RentSoundSystem.</label></div>
+  <div id="kyc-message" class="hidden md:col-span-2"></div>
+  <div class="md:col-span-2 flex flex-col sm:flex-row justify-between gap-3"><a class="btn-secondary" href="/inscription-partenaire-logistique.html">Retour</a><button id="submit-kyc" class="btn-primary" type="submit">Soumettre le dossier</button></div>
+</form>
+</div>
+<aside class="card p-7"><h2 class="font-headline text-2xl font-bold mb-4">Après soumission</h2><p class="text-on-surface-variant">Votre statut sera <b>pending</b>. Après validation admin, vous pourrez ajouter des annonces et accéder au paiement.</p></aside>
+</div>
 </section></main><div id="footer-container"></div>
 <script src="/components.js"></script>
 <script>
@@ -67,4 +68,24 @@ async function fetchPartnerByEmail(email){
 }
 function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
 </script>
-</body></html>
+
+<script>
+document.addEventListener("DOMContentLoaded", fillFromDraft);
+document.getElementById("form-kyc").addEventListener("submit",async function(e){
+ e.preventDefault();
+ const d=Object.assign(getDraft(),{registration_number:val("registration_number"),tax_id:val("tax_id"),document_urls:val("document_urls"),status:"pending",payment_status:"unpaid"});
+ if(!d.email||!d.company_name||!d.full_name){showMsg("kyc-message","err","Veuillez revenir à l’étape 1 et compléter les champs obligatoires.");return}
+ document.getElementById("submit-kyc").disabled=true;
+ if(!rssSupabase){showMsg("kyc-message","err","Supabase n’est pas chargé.");return}
+ const payload={
+   company_name:d.company_name, full_name:d.full_name, email:d.email, phone:d.phone, country:d.country, city:d.city, website:d.website,
+   categories:d.categories||[], equipment_count:Number(d.equipment_count||0), fleet_value:d.fleet_value, equipment_condition:d.equipment_condition, equipment_description:d.equipment_description,
+   coverage_area:d.coverage_area, delivery_radius:d.delivery_radius, handover_mode:d.handover_mode, technician_available:d.technician_available, deposit_policy:d.deposit_policy, insurance_status:d.insurance_status, logistics_notes:d.logistics_notes,
+   registration_number:d.registration_number, tax_id:d.tax_id, document_urls:d.document_urls, status:"pending", payment_status:"unpaid"
+ };
+ const {data,error}=await rssSupabase.from("partner_requests").insert(payload).select().single();
+ if(error){console.error(error);showMsg("kyc-message","err","Erreur Supabase : "+error.message);document.getElementById("submit-kyc").disabled=false;return}
+ setPartnerSession(d.email); localStorage.setItem("rss_partner_request_id",data.id); localStorage.removeItem("rss_partner_draft");
+ location.href="/partenaire-soumis.html";
+});
+</script></body></html>

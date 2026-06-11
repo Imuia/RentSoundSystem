@@ -24,26 +24,26 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
 .alert{border:1px solid rgba(252,3,109,.3);background:rgba(252,3,109,.08);color:#e6bcc2;border-radius:14px;padding:16px}
 @media(max-width:768px){.hero-title{font-size:38px!important;line-height:44px!important}.grid-steps{grid-template-columns:1fr!important}}
 </style>
-<title>Devenir partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
-<section class="relative min-h-[760px] flex items-center justify-center overflow-hidden px-6 pt-24 pb-20">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_10%,rgba(252,3,109,.18),transparent_35%),linear-gradient(180deg,#131313,#0e0e0e)]"></div>
-  <div class="relative z-10 max-w-5xl mx-auto text-center">
-    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/30 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-8"><span class="material-symbols-outlined text-sm">auto_awesome</span> Programme partenaire</div>
-    <h1 class="hero-title font-headline text-5xl md:text-7xl font-extrabold mb-6 text-white">Monétisez votre parc matériel avec <span class="text-primary">RentSoundSystem</span></h1>
-    <p class="text-xl text-on-surface-variant max-w-3xl mx-auto mb-10">Inscription, validation, publication d’annonces, paiement sécurisé et tableau de bord partenaire : un parcours complet inspiré de la logique officielle RentSoundSystem.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/inscription-partenaire.html" class="btn-primary">Commencer l’inscription</a>
-      <a href="/connexion-partenaire.html" class="btn-secondary">Connexion partenaire</a>
-    </div>
-  </div>
-</section>
-<section class="py-20 px-6 md:px-10 max-w-7xl mx-auto">
-  <div class="grid md:grid-cols-4 gap-6">
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">app_registration</span><h3 class="font-headline text-xl font-bold mt-4">1. Inscription</h3><p class="text-on-surface-variant mt-2">Société, contact, pays, ville et activité.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">inventory_2</span><h3 class="font-headline text-xl font-bold mt-4">2. Matériel</h3><p class="text-on-surface-variant mt-2">Catégories officielles, quantité et état du parc.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">local_shipping</span><h3 class="font-headline text-xl font-bold mt-4">3. Logistique</h3><p class="text-on-surface-variant mt-2">Retrait, livraison, caution, technicien.</p></div>
-    <div class="card p-7"><span class="material-symbols-outlined text-primary text-4xl">verified_user</span><h3 class="font-headline text-xl font-bold mt-4">4. Validation</h3><p class="text-on-surface-variant mt-2">Dossier en pending, puis approved avant publication.</p></div>
-  </div>
+<title>Tableau de bord partenaire | RentSoundSystem</title></head><body class="min-h-screen bg-background text-on-background"><div id="header-container"></div><main>
+<section class="pt-28 pb-20 px-6 md:px-10 max-w-7xl mx-auto">
+ <div class="flex flex-col md:flex-row md:items-end justify-between gap-5 mb-8">
+  <div><h1 class="font-headline text-4xl md:text-5xl font-extrabold">Tableau de bord partenaire</h1><p id="dash-subtitle" class="text-primary mt-2">Chargement du statut...</p></div>
+  <div class="flex gap-3"><a class="btn-secondary" href="/connexion-partenaire.html">Changer email</a><a id="add-ad-btn" class="btn-primary" href="/ajouter-annonce.html">Ajouter annonce</a></div>
+ </div>
+ <div id="dashboard-alert" class="hidden mb-8"></div>
+ <div class="grid md:grid-cols-4 gap-5 mb-8">
+  <div class="card p-6"><div class="text-on-surface-variant text-sm">Statut</div><div id="kpi-status" class="font-headline text-2xl font-bold mt-2">-</div></div>
+  <div class="card p-6"><div class="text-on-surface-variant text-sm">Paiement</div><div id="kpi-payment" class="font-headline text-2xl font-bold mt-2">-</div></div>
+  <div class="card p-6"><div class="text-on-surface-variant text-sm">Annonces</div><div id="kpi-ads" class="font-headline text-2xl font-bold mt-2">0</div></div>
+  <div class="card p-6"><div class="text-on-surface-variant text-sm">Demandes</div><div class="font-headline text-2xl font-bold mt-2">0</div></div>
+ </div>
+ <div class="grid lg:grid-cols-3 gap-6">
+  <a class="card p-7 hover:border-primary/50 transition" href="/partenaire-paiement.html"><span class="material-symbols-outlined text-primary text-4xl">payments</span><h2 class="font-headline text-2xl font-bold mt-4">Paiement partenaire</h2><p class="text-on-surface-variant mt-2">Activation, abonnement ou paiement sécurisé.</p></a>
+  <a class="card p-7 hover:border-primary/50 transition" href="/ajouter-annonce.html"><span class="material-symbols-outlined text-primary text-4xl">post_add</span><h2 class="font-headline text-2xl font-bold mt-4">Ajouter une annonce</h2><p class="text-on-surface-variant mt-2">Accessible uniquement si le statut partenaire est validé.</p></a>
+  <a class="card p-7 hover:border-primary/50 transition" href="/partenaire-analytics.html"><span class="material-symbols-outlined text-primary text-4xl">analytics</span><h2 class="font-headline text-2xl font-bold mt-4">Analytics</h2><p class="text-on-surface-variant mt-2">Suivi des revenus et performances.</p></a>
+  <a class="card p-7 hover:border-primary/50 transition" href="/partenaire-process-paiement.html"><span class="material-symbols-outlined text-primary text-4xl">account_tree</span><h2 class="font-headline text-2xl font-bold mt-4">Process paiement</h2><p class="text-on-surface-variant mt-2">Comprendre caution, paiement et reversement.</p></a>
+  <a class="card p-7 hover:border-primary/50 transition" href="/partenaire-litige.html"><span class="material-symbols-outlined text-primary text-4xl">gavel</span><h2 class="font-headline text-2xl font-bold mt-4">Litiges</h2><p class="text-on-surface-variant mt-2">Suivi d’un dossier de litige ou caution.</p></a>
+ </div>
 </section></main><div id="footer-container"></div>
 <script src="/components.js"></script>
 <script>
@@ -67,4 +67,26 @@ async function fetchPartnerByEmail(email){
 }
 function statusLabel(status){return status==="approved"?"Validé":status==="rejected"?"Refusé":"En validation"}
 </script>
-</body></html>
+
+<script>
+async function loadDashboard(){
+ const email=getPartnerEmail();
+ if(!email){location.href="/connexion-partenaire.html";return}
+ const partner=await fetchPartnerByEmail(email);
+ const status=partner?.status || localStorage.getItem("rss_partner_status") || "pending";
+ const payment=partner?.payment_status || "unpaid";
+ document.getElementById("dash-subtitle").textContent = partner ? (partner.company_name+" • "+partner.city+", "+partner.country) : email;
+ document.getElementById("kpi-status").textContent=statusLabel(status);
+ document.getElementById("kpi-payment").textContent= payment==="paid"?"Payé":"Non payé";
+ const add=document.getElementById("add-ad-btn");
+ if(status!=="approved"){
+   add.href="#"; add.classList.add("opacity-50","pointer-events-none");
+   showMsg("dashboard-alert","err","<strong>Compte en validation.</strong><br>Votre dossier doit être validé par l’administration avant de publier des annonces. Statut actuel : "+statusLabel(status)+".");
+ }
+ if(rssSupabase && partner){
+   const {count}=await rssSupabase.from("partner_listings").select("*",{count:"exact",head:true}).eq("partner_request_id",partner.id);
+   document.getElementById("kpi-ads").textContent=count||0;
+ }
+}
+document.addEventListener("DOMContentLoaded",loadDashboard);
+</script></body></html>
