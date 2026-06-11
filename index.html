@@ -121,6 +121,34 @@
 
   .rss-loading-products { color:#e6bcc2; font-size:14px; padding:18px 0; }
   .rss-card-placeholder { position:absolute; inset:0; background:radial-gradient(circle at 35% 20%, rgba(252,3,109,.22), transparent 35%), linear-gradient(135deg,#242424,#111); opacity:.9; }
+  .rss-empty-state {
+    grid-column: 1 / -1;
+    background: linear-gradient(145deg, rgba(31,31,31,.92), rgba(14,14,14,.96));
+    border: 1px solid rgba(252,3,109,.25);
+    border-radius: 14px;
+    padding: 28px;
+    color: #e6bcc2;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .rss-empty-state .material-symbols-outlined {
+    color: #FC036D;
+    font-size: 28px;
+    flex: 0 0 auto;
+  }
+  .rss-empty-state strong {
+    display:block;
+    color:#e2e2e2;
+    margin-bottom:6px;
+    font-family: Manrope, sans-serif;
+  }
+  .rss-empty-state p {
+    margin:0;
+    color:#e6bcc2;
+    line-height:1.55;
+  }
+
 </style>
 
 <script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
@@ -762,7 +790,7 @@ html, body {
   }
 
   function newestItems(limit) {
-    return equipmentFilter(allListings)
+    return uniqueListings(allListings)
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
   }
@@ -775,17 +803,17 @@ html, body {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
     const nearest = nearbyItems(center || currentCenter, 4);
-    const newest = newestNearbyItems(center || currentCenter, 8);
+    const newest = newestNearbyItems(center || currentCenter, 4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
         ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-loading-products col-span-full">Aucun équipement disponible dans votre pays et dans un rayon de 150 km autour de cette position.</div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible autour de votre ville.</strong><p>Il n’existe pas encore d’annonce disponible autour de votre ville ou dans votre pays. Vous pouvez essayer une autre ville ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-loading-products col-span-full">Aucune nouvelle annonce trouvée autour de votre ville ou pays.</div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucune nouvelle annonce disponible.</strong><p>Les dernières annonces publiées apparaîtront ici dès qu’elles seront disponibles.</p></div></div>';
     }
   }
 
@@ -1031,7 +1059,7 @@ html, body {
       const nearest = nearbyItems(city, 4);
       if (!nearest.length) {
         const nearestGrid = document.getElementById('nearest-products-grid');
-        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-loading-products col-span-full">Aucun équipement trouvé autour de cette ville.</div>';
+        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible autour de cette ville.</strong><p>Il n’existe pas encore d’annonce disponible autour de votre ville ou dans votre pays. Essayez une autre ville ou consultez les dernières annonces publiées dans le monde.</p></div></div>';
       }
 
       document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
