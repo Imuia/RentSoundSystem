@@ -1468,9 +1468,9 @@ html, body {
       function () {
         if (!showError && manualSearchDone) return;
         const saved = loadSavedLocation();
-        if (saved) {
-          updateCenter(saved, { isSaved: true });
-        } else {
+        if (saved && saved.source === 'geolocation') {
+          updateCenter(saved, { isGeolocation: true });
+        } else if (showError) {
           updateCenter(DEFAULT_CITY, { isFallback: true });
         }
         if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
@@ -1521,6 +1521,23 @@ html, body {
     updateCenter(DEFAULT_CITY, { isGeolocation: false });
   }
 
+  function autoLocateOnLoad() {
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+
+    // Sécurité importante : si l'utilisateur a commencé à saisir une ville
+    // ou a déjà lancé une recherche, la géolocalisation automatique ne doit jamais écraser son choix.
+    if (manualSearchDone) return;
+    if (cityInput && cityInput.value && cityInput.value.trim()) return;
+
+    const saved = loadSavedLocation();
+    if (saved && saved.source === 'geolocation') {
+      updateCenter(saved, { isGeolocation: true });
+      return;
+    }
+
+    locateUser(false);
+  }
+
 
   ready(function () {
     showLoading();
@@ -1534,6 +1551,10 @@ html, body {
     if (cityInput) {
       cityInput.setAttribute('autocomplete', 'off');
       cityInput.value = '';
+      cityInput.addEventListener('input', function () {
+        // Dès que le visiteur tape une ville, on bloque l'auto-géolocalisation en cours.
+        if (cityInput.value && cityInput.value.trim()) manualSearchDone = true;
+      });
     }
     if (equipmentInput) {
       equipmentInput.setAttribute('autocomplete', 'off');
@@ -1541,9 +1562,10 @@ html, body {
 
     loadListings();
 
-    // Chargement stable : Paris par défaut, puis l'utilisateur choisit une ville
-    // ou clique explicitement sur "Utiliser ma position".
+    // Chargement stable : Paris par défaut immédiatement, puis géolocalisation automatique
+    // uniquement si le visiteur n'a pas commencé une recherche manuelle.
     updateCenter(DEFAULT_CITY, { isFallback: true });
+    setTimeout(autoLocateOnLoad, 900);
 
     document.getElementById('use-my-location')?.addEventListener('click', function () {
       locateUser(true);
