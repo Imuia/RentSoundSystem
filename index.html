@@ -493,6 +493,13 @@ html, body {
 (function () {
   'use strict';
 
+  try {
+    const savedStart = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
+    if (savedStart && savedStart.source !== 'geolocation') localStorage.removeItem('rssUserLocation');
+  } catch (e) {
+    localStorage.removeItem('rssUserLocation');
+  }
+
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
@@ -837,6 +844,10 @@ html, body {
   }
 
   function saveLocation(center) {
+    // On mémorise uniquement la vraie géolocalisation utilisateur.
+    // Une recherche manuelle comme Cannes, Agadir ou Maroc ne doit jamais devenir
+    // la localisation par défaut après actualisation de la page.
+    if (!center || center.source !== 'geolocation') return;
     try {
       localStorage.setItem('rssUserLocation', JSON.stringify({
         name: center.name,
@@ -845,7 +856,8 @@ html, body {
         lat: center.lat,
         lng: center.lng,
         zoom: center.zoom || 13,
-        savedAt: Date.now()
+        savedAt: Date.now(),
+        source: 'geolocation'
       }));
     } catch (e) {}
   }
@@ -854,6 +866,15 @@ html, body {
     try {
       const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
       if (!saved || !saved.lat || !saved.lng) return null;
+      if (saved.source !== 'geolocation') {
+        localStorage.removeItem('rssUserLocation');
+        return null;
+      }
+      // Évite de garder une ancienne position pendant des jours.
+      if (saved.savedAt && Date.now() - Number(saved.savedAt) > 24 * 60 * 60 * 1000) {
+        localStorage.removeItem('rssUserLocation');
+        return null;
+      }
       return saved;
     } catch (e) { return null; }
   }
@@ -1147,7 +1168,7 @@ html, body {
 
   function updateCenter(center, options) {
     currentCenter = Object.assign({}, DEFAULT_CITY, { country: '', countryCode: '' }, center || {});
-    saveLocation(currentCenter);
+    if (options && options.isGeolocation) saveLocation(Object.assign({}, currentCenter, { source: 'geolocation' }));
     setLabels(currentCenter.name || 'Votre position');
     setHeroCityInput(currentCenter.name || '');
 
@@ -1288,7 +1309,7 @@ html, body {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const place = await reversePlace(lat, lng);
-        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13 }, { isGeolocation: true });
+        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13, source: 'geolocation' }, { isGeolocation: true });
       },
       function () {
         if (!showError && manualSearchDone) return;
