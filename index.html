@@ -1451,8 +1451,6 @@ html, body {
   }
 
   async function locateByIpFallback(showError) {
-    // Fallback automatique quand le navigateur refuse ou bloque la géolocalisation GPS.
-    // Cela donne une localisation approximative ville/pays sans casser la recherche manuelle.
     if (manualSearchDone) return false;
 
     try {
@@ -1482,9 +1480,7 @@ html, body {
       return true;
     } catch (e) {
       console.warn('Géolocalisation IP impossible:', e);
-      if (showError) {
-        alert('Position indisponible. Tapez une ville ou un code postal dans la recherche.');
-      }
+      if (showError) alert('Position indisponible. Tapez une ville ou un code postal dans la recherche.');
       return false;
     }
   }
@@ -1511,7 +1507,6 @@ html, body {
           return;
         }
 
-        // Si le GPS navigateur est refusé/bloqué, on utilise une localisation IP approximative.
         const fallbackOk = await locateByIpFallback(showError);
         if (!fallbackOk && showError) {
           updateCenter(DEFAULT_CITY, { isFallback: true });
@@ -1564,12 +1559,9 @@ html, body {
   }
 
   function autoLocateOnLoad() {
-    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-
     // Sécurité importante : si l'utilisateur a commencé à saisir une ville
     // ou a déjà lancé une recherche, la géolocalisation automatique ne doit jamais écraser son choix.
     if (manualSearchDone) return;
-    if (cityInput && cityInput.value && cityInput.value.trim()) return;
 
     const saved = loadSavedLocation();
     if (saved && saved.source === 'geolocation') {
@@ -1578,6 +1570,8 @@ html, body {
     }
 
     // Appel silencieux sécurisé : GPS navigateur, puis fallback IP si refusé/bloqué.
+    // Attention : on ne teste PAS la valeur du champ ville ici, car Paris est injecté
+    // automatiquement au chargement comme ville par défaut.
     locateUser(false);
   }
 
