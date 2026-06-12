@@ -493,13 +493,6 @@ html, body {
 (function () {
   'use strict';
 
-  try {
-    const savedStart = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
-    if (savedStart && savedStart.source !== 'geolocation') localStorage.removeItem('rssUserLocation');
-  } catch (e) {
-    localStorage.removeItem('rssUserLocation');
-  }
-
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
@@ -638,8 +631,7 @@ html, body {
     be: ['be', 'belgique', 'belgium'],
     ch: ['ch', 'suisse', 'switzerland'],
     us: ['us', 'usa', 'etats unis', 'états unis', 'united states'],
-    gb: ['gb', 'uk', 'royaume uni', 'united kingdom'],
-    ae: ['ae', 'uae', 'emirats arabes unis', 'émirats arabes unis', 'united arab emirates', 'dubai', 'dubaï']
+    gb: ['gb', 'uk', 'royaume uni', 'united kingdom']
   };
 
   const COUNTRY_DISPLAY = {
@@ -650,41 +642,8 @@ html, body {
     be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7 },
     ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7 },
     us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4 },
-    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 },
-    ae: { name: 'Émirats arabes unis', country: 'United Arab Emirates', countryCode: 'ae', lat: 23.4241, lng: 53.8478, zoom: 7 }
+    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 }
   };
-
-
-  const GEO_PRESETS = {
-    agadir: { name: 'Agadir', country: 'Maroc', countryCode: 'ma', lat: 30.4278, lng: -9.5981, zoom: 12, searchType: 'city' },
-    maroc: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
-    morocco: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
-    cannes: { name: 'Cannes', country: 'France', countryCode: 'fr', lat: 43.5528, lng: 7.0174, zoom: 12, searchType: 'city' },
-    paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 12, searchType: 'city' },
-    france: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, searchType: 'country' },
-    antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
-    tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
-    madagascar: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, searchType: 'country' },
-    casablanca: { name: 'Casablanca', country: 'Maroc', countryCode: 'ma', lat: 33.5731, lng: -7.5898, zoom: 12, searchType: 'city' },
-    marrakech: { name: 'Marrakech', country: 'Maroc', countryCode: 'ma', lat: 31.6295, lng: -7.9811, zoom: 12, searchType: 'city' },
-    rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 12, searchType: 'city' },
-    essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 12, searchType: 'city' },
-    taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 12, searchType: 'city' },
-    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' },
-    'santa eularia des riu': { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 12, searchType: 'city' },
-    ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 12, searchType: 'city' },
-    'dubaï': { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
-    dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
-    toulouse: { name: 'Toulouse', country: 'France', countryCode: 'fr', lat: 43.6047, lng: 1.4442, zoom: 12, searchType: 'city' },
-    bordeaux: { name: 'Bordeaux', country: 'France', countryCode: 'fr', lat: 44.8378, lng: -0.5792, zoom: 12, searchType: 'city' },
-    lyon: { name: 'Lyon', country: 'France', countryCode: 'fr', lat: 45.7640, lng: 4.8357, zoom: 12, searchType: 'city' },
-    nice: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 12, searchType: 'city' }
-  };
-
-  function presetPlaceFromQuery(query) {
-    const key = compactWords(query);
-    return GEO_PRESETS[key] ? Object.assign({}, GEO_PRESETS[key]) : null;
-  }
 
   const CITY_COUNTRY_HINTS = {
     ma: ['agadir','casablanca','marrakech','marrakesh','essaouira','rabat','tanger','tangier','fes','fès','meknes','meknès','ouarzazate','taghazout','tamraght','tetouan','tétouan'],
@@ -806,118 +765,6 @@ html, body {
     });
   }
 
-
-  /* ==========================================================================
-     LOGIQUE CARTE / RECHERCHE STABLE - VERSION FINALE
-     Objectif :
-     - recherche ville = uniquement annonces de cette ville, jamais fallback pays ;
-     - recherche pays = uniquement annonces de ce pays ;
-     - aucune annonce = message vide + carte centrée sur la ville/pays recherché ;
-     - aucune géolocalisation automatique après chargement.
-     ========================================================================== */
-
-  const COUNTRY_BOUNDS = {
-    ma: { minLat: 21.0, maxLat: 36.2, minLng: -17.5, maxLng: -0.8 },
-    mg: { minLat: -26.0, maxLat: -11.0, minLng: 43.0, maxLng: 51.5 },
-    fr: { minLat: 41.0, maxLat: 51.5, minLng: -5.5, maxLng: 10.0 },
-    es: { minLat: 27.0, maxLat: 44.5, minLng: -18.5, maxLng: 5.0 },
-    be: { minLat: 49.4, maxLat: 51.6, minLng: 2.5, maxLng: 6.5 },
-    ch: { minLat: 45.6, maxLat: 48.0, minLng: 5.8, maxLng: 10.7 },
-    gb: { minLat: 49.5, maxLat: 59.5, minLng: -8.8, maxLng: 2.2 },
-    us: { minLat: 24.0, maxLat: 49.8, minLng: -125.0, maxLng: -66.0 },
-    ae: { minLat: 22.4, maxLat: 26.2, minLng: 51.4, maxLng: 56.5 }
-  };
-
-  function coordsInCountry(item, code) {
-    const b = COUNTRY_BOUNDS[code];
-    const lat = getLat(item);
-    const lng = getLng(item);
-    if (!b || lat === null || lng === null) return false;
-    return lat >= b.minLat && lat <= b.maxLat && lng >= b.minLng && lng <= b.maxLng;
-  }
-
-  function strongListingCountryCode(item) {
-    const explicit = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
-    if (explicit) {
-      if (explicit === 'morocco' || explicit === 'maroc') return 'ma';
-      if (explicit === 'madagascar') return 'mg';
-      if (explicit === 'france') return 'fr';
-      if (explicit === 'spain' || explicit === 'espagne') return 'es';
-      if (explicit === 'united arab emirates' || explicit === 'uae') return 'ae';
-      return explicit.slice(0, 2);
-    }
-
-    const country = normalizeText(item && item.country);
-    const fromCountry = countryCodeFromText(country);
-    if (fromCountry) return fromCountry;
-
-    const text = compactWords([item && item.city, item && item.location, item && item.address].join(' '));
-    for (const code in CITY_COUNTRY_HINTS) {
-      if (CITY_COUNTRY_HINTS[code].some(city => {
-        const c = normalizeText(city);
-        return text === c || text.indexOf(c) !== -1;
-      })) return code;
-    }
-
-    // Dernier recours : coordonnées GPS.
-    for (const code in COUNTRY_BOUNDS) {
-      if (coordsInCountry(item, code)) return code;
-    }
-
-    return '';
-  }
-
-  function listingCountryMatchesCenter(item, center) {
-    const centerCode = centerCountryCode(center);
-    if (!centerCode) return false;
-
-    const codeByCoords = coordsInCountry(item, centerCode);
-    const codeByText = strongListingCountryCode(item);
-
-    // Si les coordonnées existent, elles sont la source la plus fiable.
-    if (hasCoordinates(item)) return codeByCoords;
-
-    // Sans coordonnées, on accepte seulement si le pays/ville est clairement déductible.
-    return codeByText === centerCode;
-  }
-
-  function exactCityFromItem(item) {
-    return canonicalCity((item && (item.city || item.location || item.address)) || '');
-  }
-
-  function listingCityMatchesCenter(item, center) {
-    if (isCountryCenter(center)) return true;
-    const wanted = canonicalCity(centerCityName(center));
-    if (!wanted || wanted === 'votre position' || wanted === 'autour de vous') return false;
-
-    const candidates = [item && item.city, item && item.location, item && item.address]
-      .map(canonicalCity)
-      .filter(Boolean);
-
-    // Ville stricte : Paris ne doit jamais apparaître pour Cannes.
-    return candidates.some(value => value === wanted);
-  }
-
-  function nearbyItems(center, limit) {
-    const safeCenter = center || currentCenter;
-    const source = activeListings.length ? activeListings : allListings;
-    const base = equipmentFilter(source).filter(item => listingCountryMatchesCenter(item, safeCenter));
-
-    if (isCountryCenter(safeCenter)) {
-      return uniqueListings(base)
-        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
-        .slice(0, limit);
-    }
-
-    const cityMatches = base.filter(item => listingCityMatchesCenter(item, safeCenter));
-    const withCoords = enrichByDistance(cityMatches.filter(item => hasCoordinates(item)), safeCenter)
-      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
-    const withoutCoords = cityMatches.filter(item => !hasCoordinates(item));
-
-    return uniqueListings(withCoords.concat(withoutCoords)).slice(0, limit);
-  }
-
-
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
     const city = escapeHtml(item.city || item.location || 'France');
@@ -990,9 +837,6 @@ html, body {
   }
 
   function saveLocation(center) {
-    // On mémorise uniquement la vraie géolocalisation utilisateur.
-    // Une recherche manuelle comme Cannes, Agadir ou Maroc ne doit jamais devenir
-    // la localisation par défaut après actualisation de la page.
     if (!center || center.source !== 'geolocation') return;
     try {
       localStorage.setItem('rssUserLocation', JSON.stringify({
@@ -1013,11 +857,6 @@ html, body {
       const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
       if (!saved || !saved.lat || !saved.lng) return null;
       if (saved.source !== 'geolocation') {
-        localStorage.removeItem('rssUserLocation');
-        return null;
-      }
-      // Évite de garder une ancienne position pendant des jours.
-      if (saved.savedAt && Date.now() - Number(saved.savedAt) > 24 * 60 * 60 * 1000) {
         localStorage.removeItem('rssUserLocation');
         return null;
       }
@@ -1044,9 +883,6 @@ html, body {
     const rawQuery = String(query || '').trim();
     if (!rawQuery) return null;
 
-    const preset = presetPlaceFromQuery(rawQuery);
-    if (preset) return preset;
-
     const countryCode = countryCodeFromText(rawQuery);
     if (countryCode && COUNTRY_DISPLAY[countryCode]) {
       return Object.assign({ searchType: 'country' }, COUNTRY_DISPLAY[countryCode]);
@@ -1061,9 +897,6 @@ html, body {
     }
 
     let data = [];
-
-    // Pour les villes connues, on force le pays afin d'éviter les mauvais résultats
-    // comme "Cannes" interprété en Espagne au lieu de Cannes, France.
     if (hintedCountryCode) {
       data = await nominatimSearch({
         format: 'json',
@@ -1087,7 +920,6 @@ html, body {
 
     let result = data[0];
 
-    // Si un pays est deviné par la ville, on privilégie le résultat dans ce pays.
     if (hintedCountryCode) {
       const preferred = data.find(item => {
         const a = item.address || {};
@@ -1105,12 +937,8 @@ html, body {
       (result.class === 'boundary' && a.country && !hasCity && !hintedCountryCode)
     );
 
-    const displayName = isCountryResult
-      ? ((COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].name) || rawQuery)
-      : rawQuery;
-
     return {
-      name: displayName,
+      name: isCountryResult ? ((COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].name) || rawQuery) : rawQuery,
       country: foundCountry,
       countryCode: foundCountryCode,
       lat: parseFloat(result.lat),
@@ -1148,29 +976,27 @@ html, body {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    const countryFiltered = equipmentFilter(source)
-      .filter(item => listingCountryMatchesCenter(item, safeCenter));
+    let filtered = equipmentFilter(source)
+      .filter(item => listingCountryMatchesCenter(item, safeCenter))
+      .filter(item => listingCityMatchesCenter(item, safeCenter));
 
-    // Recherche pays : toutes les annonces du pays, sans recentrer sur un autre pays.
+    // Logique officielle :
+    // - recherche pays (ex: Maroc) : toutes les annonces du pays, même sans rayon ville ;
+    // - recherche ville (ex: Agadir) : ville + pays + rayon autour de la ville.
     if (isCountryCenter(safeCenter)) {
-      return uniqueListings(countryFiltered)
+      return uniqueListings(filtered)
         .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
         .slice(0, limit);
     }
 
-    // Recherche ville : ville exacte + pays, puis rayon GPS si disponible.
-    const cityMatches = countryFiltered.filter(item => listingCityMatchesCenter(item, safeCenter));
-    const geoMatches = enrichByDistance(cityMatches.filter(item => hasCoordinates(item)), safeCenter);
-    const inRadius = geoMatches.filter(item =>
+    filtered = filtered.filter(item => hasCoordinates(item));
+    const sorted = enrichByDistance(filtered, safeCenter);
+    const inRadius = sorted.filter(item =>
       typeof item._distanceKm === 'number' &&
       item._distanceKm <= DEFAULT_RADIUS_KM
     );
 
-    // On garde aussi les annonces de la ville sans coordonnées pour les cartes produits,
-    // mais elles ne créent pas de marker sur la carte.
-    const withoutCoords = cityMatches.filter(item => !hasCoordinates(item));
-
-    return uniqueListings(inRadius.concat(withoutCoords)).slice(0, limit);
+    return inRadius.slice(0, limit);
   }
 
   function canonicalCity(value) {
@@ -1281,7 +1107,6 @@ html, body {
 
     const safeCenter = center || currentCenter;
     const items = nearbyItems(safeCenter, 30);
-
     productMarkers = items.map(item => {
       const lat = getLat(item);
       const lng = getLng(item);
@@ -1450,44 +1275,10 @@ html, body {
     window.addEventListener('resize', fixMapSize);
   }
 
-  async function locateByIpFallback(showError) {
-    if (manualSearchDone) return false;
-
-    try {
-      const res = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
-      if (!res.ok) throw new Error('IP fallback indisponible');
-
-      const data = await res.json();
-      const lat = toNumber(data.latitude);
-      const lng = toNumber(data.longitude);
-
-      if (lat === null || lng === null) throw new Error('Coordonnées IP invalides');
-
-      const city = data.city || data.region || data.country_name || 'Votre position';
-      const country = data.country_name || '';
-      const countryCode = normalizeText(data.country_code || '');
-
-      updateCenter({
-        name: city,
-        country: country,
-        countryCode: countryCode,
-        lat: lat,
-        lng: lng,
-        zoom: city ? 12 : 6,
-        source: 'geolocation'
-      }, { isGeolocation: true });
-
-      return true;
-    } catch (e) {
-      console.warn('Géolocalisation IP impossible:', e);
-      if (showError) alert('Position indisponible. Tapez une ville ou un code postal dans la recherche.');
-      return false;
-    }
-  }
-
   async function locateUser(showError) {
     if (!navigator.geolocation) {
-      await locateByIpFallback(showError);
+      if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
+      updateCenter(DEFAULT_CITY, { isFallback: true });
       return;
     }
 
@@ -1499,18 +1290,15 @@ html, body {
         const place = await reversePlace(lat, lng);
         updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13, source: 'geolocation' }, { isGeolocation: true });
       },
-      async function () {
+      function () {
         if (!showError && manualSearchDone) return;
         const saved = loadSavedLocation();
-        if (saved && saved.source === 'geolocation') {
-          updateCenter(saved, { isGeolocation: true });
-          return;
-        }
-
-        const fallbackOk = await locateByIpFallback(showError);
-        if (!fallbackOk && showError) {
+        if (saved) {
+          updateCenter(saved, { isSaved: true });
+        } else {
           updateCenter(DEFAULT_CITY, { isFallback: true });
         }
+        if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
@@ -1549,64 +1337,28 @@ html, body {
     }
   }
 
-  function useDefaultLocation() {
-    const saved = loadSavedLocation();
-    if (saved && saved.source === 'geolocation') {
-      updateCenter(saved, { isGeolocation: true });
-      return;
-    }
-    updateCenter(DEFAULT_CITY, { isGeolocation: false });
-  }
-
-  function autoLocateOnLoad() {
-    // Sécurité importante : si l'utilisateur a commencé à saisir une ville
-    // ou a déjà lancé une recherche, la géolocalisation automatique ne doit jamais écraser son choix.
-    if (manualSearchDone) return;
-
-    const saved = loadSavedLocation();
-    if (saved && saved.source === 'geolocation') {
-      updateCenter(saved, { isGeolocation: true });
-      return;
-    }
-
-    // Appel silencieux sécurisé : GPS navigateur, puis fallback IP si refusé/bloqué.
-    // Attention : on ne teste PAS la valeur du champ ville ici, car Paris est injecté
-    // automatiquement au chargement comme ville par défaut.
-    locateUser(false);
-  }
-
-
   ready(function () {
     showLoading();
     initMap();
+    loadListings();
+
+    const saved = loadSavedLocation();
+    if (saved) updateCenter(saved, { isSaved: true });
+
+    document.getElementById('use-my-location')?.addEventListener('click', function () {
+      locateUser(true);
+    });
 
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
     const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
     const searchButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim().toLowerCase() === 'rechercher');
 
-    // Évite que le navigateur réinjecte une ancienne recherche au rechargement.
     if (cityInput) {
       cityInput.setAttribute('autocomplete', 'off');
-      cityInput.value = '';
       cityInput.addEventListener('input', function () {
-        // Dès que le visiteur tape une ville, on bloque l'auto-géolocalisation en cours.
         if (cityInput.value && cityInput.value.trim()) manualSearchDone = true;
       });
     }
-    if (equipmentInput) {
-      equipmentInput.setAttribute('autocomplete', 'off');
-    }
-
-    loadListings();
-
-    // Chargement stable : Paris par défaut immédiatement, puis géolocalisation automatique
-    // uniquement si le visiteur n'a pas commencé une recherche manuelle.
-    updateCenter(DEFAULT_CITY, { isFallback: true });
-    setTimeout(autoLocateOnLoad, 900);
-
-    document.getElementById('use-my-location')?.addEventListener('click', function () {
-      locateUser(true);
-    });
 
     searchButton?.addEventListener('click', function (e) {
       e.preventDefault();
@@ -1630,10 +1382,10 @@ html, body {
       }
     });
 
-    setLabels(DEFAULT_CITY.name);
+    setLabels(saved?.name || DEFAULT_CITY.name);
+    setTimeout(function () { locateUser(false); }, saved ? 1200 : 700);
   });
 })();
-
 </script>
 
 <script src="/components.js"></script>
