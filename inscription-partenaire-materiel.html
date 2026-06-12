@@ -35,7 +35,7 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
 <section class="pt-28 pb-20 px-6 md:px-10 max-w-6xl mx-auto">
 
 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10 grid-steps">
-  <div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 1</div><div class="font-headline font-bold mt-1">Inscription</div></div><div class="card p-4 step-active"><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 2</div><div class="font-headline font-bold mt-1">Matériel</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 3</div><div class="font-headline font-bold mt-1">Logistique</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 4</div><div class="font-headline font-bold mt-1">KYC</div></div>
+  <div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 1</div><div class="font-headline font-bold mt-1">Inscription</div></div><div class="card p-4 step-active"><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 2</div><div class="font-headline font-bold mt-1">Matériel</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 3</div><div class="font-headline font-bold mt-1">Logistique</div></div><div class="card p-4 "><div class="text-primary text-xs font-bold uppercase tracking-widest">Étape 4</div><div class="font-headline font-bold mt-1">Vérification</div></div>
 </div>
 <div class="glass rounded-2xl p-8">
 <h1 class="font-headline text-4xl font-extrabold mb-3">Votre parc matériel</h1>
@@ -50,7 +50,7 @@ body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headlin
     <div><label class="label">État général</label><select id="equipment_condition" class="select"><option>Excellent</option><option>Bon</option><option>À vérifier</option></select></div>
   </div>
   <div><label class="label">Description rapide du parc</label><textarea id="equipment_description" class="input" rows="5" placeholder="Marques, modèles, quantités, prestations possibles..."></textarea></div>
-  <div class="flex flex-col sm:flex-row justify-between gap-3"><a class="btn-secondary" href="/inscription-partenaire.html">Retour</a><button class="btn-primary" type="submit">Continuer</button></div>
+  <div class="flex flex-col sm:flex-row justify-between gap-3"><a class="btn-secondary" href="/partenaire-societe.html">Retour</a><button class="btn-primary" type="submit">Continuer</button></div>
 </form>
 </div>
 </section></main><div id="footer-container"></div>
@@ -84,6 +84,7 @@ document.getElementById("form-step2").addEventListener("submit",function(e){
  setDraft({categories:checkedValues("categories"),equipment_count:val("equipment_count"),fleet_value:val("fleet_value"),equipment_condition:val("equipment_condition"),equipment_description:val("equipment_description")});
  location.href="/inscription-partenaire-logistique.html";
 });
-</script><script>window.RSS_PARTNER_PAGE="inscription-partenaire-materiel.html";</script>
+</script>
+<script>window.RSS_PARTNER_PAGE="inscription-partenaire-materiel.html";</script>
 <script src="/assets/js/partner-flow.js"></script>
 </body></html>

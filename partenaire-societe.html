@@ -160,23 +160,6 @@
 </head>
 <body class="font-body-md antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
-<!-- Standard RentSoundSystem Header -->
-<header class="w-full bg-surface-container-lowest border-b border-surface-glass-border py-4 px-gutter-x">
-<div class="max-w-container-max mx-auto flex justify-between items-center">
-<div class="flex items-center gap-2">
-<span class="material-symbols-outlined text-primary text-3xl">speaker</span>
-<span class="font-headline-md text-headline-md text-on-surface">RentSoundSystem</span>
-</div>
-<nav class="hidden md:flex gap-6">
-<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="#">Accueil</a>
-<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="#">Équipement</a>
-<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="#">Devenir Partenaire</a>
-</nav>
-<div>
-<a class="text-on-surface hover:text-primary transition-colors font-body-md" href="#">Connexion</a>
-</div>
-</div>
-</header>
 <!-- Main Content -->
 <main class="flex-grow flex items-center justify-center py-section-padding-y px-gutter-x">
 <div class="max-w-[800px] w-full">
@@ -197,7 +180,7 @@
 </div>
 <!-- Form Container -->
 <div class="glass-panel rounded-xl p-8 md:p-12">
-<form action="#" class="space-y-8" method="GET">
+<form id="form-step-societe" action="/inscription-partenaire-materiel.html" class="space-y-8" method="GET">
 <!-- Form Section: Identity -->
 <div>
 <h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-surface-glass-border pb-2">Identité de l'entreprise</h2>
@@ -267,7 +250,7 @@
 </div>
 <!-- Actions -->
 <div class="pt-8 flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-surface-glass-border">
-<button class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface font-label-caps text-label-caps hover:bg-surface-container transition-colors w-full sm:w-auto" type="button">
+<button class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface font-label-caps text-label-caps hover:bg-surface-container transition-colors w-full sm:w-auto" type="button" onclick="location.href='/inscription-partenaire.html'">
                         Retour
                     </button>
 <button class="px-8 py-3 rounded-lg bg-primary-container text-white font-label-caps text-label-caps uppercase tracking-widest neon-shadow hover:bg-inverse-primary transition-colors w-full sm:w-auto" type="submit">
@@ -279,10 +262,8 @@
 </div>
 </main>
 <!-- SEO-optimized Mega Footer -->
-
-
-<script>window.RSS_PARTNER_PAGE="partenaire-societe.html";</script>
-<script src="/assets/js/partner-flow.js"></script>
 <div id="footer-container"></div>
 <script src="/components.js"></script>
+<script>window.RSS_PARTNER_PAGE="partenaire-societe.html";</script>
+<script src="/assets/js/partner-flow.js"></script>
 </body></html>

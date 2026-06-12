@@ -212,7 +212,7 @@
 <div class="flex flex-col gap-2">
 <label class="font-label-caps text-label-caps text-on-surface-muted">Taille moyenne de la flotte</label>
 <div class="relative">
-<select class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
+<select id="fleet_size" name="fleet_size" class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
 <option disabled="" selected="" value="">Sélectionnez la catégorie de flotte...</option>
 <option value="boutique">Boutique (1-10 systèmes)</option>
 <option value="medium">Moyenne (11-50 systèmes)</option>
@@ -225,7 +225,7 @@
 <div class="flex flex-col gap-2">
 <label class="font-label-caps text-label-caps text-on-surface-muted">Type d'équipement principal</label>
 <div class="relative">
-<select class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
+<select id="main_equipment_type" name="main_equipment_type" class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
 <option value="pa">Systèmes de sonorisation live</option>
 <option value="dj">Équipement DJ</option>
 <option value="studio">Studio / Matériel d'enregistrement</option>
@@ -369,7 +369,7 @@
 <span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
                         Retour au matériel
                     </a>
-<a href="/inscription-partenaire-kyc.html" class="px-8 py-3 rounded-lg bg-primary text-on-primary font-label-caps text-label-caps uppercase hover:bg-primary/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)] flex items-center gap-2 group">
+<a href="/inscription-partenaire-kyc.html" id="logistique-next" class="px-8 py-3 rounded-lg bg-primary text-on-primary font-label-caps text-label-caps uppercase hover:bg-primary/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)] flex items-center gap-2 group">
                         Enregistrer et continuer
                         <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
 </a>
@@ -379,4 +379,6 @@
 </main>
 <div id="footer-container"></div>
 <script src="/components.js"></script>
+<script>window.RSS_PARTNER_PAGE="inscription-partenaire-logistique.html";</script>
+<script src="/assets/js/partner-flow.js"></script>
 </body></html>
