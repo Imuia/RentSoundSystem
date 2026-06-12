@@ -652,6 +652,30 @@ html, body {
     gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 }
   };
 
+
+  const GEO_PRESETS = {
+    agadir: { name: 'Agadir', country: 'Maroc', countryCode: 'ma', lat: 30.4278, lng: -9.5981, zoom: 12, searchType: 'city' },
+    maroc: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
+    morocco: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
+    cannes: { name: 'Cannes', country: 'France', countryCode: 'fr', lat: 43.5528, lng: 7.0174, zoom: 12, searchType: 'city' },
+    paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 12, searchType: 'city' },
+    france: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, searchType: 'country' },
+    antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
+    tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
+    madagascar: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, searchType: 'country' },
+    casablanca: { name: 'Casablanca', country: 'Maroc', countryCode: 'ma', lat: 33.5731, lng: -7.5898, zoom: 12, searchType: 'city' },
+    marrakech: { name: 'Marrakech', country: 'Maroc', countryCode: 'ma', lat: 31.6295, lng: -7.9811, zoom: 12, searchType: 'city' },
+    rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 12, searchType: 'city' },
+    essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 12, searchType: 'city' },
+    taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 12, searchType: 'city' },
+    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' }
+  };
+
+  function presetPlaceFromQuery(query) {
+    const key = compactWords(query);
+    return GEO_PRESETS[key] ? Object.assign({}, GEO_PRESETS[key]) : null;
+  }
+
   const CITY_COUNTRY_HINTS = {
     ma: ['agadir','casablanca','marrakech','marrakesh','essaouira','rabat','tanger','tangier','fes','fès','meknes','meknès','ouarzazate','taghazout','tamraght','tetouan','tétouan'],
     mg: ['antananarivo','tananarive','tana','tanà','nosy be','nosy-be','hell ville','hell-ville','toamasina','tamatave','mahajanga','majunga','fianarantsoa','antsiranana','diego suarez','diego-suarez'],
@@ -897,6 +921,9 @@ html, body {
   async function geocodeCity(query) {
     const rawQuery = String(query || '').trim();
     if (!rawQuery) return null;
+
+    const preset = presetPlaceFromQuery(rawQuery);
+    if (preset) return preset;
 
     const countryCode = countryCodeFromText(rawQuery);
     if (countryCode && COUNTRY_DISPLAY[countryCode]) {
@@ -1357,6 +1384,16 @@ html, body {
       alert('Erreur de recherche de ville.');
     }
   }
+
+  function useDefaultLocation() {
+    const saved = loadSavedLocation();
+    if (saved && saved.source === 'geolocation') {
+      updateCenter(saved, { isGeolocation: true });
+      return;
+    }
+    updateCenter(DEFAULT_CITY, { isGeolocation: false });
+  }
+
 
   ready(function () {
     showLoading();
