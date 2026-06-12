@@ -127,44 +127,9 @@
 </head>
 <body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
-<main class="flex-grow pt-32 pb-section-padding-y px-gutter-x max-w-container-max mx-auto w-full flex flex-col md:flex-row gap-8">
-<!-- SideNavBar (Contextual intent: Verification) -->
-<aside class="hidden lg:flex flex-col h-screen p-6 gap-4 bg-surface-container-low dark:bg-surface-container-low border-r border-surface-glass-border w-64 fixed left-0 top-28">
-<div class="mb-8">
-<div class="font-headline-md text-headline-md text-on-surface mb-1">Inscription</div>
-<div class="text-on-surface-muted text-sm">Partenaire Professionnel</div>
-</div>
-<nav class="flex flex-col gap-2 font-label-caps text-label-caps">
-<a class="flex items-center gap-3 text-on-surface-variant p-3 hover:bg-surface-container-high rounded-xl hover:bg-surface-container-highest transition-all active:translate-x-1 duration-150" href="#">
-<span class="material-symbols-outlined">person_add</span>
-<span>Configuration du compte</span>
-</a>
-<a class="flex items-center gap-3 text-on-surface-variant p-3 hover:bg-surface-container-high rounded-xl hover:bg-surface-container-highest transition-all active:translate-x-1 duration-150" href="#">
-<span class="material-symbols-outlined">business</span>
-<span>Détails de l'entreprise</span>
-</a>
-<a class="flex items-center gap-3 text-on-surface-variant p-3 hover:bg-surface-container-high rounded-xl hover:bg-surface-container-highest transition-all active:translate-x-1 duration-150" href="#">
-<span class="material-symbols-outlined">receipt_long</span>
-<span>Taxes &amp; TVA</span>
-</a>
-<a class="flex items-center gap-3 text-on-surface-variant p-3 hover:bg-surface-container-high rounded-xl hover:bg-surface-container-highest transition-all active:translate-x-1 duration-150" href="#">
-<span class="material-symbols-outlined">local_shipping</span>
-<span>Logistique</span>
-</a>
-<!-- Active State -->
-<a class="flex items-center gap-3 bg-surface-variant text-primary rounded-xl p-3 border-l-4 border-primary hover:bg-surface-container-highest transition-all active:translate-x-1 duration-150" href="#">
-<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
-<span>Vérification</span>
-</a>
-</nav>
-<div class="mt-auto pt-8">
-<button class="w-full py-3 px-4 border border-outline-variant text-on-surface rounded-lg hover:bg-surface-container transition-colors uppercase font-label-caps text-label-caps">
-                    Sauvegarder
-                </button>
-</div>
-</aside>
+<main class="flex-grow pt-32 pb-section-padding-y px-gutter-x max-w-container-max mx-auto w-full">
 <!-- Main Content Canvas -->
-<div class="w-full lg:ml-64 flex-grow flex flex-col">
+<div class="w-full max-w-5xl mx-auto flex-grow flex flex-col">
 <div class="mb-12 max-w-3xl">
 <h1 class="font-headline-lg text-headline-lg text-on-surface mb-4">Vérification &amp; KYC</h1>
 <p class="font-body-lg text-body-lg text-on-surface-muted">Dernière étape pour activer votre compte partenaire. Téléchargez les documents officiels requis pour vérifier l'identité de votre entreprise et votre couverture d'assurance.</p>
@@ -192,11 +157,11 @@
 <h3 class="font-headline-md text-headline-md text-on-surface mb-1 text-lg">Extrait Kbis</h3>
 <p class="font-body-md text-body-md text-on-surface-muted text-sm">Doit dater de moins de 3 mois. PDF ou JPG uniquement.</p>
 </div>
-<div class="mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
+<div class="kyc-upload-zone mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
 <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 group-hover:text-primary transition-colors">upload_file</span>
 <p class="font-body-md text-body-md text-on-surface mb-1">Glissez et déposez le fichier ici</p>
 <p class="font-body-md text-body-md text-on-surface-variant text-sm">ou cliquez pour parcourir</p>
-<input accept=".pdf,.jpg,.jpeg,.png" class="hidden" type="file"/>
+<input id="kyc-kbis" data-label="Extrait Kbis" accept=".pdf,.jpg,.jpeg,.png" class="hidden kyc-file-input" type="file"/>
 </div>
 </div>
 <!-- Professional Insurance -->
@@ -208,11 +173,11 @@
 <h3 class="font-headline-md text-headline-md text-on-surface mb-1 text-lg">Attestation d'assurance</h3>
 <p class="font-body-md text-body-md text-on-surface-muted text-sm">Attestation valide de responsabilité civile couvrant la location de matériel.</p>
 </div>
-<div class="mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
+<div class="kyc-upload-zone mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
 <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 group-hover:text-primary transition-colors">upload_file</span>
 <p class="font-body-md text-body-md text-on-surface mb-1">Glissez et déposez le fichier ici</p>
 <p class="font-body-md text-body-md text-on-surface-variant text-sm">ou cliquez pour parcourir</p>
-<input accept=".pdf,.jpg,.jpeg,.png" class="hidden" type="file"/>
+<input id="kyc-insurance" data-label="Attestation d’assurance" accept=".pdf,.jpg,.jpeg,.png" class="hidden kyc-file-input" type="file"/>
 </div>
 </div>
 <!-- Manager's ID -->
@@ -224,11 +189,11 @@
 <h3 class="font-headline-md text-headline-md text-on-surface mb-1 text-lg">Pièce d'identité du gérant</h3>
 <p class="font-body-md text-body-md text-on-surface-muted text-sm">Passeport ou carte nationale d'identité valide du représentant légal.</p>
 </div>
-<div class="mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
+<div class="kyc-upload-zone mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
 <span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 group-hover:text-primary transition-colors">id_card</span>
 <p class="font-body-md text-body-md text-on-surface mb-1">Glissez et déposez le fichier ici</p>
 <p class="font-body-md text-body-md text-on-surface-variant text-sm">Recto et verso requis</p>
-<input accept=".pdf,.jpg,.jpeg,.png" class="hidden" type="file"/>
+<input id="kyc-id" data-label="Pièce d’identité du gérant" accept=".pdf,.jpg,.jpeg,.png" class="hidden kyc-file-input" type="file"/>
 </div>
 </div>
 <!-- Information / Security Note -->
@@ -240,8 +205,13 @@
 </div>
 </div>
 </div>
+<div id="kyc-message" class="hidden max-w-5xl mb-6 rounded-xl border p-4 text-sm"></div>
 <!-- Primary Action -->
-<div class="mt-8 pt-8 border-t border-surface-glass-border flex justify-end max-w-5xl">
+<div class="mt-8 pt-8 border-t border-surface-glass-border flex flex-col sm:flex-row justify-between gap-4 max-w-5xl">
+<a href="/inscription-partenaire-logistique.html" class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-lg border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span>Retour</span>
+</a>
 <button id="kyc-submit" type="button" class="bg-primary-container text-white px-8 py-4 rounded-lg font-label-caps text-label-caps uppercase tracking-widest neon-shadow neon-shadow-hover transition-all transform hover:-translate-y-1 active:translate-y-0 active:scale-95 flex items-center gap-3">
 <span>Soumettre mon dossier</span>
 <span class="material-symbols-outlined text-sm">send</span>
@@ -251,6 +221,122 @@
 </main>
 <div id="footer-container"></div>
 <script src="/components.js"></script>
+
+<script>
+(function(){
+  const allowedTypes = ['application/pdf','image/jpeg','image/png'];
+  const maxSize = 8 * 1024 * 1024;
+  const message = document.getElementById('kyc-message');
+  const submit = document.getElementById('kyc-submit');
+
+  function show(type, text){
+    if(!message) return;
+    message.className = 'max-w-5xl mb-6 rounded-xl border p-4 text-sm ' + (
+      type === 'success'
+        ? 'border-green-500/40 bg-green-500/10 text-green-200'
+        : type === 'error'
+          ? 'border-red-500/40 bg-red-500/10 text-red-200'
+          : 'border-primary/40 bg-primary/10 text-on-surface-variant'
+    );
+    message.textContent = text;
+    message.classList.remove('hidden');
+  }
+
+  function setDraft(data){
+    try{
+      const old = JSON.parse(localStorage.getItem('rss_partner_draft') || '{}');
+      localStorage.setItem('rss_partner_draft', JSON.stringify(Object.assign(old, data || {})));
+    }catch(e){}
+  }
+
+  document.querySelectorAll('.kyc-upload-zone').forEach((zone) => {
+    const input = zone.querySelector('input[type="file"]');
+    if(!input) return;
+
+    const title = input.getAttribute('data-label') || 'Document';
+
+    zone.addEventListener('click', () => input.click());
+
+    ['dragenter','dragover'].forEach((eventName) => {
+      zone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        zone.classList.add('border-primary','bg-surface-container-highest');
+      });
+    });
+
+    ['dragleave','drop'].forEach((eventName) => {
+      zone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        zone.classList.remove('border-primary','bg-surface-container-highest');
+      });
+    });
+
+    zone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if(file){
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change', { bubbles:true }));
+      }
+    });
+
+    input.addEventListener('change', () => {
+      const file = input.files && input.files[0];
+      if(!file) return;
+
+      if(!allowedTypes.includes(file.type) && !/\.(pdf|jpg|jpeg|png)$/i.test(file.name)){
+        input.value = '';
+        show('error', title + ' : format refusé. Utilisez PDF, JPG ou PNG.');
+        return;
+      }
+
+      if(file.size > maxSize){
+        input.value = '';
+        show('error', title + ' : fichier trop lourd. Maximum 8 Mo.');
+        return;
+      }
+
+      zone.innerHTML = `
+        <span class="material-symbols-outlined text-4xl text-primary mb-3">task_alt</span>
+        <p class="font-body-md text-body-md text-on-surface mb-1">${file.name}</p>
+        <p class="font-body-md text-body-md text-on-surface-variant text-sm">${Math.round(file.size/1024)} Ko · cliquez pour remplacer</p>
+      `;
+      zone.appendChild(input);
+      show('success', title + ' ajouté avec succès.');
+    });
+  });
+
+  if(submit){
+    submit.addEventListener('click', function(){
+      const missing = Array.from(document.querySelectorAll('.kyc-file-input'))
+        .filter(input => !input.files || !input.files.length)
+        .map(input => input.getAttribute('data-label'));
+
+      if(missing.length){
+        show('error', 'Merci d’ajouter les documents obligatoires : ' + missing.join(', ') + '.');
+        return;
+      }
+
+      const files = {};
+      document.querySelectorAll('.kyc-file-input').forEach(input => {
+        files[input.id] = input.files[0].name;
+      });
+
+      setDraft({
+        kyc_files: files,
+        kyc_status: 'submitted',
+        status: 'pending',
+        submitted_at: new Date().toISOString()
+      });
+
+      show('success', 'Documents vérifiés côté formulaire. Envoi du dossier...');
+      setTimeout(() => { window.location.href = '/partenaire-soumis.html'; }, 700);
+    });
+  }
+})();
+</script>
+
 <script>window.RSS_PARTNER_PAGE="inscription-partenaire-kyc.html";</script>
 <script src="/assets/js/partner-flow.js"></script>
 </body></html>
