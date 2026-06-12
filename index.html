@@ -1450,10 +1450,48 @@ html, body {
     window.addEventListener('resize', fixMapSize);
   }
 
+  async function locateByIpFallback(showError) {
+    // Fallback automatique quand le navigateur refuse ou bloque la géolocalisation GPS.
+    // Cela donne une localisation approximative ville/pays sans casser la recherche manuelle.
+    if (manualSearchDone) return false;
+
+    try {
+      const res = await fetch('https://ipapi.co/json/', { cache: 'no-store' });
+      if (!res.ok) throw new Error('IP fallback indisponible');
+
+      const data = await res.json();
+      const lat = toNumber(data.latitude);
+      const lng = toNumber(data.longitude);
+
+      if (lat === null || lng === null) throw new Error('Coordonnées IP invalides');
+
+      const city = data.city || data.region || data.country_name || 'Votre position';
+      const country = data.country_name || '';
+      const countryCode = normalizeText(data.country_code || '');
+
+      updateCenter({
+        name: city,
+        country: country,
+        countryCode: countryCode,
+        lat: lat,
+        lng: lng,
+        zoom: city ? 12 : 6,
+        source: 'geolocation'
+      }, { isGeolocation: true });
+
+      return true;
+    } catch (e) {
+      console.warn('Géolocalisation IP impossible:', e);
+      if (showError) {
+        alert('Position indisponible. Tapez une ville ou un code postal dans la recherche.');
+      }
+      return false;
+    }
+  }
+
   async function locateUser(showError) {
     if (!navigator.geolocation) {
-      if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
-      updateCenter(DEFAULT_CITY, { isFallback: true });
+      await locateByIpFallback(showError);
       return;
     }
 
@@ -1465,15 +1503,19 @@ html, body {
         const place = await reversePlace(lat, lng);
         updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13, source: 'geolocation' }, { isGeolocation: true });
       },
-      function () {
+      async function () {
         if (!showError && manualSearchDone) return;
         const saved = loadSavedLocation();
         if (saved && saved.source === 'geolocation') {
           updateCenter(saved, { isGeolocation: true });
-        } else if (showError) {
+          return;
+        }
+
+        // Si le GPS navigateur est refusé/bloqué, on utilise une localisation IP approximative.
+        const fallbackOk = await locateByIpFallback(showError);
+        if (!fallbackOk && showError) {
           updateCenter(DEFAULT_CITY, { isFallback: true });
         }
-        if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
     );
@@ -1535,7 +1577,7 @@ html, body {
       return;
     }
 
-    // Appel silencieux sécurisé : ne s'exécute que si aucune recherche manuelle n'est en cours.
+    // Appel silencieux sécurisé : GPS navigateur, puis fallback IP si refusé/bloqué.
     locateUser(false);
   }
 
