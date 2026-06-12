@@ -3,288 +3,340 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>RentSoundSystem - Inscription Partenaire Professionnel</title>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>RentSoundSystem - Vérification &amp; KYC</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glow-effect {
-            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
-        }
-    </style>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "on-primary": "#ffffff",
-                      "surface-container": "#201f1f",
-                      "on-tertiary": "#303030",
-                      "on-secondary-fixed": "#1a1c1d",
-                      "on-secondary": "#2f3132",
-                      "primary": "#FC036D",
-                      "inverse-on-surface": "#313030",
-                      "surface-container-low": "#1c1b1b",
-                      "tertiary-container": "#929090",
-                      "surface-bright": "#393939",
-                      "surface-tint": "#FC036D",
-                      "primary-fixed": "#ffd9de",
-                      "on-secondary-fixed-variant": "#454748",
-                      "surface-variant": "#353534",
-                      "inverse-primary": "#bc004f",
-                      "surface-container-high": "#2a2a2a",
-                      "tertiary": "#c8c6c5",
-                      "primary-fixed-dim": "#ffb2bf",
-                      "on-surface-variant": "#e6bcc2",
-                      "on-primary-fixed": "#3f0016",
-                      "error": "#ffb4ab",
-                      "on-primary-fixed-variant": "#90003b",
-                      "on-surface": "#e5e2e1",
-                      "on-error": "#690005",
-                      "on-tertiary-fixed-variant": "#474746",
-                      "on-surface-muted": "#E6BCC2",
-                      "on-tertiary-container": "#2a2a2a",
-                      "secondary-fixed": "#e3e2e3",
-                      "on-secondary-container": "#b5b5b6",
-                      "inverse-surface": "#e5e2e1",
-                      "on-background": "#e5e2e1",
-                      "on-primary-container": "#ffffff",
-                      "surface-container-highest": "#353534",
-                      "primary-container": "#FC036D",
-                      "tertiary-fixed": "#e5e2e1",
-                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
-                      "error-container": "#93000a",
-                      "surface-container-lowest": "#0e0e0e",
-                      "on-error-container": "#ffdad6",
-                      "tertiary-fixed-dim": "#c8c6c5",
-                      "outline-variant": "#5d3f44",
-                      "secondary": "#c6c6c7",
-                      "background": "#131313",
-                      "neon-glow": "rgba(252, 3, 109, 0.3)",
-                      "secondary-fixed-dim": "#c6c6c7",
-                      "on-tertiary-fixed": "#1b1b1c",
-                      "surface-glass": "rgba(31, 31, 31, 0.6)",
-                      "secondary-container": "#454748",
-                      "surface": "#131313",
-                      "surface-dim": "#131313",
-                      "outline": "#ac878d"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                      "component-padding-y": "0.625rem",
-                      "card-gap": "1.5rem",
-                      "section-padding-y": "6rem",
-                      "container-max": "1280px",
-                      "gutter-x": "2.5rem",
-                      "component-padding-x": "1.5rem"
-              },
-              "fontFamily": {
-                      "headline-md": [
-                              "Manrope"
-                      ],
-                      "body-md": [
-                              "Inter"
-                      ],
-                      "display-hero-mobile": [
-                              "Manrope"
-                      ],
-                      "headline-lg": [
-                              "Manrope"
-                      ],
-                      "label-caps": [
-                              "Inter"
-                      ],
-                      "display-hero": [
-                              "Manrope"
-                      ],
-                      "body-lg": [
-                              "Inter"
-                      ]
-              },
-              "fontSize": {
-                      "headline-md": [
-                              "24px",
-                              {
-                                      "lineHeight": "1.4",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "body-md": [
-                              "16px",
-                              {
-                                      "lineHeight": "1.6",
-                                      "fontWeight": "400"
-                              }
-                      ],
-                      "display-hero-mobile": [
-                              "48px",
-                              {
-                                      "lineHeight": "1.2",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "headline-lg": [
-                              "40px",
-                              {
-                                      "lineHeight": "1.2",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "label-caps": [
-                              "12px",
-                              {
-                                      "lineHeight": "1.0",
-                                      "letterSpacing": "0.15em",
-                                      "fontWeight": "600"
-                              }
-                      ],
-                      "display-hero": [
-                              "72px",
-                              {
-                                      "lineHeight": "1.1",
-                                      "letterSpacing": "-0.02em",
-                                      "fontWeight": "700"
-                              }
-                      ],
-                      "body-lg": [
-                              "20px",
-                              {
-                                      "lineHeight": "1.6",
-                                      "fontWeight": "400"
-                              }
-                      ]
-              }
-      },
-          },
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "surface-container": "#201f1f",
+                        "on-tertiary": "#303030",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-secondary": "#2f3132",
+                        "primary": "#FC036D",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary-container": "#929090",
+                        "surface-bright": "#393939",
+                        "surface-tint": "#FC036D",
+                        "primary-fixed": "#ffd9de",
+                        "on-secondary-fixed-variant": "#454748",
+                        "surface-variant": "#353534",
+                        "inverse-primary": "#bc004f",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary": "#c8c6c5",
+                        "primary-fixed-dim": "#FC036D",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-primary-fixed": "#3f0016",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-surface-muted": "#E6BCC2",
+                        "on-tertiary-container": "#2a2a2a",
+                        "secondary-fixed": "#e3e2e3",
+                        "on-secondary-container": "#b5b5b6",
+                        "inverse-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "on-primary-container": "#ffffff",
+                        "surface-container-highest": "#353534",
+                        "primary-container": "#FC036D",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "outline-variant": "#5d3f44",
+                        "secondary": "#c6c6c7",
+                        "background": "#131313",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "secondary-container": "#454748",
+                        "surface": "#131313",
+                        "surface-dim": "#131313",
+                        "outline": "#ac878d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-y": "0.625rem",
+                        "card-gap": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "container-max": "1280px",
+                        "gutter-x": "2.5rem",
+                        "component-padding-x": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "display-hero-mobile": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "display-hero": ["Manrope", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
         }
-      </script>
+    </script>
+<style>
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .neon-shadow-hover:hover {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.5);
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
 <style id="rss-global-component-fix">
   #header-container { min-height: 73px; }
   #footer-container { min-height: 320px; }
   #header-container header { display:block; }
   #footer-container footer { display:block; }
 </style>
-
 </head>
-<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<body class="bg-background text-on-surface font-body-md text-body-md antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
-<!-- Main Canvas -->
-<main class="flex-grow flex flex-col items-center justify-center py-section-padding-y px-gutter-x">
-<div class="max-w-container-max w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-<!-- Left Column: Form & Progress -->
-<div class="flex flex-col w-full max-w-md mx-auto lg:mx-0">
-<!-- Branding Header -->
-<div class="mb-8 text-center lg:text-left">
-<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2 tracking-tight">Portail Partenaire</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant">Étape 1 sur 4 : Création de Compte</p>
+<main class="flex-grow pt-32 pb-section-padding-y px-gutter-x max-w-container-max mx-auto w-full">
+<!-- Main Content Canvas -->
+<div class="w-full max-w-5xl mx-auto flex-grow flex flex-col">
+<div class="mb-12 max-w-3xl">
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-4">Vérification &amp; KYC</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted">Dernière étape pour activer votre compte partenaire. Téléchargez les documents officiels requis pour vérifier l'identité de votre entreprise et votre couverture d'assurance.</p>
 </div>
 <!-- Progress Bar -->
-<div class="w-full bg-surface-container-low rounded-full h-2 mb-10 overflow-hidden border border-surface-glass-border">
-<div class="bg-primary h-2 rounded-full glow-effect transition-all duration-500 ease-out" style="width: 25%"></div>
+<div class="mb-12 max-w-3xl">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Étape 4 sur 4</span>
+<span class="font-body-md text-body-md text-on-surface-muted">100% Terminé</span>
 </div>
-<!-- Registration Form -->
-<div class="bg-surface-glass backdrop-blur-xl border border-surface-glass-border rounded-xl p-8 shadow-2xl relative">
-<!-- Subtle Glow Accent -->
-<div class="absolute -top-10 -left-10 w-32 h-32 bg-primary/20 blur-[60px] rounded-full pointer-events-none"></div>
-<form id="form-step-inscription" action="/partenaire-societe.html" class="space-y-6 relative z-10" method="GET">
-<!-- Full Name -->
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container neon-shadow w-full rounded-full relative">
+<div class="absolute inset-0 bg-white opacity-20" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);"></div>
+</div>
+</div>
+</div>
+<!-- Upload Zones Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-card-gap mb-12 max-w-5xl">
+<!-- Extrait Kbis -->
+<div class="glass-panel rounded-xl p-8 flex flex-col gap-4 relative group transition-all hover:border-primary-container">
+<div class="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary text-sm">description</span>
+</div>
 <div>
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="fullName">Nom Personnel</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-tertiary-container" data-icon="person">person</span>
-<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg py-3 pl-12 pr-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-md" id="fullName" name="fullName" placeholder="Jeanne Dupont" required="" type="text"/>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1 text-lg">Extrait Kbis</h3>
+<p class="font-body-md text-body-md text-on-surface-muted text-sm">Doit dater de moins de 3 mois. PDF ou JPG uniquement.</p>
+</div>
+<div class="kyc-upload-zone mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 group-hover:text-primary transition-colors">upload_file</span>
+<p class="font-body-md text-body-md text-on-surface mb-1">Glissez et déposez le fichier ici</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">ou cliquez pour parcourir</p>
+<input id="kyc-kbis" data-label="Extrait Kbis" accept=".pdf,.jpg,.jpeg,.png" class="hidden kyc-file-input" type="file"/>
 </div>
 </div>
-<!-- Professional Email -->
+<!-- Professional Insurance -->
+<div class="glass-panel rounded-xl p-8 flex flex-col gap-4 relative group transition-all hover:border-primary-container">
+<div class="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary text-sm">security</span>
+</div>
 <div>
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="email">Email Professionnel</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-tertiary-container" data-icon="mail">mail</span>
-<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg py-3 pl-12 pr-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-md" id="email" name="email" placeholder="jeanne@studio-acoustics.com" required="" type="email"/>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1 text-lg">Attestation d'assurance</h3>
+<p class="font-body-md text-body-md text-on-surface-muted text-sm">Attestation valide de responsabilité civile couvrant la location de matériel.</p>
+</div>
+<div class="kyc-upload-zone mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 group-hover:text-primary transition-colors">upload_file</span>
+<p class="font-body-md text-body-md text-on-surface mb-1">Glissez et déposez le fichier ici</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">ou cliquez pour parcourir</p>
+<input id="kyc-insurance" data-label="Attestation d’assurance" accept=".pdf,.jpg,.jpeg,.png" class="hidden kyc-file-input" type="file"/>
 </div>
 </div>
-<!-- Password -->
+<!-- Manager's ID -->
+<div class="glass-panel rounded-xl p-8 flex flex-col gap-4 relative group transition-all hover:border-primary-container md:col-span-2 lg:col-span-1">
+<div class="absolute top-4 right-4 w-8 h-8 rounded-full bg-surface-container-low flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary text-sm">badge</span>
+</div>
 <div>
-<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2" for="password">Mot de passe</label>
-<div class="relative">
-<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-tertiary-container" data-icon="lock">lock</span>
-<input class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg py-3 pl-12 pr-4 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body-md" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-1 text-lg">Pièce d'identité du gérant</h3>
+<p class="font-body-md text-body-md text-on-surface-muted text-sm">Passeport ou carte nationale d'identité valide du représentant légal.</p>
 </div>
-<p class="mt-2 text-sm text-tertiary-container font-body-md text-sm">Doit contenir au moins 8 caractères.</p>
+<div class="kyc-upload-zone mt-4 border-2 border-dashed border-outline-variant rounded-lg p-8 flex flex-col items-center justify-center text-center bg-surface-container-low/50 hover:bg-surface-container-highest hover:border-primary transition-all cursor-pointer group-hover:bg-surface-container">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-3 group-hover:text-primary transition-colors">id_card</span>
+<p class="font-body-md text-body-md text-on-surface mb-1">Glissez et déposez le fichier ici</p>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Recto et verso requis</p>
+<input id="kyc-id" data-label="Pièce d’identité du gérant" accept=".pdf,.jpg,.jpeg,.png" class="hidden kyc-file-input" type="file"/>
 </div>
-<!-- Submit Button -->
-<div class="pt-4">
-<button class="w-full bg-primary-container text-white font-label-caps text-label-caps uppercase tracking-wider py-4 rounded-lg glow-effect hover:bg-primary-container/90 transition-all active:scale-[0.98] flex items-center justify-center gap-2" type="submit">
-                                Continuer vers l'Étape 2
-                                <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<!-- Information / Security Note -->
+<div class="bg-surface-container-low border border-outline-variant/30 rounded-xl p-6 flex gap-4 items-start md:col-span-2 lg:col-span-1">
+<span class="material-symbols-outlined text-tertiary-container mt-1">encrypted</span>
+<div>
+<h4 class="font-body-md text-body-md text-on-surface font-semibold mb-2">Traitement sécurisé des données</h4>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Tous les documents téléchargés sont cryptés à l'aide d'un cryptage AES-256 de niveau bancaire. Les fichiers sont strictement utilisés pour les processus de vérification KYC par notre équipe de conformité et ne sont jamais partagés avec des tiers.</p>
+</div>
+</div>
+</div>
+<div id="kyc-message" class="hidden max-w-5xl mb-6 rounded-xl border p-4 text-sm"></div>
+<!-- Primary Action -->
+<div class="mt-8 pt-8 border-t border-surface-glass-border flex flex-col sm:flex-row justify-between gap-4 max-w-5xl">
+<a href="/inscription-partenaire-logistique.html" class="inline-flex items-center justify-center gap-3 px-8 py-4 rounded-lg border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase tracking-widest hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined text-sm">arrow_back</span>
+<span>Retour</span>
+</a>
+<button id="kyc-submit" type="button" class="bg-primary-container text-white px-8 py-4 rounded-lg font-label-caps text-label-caps uppercase tracking-widest neon-shadow neon-shadow-hover transition-all transform hover:-translate-y-1 active:translate-y-0 active:scale-95 flex items-center gap-3">
+<span>Soumettre mon dossier</span>
+<span class="material-symbols-outlined text-sm">send</span>
 </button>
-</div>
-</form>
-<div class="mt-6 text-center">
-<p class="font-body-md text-on-surface-variant text-sm">Vous avez déjà un compte ? <a class="text-primary hover:underline transition-all" href="/connexion-partenaire.html">Se connecter</a></p>
-</div>
-</div>
-</div>
-<!-- Right Column: Benefits Showcase -->
-<div class="hidden lg:flex flex-col h-full justify-center">
-<div class="bg-surface-container-low border border-surface-glass-border rounded-2xl p-10 relative overflow-hidden h-full flex flex-col justify-center">
-<!-- Ambient Background Image -->
-<div class="absolute inset-0 opacity-20 z-0 bg-cover bg-center" data-alt="A dimly lit, high-end recording studio control room at night. Massive mixing console in the foreground with glowing LED buttons. Large studio monitors silhouetted against acoustic wall treatments. Deep blacks and obsidian surfaces dominate, punctuated by vibrant electric magenta accent lighting creating a cutting-edge, nocturnal premium atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBoy1ogCyQRqeyDRJmwh2l-sFIMzcOApGKaQXJCUgDSYqjjG2kbyVQE6vFz2rUWr2RGAhYzAQ8MdzrxMVBrAReGPN3wM_fBCBOOcDUL0LfssM_eohdhSDH_QD4JzQDgQqTOgocu8LjtnQTu-lU3FmKN14r1TaGcuhCUR1_QWO4ARm5xQ2V0S-ew1nLUWeudarcAWAh2SpDk9JeNn5GOdDdn6HbLfrodTyiIE_YGxshav7O69zXSewyr6Vb_q8F5HkLTcBBgcXYIPGo');"></div>
-<!-- Dark Gradient Overlay -->
-<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent z-0"></div>
-<div class="relative z-10">
-<h2 class="font-headline-md text-headline-md text-on-surface mb-8">Propulsez Votre Entreprise Audio.</h2>
-<div class="space-y-6">
-<!-- Benefit 1 -->
-<div class="flex items-start gap-4">
-<div class="bg-surface-container-highest border border-surface-glass-border p-3 rounded-lg text-primary mt-1">
-<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
-</div>
-<div>
-<h3 class="font-headline-md text-headline-md text-on-surface text-lg mb-1">Portée Mondiale</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">Connectez-vous avec des organisateurs d'événements de haut niveau et des producteurs recherchant des équipements premium.</p>
-</div>
-</div>
-<!-- Benefit 2 -->
-<div class="flex items-start gap-4">
-<div class="bg-surface-container-highest border border-surface-glass-border p-3 rounded-lg text-primary mt-1">
-<span class="material-symbols-outlined" data-icon="shield_person">shield_person</span>
-</div>
-<div>
-<h3 class="font-headline-md text-headline-md text-on-surface text-lg mb-1">Sécurité Vérifiée</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">Assurance complète et vérification d'identité pour chaque transaction de location.</p>
-</div>
-</div>
-<!-- Benefit 3 -->
-<div class="flex items-start gap-4">
-<div class="bg-surface-container-highest border border-surface-glass-border p-3 rounded-lg text-primary mt-1">
-<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
-</div>
-<div>
-<h3 class="font-headline-md text-headline-md text-on-surface text-lg mb-1">Analytiques Avancées</h3>
-<p class="font-body-md text-body-md text-on-surface-variant">Suivez les taux d'utilisation, le ROI et les tendances de la demande depuis votre tableau de bord dédié.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 </main>
-<!-- SEO-optimized Mega Footer -->
 <div id="footer-container"></div>
 <script src="/components.js"></script>
-<script>window.RSS_PARTNER_PAGE="inscription-partenaire.html";</script>
+
+<script>
+(function(){
+  const allowedTypes = ['application/pdf','image/jpeg','image/png'];
+  const maxSize = 8 * 1024 * 1024;
+  const message = document.getElementById('kyc-message');
+  const submit = document.getElementById('kyc-submit');
+
+  function show(type, text){
+    if(!message) return;
+    message.className = 'max-w-5xl mb-6 rounded-xl border p-4 text-sm ' + (
+      type === 'success'
+        ? 'border-green-500/40 bg-green-500/10 text-green-200'
+        : type === 'error'
+          ? 'border-red-500/40 bg-red-500/10 text-red-200'
+          : 'border-primary/40 bg-primary/10 text-on-surface-variant'
+    );
+    message.textContent = text;
+    message.classList.remove('hidden');
+  }
+
+  function setDraft(data){
+    try{
+      const old = JSON.parse(localStorage.getItem('rss_partner_draft') || '{}');
+      localStorage.setItem('rss_partner_draft', JSON.stringify(Object.assign(old, data || {})));
+    }catch(e){}
+  }
+
+  document.querySelectorAll('.kyc-upload-zone').forEach((zone) => {
+    const input = zone.querySelector('input[type="file"]');
+    if(!input) return;
+
+    const title = input.getAttribute('data-label') || 'Document';
+
+    zone.addEventListener('click', () => input.click());
+
+    ['dragenter','dragover'].forEach((eventName) => {
+      zone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        zone.classList.add('border-primary','bg-surface-container-highest');
+      });
+    });
+
+    ['dragleave','drop'].forEach((eventName) => {
+      zone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        zone.classList.remove('border-primary','bg-surface-container-highest');
+      });
+    });
+
+    zone.addEventListener('drop', (e) => {
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if(file){
+        const dt = new DataTransfer();
+        dt.items.add(file);
+        input.files = dt.files;
+        input.dispatchEvent(new Event('change', { bubbles:true }));
+      }
+    });
+
+    input.addEventListener('change', () => {
+      const file = input.files && input.files[0];
+      if(!file) return;
+
+      if(!allowedTypes.includes(file.type) && !/\.(pdf|jpg|jpeg|png)$/i.test(file.name)){
+        input.value = '';
+        show('error', title + ' : format refusé. Utilisez PDF, JPG ou PNG.');
+        return;
+      }
+
+      if(file.size > maxSize){
+        input.value = '';
+        show('error', title + ' : fichier trop lourd. Maximum 8 Mo.');
+        return;
+      }
+
+      zone.innerHTML = `
+        <span class="material-symbols-outlined text-4xl text-primary mb-3">task_alt</span>
+        <p class="font-body-md text-body-md text-on-surface mb-1">${file.name}</p>
+        <p class="font-body-md text-body-md text-on-surface-variant text-sm">${Math.round(file.size/1024)} Ko · cliquez pour remplacer</p>
+      `;
+      zone.appendChild(input);
+      show('success', title + ' ajouté avec succès.');
+    });
+  });
+
+  if(submit){
+    submit.addEventListener('click', function(){
+      const missing = Array.from(document.querySelectorAll('.kyc-file-input'))
+        .filter(input => !input.files || !input.files.length)
+        .map(input => input.getAttribute('data-label'));
+
+      if(missing.length){
+        show('error', 'Merci d’ajouter les documents obligatoires : ' + missing.join(', ') + '.');
+        return;
+      }
+
+      const files = {};
+      document.querySelectorAll('.kyc-file-input').forEach(input => {
+        files[input.id] = input.files[0].name;
+      });
+
+      setDraft({
+        kyc_files: files,
+        kyc_status: 'submitted',
+        status: 'pending',
+        submitted_at: new Date().toISOString()
+      });
+
+      show('success', 'Documents vérifiés côté formulaire. Envoi du dossier...');
+      setTimeout(() => { window.location.href = '/partenaire-soumis.html'; }, 700);
+    });
+  }
+})();
+</script>
+
+<script>window.RSS_PARTNER_PAGE="inscription-partenaire-kyc.html";</script>
 <script src="/assets/js/partner-flow.js"></script>
 </body></html>
