@@ -671,9 +671,9 @@ html, body {
     essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 12, searchType: 'city' },
     taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 12, searchType: 'city' },
     tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' },
-    santa eularia des riu: { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 12, searchType: 'city' },
+    'santa eularia des riu': { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 12, searchType: 'city' },
     ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 12, searchType: 'city' },
-    dubaï: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
+    'dubaï': { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
     dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
     toulouse: { name: 'Toulouse', country: 'France', countryCode: 'fr', lat: 43.6047, lng: 1.4442, zoom: 12, searchType: 'city' },
     bordeaux: { name: 'Bordeaux', country: 'France', countryCode: 'fr', lat: 44.8378, lng: -0.5792, zoom: 12, searchType: 'city' },
@@ -1326,8 +1326,6 @@ html, body {
         userMarker = null;
       }
 
-      // Le point blanc est uniquement la vraie position navigateur.
-      // Une recherche ville/pays n'est jamais "ma position".
       if (options && options.isGeolocation) {
         const userIcon = L.divIcon({
           className: 'rss-user-marker',
