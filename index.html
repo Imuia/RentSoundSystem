@@ -638,7 +638,8 @@ html, body {
     be: ['be', 'belgique', 'belgium'],
     ch: ['ch', 'suisse', 'switzerland'],
     us: ['us', 'usa', 'etats unis', 'états unis', 'united states'],
-    gb: ['gb', 'uk', 'royaume uni', 'united kingdom']
+    gb: ['gb', 'uk', 'royaume uni', 'united kingdom'],
+    ae: ['ae', 'uae', 'emirats arabes unis', 'émirats arabes unis', 'united arab emirates', 'dubai', 'dubaï']
   };
 
   const COUNTRY_DISPLAY = {
@@ -649,7 +650,8 @@ html, body {
     be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7 },
     ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7 },
     us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4 },
-    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 }
+    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 },
+    ae: { name: 'Émirats arabes unis', country: 'United Arab Emirates', countryCode: 'ae', lat: 23.4241, lng: 53.8478, zoom: 7 }
   };
 
 
@@ -668,7 +670,15 @@ html, body {
     rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 12, searchType: 'city' },
     essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 12, searchType: 'city' },
     taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 12, searchType: 'city' },
-    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' }
+    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' },
+    santa eularia des riu: { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 12, searchType: 'city' },
+    ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 12, searchType: 'city' },
+    dubaï: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
+    dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
+    toulouse: { name: 'Toulouse', country: 'France', countryCode: 'fr', lat: 43.6047, lng: 1.4442, zoom: 12, searchType: 'city' },
+    bordeaux: { name: 'Bordeaux', country: 'France', countryCode: 'fr', lat: 44.8378, lng: -0.5792, zoom: 12, searchType: 'city' },
+    lyon: { name: 'Lyon', country: 'France', countryCode: 'fr', lat: 45.7640, lng: 4.8357, zoom: 12, searchType: 'city' },
+    nice: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 12, searchType: 'city' }
   };
 
   function presetPlaceFromQuery(query) {
@@ -795,6 +805,118 @@ html, body {
       return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
     });
   }
+
+
+  /* ==========================================================================
+     LOGIQUE CARTE / RECHERCHE STABLE - VERSION FINALE
+     Objectif :
+     - recherche ville = uniquement annonces de cette ville, jamais fallback pays ;
+     - recherche pays = uniquement annonces de ce pays ;
+     - aucune annonce = message vide + carte centrée sur la ville/pays recherché ;
+     - aucune géolocalisation automatique après chargement.
+     ========================================================================== */
+
+  const COUNTRY_BOUNDS = {
+    ma: { minLat: 21.0, maxLat: 36.2, minLng: -17.5, maxLng: -0.8 },
+    mg: { minLat: -26.0, maxLat: -11.0, minLng: 43.0, maxLng: 51.5 },
+    fr: { minLat: 41.0, maxLat: 51.5, minLng: -5.5, maxLng: 10.0 },
+    es: { minLat: 27.0, maxLat: 44.5, minLng: -18.5, maxLng: 5.0 },
+    be: { minLat: 49.4, maxLat: 51.6, minLng: 2.5, maxLng: 6.5 },
+    ch: { minLat: 45.6, maxLat: 48.0, minLng: 5.8, maxLng: 10.7 },
+    gb: { minLat: 49.5, maxLat: 59.5, minLng: -8.8, maxLng: 2.2 },
+    us: { minLat: 24.0, maxLat: 49.8, minLng: -125.0, maxLng: -66.0 },
+    ae: { minLat: 22.4, maxLat: 26.2, minLng: 51.4, maxLng: 56.5 }
+  };
+
+  function coordsInCountry(item, code) {
+    const b = COUNTRY_BOUNDS[code];
+    const lat = getLat(item);
+    const lng = getLng(item);
+    if (!b || lat === null || lng === null) return false;
+    return lat >= b.minLat && lat <= b.maxLat && lng >= b.minLng && lng <= b.maxLng;
+  }
+
+  function strongListingCountryCode(item) {
+    const explicit = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
+    if (explicit) {
+      if (explicit === 'morocco' || explicit === 'maroc') return 'ma';
+      if (explicit === 'madagascar') return 'mg';
+      if (explicit === 'france') return 'fr';
+      if (explicit === 'spain' || explicit === 'espagne') return 'es';
+      if (explicit === 'united arab emirates' || explicit === 'uae') return 'ae';
+      return explicit.slice(0, 2);
+    }
+
+    const country = normalizeText(item && item.country);
+    const fromCountry = countryCodeFromText(country);
+    if (fromCountry) return fromCountry;
+
+    const text = compactWords([item && item.city, item && item.location, item && item.address].join(' '));
+    for (const code in CITY_COUNTRY_HINTS) {
+      if (CITY_COUNTRY_HINTS[code].some(city => {
+        const c = normalizeText(city);
+        return text === c || text.indexOf(c) !== -1;
+      })) return code;
+    }
+
+    // Dernier recours : coordonnées GPS.
+    for (const code in COUNTRY_BOUNDS) {
+      if (coordsInCountry(item, code)) return code;
+    }
+
+    return '';
+  }
+
+  function listingCountryMatchesCenter(item, center) {
+    const centerCode = centerCountryCode(center);
+    if (!centerCode) return false;
+
+    const codeByCoords = coordsInCountry(item, centerCode);
+    const codeByText = strongListingCountryCode(item);
+
+    // Si les coordonnées existent, elles sont la source la plus fiable.
+    if (hasCoordinates(item)) return codeByCoords;
+
+    // Sans coordonnées, on accepte seulement si le pays/ville est clairement déductible.
+    return codeByText === centerCode;
+  }
+
+  function exactCityFromItem(item) {
+    return canonicalCity((item && (item.city || item.location || item.address)) || '');
+  }
+
+  function listingCityMatchesCenter(item, center) {
+    if (isCountryCenter(center)) return true;
+    const wanted = canonicalCity(centerCityName(center));
+    if (!wanted || wanted === 'votre position' || wanted === 'autour de vous') return false;
+
+    const candidates = [item && item.city, item && item.location, item && item.address]
+      .map(canonicalCity)
+      .filter(Boolean);
+
+    // Ville stricte : Paris ne doit jamais apparaître pour Cannes.
+    return candidates.some(value => value === wanted);
+  }
+
+  function nearbyItems(center, limit) {
+    const safeCenter = center || currentCenter;
+    const source = activeListings.length ? activeListings : allListings;
+    const base = equipmentFilter(source).filter(item => listingCountryMatchesCenter(item, safeCenter));
+
+    if (isCountryCenter(safeCenter)) {
+      return uniqueListings(base)
+        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
+        .slice(0, limit);
+    }
+
+    const cityMatches = base.filter(item => listingCityMatchesCenter(item, safeCenter));
+    const withCoords = enrichByDistance(cityMatches.filter(item => hasCoordinates(item)), safeCenter)
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+    const withoutCoords = cityMatches.filter(item => !hasCoordinates(item));
+
+    return uniqueListings(withCoords.concat(withoutCoords)).slice(0, limit);
+  }
+
 
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
@@ -1159,6 +1281,7 @@ html, body {
 
     const safeCenter = center || currentCenter;
     const items = nearbyItems(safeCenter, 30);
+
     productMarkers = items.map(item => {
       const lat = getLat(item);
       const lng = getLng(item);
@@ -1168,12 +1291,10 @@ html, body {
         .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
     }).filter(Boolean);
 
-    if (productMarkers.length && isCountryCenter(safeCenter)) {
+    if (isCountryCenter(safeCenter) && productMarkers.length) {
       const group = L.featureGroup(productMarkers);
       map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 7, animate: true });
     } else {
-      // Pour une recherche ville, on garde toujours la carte centrée sur la ville recherchée.
-      // Les markers proches s'affichent, mais ils ne déplacent pas la carte vers un autre pays.
       map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 12, { animate: true });
     }
 
@@ -1200,18 +1321,26 @@ html, body {
     setHeroCityInput(currentCenter.name || '');
 
     if (mapReady && map) {
-      const userIcon = L.divIcon({
-        className: 'rss-user-marker',
-        html: '<div class="rss-user-dot"></div>',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10],
-        popupAnchor: [0, -10]
-      });
+      if (userMarker) {
+        map.removeLayer(userMarker);
+        userMarker = null;
+      }
 
-      if (userMarker) map.removeLayer(userMarker);
-      userMarker = L.marker([currentCenter.lat, currentCenter.lng], { icon: userIcon, zIndexOffset: 1000 })
-        .addTo(map)
-        .bindPopup(options && options.isSearch ? currentCenter.name : 'Votre position', { className: 'rss-popup' });
+      // Le point blanc est uniquement la vraie position navigateur.
+      // Une recherche ville/pays n'est jamais "ma position".
+      if (options && options.isGeolocation) {
+        const userIcon = L.divIcon({
+          className: 'rss-user-marker',
+          html: '<div class="rss-user-dot"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          popupAnchor: [0, -10]
+        });
+
+        userMarker = L.marker([currentCenter.lat, currentCenter.lng], { icon: userIcon, zIndexOffset: 1000 })
+          .addTo(map)
+          .bindPopup('Votre position', { className: 'rss-popup' });
+      }
 
       map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 13, { animate: true });
     }
@@ -1398,18 +1527,29 @@ html, body {
   ready(function () {
     showLoading();
     initMap();
-    loadListings();
-
-    const saved = loadSavedLocation();
-    if (saved) updateCenter(saved, { isSaved: true });
-
-    document.getElementById('use-my-location')?.addEventListener('click', function () {
-      locateUser(true);
-    });
 
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
     const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
     const searchButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim().toLowerCase() === 'rechercher');
+
+    // Évite que le navigateur réinjecte une ancienne recherche au rechargement.
+    if (cityInput) {
+      cityInput.setAttribute('autocomplete', 'off');
+      cityInput.value = '';
+    }
+    if (equipmentInput) {
+      equipmentInput.setAttribute('autocomplete', 'off');
+    }
+
+    loadListings();
+
+    // Chargement stable : Paris par défaut, puis l'utilisateur choisit une ville
+    // ou clique explicitement sur "Utiliser ma position".
+    updateCenter(DEFAULT_CITY, { isFallback: true });
+
+    document.getElementById('use-my-location')?.addEventListener('click', function () {
+      locateUser(true);
+    });
 
     searchButton?.addEventListener('click', function (e) {
       e.preventDefault();
@@ -1433,10 +1573,10 @@ html, body {
       }
     });
 
-    setLabels(saved?.name || DEFAULT_CITY.name);
-    setTimeout(function () { locateUser(false); }, saved ? 1200 : 700);
+    setLabels(DEFAULT_CITY.name);
   });
 })();
+
 </script>
 
 <script src="/components.js"></script>
