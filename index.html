@@ -636,15 +636,15 @@ html, body {
   };
 
   const COUNTRY_DISPLAY = {
-    ma: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6 },
-    mg: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6 },
-    fr: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6 },
-    es: { name: 'Espagne', country: 'Espagne', countryCode: 'es', lat: 40.4637, lng: -3.7492, zoom: 6 },
-    be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7 },
-    ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7 },
-    us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4 },
-    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 },
-    ae: { name: 'Émirats arabes unis', country: 'United Arab Emirates', countryCode: 'ae', lat: 23.4241, lng: 53.8478, zoom: 7 }
+    ma: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, bounds: { minLat: 21.0, maxLat: 36.2, minLng: -17.5, maxLng: -0.8 } },
+    mg: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, bounds: { minLat: -26.0, maxLat: -11.0, minLng: 43.0, maxLng: 51.5 } },
+    fr: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, bounds: { minLat: 41.0, maxLat: 51.5, minLng: -5.5, maxLng: 10.0 } },
+    es: { name: 'Espagne', country: 'Espagne', countryCode: 'es', lat: 40.4637, lng: -3.7492, zoom: 6, bounds: { minLat: 27.0, maxLat: 44.5, minLng: -18.5, maxLng: 5.0 } },
+    be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7, bounds: { minLat: 49.4, maxLat: 51.6, minLng: 2.5, maxLng: 6.5 } },
+    ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7, bounds: { minLat: 45.6, maxLat: 48.0, minLng: 5.8, maxLng: 10.7 } },
+    us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4, bounds: { minLat: 24.0, maxLat: 49.8, minLng: -125.0, maxLng: -66.0 } },
+    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6, bounds: { minLat: 49.5, maxLat: 59.5, minLng: -8.8, maxLng: 2.2 } },
+    ae: { name: 'Émirats arabes unis', country: 'United Arab Emirates', countryCode: 'ae', lat: 23.4241, lng: 53.8478, zoom: 7, bounds: { minLat: 22.4, maxLat: 26.2, minLng: 51.4, maxLng: 56.5 } }
   };
 
 
@@ -711,6 +711,29 @@ html, body {
       })) return code;
     }
     return '';
+  }
+
+  function boundsFromNominatim(item) {
+    const b = item && item.boundingbox;
+    if (!Array.isArray(b) || b.length < 4) return null;
+    const minLat = toNumber(b[0]);
+    const maxLat = toNumber(b[1]);
+    const minLng = toNumber(b[2]);
+    const maxLng = toNumber(b[3]);
+    if (minLat === null || maxLat === null || minLng === null || maxLng === null) return null;
+    return { minLat, maxLat, minLng, maxLng };
+  }
+
+  function boundsContainCoords(bounds, lat, lng) {
+    if (!bounds || lat === null || lng === null) return false;
+    return lat >= bounds.minLat && lat <= bounds.maxLat && lng >= bounds.minLng && lng <= bounds.maxLng;
+  }
+
+  function centerBounds(center) {
+    const code = centerCountryCode(center);
+    if (center && center.bounds) return center.bounds;
+    if (code && COUNTRY_DISPLAY[code] && COUNTRY_DISPLAY[code].bounds) return COUNTRY_DISPLAY[code].bounds;
+    return null;
   }
 
   function inferCountryCodeFromListing(item) {
@@ -797,6 +820,64 @@ html, body {
       return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
     });
   }
+
+
+  /* ==========================================================================
+     FILTRAGE GEO UNIVERSEL - VILLES ET PAYS
+     Règle définitive :
+     - recherche pays : seules les annonces dans les limites GPS du pays passent ;
+     - recherche ville : pays correct + ville correcte + rayon ;
+     - aucune annonce ambiguë hors pays ne doit apparaître.
+     ========================================================================== */
+
+  function listingCountryMatchesCenter(item, center) {
+    const code = centerCountryCode(center);
+    if (!code) return false;
+
+    const itemLat = getLat(item);
+    const itemLng = getLng(item);
+    const bounds = centerBounds(center);
+
+    // Si l'annonce a des coordonnées et que le pays recherché a des limites,
+    // les coordonnées sont la source de vérité.
+    if (itemLat !== null && itemLng !== null && bounds) {
+      return boundsContainCoords(bounds, itemLat, itemLng);
+    }
+
+    // Sinon on utilise les champs texte clairement identifiables.
+    const itemCode = inferCountryCodeFromListing(item);
+    if (itemCode) return itemCode === code;
+
+    // Pour une recherche pays, on refuse les annonces sans pays clair.
+    if (isCountryCenter(center)) return false;
+
+    // Pour une recherche ville, la ville + le rayon filtreront ensuite.
+    return true;
+  }
+
+  function nearbyItems(center, limit) {
+    const safeCenter = center || currentCenter;
+    const source = activeListings.length ? activeListings : allListings;
+
+    let filtered = equipmentFilter(source)
+      .filter(item => listingCountryMatchesCenter(item, safeCenter));
+
+    if (isCountryCenter(safeCenter)) {
+      return uniqueListings(filtered)
+        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
+        .slice(0, limit);
+    }
+
+    filtered = filtered
+      .filter(item => listingCityMatchesCenter(item, safeCenter))
+      .filter(item => hasCoordinates(item));
+
+    const sorted = enrichByDistance(filtered, safeCenter);
+    return sorted
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
+      .slice(0, limit);
+  }
+
 
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
@@ -975,7 +1056,8 @@ html, body {
       lat: parseFloat(result.lat),
       lng: parseFloat(result.lon),
       zoom: isCountryResult ? 6 : 13,
-      searchType: isCountryResult ? 'country' : 'city'
+      searchType: isCountryResult ? 'country' : 'city',
+      bounds: boundsFromNominatim(result)
     };
   }
 
