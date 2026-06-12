@@ -631,7 +631,8 @@ html, body {
     be: ['be', 'belgique', 'belgium'],
     ch: ['ch', 'suisse', 'switzerland'],
     us: ['us', 'usa', 'etats unis', 'états unis', 'united states'],
-    gb: ['gb', 'uk', 'royaume uni', 'united kingdom']
+    gb: ['gb', 'uk', 'royaume uni', 'united kingdom'],
+    ae: ['ae', 'uae', 'emirats arabes unis', 'émirats arabes unis', 'united arab emirates', 'dubai', 'dubaï']
   };
 
   const COUNTRY_DISPLAY = {
@@ -642,13 +643,45 @@ html, body {
     be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7 },
     ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7 },
     us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4 },
-    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 }
+    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6 },
+    ae: { name: 'Émirats arabes unis', country: 'United Arab Emirates', countryCode: 'ae', lat: 23.4241, lng: 53.8478, zoom: 7 }
   };
+
+
+  const GEO_PRESETS = {
+    agadir: { name: 'Agadir', country: 'Maroc', countryCode: 'ma', lat: 30.4278, lng: -9.5981, zoom: 12, searchType: 'city' },
+    maroc: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
+    morocco: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
+    cannes: { name: 'Cannes', country: 'France', countryCode: 'fr', lat: 43.5528, lng: 7.0174, zoom: 12, searchType: 'city' },
+    nice: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 12, searchType: 'city' },
+    nices: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 12, searchType: 'city' },
+    paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 12, searchType: 'city' },
+    france: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, searchType: 'country' },
+    antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
+    tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
+    tana: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
+    madagascar: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, searchType: 'country' },
+    casablanca: { name: 'Casablanca', country: 'Maroc', countryCode: 'ma', lat: 33.5731, lng: -7.5898, zoom: 12, searchType: 'city' },
+    marrakech: { name: 'Marrakech', country: 'Maroc', countryCode: 'ma', lat: 31.6295, lng: -7.9811, zoom: 12, searchType: 'city' },
+    rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 12, searchType: 'city' },
+    essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 12, searchType: 'city' },
+    taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 12, searchType: 'city' },
+    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' },
+    dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
+    'dubaï': { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
+    ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 12, searchType: 'city' },
+    'santa eularia des riu': { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 12, searchType: 'city' }
+  };
+
+  function presetPlaceFromQuery(query) {
+    const key = compactWords(query);
+    return GEO_PRESETS[key] ? Object.assign({}, GEO_PRESETS[key]) : null;
+  }
 
   const CITY_COUNTRY_HINTS = {
     ma: ['agadir','casablanca','marrakech','marrakesh','essaouira','rabat','tanger','tangier','fes','fès','meknes','meknès','ouarzazate','taghazout','tamraght','tetouan','tétouan'],
     mg: ['antananarivo','tananarive','tana','tanà','nosy be','nosy-be','hell ville','hell-ville','toamasina','tamatave','mahajanga','majunga','fianarantsoa','antsiranana','diego suarez','diego-suarez'],
-    fr: ['paris','lyon','marseille','nice','cannes','toulouse','bordeaux','lille','nantes','strasbourg','montpellier']
+    fr: ['paris','lyon','marseille','nice','nices','cannes','toulouse','bordeaux','lille','nantes','strasbourg','montpellier']
   };
 
   function compactWords(value) {
@@ -837,7 +870,6 @@ html, body {
   }
 
   function saveLocation(center) {
-    if (!center || center.source !== 'geolocation') return;
     try {
       localStorage.setItem('rssUserLocation', JSON.stringify({
         name: center.name,
@@ -846,8 +878,7 @@ html, body {
         lat: center.lat,
         lng: center.lng,
         zoom: center.zoom || 13,
-        savedAt: Date.now(),
-        source: 'geolocation'
+        savedAt: Date.now()
       }));
     } catch (e) {}
   }
@@ -856,10 +887,6 @@ html, body {
     try {
       const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
       if (!saved || !saved.lat || !saved.lng) return null;
-      if (saved.source !== 'geolocation') {
-        localStorage.removeItem('rssUserLocation');
-        return null;
-      }
       return saved;
     } catch (e) { return null; }
   }
@@ -882,6 +909,10 @@ html, body {
   async function geocodeCity(query) {
     const rawQuery = String(query || '').trim();
     if (!rawQuery) return null;
+
+    // Priorité aux presets locaux : évite Cannes/Nice qui partent parfois en Espagne.
+    const preset = presetPlaceFromQuery(rawQuery);
+    if (preset) return preset;
 
     const countryCode = countryCodeFromText(rawQuery);
     if (countryCode && COUNTRY_DISPLAY[countryCode]) {
@@ -1141,7 +1172,7 @@ html, body {
 
   function updateCenter(center, options) {
     currentCenter = Object.assign({}, DEFAULT_CITY, { country: '', countryCode: '' }, center || {});
-    if (options && options.isGeolocation) saveLocation(Object.assign({}, currentCenter, { source: 'geolocation' }));
+    if (options && options.isGeolocation) saveLocation(currentCenter);
     setLabels(currentCenter.name || 'Votre position');
     setHeroCityInput(currentCenter.name || '');
 
@@ -1288,7 +1319,7 @@ html, body {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const place = await reversePlace(lat, lng);
-        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13, source: 'geolocation' }, { isGeolocation: true });
+        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13 }, { isGeolocation: true });
       },
       function () {
         if (!showError && manualSearchDone) return;
