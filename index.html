@@ -1052,10 +1052,12 @@ html, body {
     }).filter(Boolean);
 
     if (productMarkers.length) {
-      const layers = userMarker ? productMarkers.concat([userMarker]) : productMarkers;
-      const group = L.featureGroup(layers);
+      // Correction : ne pas inclure la position utilisateur dans le fitBounds.
+      // Sinon la carte peut se dézoomer vers un autre pays lors d'une recherche ville.
+      const group = L.featureGroup(productMarkers);
       map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 13, animate: true });
     } else {
+      // Toujours rester centré sur la ville recherchée.
       map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 12);
     }
 
