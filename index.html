@@ -505,6 +505,7 @@ html, body {
   let allListings = [];
   let activeListings = [];
   let currentCenter = DEFAULT_CITY;
+  let manualSearchDone = false;
   let mapReady = false;
   let listingsReady = false;
 
@@ -663,6 +664,18 @@ html, body {
     if (!text) return '';
     for (const code in COUNTRY_ALIASES) {
       if (COUNTRY_ALIASES[code].some(alias => text === alias || text.indexOf(alias) !== -1)) return code;
+    }
+    return '';
+  }
+
+  function cityCountryHintFromText(value) {
+    const text = compactWords(value);
+    if (!text) return '';
+    for (const code in CITY_COUNTRY_HINTS) {
+      if (CITY_COUNTRY_HINTS[code].some(city => {
+        const c = normalizeText(city);
+        return text === c || text.indexOf(c) !== -1 || c.indexOf(text) !== -1;
+      })) return code;
     }
     return '';
   }
@@ -861,24 +874,77 @@ html, body {
   }
 
   async function geocodeCity(query) {
-    const countryCode = countryCodeFromText(query);
+    const rawQuery = String(query || '').trim();
+    if (!rawQuery) return null;
+
+    const countryCode = countryCodeFromText(rawQuery);
     if (countryCode && COUNTRY_DISPLAY[countryCode]) {
       return Object.assign({ searchType: 'country' }, COUNTRY_DISPLAY[countryCode]);
     }
 
-    const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&limit=1&q=' + encodeURIComponent(query));
-    const data = await res.json();
+    const hintedCountryCode = cityCountryHintFromText(rawQuery);
+
+    async function nominatimSearch(params) {
+      const url = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams(params).toString();
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    let data = [];
+
+    // Pour les villes connues, on force le pays afin d'éviter les mauvais résultats
+    // comme "Cannes" interprété en Espagne au lieu de Cannes, France.
+    if (hintedCountryCode) {
+      data = await nominatimSearch({
+        format: 'json',
+        addressdetails: '1',
+        limit: '5',
+        countrycodes: hintedCountryCode,
+        q: rawQuery
+      });
+    }
+
+    if (!data || !data.length) {
+      data = await nominatimSearch({
+        format: 'json',
+        addressdetails: '1',
+        limit: '5',
+        q: rawQuery
+      });
+    }
+
     if (!data || !data.length) return null;
-    const a = data[0].address || {};
-    const foundCountryCode = normalizeText(a.country_code || '');
-    const foundCountry = a.country || '';
-    const isCountryResult = Boolean(data[0].type === 'country' || data[0].class === 'boundary' && (a.country && !a.city && !a.town && !a.village));
+
+    let result = data[0];
+
+    // Si un pays est deviné par la ville, on privilégie le résultat dans ce pays.
+    if (hintedCountryCode) {
+      const preferred = data.find(item => {
+        const a = item.address || {};
+        return normalizeText(a.country_code || '') === hintedCountryCode;
+      });
+      if (preferred) result = preferred;
+    }
+
+    const a = result.address || {};
+    const foundCountryCode = normalizeText(a.country_code || hintedCountryCode || '');
+    const foundCountry = a.country || (COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].country) || '';
+    const hasCity = Boolean(a.city || a.town || a.village || a.municipality || a.county);
+    const isCountryResult = Boolean(
+      result.type === 'country' ||
+      (result.class === 'boundary' && a.country && !hasCity && !hintedCountryCode)
+    );
+
+    const displayName = isCountryResult
+      ? ((COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].name) || rawQuery)
+      : rawQuery;
+
     return {
-      name: query,
+      name: displayName,
       country: foundCountry,
       countryCode: foundCountryCode,
-      lat: parseFloat(data[0].lat),
-      lng: parseFloat(data[0].lon),
+      lat: parseFloat(result.lat),
+      lng: parseFloat(result.lon),
       zoom: isCountryResult ? 6 : 13,
       searchType: isCountryResult ? 'country' : 'city'
     };
@@ -912,27 +978,29 @@ html, body {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    let filtered = equipmentFilter(source)
-      .filter(item => listingCountryMatchesCenter(item, safeCenter))
-      .filter(item => listingCityMatchesCenter(item, safeCenter));
+    const countryFiltered = equipmentFilter(source)
+      .filter(item => listingCountryMatchesCenter(item, safeCenter));
 
-    // Logique officielle :
-    // - recherche pays (ex: Maroc) : toutes les annonces du pays, même sans rayon ville ;
-    // - recherche ville (ex: Agadir) : ville + pays + rayon autour de la ville.
+    // Recherche pays : toutes les annonces du pays, sans recentrer sur un autre pays.
     if (isCountryCenter(safeCenter)) {
-      return uniqueListings(filtered)
+      return uniqueListings(countryFiltered)
         .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
         .slice(0, limit);
     }
 
-    filtered = filtered.filter(item => hasCoordinates(item));
-    const sorted = enrichByDistance(filtered, safeCenter);
-    const inRadius = sorted.filter(item =>
+    // Recherche ville : ville exacte + pays, puis rayon GPS si disponible.
+    const cityMatches = countryFiltered.filter(item => listingCityMatchesCenter(item, safeCenter));
+    const geoMatches = enrichByDistance(cityMatches.filter(item => hasCoordinates(item)), safeCenter);
+    const inRadius = geoMatches.filter(item =>
       typeof item._distanceKm === 'number' &&
       item._distanceKm <= DEFAULT_RADIUS_KM
     );
 
-    return inRadius.slice(0, limit);
+    // On garde aussi les annonces de la ville sans coordonnées pour les cartes produits,
+    // mais elles ne créent pas de marker sur la carte.
+    const withoutCoords = cityMatches.filter(item => !hasCoordinates(item));
+
+    return uniqueListings(inRadius.concat(withoutCoords)).slice(0, limit);
   }
 
   function canonicalCity(value) {
@@ -1041,7 +1109,8 @@ html, body {
       popupAnchor: [0, -38]
     });
 
-    const items = nearbyItems(center || currentCenter, 30);
+    const safeCenter = center || currentCenter;
+    const items = nearbyItems(safeCenter, 30);
     productMarkers = items.map(item => {
       const lat = getLat(item);
       const lng = getLng(item);
@@ -1051,14 +1120,13 @@ html, body {
         .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
     }).filter(Boolean);
 
-    if (productMarkers.length) {
-      // Correction : ne pas inclure la position utilisateur dans le fitBounds.
-      // Sinon la carte peut se dézoomer vers un autre pays lors d'une recherche ville.
+    if (productMarkers.length && isCountryCenter(safeCenter)) {
       const group = L.featureGroup(productMarkers);
-      map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 13, animate: true });
+      map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 7, animate: true });
     } else {
-      // Toujours rester centré sur la ville recherchée.
-      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 12);
+      // Pour une recherche ville, on garde toujours la carte centrée sur la ville recherchée.
+      // Les markers proches s'affichent, mais ils ne déplacent pas la carte vers un autre pays.
+      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 12, { animate: true });
     }
 
     setTimeout(fixMapSize, 50);
@@ -1216,12 +1284,14 @@ html, body {
 
     navigator.geolocation.getCurrentPosition(
       async function (pos) {
+        if (!showError && manualSearchDone) return;
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const place = await reversePlace(lat, lng);
         updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13 }, { isGeolocation: true });
       },
       function () {
+        if (!showError && manualSearchDone) return;
         const saved = loadSavedLocation();
         if (saved) {
           updateCenter(saved, { isSaved: true });
@@ -1235,6 +1305,7 @@ html, body {
   }
 
   async function searchAroundCity() {
+    manualSearchDone = true;
     const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
     const query = cityInput && cityInput.value ? cityInput.value.trim() : '';
 
