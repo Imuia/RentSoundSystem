@@ -1664,7 +1664,7 @@
       priceMonth: Number(item.price_month || 0),
       caution: Number(item.caution || item.deposit || item.security_deposit || 0),
       deposit: Number(item.caution || item.deposit || item.security_deposit || 0),
-      vatRate: Number(item.vat_rate || item.tva_rate || item.tax_rate || 0.20),
+      vatRate: Number(item.vat_rate || item.tva_rate || item.tax_rate || 0),
       quantity: qty,
       image: firstLoadedImage || firstImage(),
       url: location.href,
@@ -1695,9 +1695,24 @@
     const dates = selectedDates();
     const startDate = dates[0] || '';
     const endDate = dates[dates.length - 1] || startDate || '';
+    const dayCount = Math.max(1, dates.length || 1);
     const delivery = !!document.querySelector('#rss-option-delivery')?.checked;
     const install = !!document.querySelector('#rss-option-install')?.checked;
+    const deliveryUnitPrice = Number(document.querySelector('#rss-option-delivery')?.dataset.optionPrice || 0) || 0;
+    const installationUnitPrice = Number(document.querySelector('#rss-option-install')?.dataset.optionPrice || 0) || 0;
+    const deliveryPrice = delivery ? deliveryUnitPrice : 0;
+    const installationPrice = install ? installationUnitPrice : 0;
     const city = product.city || txt('.font-headline.text-body-md.font-bold.text-on-surface.uppercase') || '';
+    const rentalAmount = Number(product.dailyPrice || 0) * dayCount * Math.max(1, Number(product.quantity || 1));
+    const subtotal = rentalAmount + deliveryPrice + installationPrice;
+    const vatRate = Number(product.vatRate || 0);
+    const tax = subtotal * vatRate;
+    const total = subtotal + tax;
+
+    product.selectedDates = dates;
+    product.caution = Number(product.caution || product.deposit || 0);
+    product.deposit = product.caution;
+    product.vatRate = vatRate;
 
     return {
       product: product,
@@ -1705,10 +1720,30 @@
         startDate:startDate,
         endDate:endDate,
         city:city,
+        days:dayCount,
         delivery:delivery ? 'delivery' : 'pickup',
         technician:install
       },
-      options:{ delivery:delivery, technician:install },
+      options:{
+        delivery:delivery,
+        technician:install,
+        installation:install,
+        deliveryPrice:deliveryPrice,
+        installationPrice:installationPrice
+      },
+      amounts:{
+        rental:rentalAmount,
+        delivery:deliveryPrice,
+        technician:installationPrice,
+        installation:installationPrice,
+        subtotal:subtotal,
+        vatRate:vatRate,
+        tax:tax,
+        total:total,
+        deposit:product.caution,
+        caution:product.caution
+      },
+      pricingMode:'exact_product_page_daily',
       source:'product-page',
       updatedAt:new Date().toISOString()
     };
