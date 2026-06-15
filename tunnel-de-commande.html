@@ -576,13 +576,36 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const caution=safeNumber(firstFilled(item.caution,item.deposit,item.security_deposit,item.deposit_amount),0);
     const vatRate=safeNumber(firstFilled(item.vat_rate,item.tva_rate,item.tax_rate),0.20);
     return {
-      id:item.id||'', original_id:item.original_id??'', name:item.title||item.name||'Annonce RentSoundSystem',
+      id:item.id||'',
+      original_id:item.original_id??'',
+      name:item.title||item.name||'Annonce RentSoundSystem',
       description:cleanText(item.description||item.summary||item.category||''),
-      dailyPrice:price, price:price, quantity:1, deposit:caution, caution:caution,
-      vatRate:vatRate>1?vatRate/100:vatRate, image:imageOf(item),
+      dailyPrice:price,
+      price:price,
+      priceLabel:item.price_label||'per_day',
+      priceWeekend:safeNumber(item.price_weekend,0),
+      priceWeek:safeNumber(item.price_week,0),
+      priceMonth:safeNumber(item.price_month,0),
+      quantity:1,
+      deposit:caution,
+      caution:caution,
+      vatRate:vatRate>1?vatRate/100:vatRate,
+      image:imageOf(item),
       url:item.original_id?'/product?original_id='+encodeURIComponent(item.original_id):(item.id?'/product?id='+encodeURIComponent(item.id):''),
-      city:item.city||item.location||'', country:item.country||'',
-      ownerName:item.owner_name||item.owner_username||'', ownerEmail:item.owner_email||'', ownerPhone:item.owner_phone||'', ownerUsername:item.owner_username||'', partnerId:item.legacy_user_id||''
+      category:item.category||'',
+      type:item.type||'',
+      brand:item.brand||'',
+      model:item.model||'',
+      city:item.city||item.location||'',
+      country:item.country||'',
+      address:item.address||'',
+      ownerName:item.owner_name||item.owner_username||'',
+      ownerEmail:item.owner_email||'',
+      ownerPhone:item.owner_phone||'',
+      ownerUsername:item.owner_username||'',
+      partnerId:item.legacy_user_id||'',
+      minDuration:item.min_duration||'',
+      maxDuration:item.max_duration||''
     };
   }
 
@@ -591,12 +614,24 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     p.name=firstFilled(p.name,p.title,DEFAULT_PRODUCT.name);
     p.description=cleanText(firstFilled(p.description,p.desc,p.category,DEFAULT_PRODUCT.description));
     p.dailyPrice=safeNumber(firstFilled(p.dailyPrice,p.price,p.price_day,p.price_per_day,p.amount),DEFAULT_PRODUCT.dailyPrice);
+    p.price=p.dailyPrice;
+    p.priceLabel=firstFilled(p.priceLabel,p.price_label,'per_day');
+    p.priceWeekend=safeNumber(firstFilled(p.priceWeekend,p.price_weekend),0);
+    p.priceWeek=safeNumber(firstFilled(p.priceWeek,p.price_week),0);
+    p.priceMonth=safeNumber(firstFilled(p.priceMonth,p.price_month),0);
     p.quantity=Math.max(1,safeNumber(firstFilled(p.quantity,p.qty),1));
     p.deposit=safeNumber(firstFilled(p.deposit,p.caution,p.security_deposit,p.deposit_amount),0);
     p.caution=p.deposit;
     p.vatRate=safeNumber(firstFilled(p.vatRate,p.vat_rate,p.tva_rate,p.tax_rate),0.20);
     if(p.vatRate>1)p.vatRate=p.vatRate/100;
     p.image=firstFilled(p.image,p.image_url,p.featured_image,'');
+    p.city=firstFilled(p.city,p.location,'');
+    p.country=firstFilled(p.country,'');
+    p.ownerName=firstFilled(p.ownerName,p.owner_name,p.owner_username,'');
+    p.ownerEmail=firstFilled(p.ownerEmail,p.owner_email,'');
+    p.ownerPhone=firstFilled(p.ownerPhone,p.owner_phone,'');
+    p.ownerUsername=firstFilled(p.ownerUsername,p.owner_username,'');
+    p.partnerId=firstFilled(p.partnerId,p.legacy_user_id,'');
     return p;
   }
 
@@ -639,7 +674,49 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   function initDates(){const start=qs('#rental-start'),end=qs('#rental-end'),draft=getDraft(); if(start&&!start.value)start.value=draft?.rental?.startDate||todayPlus(7); if(end&&!end.value)end.value=draft?.rental?.endDate||draft?.rental?.startDate||todayPlus(9); if(start&&end){start.min=todayPlus(0); end.min=start.value; start.addEventListener('change',()=>{if(end.value<start.value)end.value=start.value; end.min=start.value; persistDraftFromCheckout(); updateSummary();}); end.addEventListener('change',()=>{persistDraftFromCheckout(); updateSummary();});}}
   function days(){const s=qs('#rental-start')?.value,e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'),ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd.getTime())||Number.isNaN(ed.getTime()))return 1; return Math.max(1,Math.round((ed-sd)/(1000*60*60*24))+1);}
-  function totals(){const product=getProduct(),d=days(); const delivery=qs('#delivery-transport')?.checked?250:0; const technician=qs('#technician')?.checked?450*d:0; const rental=product.dailyPrice*d*product.quantity; const subtotal=rental+delivery+technician; const tax=subtotal*(Number(product.vatRate??0.20)); const total=subtotal+tax; return {product,d,rental,delivery,technician,subtotal,tax,total,deposit:product.deposit,vatRate:Number(product.vatRate??0.20)};}
+  function rentalAmount(product,d){
+    const qty = Math.max(1, Number(product.quantity || 1));
+    const day = safeNumber(product.dailyPrice,0);
+    const weekend = safeNumber(product.priceWeekend,0);
+    const week = safeNumber(product.priceWeek,0);
+    const month = safeNumber(product.priceMonth,0);
+
+    // 1 jour = prix jour.
+    if(d <= 1) return { amount: day * qty, mode:'day', label:'Location (1 jour)' };
+
+    // 2 ou 3 jours : utiliser le tarif week-end si disponible.
+    if(d >= 2 && d <= 3 && weekend > 0) {
+      return { amount: weekend * qty, mode:'weekend', label:'Location week-end ('+d+' jours)' };
+    }
+
+    // 7 jours et plus : semaines complètes + reste au prix jour.
+    if(d >= 7 && week > 0 && d < 30) {
+      const weeks = Math.floor(d / 7);
+      const rest = d % 7;
+      return { amount: ((weeks * week) + (rest * day)) * qty, mode:'week', label:'Location ('+weeks+' semaine'+(weeks>1?'s':'')+(rest ? ' + '+rest+' jour'+(rest>1?'s':'') : '')+')' };
+    }
+
+    // 30 jours et plus : mois complets + reste au prorata jour.
+    if(d >= 30 && month > 0) {
+      const months = Math.floor(d / 30);
+      const rest = d % 30;
+      return { amount: ((months * month) + (rest * day)) * qty, mode:'month', label:'Location ('+months+' mois'+(rest ? ' + '+rest+' jour'+(rest>1?'s':'') : '')+')' };
+    }
+
+    return { amount: day * d * qty, mode:'day', label:'Location ('+d+' jour'+(d>1?'s':'')+')' };
+  }
+
+  function totals(){
+    const product=getProduct(),d=days();
+    const delivery=qs('#delivery-transport')?.checked?250:0;
+    const technician=qs('#technician')?.checked?450*d:0;
+    const rentalInfo=rentalAmount(product,d);
+    const rental=rentalInfo.amount;
+    const subtotal=rental+delivery+technician;
+    const tax=subtotal*(Number(product.vatRate??0.20));
+    const total=subtotal+tax;
+    return {product,d,rental,rentalLabel:rentalInfo.label,pricingMode:rentalInfo.mode,delivery,technician,subtotal,tax,total,deposit:product.deposit,vatRate:Number(product.vatRate??0.20)};
+  }
 
   function updatePaymentUI(){
     const labels={card:'Carte bancaire sélectionnée.',paypal:'PayPal sélectionné : indiquez l’e-mail PayPal du client pour préparer le paiement.',apple_pay:'Apple Pay sélectionné : le paiement sera disponible sur appareil compatible après intégration du prestataire.',crypto:'Crypto sélectionné : choisissez la devise et le réseau pour préparer la validation.',bank_transfer:'Virement bancaire sélectionné : le RIB et la référence apparaissent ci-dessous.'};
@@ -655,10 +732,19 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   function updateSummary(){
     const t=totals(),p=t.product;
-    setText('#summary-item-name',p.name); setText('#summary-item-desc',p.description||'Annonce RentSoundSystem'); setText('#summary-price-day',money(p.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
+    setText('#summary-item-name',p.name); setText('#summary-item-desc',p.description||'Annonce RentSoundSystem'); setText('#summary-price-day',money(p.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
     const taxLabel=Array.from(document.querySelectorAll('span')).find(el=>el.textContent.trim().startsWith('TVA')); if(taxLabel)taxLabel.textContent='TVA ('+Math.round(t.vatRate*100)+'%)';
     const img=qs('.w-20.h-20 img'); if(img&&p.image){img.src=p.image; img.alt=p.name||'Produit RentSoundSystem';}
     const summaryName=qs('#summary-item-name'); let meta=qs('#rss-summary-owner'); if(summaryName&&p.ownerName){if(!meta){meta=document.createElement('div'); meta.id='rss-summary-owner'; meta.className='rss-summary-meta rss-summary-owner'; summaryName.parentElement.appendChild(meta);} meta.textContent='Loueur : '+p.ownerName;}
+    let tiers=qs('#rss-summary-price-tiers');
+    if(summaryName){
+      if(!tiers){tiers=document.createElement('div'); tiers.id='rss-summary-price-tiers'; tiers.className='rss-summary-meta'; summaryName.parentElement.appendChild(tiers);}
+      const tierParts=[];
+      if(p.priceWeekend) tierParts.push('Week-end '+money(p.priceWeekend));
+      if(p.priceWeek) tierParts.push('Semaine '+money(p.priceWeek));
+      if(p.priceMonth) tierParts.push('Mois '+money(p.priceMonth));
+      tiers.textContent = tierParts.length ? tierParts.join(' · ') : '';
+    }
     persistDraftFromCheckout();
   }
 
@@ -668,7 +754,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return{saved:false,reason:'no_supabase'}; const {data:{session}}=await sb.auth.getSession(); const payload={equipment_name:order.item.name,renter_name:order.item.ownerName||'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:'pending',total_price:order.amounts.total}; if(session?.user)payload.user_id=session.user.id; const {error}=await sb.from('reservations').insert(payload); if(error){console.warn('Reservation Supabase:',error); return{saved:false,reason:error.message};} return{saved:true};}catch(e){console.warn('Reservation non sauvegardée:',e); return{saved:false,reason:e.message||String(e)}}}
 
-  function buildOrder(){const t=totals(),ref=getOrderRef(),p=t.product; return{id:ref,createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request',details:getPaymentDetails()},item:{id:p.id||'',original_id:p.original_id??null,name:p.name,description:p.description,dailyPrice:p.dailyPrice,quantity:p.quantity,deposit:t.deposit,caution:t.deposit,image:p.image||'',url:p.url||'',ownerName:p.ownerName||'',ownerEmail:p.ownerEmail||'',ownerPhone:p.ownerPhone||'',ownerUsername:p.ownerUsername||'',partnerId:p.partnerId||''},amounts:{rental:t.rental,delivery:t.delivery,technician:t.technician,subtotal:t.subtotal,vatRate:t.vatRate,tax:t.tax,total:t.total,deposit:t.deposit,caution:t.deposit}};}
+  function buildOrder(){const t=totals(),ref=getOrderRef(),p=t.product; return{id:ref,createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request',details:getPaymentDetails()},item:{id:p.id||'',original_id:p.original_id??null,name:p.name,description:p.description,dailyPrice:p.dailyPrice,priceWeekend:p.priceWeekend||0,priceWeek:p.priceWeek||0,priceMonth:p.priceMonth||0,priceLabel:p.priceLabel||'per_day',quantity:p.quantity,deposit:t.deposit,caution:t.deposit,image:p.image||'',url:p.url||'',category:p.category||'',type:p.type||'',brand:p.brand||'',model:p.model||'',city:p.city||'',country:p.country||'',address:p.address||'',ownerName:p.ownerName||'',ownerEmail:p.ownerEmail||'',ownerPhone:p.ownerPhone||'',ownerUsername:p.ownerUsername||'',partnerId:p.partnerId||''},amounts:{rental:t.rental,rentalLabel:t.rentalLabel,pricingMode:t.pricingMode,delivery:t.delivery,technician:t.technician,subtotal:t.subtotal,vatRate:t.vatRate,tax:t.tax,total:t.total,deposit:t.deposit,caution:t.deposit}};}
 
   async function submit(){if(!validate())return; const btn=qs('#confirm-order-btn'); btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Validation...'; const order=buildOrder(); localStorage.setItem('rssLastOrder',JSON.stringify(order)); try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const next=[order].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(order.id))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next));}catch(e){} const saved=await saveReservation(order); localStorage.removeItem('rssCheckoutDraft'); localStorage.removeItem(ORDER_REF_KEY); showMessage(saved.saved?'Commande enregistrée. Redirection vers la confirmation...':'Commande enregistrée localement. Redirection vers la confirmation...','success'); setTimeout(()=>{window.location.href=CONFIRMATION_URL+'?order='+encodeURIComponent(order.id)},550);}
 

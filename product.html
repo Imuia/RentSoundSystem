@@ -1158,6 +1158,16 @@
     const category = item.category || 'Matériel audio';
     const price = money(item.price || 0);
 
+    // Synchronisation prix réel Supabase -> interface + tunnel.
+    const basePriceEl = document.getElementById('rss-base-price');
+    const totalPriceEl = document.getElementById('rss-total-price');
+    const realBasePrice = Number(item.price || 0);
+    if (basePriceEl) {
+      basePriceEl.dataset.price = String(realBasePrice);
+      basePriceEl.innerHTML = money(realBasePrice) + ' <span class="text-body-md text-on-surface-variant font-normal">/ jour</span>';
+    }
+    if (totalPriceEl) totalPriceEl.textContent = money(realBasePrice);
+
     updateOwnerUI(item);
 
     window.RSS_CURRENT_PRODUCT = item;
@@ -1625,37 +1635,72 @@
     const p = new URLSearchParams(window.location.search);
     return { id:p.get('id') || '', original_id:p.get('original_id') || '' };
   }
-  function currentProductDraft(){
+  function productFromLoadedItem() {
+    const item = window.RSS_CURRENT_PRODUCT || {};
     const ids = productIdFromUrl();
-    const name = txt('.lg\\:col-span-5 h1') || document.title.replace(' - RentSoundSystem.com','');
-    const desc = txt('#rss-tab-overview p') || txt('#rss-tab-included li') || 'Location de matériel RentSoundSystem';
-    const priceText = txt('#rss-base-price') || txt('#rss-total-price');
-    const basePrice = Number(document.querySelector('#rss-base-price')?.dataset.price || 0) || numFromText(priceText) || 0;
-    const qty = Math.max(1, Number(txt('#rss-qty-value')) || 1);
+    const rawImages = Array.isArray(item.listing_images) ? item.listing_images : [];
+    const firstLoadedImage = rawImages
+      .slice()
+      .sort(function(a,b){ return Number(a.position || 0) - Number(b.position || 0); })
+      .map(function(x){ return x.image_url; })
+      .filter(Boolean)[0] || '';
+
+    const domPrice = Number(document.querySelector('#rss-base-price')?.dataset.price || 0) || numFromText(txt('#rss-base-price')) || 0;
+    const dailyPrice = Number(item.price || item.dailyPrice || item.price_day || item.price_per_day || domPrice || 0);
+    const qtyControls = document.getElementById('rss-qty-controls');
+    const qtyIsHidden = qtyControls && qtyControls.classList.contains('rss-qty-hidden');
+    const qty = qtyIsHidden ? 1 : Math.max(1, Number(txt('#rss-qty-value')) || 1);
+
+    return {
+      id: item.id || ids.id || '',
+      original_id: item.original_id ?? ids.original_id ?? '',
+      name: item.title || item.name || txt('.lg\\:col-span-5 h1') || document.title.replace(' - RentSoundSystem.com',''),
+      description: cleanTextForDraft(item.description || item.summary || txt('#rss-tab-overview p') || txt('#rss-tab-included li') || 'Location de matériel RentSoundSystem'),
+      dailyPrice: dailyPrice,
+      price: dailyPrice,
+      priceLabel: item.price_label || 'per_day',
+      priceWeekend: Number(item.price_weekend || 0),
+      priceWeek: Number(item.price_week || 0),
+      priceMonth: Number(item.price_month || 0),
+      caution: Number(item.caution || item.deposit || item.security_deposit || 0),
+      deposit: Number(item.caution || item.deposit || item.security_deposit || 0),
+      vatRate: Number(item.vat_rate || item.tva_rate || item.tax_rate || 0.20),
+      quantity: qty,
+      image: firstLoadedImage || firstImage(),
+      url: location.href,
+      category: item.category || '',
+      type: item.type || '',
+      brand: item.brand || '',
+      model: item.model || '',
+      city: item.city || item.location || '',
+      country: item.country || '',
+      address: item.address || '',
+      ownerName: item.owner_name || ownerName(item) || document.getElementById('rss-owner-name')?.textContent?.trim() || '',
+      ownerLocation: [item.owner_city || item.city, item.owner_country || item.country].filter(Boolean).join(', ') || document.getElementById('rss-owner-location')?.textContent?.trim() || '',
+      ownerUsername: item.owner_username || document.getElementById('rss-owner-username')?.textContent?.replace('@','').trim() || '',
+      ownerEmail: item.owner_email || document.getElementById('rss-owner-email')?.href?.replace('mailto:','') || '',
+      ownerPhone: item.owner_phone || document.getElementById('rss-owner-phone')?.textContent?.trim() || '',
+      legacyUserId: item.legacy_user_id || '',
+      minDuration: item.min_duration || '',
+      maxDuration: item.max_duration || ''
+    };
+  }
+
+  function cleanTextForDraft(value) {
+    return String(value || '').replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
+  }
+
+  function currentProductDraft(){
+    const product = productFromLoadedItem();
     const dates = selectedDates();
     const startDate = dates[0] || '';
     const endDate = dates[dates.length - 1] || startDate || '';
     const delivery = !!document.querySelector('#rss-option-delivery')?.checked;
     const install = !!document.querySelector('#rss-option-install')?.checked;
-    const city = txt('.font-headline.text-body-md.font-bold.text-on-surface.uppercase') || '';
-    const ownerName = document.getElementById('rss-owner-name')?.textContent?.trim() || '';
-    const ownerLocation = document.getElementById('rss-owner-location')?.textContent?.trim() || '';
+    const city = product.city || txt('.font-headline.text-body-md.font-bold.text-on-surface.uppercase') || '';
+
     return {
-      product:{
-        id:ids.id,
-        original_id:ids.original_id,
-        name:name,
-        description:desc,
-        dailyPrice:basePrice,
-        quantity:qty,
-        image:firstImage(),
-        url:location.href,
-        ownerName: ownerName,
-        ownerLocation: ownerLocation,
-        ownerUsername: document.getElementById('rss-owner-username')?.textContent?.replace('@','').trim() || '',
-        ownerEmail: document.getElementById('rss-owner-email')?.href?.replace('mailto:','') || '',
-        ownerPhone: document.getElementById('rss-owner-phone')?.textContent?.trim() || ''
-      },
+      product: product,
       rental:{
         startDate:startDate,
         endDate:endDate,
@@ -1672,7 +1717,9 @@
     const draft = currentProductDraft();
     try{
       localStorage.setItem('rssCheckoutDraft', JSON.stringify(draft));
+      localStorage.setItem('rssQuoteDraft', JSON.stringify(draft));
       localStorage.setItem('rssSelectedProduct', JSON.stringify(draft.product));
+      localStorage.setItem('rssLastProduct', JSON.stringify(draft.product));
     }catch(e){}
     const params = new URLSearchParams();
     if(draft.product.original_id) params.set('original_id', draft.product.original_id);
