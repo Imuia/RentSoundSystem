@@ -282,6 +282,22 @@
   }
 </style>
 
+
+<style id="rss-product-calendar-qty-fix-css">
+  .rss-day-past {
+    opacity: .22 !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    text-decoration: line-through;
+    background: rgba(255,255,255,.025) !important;
+    color: rgba(230,188,194,.45) !important;
+    border-color: rgba(255,255,255,.06) !important;
+  }
+  .rss-qty-hidden {
+    display: none !important;
+  }
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -440,7 +456,7 @@
 <div class="font-label text-label-caps text-on-surface-variant mb-1">Tarif de base</div>
 <div id="rss-base-price" class="font-headline text-headline-lg text-primary font-bold" data-price="850">850.00€ <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
 </div>
-<div class="flex items-center space-x-2">
+<div id="rss-qty-controls" class="flex items-center space-x-2">
 <button id="rss-qty-minus" type="button" class="rss-qty-btn w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">-</button>
 <span id="rss-qty-value" class="font-body text-body-lg w-8 text-center">1</span>
 <button id="rss-qty-plus" type="button" class="rss-qty-btn w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">+</button>
@@ -1234,10 +1250,51 @@
   ready(function () {
     let qty = 1;
     let selectedDates = [];
-    let currentMonthIndex = 4; // Mai
-    let currentYear = 2026;
+    let currentMonthIndex = new Date().getMonth();
+    let currentYear = new Date().getFullYear();
 
     const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+
+    function todayMidnight() {
+      const now = new Date();
+      return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    }
+
+    function isPastDate(year, monthIndex, day) {
+      return new Date(year, monthIndex, day) < todayMidnight();
+    }
+
+    function normalizeText(value) {
+      return String(value || '')
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '');
+    }
+
+    function productDoesNotNeedQuantity() {
+      const pageText = normalizeText([
+        document.querySelector('.lg\\:col-span-5 h1')?.textContent,
+        document.querySelector('#rss-tab-overview p')?.textContent,
+        document.querySelector('#rss-tab-specs')?.textContent,
+        document.querySelector('.lg\\:col-span-5 .grid.grid-cols-2')?.textContent
+      ].join(' '));
+
+      // Ces annonces sont des prestations / packs / événements : la quantité n'a pas de sens côté client.
+      return /evenement|événement|mariage|conference|conférence|prestation|pack|scene|scène|systeme|système|installation|regie|régie|sonorisation|eclairage|éclairage|location evenementiel|location événementiel/.test(pageText);
+    }
+
+    function updateQuantityVisibility() {
+      const qtyControls = document.getElementById('rss-qty-controls');
+      if (!qtyControls) return;
+      if (productDoesNotNeedQuantity()) {
+        qty = 1;
+        if (qtyValue) qtyValue.textContent = '1';
+        qtyControls.classList.add('rss-qty-hidden');
+      } else {
+        qtyControls.classList.remove('rss-qty-hidden');
+      }
+      updateTotal();
+    }
 
     const minusBtn = document.getElementById('rss-qty-minus');
     const plusBtn = document.getElementById('rss-qty-plus');
@@ -1297,14 +1354,20 @@
 
       for (let day = 1; day <= daysInMonth; day++) {
         const key = dateKey(currentYear, currentMonthIndex, day);
-        const selected = selectedDates.includes(key);
-        html += '<button type="button" data-date="' + key + '" class="rss-day py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface hover:border-primary hover:text-primary transition-colors ' + (selected ? 'rss-selected-day' : '') + '">' + day + '</button>';
+        const past = isPastDate(currentYear, currentMonthIndex, day);
+        const selected = !past && selectedDates.includes(key);
+        const cls = past
+          ? 'rss-day-past'
+          : 'rss-day hover:border-primary hover:text-primary';
+        const title = past ? 'Date passée indisponible' : 'Sélectionner cette date';
+        html += '<button type="button" data-date="' + key + '" title="' + title + '" ' + (past ? 'disabled aria-disabled="true"' : '') + ' class="' + cls + ' py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface transition-colors ' + (selected ? 'rss-selected-day' : '') + '">' + day + '</button>';
       }
 
       calendarGrid.innerHTML = html;
 
       calendarGrid.querySelectorAll('.rss-day').forEach(function(dayButton) {
         dayButton.addEventListener('click', function () {
+          if (dayButton.disabled || dayButton.classList.contains('rss-day-past')) return;
           const key = dayButton.dataset.date;
 
           if (selectedDates.includes(key)) {
@@ -1349,12 +1412,20 @@
     });
 
     document.getElementById('rss-cal-prev')?.addEventListener('click', function () {
+      const now = new Date();
+      const currentVisible = new Date(currentYear, currentMonthIndex, 1);
+      const currentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+      if (currentVisible <= currentMonth) return;
+
       currentMonthIndex -= 1;
       if (currentMonthIndex < 0) {
         currentMonthIndex = 11;
         currentYear -= 1;
       }
-      selectedDates = [];
+      selectedDates = selectedDates.filter(function(d) {
+        const parts = d.split('-');
+        return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2])) >= todayMidnight();
+      });
       renderCalendar();
     });
 
@@ -1471,7 +1542,10 @@
     bindRelatedClick();
     setInterval(bindRelatedClick, 1200);
     renderCalendar();
+    updateQuantityVisibility();
     updateTotal();
+    setTimeout(updateQuantityVisibility, 700);
+    setTimeout(updateQuantityVisibility, 1500);
   });
 })();
 </script>
