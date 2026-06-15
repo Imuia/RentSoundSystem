@@ -1160,6 +1160,9 @@
 
     updateOwnerUI(item);
 
+    window.RSS_CURRENT_PRODUCT = item;
+    window.dispatchEvent(new CustomEvent('rss:product-loaded', { detail: item }));
+
     document.title = title + ' - RentSoundSystem.com';
 
     text(document.querySelector('.lg\\:col-span-5 h1'), title);
@@ -1271,25 +1274,60 @@
         .replace(/[\u0300-\u036f]/g, '');
     }
 
-    function productDoesNotNeedQuantity() {
-      const pageText = normalizeText([
+    function productTextFromItem(item) {
+      if (!item) return '';
+      return normalizeText([
+        item.original_id,
+        item.title,
+        item.category,
+        item.type,
+        item.brand,
+        item.model,
+        item.description,
+        item.price_label
+      ].join(' '));
+    }
+
+    function productTextFromPage() {
+      return normalizeText([
         document.querySelector('.lg\\:col-span-5 h1')?.textContent,
         document.querySelector('#rss-tab-overview p')?.textContent,
         document.querySelector('#rss-tab-specs')?.textContent,
         document.querySelector('.lg\\:col-span-5 .grid.grid-cols-2')?.textContent
       ].join(' '));
+    }
 
-      // AFFICHER +/- seulement quand le client peut choisir une vraie quantité d'unités.
-      // Exemples : casques, micros individuels, petites unités séparées.
-      const isQuantityProduct =
-        /casque|casques|silent|headphone|microphone|micro\b|sm58|uhf individuel|cdj\b|platine\b/.test(pageText) &&
-        !/pack|systeme|système|regie|régie|prestation|conference|conférence|sonorisation complete|sonorisation complète|kit complet/.test(pageText);
+    function productNeedsQuantity(item) {
+      const txt = productTextFromItem(item) || productTextFromPage();
 
-      if (isQuantityProduct) return false;
+      // Forçage utile pour les cas connus.
+      // original_id=474 est une annonce casque : le + / - doit rester visible.
+      const originalId = String(item?.original_id || new URLSearchParams(location.search).get('original_id') || '');
+      if (['474'].includes(originalId)) return true;
 
-      // CACHER +/- pour les offres vendues comme service, pack ou configuration complète.
-      // original_id=473 entre dans cette logique si le titre/description est une location pack/prestation.
-      return /location|evenement|événement|mariage|conference|conférence|prestation|pack|scene|scène|systeme|système|installation|regie|régie|sonorisation|eclairage|éclairage|kit|configuration|service/.test(pageText);
+      // Afficher +/- uniquement pour les produits réellement loués en unités.
+      // On garde les casques même si le titre contient "location", car le client peut choisir le nombre.
+      const unitProduct =
+        /casque|casques|silent|silent disco|headphone|headphones|ecouteur|écouteur|microphone|micro\s|sm58|talkie|talkies|badge|bracelet|uplight|par led|lyre individuelle/.test(txt);
+
+      const packagedUnit =
+        /pack casque|pack casques|kit casque|kit casques|lot de casques|lot casques|casques silent|silent arena|silent disco/.test(txt);
+
+      if (unitProduct || packagedUnit) return true;
+
+      // Les offres suivantes sont des prestations / configurations globales :
+      // pas de quantité côté client.
+      const serviceOrPack =
+        /sonorisation|systeme|système|pack son|pack sono|pack scene|pack scène|regie|régie|dj|cdj|djm|conference|conférence|evenement|événement|mariage|prestation|installation|eclairage|éclairage|structure|scene|scène|kit complet|configuration|service|location pack|location systeme|location système/.test(txt);
+
+      if (serviceOrPack) return false;
+
+      // Par défaut on cache pour éviter une quantité illogique sur les locations complexes.
+      return false;
+    }
+
+    function productDoesNotNeedQuantity() {
+      return !productNeedsQuantity(window.RSS_CURRENT_PRODUCT);
     }
 
     function updateQuantityVisibility() {
@@ -1299,8 +1337,10 @@
         qty = 1;
         if (qtyValue) qtyValue.textContent = '1';
         qtyControls.classList.add('rss-qty-hidden');
+        qtyControls.setAttribute('data-qty-mode', 'hidden');
       } else {
         qtyControls.classList.remove('rss-qty-hidden');
+        qtyControls.setAttribute('data-qty-mode', 'visible');
       }
       updateTotal();
     }
@@ -1555,6 +1595,9 @@
     updateTotal();
     setTimeout(updateQuantityVisibility, 700);
     setTimeout(updateQuantityVisibility, 1500);
+    window.addEventListener('rss:product-loaded', function () {
+      updateQuantityVisibility();
+    });
   });
 })();
 </script>
