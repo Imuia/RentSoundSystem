@@ -556,7 +556,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   function qs(s){return document.querySelector(s)}
   function qsa(s){return Array.from(document.querySelectorAll(s))}
   function money(v){return Number(v||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});}
-  function dateFR(v){if(!v)return 'À confirmer';const d=new Date(v+'T00:00:00');return Number.isNaN(d.getTime())?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
+  function dateFR(v){if(!v)return '';const d=new Date(v+'T00:00:00');return Number.isNaN(d.getTime())?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
   function setText(s,v){const el=qs(s); if(el) el.textContent=v;}
   function safeNumber(v,fallback=0){const n=Number(String(v ?? '').replace(',', '.').replace(/[^\d.-]/g,'')); return Number.isFinite(n)?n:fallback;}
   function showMessage(text,type='error'){const el=qs('#checkout-message'); if(!el)return; el.textContent=text; el.classList.remove('hidden','text-error','text-primary','border-error/40','border-primary/40','bg-error-container/20','bg-primary/10'); if(type==='success'){el.classList.add('text-primary','border-primary/40','bg-primary/10')}else{el.classList.add('text-error','border-error/40','bg-error-container/20')}}
@@ -672,10 +672,11 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     }catch(e){console.warn('Chargement annonce checkout impossible:',e)}
   }
 
-  function initDates(){const start=qs('#rental-start'),end=qs('#rental-end'),draft=getDraft(); if(start&&!start.value)start.value=draft?.rental?.startDate||todayPlus(7); if(end&&!end.value)end.value=draft?.rental?.endDate||draft?.rental?.startDate||todayPlus(9); if(start&&end){start.min=todayPlus(0); end.min=start.value; start.addEventListener('change',()=>{if(end.value<start.value)end.value=start.value; end.min=start.value; persistDraftFromCheckout(); updateSummary();}); end.addEventListener('change',()=>{persistDraftFromCheckout(); updateSummary();});}}
-  function days(){const s=qs('#rental-start')?.value,e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'),ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd.getTime())||Number.isNaN(ed.getTime()))return 1; return Math.max(1,Math.round((ed-sd)/(1000*60*60*24))+1);}
+  function initDates(){const start=qs('#rental-start'),end=qs('#rental-end'),draft=getDraft(); const hasDraftDates=!!(draft?.rental?.hasDates && draft?.rental?.startDate && draft?.rental?.endDate); if(start&&!start.value&&hasDraftDates)start.value=draft.rental.startDate; if(end&&!end.value&&hasDraftDates)end.value=draft.rental.endDate; if(start)start.min=todayPlus(0); if(end)end.min=start?.value||todayPlus(0); if(start&&end){start.addEventListener('change',()=>{if(start.value&&end.value&&end.value<start.value)end.value=start.value; end.min=start.value||todayPlus(0); persistDraftFromCheckout(); updateSummary();}); end.addEventListener('change',()=>{persistDraftFromCheckout(); updateSummary();});}}
+  function days(){const s=qs('#rental-start')?.value,e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'),ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd.getTime())||Number.isNaN(ed.getTime()))return 0; return Math.max(1,Math.round((ed-sd)/(1000*60*60*24))+1);}
   function rentalAmount(product,d){
     const draft = getDraft();
+    if(!d || d < 1) return { amount:0, mode:'no_dates', label:'Location — dates à sélectionner' };
     const qty = Math.max(1, Number(product.quantity || 1));
     const day = safeNumber(product.dailyPrice,0);
     const draftDays = Number(draft?.rental?.days || 0);
@@ -701,7 +702,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const draftInstall = safeNumber(draft?.amounts?.installation ?? draft?.amounts?.technician ?? draft?.options?.installationPrice, 0);
 
     const delivery=qs('#delivery-transport')?.checked ? (draft?.source === 'product-page' ? draftDelivery : 250) : 0;
-    const technician=qs('#technician')?.checked ? (draft?.source === 'product-page' ? draftInstall : 450*d) : 0;
+    const technician=(d>0 && qs('#technician')?.checked) ? (draft?.source === 'product-page' ? draftInstall : 450*d) : 0;
 
     const subtotal=rental+delivery+technician;
     const exactTax = safeNumber(draft?.amounts?.tax, 0);
@@ -727,7 +728,13 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   function updateSummary(){
     const t=totals(),p=t.product;
-    setText('#summary-item-name',p.name); setText('#summary-item-desc',p.description||'Annonce RentSoundSystem'); setText('#summary-price-day',money(p.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
+    setText('#summary-item-name',p.name); setText('#summary-item-desc',p.description||'Annonce RentSoundSystem'); setText('#summary-price-day',money(p.dailyPrice)+' / jour');
+    const hasDates=!!(qs('#rental-start')?.value && qs('#rental-end')?.value && t.d>0);
+    const datesEl=qs('#summary-dates');
+    const datesRow=datesEl?.closest('.flex.justify-between.items-center');
+    if(datesEl && hasDates){datesEl.textContent=dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')';}
+    if(datesRow) datesRow.classList.toggle('hidden', !hasDates);
+    setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || (hasDates ? ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')') : 'Location — dates à sélectionner')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
     const taxLabel=Array.from(document.querySelectorAll('span')).find(el=>el.textContent.trim().startsWith('TVA')); if(taxLabel)taxLabel.textContent='TVA ('+Math.round(t.vatRate*100)+'%)';
     const img=qs('.w-20.h-20 img'); if(img&&p.image){img.src=p.image; img.alt=p.name||'Produit RentSoundSystem';}
     const summaryName=qs('#summary-item-name'); let meta=qs('#rss-summary-owner'); if(summaryName&&p.ownerName){if(!meta){meta=document.createElement('div'); meta.id='rss-summary-owner'; meta.className='rss-summary-meta rss-summary-owner'; summaryName.parentElement.appendChild(meta);} meta.textContent='Loueur : '+p.ownerName;}
@@ -753,7 +760,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   async function submit(){if(!validate())return; const btn=qs('#confirm-order-btn'); btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Validation...'; const order=buildOrder(); localStorage.setItem('rssLastOrder',JSON.stringify(order)); try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const next=[order].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(order.id))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next));}catch(e){} const saved=await saveReservation(order); localStorage.removeItem('rssCheckoutDraft'); localStorage.removeItem(ORDER_REF_KEY); showMessage(saved.saved?'Commande enregistrée. Redirection vers la confirmation...':'Commande enregistrée localement. Redirection vers la confirmation...','success'); setTimeout(()=>{window.location.href=CONFIRMATION_URL+'?order='+encodeURIComponent(order.id)},550);}
 
-  function persistDraftFromCheckout(){try{const p=getProduct(); const draft=Object.assign({},getDraft(),{product:p,rental:{startDate:qs('#rental-start')?.value||'',endDate:qs('#rental-end')?.value||'',city:qs('#event-city')?.value.trim()||'',delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked}}); localStorage.setItem('rssCheckoutDraft',JSON.stringify(draft)); localStorage.setItem('rssSelectedProduct',JSON.stringify(p));}catch(e){}}
+  function persistDraftFromCheckout(){try{const p=getProduct(); const draft=Object.assign({},getDraft(),{product:p,rental:{startDate:qs('#rental-start')?.value||'',endDate:qs('#rental-end')?.value||'',hasDates:!!(qs('#rental-start')?.value&&qs('#rental-end')?.value),days:days(),city:qs('#event-city')?.value.trim()||'',delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked}}); localStorage.setItem('rssCheckoutDraft',JSON.stringify(draft)); localStorage.setItem('rssSelectedProduct',JSON.stringify(p));}catch(e){}}
   function applyDraft(){
     const draft=getDraft(),p=getProduct();
     if((draft?.rental?.city||p.city)&&qs('#event-city'))qs('#event-city').value=draft?.rental?.city||p.city;

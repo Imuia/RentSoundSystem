@@ -1693,9 +1693,10 @@
   function currentProductDraft(){
     const product = productFromLoadedItem();
     const dates = selectedDates();
-    const startDate = dates[0] || '';
-    const endDate = dates[dates.length - 1] || startDate || '';
-    const dayCount = Math.max(1, dates.length || 1);
+    const hasSelectedDates = dates.length > 0;
+    const startDate = hasSelectedDates ? dates[0] : '';
+    const endDate = hasSelectedDates ? dates[dates.length - 1] : '';
+    const dayCount = hasSelectedDates ? dates.length : 0;
     const delivery = !!document.querySelector('#rss-option-delivery')?.checked;
     const install = !!document.querySelector('#rss-option-install')?.checked;
     const deliveryUnitPrice = Number(document.querySelector('#rss-option-delivery')?.dataset.optionPrice || 0) || 0;
@@ -1721,6 +1722,7 @@
         endDate:endDate,
         city:city,
         days:dayCount,
+        hasDates:hasSelectedDates,
         delivery:delivery ? 'delivery' : 'pickup',
         technician:install
       },
@@ -1732,6 +1734,7 @@
         installationPrice:installationPrice
       },
       amounts:{
+        hasDates:hasSelectedDates,
         rental:rentalAmount,
         delivery:deliveryPrice,
         technician:installationPrice,
