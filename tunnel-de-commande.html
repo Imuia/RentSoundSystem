@@ -223,6 +223,11 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   .rss-summary-owner{color:#FC036D;font-weight:700}
 </style>
 
+
+<style id="rss-checkout-required-fix-css">
+  .rss-field-error{border-color:#ff6b6b!important; box-shadow:0 0 0 1px rgba(255,107,107,.6),0 0 22px rgba(252,3,109,.20)!important;}
+  .rss-caution-note{font-size:11px;color:#C9A5B5;margin-top:3px;}
+</style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -516,7 +521,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <span class="font-body text-body-md text-inverse-surface" id="amount-insurance">--</span>
 </div>
 <div class="flex justify-between items-center">
-<span class="font-body text-body-md text-on-surface-variant">Caution (Dépôt de garantie)</span>
+<span class="font-body text-body-md text-on-surface-variant" id="label-deposit">Caution obligatoire (dépôt de garantie)</span>
 <span class="font-body text-body-md text-inverse-surface" id="amount-deposit">5 000,00 €</span>
 </div><div class="flex justify-between items-center mt-2">
 <span class="font-body text-body-sm text-on-surface-variant">TVA (20%)</span>
@@ -734,7 +739,13 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const datesRow=datesEl?.closest('.flex.justify-between.items-center');
     if(datesEl && hasDates){datesEl.textContent=dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')';}
     if(datesRow) datesRow.classList.toggle('hidden', !hasDates);
-    setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || (hasDates ? ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')') : 'Location — dates à sélectionner')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
+    setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || (hasDates ? ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')') : 'Location — dates à sélectionner')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#label-deposit', t.deposit > 0 ? 'Caution obligatoire (dépôt de garantie)' : 'Caution (dépôt de garantie)'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
+    const depositEl=qs('#amount-deposit');
+    if(depositEl){
+      let note=qs('#rss-caution-note');
+      if(!note){note=document.createElement('div'); note.id='rss-caution-note'; note.className='rss-caution-note'; depositEl.parentElement.appendChild(note);}
+      note.textContent = t.deposit > 0 ? 'Obligatoire : empreinte bancaire ou dépôt demandé avant validation.' : 'Aucune caution demandée pour cette annonce.';
+    }
     const taxLabel=Array.from(document.querySelectorAll('span')).find(el=>el.textContent.trim().startsWith('TVA')); if(taxLabel)taxLabel.textContent='TVA ('+Math.round(t.vatRate*100)+'%)';
     const img=qs('.w-20.h-20 img'); if(img&&p.image){img.src=p.image; img.alt=p.name||'Produit RentSoundSystem';}
     const summaryName=qs('#summary-item-name'); let meta=qs('#rss-summary-owner'); if(summaryName&&p.ownerName){if(!meta){meta=document.createElement('div'); meta.id='rss-summary-owner'; meta.className='rss-summary-meta rss-summary-owner'; summaryName.parentElement.appendChild(meta);} meta.textContent='Loueur : '+p.ownerName;}
@@ -750,7 +761,32 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     persistDraftFromCheckout();
   }
 
-  function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
+  function clearFieldErrors(){
+    qsa('.rss-field-error').forEach(el=>el.classList.remove('rss-field-error'));
+  }
+
+  function requireRentalDates(){
+    const start = qs('#rental-start');
+    const end = qs('#rental-end');
+    const s = start?.value || '';
+    const e = end?.value || '';
+    if (!s || !e || days() < 1) {
+      start?.classList.add('rss-field-error');
+      end?.classList.add('rss-field-error');
+      (start || end)?.focus();
+      showMessage('Les dates de location sont obligatoires. Sélectionnez une date de début et une date de retour.');
+      return false;
+    }
+    if (e < s) {
+      end?.classList.add('rss-field-error');
+      end?.focus();
+      showMessage('La date de retour doit être identique ou postérieure à la date de début.');
+      return false;
+    }
+    return true;
+  }
+
+  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
 
   async function requireLogin(){const sb=await getSupabase(); if(!sb){showMessage('Connexion obligatoire : Supabase JS n’est pas chargé. Rechargez la page.','error'); return false;} const {data:{session}}=await sb.auth.getSession(); if(!session?.user){try{persistDraftFromCheckout();}catch(e){} const redirect=(window.location.pathname||'/tunnel-de-commande.html')+(window.location.search||''); window.location.href='/connexion-inscription.html?redirect='+encodeURIComponent(redirect); return false;} return true;}
 
@@ -781,7 +817,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   }
 
   async function prefillConnectedUser(){try{const sb=await getSupabase(); if(!sb)return; const {data:{session}}=await sb.auth.getSession(); if(!session?.user)return; const user=session.user; if(qs('#email')&&!qs('#email').value)qs('#email').value=user.email||''; const {data:profile}=await sb.from('profiles').select('full_name,company_name,email').eq('id',user.id).maybeSingle(); const full=(profile?.full_name||user.user_metadata?.full_name||'').trim(); const parts=full.split(/\s+/); if(full&&qs('#first-name')&&!qs('#first-name').value)qs('#first-name').value=parts.shift()||full; if(parts.length&&qs('#last-name')&&!qs('#last-name').value)qs('#last-name').value=parts.join(' '); if(profile?.company_name&&qs('#company-name')&&!qs('#company-name').value)qs('#company-name').value=profile.company_name; updateSummary();}catch(e){console.warn('Préremplissage client impossible',e);}}
-  function bind(){initDates(); applyDraft(); qsa('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{updateSummary(); updatePaymentUI();})); qsa('input[name="delivery"],#technician,select').forEach(el=>el.addEventListener('change',()=>{updateSummary(); updatePaymentUI();})); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#copy-bank-details')?.addEventListener('click',()=>{const text='Bénéficiaire : RentSoundSystem / IMUIA LLC\nIBAN : '+(qs('#bank-iban')?.textContent||'')+'\nBIC : '+(qs('#bank-bic')?.textContent||'')+'\nRéférence : '+(qs('#bank-reference')?.textContent||''); navigator.clipboard?.writeText(text); showMessage('RIB copié.','success');}); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary(); prefillConnectedUser();}
+  function bind(){initDates(); applyDraft(); qsa('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{el.classList.remove('rss-field-error'); updateSummary(); updatePaymentUI();})); qsa('input[name="delivery"],#technician,select').forEach(el=>el.addEventListener('change',()=>{updateSummary(); updatePaymentUI();})); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#copy-bank-details')?.addEventListener('click',()=>{const text='Bénéficiaire : RentSoundSystem / IMUIA LLC\nIBAN : '+(qs('#bank-iban')?.textContent||'')+'\nBIC : '+(qs('#bank-bic')?.textContent||'')+'\nRéférence : '+(qs('#bank-reference')?.textContent||''); navigator.clipboard?.writeText(text); showMessage('RIB copié.','success');}); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary(); prefillConnectedUser();}
   document.addEventListener('DOMContentLoaded',async()=>{await loadListingFromUrl(); const ok=await requireLogin(); if(!ok)return; bind();});
 })();
 </script>

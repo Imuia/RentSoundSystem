@@ -298,6 +298,15 @@
   }
 </style>
 
+
+<style id="rss-product-date-required-css">
+  .rss-date-required-message{
+    display:none; margin-top:10px; padding:10px 12px; border:1px solid rgba(255,80,80,.45);
+    background:rgba(147,0,10,.18); color:#ffb4ab; border-radius:8px; font-size:13px;
+  }
+  .rss-date-required-message.active{display:block;}
+  .rss-date-required-highlight{box-shadow:0 0 0 2px rgba(255,80,80,.35),0 0 24px rgba(252,3,109,.18);}
+</style>
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -472,6 +481,7 @@
 <span id="rss-cal-next" class="rss-calendar-nav material-symbols-outlined cursor-pointer text-[20px]">chevron_right</span>
 </div>
 <div id="rss-calendar-grid" class="p-3 grid grid-cols-7 gap-1 text-center font-body text-body-sm text-on-surface-variant"></div>
+<div id="rss-date-required-message" class="rss-date-required-message">Veuillez sélectionner au moins une date de location avant de réserver.</div>
 </div>
 </div>
 <!-- Options -->
@@ -1435,6 +1445,8 @@
           } else {
             selectedDates.push(key);
             selectedDates.sort();
+            document.getElementById('rss-date-required-message')?.classList.remove('active');
+            document.getElementById('rss-calendar-grid')?.closest('.border')?.classList.remove('rss-date-required-highlight');
             dayButton.classList.add('rss-selected-day');
           }
 
@@ -1751,7 +1763,22 @@
       updatedAt:new Date().toISOString()
     };
   }
+  function requireSelectedDatesBeforeCheckout(){
+    const draft = currentProductDraft();
+    if (draft.rental && draft.rental.hasDates) return true;
+
+    const msg = document.getElementById('rss-date-required-message');
+    const calendar = document.getElementById('rss-calendar-grid');
+    if (msg) msg.classList.add('active');
+    if (calendar) {
+      calendar.closest('.border')?.classList.add('rss-date-required-highlight');
+      calendar.scrollIntoView({ behavior:'smooth', block:'center' });
+    }
+    return false;
+  }
+
   function goCheckout(){
+    if (!requireSelectedDatesBeforeCheckout()) return;
     const draft = currentProductDraft();
     try{
       localStorage.setItem('rssCheckoutDraft', JSON.stringify(draft));
