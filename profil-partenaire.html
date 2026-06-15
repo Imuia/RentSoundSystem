@@ -21,8 +21,8 @@ tailwind.config = {
   .font-headline{font-family:Manrope,sans-serif}
   #header-container{min-height:auto}
   #footer-container{min-height:320px}
-  .partner-hero{background:radial-gradient(circle at 85% 0%, rgba(252,3,109,.18), transparent 34%),linear-gradient(145deg, rgba(31,31,31,.96), rgba(14,14,14,.98));border:1px solid rgba(255,255,255,.08)}
-  .partner-logo{background:#fff;border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 55px rgba(0,0,0,.22)}
+  .partner-hero{background:radial-gradient(circle at 85% 0%, rgba(252,3,109,.18), transparent 34%),linear-gradient(145deg, rgba(31,31,31,.96), rgba(14,14,14,.98));border:1px solid rgba(252,3,109,.22);box-shadow:0 22px 70px rgba(0,0,0,.34),0 0 28px rgba(252,3,109,.08)}
+  .partner-logo{background:linear-gradient(180deg,#252525,#101010);border:1px solid rgba(252,3,109,.35);box-shadow:0 0 22px rgba(252,3,109,.14), inset 0 0 0 1px rgba(255,255,255,.04)}
   .rss-card{background:linear-gradient(145deg, rgba(31,31,31,.92), rgba(14,14,14,.96));border:1px solid rgba(255,255,255,.07)}
   .rss-btn{background:#fc036d;color:#fff;border-radius:999px;padding:.75rem 1.2rem;font-weight:800;display:inline-flex;align-items:center;gap:.4rem}
   .rss-btn-secondary{border:1px solid rgba(255,255,255,.12);color:#e2e2e2;border-radius:999px;padding:.75rem 1.2rem;font-weight:700;display:inline-flex;align-items:center;gap:.4rem}
@@ -80,7 +80,7 @@ tailwind.config = {
     text('partner-name',p.name||p.owner_name||p.owner_username||'Partenaire RentSoundSystem');
     text('partner-location',p.location||[p.owner_city,p.owner_country].filter(Boolean).join(', ')||'Localisation non précisée');
     text('partner-description',p.description||'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
-    const email=p.email||p.owner_email||'', phone=p.phone||p.owner_phone||'', logo=p.logo||p.owner_logo||'';
+    const email=p.email||p.owner_email||'', phone=p.phone||p.owner_phone||''; let logo=p.logo||p.owner_logo||''; if(!logo && (p.username || p.owner_username)){ logo='/uploads/partners/'+String(p.username||p.owner_username).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')+'.png'; }
     const emailEl=document.getElementById('partner-email'); if(emailEl&&email){emailEl.href='mailto:'+email;emailEl.classList.remove('hidden')}
     const phoneEl=document.getElementById('partner-phone'); if(phoneEl&&phone){phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);phoneEl.classList.remove('hidden')}
     const logoEl=document.getElementById('partner-logo'), fallback=document.getElementById('partner-logo-fallback');

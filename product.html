@@ -210,25 +210,76 @@
 
 
 
+
 <style id="rss-product-added-by-profile-css">
   .rss-added-by-card {
-    background:#f7f7f7;
-    color:#121212;
-    border:1px solid rgba(0,0,0,.06);
-    border-radius:2px;
-    box-shadow:0 12px 35px rgba(0,0,0,.08);
+    background:
+      radial-gradient(circle at 90% 0%, rgba(252,3,109,.18), transparent 32%),
+      linear-gradient(145deg, rgba(31,31,31,.96), rgba(14,14,14,.98));
+    color:#e2e2e2;
+    border:1px solid rgba(252,3,109,.22);
+    border-radius:12px;
+    box-shadow:0 22px 70px rgba(0,0,0,.34), 0 0 28px rgba(252,3,109,.08);
   }
-  .rss-added-by-card .rss-added-label { color:#8c7f84; font-size:14px; }
-  .rss-added-by-card .rss-added-name { color:#121212; font-size:20px; line-height:1.2; font-weight:500; }
-  .rss-added-avatar { background:#fff; border:1px solid rgba(0,0,0,.04); box-shadow:0 5px 18px rgba(0,0,0,.06); }
+  .rss-added-by-card .rss-added-label {
+    color:#e6bcc2;
+    opacity:.78;
+    font-size:14px;
+  }
+  .rss-added-by-card .rss-added-name {
+    color:#ffffff;
+    font-size:22px;
+    line-height:1.2;
+    font-weight:700;
+    font-family:Manrope, sans-serif;
+  }
+  .rss-added-avatar {
+    background:
+      radial-gradient(circle at 50% 28%, rgba(252,3,109,.26), transparent 38%),
+      linear-gradient(180deg,#252525,#101010);
+    border:1px solid rgba(252,3,109,.35);
+    box-shadow:0 0 22px rgba(252,3,109,.14), inset 0 0 0 1px rgba(255,255,255,.04);
+  }
   .rss-added-profile-btn {
-    display:inline-flex; align-items:center; gap:6px; background:#ffe1ef; color:#fc036d;
-    padding:7px 14px; border-radius:999px; font-weight:700; font-size:14px; transition:.2s ease;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background:rgba(252,3,109,.14);
+    color:#fc036d;
+    border:1px solid rgba(252,3,109,.30);
+    padding:8px 15px;
+    border-radius:999px;
+    font-weight:800;
+    font-size:14px;
+    transition:.2s ease;
   }
-  .rss-added-profile-btn:hover { background:#fc036d; color:#fff; transform:translateY(-1px); }
-  .rss-added-separator { border-color:rgba(0,0,0,.10); }
-  .rss-added-desc { color:#111; font-size:16px; line-height:1.55; }
-  @media(max-width:767px){ .rss-added-by-card{padding:22px!important;} }
+  .rss-added-profile-btn:hover {
+    background:#fc036d;
+    color:#fff;
+    transform:translateY(-1px);
+    box-shadow:0 0 20px rgba(252,3,109,.25);
+  }
+  .rss-added-separator {
+    border-color:rgba(252,3,109,.18);
+  }
+  .rss-added-desc {
+    color:#e6bcc2;
+    font-size:16px;
+    line-height:1.6;
+  }
+  .rss-added-contact {
+    background:rgba(255,255,255,.045);
+    border:1px solid rgba(255,255,255,.08);
+    color:#e2e2e2;
+  }
+  .rss-added-contact:hover {
+    color:#fc036d;
+    border-color:rgba(252,3,109,.55);
+    background:rgba(252,3,109,.08);
+  }
+  @media(max-width:767px){
+    .rss-added-by-card{padding:22px!important;}
+  }
 </style>
 
 </head>
@@ -367,10 +418,10 @@
   <hr class="rss-added-separator my-7">
   <p id="rss-owner-description" class="rss-added-desc">Partenaire RentSoundSystem spécialisé dans la location de matériel événementiel professionnel.</p>
   <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2">
-    <a id="rss-owner-email" href="#" class="hidden px-3 py-2 rounded-full text-sm bg-white/70 text-[#121212] hover:text-primary transition">
+    <a id="rss-owner-email" href="#" class="rss-added-contact hidden px-3 py-2 rounded-full text-sm transition">
       <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>Contacter par email
     </a>
-    <a id="rss-owner-phone" href="#" class="hidden px-3 py-2 rounded-full text-sm bg-white/70 text-[#121212] hover:text-primary transition">
+    <a id="rss-owner-phone" href="#" class="rss-added-contact hidden px-3 py-2 rounded-full text-sm transition">
       <span class="material-symbols-outlined text-[16px] align-middle mr-1">call</span>Téléphone
     </a>
   </div>
@@ -614,13 +665,23 @@
   }
 
   function ownerLogo(item) {
-    return firstFilled(
+    const directLogo = firstFilled(
       item.owner_logo,
       item.partner_logo,
       item.company_logo,
       item.avatar_url,
       item.logo_url
     );
+    if (directLogo) return directLogo;
+
+    const username = ownerUsername(item);
+    const slug = partnerSlug(username || ownerName(item));
+
+    // Fallback local si vous ajoutez les logos partenaires dans /public/uploads/partners/
+    // Exemple : /public/uploads/partners/mariage-madagascar.png
+    if (slug) return '/uploads/partners/' + slug + '.png';
+
+    return '';
   }
 
   function updateOwnerUI(item) {
