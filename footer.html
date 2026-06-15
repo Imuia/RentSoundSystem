@@ -4,78 +4,57 @@
   #rss-footer * {
     box-sizing: border-box;
   }
-  /* ===== CTA PARTENAIRE FOOTER ===== */
+  /* ===== Bouton partenaire intégré au bloc Marketplace ===== */
+  #rss-footer .partner-footer-btn-mini {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    margin: 2px 0 4px;
+    padding: 10px 14px;
+    border: 1px solid rgba(252,3,109,.65);
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FC036D 0%, #ff2d86 100%);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(252,3,109,.24);
+    transition: .25s ease;
+  }
 
-.partner-footer-cta{
-    margin-top:40px;
-    padding-top:30px;
-    border-top:1px solid rgba(255,255,255,0.08);
+  #rss-footer .partner-footer-btn-mini:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(252,3,109,.38);
+  }
 
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-}
+  #rss-footer .partner-footer-btn-mini .material-symbols-outlined {
+    font-size: 18px;
+  }
 
-.partner-footer-btn{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:10px;
+  #rss-footer .partner-footer-login-mini {
+    color: #bdbdbd;
+    font-size: 13px;
+    line-height: 18px;
+    text-decoration: none;
+    transition: .25s ease;
+    margin-top: -4px;
+  }
 
-    padding:14px 28px;
+  #rss-footer .partner-footer-login-mini:hover {
+    color: #FC036D;
+  }
 
-    background:linear-gradient(
-        135deg,
-        #FC036D 0%,
-        #ff2d86 100%
-    );
-
-    color:#ffffff;
-    text-decoration:none;
-    font-weight:700;
-    font-size:15px;
-
-    border-radius:10px;
-    border:none;
-
-    box-shadow:0 10px 25px rgba(252,3,109,.30);
-
-    transition:all .25s ease;
-}
-
-.partner-footer-btn:hover{
-    transform:translateY(-2px);
-    box-shadow:0 15px 35px rgba(252,3,109,.45);
-}
-
-.partner-footer-btn .material-symbols-outlined{
-    font-size:20px;
-}
-
-.partner-footer-link{
-    color:#bdbdbd;
-    text-decoration:none;
-    font-size:14px;
-
-    transition:all .25s ease;
-}
-
-.partner-footer-link:hover{
-    color:#FC036D;
-}
-
-@media (max-width:768px){
-
-    .partner-footer-btn{
-        width:100%;
-        max-width:320px;
+  @media (max-width:768px) {
+    #rss-footer .partner-footer-btn-mini {
+      width: 100%;
+      max-width: 260px;
     }
+  }
 
-}
-
-  #rss-footer {
+#rss-footer {
     width: 100%;
     background: #0e0e0e;
     border-top: 1px solid rgba(255,255,255,.05);
@@ -289,20 +268,6 @@
           <a class="rss-footer-link" href="/faq.html">FAQ</a>
         </nav>
       </div>
-	  <div class="partner-footer-cta">
-
-    <a href="/inscription-partenaire"
-       class="partner-footer-btn">
-        <span class="material-symbols-outlined">storefront</span>
-        Devenir partenaire
-    </a>
-
-    <a href="/connexion-partenaire"
-       class="partner-footer-link">
-        Déjà partenaire ? Connexion
-    </a>
-
-</div>
     </div>
 
     <div class="rss-footer-bottom">
