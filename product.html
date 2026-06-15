@@ -1279,8 +1279,17 @@
         document.querySelector('.lg\\:col-span-5 .grid.grid-cols-2')?.textContent
       ].join(' '));
 
-      // Ces annonces sont des prestations / packs / événements : la quantité n'a pas de sens côté client.
-      return /evenement|événement|mariage|conference|conférence|prestation|pack|scene|scène|systeme|système|installation|regie|régie|sonorisation|eclairage|éclairage|location evenementiel|location événementiel/.test(pageText);
+      // AFFICHER +/- seulement quand le client peut choisir une vraie quantité d'unités.
+      // Exemples : casques, micros individuels, petites unités séparées.
+      const isQuantityProduct =
+        /casque|casques|silent|headphone|microphone|micro\b|sm58|uhf individuel|cdj\b|platine\b/.test(pageText) &&
+        !/pack|systeme|système|regie|régie|prestation|conference|conférence|sonorisation complete|sonorisation complète|kit complet/.test(pageText);
+
+      if (isQuantityProduct) return false;
+
+      // CACHER +/- pour les offres vendues comme service, pack ou configuration complète.
+      // original_id=473 entre dans cette logique si le titre/description est une location pack/prestation.
+      return /location|evenement|événement|mariage|conference|conférence|prestation|pack|scene|scène|systeme|système|installation|regie|régie|sonorisation|eclairage|éclairage|kit|configuration|service/.test(pageText);
     }
 
     function updateQuantityVisibility() {
