@@ -191,6 +191,54 @@
 }
 </style>
 
+
+<style id="rss-product-owner-css">
+  .rss-owner-card {
+    background: linear-gradient(145deg, rgba(31,31,31,.78), rgba(14,14,14,.96));
+    border: 1px solid rgba(252,3,109,.22);
+    box-shadow: 0 0 24px rgba(252,3,109,.08);
+  }
+  .rss-owner-avatar {
+    background: radial-gradient(circle at 50% 30%, rgba(252,3,109,.35), transparent 36%), #202020;
+  }
+  .rss-owner-meta {
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.03);
+  }
+</style>
+
+
+<style id="rss-product-owner-pro-css">
+  .rss-owner-card-pro {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(252,3,109,.18), transparent 34%),
+      linear-gradient(145deg, rgba(31,31,31,.92), rgba(14,14,14,.98));
+    border: 1px solid rgba(252,3,109,.26);
+    box-shadow: 0 18px 55px rgba(0,0,0,.28), 0 0 22px rgba(252,3,109,.08);
+  }
+  .rss-owner-avatar-pro {
+    background:
+      radial-gradient(circle at 50% 30%, rgba(252,3,109,.40), transparent 38%),
+      linear-gradient(180deg,#2a2a2a,#111);
+    border: 1px solid rgba(252,3,109,.35);
+  }
+  .rss-owner-badge-pro {
+    border: 1px solid rgba(252,3,109,.30);
+    background: rgba(252,3,109,.10);
+    color: #fc036d;
+  }
+  .rss-owner-action-pro {
+    border: 1px solid rgba(255,255,255,.10);
+    background: rgba(255,255,255,.035);
+    transition: .22s ease;
+  }
+  .rss-owner-action-pro:hover {
+    border-color: rgba(252,3,109,.70);
+    color: #fc036d;
+    transform: translateY(-1px);
+  }
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -207,13 +255,13 @@
 <span class="material-symbols-outlined text-[16px]">chevron_right</span>
 <span class="text-on-surface">Système de Sonorisation JBL Pro</span>
 </div>
-<div class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/30">
-<div class="h-10 w-10 rounded-full bg-surface-container-high flex items-center justify-center overflow-hidden border border-outline-variant/50">
-<img alt="Vendor Logo" class="h-full w-full object-cover opacity-80" data-alt="A professional vendor logo or avatar for a sound equipment rental company, featuring a subtle geometric design in dark greys and pink accents, set against a pitch black background. Minimalist corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5ssxkWIylNE8HIbQniPBRpAx7jG5_neA8P9g5ThT0AdDXcqZlfk7QM3CqoMq7RNfb1HvPhL04t3WVIaycfHPEvSqZZ01VNzuXCUMd6latavK2CPCFFAh5RN9uwwJlp4gpkLtMEnddOv1pBZo5OmsuFybQ6Dpm6MXujBJM7yrhrf4F9auM13R6IJKV4hRXdqMwPEQ0LClLLmGZZm0-0cntyqz73JyzmCijr8UeNEAEImJM_LXGh5HhoxbwFM43AQvJCsLAf0Ni-4Q">
+<div id="rss-owner-mini-card" class="flex items-center space-x-3 bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant/30">
+<div class="h-10 w-10 rounded-full rss-owner-avatar flex items-center justify-center overflow-hidden border border-outline-variant/50">
+<span class="material-symbols-outlined text-primary">storefront</span>
 </div>
 <div>
-<div class="font-headline text-body-md font-bold text-on-surface uppercase tracking-wide">MARRAKECH</div>
-<div class="font-body text-body-sm text-on-surface-variant uppercase tracking-wider">MAROC</div>
+<div id="rss-owner-mini-name" class="font-headline text-body-md font-bold text-on-surface uppercase tracking-wide">LOUEUR</div>
+<div id="rss-owner-mini-location" class="font-body text-body-sm text-on-surface-variant uppercase tracking-wider">LOCALISATION</div>
 </div>
 </div>
 </div>
@@ -305,6 +353,47 @@
 </div>
 </div>
 </div>
+
+<!-- Owner / Partner Panel -->
+<div id="rss-owner-card" class="rss-owner-card-pro p-5 rounded-xl relative overflow-hidden">
+  <div class="relative z-10">
+    <div class="flex items-start gap-4">
+      <div class="h-16 w-16 rounded-xl rss-owner-avatar-pro flex items-center justify-center shrink-0">
+        <span class="material-symbols-outlined text-primary text-[34px]">storefront</span>
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="flex flex-wrap items-center gap-2 mb-1">
+          <span class="rss-owner-badge-pro px-2 py-1 rounded text-[10px] uppercase tracking-[.16em] font-bold">Loueur vérifié</span>
+          <span id="rss-owner-legacy-id" class="hidden px-2 py-1 rounded bg-surface-container text-[10px] text-on-surface-variant uppercase tracking-[.14em]"></span>
+        </div>
+        <h3 id="rss-owner-name" class="font-headline text-headline-md text-on-surface font-bold leading-tight truncate">Loueur RentSoundSystem</h3>
+        <p id="rss-owner-username" class="font-body text-body-sm text-primary mt-1 hidden"></p>
+        <p id="rss-owner-location" class="font-body text-body-sm text-on-surface-variant mt-1">Localisation non précisée</p>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5">
+      <a id="rss-owner-email" href="#" class="rss-owner-action-pro hidden px-3 py-3 rounded text-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-[17px] align-middle mr-1">mail</span>Email
+      </a>
+      <a id="rss-owner-phone" href="#" class="rss-owner-action-pro hidden px-3 py-3 rounded text-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-[17px] align-middle mr-1">call</span>Téléphone
+      </a>
+    </div>
+
+    <div class="mt-4 pt-4 border-t border-outline-variant/20 grid grid-cols-2 gap-3 text-sm">
+      <div>
+        <div class="text-on-surface-variant text-xs uppercase tracking-wider mb-1">Annonce</div>
+        <div id="rss-owner-listing-id" class="text-on-surface font-bold">—</div>
+      </div>
+      <div>
+        <div class="text-on-surface-variant text-xs uppercase tracking-wider mb-1">Statut</div>
+        <div class="text-primary font-bold">Partenaire</div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- Booking Panel -->
 <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/30 shadow-lg relative overflow-hidden">
 <!-- Subtle Glow -->
@@ -450,6 +539,100 @@
     });
   }
 
+  function firstFilled() {
+    for (let i = 0; i < arguments.length; i++) {
+      const value = arguments[i];
+      if (value !== undefined && value !== null && String(value).trim() !== '') return String(value).trim();
+    }
+    return '';
+  }
+
+  function looksLikeUuid(value) {
+    return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(value || '').trim());
+  }
+
+  function ownerUsername(item) {
+    const username = firstFilled(
+      item.owner_username,
+      item.username,
+      item.user_login,
+      item.user_nicename,
+      item.partner_username
+    );
+
+    // Dans l'import WordPress, la colonne user_id peut contenir un username texte.
+    if (username) return username;
+    if (item.user_id && !looksLikeUuid(item.user_id)) return String(item.user_id).trim();
+
+    return '';
+  }
+
+  function ownerName(item) {
+    return firstFilled(
+      item.owner_name,
+      item.company_name,
+      item.partner_name,
+      item.display_name,
+      item.nom,
+      ownerUsername(item),
+      'Loueur RentSoundSystem'
+    );
+  }
+
+  function ownerLocation(item) {
+    return [firstFilled(item.owner_city, item.city, item.location), firstFilled(item.owner_country, item.country)]
+      .filter(Boolean)
+      .join(', ') || 'Localisation non précisée';
+  }
+
+  function setOwnerLink(id, href, label) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    if (!href) {
+      el.classList.add('hidden');
+      el.removeAttribute('href');
+      return;
+    }
+    el.href = href;
+    el.classList.remove('hidden');
+    const icon = id.indexOf('phone') !== -1 ? 'call' : 'mail';
+    el.innerHTML = '<span class="material-symbols-outlined text-[17px] align-middle mr-1">' + icon + '</span>' + safe(label);
+  }
+
+  function updateOwnerUI(item) {
+    const username = ownerUsername(item);
+    const name = ownerName(item);
+    const location = ownerLocation(item);
+    const email = firstFilled(item.owner_email, item.email, item.user_email, item.partner_email);
+    const phone = firstFilled(item.owner_phone, item.phone, item.telephone, item.mobile, item.partner_phone);
+    const legacyId = firstFilled(item.legacy_user_id, item.wordpress_user_id);
+    const listingId = firstFilled(item.original_id, item.id);
+
+    text(document.getElementById('rss-owner-name'), name);
+    text(document.getElementById('rss-owner-location'), location);
+    text(document.getElementById('rss-owner-mini-name'), name.toUpperCase());
+    text(document.getElementById('rss-owner-mini-location'), location.toUpperCase());
+    text(document.getElementById('rss-owner-listing-id'), listingId ? '#' + listingId : '—');
+
+    const usernameEl = document.getElementById('rss-owner-username');
+    if (usernameEl && username) {
+      usernameEl.textContent = '@' + username;
+      usernameEl.classList.remove('hidden');
+    }
+
+    const legacyEl = document.getElementById('rss-owner-legacy-id');
+    if (legacyEl && legacyId) {
+      legacyEl.textContent = 'User #' + legacyId;
+      legacyEl.classList.remove('hidden');
+    }
+
+    setOwnerLink('rss-owner-email', email ? 'mailto:' + email : '', email ? 'Contacter par email' : '');
+    setOwnerLink('rss-owner-phone', phone ? 'tel:' + String(phone).replace(/\s+/g, '') : '', phone || '');
+
+    const vendorBox = document.getElementById('rss-owner-mini-card');
+    if (vendorBox) vendorBox.setAttribute('title', name + ' - ' + location);
+  }
+
   function productUrl(item) {
     if (item && item.original_id !== undefined && item.original_id !== null) return 'product.html?original_id=' + encodeURIComponent(item.original_id);
     if (item && item.id) return 'product.html?id=' + encodeURIComponent(item.id);
@@ -536,7 +719,7 @@
     const ignore = new Set([
       'id','original_id','created_at','updated_at','published_at','status','slug',
       'listing_images','image_url','featured_image','thumbnail','description','title',
-      'featured','user_id','owner_id'
+      'featured','user_id','owner_id','owner_username','owner_email','owner_name','owner_phone','owner_city','owner_country','legacy_user_id','wordpress_user_id',
     ]);
 
     const labels = {
@@ -839,6 +1022,8 @@
     const category = item.category || 'Matériel audio';
     const price = money(item.price || 0);
 
+    updateOwnerUI(item);
+
     document.title = title + ' - RentSoundSystem.com';
 
     text(document.querySelector('.lg\\:col-span-5 h1'), title);
@@ -848,13 +1033,7 @@
     const breadcrumbCategory = document.querySelectorAll('main .flex.items-center.space-x-2.text-body-sm a')[1];
     text(breadcrumbCategory, category.replace(/-/g, ' '));
 
-    const vendorBox = document.querySelector('.bg-surface-container-low.px-4.py-2');
-    if (vendorBox) {
-      const vendorTexts = vendorBox.querySelectorAll('div.font-headline, div.font-body');
-      text(vendorTexts[0], city.toUpperCase());
-      text(vendorTexts[1], country.toUpperCase());
-    }
-
+    // Le bloc loueur est alimenté par updateOwnerUI(item), avec owner_username / owner_name.
     const mainImage = document.querySelector('.aspect-square.md\\:aspect-\\[4\\/3\\] img') || document.querySelector('main img[alt*="Système"]');
     setImage(mainImage, firstImage, title);
 
@@ -1213,6 +1392,8 @@
     const delivery = !!document.querySelector('#rss-option-delivery')?.checked;
     const install = !!document.querySelector('#rss-option-install')?.checked;
     const city = txt('.font-headline.text-body-md.font-bold.text-on-surface.uppercase') || '';
+    const ownerName = document.getElementById('rss-owner-name')?.textContent?.trim() || '';
+    const ownerLocation = document.getElementById('rss-owner-location')?.textContent?.trim() || '';
     return {
       product:{
         id:ids.id,
@@ -1222,7 +1403,12 @@
         dailyPrice:basePrice,
         quantity:qty,
         image:firstImage(),
-        url:location.href
+        url:location.href,
+        ownerName: ownerName,
+        ownerLocation: ownerLocation,
+        ownerUsername: document.getElementById('rss-owner-username')?.textContent?.replace('@','').trim() || '',
+        ownerEmail: document.getElementById('rss-owner-email')?.href?.replace('mailto:','') || '',
+        ownerPhone: document.getElementById('rss-owner-phone')?.textContent?.trim() || ''
       },
       rental:{
         startDate:startDate,
@@ -1260,7 +1446,15 @@
       if(label.includes('faire une demande de devis')){
         e.preventDefault();
         e.stopImmediatePropagation();
-        window.location.href = '/demande-de-devis.html';
+        const draft = currentProductDraft();
+        try{
+          localStorage.setItem('rssQuoteDraft', JSON.stringify(draft));
+          localStorage.setItem('rssSelectedProduct', JSON.stringify(draft.product));
+        }catch(err){}
+        const params = new URLSearchParams();
+        if(draft.product.original_id) params.set('original_id', draft.product.original_id);
+        if(draft.product.id) params.set('id', draft.product.id);
+        window.location.href = '/demande-de-devis.html' + (params.toString() ? '?' + params.toString() : '');
       }
     }, true);
   });
