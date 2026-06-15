@@ -209,57 +209,26 @@
 
 
 
-<style id="rss-product-owner-pro-clean-css">
-  .rss-owner-card-pro {
-    background:
-      linear-gradient(145deg, rgba(28,28,28,.96), rgba(12,12,12,.98));
-    border: 1px solid rgba(255,255,255,.10);
-    box-shadow: 0 18px 55px rgba(0,0,0,.34);
+
+<style id="rss-product-added-by-profile-css">
+  .rss-added-by-card {
+    background:#f7f7f7;
+    color:#121212;
+    border:1px solid rgba(0,0,0,.06);
+    border-radius:2px;
+    box-shadow:0 12px 35px rgba(0,0,0,.08);
   }
-  .rss-owner-card-pro::before {
-    content:"";
-    position:absolute;
-    inset:0;
-    background: radial-gradient(circle at 100% 0%, rgba(252,3,109,.16), transparent 34%);
-    pointer-events:none;
+  .rss-added-by-card .rss-added-label { color:#8c7f84; font-size:14px; }
+  .rss-added-by-card .rss-added-name { color:#121212; font-size:20px; line-height:1.2; font-weight:500; }
+  .rss-added-avatar { background:#fff; border:1px solid rgba(0,0,0,.04); box-shadow:0 5px 18px rgba(0,0,0,.06); }
+  .rss-added-profile-btn {
+    display:inline-flex; align-items:center; gap:6px; background:#ffe1ef; color:#fc036d;
+    padding:7px 14px; border-radius:999px; font-weight:700; font-size:14px; transition:.2s ease;
   }
-  .rss-owner-avatar-pro {
-    background:
-      radial-gradient(circle at 50% 30%, rgba(252,3,109,.26), transparent 38%),
-      linear-gradient(180deg,#252525,#111);
-    border: 1px solid rgba(252,3,109,.30);
-    box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
-  }
-  .rss-owner-badge-pro {
-    border: 1px solid rgba(252,3,109,.32);
-    background: rgba(252,3,109,.09);
-    color: #fc036d;
-  }
-  .rss-owner-id-pro {
-    border: 1px solid rgba(255,255,255,.08);
-    background: rgba(255,255,255,.035);
-    color: #c6c6c7;
-  }
-  .rss-owner-action-pro {
-    border: 1px solid rgba(255,255,255,.10);
-    background: rgba(255,255,255,.035);
-    transition: .22s ease;
-  }
-  .rss-owner-action-pro:hover {
-    border-color: rgba(252,3,109,.62);
-    color: #fc036d;
-    transform: translateY(-1px);
-  }
-  .rss-owner-muted {
-    color:#e6bcc2;
-    opacity:.78;
-  }
-  .rss-owner-label {
-    color:#c6c6c7;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:.14em;
-  }
+  .rss-added-profile-btn:hover { background:#fc036d; color:#fff; transform:translateY(-1px); }
+  .rss-added-separator { border-color:rgba(0,0,0,.10); }
+  .rss-added-desc { color:#111; font-size:16px; line-height:1.55; }
+  @media(max-width:767px){ .rss-added-by-card{padding:22px!important;} }
 </style>
 
 </head>
@@ -378,52 +347,37 @@
 </div>
 
 
+
 <!-- Owner / Partner Panel -->
-<div id="rss-owner-card" class="rss-owner-card-pro p-5 rounded-xl relative overflow-hidden">
-  <div class="relative z-10">
-    <div class="flex items-start gap-4">
-      <div class="h-16 w-16 rounded-xl rss-owner-avatar-pro flex items-center justify-center shrink-0">
-        <span class="material-symbols-outlined text-primary text-[34px]">storefront</span>
-      </div>
-
-      <div class="flex-1 min-w-0">
-        <div class="flex flex-wrap items-center gap-2 mb-2">
-          <span class="rss-owner-badge-pro px-2.5 py-1 rounded text-[10px] uppercase tracking-[.16em] font-bold">Loueur vérifié</span>
-          <span id="rss-owner-legacy-id" class="rss-owner-id-pro hidden px-2.5 py-1 rounded text-[10px] uppercase tracking-[.14em]"></span>
-        </div>
-
-        <h3 id="rss-owner-name" class="font-headline text-headline-md text-on-surface font-bold leading-tight truncate">Loueur RentSoundSystem</h3>
-
-        <div class="mt-2 space-y-1">
-          <p id="rss-owner-location" class="font-body text-body-sm rss-owner-muted flex items-center gap-2">
-            <span class="material-symbols-outlined text-[17px] text-primary">location_on</span>
-            Localisation non précisée
-          </p>
-          <p id="rss-owner-username" class="font-body text-body-sm rss-owner-muted hidden"></p>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5">
-      <a id="rss-owner-email" href="#" class="rss-owner-action-pro hidden px-3 py-3 rounded text-sm text-on-surface-variant">
-        <span class="material-symbols-outlined text-[17px] align-middle mr-1">mail</span>Contacter par email
-      </a>
-      <a id="rss-owner-phone" href="#" class="rss-owner-action-pro hidden px-3 py-3 rounded text-sm text-on-surface-variant">
-        <span class="material-symbols-outlined text-[17px] align-middle mr-1">call</span>Téléphone
+<div id="rss-owner-card" class="rss-added-by-card p-8 relative overflow-hidden">
+  <div class="flex items-start justify-between gap-5">
+    <div class="min-w-0">
+      <div class="rss-added-label mb-1">Ajouté par</div>
+      <h3 id="rss-owner-name" class="rss-added-name truncate">Loueur RentSoundSystem</h3>
+      <a id="rss-owner-profile-link" href="/profil-partenaire.html" class="rss-added-profile-btn mt-3">
+        Voir le profil
+        <span class="material-symbols-outlined text-[17px]">chevron_right</span>
       </a>
     </div>
-
-    <div class="mt-5 pt-4 border-t border-outline-variant/20 grid grid-cols-2 gap-4">
-      <div>
-        <div class="rss-owner-label mb-1">Annonce</div>
-        <div id="rss-owner-listing-id" class="text-on-surface font-bold">—</div>
-      </div>
-      <div>
-        <div class="rss-owner-label mb-1">Statut</div>
-        <div class="text-primary font-bold">Partenaire vérifié</div>
-      </div>
+    <div class="h-16 w-16 rounded-full rss-added-avatar flex items-center justify-center shrink-0 overflow-hidden">
+      <img id="rss-owner-logo" alt="Logo partenaire" class="hidden w-full h-full object-cover">
+      <span id="rss-owner-logo-fallback" class="material-symbols-outlined text-primary text-[30px]">storefront</span>
     </div>
   </div>
+  <hr class="rss-added-separator my-7">
+  <p id="rss-owner-description" class="rss-added-desc">Partenaire RentSoundSystem spécialisé dans la location de matériel événementiel professionnel.</p>
+  <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2">
+    <a id="rss-owner-email" href="#" class="hidden px-3 py-2 rounded-full text-sm bg-white/70 text-[#121212] hover:text-primary transition">
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>Contacter par email
+    </a>
+    <a id="rss-owner-phone" href="#" class="hidden px-3 py-2 rounded-full text-sm bg-white/70 text-[#121212] hover:text-primary transition">
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">call</span>Téléphone
+    </a>
+  </div>
+  <span id="rss-owner-username" class="hidden"></span>
+  <span id="rss-owner-location" class="hidden"></span>
+  <span id="rss-owner-listing-id" class="hidden"></span>
+  <span id="rss-owner-legacy-id" class="hidden"></span>
 </div>
 
 <!-- Booking Panel -->
@@ -638,6 +592,37 @@
     el.innerHTML = '<span class="material-symbols-outlined text-[17px] align-middle mr-1">' + icon + '</span>' + safe(label);
   }
 
+  function partnerSlug(value) {
+    return String(value || '')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function ownerDescription(item) {
+    return firstFilled(
+      item.owner_description,
+      item.partner_description,
+      item.company_description,
+      item.bio,
+      item.about,
+      item.description_partner
+    ) || 'Partenaire RentSoundSystem spécialisé dans la location de matériel événementiel professionnel.';
+  }
+
+  function ownerLogo(item) {
+    return firstFilled(
+      item.owner_logo,
+      item.partner_logo,
+      item.company_logo,
+      item.avatar_url,
+      item.logo_url
+    );
+  }
+
   function updateOwnerUI(item) {
     const username = ownerUsername(item);
     const name = ownerName(item);
@@ -646,26 +631,44 @@
     const phone = firstFilled(item.owner_phone, item.phone, item.telephone, item.mobile, item.partner_phone);
     const legacyId = firstFilled(item.legacy_user_id, item.wordpress_user_id);
     const listingId = firstFilled(item.original_id, item.id);
+    const slug = partnerSlug(username || name || legacyId);
+    const desc = ownerDescription(item);
+    const logo = ownerLogo(item);
 
     text(document.getElementById('rss-owner-name'), name);
     text(document.getElementById('rss-owner-location'), location);
     text(document.getElementById('rss-owner-mini-name'), name.toUpperCase());
     text(document.getElementById('rss-owner-mini-location'), location.toUpperCase());
     text(document.getElementById('rss-owner-listing-id'), listingId ? '#' + listingId : '—');
+    text(document.getElementById('rss-owner-description'), desc);
+
+    const profileLink = document.getElementById('rss-owner-profile-link');
+    if (profileLink) {
+      const params = new URLSearchParams();
+      if (username) params.set('username', username);
+      if (legacyId) params.set('legacy_user_id', legacyId);
+      if (slug) params.set('slug', slug);
+      profileLink.href = '/profil-partenaire.html' + (params.toString() ? '?' + params.toString() : '');
+    }
 
     const usernameEl = document.getElementById('rss-owner-username');
     if (usernameEl) {
-      // Ne pas afficher le username WordPress brut au client.
-      // Exemple importé : "I AM NOT RICH" est seulement un ancien login interne.
-      usernameEl.textContent = '';
+      usernameEl.textContent = username || '';
       usernameEl.classList.add('hidden');
     }
 
     const legacyEl = document.getElementById('rss-owner-legacy-id');
-    if (legacyEl && legacyId) {
-      legacyEl.textContent = 'Profil partenaire';
-      legacyEl.title = 'Ancien ID utilisateur : ' + legacyId;
-      legacyEl.classList.remove('hidden');
+    if (legacyEl) {
+      legacyEl.textContent = legacyId || '';
+      legacyEl.classList.add('hidden');
+    }
+
+    const logoEl = document.getElementById('rss-owner-logo');
+    const fallbackEl = document.getElementById('rss-owner-logo-fallback');
+    if (logoEl && logo) {
+      logoEl.src = logo;
+      logoEl.onload = function(){ logoEl.classList.remove('hidden'); if (fallbackEl) fallbackEl.classList.add('hidden'); };
+      logoEl.onerror = function(){ logoEl.classList.add('hidden'); if (fallbackEl) fallbackEl.classList.remove('hidden'); };
     }
 
     setOwnerLink('rss-owner-email', email ? 'mailto:' + email : '', email ? 'Contacter par email' : '');
@@ -673,6 +676,20 @@
 
     const vendorBox = document.getElementById('rss-owner-mini-card');
     if (vendorBox) vendorBox.setAttribute('title', name + ' - ' + location);
+
+    try {
+      localStorage.setItem('rssLastPartnerProfile', JSON.stringify({
+        username: username,
+        legacy_user_id: legacyId,
+        name: name,
+        location: location,
+        email: email,
+        phone: phone,
+        description: desc,
+        logo: logo,
+        slug: slug
+      }));
+    } catch(e) {}
   }
 
   function productUrl(item) {

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Profil partenaire - RentSoundSystem.com</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: { extend: { colors: { background:"#131313", surface:"#131313", primary:"#fc036d", "on-primary":"#ffffff", "on-surface":"#e2e2e2", "on-surface-variant":"#e6bcc2", "surface-container":"#1f1f1f", "surface-container-low":"#1b1b1b", "surface-container-lowest":"#0e0e0e", "outline-variant":"#5d3f44" }, fontFamily:{ headline:["Manrope"], body:["Inter"] } } }
+}
+</script>
+<style>
+  body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2}
+  .font-headline{font-family:Manrope,sans-serif}
+  #header-container{min-height:auto}
+  #footer-container{min-height:320px}
+  .partner-hero{background:radial-gradient(circle at 85% 0%, rgba(252,3,109,.18), transparent 34%),linear-gradient(145deg, rgba(31,31,31,.96), rgba(14,14,14,.98));border:1px solid rgba(255,255,255,.08)}
+  .partner-logo{background:#fff;border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 55px rgba(0,0,0,.22)}
+  .rss-card{background:linear-gradient(145deg, rgba(31,31,31,.92), rgba(14,14,14,.96));border:1px solid rgba(255,255,255,.07)}
+  .rss-btn{background:#fc036d;color:#fff;border-radius:999px;padding:.75rem 1.2rem;font-weight:800;display:inline-flex;align-items:center;gap:.4rem}
+  .rss-btn-secondary{border:1px solid rgba(255,255,255,.12);color:#e2e2e2;border-radius:999px;padding:.75rem 1.2rem;font-weight:700;display:inline-flex;align-items:center;gap:.4rem}
+  .rss-listing-card{cursor:pointer;transition:.25s ease}
+  .rss-listing-card:hover{transform:translateY(-4px);border-color:rgba(252,3,109,.65)}
+</style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
+<main class="flex-grow max-w-[1280px] mx-auto w-full px-6 py-10 md:py-14">
+  <section class="partner-hero rounded-xl p-6 md:p-10 mb-8">
+    <div class="flex flex-col md:flex-row gap-8 md:items-center">
+      <div class="w-28 h-28 md:w-36 md:h-36 rounded-full partner-logo flex items-center justify-center overflow-hidden shrink-0">
+        <img id="partner-logo" class="hidden w-full h-full object-cover" alt="Logo partenaire">
+        <span id="partner-logo-fallback" class="material-symbols-outlined text-primary text-[54px]">storefront</span>
+      </div>
+      <div class="flex-1">
+        <p class="text-primary uppercase tracking-[.18em] text-xs font-bold mb-3">Profil partenaire</p>
+        <h1 id="partner-name" class="font-headline text-4xl md:text-5xl font-extrabold mb-3">Partenaire RentSoundSystem</h1>
+        <p id="partner-location" class="text-on-surface-variant flex items-center gap-2 mb-4"><span class="material-symbols-outlined text-primary">location_on</span>Localisation non précisée</p>
+        <p id="partner-description" class="text-on-surface-variant max-w-3xl leading-relaxed">Partenaire spécialisé dans la location de matériel événementiel professionnel.</p>
+        <div class="flex flex-wrap gap-3 mt-6">
+          <a id="partner-email" class="rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">mail</span>Contacter par email</a>
+          <a id="partner-phone" class="rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">call</span>Téléphone</a>
+          <a href="/demande-de-devis.html" class="rss-btn"><span class="material-symbols-outlined">request_quote</span>Demander un devis</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
+    <div class="rss-card rounded-xl p-6"><div class="text-on-surface-variant text-xs uppercase tracking-[.16em] mb-2">Annonces publiées</div><div id="partner-listings-count" class="font-headline text-4xl font-extrabold text-primary">0</div></div>
+    <div class="rss-card rounded-xl p-6"><div class="text-on-surface-variant text-xs uppercase tracking-[.16em] mb-2">Statut</div><div class="font-headline text-2xl font-bold text-primary">Partenaire vérifié</div></div>
+    <div class="rss-card rounded-xl p-6"><div class="text-on-surface-variant text-xs uppercase tracking-[.16em] mb-2">Spécialité</div><div id="partner-specialty" class="font-headline text-2xl font-bold">Événementiel</div></div>
+  </section>
+  <section class="mb-8">
+    <div class="flex items-center justify-between gap-4 mb-5"><h2 class="font-headline text-3xl font-bold">Annonces du partenaire</h2><a href="/index.html" class="text-primary font-bold">Voir le catalogue</a></div>
+    <div id="partner-listings-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="rss-card rounded-xl p-6 text-on-surface-variant">Chargement des annonces...</div></div>
+  </section>
+</main>
+<div id="footer-container"></div>
+<script>
+(function(){
+  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  let client=null;
+  function ready(fn){if(document.readyState!=='loading')fn();else document.addEventListener('DOMContentLoaded',fn)}
+  function safe(v){return String(v||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
+  function text(id,value){const el=document.getElementById(id);if(el&&value)el.textContent=value}
+  function money(v){return Number(v||0).toLocaleString('fr-FR',{maximumFractionDigits:0})+'€'}
+  function productUrl(item){if(item.original_id)return'/product.html?original_id='+encodeURIComponent(item.original_id);return'/product.html?id='+encodeURIComponent(item.id)}
+  function imageOf(item){const imgs=item.listing_images||[];return imgs[0]?.image_url||item.image_url||item.featured_image||''}
+  function loadFromLocal(){try{return JSON.parse(localStorage.getItem('rssLastPartnerProfile')||'null')}catch(e){return null}}
+  function applyProfile(p){
+    if(!p)return;
+    text('partner-name',p.name||p.owner_name||p.owner_username||'Partenaire RentSoundSystem');
+    text('partner-location',p.location||[p.owner_city,p.owner_country].filter(Boolean).join(', ')||'Localisation non précisée');
+    text('partner-description',p.description||'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
+    const email=p.email||p.owner_email||'', phone=p.phone||p.owner_phone||'', logo=p.logo||p.owner_logo||'';
+    const emailEl=document.getElementById('partner-email'); if(emailEl&&email){emailEl.href='mailto:'+email;emailEl.classList.remove('hidden')}
+    const phoneEl=document.getElementById('partner-phone'); if(phoneEl&&phone){phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);phoneEl.classList.remove('hidden')}
+    const logoEl=document.getElementById('partner-logo'), fallback=document.getElementById('partner-logo-fallback');
+    if(logoEl&&logo){logoEl.src=logo;logoEl.onload=function(){logoEl.classList.remove('hidden');fallback?.classList.add('hidden')};logoEl.onerror=function(){logoEl.classList.add('hidden');fallback?.classList.remove('hidden')}}
+  }
+  function renderListings(items){
+    const grid=document.getElementById('partner-listings-grid'); if(!grid)return;
+    document.getElementById('partner-listings-count').textContent=String(items.length||0);
+    if(!items.length){grid.innerHTML='<div class="rss-card rounded-xl p-6 text-on-surface-variant">Aucune annonce publique pour ce partenaire.</div>';return}
+    grid.innerHTML=items.slice(0,12).map(item=>{
+      const img=imageOf(item);
+      return '<article class="rss-card rss-listing-card rounded-xl overflow-hidden" onclick="location.href=\''+productUrl(item)+'\'"><div class="aspect-video bg-surface-container-lowest overflow-hidden">'+
+        (img?'<img src="'+safe(img)+'" class="w-full h-full object-cover" alt="'+safe(item.title)+'" loading="lazy">':'<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[42px]">inventory_2</span></div>')+
+        '</div><div class="p-5"><h3 class="font-headline text-xl font-bold mb-2 line-clamp-2">'+safe(item.title||'Annonce')+'</h3><p class="text-on-surface-variant mb-4">'+safe([item.city||item.location,item.country].filter(Boolean).join(', '))+'</p><div class="text-primary font-headline font-bold text-2xl">'+money(item.price)+'</div></div></article>';
+    }).join('');
+  }
+  async function loadProfile(){
+    const params=new URLSearchParams(location.search);
+    const username=params.get('username')||'', legacy=params.get('legacy_user_id')||'', cached=loadFromLocal();
+    if(cached)applyProfile(cached);
+    if(!window.supabase)return;
+    client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    let query=client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(24);
+    if(username)query=query.eq('owner_username',username);
+    else if(legacy&&!isNaN(Number(legacy)))query=query.eq('legacy_user_id',Number(legacy));
+    else if(cached&&cached.username)query=query.eq('owner_username',cached.username);
+    else if(cached&&cached.legacy_user_id)query=query.eq('legacy_user_id',Number(cached.legacy_user_id));
+    const {data,error}=await query; if(error){console.warn(error);return}
+    const items=data||[];
+    if(items[0]){
+      const first=items[0];
+      applyProfile({name:first.owner_name||first.owner_username||cached?.name,location:[first.owner_city,first.owner_country].filter(Boolean).join(', ')||cached?.location,email:first.owner_email||cached?.email,phone:first.owner_phone||cached?.phone,description:first.owner_description||first.partner_description||cached?.description,logo:first.owner_logo||first.partner_logo||cached?.logo});
+      text('partner-specialty',first.category?String(first.category).replace(/-/g,' '):'Événementiel');
+    }
+    renderListings(items);
+  }
+  ready(loadProfile);
+})();
+</script>
+<script src="/components.js"></script>
+</body>
+</html>
