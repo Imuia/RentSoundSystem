@@ -217,6 +217,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 .payment-copy-btn{border:1px solid rgba(252,3,109,.35);color:#fff;background:rgba(252,3,109,.12);padding:.55rem .8rem;border-radius:.25rem;font-weight:700;}
 .payment-copy-btn:hover{background:rgba(252,3,109,.22);}
 </style>
+
+<style id="rss-checkout-dynamic-order-css">
+  .rss-summary-meta{color:#C9A5B5;font-size:12px;line-height:1.35;margin-top:4px}
+  .rss-summary-owner{color:#FC036D;font-weight:700}
+</style>
+
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -542,101 +548,135 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   const CONFIRMATION_URL='/confirmation-de-commande.html';
-  const DEFAULT_PRODUCT={name:'L-Acoustics K2 System',description:'Pack complet audio professionnel',dailyPrice:1200,deposit:5000,quantity:1,image:''};
+  const DEFAULT_PRODUCT={name:'Matériel RentSoundSystem',description:'Location de matériel événementiel professionnel',dailyPrice:0,deposit:0,caution:0,quantity:1,image:'',vatRate:0.20};
   const ORDER_REF_KEY='rssPendingOrderRef';
   let selectedPayment='card';
+  let loadedListing=null;
+
   function qs(s){return document.querySelector(s)}
   function qsa(s){return Array.from(document.querySelectorAll(s))}
   function money(v){return Number(v||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});}
   function dateFR(v){if(!v)return 'À confirmer';const d=new Date(v+'T00:00:00');return Number.isNaN(d.getTime())?v:d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});}
   function setText(s,v){const el=qs(s); if(el) el.textContent=v;}
+  function safeNumber(v,fallback=0){const n=Number(String(v ?? '').replace(',', '.').replace(/[^\d.-]/g,'')); return Number.isFinite(n)?n:fallback;}
   function showMessage(text,type='error'){const el=qs('#checkout-message'); if(!el)return; el.textContent=text; el.classList.remove('hidden','text-error','text-primary','border-error/40','border-primary/40','bg-error-container/20','bg-primary/10'); if(type==='success'){el.classList.add('text-primary','border-primary/40','bg-primary/10')}else{el.classList.add('text-error','border-error/40','bg-error-container/20')}}
   function hideMessage(){qs('#checkout-message')?.classList.add('hidden')}
-  function getOrderRef(){
-    let ref=localStorage.getItem(ORDER_REF_KEY);
-    if(!ref){ref='RSS-'+Date.now().toString().slice(-6); localStorage.setItem(ORDER_REF_KEY,ref);}
-    return ref;
-  }
+  function getOrderRef(){let ref=localStorage.getItem(ORDER_REF_KEY); if(!ref){ref='RSS-'+Date.now().toString().slice(-6); localStorage.setItem(ORDER_REF_KEY,ref);} return ref;}
   function todayPlus(days){const d=new Date(); d.setDate(d.getDate()+days); return d.toISOString().slice(0,10)}
-  function getDraft(){try{return JSON.parse(localStorage.getItem('rssCheckoutDraft')||'null')||{};}catch{return {};}}
-  function initDates(){const start=qs('#rental-start'), end=qs('#rental-end'), draft=getDraft(); if(start&&!start.value) start.value=draft?.rental?.startDate || todayPlus(7); if(end&&!end.value) end.value=draft?.rental?.endDate || draft?.rental?.startDate || todayPlus(9); if(start&&end){start.min=todayPlus(0); end.min=start.value; start.addEventListener('change',()=>{if(end.value<start.value)end.value=start.value; end.min=start.value; persistDraftFromCheckout(); updateSummary();}); end.addEventListener('change',()=>{persistDraftFromCheckout(); updateSummary();});} }
-  function days(){const s=qs('#rental-start')?.value, e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'), ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd.getTime())||Number.isNaN(ed.getTime())) return 1; return Math.max(1, Math.round((ed-sd)/(1000*60*60*24))+1);}
-  function getProduct(){try{const draft=getDraft(); const stored=JSON.parse(localStorage.getItem('rssSelectedProduct')||'null'); const p=Object.assign({},DEFAULT_PRODUCT,draft.product||{},stored||{}); p.dailyPrice=Number(p.dailyPrice||p.price||p.price_day||p.price_per_day||DEFAULT_PRODUCT.dailyPrice); p.quantity=Math.max(1,Number(p.quantity||1)); p.deposit=Number(p.deposit||p.caution||DEFAULT_PRODUCT.deposit); return p;}catch{return DEFAULT_PRODUCT}}
-  function totals(){const product=getProduct(), d=days(); const delivery=qs('#delivery-transport')?.checked?250:0; const technician=qs('#technician')?.checked?450*d:0; const rental=product.dailyPrice*d*product.quantity; const subtotal=rental+delivery+technician; const tax=subtotal*.20; const total=subtotal+tax; return {product,d,rental,delivery,technician,tax,total,deposit:product.deposit};}
-  function updatePaymentUI(){
-    const labels={
-      card:'Carte bancaire sélectionnée.',
-      paypal:'PayPal sélectionné : indiquez l’e-mail PayPal du client pour préparer le paiement.',
-      apple_pay:'Apple Pay sélectionné : le paiement sera disponible sur appareil compatible après intégration du prestataire.',
-      crypto:'Crypto sélectionné : choisissez la devise et le réseau pour préparer la validation.',
-      bank_transfer:'Virement bancaire sélectionné : le RIB et la référence apparaissent ci-dessous.'
+  function readJson(key){try{const v=localStorage.getItem(key); return v?JSON.parse(v):null;}catch(e){return null}}
+  function writeJson(key,value){try{localStorage.setItem(key,JSON.stringify(value));}catch(e){}}
+  function getDraft(){return readJson('rssCheckoutDraft') || readJson('rssQuoteDraft') || {};}
+  function firstFilled(){for(let i=0;i<arguments.length;i++){const v=arguments[i]; if(v!==undefined&&v!==null&&String(v).trim()!=='') return v;} return '';}
+  function cleanText(v){return String(v||'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();}
+  function imageOf(item){const imgs=item?.listing_images||[]; return imgs[0]?.image_url || item?.image_url || item?.featured_image || item?.image || '';}
+
+  function productFromListing(item){
+    if(!item) return {};
+    const price=safeNumber(firstFilled(item.price,item.dailyPrice,item.price_day,item.price_per_day),0);
+    const caution=safeNumber(firstFilled(item.caution,item.deposit,item.security_deposit,item.deposit_amount),0);
+    const vatRate=safeNumber(firstFilled(item.vat_rate,item.tva_rate,item.tax_rate),0.20);
+    return {
+      id:item.id||'', original_id:item.original_id??'', name:item.title||item.name||'Annonce RentSoundSystem',
+      description:cleanText(item.description||item.summary||item.category||''),
+      dailyPrice:price, price:price, quantity:1, deposit:caution, caution:caution,
+      vatRate:vatRate>1?vatRate/100:vatRate, image:imageOf(item),
+      url:item.original_id?'/product?original_id='+encodeURIComponent(item.original_id):(item.id?'/product?id='+encodeURIComponent(item.id):''),
+      city:item.city||item.location||'', country:item.country||'',
+      ownerName:item.owner_name||item.owner_username||'', ownerEmail:item.owner_email||'', ownerPhone:item.owner_phone||'', ownerUsername:item.owner_username||'', partnerId:item.legacy_user_id||''
     };
-    qsa('.payment-method').forEach(btn=>{
-      const active=btn.dataset.method===selectedPayment;
-      btn.classList.toggle('border-2',active);
-      btn.classList.toggle('border-primary',active);
-      btn.classList.toggle('border-outline-variant',!active);
-      btn.classList.toggle('bg-surface-container-high',active);
-      btn.setAttribute('aria-pressed',active?'true':'false');
-      btn.querySelectorAll('span').forEach(span=>{
-        span.classList.toggle('text-inverse-surface',active);
-        span.classList.toggle('text-on-surface-variant',!active);
-      });
-    });
-    const note=qs('#payment-note');
-    if(note) note.textContent=labels[selectedPayment]||labels.card;
-    qsa('.payment-panel').forEach(panel=>{
-      const active=panel.dataset.panel===selectedPayment;
-      panel.classList.toggle('active',active);
-      panel.querySelectorAll('input,select,textarea,button').forEach(el=>{el.disabled=!active;});
-    });
-    const email=qs('#email')?.value||'';
-    if(selectedPayment==='paypal' && qs('#paypal-email') && !qs('#paypal-email').value) qs('#paypal-email').value=email;
-    if(selectedPayment==='apple_pay' && qs('#apple-phone') && !qs('#apple-phone').value) qs('#apple-phone').value=qs('#phone')?.value||'';
-    const ref=getOrderRef();
-    if(qs('#paypal-reference') && !qs('#paypal-reference').value) qs('#paypal-reference').value=ref;
-    if(qs('#bank-reference')) qs('#bank-reference').textContent=ref;
-    const btn=qs('#confirm-order-btn');
-    const btnLabels={card:'Confirmer et payer',paypal:'Confirmer avec PayPal',apple_pay:'Confirmer avec Apple Pay',crypto:'Confirmer paiement crypto',bank_transfer:'Confirmer le virement'};
-    if(btn&&!btn.disabled) btn.innerHTML='<span class="material-symbols-outlined" data-icon="lock">lock</span> '+(btnLabels[selectedPayment]||'Confirmer et payer');
   }
-  function getPaymentDetails(){
-    if(selectedPayment==='paypal') return {paypalEmail:qs('#paypal-email')?.value.trim()||'',reference:qs('#paypal-reference')?.value||''};
-    if(selectedPayment==='apple_pay') return {phone:qs('#apple-phone')?.value.trim()||'',device:qs('#apple-device')?.value||''};
-    if(selectedPayment==='crypto') return {currency:qs('#crypto-currency')?.value||'',network:qs('#crypto-network')?.value||'',transaction:qs('#crypto-tx')?.value.trim()||''};
-    if(selectedPayment==='bank_transfer') return {holder:qs('#bank-account-holder')?.value.trim()||'',plannedDate:qs('#bank-transfer-date')?.value||'',iban:qs('#bank-iban')?.textContent||'',bic:qs('#bank-bic')?.textContent||'',reference:qs('#bank-reference')?.textContent||''};
-    return {cardName:qs('#card-name')?.value.trim()||''};
+
+  function normalizeProduct(p){
+    p=Object.assign({},DEFAULT_PRODUCT,p||{});
+    p.name=firstFilled(p.name,p.title,DEFAULT_PRODUCT.name);
+    p.description=cleanText(firstFilled(p.description,p.desc,p.category,DEFAULT_PRODUCT.description));
+    p.dailyPrice=safeNumber(firstFilled(p.dailyPrice,p.price,p.price_day,p.price_per_day,p.amount),DEFAULT_PRODUCT.dailyPrice);
+    p.quantity=Math.max(1,safeNumber(firstFilled(p.quantity,p.qty),1));
+    p.deposit=safeNumber(firstFilled(p.deposit,p.caution,p.security_deposit,p.deposit_amount),0);
+    p.caution=p.deposit;
+    p.vatRate=safeNumber(firstFilled(p.vatRate,p.vat_rate,p.tva_rate,p.tax_rate),0.20);
+    if(p.vatRate>1)p.vatRate=p.vatRate/100;
+    p.image=firstFilled(p.image,p.image_url,p.featured_image,'');
+    return p;
   }
-    function updateSummary(){const t=totals(); setText('#summary-item-name',t.product.name); setText('#summary-item-desc',t.product.description); setText('#summary-price-day',money(t.product.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',t.product.quantity+' système'); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total)); const img=qs('.w-20.h-20 img'); if(img&&t.product.image){img.src=t.product.image; img.alt=t.product.name||'Produit RentSoundSystem';} persistDraftFromCheckout(); }
-  function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}}
-    if(selectedPayment==='paypal' && !/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;}
-    if(selectedPayment==='apple_pay' && (qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;}
-    if(selectedPayment==='bank_transfer' && !(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;}
-    return true;}
+
+  function getProduct(){
+    const draft=getDraft();
+    const stored=readJson('rssSelectedProduct') || readJson('rssLastProduct') || {};
+    const fromListing=productFromListing(loadedListing);
+    return normalizeProduct(Object.assign({},DEFAULT_PRODUCT,draft.product||{},stored||{},fromListing||{}));
+  }
+
   async function getSupabase(){if(!window.supabase)return null; return window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);}
-  async function requireLogin(){
-    const sb=await getSupabase();
-    if(!sb){
-      showMessage('Connexion obligatoire : Supabase JS n’est pas chargé. Rechargez la page.', 'error');
-      return false;
-    }
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session?.user){
-      try{persistDraftFromCheckout();}catch(e){}
-      const redirect=(window.location.pathname||'/tunnel-de-commande.html')+(window.location.search||'');
-      window.location.href='/connexion-inscription.html?redirect='+encodeURIComponent(redirect);
-      return false;
-    }
-    return true;
+
+  async function loadListingFromUrl(){
+    try{
+      const params=new URLSearchParams(location.search);
+      const originalId=params.get('original_id')||params.get('listing_original_id');
+      const id=params.get('id')||params.get('listing_id');
+      const draft=getDraft();
+      const stored=readJson('rssSelectedProduct')||{};
+      const fallbackOriginal=firstFilled(draft?.product?.original_id,stored?.original_id);
+      const fallbackId=firstFilled(draft?.product?.id,stored?.id);
+      const sb=await getSupabase();
+      if(!sb)return;
+      let query=sb.from('listings').select('*, listing_images(image_url, position)').eq('status','publish');
+      if(originalId&&!isNaN(Number(originalId))) query=query.eq('original_id',Number(originalId)).maybeSingle();
+      else if(id) query=query.eq('id',id).maybeSingle();
+      else if(fallbackOriginal&&!isNaN(Number(fallbackOriginal))) query=query.eq('original_id',Number(fallbackOriginal)).maybeSingle();
+      else if(fallbackId) query=query.eq('id',fallbackId).maybeSingle();
+      else return;
+      const {data,error}=await query;
+      if(!error&&data){
+        loadedListing=data;
+        const product=productFromListing(data);
+        const draftNow=getDraft();
+        writeJson('rssSelectedProduct',product);
+        writeJson('rssCheckoutDraft',Object.assign({},draftNow,{product:Object.assign({},draftNow.product||{},product)}));
+      }else if(error){console.warn('Listing checkout introuvable:',error)}
+    }catch(e){console.warn('Chargement annonce checkout impossible:',e)}
   }
-    async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return {saved:false,reason:'no_supabase'}; const {data:{session}}=await sb.auth.getSession(); const payload={equipment_name:order.item.name,renter_name:'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:'pending',total_price:order.amounts.total}; if(session?.user) payload.user_id=session.user.id; const {error}=await sb.from('reservations').insert(payload); if(error){console.warn('Reservation Supabase:',error); return {saved:false,reason:error.message};} return {saved:true};}catch(e){console.warn('Reservation non sauvegardée:',e); return {saved:false,reason:e.message||String(e)}}}
-  function buildOrder(){const t=totals(); const ref=getOrderRef(); return {id:ref,createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request',details:getPaymentDetails()},item:{id:t.product.id||'',original_id:t.product.original_id??null,name:t.product.name,description:t.product.description,dailyPrice:t.product.dailyPrice,quantity:t.product.quantity,deposit:t.deposit,image:t.product.image||'',url:t.product.url||''},amounts:{rental:t.rental,delivery:t.delivery,technician:t.technician,tax:t.tax,total:t.total,deposit:t.deposit}};}
+
+  function initDates(){const start=qs('#rental-start'),end=qs('#rental-end'),draft=getDraft(); if(start&&!start.value)start.value=draft?.rental?.startDate||todayPlus(7); if(end&&!end.value)end.value=draft?.rental?.endDate||draft?.rental?.startDate||todayPlus(9); if(start&&end){start.min=todayPlus(0); end.min=start.value; start.addEventListener('change',()=>{if(end.value<start.value)end.value=start.value; end.min=start.value; persistDraftFromCheckout(); updateSummary();}); end.addEventListener('change',()=>{persistDraftFromCheckout(); updateSummary();});}}
+  function days(){const s=qs('#rental-start')?.value,e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'),ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd.getTime())||Number.isNaN(ed.getTime()))return 1; return Math.max(1,Math.round((ed-sd)/(1000*60*60*24))+1);}
+  function totals(){const product=getProduct(),d=days(); const delivery=qs('#delivery-transport')?.checked?250:0; const technician=qs('#technician')?.checked?450*d:0; const rental=product.dailyPrice*d*product.quantity; const subtotal=rental+delivery+technician; const tax=subtotal*(Number(product.vatRate??0.20)); const total=subtotal+tax; return {product,d,rental,delivery,technician,subtotal,tax,total,deposit:product.deposit,vatRate:Number(product.vatRate??0.20)};}
+
+  function updatePaymentUI(){
+    const labels={card:'Carte bancaire sélectionnée.',paypal:'PayPal sélectionné : indiquez l’e-mail PayPal du client pour préparer le paiement.',apple_pay:'Apple Pay sélectionné : le paiement sera disponible sur appareil compatible après intégration du prestataire.',crypto:'Crypto sélectionné : choisissez la devise et le réseau pour préparer la validation.',bank_transfer:'Virement bancaire sélectionné : le RIB et la référence apparaissent ci-dessous.'};
+    qsa('.payment-method').forEach(btn=>{const active=btn.dataset.method===selectedPayment; btn.classList.toggle('border-2',active); btn.classList.toggle('border-primary',active); btn.classList.toggle('border-outline-variant',!active); btn.classList.toggle('bg-surface-container-high',active); btn.setAttribute('aria-pressed',active?'true':'false'); btn.querySelectorAll('span').forEach(span=>{span.classList.toggle('text-inverse-surface',active); span.classList.toggle('text-on-surface-variant',!active);});});
+    const note=qs('#payment-note'); if(note)note.textContent=labels[selectedPayment]||labels.card;
+    qsa('.payment-panel').forEach(panel=>{const active=panel.dataset.panel===selectedPayment; panel.classList.toggle('active',active); panel.querySelectorAll('input,select,textarea,button').forEach(el=>{el.disabled=!active;});});
+    const email=qs('#email')?.value||''; if(selectedPayment==='paypal'&&qs('#paypal-email')&&!qs('#paypal-email').value)qs('#paypal-email').value=email; if(selectedPayment==='apple_pay'&&qs('#apple-phone')&&!qs('#apple-phone').value)qs('#apple-phone').value=qs('#phone')?.value||'';
+    const ref=getOrderRef(); if(qs('#paypal-reference')&&!qs('#paypal-reference').value)qs('#paypal-reference').value=ref; if(qs('#bank-reference'))qs('#bank-reference').textContent=ref;
+    const btn=qs('#confirm-order-btn'); const btnLabels={card:'Confirmer et payer',paypal:'Confirmer avec PayPal',apple_pay:'Confirmer avec Apple Pay',crypto:'Confirmer paiement crypto',bank_transfer:'Confirmer le virement'}; if(btn&&!btn.disabled)btn.innerHTML='<span class="material-symbols-outlined" data-icon="lock">lock</span> '+(btnLabels[selectedPayment]||'Confirmer et payer');
+  }
+
+  function getPaymentDetails(){if(selectedPayment==='paypal')return{paypalEmail:qs('#paypal-email')?.value.trim()||'',reference:qs('#paypal-reference')?.value||''}; if(selectedPayment==='apple_pay')return{phone:qs('#apple-phone')?.value.trim()||'',device:qs('#apple-device')?.value||''}; if(selectedPayment==='crypto')return{currency:qs('#crypto-currency')?.value||'',network:qs('#crypto-network')?.value||'',transaction:qs('#crypto-tx')?.value.trim()||''}; if(selectedPayment==='bank_transfer')return{holder:qs('#bank-account-holder')?.value.trim()||'',plannedDate:qs('#bank-transfer-date')?.value||'',iban:qs('#bank-iban')?.textContent||'',bic:qs('#bank-bic')?.textContent||'',reference:qs('#bank-reference')?.textContent||''}; return{cardName:qs('#card-name')?.value.trim()||''};}
+
+  function updateSummary(){
+    const t=totals(),p=t.product;
+    setText('#summary-item-name',p.name); setText('#summary-item-desc',p.description||'Annonce RentSoundSystem'); setText('#summary-price-day',money(p.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
+    const taxLabel=Array.from(document.querySelectorAll('span')).find(el=>el.textContent.trim().startsWith('TVA')); if(taxLabel)taxLabel.textContent='TVA ('+Math.round(t.vatRate*100)+'%)';
+    const img=qs('.w-20.h-20 img'); if(img&&p.image){img.src=p.image; img.alt=p.name||'Produit RentSoundSystem';}
+    const summaryName=qs('#summary-item-name'); let meta=qs('#rss-summary-owner'); if(summaryName&&p.ownerName){if(!meta){meta=document.createElement('div'); meta.id='rss-summary-owner'; meta.className='rss-summary-meta rss-summary-owner'; summaryName.parentElement.appendChild(meta);} meta.textContent='Loueur : '+p.ownerName;}
+    persistDraftFromCheckout();
+  }
+
+  function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
+
+  async function requireLogin(){const sb=await getSupabase(); if(!sb){showMessage('Connexion obligatoire : Supabase JS n’est pas chargé. Rechargez la page.','error'); return false;} const {data:{session}}=await sb.auth.getSession(); if(!session?.user){try{persistDraftFromCheckout();}catch(e){} const redirect=(window.location.pathname||'/tunnel-de-commande.html')+(window.location.search||''); window.location.href='/connexion-inscription.html?redirect='+encodeURIComponent(redirect); return false;} return true;}
+
+  async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return{saved:false,reason:'no_supabase'}; const {data:{session}}=await sb.auth.getSession(); const payload={equipment_name:order.item.name,renter_name:order.item.ownerName||'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:'pending',total_price:order.amounts.total}; if(session?.user)payload.user_id=session.user.id; const {error}=await sb.from('reservations').insert(payload); if(error){console.warn('Reservation Supabase:',error); return{saved:false,reason:error.message};} return{saved:true};}catch(e){console.warn('Reservation non sauvegardée:',e); return{saved:false,reason:e.message||String(e)}}}
+
+  function buildOrder(){const t=totals(),ref=getOrderRef(),p=t.product; return{id:ref,createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request',details:getPaymentDetails()},item:{id:p.id||'',original_id:p.original_id??null,name:p.name,description:p.description,dailyPrice:p.dailyPrice,quantity:p.quantity,deposit:t.deposit,caution:t.deposit,image:p.image||'',url:p.url||'',ownerName:p.ownerName||'',ownerEmail:p.ownerEmail||'',ownerPhone:p.ownerPhone||'',ownerUsername:p.ownerUsername||'',partnerId:p.partnerId||''},amounts:{rental:t.rental,delivery:t.delivery,technician:t.technician,subtotal:t.subtotal,vatRate:t.vatRate,tax:t.tax,total:t.total,deposit:t.deposit,caution:t.deposit}};}
+
   async function submit(){if(!validate())return; const btn=qs('#confirm-order-btn'); btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Validation...'; const order=buildOrder(); localStorage.setItem('rssLastOrder',JSON.stringify(order)); try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const next=[order].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(order.id))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next));}catch(e){} const saved=await saveReservation(order); localStorage.removeItem('rssCheckoutDraft'); localStorage.removeItem(ORDER_REF_KEY); showMessage(saved.saved?'Commande enregistrée. Redirection vers la confirmation...':'Commande enregistrée localement. Redirection vers la confirmation...','success'); setTimeout(()=>{window.location.href=CONFIRMATION_URL+'?order='+encodeURIComponent(order.id)},550);}
+
   function persistDraftFromCheckout(){try{const p=getProduct(); const draft=Object.assign({},getDraft(),{product:p,rental:{startDate:qs('#rental-start')?.value||'',endDate:qs('#rental-end')?.value||'',city:qs('#event-city')?.value.trim()||'',delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked}}); localStorage.setItem('rssCheckoutDraft',JSON.stringify(draft)); localStorage.setItem('rssSelectedProduct',JSON.stringify(p));}catch(e){}}
-  function applyDraft(){const draft=getDraft(); if(draft?.rental?.city&&qs('#event-city')) qs('#event-city').value=draft.rental.city; if(draft?.rental?.delivery==='delivery'&&qs('#delivery-transport')) qs('#delivery-transport').checked=true; if(draft?.rental?.delivery==='pickup'&&qs('#delivery-pickup')) qs('#delivery-pickup').checked=true; if(draft?.rental?.technician&&qs('#technician')) qs('#technician').checked=true;}
-  async function prefillConnectedUser(){try{const sb=await getSupabase(); if(!sb)return; const {data:{session}}=await sb.auth.getSession(); if(!session?.user)return; const user=session.user; if(qs('#email')&&!qs('#email').value) qs('#email').value=user.email||''; const {data:profile}=await sb.from('profiles').select('full_name,company_name,email').eq('id',user.id).maybeSingle(); const full=(profile?.full_name||user.user_metadata?.full_name||'').trim(); const parts=full.split(/\s+/); if(full&&qs('#first-name')&&!qs('#first-name').value) qs('#first-name').value=parts.shift()||full; if(parts.length&&qs('#last-name')&&!qs('#last-name').value) qs('#last-name').value=parts.join(' '); if(profile?.company_name&&qs('#company-name')&&!qs('#company-name').value) qs('#company-name').value=profile.company_name; updateSummary();}catch(e){console.warn('Préremplissage client impossible',e);}}
+  function applyDraft(){const draft=getDraft(),p=getProduct(); if((draft?.rental?.city||p.city)&&qs('#event-city'))qs('#event-city').value=draft?.rental?.city||p.city; if(draft?.rental?.delivery==='delivery'&&qs('#delivery-transport'))qs('#delivery-transport').checked=true; if(draft?.rental?.delivery==='pickup'&&qs('#delivery-pickup'))qs('#delivery-pickup').checked=true; if(draft?.rental?.technician&&qs('#technician'))qs('#technician').checked=true; if(p.name&&qs('#delivery-pickup-title'))qs('#delivery-pickup-title').textContent='Retrait chez le loueur';}
+  async function prefillConnectedUser(){try{const sb=await getSupabase(); if(!sb)return; const {data:{session}}=await sb.auth.getSession(); if(!session?.user)return; const user=session.user; if(qs('#email')&&!qs('#email').value)qs('#email').value=user.email||''; const {data:profile}=await sb.from('profiles').select('full_name,company_name,email').eq('id',user.id).maybeSingle(); const full=(profile?.full_name||user.user_metadata?.full_name||'').trim(); const parts=full.split(/\s+/); if(full&&qs('#first-name')&&!qs('#first-name').value)qs('#first-name').value=parts.shift()||full; if(parts.length&&qs('#last-name')&&!qs('#last-name').value)qs('#last-name').value=parts.join(' '); if(profile?.company_name&&qs('#company-name')&&!qs('#company-name').value)qs('#company-name').value=profile.company_name; updateSummary();}catch(e){console.warn('Préremplissage client impossible',e);}}
   function bind(){initDates(); applyDraft(); qsa('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{updateSummary(); updatePaymentUI();})); qsa('input[name="delivery"],#technician,select').forEach(el=>el.addEventListener('change',()=>{updateSummary(); updatePaymentUI();})); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#copy-bank-details')?.addEventListener('click',()=>{const text='Bénéficiaire : RentSoundSystem / IMUIA LLC\nIBAN : '+(qs('#bank-iban')?.textContent||'')+'\nBIC : '+(qs('#bank-bic')?.textContent||'')+'\nRéférence : '+(qs('#bank-reference')?.textContent||''); navigator.clipboard?.writeText(text); showMessage('RIB copié.','success');}); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary(); prefillConnectedUser();}
-  document.addEventListener('DOMContentLoaded',async()=>{const ok=await requireLogin(); if(!ok)return; bind();});
+  document.addEventListener('DOMContentLoaded',async()=>{await loadListingFromUrl(); const ok=await requireLogin(); if(!ok)return; bind();});
 })();
 </script>
 <script src="/components.js"></script>

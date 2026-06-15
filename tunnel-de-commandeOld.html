@@ -205,6 +205,17 @@ section:hover{border-color:rgba(252,3,109,.32)!important;}
 input[type=radio],input[type=checkbox]{accent-color:#FC036D!important;}
 label:hover{border-color:rgba(252,3,109,.45)!important;}
 input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;}
+
+.payment-panel{display:none;}
+.payment-panel.active{display:flex;}
+.payment-info-card{
+  background:linear-gradient(145deg,rgba(252,3,109,.10),rgba(20,20,20,.94));
+  border:1px solid rgba(252,3,109,.25);
+  border-radius:.25rem;
+  padding:1rem;
+}
+.payment-copy-btn{border:1px solid rgba(252,3,109,.35);color:#fff;background:rgba(252,3,109,.12);padding:.55rem .8rem;border-radius:.25rem;font-weight:700;}
+.payment-copy-btn:hover{background:rgba(252,3,109,.22);}
 </style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
@@ -326,7 +337,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <span class="font-label text-label-md text-on-surface-variant text-center">Virement Bancaire</span>
 </button></div>
 <div id="payment-note" class="mb-5 rounded border border-primary/30 bg-primary/10 text-primary px-4 py-3 text-sm">Carte bancaire sélectionnée.</div>
-<form class="flex flex-col gap-4" id="card-payment-fields">
+<div id="payment-panels" class="space-y-4">
+<form class="payment-panel active flex-col gap-4" id="card-payment-fields" data-panel="card">
+<div class="payment-info-card flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<p class="text-sm text-on-surface-variant">Paiement sécurisé par carte bancaire. Les champs ci-dessous simulent la saisie checkout ; à brancher ensuite sur Stripe/PayPal Checkout selon votre prestataire.</p>
+</div>
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Numéro de carte</label>
 <div class="relative">
@@ -349,6 +365,106 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <input autocomplete="cc-name" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="card-name" placeholder="Jean Dupont" type="text"/>
 </div>
 </form>
+
+<div class="payment-panel flex-col gap-4" id="paypal-payment-fields" data-panel="paypal">
+<div class="payment-info-card flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">account_balance_wallet</span>
+<div>
+<h3 class="font-headline font-bold text-inverse-surface mb-1">Paiement PayPal</h3>
+<p class="text-sm text-on-surface-variant">Le client confirme sa commande ici. Il recevra ensuite un lien PayPal sécurisé ou sera redirigé vers PayPal Checkout quand l’intégration sera branchée.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Email PayPal du client</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="paypal-email" type="email" placeholder="paypal@example.com"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Référence PayPal</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="paypal-reference" type="text" placeholder="Générée automatiquement" readonly/>
+</div>
+</div>
+</div>
+
+<div class="payment-panel flex-col gap-4" id="apple-pay-payment-fields" data-panel="apple_pay">
+<div class="payment-info-card flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">payments</span>
+<div>
+<h3 class="font-headline font-bold text-inverse-surface mb-1">Apple Pay</h3>
+<p class="text-sm text-on-surface-variant">Apple Pay sera proposé sur Safari/iPhone/Mac lorsque le domaine sera validé avec le prestataire de paiement. La commande est enregistrée comme demande de paiement Apple Pay.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Téléphone associé</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="apple-phone" type="tel" placeholder="+33 6 00 00 00 00"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Appareil utilisé</label>
+<select class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="apple-device">
+<option>iPhone / Safari</option><option>Mac / Safari</option><option>Autre appareil</option>
+</select>
+</div>
+</div>
+</div>
+
+<div class="payment-panel flex-col gap-4" id="crypto-payment-fields" data-panel="crypto">
+<div class="payment-info-card flex items-start gap-3">
+<span class="material-symbols-outlined text-primary">currency_bitcoin</span>
+<div>
+<h3 class="font-headline font-bold text-inverse-surface mb-1">Paiement crypto</h3>
+<p class="text-sm text-on-surface-variant">La réservation sera mise en attente le temps de confirmer le paiement crypto. Les coordonnées exactes pourront être envoyées automatiquement après validation.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Crypto choisie</label>
+<select class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="crypto-currency">
+<option value="USDT">USDT</option><option value="BTC">Bitcoin</option><option value="ETH">Ethereum</option><option value="USDC">USDC</option>
+</select>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Réseau</label>
+<select class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="crypto-network">
+<option value="TRC20">TRC20</option><option value="ERC20">ERC20</option><option value="BTC">Bitcoin</option><option value="Polygon">Polygon</option>
+</select>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Hash / référence de transaction si déjà payé</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="crypto-tx" type="text" placeholder="Optionnel"/>
+</div>
+</div>
+
+<div class="payment-panel flex-col gap-4" id="bank-transfer-payment-fields" data-panel="bank_transfer">
+<div class="payment-info-card">
+<div class="flex items-start gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">account_balance</span>
+<div>
+<h3 class="font-headline font-bold text-inverse-surface mb-1">Virement bancaire</h3>
+<p class="text-sm text-on-surface-variant">Le client confirme la commande puis reçoit les instructions de virement. La réservation reste en attente jusqu’à réception du paiement.</p>
+</div>
+</div>
+<div class="grid gap-3 text-sm">
+<div class="flex justify-between gap-4 border-t border-outline-variant/50 pt-3"><span class="text-on-surface-variant">Bénéficiaire</span><strong class="text-inverse-surface text-right">RentSoundSystem / IMUIA LLC</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">IBAN</span><strong class="text-inverse-surface text-right" id="bank-iban">FR76 0000 0000 0000 0000 0000 000</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">BIC</span><strong class="text-inverse-surface text-right" id="bank-bic">BANKFRPPXXX</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Référence à indiquer</span><strong class="text-primary text-right" id="bank-reference">RSS-COMMANDE</strong></div>
+</div>
+<button type="button" class="payment-copy-btn mt-4" id="copy-bank-details">Copier le RIB</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Nom du titulaire du compte émetteur</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="bank-account-holder" type="text" placeholder="Nom ou société"/>
+</div>
+<div class="flex flex-col gap-1">
+<label class="font-label text-label-caps text-on-surface-variant">Date prévue du virement</label>
+<input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="bank-transfer-date" type="date"/>
+</div>
+</div>
+</div>
+</div>
 </section>
 </div>
 <!-- Right Column: Order Summary -->
@@ -427,6 +543,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   const CONFIRMATION_URL='/confirmation-de-commande.html';
   const DEFAULT_PRODUCT={name:'L-Acoustics K2 System',description:'Pack complet audio professionnel',dailyPrice:1200,deposit:5000,quantity:1,image:''};
+  const ORDER_REF_KEY='rssPendingOrderRef';
   let selectedPayment='card';
   function qs(s){return document.querySelector(s)}
   function qsa(s){return Array.from(document.querySelectorAll(s))}
@@ -435,14 +552,25 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   function setText(s,v){const el=qs(s); if(el) el.textContent=v;}
   function showMessage(text,type='error'){const el=qs('#checkout-message'); if(!el)return; el.textContent=text; el.classList.remove('hidden','text-error','text-primary','border-error/40','border-primary/40','bg-error-container/20','bg-primary/10'); if(type==='success'){el.classList.add('text-primary','border-primary/40','bg-primary/10')}else{el.classList.add('text-error','border-error/40','bg-error-container/20')}}
   function hideMessage(){qs('#checkout-message')?.classList.add('hidden')}
+  function getOrderRef(){
+    let ref=localStorage.getItem(ORDER_REF_KEY);
+    if(!ref){ref='RSS-'+Date.now().toString().slice(-6); localStorage.setItem(ORDER_REF_KEY,ref);}
+    return ref;
+  }
   function todayPlus(days){const d=new Date(); d.setDate(d.getDate()+days); return d.toISOString().slice(0,10)}
   function getDraft(){try{return JSON.parse(localStorage.getItem('rssCheckoutDraft')||'null')||{};}catch{return {};}}
   function initDates(){const start=qs('#rental-start'), end=qs('#rental-end'), draft=getDraft(); if(start&&!start.value) start.value=draft?.rental?.startDate || todayPlus(7); if(end&&!end.value) end.value=draft?.rental?.endDate || draft?.rental?.startDate || todayPlus(9); if(start&&end){start.min=todayPlus(0); end.min=start.value; start.addEventListener('change',()=>{if(end.value<start.value)end.value=start.value; end.min=start.value; persistDraftFromCheckout(); updateSummary();}); end.addEventListener('change',()=>{persistDraftFromCheckout(); updateSummary();});} }
-  function days(){const s=qs('#rental-start')?.value, e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'), ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd)||Number.isNaN(ed)) return 1; return Math.max(1, Math.round((ed-sd)/(1000*60*60*24))+1);}
+  function days(){const s=qs('#rental-start')?.value, e=qs('#rental-end')?.value; const sd=new Date(s+'T00:00:00'), ed=new Date(e+'T00:00:00'); if(!s||!e||Number.isNaN(sd.getTime())||Number.isNaN(ed.getTime())) return 1; return Math.max(1, Math.round((ed-sd)/(1000*60*60*24))+1);}
   function getProduct(){try{const draft=getDraft(); const stored=JSON.parse(localStorage.getItem('rssSelectedProduct')||'null'); const p=Object.assign({},DEFAULT_PRODUCT,draft.product||{},stored||{}); p.dailyPrice=Number(p.dailyPrice||p.price||p.price_day||p.price_per_day||DEFAULT_PRODUCT.dailyPrice); p.quantity=Math.max(1,Number(p.quantity||1)); p.deposit=Number(p.deposit||p.caution||DEFAULT_PRODUCT.deposit); return p;}catch{return DEFAULT_PRODUCT}}
   function totals(){const product=getProduct(), d=days(); const delivery=qs('#delivery-transport')?.checked?250:0; const technician=qs('#technician')?.checked?450*d:0; const rental=product.dailyPrice*d*product.quantity; const subtotal=rental+delivery+technician; const tax=subtotal*.20; const total=subtotal+tax; return {product,d,rental,delivery,technician,tax,total,deposit:product.deposit};}
   function updatePaymentUI(){
-    const labels={card:'Carte bancaire sélectionnée.',paypal:'PayPal sélectionné. La réservation sera enregistrée et le paiement PayPal pourra être branché ensuite.',apple_pay:'Apple Pay sélectionné. La réservation sera enregistrée et le paiement Apple Pay pourra être branché ensuite.',crypto:'Crypto sélectionné. La réservation sera enregistrée pour validation manuelle.',bank_transfer:'Virement bancaire sélectionné. Les instructions de virement seront envoyées après validation.'};
+    const labels={
+      card:'Carte bancaire sélectionnée.',
+      paypal:'PayPal sélectionné : indiquez l’e-mail PayPal du client pour préparer le paiement.',
+      apple_pay:'Apple Pay sélectionné : le paiement sera disponible sur appareil compatible après intégration du prestataire.',
+      crypto:'Crypto sélectionné : choisissez la devise et le réseau pour préparer la validation.',
+      bank_transfer:'Virement bancaire sélectionné : le RIB et la référence apparaissent ci-dessous.'
+    };
     qsa('.payment-method').forEach(btn=>{
       const active=btn.dataset.method===selectedPayment;
       btn.classList.toggle('border-2',active);
@@ -457,12 +585,34 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     });
     const note=qs('#payment-note');
     if(note) note.textContent=labels[selectedPayment]||labels.card;
-    const cardFields=qs('#card-payment-fields');
-    if(cardFields) cardFields.classList.toggle('hidden',selectedPayment!=='card');
-    ['#card-number','#card-expiry','#card-cvc','#card-name'].forEach(s=>{const el=qs(s); if(el) el.disabled=selectedPayment!=='card';});
+    qsa('.payment-panel').forEach(panel=>{
+      const active=panel.dataset.panel===selectedPayment;
+      panel.classList.toggle('active',active);
+      panel.querySelectorAll('input,select,textarea,button').forEach(el=>{el.disabled=!active;});
+    });
+    const email=qs('#email')?.value||'';
+    if(selectedPayment==='paypal' && qs('#paypal-email') && !qs('#paypal-email').value) qs('#paypal-email').value=email;
+    if(selectedPayment==='apple_pay' && qs('#apple-phone') && !qs('#apple-phone').value) qs('#apple-phone').value=qs('#phone')?.value||'';
+    const ref=getOrderRef();
+    if(qs('#paypal-reference') && !qs('#paypal-reference').value) qs('#paypal-reference').value=ref;
+    if(qs('#bank-reference')) qs('#bank-reference').textContent=ref;
+    const btn=qs('#confirm-order-btn');
+    const btnLabels={card:'Confirmer et payer',paypal:'Confirmer avec PayPal',apple_pay:'Confirmer avec Apple Pay',crypto:'Confirmer paiement crypto',bank_transfer:'Confirmer le virement'};
+    if(btn&&!btn.disabled) btn.innerHTML='<span class="material-symbols-outlined" data-icon="lock">lock</span> '+(btnLabels[selectedPayment]||'Confirmer et payer');
   }
-  function updateSummary(){const t=totals(); setText('#summary-item-name',t.product.name); setText('#summary-item-desc',t.product.description); setText('#summary-price-day',money(t.product.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',t.product.quantity+' système'); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total)); const img=qs('.w-20.h-20 img'); if(img&&t.product.image){img.src=t.product.image; img.alt=t.product.name||'Produit RentSoundSystem';} persistDraftFromCheckout(); }
-  function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} return true;}
+  function getPaymentDetails(){
+    if(selectedPayment==='paypal') return {paypalEmail:qs('#paypal-email')?.value.trim()||'',reference:qs('#paypal-reference')?.value||''};
+    if(selectedPayment==='apple_pay') return {phone:qs('#apple-phone')?.value.trim()||'',device:qs('#apple-device')?.value||''};
+    if(selectedPayment==='crypto') return {currency:qs('#crypto-currency')?.value||'',network:qs('#crypto-network')?.value||'',transaction:qs('#crypto-tx')?.value.trim()||''};
+    if(selectedPayment==='bank_transfer') return {holder:qs('#bank-account-holder')?.value.trim()||'',plannedDate:qs('#bank-transfer-date')?.value||'',iban:qs('#bank-iban')?.textContent||'',bic:qs('#bank-bic')?.textContent||'',reference:qs('#bank-reference')?.textContent||''};
+    return {cardName:qs('#card-name')?.value.trim()||''};
+  }
+    function updateSummary(){const t=totals(); setText('#summary-item-name',t.product.name); setText('#summary-item-desc',t.product.description); setText('#summary-price-day',money(t.product.dailyPrice)+' / jour'); setText('#summary-dates',dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#summary-quantity',t.product.quantity+' système'); setText('#label-rental-days','Location ('+t.d+' jour'+(t.d>1?'s':'')+')'); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total)); const img=qs('.w-20.h-20 img'); if(img&&t.product.image){img.src=t.product.image; img.alt=t.product.name||'Produit RentSoundSystem';} persistDraftFromCheckout(); }
+  function validate(){hideMessage(); const required=['#first-name','#last-name','#email','#phone','#rental-start','#rental-end','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}}
+    if(selectedPayment==='paypal' && !/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;}
+    if(selectedPayment==='apple_pay' && (qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;}
+    if(selectedPayment==='bank_transfer' && !(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;}
+    return true;}
   async function getSupabase(){if(!window.supabase)return null; return window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);}
   async function requireLogin(){
     const sb=await getSupabase();
@@ -480,12 +630,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return true;
   }
     async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return {saved:false,reason:'no_supabase'}; const {data:{session}}=await sb.auth.getSession(); const payload={equipment_name:order.item.name,renter_name:'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:'pending',total_price:order.amounts.total}; if(session?.user) payload.user_id=session.user.id; const {error}=await sb.from('reservations').insert(payload); if(error){console.warn('Reservation Supabase:',error); return {saved:false,reason:error.message};} return {saved:true};}catch(e){console.warn('Reservation non sauvegardée:',e); return {saved:false,reason:e.message||String(e)}}}
-  function buildOrder(){const t=totals(); return {id:'RSS-'+Date.now().toString().slice(-6),createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request'},item:{id:t.product.id||'',original_id:t.product.original_id??null,name:t.product.name,description:t.product.description,dailyPrice:t.product.dailyPrice,quantity:t.product.quantity,deposit:t.deposit,image:t.product.image||'',url:t.product.url||''},amounts:{rental:t.rental,delivery:t.delivery,technician:t.technician,tax:t.tax,total:t.total,deposit:t.deposit}};}
-  async function submit(){if(!validate())return; const btn=qs('#confirm-order-btn'); btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Validation...'; const order=buildOrder(); localStorage.setItem('rssLastOrder',JSON.stringify(order)); try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const next=[order].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(order.id))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next));}catch(e){} const saved=await saveReservation(order); localStorage.removeItem('rssCheckoutDraft'); showMessage(saved.saved?'Commande enregistrée. Redirection vers la confirmation...':'Commande enregistrée localement. Redirection vers la confirmation...','success'); setTimeout(()=>{window.location.href=CONFIRMATION_URL+'?order='+encodeURIComponent(order.id)},550);}
+  function buildOrder(){const t=totals(); const ref=getOrderRef(); return {id:ref,createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request',details:getPaymentDetails()},item:{id:t.product.id||'',original_id:t.product.original_id??null,name:t.product.name,description:t.product.description,dailyPrice:t.product.dailyPrice,quantity:t.product.quantity,deposit:t.deposit,image:t.product.image||'',url:t.product.url||''},amounts:{rental:t.rental,delivery:t.delivery,technician:t.technician,tax:t.tax,total:t.total,deposit:t.deposit}};}
+  async function submit(){if(!validate())return; const btn=qs('#confirm-order-btn'); btn.disabled=true; btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Validation...'; const order=buildOrder(); localStorage.setItem('rssLastOrder',JSON.stringify(order)); try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const next=[order].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(order.id))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next));}catch(e){} const saved=await saveReservation(order); localStorage.removeItem('rssCheckoutDraft'); localStorage.removeItem(ORDER_REF_KEY); showMessage(saved.saved?'Commande enregistrée. Redirection vers la confirmation...':'Commande enregistrée localement. Redirection vers la confirmation...','success'); setTimeout(()=>{window.location.href=CONFIRMATION_URL+'?order='+encodeURIComponent(order.id)},550);}
   function persistDraftFromCheckout(){try{const p=getProduct(); const draft=Object.assign({},getDraft(),{product:p,rental:{startDate:qs('#rental-start')?.value||'',endDate:qs('#rental-end')?.value||'',city:qs('#event-city')?.value.trim()||'',delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked}}); localStorage.setItem('rssCheckoutDraft',JSON.stringify(draft)); localStorage.setItem('rssSelectedProduct',JSON.stringify(p));}catch(e){}}
   function applyDraft(){const draft=getDraft(); if(draft?.rental?.city&&qs('#event-city')) qs('#event-city').value=draft.rental.city; if(draft?.rental?.delivery==='delivery'&&qs('#delivery-transport')) qs('#delivery-transport').checked=true; if(draft?.rental?.delivery==='pickup'&&qs('#delivery-pickup')) qs('#delivery-pickup').checked=true; if(draft?.rental?.technician&&qs('#technician')) qs('#technician').checked=true;}
   async function prefillConnectedUser(){try{const sb=await getSupabase(); if(!sb)return; const {data:{session}}=await sb.auth.getSession(); if(!session?.user)return; const user=session.user; if(qs('#email')&&!qs('#email').value) qs('#email').value=user.email||''; const {data:profile}=await sb.from('profiles').select('full_name,company_name,email').eq('id',user.id).maybeSingle(); const full=(profile?.full_name||user.user_metadata?.full_name||'').trim(); const parts=full.split(/\s+/); if(full&&qs('#first-name')&&!qs('#first-name').value) qs('#first-name').value=parts.shift()||full; if(parts.length&&qs('#last-name')&&!qs('#last-name').value) qs('#last-name').value=parts.join(' '); if(profile?.company_name&&qs('#company-name')&&!qs('#company-name').value) qs('#company-name').value=profile.company_name; updateSummary();}catch(e){console.warn('Préremplissage client impossible',e);}}
-  function bind(){initDates(); applyDraft(); qsa('input').forEach(el=>el.addEventListener('input',updateSummary)); qsa('input[name="delivery"],#technician').forEach(el=>el.addEventListener('change',updateSummary)); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary(); prefillConnectedUser();}
+  function bind(){initDates(); applyDraft(); qsa('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{updateSummary(); updatePaymentUI();})); qsa('input[name="delivery"],#technician,select').forEach(el=>el.addEventListener('change',()=>{updateSummary(); updatePaymentUI();})); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#copy-bank-details')?.addEventListener('click',()=>{const text='Bénéficiaire : RentSoundSystem / IMUIA LLC\nIBAN : '+(qs('#bank-iban')?.textContent||'')+'\nBIC : '+(qs('#bank-bic')?.textContent||'')+'\nRéférence : '+(qs('#bank-reference')?.textContent||''); navigator.clipboard?.writeText(text); showMessage('RIB copié.','success');}); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary(); prefillConnectedUser();}
   document.addEventListener('DOMContentLoaded',async()=>{const ok=await requireLogin(); if(!ok)return; bind();});
 })();
 </script>
