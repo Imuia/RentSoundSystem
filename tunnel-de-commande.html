@@ -216,6 +216,9 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 }
 .payment-copy-btn{border:1px solid rgba(252,3,109,.35);color:#fff;background:rgba(252,3,109,.12);padding:.55rem .8rem;border-radius:.25rem;font-weight:700;}
 .payment-copy-btn:hover{background:rgba(252,3,109,.22);}
+.location-dates-section {
+    pointer-events: none;
+}
 </style>
 
 <style id="rss-checkout-dynamic-order-css">
@@ -275,7 +278,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-headline font-bold">2</div>
 <h2 class="font-headline text-headline-md text-inverse-surface">Services &amp; Logistique</h2>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 location-dates-section">
 <div class="flex flex-col gap-1"><label class="font-label text-label-caps text-on-surface-variant">Date de début</label><input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="rental-start" required="" type="date"/></div>
 <div class="flex flex-col gap-1"><label class="font-label text-label-caps text-on-surface-variant">Date de retour</label><input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="rental-end" required="" type="date"/></div>
 <div class="flex flex-col gap-1"><label class="font-label text-label-caps text-on-surface-variant">Ville / lieu</label><input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="event-city" placeholder="Paris, Nice, Cannes..." required="" type="text"/></div>
