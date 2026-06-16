@@ -184,6 +184,27 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-real-schema-image-fixes">
+  input.rss-input,
+  textarea.rss-input,
+  select.rss-input,
+  input[type="file"].rss-input {
+    background:#101010!important;
+    color:#fff!important;
+    border-color:rgba(255,255,255,.14)!important;
+  }
+  input.rss-input::file-selector-button,
+  input[type="file"].rss-input::file-selector-button{
+    background:#242424!important;
+    color:#fff!important;
+    border:1px solid rgba(252,3,109,.35)!important;
+    border-radius:8px!important;
+    padding:8px 12px!important;
+    margin-right:12px!important;
+  }
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -288,20 +309,43 @@ async function loadPartnerListings(ctx){
   return data||[];
 }
 async function loadListingImages(listingId){
-  const {data,error}=await sb.from('listing_images').select('id,listing_id,url,src,alt,sort_order').eq('listing_id',listingId).order('sort_order',{ascending:true});
-  if(error) return [];
+  const {data,error}=await sb.from('listing_images')
+    .select('id,listing_id,image_url,position,created_at')
+    .eq('listing_id',listingId)
+    .order('position',{ascending:true});
+  if(error){
+    console.warn('Erreur chargement images:', error.message);
+    return [];
+  }
   return data||[];
 }
 async function uploadImageFile(file, listingId){
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
   const path='partners/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
-  const {error:upErr}=await sb.storage.from('listing-images').upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
-  if(upErr) throw upErr;
-  const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
-  const url=pub.publicUrl;
-  const {error:insErr}=await sb.from('listing_images').insert({listing_id:listingId,url,src:url,alt:'Image annonce',sort_order:99});
+  const bucketName='listing-images';
+
+  const {error:upErr}=await sb.storage
+    .from(bucketName)
+    .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+
+  if(upErr){
+    throw new Error(upErr.message === 'Bucket not found'
+      ? 'Bucket Storage "'+bucketName+'" introuvable. Créez-le dans Supabase > Storage ou changez bucketName dans le code.'
+      : upErr.message
+    );
+  }
+
+  const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
+  const imageUrl=pub.publicUrl;
+
+  const {error:insErr}=await sb.from('listing_images').insert({
+    listing_id: listingId,
+    image_url: imageUrl,
+    position: 999
+  });
+
   if(insErr) throw insErr;
-  return url;
+  return imageUrl;
 }
 document.addEventListener('DOMContentLoaded',()=>{
   $('logout-btn')?.addEventListener('click',async()=>{try{await sb.auth.signOut()}catch(e){} location.href='/connexion-inscription.html'});
@@ -351,7 +395,7 @@ async function renderImages(listingId){
  const wrap=$('edit-images'); wrap.innerHTML='<p class="rss-muted">Chargement des images...</p>';
  const imgs=await loadListingImages(listingId); STATE.images[listingId]=imgs;
  wrap.innerHTML=imgs.length?imgs.map(img=>{
-   const imageUrl = img.url || img.src || img.image_url || '';
+   const imageUrl = img.image_url || '';
    return `<div class="rss-image-preview-card">
      <div class="rss-image-preview-actions">
        <button class="rss-image-mini-btn" onclick="deleteImage('${img.id}')" type="button" title="Supprimer">×</button>
@@ -386,7 +430,7 @@ function removeNewEditImage(index){
 window.removeNewEditImage = removeNewEditImage;
 async function replaceImageUrl(id){
  const input=$('img-url-'+id); const url=input.value.trim();
- const {error}=await sb.from('listing_images').update({url,src:url}).eq('id',id);
+ const {error}=await sb.from('listing_images').update({image_url:url}).eq('id',id);
  if(error){alert('Erreur image : '+error.message);return}
  await renderImages($('edit-id').value);
 }
