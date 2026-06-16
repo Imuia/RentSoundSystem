@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  darkMode: "class",
+  theme: { extend: { colors: { primary: "#FC036D", background: "#0e0e0e" } } }
+}
+</script>
+<style>
+
+:root{--pink:#FC036D;--pink2:#ff2d86;--bg:#0e0e0e;--card:#1b1b1b}
+*{box-sizing:border-box}
+body{font-family:Inter,sans-serif;background:radial-gradient(circle at top right,rgba(252,3,109,.12),transparent 34%),#0e0e0e;color:#e8e8e8}
+h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
+.rss-sidebar{position:fixed;left:0;top:0;width:280px;height:100vh;background:#101010;border-right:1px solid rgba(255,255,255,.1);padding:22px;z-index:50}
+.rss-main{margin-left:280px;padding:96px 32px 60px;max-width:1340px}
+.rss-topbar{position:fixed;left:280px;right:0;top:0;height:66px;background:rgba(16,16,16,.86);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.1);z-index:40;padding:0 32px;display:flex;align-items:center;justify-content:space-between}
+.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.94),rgba(14,14,14,.98));border:1px solid rgba(255,255,255,.08);border-radius:18px;box-shadow:0 20px 60px rgba(0,0,0,.32)}
+.rss-card-pink{border-color:rgba(252,3,109,.28);box-shadow:0 0 36px rgba(252,3,109,.08)}
+.rss-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 15px;border-radius:10px;font-weight:800;font-size:13px;text-decoration:none;transition:.22s ease;border:0;cursor:pointer}
+.rss-btn-primary{background:linear-gradient(135deg,var(--pink),var(--pink2));color:white;box-shadow:0 12px 30px rgba(252,3,109,.3)}
+.rss-btn-outline{border:1px solid rgba(252,3,109,.55);color:white;background:rgba(252,3,109,.05)}
+.rss-btn:hover{transform:translateY(-1px)}
+.rss-nav-link{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;color:#cbb8bd;text-decoration:none;font-weight:700;transition:.2s}
+.rss-nav-link:hover,.rss-nav-link.active{background:linear-gradient(135deg,rgba(252,3,109,.24),rgba(252,3,109,.08));color:white;border:1px solid rgba(252,3,109,.22)}
+.rss-input{width:100%;background:#101010;border:1px solid rgba(255,255,255,.10);border-radius:10px;padding:11px 12px;color:#fff;outline:none}
+.rss-input:focus{border-color:#FC036D;box-shadow:0 0 0 3px rgba(252,3,109,.12)}
+.rss-badge{display:inline-flex;align-items:center;padding:6px 10px;border-radius:999px;background:rgba(252,3,109,.12);border:1px solid rgba(252,3,109,.25);color:#ffb2d2;font-size:12px;font-weight:800}
+.rss-table th{color:#e6bcc2;font-size:12px;text-transform:uppercase;letter-spacing:.10em}
+.rss-table td{border-top:1px solid rgba(255,255,255,.06)}
+.rss-modal{display:none}.rss-modal.is-open{display:flex}.rss-no-scroll{overflow:hidden}
+@media(max-width:900px){.rss-sidebar{display:none}.rss-topbar{left:0}.rss-main{margin-left:0;padding:90px 18px 40px}}
+
+
+.rss-page-title{font-size:clamp(34px,5vw,54px);font-weight:900;margin:0 0 8px}
+.rss-muted{color:#e6bcc2}
+.rss-grid{display:grid;gap:18px}
+.rss-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.rss-thumb{width:92px;height:70px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:#151515}
+.rss-image-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035)}
+.rss-danger{border:1px solid rgba(255,80,80,.55);color:#ffb4ab;background:rgba(255,80,80,.07)}
+.rss-success{border:1px solid rgba(80,255,160,.35);color:#9fffc8;background:rgba(80,255,160,.08)}
+
+</style>
+<title>Profil partenaire</title>
+</head>
+<body>
+<aside class="rss-sidebar">
+  <div style="display:flex;gap:12px;align-items:center;margin-bottom:34px">
+    <div style="width:48px;height:48px;border-radius:16px;background:rgba(252,3,109,.1);border:1px solid rgba(252,3,109,.35);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="color:#FC036D">storefront</span></div>
+    <div><div class="font-headline" style="font-size:20px;font-weight:900;color:#FC036D">RentSoundSystem</div><div id="partner-status-label" style="font-size:12px;color:#e6bcc2">Partenaire validé</div></div>
+  </div>
+  <nav style="display:grid;gap:8px">
+    <a href="/tableau-de-bord-partenaire-valide.html" class="rss-nav-link "><span class="material-symbols-outlined">dashboard</span> Tableau de bord</a>
+    <a href="/mes-annonces-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
+    <a href="/reservations-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">event_available</span> Réservations</a>
+    <a href="/revenus-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">payments</span> Revenus</a>
+    <a href="/profil-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
+  </nav>
+  <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
+    <a href="/ajouter-materiel-partenaire.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
+    <button id="logout-btn" class="rss-btn rss-btn-outline" style="width:100%"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
+  </div>
+</aside>
+<header class="rss-topbar">
+  <div><div style="font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:#FC036D;font-weight:900">Espace partenaire</div><div id="top-partner-name" class="font-headline" style="font-weight:800">Chargement...</div></div>
+  <a class="rss-btn rss-btn-outline" href="/">Voir le site</a>
+</header>
+<main class="rss-main">
+  <div id="auth-alert" style="display:none"></div>
+  
+<section class="rss-card rss-card-pink" style="padding:26px">
+<h1 class="font-headline rss-page-title">Profil partenaire</h1>
+<p class="rss-muted" style="margin-bottom:24px">Informations affichées sur vos annonces.</p>
+<form id="partner-form" class="rss-form-grid">
+<label>Nom / enseigne<input id="partner-name-input" class="rss-input" style="margin-top:6px"></label>
+<label>Téléphone<input id="partner-phone-input" class="rss-input" style="margin-top:6px"></label>
+<label>Ville<input id="partner-city-input" class="rss-input" style="margin-top:6px"></label>
+<label>Pays<input id="partner-country-input" class="rss-input" style="margin-top:6px"></label>
+<div style="grid-column:1/-1;text-align:right"><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer</button></div>
+</form>
+</section>
+
+</main>
+
+<script>
+const RSS_CONFIG = {
+  url: 'https://crxofkxinsspfgdsxpiy.supabase.co',
+  key: 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj'
+};
+const sb = window.supabase ? window.supabase.createClient(RSS_CONFIG.url, RSS_CONFIG.key) : null;
+const euro = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
+const $ = id => document.getElementById(id);
+const clean = v => String(v||'').trim().toLowerCase();
+const esc = v => String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const num = v => (v===''||v==null?null:(Number.isFinite(Number(v))?Number(v):null));
+const price = v => euro.format(Number(v||0));
+const statusNorm = s => {s=String(s||'publish').toLowerCase(); return s==='published'?'publish':s};
+function badge(s){s=statusNorm(s); if(s==='publish') return '<span class="rss-badge">Publié</span>'; if(s==='draft') return '<span class="rss-badge" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#ddd">Brouillon</span>'; return '<span class="rss-badge">En attente</span>'}
+function alertBox(msg,type='info'){const b=$('auth-alert'); if(!b) return; b.style.display='block'; b.className='rss-card '+(type==='success'?'rss-success': type==='error'?'rss-danger':'rss-card-pink'); b.style.marginBottom='24px'; b.style.padding='18px'; b.innerHTML=msg}
+async function getPartnerContext(){
+  if(!sb){ alertBox('Supabase JS n’est pas chargé.','error'); return null; }
+  const {data:sessionData}=await sb.auth.getSession();
+  const user=sessionData?.session?.user||null;
+  if(!user){ location.href='/connexion-inscription.html?redirect=/tableau-de-bord-partenaire-valide.html'; return null; }
+  const email=clean(user.email);
+  const {data:profile}=await sb.from('profiles').select('id,email,full_name,company_name,role,phone').eq('id',user.id).maybeSingle();
+  if(profile?.role==='client'){ alertBox('Ce compte est client. Connectez-vous avec un compte partenaire validé.','error'); return null; }
+  const {data:partner}=await sb.from('partners').select('*').ilike('email',email).maybeSingle();
+  if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){ alertBox('Aucun profil partenaire validé trouvé pour cet email.','error'); return null; }
+  const p=partner||{email,name:profile?.full_name||profile?.company_name||email,phone:profile?.phone||'',status:'approved'};
+  if(!['approved','active'].includes(String(p.status||'approved').toLowerCase()) && profile?.role!=='partner' && profile?.role!=='partenaire'){
+    location.href='/partenaire-soumis.html'; return null;
+  }
+  const name=p.name||p.full_name||p.company_name||'Partenaire';
+  if($('top-partner-name')) $('top-partner-name').textContent=name;
+  if($('partner-status-label')) $('partner-status-label').textContent='Partenaire validé';
+  return {user, partner:p, email:clean(p.email||email), legacy:p.legacy_user_id};
+}
+async function loadPartnerListings(ctx){
+  let q=sb.from('listings').select('id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at').order('created_at',{ascending:false});
+  q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
+  const {data,error}=await q;
+  if(error){ alertBox('Impossible de charger les annonces : '+error.message,'error'); return []; }
+  return data||[];
+}
+async function loadListingImages(listingId){
+  const {data,error}=await sb.from('listing_images').select('id,listing_id,url,src,alt,sort_order').eq('listing_id',listingId).order('sort_order',{ascending:true});
+  if(error) return [];
+  return data||[];
+}
+async function uploadImageFile(file, listingId){
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path='partners/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
+  const {error:upErr}=await sb.storage.from('listing-images').upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+  if(upErr) throw upErr;
+  const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
+  const url=pub.publicUrl;
+  const {error:insErr}=await sb.from('listing_images').insert({listing_id:listingId,url,src:url,alt:'Image annonce',sort_order:99});
+  if(insErr) throw insErr;
+  return url;
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  $('logout-btn')?.addEventListener('click',async()=>{try{await sb.auth.signOut()}catch(e){} location.href='/connexion-inscription.html'});
+});
+</script>
+
+
+<script>
+let CTX=null;
+document.addEventListener('DOMContentLoaded', async()=>{
+ CTX=await getPartnerContext(); if(!CTX)return;
+ const p=CTX.partner;
+ $('partner-name-input').value=p.name||''; $('partner-phone-input').value=p.phone||''; $('partner-city-input').value=p.city||''; $('partner-country-input').value=p.country||'';
+ $('partner-form')?.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(!p.id){alertBox('Aucun ID partners trouvé.','error');return}
+  const update={name:$('partner-name-input').value.trim(),phone:$('partner-phone-input').value.trim(),city:$('partner-city-input').value.trim(),country:$('partner-country-input').value.trim()};
+  const {error}=await sb.from('partners').update(update).eq('id',p.id);
+  if(error){alertBox('Erreur profil : '+error.message,'error');return}
+  alertBox('Profil partenaire mis à jour.','success');
+ });
+});
+</script>
+
+</body>
+</html>
