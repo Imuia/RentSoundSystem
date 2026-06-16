@@ -71,6 +71,35 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-partner-dashboard-clean-fixes">
+  .rss-topbar{display:none!important;}
+  .rss-main{padding-top:32px!important;}
+  .rss-sidebar{top:80px!important;height:calc(100vh - 80px)!important;}
+  .rss-nav-link{
+    border:1px solid transparent!important;
+    transform:none!important;
+    will-change:auto!important;
+  }
+  .rss-nav-link:hover,
+  .rss-nav-link.active{
+    transform:none!important;
+    border-color:rgba(252,3,109,.22)!important;
+  }
+  .rss-nav-link *{pointer-events:none;}
+  .rss-btn:hover{transform:none!important;}
+  .rss-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:12px;}
+  .rss-preview-card{position:relative;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);border-radius:14px;overflow:hidden;min-height:138px;}
+  .rss-preview-card img{width:100%;height:110px;object-fit:cover;display:block;background:#111;}
+  .rss-preview-card .rss-preview-name{font-size:11px;color:#e6bcc2;padding:7px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rss-preview-remove{position:absolute;top:7px;right:7px;width:30px;height:30px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.72);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .rss-preview-remove:hover{background:#FC036D;}
+  @media(max-width:900px){
+    .rss-main{padding-top:24px!important;}
+    .rss-sidebar{top:72px!important;height:calc(100vh - 72px)!important;}
+  }
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -91,10 +120,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <button id="logout-btn" class="rss-btn rss-btn-outline" style="width:100%"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
   </div>
 </aside>
-<header class="rss-topbar">
-  <div><div style="font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:#FC036D;font-weight:900">Espace partenaire</div><div id="top-partner-name" class="font-headline" style="font-weight:800">Chargement...</div></div>
-  <a class="rss-btn rss-btn-outline" href="/">Voir le site</a>
-</header>
 <main class="rss-main">
   <div id="auth-alert" style="display:none"></div>
   

@@ -71,6 +71,35 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-partner-dashboard-clean-fixes">
+  .rss-topbar{display:none!important;}
+  .rss-main{padding-top:32px!important;}
+  .rss-sidebar{top:80px!important;height:calc(100vh - 80px)!important;}
+  .rss-nav-link{
+    border:1px solid transparent!important;
+    transform:none!important;
+    will-change:auto!important;
+  }
+  .rss-nav-link:hover,
+  .rss-nav-link.active{
+    transform:none!important;
+    border-color:rgba(252,3,109,.22)!important;
+  }
+  .rss-nav-link *{pointer-events:none;}
+  .rss-btn:hover{transform:none!important;}
+  .rss-preview-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px;margin-top:12px;}
+  .rss-preview-card{position:relative;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);border-radius:14px;overflow:hidden;min-height:138px;}
+  .rss-preview-card img{width:100%;height:110px;object-fit:cover;display:block;background:#111;}
+  .rss-preview-card .rss-preview-name{font-size:11px;color:#e6bcc2;padding:7px 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .rss-preview-remove{position:absolute;top:7px;right:7px;width:30px;height:30px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.72);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;}
+  .rss-preview-remove:hover{background:#FC036D;}
+  @media(max-width:900px){
+    .rss-main{padding-top:24px!important;}
+    .rss-sidebar{top:72px!important;height:calc(100vh - 72px)!important;}
+  }
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -91,10 +120,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <button id="logout-btn" class="rss-btn rss-btn-outline" style="width:100%"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
   </div>
 </aside>
-<header class="rss-topbar">
-  <div><div style="font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:#FC036D;font-weight:900">Espace partenaire</div><div id="top-partner-name" class="font-headline" style="font-weight:800">Chargement...</div></div>
-  <a class="rss-btn rss-btn-outline" href="/">Voir le site</a>
-</header>
 <main class="rss-main">
   <div id="auth-alert" style="display:none"></div>
   
@@ -134,7 +159,11 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <label>Durée maximum<input id="max_duration" class="rss-input" style="margin-top:6px" type="number" value="999" min="1"></label>
 <label>Code postal<input id="zip" class="rss-input" style="margin-top:6px"></label>
 <label>Statut<select id="status" class="rss-input" style="margin-top:6px"><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></label>
-    <label>Images<input id="images" type="file" multiple accept="image/*" class="rss-input" style="margin-top:6px"></label>
+    <label style="grid-column:1/-1">Images
+<input id="images" type="file" multiple accept="image/*" class="rss-input" style="margin-top:6px">
+<div id="image-preview-grid" class="rss-preview-grid"></div>
+<p class="rss-muted" style="font-size:12px;margin-top:8px">Les images sélectionnées s’affichent ici. Vous pouvez supprimer une image avant publication.</p>
+</label>
     <div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.1);padding-top:16px">
       <p id="add-message" class="rss-muted"></p>
       <button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">add</span> Publier l’annonce</button>
@@ -209,10 +238,36 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <script>
 let CTX=null;
+let selectedImageFiles = [];
 document.addEventListener('DOMContentLoaded', async()=>{
  CTX=await getPartnerContext(); if(!CTX)return;
  $('add-form')?.addEventListener('submit',saveNewListing);
+ const imageInput = $('images');
+ imageInput?.addEventListener('change', () => {
+   selectedImageFiles = selectedImageFiles.concat(Array.from(imageInput.files || []));
+   imageInput.value = '';
+   renderSelectedImagePreviews();
+ });
 });
+function renderSelectedImagePreviews(){
+ const wrap = $('image-preview-grid');
+ if(!wrap) return;
+ if(!selectedImageFiles.length){ wrap.innerHTML=''; return; }
+ wrap.innerHTML = selectedImageFiles.map((file,index)=>{
+   const url = URL.createObjectURL(file);
+   return `<div class="rss-preview-card">
+     <button type="button" class="rss-preview-remove" onclick="removeSelectedImage(${index})" title="Supprimer cette image">×</button>
+     <img src="${url}" alt="">
+     <div class="rss-preview-name">${esc(file.name)}</div>
+   </div>`;
+ }).join('');
+}
+function removeSelectedImage(index){
+ selectedImageFiles.splice(index,1);
+ renderSelectedImagePreviews();
+}
+window.removeSelectedImage = removeSelectedImage;
+
 async function saveNewListing(e){
  e.preventDefault();
  const partner=CTX.partner||{};
@@ -226,8 +281,9 @@ async function saveNewListing(e){
  $('add-message').textContent='Création de l’annonce...';
  const {data,error}=await sb.from('listings').insert(payload).select('id,original_id').single();
  if(error){$('add-message').textContent='Erreur : '+error.message+' — vérifiez la policy INSERT sur listings.';return}
- const files=Array.from($('images').files||[]);
+ const files=selectedImageFiles;
  try{ for(const file of files) await uploadImageFile(file,data.id); }catch(e){$('add-message').textContent='Annonce créée, mais erreur image : '+e.message; return}
+ selectedImageFiles=[]; renderSelectedImagePreviews();
  $('add-message').textContent='Annonce créée avec succès.';
  setTimeout(()=>location.href='/mes-annonces-partenaire.html?edit='+data.id,600);
 }
