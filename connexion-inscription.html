@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', function () {
       if (profile?.role === 'partner' || profile?.role === 'partenaire') {
         localStorage.setItem('rssUserRole', 'partner');
         localStorage.setItem('rssPartnerEmail', finalEmail);
-        return '/tableau-de-bord-partenaire.html';
+        return '/tableau-de-bord-partenaire-valide.html';
       }
 
       // Nouvelle table centrale des partenaires validés/importés.
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function () {
               updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
 
-            return '/tableau-de-bord-partenaire.html';
+            return '/tableau-de-bord-partenaire-valide.html';
           }
 
           return '/partenaire-soumis.html';
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
               updated_at: new Date().toISOString()
             }, { onConflict: 'id' });
 
-            return '/tableau-de-bord-partenaire.html';
+            return '/tableau-de-bord-partenaire-valide.html';
           }
 
           return '/partenaire-soumis.html';
