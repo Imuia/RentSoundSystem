@@ -160,9 +160,13 @@ document.documentElement.classList.add('rss-auth-precheck');
 <button id="login-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Connexion</button>
 <button id="register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Inscription</button>
 </div>
-<div id="register-type-tabs" class="hidden bg-surface-container-lowest p-1 rounded-lg mb-6 border border-outline-variant/10">
-<button id="client-register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Client</button>
-<button id="partner-register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Partenaire</button>
+<div id="register-type-tabs" class="hidden mb-6" style="display:none;gap:10px;">
+<button id="client-register-tab" type="button" style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:#FC036D;color:#fff;box-shadow:0 0 15px rgba(252,3,109,.25);">
+Client
+</button>
+<button id="partner-register-tab" type="button" style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:rgba(252,3,109,.08);color:#e6bcc2;">
+Partenaire
+</button>
 </div>
 <p id="auth-unified-note" class="mb-5 text-xs text-center text-on-surface-variant">
   Clients et partenaires utilisent le même accès. Les partenaires validés sont redirigés vers leur tableau de bord.
@@ -432,8 +436,7 @@ document.addEventListener('DOMContentLoaded', function () {
     companyField.classList.toggle('hidden', !isRegister);
     confirmField.classList.toggle('hidden', !isRegister);
     loginOptions.classList.toggle('hidden', isRegister);
-    registerTypeTabs?.classList.toggle('hidden', !isRegister);
-    registerTypeTabs?.classList.toggle('flex', isRegister);
+    registerTypeTabs.style.display = isRegister ? 'flex' : 'none';
 
     submitBtn.textContent = isRegister ? 'Créer mon compte' : 'Se connecter';
 
