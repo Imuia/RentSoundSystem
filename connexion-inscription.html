@@ -170,7 +170,7 @@ Partenaire
 </div>
 
 <!-- Form -->
-<!-- rss-role-routing-note: Connexion unique. Client => espace client. Partenaire profile/partner_requests/listings => dashboard partenaire. -->
+<!-- rss-role-routing-note: Connexion unique. Client => espace client. Partenaire profiles/partners/partner_requests => dashboard partenaire. -->
 <form id="auth-form" class="space-y-5">
 <div id="name-field" class="hidden">
 <label class="block text-sm font-medium text-on-surface-variant mb-1" for="full-name">Nom complet</label>
@@ -301,14 +301,58 @@ document.addEventListener('DOMContentLoaded', function () {
       const profileEmail = String(profile?.email || email).trim().toLowerCase();
       const finalEmail = profileEmail || email;
 
-      // 1) Rôle officiel dans profiles : c'est la priorité.
+      // PRIORITÉ ABSOLUE : si le profil est client, il reste client.
+      // Cela évite qu'un client soit envoyé vers partenaire-soumis à cause de listings ou partner_requests.
+      if (profile?.role === 'client') {
+        localStorage.setItem('rssUserRole', 'client');
+        localStorage.removeItem('rssPartnerRequestId');
+        localStorage.removeItem('rssPartnerStatus');
+        localStorage.removeItem('rssPartnerLegacyUserId');
+        return '/espace-client.html';
+      }
+
+      // Partenaire officiel dans profiles.
       if (profile?.role === 'partner' || profile?.role === 'partenaire') {
         localStorage.setItem('rssUserRole', 'partner');
         localStorage.setItem('rssPartnerEmail', finalEmail);
         return '/tableau-de-bord-partenaire.html';
       }
 
-      // 2) Demande partenaire validée / en attente.
+      // Nouvelle table centrale des partenaires validés/importés.
+      if (finalEmail) {
+        const { data: partner } = await supabaseClient
+          .from('partners')
+          .select('id,user_id,email,status,legacy_user_id,name')
+          .ilike('email', finalEmail)
+          .maybeSingle();
+
+        if (partner) {
+          localStorage.setItem('rssUserRole', 'partner');
+          localStorage.setItem('rssPartnerEmail', finalEmail);
+          localStorage.setItem('rssPartnerId', partner.id);
+          localStorage.setItem('rssPartnerStatus', partner.status || 'approved');
+
+          if (partner.legacy_user_id) {
+            localStorage.setItem('rssPartnerLegacyUserId', String(partner.legacy_user_id));
+          }
+
+          if (partner.status === 'approved' || partner.status === 'active') {
+            await supabaseClient.from('profiles').upsert({
+              id: user.id,
+              email: finalEmail,
+              full_name: partner.name || user.user_metadata?.full_name || finalEmail.split('@')[0],
+              role: 'partner',
+              updated_at: new Date().toISOString()
+            }, { onConflict: 'id' });
+
+            return '/tableau-de-bord-partenaire.html';
+          }
+
+          return '/partenaire-soumis.html';
+        }
+      }
+
+      // Demande partenaire : utilisé seulement si aucun profil client n'existe.
       if (finalEmail) {
         const { data: requests } = await supabaseClient
           .from('partner_requests')
@@ -339,43 +383,11 @@ document.addEventListener('DOMContentLoaded', function () {
           return '/partenaire-soumis.html';
         }
       }
-
-      // 3) Partenaires déjà importés depuis l'ancien site :
-      // si l'email possède déjà des annonces dans listings, il doit accéder au tableau de bord partenaire.
-      if (finalEmail) {
-        const { data: listings } = await supabaseClient
-          .from('listings')
-          .select('id,owner_email,owner_name,legacy_user_id')
-          .ilike('owner_email', finalEmail)
-          .limit(1);
-
-        const listingOwner = listings && listings[0];
-
-        if (listingOwner) {
-          localStorage.setItem('rssUserRole', 'partner');
-          localStorage.setItem('rssPartnerEmail', finalEmail);
-          localStorage.setItem('rssPartnerStatus', 'approved');
-
-          if (listingOwner.legacy_user_id) {
-            localStorage.setItem('rssPartnerLegacyUserId', String(listingOwner.legacy_user_id));
-          }
-
-          await supabaseClient.from('profiles').upsert({
-            id: user.id,
-            email: finalEmail,
-            full_name: listingOwner.owner_name || user.user_metadata?.full_name || finalEmail.split('@')[0],
-            role: 'partner',
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'id' });
-
-          return '/tableau-de-bord-partenaire.html';
-        }
-      }
     } catch (e) {
       console.warn('Redirection rôle impossible:', e);
     }
 
-    // Par défaut : vrai client.
+    // Par défaut : client normal.
     localStorage.setItem('rssUserRole', 'client');
     return '/espace-client.html';
   }
