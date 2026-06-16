@@ -168,9 +168,7 @@ Client
 Partenaire
 </button>
 </div>
-<p id="auth-unified-note" class="mb-5 text-xs text-center text-on-surface-variant">
-  Clients et partenaires utilisent le même accès. Les partenaires validés sont redirigés vers leur tableau de bord.
-</p>
+
 <!-- Form -->
 <form id="auth-form" class="space-y-5">
 <div id="name-field" class="hidden">
@@ -449,9 +447,23 @@ document.addEventListener('DOMContentLoaded', function () {
   loginTab.addEventListener('click', () => activateTab('login'));
   registerTab.addEventListener('click', () => activateTab('register'));
 
-  clientRegisterTab?.addEventListener('click', () => activateTab('register'));
+  clientRegisterTab?.addEventListener('click', () => {
+    clientRegisterTab.style.background='#FC036D';
+    clientRegisterTab.style.color='#fff';
+    partnerRegisterTab.style.background='rgba(252,3,109,.08)';
+    partnerRegisterTab.style.color='#e6bcc2';
+    activateTab('register');
+  });
+
   partnerRegisterTab?.addEventListener('click', () => {
-    window.location.href = '/inscription-partenaire';
+    partnerRegisterTab.style.background='#FC036D';
+    partnerRegisterTab.style.color='#fff';
+    clientRegisterTab.style.background='rgba(252,3,109,.08)';
+    clientRegisterTab.style.color='#e6bcc2';
+
+    setTimeout(() => {
+      window.location.href='/inscription-partenaire';
+    },150);
   });
 
   if (params.get('type') === 'partner') {
