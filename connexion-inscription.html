@@ -164,6 +164,9 @@ document.documentElement.classList.add('rss-auth-precheck');
 <button id="client-register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Client</button>
 <button id="partner-register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Partenaire</button>
 </div>
+<p id="auth-unified-note" class="mb-5 text-xs text-center text-on-surface-variant">
+  Clients et partenaires utilisent le même accès. Les partenaires validés sont redirigés vers leur tableau de bord.
+</p>
 <!-- Form -->
 <form id="auth-form" class="space-y-5">
 <div id="name-field" class="hidden">
@@ -273,10 +276,57 @@ document.addEventListener('DOMContentLoaded', function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
   const params = new URLSearchParams(window.location.search);
-  const rawRedirect = params.get('redirect') || '/espace-client.html';
-  const safeRedirect = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/espace-client.html';
+  const rawRedirect = params.get('redirect') || '';
+  const hasExplicitRedirect = rawRedirect && rawRedirect.startsWith('/') && !rawRedirect.startsWith('//');
+  const safeRedirect = hasExplicitRedirect ? rawRedirect : '/espace-client.html';
   const REDIRECT_URL = window.location.origin + safeRedirect;
-  const LOCAL_REDIRECT_URL = safeRedirect;
+  let LOCAL_REDIRECT_URL = safeRedirect;
+
+  async function resolveLoginRedirect(user) {
+    if (hasExplicitRedirect) return safeRedirect;
+    if (!supabaseClient || !user) return '/espace-client.html';
+
+    try {
+      const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('role,email')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      const email = String(profile?.email || user.email || '').trim().toLowerCase();
+
+      if (profile?.role === 'partner' || profile?.role === 'partenaire') {
+        return '/tableau-de-bord-partenaire.html';
+      }
+
+      if (email) {
+        const { data: requests } = await supabaseClient
+          .from('partner_requests')
+          .select('id,status,email')
+          .ilike('email', email)
+          .order('created_at', { ascending: false })
+          .limit(1);
+
+        const request = requests && requests[0];
+
+        if (request) {
+          localStorage.setItem('rssPartnerEmail', email);
+          localStorage.setItem('rssPartnerRequestId', request.id);
+          localStorage.setItem('rssPartnerStatus', request.status || 'pending');
+
+          if (request.status === 'approved') {
+            return '/tableau-de-bord-partenaire.html';
+          }
+
+          return '/partenaire-soumis.html';
+        }
+      }
+    } catch (e) {
+      console.warn('Redirection rôle impossible:', e);
+    }
+
+    return '/espace-client.html';
+  }
 
   const supabaseClient = window.supabase
     ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY)
@@ -285,7 +335,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (supabaseClient) {
     supabaseClient.auth.getSession().then(({ data }) => {
       if (data?.session && !new URLSearchParams(window.location.search).get('force')) {
-        window.location.replace(LOCAL_REDIRECT_URL);
+        resolveLoginRedirect(data.session.user).then((url) => {
+          window.location.replace(url);
+        });
         return;
       }
       document.body.classList.remove('rss-checking-session');
@@ -509,18 +561,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const { data: userData } = await supabaseClient.auth.getUser();
         if (userData?.user) {
+          const { data: existingProfile } = await supabaseClient
+            .from('profiles')
+            .select('role')
+            .eq('id', userData.user.id)
+            .maybeSingle();
+
           await supabaseClient.from('profiles').upsert({
             id: userData.user.id,
             email: userData.user.email,
             full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Client',
             company_name: userData.user.user_metadata?.company_name || '',
-            role: 'client',
+            role: existingProfile?.role || 'client',
             updated_at: new Date().toISOString()
           }, { onConflict: 'id' });
         }
 
+        const nextUrl = await resolveLoginRedirect(userData?.user);
         showStatus('Connexion réussie. Redirection...', 'success');
-        window.location.href = LOCAL_REDIRECT_URL;
+        window.location.href = nextUrl;
       }
     } catch (err) {
       if (mode === 'register' && isDuplicateEmailError(err)) {
