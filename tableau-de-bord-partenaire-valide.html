@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
-<title>RentSoundSystem - Tableau de bord partenaire</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -15,6 +14,7 @@ tailwind.config = {
 }
 </script>
 <style>
+
 :root{--pink:#FC036D;--pink2:#ff2d86;--bg:#0e0e0e;--card:#1b1b1b}
 *{box-sizing:border-box}
 body{font-family:Inter,sans-serif;background:radial-gradient(circle at top right,rgba(252,3,109,.12),transparent 34%),#0e0e0e;color:#e8e8e8}
@@ -37,7 +37,19 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 .rss-table td{border-top:1px solid rgba(255,255,255,.06)}
 .rss-modal{display:none}.rss-modal.is-open{display:flex}.rss-no-scroll{overflow:hidden}
 @media(max-width:900px){.rss-sidebar{display:none}.rss-topbar{left:0}.rss-main{margin-left:0;padding:90px 18px 40px}}
+
+
+.rss-page-title{font-size:clamp(34px,5vw,54px);font-weight:900;margin:0 0 8px}
+.rss-muted{color:#e6bcc2}
+.rss-grid{display:grid;gap:18px}
+.rss-form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.rss-thumb{width:92px;height:70px;object-fit:cover;border-radius:10px;border:1px solid rgba(255,255,255,.10);background:#151515}
+.rss-image-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid rgba(255,255,255,.08);border-radius:14px;background:rgba(255,255,255,.035)}
+.rss-danger{border:1px solid rgba(255,80,80,.55);color:#ffb4ab;background:rgba(255,80,80,.07)}
+.rss-success{border:1px solid rgba(80,255,160,.35);color:#9fffc8;background:rgba(80,255,160,.08)}
+
 </style>
+<title>Tableau de bord partenaire validé</title>
 </head>
 <body>
 <aside class="rss-sidebar">
@@ -46,200 +58,121 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <div><div class="font-headline" style="font-size:20px;font-weight:900;color:#FC036D">RentSoundSystem</div><div id="partner-status-label" style="font-size:12px;color:#e6bcc2">Partenaire validé</div></div>
   </div>
   <nav style="display:grid;gap:8px">
-    <a href="#dashboard" class="rss-nav-link active"><span class="material-symbols-outlined">dashboard</span> Tableau de bord</a>
-    <a href="#annonces" class="rss-nav-link"><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
-    <a href="#reservations" class="rss-nav-link"><span class="material-symbols-outlined">event_available</span> Réservations</a>
-    <a href="#revenus" class="rss-nav-link"><span class="material-symbols-outlined">payments</span> Revenus</a>
-    <a href="#profil" class="rss-nav-link"><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
+    <a href="/tableau-de-bord-partenaire-valide.html" class="rss-nav-link active"><span class="material-symbols-outlined">dashboard</span> Tableau de bord</a>
+    <a href="/mes-annonces-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
+    <a href="/reservations-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">event_available</span> Réservations</a>
+    <a href="/revenus-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">payments</span> Revenus</a>
+    <a href="/profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
   </nav>
   <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
-    <a href="/inscription-partenaire-materiel.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
+    <a href="/ajouter-materiel-partenaire.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
     <button id="logout-btn" class="rss-btn rss-btn-outline" style="width:100%"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
   </div>
 </aside>
-
 <header class="rss-topbar">
   <div><div style="font-size:12px;text-transform:uppercase;letter-spacing:.2em;color:#FC036D;font-weight:900">Espace partenaire</div><div id="top-partner-name" class="font-headline" style="font-weight:800">Chargement...</div></div>
   <a class="rss-btn rss-btn-outline" href="/">Voir le site</a>
 </header>
-
 <main class="rss-main">
-  <div id="auth-alert" class="rss-card rss-card-pink" style="display:none;margin-bottom:24px;padding:18px"></div>
-
-  <section id="dashboard">
-    <h1 class="font-headline" style="font-size:clamp(34px,5vw,54px);font-weight:900;margin:0 0 8px">Tableau de bord partenaire</h1>
-    <p style="color:#e6bcc2;margin-bottom:28px">Gérez vos annonces, vos réservations et vos informations loueur.</p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:26px">
-      <div class="rss-card rss-card-pink" style="padding:22px"><p style="color:#e6bcc2;margin:0">Annonces</p><p id="stat-listings" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0</p></div>
-      <div class="rss-card" style="padding:22px"><p style="color:#e6bcc2;margin:0">Publiées</p><p id="stat-published" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0</p></div>
-      <div class="rss-card" style="padding:22px"><p style="color:#e6bcc2;margin:0">Vues</p><p id="stat-views" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0</p></div>
-      <div class="rss-card" style="padding:22px"><p style="color:#e6bcc2;margin:0">Prix moyen / jour</p><p id="stat-avg-price" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0 €</p></div>
+  <div id="auth-alert" style="display:none"></div>
+  
+<section>
+  <h1 class="font-headline rss-page-title">Tableau de bord partenaire</h1>
+  <p class="rss-muted" style="margin-bottom:28px">Vue d’ensemble de votre activité partenaire.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-bottom:26px">
+    <div class="rss-card rss-card-pink" style="padding:22px"><p class="rss-muted" style="margin:0">Annonces</p><p id="stat-listings" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0</p></div>
+    <div class="rss-card" style="padding:22px"><p class="rss-muted" style="margin:0">Publiées</p><p id="stat-published" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0</p></div>
+    <div class="rss-card" style="padding:22px"><p class="rss-muted" style="margin:0">Vues</p><p id="stat-views" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0</p></div>
+    <div class="rss-card" style="padding:22px"><p class="rss-muted" style="margin:0">Prix moyen / jour</p><p id="stat-avg-price" class="font-headline" style="font-size:40px;font-weight:900;margin:8px 0 0">0 €</p></div>
+  </div>
+  <div class="rss-card rss-card-pink" style="padding:24px">
+    <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px">
+      <div><h2 class="font-headline" style="font-size:26px;font-weight:900;margin:0">Mes annonces récentes</h2><p class="rss-muted" style="margin:5px 0 0;font-size:14px">Accès rapide aux dernières annonces.</p></div>
+      <a class="rss-btn rss-btn-primary" href="/ajouter-materiel-partenaire.html"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
     </div>
+    <div id="recent-listings" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px"></div>
+  </div>
+</section>
 
-    <div style="display:grid;grid-template-columns:minmax(0,2fr) minmax(280px,1fr);gap:22px;margin-bottom:30px">
-      <div class="rss-card rss-card-pink" style="padding:24px">
-        <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;margin-bottom:18px">
-          <div><h2 class="font-headline" style="font-size:26px;font-weight:900;margin:0">Mes annonces récentes</h2><p style="color:#e6bcc2;margin:5px 0 0;font-size:14px">Modification rapide des annonces rattachées à votre compte.</p></div>
-          <button id="refresh-listings" class="rss-btn rss-btn-outline"><span class="material-symbols-outlined">refresh</span> Actualiser</button>
-        </div>
-        <div id="recent-listings" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px"></div>
-      </div>
-      <div class="rss-card" style="padding:24px">
-        <h2 class="font-headline" style="font-size:26px;font-weight:900;margin:0 0 18px">Profil partenaire</h2>
-        <div style="display:grid;gap:15px;font-size:14px">
-          <div><div style="color:#e6bcc2">Nom</div><div id="profile-name" style="font-weight:900;font-size:18px">-</div></div>
-          <div><div style="color:#e6bcc2">Email</div><div id="profile-email" style="font-weight:800;word-break:break-all">-</div></div>
-          <div><div style="color:#e6bcc2">Téléphone</div><div id="profile-phone" style="font-weight:800">-</div></div>
-          <div><div style="color:#e6bcc2">Ville / pays</div><div id="profile-location" style="font-weight:800">-</div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="annonces" class="rss-card" style="padding:24px;margin-top:28px">
-    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-bottom:22px">
-      <div><h2 class="font-headline" style="font-size:34px;font-weight:900;margin:0">Mes annonces</h2><p style="color:#e6bcc2;margin:6px 0 0">Cliquez sur “Modifier” pour mettre à jour une annonce.</p></div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap"><input id="listing-search" class="rss-input" style="width:260px" placeholder="Rechercher..."><select id="status-filter" class="rss-input" style="width:180px"><option value="">Tous les statuts</option><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></div>
-    </div>
-    <div style="overflow-x:auto">
-      <table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px">
-        <thead><tr><th style="padding:0 16px 12px 0">Annonce</th><th style="padding:0 16px 12px 0">Ville</th><th style="padding:0 16px 12px 0">Prix</th><th style="padding:0 16px 12px 0">Statut</th><th style="padding:0 16px 12px 0">Vues</th><th style="padding:0 0 12px;text-align:right">Actions</th></tr></thead>
-        <tbody id="listings-table"></tbody>
-      </table>
-    </div>
-    <div id="empty-listings" style="display:none;text-align:center;padding:48px;color:#e6bcc2">Aucune annonce trouvée pour ce partenaire.</div>
-  </section>
-
-  <section id="reservations" class="rss-card" style="padding:24px;margin-top:28px"><h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0 0 8px">Réservations</h2><p style="color:#e6bcc2">Les demandes liées à vos annonces seront listées ici.</p></section>
-  <section id="revenus" class="rss-card" style="padding:24px;margin-top:28px"><h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0 0 8px">Revenus</h2><p style="color:#e6bcc2">Les revenus seront calculés à partir des réservations validées.</p></section>
-
-  <section id="profil" class="rss-card" style="padding:24px;margin-top:28px">
-    <h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0 0 20px">Informations partenaire</h2>
-    <form id="partner-form" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px">
-      <label>Nom / enseigne<input id="partner-name-input" class="rss-input" style="margin-top:6px"></label>
-      <label>Téléphone<input id="partner-phone-input" class="rss-input" style="margin-top:6px"></label>
-      <label>Ville<input id="partner-city-input" class="rss-input" style="margin-top:6px"></label>
-      <label>Pays<input id="partner-country-input" class="rss-input" style="margin-top:6px"></label>
-      <div style="grid-column:1/-1;text-align:right"><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer</button></div>
-    </form>
-  </section>
 </main>
 
-<div id="listing-modal" class="rss-modal" style="position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
-  <div class="rss-card rss-card-pink" style="width:100%;max-width:820px;max-height:92vh;overflow:auto;padding:24px">
-    <div style="display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:18px">
-      <div><h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0">Modifier l’annonce</h2><p style="color:#e6bcc2;margin:5px 0 0">Les changements sont enregistrés dans Supabase.</p></div>
-      <button id="close-modal" class="rss-btn rss-btn-outline" type="button"><span class="material-symbols-outlined">close</span></button>
-    </div>
-    <form id="listing-edit-form" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:15px">
-      <input type="hidden" id="edit-id">
-      <label style="grid-column:1/-1">Titre<input id="edit-title" class="rss-input" style="margin-top:6px" required></label>
-      <label style="grid-column:1/-1">Description<textarea id="edit-description" class="rss-input" style="margin-top:6px;min-height:140px"></textarea></label>
-      <label>Prix / jour<input id="edit-price" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
-      <label>Caution<input id="edit-caution" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
-      <label>Marque<input id="edit-brand" class="rss-input" style="margin-top:6px"></label>
-      <label>Modèle<input id="edit-model" class="rss-input" style="margin-top:6px"></label>
-      <label>Catégorie<input id="edit-category" class="rss-input" style="margin-top:6px"></label>
-      <label>Statut<select id="edit-status" class="rss-input" style="margin-top:6px"><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></label>
-      <label>Ville<input id="edit-city" class="rss-input" style="margin-top:6px"></label>
-      <label>Pays<input id="edit-country" class="rss-input" style="margin-top:6px"></label>
-      <label style="grid-column:1/-1">Adresse<input id="edit-address" class="rss-input" style="margin-top:6px"></label>
-      <div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.1);padding-top:16px"><p id="edit-message" style="color:#e6bcc2;margin:0"></p><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Sauvegarder</button></div>
-    </form>
-  </div>
-</div>
-
 <script>
-document.addEventListener('DOMContentLoaded', async function(){
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const supabaseClient = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-  const state = { user:null, partner:null, listings:[], filtered:[] };
-  const euro = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
-  const $ = id => document.getElementById(id);
-  const clean = v => String(v||'').trim().toLowerCase();
-  const esc = v => String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-  const num = v => (v===''||v==null?null:(Number.isFinite(Number(v))?Number(v):null));
-  const status = s => {s=String(s||'publish').toLowerCase(); return s==='published'?'publish':s};
-  const price = v => euro.format(Number(v||0));
-  function alertBox(msg,type='info'){const b=$('auth-alert'); b.style.display='block'; b.innerHTML=msg; b.style.borderColor=type==='error'?'rgba(255,80,80,.35)':'rgba(252,3,109,.28)'}
-  function badge(s){s=status(s); if(s==='publish') return '<span class="rss-badge">Publié</span>'; if(s==='draft') return '<span class="rss-badge" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#ddd">Brouillon</span>'; return '<span class="rss-badge">En attente</span>'}
-  async function init(){
-    if(!supabaseClient){alertBox('Supabase JS n’est pas chargé.','error');return}
-    const {data:sessionData}=await supabaseClient.auth.getSession();
-    state.user=sessionData?.session?.user||null;
-    if(!state.user){location.href='/connexion-inscription.html?redirect=/tableau-de-bord-partenaire.html';return}
-    const email=clean(state.user.email);
-    const {data:profile}=await supabaseClient.from('profiles').select('id,email,full_name,company_name,role,phone').eq('id',state.user.id).maybeSingle();
-    if(profile?.role==='client'){alertBox('Ce compte est enregistré comme client. Utilisez un compte partenaire validé.','error');return}
-    const {data:partner}=await supabaseClient.from('partners').select('*').ilike('email',email).maybeSingle();
-    if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){alertBox('Aucun profil partenaire validé trouvé pour cet email.','error');return}
-    state.partner=partner||{email,name:profile?.full_name||profile?.company_name||email,phone:profile?.phone||'',status:'approved'};
-    fillPartner();
-    await loadListings();
+const RSS_CONFIG = {
+  url: 'https://crxofkxinsspfgdsxpiy.supabase.co',
+  key: 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj'
+};
+const sb = window.supabase ? window.supabase.createClient(RSS_CONFIG.url, RSS_CONFIG.key) : null;
+const euro = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'});
+const $ = id => document.getElementById(id);
+const clean = v => String(v||'').trim().toLowerCase();
+const esc = v => String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
+const num = v => (v===''||v==null?null:(Number.isFinite(Number(v))?Number(v):null));
+const price = v => euro.format(Number(v||0));
+const statusNorm = s => {s=String(s||'publish').toLowerCase(); return s==='published'?'publish':s};
+function badge(s){s=statusNorm(s); if(s==='publish') return '<span class="rss-badge">Publié</span>'; if(s==='draft') return '<span class="rss-badge" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#ddd">Brouillon</span>'; return '<span class="rss-badge">En attente</span>'}
+function alertBox(msg,type='info'){const b=$('auth-alert'); if(!b) return; b.style.display='block'; b.className='rss-card '+(type==='success'?'rss-success': type==='error'?'rss-danger':'rss-card-pink'); b.style.marginBottom='24px'; b.style.padding='18px'; b.innerHTML=msg}
+async function getPartnerContext(){
+  if(!sb){ alertBox('Supabase JS n’est pas chargé.','error'); return null; }
+  const {data:sessionData}=await sb.auth.getSession();
+  const user=sessionData?.session?.user||null;
+  if(!user){ location.href='/connexion-inscription.html?redirect=/tableau-de-bord-partenaire-valide.html'; return null; }
+  const email=clean(user.email);
+  const {data:profile}=await sb.from('profiles').select('id,email,full_name,company_name,role,phone').eq('id',user.id).maybeSingle();
+  if(profile?.role==='client'){ alertBox('Ce compte est client. Connectez-vous avec un compte partenaire validé.','error'); return null; }
+  const {data:partner}=await sb.from('partners').select('*').ilike('email',email).maybeSingle();
+  if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){ alertBox('Aucun profil partenaire validé trouvé pour cet email.','error'); return null; }
+  const p=partner||{email,name:profile?.full_name||profile?.company_name||email,phone:profile?.phone||'',status:'approved'};
+  if(!['approved','active'].includes(String(p.status||'approved').toLowerCase()) && profile?.role!=='partner' && profile?.role!=='partenaire'){
+    location.href='/partenaire-soumis.html'; return null;
   }
-  function fillPartner(){
-    const p=state.partner||{}, name=p.name||p.full_name||p.company_name||'Partenaire', email=p.email||state.user?.email||'';
-    $('top-partner-name').textContent=name; $('profile-name').textContent=name; $('profile-email').textContent=email; $('profile-phone').textContent=p.phone||'-'; $('profile-location').textContent=[p.city,p.country].filter(Boolean).join(', ')||'-';
-    $('partner-name-input').value=name||''; $('partner-phone-input').value=p.phone||''; $('partner-city-input').value=p.city||''; $('partner-country-input').value=p.country||''; $('partner-status-label').textContent=(p.status==='active'||p.status==='approved')?'Partenaire validé':'Partenaire en validation';
-  }
-  async function loadListings(){
-    const p=state.partner||{}, email=clean(p.email||state.user?.email), legacy=p.legacy_user_id;
-    let q=supabaseClient.from('listings').select('id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at').order('created_at',{ascending:false});
-    q=legacy?q.or('owner_email.ilike.'+email+',legacy_user_id.eq.'+legacy):q.ilike('owner_email',email);
-    const {data,error}=await q;
-    if(error){alertBox('Impossible de charger les annonces : '+error.message,'error');return}
-    state.listings=data||[]; applyFilters(); renderStats(); renderRecent();
-  }
-  function applyFilters(){
-    const q=clean($('listing-search')?.value), st=$('status-filter')?.value||'';
-    state.filtered=state.listings.filter(i=>(!st||status(i.status)===st)&&(!q||[i.title,i.city,i.country,i.category,i.brand,i.model,String(i.original_id||'')].join(' ').toLowerCase().includes(q)));
-    renderTable();
-  }
-  function renderStats(){
-    const prices=state.listings.map(x=>Number(x.price||0)).filter(n=>n>0), avg=prices.length?prices.reduce((a,b)=>a+b,0)/prices.length:0;
-    $('stat-listings').textContent=state.listings.length; $('stat-published').textContent=state.listings.filter(x=>status(x.status)==='publish').length; $('stat-views').textContent=state.listings.reduce((s,x)=>s+Number(x.views||0),0); $('stat-avg-price').textContent=avg?price(avg):'0 €';
-  }
-  function renderRecent(){
-    const w=$('recent-listings'), items=state.listings.slice(0,4);
-    if(!items.length){w.innerHTML='<p style="color:#e6bcc2">Aucune annonce récente.</p>';return}
-    w.innerHTML=items.map(i=>'<article style="padding:16px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1)"><div style="display:flex;justify-content:space-between;gap:12px"><div><div style="font-size:12px;color:#FC036D;font-weight:900">#'+esc(i.original_id||'—')+'</div><h3 style="margin:6px 0 4px;font-weight:900">'+esc(i.title||'Annonce sans titre')+'</h3><p style="color:#e6bcc2;font-size:13px;margin:0">'+esc([i.city,i.country].filter(Boolean).join(', ')||'-')+'</p></div>'+badge(i.status)+'</div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px"><strong style="color:#FC036D">'+price(i.price)+' / jour</strong><button class="rss-btn rss-btn-outline" style="padding:8px 12px" onclick="window.RSSPartnerDashboard.openEdit(\''+i.id+'\')">Modifier</button></div></article>').join('');
-  }
-  function renderTable(){
-    const body=$('listings-table'), empty=$('empty-listings');
-    if(!state.filtered.length){body.innerHTML=''; empty.style.display='block'; return}
-    empty.style.display='none';
-    body.innerHTML=state.filtered.map(i=>'<tr><td style="padding:16px 16px 16px 0"><div style="font-weight:900">'+esc(i.title||'Annonce sans titre')+'</div><div style="font-size:12px;color:#e6bcc2;margin-top:4px">ID original : '+esc(i.original_id||'-')+' · '+esc(i.category||'-')+'</div></td><td style="padding:16px 16px 16px 0;color:#e6bcc2">'+esc([i.city,i.country].filter(Boolean).join(', ')||'-')+'</td><td style="padding:16px 16px 16px 0;font-weight:900;color:#FC036D">'+price(i.price)+'</td><td style="padding:16px 16px 16px 0">'+badge(i.status)+'</td><td style="padding:16px 16px 16px 0">'+Number(i.views||0)+'</td><td style="padding:16px 0;text-align:right"><button class="rss-btn rss-btn-outline" onclick="window.RSSPartnerDashboard.openEdit(\''+i.id+'\')"><span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier</button></td></tr>').join('');
-  }
-  function openEdit(id){
-    const i=state.listings.find(x=>x.id===id); if(!i)return;
-    $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??''; $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=status(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
-    $('listing-modal').classList.add('is-open'); document.body.classList.add('rss-no-scroll');
-  }
-  function closeEdit(){ $('listing-modal').classList.remove('is-open'); document.body.classList.remove('rss-no-scroll') }
-  async function saveListing(e){
-    e.preventDefault();
-    const id=$('edit-id').value;
-    const update={title:$('edit-title').value.trim(),description:$('edit-description').value.trim(),price:num($('edit-price').value),caution:num($('edit-caution').value),brand:$('edit-brand').value.trim(),model:$('edit-model').value.trim(),category:$('edit-category').value.trim(),status:$('edit-status').value,city:$('edit-city').value.trim(),country:$('edit-country').value.trim(),address:$('edit-address').value.trim()};
-    $('edit-message').textContent='Sauvegarde...';
-    const {error}=await supabaseClient.from('listings').update(update).eq('id',id);
-    if(error){$('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';return}
-    $('edit-message').textContent='Annonce mise à jour.'; await loadListings(); setTimeout(closeEdit,500);
-  }
-  async function savePartner(e){
-    e.preventDefault();
-    if(!state.partner?.id){alertBox('Aucun ID partners trouvé. Impossible de sauvegarder dans partners.','error');return}
-    const update={name:$('partner-name-input').value.trim(),phone:$('partner-phone-input').value.trim(),city:$('partner-city-input').value.trim(),country:$('partner-country-input').value.trim()};
-    const {error}=await supabaseClient.from('partners').update(update).eq('id',state.partner.id);
-    if(error){alertBox('Impossible de mettre à jour le profil partenaire : '+error.message,'error');return}
-    state.partner={...state.partner,...update}; fillPartner(); alertBox('Profil partenaire mis à jour.');
-  }
-  $('listing-search')?.addEventListener('input',applyFilters); $('status-filter')?.addEventListener('change',applyFilters); $('refresh-listings')?.addEventListener('click',loadListings); $('close-modal')?.addEventListener('click',closeEdit); $('listing-modal')?.addEventListener('click',e=>{if(e.target.id==='listing-modal')closeEdit()}); $('listing-edit-form')?.addEventListener('submit',saveListing); $('partner-form')?.addEventListener('submit',savePartner);
-  $('logout-btn')?.addEventListener('click',async()=>{await supabaseClient.auth.signOut(); location.href='/connexion-inscription.html'});
-  window.RSSPartnerDashboard={openEdit};
-  init();
+  const name=p.name||p.full_name||p.company_name||'Partenaire';
+  if($('top-partner-name')) $('top-partner-name').textContent=name;
+  if($('partner-status-label')) $('partner-status-label').textContent='Partenaire validé';
+  return {user, partner:p, email:clean(p.email||email), legacy:p.legacy_user_id};
+}
+async function loadPartnerListings(ctx){
+  let q=sb.from('listings').select('id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at').order('created_at',{ascending:false});
+  q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
+  const {data,error}=await q;
+  if(error){ alertBox('Impossible de charger les annonces : '+error.message,'error'); return []; }
+  return data||[];
+}
+async function loadListingImages(listingId){
+  const {data,error}=await sb.from('listing_images').select('id,listing_id,url,src,alt,sort_order').eq('listing_id',listingId).order('sort_order',{ascending:true});
+  if(error) return [];
+  return data||[];
+}
+async function uploadImageFile(file, listingId){
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path='partners/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
+  const {error:upErr}=await sb.storage.from('listing-images').upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+  if(upErr) throw upErr;
+  const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
+  const url=pub.publicUrl;
+  const {error:insErr}=await sb.from('listing_images').insert({listing_id:listingId,url,src:url,alt:'Image annonce',sort_order:99});
+  if(insErr) throw insErr;
+  return url;
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  $('logout-btn')?.addEventListener('click',async()=>{try{await sb.auth.signOut()}catch(e){} location.href='/connexion-inscription.html'});
 });
 </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', async()=>{
+ const ctx=await getPartnerContext(); if(!ctx)return;
+ const listings=await loadPartnerListings(ctx);
+ const prices=listings.map(x=>Number(x.price||0)).filter(n=>n>0);
+ const avg=prices.length?prices.reduce((a,b)=>a+b,0)/prices.length:0;
+ $('stat-listings').textContent=listings.length;
+ $('stat-published').textContent=listings.filter(x=>statusNorm(x.status)==='publish').length;
+ $('stat-views').textContent=listings.reduce((s,x)=>s+Number(x.views||0),0);
+ $('stat-avg-price').textContent=avg?price(avg):'0 €';
+ const wrap=$('recent-listings');
+ wrap.innerHTML=listings.slice(0,4).map(i=>`<article style="padding:16px;border-radius:16px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.1)"><div style="font-size:12px;color:#FC036D;font-weight:900">#${esc(i.original_id||'—')}</div><h3 style="margin:6px 0 4px;font-weight:900">${esc(i.title||'Annonce')}</h3><p class="rss-muted">${esc([i.city,i.country].filter(Boolean).join(', ')||'-')}</p><a class="rss-btn rss-btn-outline" style="margin-top:12px" href="/mes-annonces-partenaire.html?edit=${i.id}">Modifier</a></article>`).join('')||'<p class="rss-muted">Aucune annonce récente.</p>';
+});
+</script>
+
 </body>
 </html>

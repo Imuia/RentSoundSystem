@@ -49,7 +49,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 .rss-success{border:1px solid rgba(80,255,160,.35);color:#9fffc8;background:rgba(80,255,160,.08)}
 
 </style>
-<title>Profil partenaire</title>
+<title>Mes annonces partenaire</title>
 </head>
 <body>
 <aside class="rss-sidebar">
@@ -59,10 +59,10 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   </div>
   <nav style="display:grid;gap:8px">
     <a href="/tableau-de-bord-partenaire-valide.html" class="rss-nav-link "><span class="material-symbols-outlined">dashboard</span> Tableau de bord</a>
-    <a href="/mes-annonces-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
+    <a href="/mes-annonces-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
     <a href="/reservations-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">event_available</span> Réservations</a>
     <a href="/revenus-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">payments</span> Revenus</a>
-    <a href="/profil-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
+    <a href="/profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
   </nav>
   <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
     <a href="/ajouter-materiel-partenaire.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
@@ -76,17 +76,41 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <main class="rss-main">
   <div id="auth-alert" style="display:none"></div>
   
-<section class="rss-card rss-card-pink" style="padding:26px">
-<h1 class="font-headline rss-page-title">Profil partenaire</h1>
-<p class="rss-muted" style="margin-bottom:24px">Informations affichées sur vos annonces.</p>
-<form id="partner-form" class="rss-form-grid">
-<label>Nom / enseigne<input id="partner-name-input" class="rss-input" style="margin-top:6px"></label>
-<label>Téléphone<input id="partner-phone-input" class="rss-input" style="margin-top:6px"></label>
-<label>Ville<input id="partner-city-input" class="rss-input" style="margin-top:6px"></label>
-<label>Pays<input id="partner-country-input" class="rss-input" style="margin-top:6px"></label>
-<div style="grid-column:1/-1;text-align:right"><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer</button></div>
-</form>
+<section class="rss-card" style="padding:24px">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-bottom:22px">
+    <div><h1 class="font-headline rss-page-title">Mes annonces</h1><p class="rss-muted">Modifiez vos annonces, images et informations.</p></div>
+    <a class="rss-btn rss-btn-primary" href="/ajouter-materiel-partenaire.html"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px"><input id="listing-search" class="rss-input" style="width:260px" placeholder="Rechercher..."><select id="status-filter" class="rss-input" style="width:180px"><option value="">Tous les statuts</option><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></div>
+  <div style="overflow-x:auto"><table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px"><thead><tr><th style="padding:0 16px 12px 0">Annonce</th><th>Ville</th><th>Prix</th><th>Statut</th><th>Images</th><th style="text-align:right">Actions</th></tr></thead><tbody id="listings-table"></tbody></table></div>
+  <div id="empty-listings" style="display:none;text-align:center;padding:48px;color:#e6bcc2">Aucune annonce trouvée.</div>
 </section>
+<div id="listing-modal" class="rss-modal" style="position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
+ <div class="rss-card rss-card-pink" style="width:100%;max-width:920px;max-height:92vh;overflow:auto;padding:24px">
+  <div style="display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:18px"><div><h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0">Modifier l’annonce</h2><p class="rss-muted">Texte, prix, statut et images.</p></div><button id="close-modal" class="rss-btn rss-btn-outline" type="button"><span class="material-symbols-outlined">close</span></button></div>
+  <form id="listing-edit-form" class="rss-form-grid">
+    <input type="hidden" id="edit-id">
+    <label style="grid-column:1/-1">Titre<input id="edit-title" class="rss-input" style="margin-top:6px" required></label>
+    <label style="grid-column:1/-1">Description<textarea id="edit-description" class="rss-input" style="margin-top:6px;min-height:140px"></textarea></label>
+    <label>Prix / jour<input id="edit-price" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
+    <label>Caution<input id="edit-caution" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
+    <label>Marque<input id="edit-brand" class="rss-input" style="margin-top:6px"></label>
+    <label>Modèle<input id="edit-model" class="rss-input" style="margin-top:6px"></label>
+    <label>Catégorie<input id="edit-category" class="rss-input" style="margin-top:6px"></label>
+    <label>Statut<select id="edit-status" class="rss-input" style="margin-top:6px"><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></label>
+    <label>Ville<input id="edit-city" class="rss-input" style="margin-top:6px"></label>
+    <label>Pays<input id="edit-country" class="rss-input" style="margin-top:6px"></label>
+    <label style="grid-column:1/-1">Adresse<input id="edit-address" class="rss-input" style="margin-top:6px"></label>
+    <div style="grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-top:16px">
+      <h3 class="font-headline" style="font-size:22px;font-weight:900;margin:0 0 10px">Images</h3>
+      <div id="edit-images" style="display:grid;gap:10px;margin-bottom:12px"></div>
+      <input id="new-images" type="file" accept="image/*" multiple class="rss-input">
+      <p class="rss-muted" style="font-size:12px;margin-top:8px">Vous pouvez ajouter, remplacer ou supprimer des images. Prévoir une policy Supabase Storage sur le bucket <b>listing-images</b>.</p>
+    </div>
+    <div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.1);padding-top:16px"><p id="edit-message" class="rss-muted"></p><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Sauvegarder</button></div>
+  </form>
+ </div>
+</div>
 
 </main>
 
@@ -154,20 +178,66 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 <script>
-let CTX=null;
+let STATE={ctx:null,listings:[],filtered:[],images:{}};
 document.addEventListener('DOMContentLoaded', async()=>{
- CTX=await getPartnerContext(); if(!CTX)return;
- const p=CTX.partner;
- $('partner-name-input').value=p.name||''; $('partner-phone-input').value=p.phone||''; $('partner-city-input').value=p.city||''; $('partner-country-input').value=p.country||'';
- $('partner-form')?.addEventListener('submit',async e=>{
-  e.preventDefault();
-  if(!p.id){alertBox('Aucun ID partners trouvé.','error');return}
-  const update={name:$('partner-name-input').value.trim(),phone:$('partner-phone-input').value.trim(),city:$('partner-city-input').value.trim(),country:$('partner-country-input').value.trim()};
-  const {error}=await sb.from('partners').update(update).eq('id',p.id);
-  if(error){alertBox('Erreur profil : '+error.message,'error');return}
-  alertBox('Profil partenaire mis à jour.','success');
- });
+ STATE.ctx=await getPartnerContext(); if(!STATE.ctx)return;
+ await loadPageListings();
+ $('listing-search')?.addEventListener('input',applyFilters);
+ $('status-filter')?.addEventListener('change',applyFilters);
+ $('close-modal')?.addEventListener('click',closeEdit);
+ $('listing-modal')?.addEventListener('click',e=>{if(e.target.id==='listing-modal')closeEdit()});
+ $('listing-edit-form')?.addEventListener('submit',saveListing);
+ const params=new URLSearchParams(location.search); if(params.get('edit')) setTimeout(()=>openEdit(params.get('edit')),600);
 });
+async function loadPageListings(){STATE.listings=await loadPartnerListings(STATE.ctx); applyFilters();}
+function applyFilters(){
+ const q=clean($('listing-search')?.value), st=$('status-filter')?.value||'';
+ STATE.filtered=STATE.listings.filter(i=>(!st||statusNorm(i.status)===st)&&(!q||[i.title,i.city,i.country,i.category,i.brand,i.model,String(i.original_id||'')].join(' ').toLowerCase().includes(q)));
+ renderTable();
+}
+function renderTable(){
+ const body=$('listings-table'), empty=$('empty-listings');
+ if(!STATE.filtered.length){body.innerHTML=''; empty.style.display='block'; return}
+ empty.style.display='none';
+ body.innerHTML=STATE.filtered.map(i=>`<tr><td style="padding:16px 16px 16px 0"><div style="font-weight:900">${esc(i.title||'Annonce')}</div><div class="rss-muted" style="font-size:12px;margin-top:4px">ID original : ${esc(i.original_id||'-')} · ${esc(i.category||'-')}</div></td><td class="rss-muted">${esc([i.city,i.country].filter(Boolean).join(', ')||'-')}</td><td style="font-weight:900;color:#FC036D">${price(i.price)}</td><td>${badge(i.status)}</td><td><button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')"><span class="material-symbols-outlined" style="font-size:16px">image</span> Gérer</button></td><td style="text-align:right"><button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')"><span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier</button></td></tr>`).join('');
+}
+async function openEdit(id){
+ const i=STATE.listings.find(x=>x.id===id); if(!i)return;
+ $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??''; $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
+ await renderImages(id);
+ $('listing-modal').classList.add('is-open'); document.body.classList.add('rss-no-scroll');
+}
+function closeEdit(){ $('listing-modal').classList.remove('is-open'); document.body.classList.remove('rss-no-scroll') }
+async function renderImages(listingId){
+ const wrap=$('edit-images'); wrap.innerHTML='<p class="rss-muted">Chargement des images...</p>';
+ const imgs=await loadListingImages(listingId); STATE.images[listingId]=imgs;
+ wrap.innerHTML=imgs.length?imgs.map(img=>`<div class="rss-image-row"><img class="rss-thumb" src="${esc(img.url||img.src||'')}" onerror="this.style.display='none'"><div style="flex:1"><div style="font-weight:800">Image #${esc(img.id)}</div><input class="rss-input" id="img-url-${img.id}" value="${esc(img.url||img.src||'')}" style="margin-top:6px"></div><button class="rss-btn rss-btn-outline" onclick="replaceImageUrl('${img.id}')" type="button">Modifier URL</button><button class="rss-btn rss-danger" onclick="deleteImage('${img.id}')" type="button"><span class="material-symbols-outlined">delete</span></button></div>`).join(''):'<p class="rss-muted">Aucune image enregistrée pour cette annonce.</p>';
+}
+async function replaceImageUrl(id){
+ const input=$('img-url-'+id); const url=input.value.trim();
+ const {error}=await sb.from('listing_images').update({url,src:url}).eq('id',id);
+ if(error){alert('Erreur image : '+error.message);return}
+ await renderImages($('edit-id').value);
+}
+async function deleteImage(id){
+ if(!confirm('Supprimer cette image ?')) return;
+ const {error}=await sb.from('listing_images').delete().eq('id',id);
+ if(error){alert('Erreur suppression : '+error.message);return}
+ await renderImages($('edit-id').value);
+}
+async function saveListing(e){
+ e.preventDefault();
+ const id=$('edit-id').value;
+ const update={title:$('edit-title').value.trim(),description:$('edit-description').value.trim(),price:num($('edit-price').value),caution:num($('edit-caution').value),brand:$('edit-brand').value.trim(),model:$('edit-model').value.trim(),category:$('edit-category').value.trim(),status:$('edit-status').value,city:$('edit-city').value.trim(),country:$('edit-country').value.trim(),address:$('edit-address').value.trim()};
+ $('edit-message').textContent='Sauvegarde...';
+ const {error}=await sb.from('listings').update(update).eq('id',id);
+ if(error){$('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';return}
+ const files=Array.from($('new-images').files||[]);
+ try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée, mais erreur image : '+e.message; return; }
+ $('edit-message').textContent='Annonce mise à jour.';
+ await loadPageListings(); await renderImages(id); $('new-images').value='';
+}
+window.openEdit=openEdit; window.deleteImage=deleteImage; window.replaceImageUrl=replaceImageUrl;
 </script>
 
 </body>

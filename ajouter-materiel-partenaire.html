@@ -49,7 +49,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 .rss-success{border:1px solid rgba(80,255,160,.35);color:#9fffc8;background:rgba(80,255,160,.08)}
 
 </style>
-<title>Profil partenaire</title>
+<title>Ajouter du matériel partenaire</title>
 </head>
 <body>
 <aside class="rss-sidebar">
@@ -59,10 +59,10 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   </div>
   <nav style="display:grid;gap:8px">
     <a href="/tableau-de-bord-partenaire-valide.html" class="rss-nav-link "><span class="material-symbols-outlined">dashboard</span> Tableau de bord</a>
-    <a href="/mes-annonces-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
+    <a href="/mes-annonces-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
     <a href="/reservations-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">event_available</span> Réservations</a>
     <a href="/revenus-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">payments</span> Revenus</a>
-    <a href="/profil-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
+    <a href="/profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
   </nav>
   <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
     <a href="/ajouter-materiel-partenaire.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
@@ -77,15 +77,31 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   <div id="auth-alert" style="display:none"></div>
   
 <section class="rss-card rss-card-pink" style="padding:26px">
-<h1 class="font-headline rss-page-title">Profil partenaire</h1>
-<p class="rss-muted" style="margin-bottom:24px">Informations affichées sur vos annonces.</p>
-<form id="partner-form" class="rss-form-grid">
-<label>Nom / enseigne<input id="partner-name-input" class="rss-input" style="margin-top:6px"></label>
-<label>Téléphone<input id="partner-phone-input" class="rss-input" style="margin-top:6px"></label>
-<label>Ville<input id="partner-city-input" class="rss-input" style="margin-top:6px"></label>
-<label>Pays<input id="partner-country-input" class="rss-input" style="margin-top:6px"></label>
-<div style="grid-column:1/-1;text-align:right"><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer</button></div>
-</form>
+  <h1 class="font-headline rss-page-title">Ajouter du matériel</h1>
+  <p class="rss-muted" style="margin-bottom:24px">Créez une nouvelle annonce avec les informations principales, les prix et les images.</p>
+  <form id="add-form" class="rss-form-grid">
+    <label style="grid-column:1/-1">Titre de l’annonce<input id="title" class="rss-input" style="margin-top:6px" required placeholder="Ex : Régie DJ Pioneer CDJ 3000 + DJM A9"></label>
+    <label style="grid-column:1/-1">Description<textarea id="description" class="rss-input" style="margin-top:6px;min-height:150px" required></textarea></label>
+    <label>Catégorie<input id="category" class="rss-input" style="margin-top:6px" placeholder="sonorisation-eclairage"></label>
+    <label>Type<select id="type" class="rss-input" style="margin-top:6px"><option value="rental">Location</option><option value="service">Service événementiel</option></select></label>
+    <label>Marque<input id="brand" class="rss-input" style="margin-top:6px"></label>
+    <label>Modèle<input id="model" class="rss-input" style="margin-top:6px"></label>
+    <label>Prix / jour<input id="price" class="rss-input" style="margin-top:6px" type="number" step="0.01" required></label>
+    <label>Caution<input id="caution" class="rss-input" style="margin-top:6px" type="number" step="0.01" value="0"></label>
+    <label>Prix week-end<input id="price_weekend" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
+    <label>Prix semaine<input id="price_week" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
+    <label>Ville<input id="city" class="rss-input" style="margin-top:6px" required></label>
+    <label>Pays<input id="country" class="rss-input" style="margin-top:6px" required></label>
+    <label style="grid-column:1/-1">Adresse<input id="address" class="rss-input" style="margin-top:6px"></label>
+    <label>Latitude<input id="lat" class="rss-input" style="margin-top:6px" type="number" step="any"></label>
+    <label>Longitude<input id="lng" class="rss-input" style="margin-top:6px" type="number" step="any"></label>
+    <label>Statut<select id="status" class="rss-input" style="margin-top:6px"><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></label>
+    <label>Images<input id="images" type="file" multiple accept="image/*" class="rss-input" style="margin-top:6px"></label>
+    <div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:14px;border-top:1px solid rgba(255,255,255,.1);padding-top:16px">
+      <p id="add-message" class="rss-muted"></p>
+      <button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">add</span> Publier l’annonce</button>
+    </div>
+  </form>
 </section>
 
 </main>
@@ -157,17 +173,26 @@ document.addEventListener('DOMContentLoaded',()=>{
 let CTX=null;
 document.addEventListener('DOMContentLoaded', async()=>{
  CTX=await getPartnerContext(); if(!CTX)return;
- const p=CTX.partner;
- $('partner-name-input').value=p.name||''; $('partner-phone-input').value=p.phone||''; $('partner-city-input').value=p.city||''; $('partner-country-input').value=p.country||'';
- $('partner-form')?.addEventListener('submit',async e=>{
-  e.preventDefault();
-  if(!p.id){alertBox('Aucun ID partners trouvé.','error');return}
-  const update={name:$('partner-name-input').value.trim(),phone:$('partner-phone-input').value.trim(),city:$('partner-city-input').value.trim(),country:$('partner-country-input').value.trim()};
-  const {error}=await sb.from('partners').update(update).eq('id',p.id);
-  if(error){alertBox('Erreur profil : '+error.message,'error');return}
-  alertBox('Profil partenaire mis à jour.','success');
- });
+ $('add-form')?.addEventListener('submit',saveNewListing);
 });
+async function saveNewListing(e){
+ e.preventDefault();
+ const partner=CTX.partner||{};
+ const payload={
+  title:$('title').value.trim(),description:$('description').value.trim(),status:$('status').value,
+  category:$('category').value.trim(),type:$('type').value,brand:$('brand').value.trim(),model:$('model').value.trim(),
+  price:num($('price').value)||0,price_label:'per_day',caution:num($('caution').value)||0,price_weekend:num($('price_weekend').value),price_week:num($('price_week').value),
+  city:$('city').value.trim(),location:$('city').value.trim(),country:$('country').value.trim(),address:$('address').value.trim(),
+  lat:num($('lat').value),lng:num($('lng').value),owner_email:CTX.email,owner_name:partner.name||'',owner_phone:partner.phone||'',owner_city:partner.city||'',owner_country:partner.country||'',legacy_user_id:partner.legacy_user_id||null
+ };
+ $('add-message').textContent='Création de l’annonce...';
+ const {data,error}=await sb.from('listings').insert(payload).select('id,original_id').single();
+ if(error){$('add-message').textContent='Erreur : '+error.message+' — vérifiez la policy INSERT sur listings.';return}
+ const files=Array.from($('images').files||[]);
+ try{ for(const file of files) await uploadImageFile(file,data.id); }catch(e){$('add-message').textContent='Annonce créée, mais erreur image : '+e.message; return}
+ $('add-message').textContent='Annonce créée avec succès.';
+ setTimeout(()=>location.href='/mes-annonces-partenaire.html?edit='+data.id,600);
+}
 </script>
 
 </body>
