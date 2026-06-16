@@ -160,6 +160,10 @@ document.documentElement.classList.add('rss-auth-precheck');
 <button id="login-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Connexion</button>
 <button id="register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Inscription</button>
 </div>
+<div id="register-type-tabs" class="hidden bg-surface-container-lowest p-1 rounded-lg mb-6 border border-outline-variant/10">
+<button id="client-register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md bg-surface-container-high text-on-surface shadow-sm border border-outline-variant/20 transition-all">Client</button>
+<button id="partner-register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Partenaire</button>
+</div>
 <!-- Form -->
 <form id="auth-form" class="space-y-5">
 <div id="name-field" class="hidden">
@@ -292,6 +296,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const loginTab = document.getElementById('login-tab');
   const registerTab = document.getElementById('register-tab');
+  const registerTypeTabs = document.getElementById('register-type-tabs');
+  const clientRegisterTab = document.getElementById('client-register-tab');
+  const partnerRegisterTab = document.getElementById('partner-register-tab');
   const nameField = document.getElementById('name-field');
   const companyField = document.getElementById('company-field');
   const confirmField = document.getElementById('confirm-password-field');
@@ -373,6 +380,8 @@ document.addEventListener('DOMContentLoaded', function () {
     companyField.classList.toggle('hidden', !isRegister);
     confirmField.classList.toggle('hidden', !isRegister);
     loginOptions.classList.toggle('hidden', isRegister);
+    registerTypeTabs?.classList.toggle('hidden', !isRegister);
+    registerTypeTabs?.classList.toggle('flex', isRegister);
 
     submitBtn.textContent = isRegister ? 'Créer mon compte' : 'Se connecter';
 
@@ -384,6 +393,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   loginTab.addEventListener('click', () => activateTab('login'));
   registerTab.addEventListener('click', () => activateTab('register'));
+
+  clientRegisterTab?.addEventListener('click', () => activateTab('register'));
+  partnerRegisterTab?.addEventListener('click', () => {
+    window.location.href = '/inscription-partenaire';
+  });
+
+  if (params.get('type') === 'partner') {
+    window.location.href = '/inscription-partenaire';
+    return;
+  }
 
   if (params.get('mode') === 'register') activateTab('register');
 
