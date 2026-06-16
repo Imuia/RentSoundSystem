@@ -164,7 +164,7 @@
 <span class="material-symbols-outlined text-primary text-2xl">lock_reset</span>
 </div>
 <h1 class="font-headline text-headline-lg text-on-surface mb-2">Réinitialiser votre mot de passe</h1>
-<p class="font-body text-body-md text-on-surface-variant">Choisissez un mot de passe robuste pour protéger votre compte.</p>
+<p class="font-body text-body-md text-on-surface-variant">Choisissez un mot de passe robuste pour protéger votre compte client ou partenaire.</p>
 </div>
 <form id="reset-password-form" class="space-y-6">
 <!-- Field: New Password -->
@@ -306,6 +306,7 @@
       if (error) {
         showMessage('Lien expiré ou invalide. Redemandez un email de réinitialisation.', 'error');
       } else {
+        localStorage.setItem('rss_password_reset_done', '1');
         showMessage('Mot de passe mis à jour. Redirection vers la connexion...', 'success');
         setTimeout(function(){ window.location.href = '/mot-de-passe-reinitialise.html'; }, 1600);
       }

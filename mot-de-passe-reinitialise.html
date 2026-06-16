@@ -154,10 +154,10 @@
                 Mot de passe mis à jour !
             </h1>
 <p class="font-body text-base text-on-surface-variant mb-10 leading-relaxed">
-                Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter à votre compte.
+                Votre mot de passe a été réinitialisé avec succès. Vous pouvez maintenant vous connecter à votre compte client ou partenaire.
             </p>
 <!-- Action -->
-<a class="inline-flex items-center justify-center w-full bg-primary text-on-primary font-label text-sm uppercase tracking-wider py-4 px-6 rounded hover:brightness-110 transition-all duration-200 font-semibold" href="/connexion-inscription.html">
+<a class="inline-flex items-center justify-center w-full bg-primary text-on-primary font-label text-sm uppercase tracking-wider py-4 px-6 rounded hover:brightness-110 transition-all duration-200 font-semibold" href="/connexion-inscription.html?force=1">
                 SE CONNECTER
                 <span class="material-symbols-outlined ml-2 text-xl">arrow_forward</span>
 </a>
@@ -165,4 +165,13 @@
 </main>
 <div id="footer-container"></div>
 <script src="/components.js"></script>
+<script id="rss-reset-success-cleanup">
+(function(){
+  try{
+    localStorage.removeItem('rss_password_reset_done');
+    localStorage.removeItem('rss_reset_email');
+    localStorage.removeItem('rss_reset_type');
+  }catch(e){}
+})();
+</script>
 </body></html>

@@ -156,19 +156,23 @@
                 Mot de passe oublié ?
             </h1>
 <p id="forgot-text" class="font-body text-base text-on-surface-variant mb-8 leading-relaxed max-w-sm">
-                Entrez votre adresse e-mail. Nous vous enverrons un lien sécurisé pour réinitialiser votre mot de passe.
+                Entrez l’adresse e-mail de votre compte client ou partenaire. Nous vous enverrons un lien sécurisé pour réinitialiser votre mot de passe.
             </p>
 
 <form id="forgot-form" class="w-full space-y-4">
   <div class="relative">
     <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">mail</span>
-    <input id="forgot-email" class="w-full bg-surface-container-high rounded py-3 pl-10 pr-4 border border-outline-variant focus:outline-none focus:border-[#FC036D] text-sm text-on-surface" placeholder="votre@email.com" type="email" required>
+    <input id="forgot-email" class="w-full bg-surface-container-high rounded py-3 pl-10 pr-4 border border-outline-variant focus:outline-none focus:border-[#FC036D] text-sm text-on-surface" placeholder="email client ou partenaire" type="email" required>
   </div>
   <button id="forgot-submit" class="w-full text-on-primary font-label text-sm font-semibold uppercase tracking-widest py-4 px-6 rounded hover:bg-primary-fixed transition-colors duration-200 flex items-center justify-center gap-2 bg-[#FC036D]" type="submit">
     <span class="material-symbols-outlined text-[20px]">send</span>
     Envoyer le lien
   </button>
 </form>
+<p id="forgot-account-note" class="mt-4 text-xs text-on-surface-variant leading-relaxed">
+  Le même lien fonctionne pour les comptes clients et les comptes partenaires validés.
+</p>
+
 
 <div id="forgot-success" class="hidden w-full">
   <a class="w-full text-on-primary font-label text-sm font-semibold uppercase tracking-widest py-4 px-6 rounded hover:bg-primary-fixed transition-colors duration-200 flex items-center justify-center gap-2 bg-[#FC036D]" href="/connexion-inscription.html">
@@ -191,7 +195,9 @@
 (function () {
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const RESET_REDIRECT_URL = window.location.origin + '/reinitialiser-mot-de-passe.html';
+  const params = new URLSearchParams(window.location.search);
+  const resetType = params.get('type') === 'partner' ? 'partner' : 'auto';
+  const RESET_REDIRECT_URL = window.location.origin + '/reinitialiser-mot-de-passe.html' + (resetType === 'partner' ? '?type=partner' : '');
 
   function ready(fn) {
     if (document.readyState !== 'loading') fn();
@@ -215,6 +221,7 @@
 
   function showSuccess(email) {
     localStorage.setItem('rss_reset_email', email);
+    localStorage.setItem('rss_reset_type', resetType);
 
     document.getElementById('forgot-icon').textContent = 'mail';
     document.getElementById('forgot-title').textContent = 'E-mail envoyé !';
