@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,8 +52,28 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 </style>
 <title>Mes annonces partenaire</title>
+
+<style id="rss-global-header-footer-partner">
+  body { padding-top: 80px; }
+  #header-container { min-height: 70px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+  #footer-container { margin-left: 280px; min-height: 320px; background:#0e0e0e; border-top:1px solid rgba(255,255,255,.06); }
+  #header-container header { background: rgba(19,19,19,.86); backdrop-filter: blur(12px); border-bottom:1px solid rgba(255,255,255,.10); }
+  #footer-container footer { background:#0e0e0e; }
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+  .rss-sidebar { top: 80px !important; height: calc(100vh - 80px) !important; }
+  .rss-topbar { top: 80px !important; }
+  .rss-main { min-height: calc(100vh - 80px); }
+  @media(max-width:900px){
+    body { padding-top: 72px; }
+    #footer-container { margin-left:0; }
+    .rss-topbar { top:72px !important; }
+  }
+</style>
+
 </head>
 <body>
+<div id="header-container"></div>
 <aside class="rss-sidebar">
   <div style="display:flex;gap:12px;align-items:center;margin-bottom:34px">
     <div style="width:48px;height:48px;border-radius:16px;background:rgba(252,3,109,.1);border:1px solid rgba(252,3,109,.35);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="color:#FC036D">storefront</span></div>
@@ -62,7 +84,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <a href="/mes-annonces-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
     <a href="/reservations-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">event_available</span> Réservations</a>
     <a href="/revenus-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">payments</span> Revenus</a>
-    <a href="/profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
+    <a href="/mon-profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Mon profil</a>
   </nav>
   <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
     <a href="/ajouter-materiel-partenaire.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
@@ -240,5 +262,7 @@ async function saveListing(e){
 window.openEdit=openEdit; window.deleteImage=deleteImage; window.replaceImageUrl=replaceImageUrl;
 </script>
 
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body>
 </html>

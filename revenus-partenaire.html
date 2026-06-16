@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -50,8 +52,28 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 </style>
 <title>Revenus partenaire</title>
+
+<style id="rss-global-header-footer-partner">
+  body { padding-top: 80px; }
+  #header-container { min-height: 70px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; }
+  #footer-container { margin-left: 280px; min-height: 320px; background:#0e0e0e; border-top:1px solid rgba(255,255,255,.06); }
+  #header-container header { background: rgba(19,19,19,.86); backdrop-filter: blur(12px); border-bottom:1px solid rgba(255,255,255,.10); }
+  #footer-container footer { background:#0e0e0e; }
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+  .rss-sidebar { top: 80px !important; height: calc(100vh - 80px) !important; }
+  .rss-topbar { top: 80px !important; }
+  .rss-main { min-height: calc(100vh - 80px); }
+  @media(max-width:900px){
+    body { padding-top: 72px; }
+    #footer-container { margin-left:0; }
+    .rss-topbar { top:72px !important; }
+  }
+</style>
+
 </head>
 <body>
+<div id="header-container"></div>
 <aside class="rss-sidebar">
   <div style="display:flex;gap:12px;align-items:center;margin-bottom:34px">
     <div style="width:48px;height:48px;border-radius:16px;background:rgba(252,3,109,.1);border:1px solid rgba(252,3,109,.35);display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="color:#FC036D">storefront</span></div>
@@ -62,7 +84,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <a href="/mes-annonces-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">inventory_2</span> Mes annonces</a>
     <a href="/reservations-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">event_available</span> Réservations</a>
     <a href="/revenus-partenaire.html" class="rss-nav-link active"><span class="material-symbols-outlined">payments</span> Revenus</a>
-    <a href="/profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Profil partenaire</a>
+    <a href="/mon-profil-partenaire.html" class="rss-nav-link "><span class="material-symbols-outlined">settings</span> Mon profil</a>
   </nav>
   <div style="margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,.1)">
     <a href="/ajouter-materiel-partenaire.html" class="rss-btn rss-btn-primary" style="width:100%;margin-bottom:12px"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
@@ -75,7 +97,16 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 </header>
 <main class="rss-main">
   <div id="auth-alert" style="display:none"></div>
-  <section class="rss-card" style="padding:26px"><h1 class="font-headline rss-page-title">Revenus</h1><p class="rss-muted">Cette page affichera les revenus, paiements validés et commissions liées aux réservations.</p><div id="revenus-list" style="margin-top:20px"></div></section>
+  <section class="rss-card" style="padding:26px">
+  <h1 class="font-headline rss-page-title">Revenus</h1>
+  <p class="rss-muted">Synthèse des revenus estimés à partir de vos annonces et réservations confirmées.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;margin:22px 0">
+    <div class="rss-card rss-card-pink" style="padding:18px"><p class="rss-muted" style="margin:0">Revenus confirmés</p><strong id="rev-total" style="font-size:32px">0 €</strong></div>
+    <div class="rss-card" style="padding:18px"><p class="rss-muted" style="margin:0">Réservations payées</p><strong id="rev-paid" style="font-size:32px">0</strong></div>
+    <div class="rss-card" style="padding:18px"><p class="rss-muted" style="margin:0">Annonces actives</p><strong id="rev-listings" style="font-size:32px">0</strong></div>
+  </div>
+  <div id="revenus-list" style="margin-top:20px"></div>
+</section>
 </main>
 
 <script>
@@ -140,6 +171,30 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
-<script>document.addEventListener('DOMContentLoaded', async()=>{await getPartnerContext();});</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', async()=>{
+  const ctx = await getPartnerContext(); if(!ctx) return;
+  const listings = await loadPartnerListings(ctx);
+  $('rev-listings').textContent = listings.filter(x=>statusNorm(x.status)==='publish').length;
+  const ids = listings.map(x=>x.id);
+  let rows = [];
+  if(ids.length){
+    try{
+      const {data,error} = await sb.from('reservations').select('*').in('listing_id', ids).order('created_at',{ascending:false});
+      if(!error) rows = data || [];
+    }catch(e){}
+  }
+  const paid = rows.filter(r=>['paid','confirmed','confirmé','confirmee','confirmée'].includes(String(r.status||'').toLowerCase()));
+  const total = paid.reduce((s,r)=>s+Number(r.total||r.amount||0),0);
+  $('rev-paid').textContent = paid.length;
+  $('rev-total').textContent = price(total);
+  $('revenus-list').innerHTML = paid.length
+    ? '<div class="rss-card" style="padding:18px">Revenus calculés sur les réservations confirmées/payées.</div>'
+    : '<div class="rss-card" style="padding:18px;color:#e6bcc2">Aucun revenu confirmé pour le moment.</div>';
+});
+</script>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
 </body>
 </html>
