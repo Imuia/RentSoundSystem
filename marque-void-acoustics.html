@@ -446,25 +446,32 @@
     return '/catalog.html?brand=void';
   }
   function matchesVoid(item){
-    const text = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
-    return text.includes('void') || text.includes('air motion') || text.includes('nexus') || text.includes('stasys') || text.includes('incubus') || text.includes('airten');
+    const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
+    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
+
+    // Filtre strict : pas de mots génériques comme "air", "nexus", "sub", etc.
+    // Sinon des annonces d'autres marques peuvent remonter.
+    return (
+      brandText.includes('void') ||
+      brandText.includes('void acoustics') ||
+      fullText.includes('void acoustics') ||
+      fullText.includes('voidacoustics') ||
+      fullText.includes('marque void') ||
+      fullText.includes('brand void')
+    );
   }
   function brandSearchTerms(title){
-    const base = norm(title).replace(/\bprofessional\b/g,'').replace(/\bprofessionnal\b/g,'').trim();
-    const terms = new Set();
-    if(base) terms.add(base);
-    if(base.includes('void acoustics')) terms.add('void');
-    if(base.includes('void')) terms.add('void acoustics');
-    title.split(/\s+/).forEach(w => {
-      const nw = norm(w);
-      if(nw.length >= 3) terms.add(nw);
-    });
-    ['void','void acoustics','air motion','airten','air vantage','stasys','xair','nexus','tri motion','air stream','sub vantage'].forEach(t => terms.add(t));
-    return Array.from(terms).filter(Boolean);
+    return ['void acoustics','void','voidacoustics'];
   }
   function productMatchesBrand(item, terms){
-    const text = norm([item.brand,item.title,item.model,item.category,item.description].join(' '));
-    return terms.some(term => text.includes(term));
+    const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
+    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.model, item.category, item.description].join(' '));
+    return (
+      brandText.includes('void') ||
+      brandText.includes('void acoustics') ||
+      fullText.includes('void acoustics') ||
+      fullText.includes('voidacoustics')
+    );
   }
   function typeOf(item){
     const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
@@ -502,7 +509,7 @@
     setCount(list.length);
     renderMapMarkers(list);
     if(!list.length){
-      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Les annonces sont recherchées dans brand, title, model, category et description, comme sur la page marque-detail.</p></div>';
+      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces contenant réellement Void ou Void Acoustics dans la marque, le titre, le modèle ou la description sont affichées ici.</p></div>';
       return;
     }
     grid.innerHTML = list.map((item, index) => {
@@ -566,8 +573,10 @@
       allVoidProducts = rows.filter(item => matchesVoid(item) || productMatchesBrand(item, terms));
 
       if(!allVoidProducts.length){
-        const loose = ['void','acoustics','air','motion','stasys','nexus','airten'];
-        allVoidProducts = rows.filter(item => productMatchesBrand(item, loose));
+        allVoidProducts = rows.filter(item => {
+          const text = norm([item.brand,item.title,item.model,item.description].join(' '));
+          return text.includes('void acoustics') || text.includes('voidacoustics') || norm(item.brand).includes('void');
+        });
       }
 
       render(currentFilter);
