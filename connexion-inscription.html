@@ -82,6 +82,18 @@
 <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+		#client-register-tab,
+#partner-register-tab{
+    transition:all .2s ease;
+    cursor:pointer;
+}
+
+#client-register-tab:hover,
+#partner-register-tab:hover{
+    background:#FC036D !important;
+    color:#ffffff !important;
+    box-shadow:0 0 15px rgba(252,3,109,.35);
+}
     </style>
 
 <style id="rss-auth-global-compat">
@@ -164,7 +176,8 @@ document.documentElement.classList.add('rss-auth-precheck');
 <button id="client-register-tab" type="button" style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:#FC036D;color:#fff;box-shadow:0 0 15px rgba(252,3,109,.25);">
 Client
 </button>
-<button id="partner-register-tab" type="button" style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:rgba(252,3,109,.08);color:#e6bcc2;">
+<button id="partner-register-tab" type="button"
+style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:transparent;color:#e6bcc2;">
 Partenaire
 </button>
 </div>
@@ -506,32 +519,18 @@ document.addEventListener('DOMContentLoaded', function () {
       : "Accédez à l'inventaire de production technique.";
   }
 
-  loginTab.addEventListener('click', () => activateTab('login'));
-  registerTab.addEventListener('click', () => activateTab('register'));
-
   clientRegisterTab?.addEventListener('click', () => {
-    clientRegisterTab.style.background='#FC036D';
-    clientRegisterTab.style.color='#fff';
-    partnerRegisterTab.style.background='rgba(252,3,109,.08)';
-    partnerRegisterTab.style.color='#e6bcc2';
     activateTab('register');
-  });
+});
 
-  partnerRegisterTab?.addEventListener('click', () => {
-    partnerRegisterTab.style.background='#FC036D';
-    partnerRegisterTab.style.color='#fff';
-    clientRegisterTab.style.background='rgba(252,3,109,.08)';
-    clientRegisterTab.style.color='#e6bcc2';
+partnerRegisterTab?.addEventListener('click', () => {
+    window.location.href = '/inscription-partenaire.html';
+});
 
-    setTimeout(() => {
-      window.location.href='/inscription-partenaire';
-    },150);
-  });
-
-  if (params.get('type') === 'partner') {
-    window.location.href = '/inscription-partenaire';
+if (params.get('type') === 'partner') {
+    window.location.href = '/inscription-partenaire.html';
     return;
-  }
+}
 
   if (params.get('mode') === 'register') activateTab('register');
 
