@@ -436,7 +436,7 @@
     return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
   }
   function price(item){
-    const value = item.price_per_day ?? item.daily_price ?? item.price ?? item.prix ?? 0;
+    const value = item.price_per_day ?? item.price_day ?? item.daily_price ?? item.price ?? item.prix ?? 0;
     const n = Number(value || 0);
     return n ? n.toLocaleString('fr-FR', {maximumFractionDigits:0}) + '€' : 'Sur devis';
   }
@@ -448,6 +448,23 @@
   function matchesVoid(item){
     const text = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
     return text.includes('void') || text.includes('air motion') || text.includes('nexus') || text.includes('stasys') || text.includes('incubus') || text.includes('airten');
+  }
+  function brandSearchTerms(title){
+    const base = norm(title).replace(/\bprofessional\b/g,'').replace(/\bprofessionnal\b/g,'').trim();
+    const terms = new Set();
+    if(base) terms.add(base);
+    if(base.includes('void acoustics')) terms.add('void');
+    if(base.includes('void')) terms.add('void acoustics');
+    title.split(/\s+/).forEach(w => {
+      const nw = norm(w);
+      if(nw.length >= 3) terms.add(nw);
+    });
+    ['void','void acoustics','air motion','airten','air vantage','stasys','xair','nexus','tri motion','air stream','sub vantage'].forEach(t => terms.add(t));
+    return Array.from(terms).filter(Boolean);
+  }
+  function productMatchesBrand(item, terms){
+    const text = norm([item.brand,item.title,item.model,item.category,item.description].join(' '));
+    return terms.some(term => text.includes(term));
   }
   function typeOf(item){
     const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
@@ -485,7 +502,7 @@
     setCount(list.length);
     renderMapMarkers(list);
     if(!list.length){
-      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces dont la colonne brand correspond à Void Acoustics sont affichées ici.</p></div>';
+      grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Void disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Les annonces sont recherchées dans brand, title, model, category et description, comme sur la page marque-detail.</p></div>';
       return;
     }
     grid.innerHTML = list.map((item, index) => {
@@ -520,39 +537,45 @@
     try{
       if(!window.supabase) throw new Error('Supabase JS non chargé');
       const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      const { data, error } = await client
+
+      let brandTitle = 'Void Acoustics';
+      try{
+        const brandRes = await client.from('brands').select('*').eq('slug','void-acoustics').maybeSingle();
+        if(!brandRes.error && brandRes.data && brandRes.data.title) brandTitle = brandRes.data.title;
+      }catch(e){}
+
+      const fields = '*, listing_images(image_url, position)';
+      let listingsRes = await client
         .from('listings')
-        .select(`
-          id,
-          original_id,
-          title,
-          description,
-          city,
-          location,
-          lat,
-          lng,
-          price,
-          price_day,
-          price_per_day,
-          model,
-          brand,
-          category,
-          status,
-          listing_images(image_url, position)
-        `)
-        .or('brand.ilike.%void%,title.ilike.%void%,model.ilike.%void%,description.ilike.%void%')
-        .order('created_at', { ascending:false })
-        .limit(80);
+        .select(fields)
+        .eq('status','publish')
+        .limit(500);
 
-      if(error) throw error;
+      if(listingsRes.error){
+        listingsRes = await client
+          .from('listings')
+          .select(fields)
+          .limit(500);
+      }
 
-      allVoidProducts = (data || []).filter(matchesVoid);
+      if(listingsRes.error) throw listingsRes.error;
+
+      const rows = listingsRes.data || [];
+      const terms = brandSearchTerms(brandTitle);
+
+      allVoidProducts = rows.filter(item => matchesVoid(item) || productMatchesBrand(item, terms));
+
+      if(!allVoidProducts.length){
+        const loose = ['void','acoustics','air','motion','stasys','nexus','airten'];
+        allVoidProducts = rows.filter(item => productMatchesBrand(item, loose));
+      }
+
       render(currentFilter);
     }catch(error){
       console.warn('Void listings loading error:', error.message || error);
       const grid = $('#void-products-grid');
       if(grid){
-        grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">warning</span><h3 class="text-headline-md font-headline-md mb-2">Impossible de charger les annonces Void</h3><p class="text-body-md font-body-md text-on-surface-variant">Vérifiez les colonnes Supabase et les politiques RLS de la table listings.</p></div>';
+        grid.innerHTML = '<div class="void-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">warning</span><h3 class="text-headline-md font-headline-md mb-2">Impossible de charger les annonces Void</h3><p class="text-body-md font-body-md text-on-surface-variant">Vérifiez les colonnes Supabase, la table brands et les politiques RLS de la table listings.</p></div>';
       }
       setCount(0);
       renderMapMarkers([]);
