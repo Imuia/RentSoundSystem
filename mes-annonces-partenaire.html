@@ -205,6 +205,20 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-storage-help-style">
+  .rss-storage-help{
+    margin-top:10px;
+    padding:12px 14px;
+    border:1px solid rgba(252,3,109,.22);
+    border-radius:12px;
+    background:rgba(252,3,109,.06);
+    color:#e6bcc2;
+    font-size:12px;
+    line-height:1.55;
+  }
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -321,7 +335,14 @@ async function loadListingImages(listingId){
 }
 async function uploadImageFile(file, listingId){
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
-  const path='partners/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
+
+  const {data:userData,error:userErr}=await sb.auth.getUser();
+  if(userErr || !userData || !userData.user){
+    throw new Error('Utilisateur non connecté : impossible d’envoyer l’image.');
+  }
+
+  const userId=userData.user.id;
+  const path=userId+'/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
   const bucketName='listing-images';
 
   const {error:upErr}=await sb.storage
@@ -329,10 +350,13 @@ async function uploadImageFile(file, listingId){
     .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
 
   if(upErr){
-    throw new Error(upErr.message === 'Bucket not found'
-      ? 'Bucket Storage "'+bucketName+'" introuvable. Créez-le dans Supabase > Storage ou changez bucketName dans le code.'
-      : upErr.message
-    );
+    if(upErr.message === 'Bucket not found'){
+      throw new Error('Storage bucket "'+bucketName+'" introuvable. Créez ce bucket dans Supabase Storage.');
+    }
+    if(String(upErr.message||'').toLowerCase().includes('row-level security')){
+      throw new Error('Storage RLS bloque l’upload. Ajoutez les policies Storage sur le bucket "'+bucketName+'".');
+    }
+    throw new Error('Erreur Storage : '+upErr.message);
   }
 
   const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
@@ -344,7 +368,13 @@ async function uploadImageFile(file, listingId){
     position: 999
   });
 
-  if(insErr) throw insErr;
+  if(insErr){
+    if(String(insErr.message||'').toLowerCase().includes('row-level security')){
+      throw new Error('RLS bloque l’insertion dans listing_images. Vérifiez les policies INSERT sur public.listing_images.');
+    }
+    throw new Error('Erreur listing_images : '+insErr.message);
+  }
+
   return imageUrl;
 }
 document.addEventListener('DOMContentLoaded',()=>{
