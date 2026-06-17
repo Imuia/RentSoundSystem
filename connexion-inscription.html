@@ -149,6 +149,21 @@ body.rss-checking-session main{opacity:0;pointer-events:none;transition:opacity 
 <script>
 document.documentElement.classList.add('rss-auth-precheck');
 </script>
+
+<style id="rss-auth-tabs-click-fix">
+  #login-tab, #register-tab, #client-register-tab, #partner-register-tab {
+    pointer-events:auto!important;
+    cursor:pointer!important;
+    user-select:none;
+  }
+  #client-register-tab:hover,
+  #partner-register-tab:hover{
+    background:#FC036D !important;
+    color:#ffffff !important;
+    box-shadow:0 0 15px rgba(252,3,109,.35)!important;
+  }
+</style>
+
 </head>
 <body class="bg-surface text-on-surface min-h-screen flex flex-col font-body antialiased pt-20 rss-checking-session">
 <div id="header-container"></div>
@@ -173,7 +188,8 @@ document.documentElement.classList.add('rss-auth-precheck');
 <button id="register-tab" type="button" class="flex-1 py-2 text-sm font-semibold rounded-md text-on-surface-variant hover:text-on-surface transition-all">Inscription</button>
 </div>
 <div id="register-type-tabs" class="hidden mb-6" style="display:none;gap:10px;">
-<button id="client-register-tab" type="button" style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:#FC036D;color:#fff;box-shadow:0 0 15px rgba(252,3,109,.25);">
+<button id="client-register-tab" type="button"
+style="padding:8px 18px;border-radius:999px;font-size:13px;font-weight:600;border:1px solid rgba(252,3,109,.25);background:transparent;color:#e6bcc2;">
 Client
 </button>
 <button id="partner-register-tab" type="button"
@@ -517,7 +533,19 @@ document.addEventListener('DOMContentLoaded', function () {
     if (subtitle) subtitle.textContent = isRegister
       ? 'Créez votre espace pour louer ou proposer du matériel.'
       : "Accédez à l'inventaire de production technique.";
+
+    if (clientRegisterTab) {
+      clientRegisterTab.style.background = isRegister ? 'rgba(252,3,109,.12)' : 'transparent';
+      clientRegisterTab.style.color = isRegister ? '#ffffff' : '#e6bcc2';
+    }
+    if (partnerRegisterTab) {
+      partnerRegisterTab.style.background = 'transparent';
+      partnerRegisterTab.style.color = '#e6bcc2';
+    }
   }
+
+  loginTab?.addEventListener('click', () => activateTab('login'));
+  registerTab?.addEventListener('click', () => activateTab('register'));
 
   clientRegisterTab?.addEventListener('click', () => {
     activateTab('register');
