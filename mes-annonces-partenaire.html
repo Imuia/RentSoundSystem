@@ -225,6 +225,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 .brand-img-fallback::after{content:'image indisponible';color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 </style>
 
+
+<!-- rss-delete-listing-fix-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -597,7 +599,30 @@ function renderTable(){
  const body=$('listings-table'), empty=$('empty-listings');
  if(!STATE.filtered.length){body.innerHTML=''; empty.style.display='block'; return}
  empty.style.display='none';
- body.innerHTML=STATE.filtered.map(i=>`<tr><td style="padding:16px 16px 16px 0"><div style="font-weight:900">${esc(i.title||'Annonce')}</div><div class="rss-muted" style="font-size:12px;margin-top:4px">ID original : ${esc(i.original_id||'-')} · ${esc(i.category||'-')}</div></td><td class="rss-muted">${esc([i.city,i.country].filter(Boolean).join(', ')||'-')}</td><td style="font-weight:900;color:#FC036D">${price(i.price)}</td><td>${badge(i.status)}</td><td><button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')"><span class="material-symbols-outlined" style="font-size:16px">image</span> Gérer</button></td><td style="text-align:right"><button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')"><span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier</button></td></tr>`).join('');
+ body.innerHTML=STATE.filtered.map(i=>`<tr>
+<td style="padding:16px 16px 16px 0">
+  <div style="font-weight:900">${esc(i.title||'Annonce')}</div>
+  <div class="rss-muted" style="font-size:12px;margin-top:4px">ID original : ${esc(i.original_id||'-')} · ${esc(i.category||'-')}</div>
+</td>
+<td class="rss-muted">${esc([i.city,i.country].filter(Boolean).join(', ')||'-')}</td>
+<td style="font-weight:900;color:#FC036D">${price(i.price)}</td>
+<td>${badge(i.status)}</td>
+<td>
+  <button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')">
+    <span class="material-symbols-outlined" style="font-size:16px">image</span> Gérer
+  </button>
+</td>
+<td style="text-align:right">
+  <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+    <button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')">
+      <span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier
+    </button>
+    <button class="rss-btn rss-danger" onclick="deleteListing('${i.id}')" type="button">
+      <span class="material-symbols-outlined" style="font-size:16px">delete</span> Supprimer
+    </button>
+  </div>
+</td>
+</tr>`).join('');
 }
 async function openEdit(id){
  const i=STATE.listings.find(x=>x.id===id); if(!i)return;
@@ -687,6 +712,51 @@ async function deleteImage(key){
  if(error){alert('Erreur suppression : '+error.message);return}
  await renderImages($('edit-id').value);
 }
+
+async function deleteListing(id){
+ if(!id) return;
+ const item = (STATE.listings || []).find(x => String(x.id) === String(id));
+ const title = item?.title || 'cette annonce';
+
+ const ok = confirm(
+   'Supprimer définitivement l’annonce : "' + title + '" ?\n\n' +
+   'Cette action supprimera aussi les images liées dans la base de données.'
+ );
+ if(!ok) return;
+
+ try{
+   const msg = $('edit-message');
+   if(msg) msg.textContent='Suppression en cours...';
+
+   // Sécurité propriétaire : on ne supprime que les annonces du partenaire connecté.
+   let query = sb.from('listings').delete().eq('id', id);
+   if(STATE.ctx?.email) query = query.ilike('owner_email', cleanEmail(STATE.ctx.email));
+
+   // Nettoyage des images liées. Si RLS bloque, on continue quand même la suppression annonce.
+   try{
+     await sb.from('listing_images').delete().eq('listing_id', id);
+   }catch(e){
+     console.warn('Suppression listing_images impossible:', e.message || e);
+   }
+
+   const {error} = await query;
+   if(error){
+     alert('Erreur suppression annonce : ' + error.message + '\\nVérifiez la policy DELETE sur listings.');
+     return;
+   }
+
+   // Fermer le modal si l’annonce supprimée était ouverte.
+   if($('edit-id') && String($('edit-id').value) === String(id)) closeEdit();
+
+   STATE.listings = (STATE.listings || []).filter(x => String(x.id) !== String(id));
+   STATE.filtered = (STATE.filtered || []).filter(x => String(x.id) !== String(id));
+   renderTable();
+   alertBox('Annonce supprimée avec succès.','success');
+ }catch(err){
+   alert('Erreur suppression : ' + (err.message || err));
+ }
+}
+
 async function saveListing(e){
  e.preventDefault();
  const id=$('edit-id').value;
@@ -718,10 +788,33 @@ async function saveListing(e){
  $('edit-message').textContent='Annonce mise à jour.';
  await loadPageListings(); await renderImages(id); STATE.selectedEditFiles=[]; renderNewImagePreviews(); $('new-images').value='';
 }
-window.openEdit=openEdit; window.deleteImage=deleteImage; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
+window.openEdit=openEdit; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
 </script>
 
 <div id="footer-container"></div>
 <script src="/components.js"></script>
+
+<!--
+SQL RLS utile si la suppression d'annonce est bloquée :
+create policy "partners can delete own listings"
+on public.listings
+for delete
+to authenticated
+using (
+  lower(owner_email) = lower((select email from auth.users where id = auth.uid()))
+);
+create policy "partners can delete own listing images"
+on public.listing_images
+for delete
+to authenticated
+using (
+  exists (
+    select 1 from public.listings l
+    where l.id = listing_images.listing_id
+    and lower(l.owner_email) = lower((select email from auth.users where id = auth.uid()))
+  )
+);
+-->
+
 </body>
 </html>
