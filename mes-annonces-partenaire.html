@@ -219,6 +219,12 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-dashboard-image-fallback-css">
+.brand-img-fallback{background:radial-gradient(circle at 50% 20%,rgba(252,3,109,.24),transparent 36%),linear-gradient(180deg,#242424,#101010)!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.brand-img-fallback::after{content:'image indisponible';color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -322,45 +328,83 @@ async function loadPartnerListings(ctx){
   if(error){ alertBox('Impossible de charger les annonces : '+error.message,'error'); return []; }
   return data||[];
 }
-async function loadListingImages(listingId){
-  const {data,error}=await sb.from('listing_images')
-    .select('id,listing_id,image_url,position,created_at')
-    .eq('listing_id',listingId)
-    .order('position',{ascending:true});
-  if(error){
-    console.warn('Erreur chargement images:', error.message);
-    return [];
+
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=()=>reject(new Error('Lecture image impossible'));
+    reader.readAsDataURL(file);
+  });
+}
+function imageKey(img){
+  if(img.source === 'staging'){
+    return 'staging|'+encodeURIComponent(img.listing_original_id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
   }
-  return data||[];
+  return 'main|'+encodeURIComponent(img.id||'');
+}
+function parseImageKey(key){
+  const parts=String(key||'').split('|');
+  return {source:parts[0], id:decodeURIComponent(parts[1]||''), original_id:decodeURIComponent(parts[1]||''), position:decodeURIComponent(parts[2]||''), image_url:decodeURIComponent(parts[3]||'')};
+}
+
+async function loadListingImages(listingOrId){
+  const listing = (typeof listingOrId === 'object' && listingOrId)
+    ? listingOrId
+    : (STATE.listings || []).find(x => String(x.id) === String(listingOrId)) || {id: listingOrId};
+
+  const out = [];
+  const seen = new Set();
+
+  if(listing.id){
+    const {data,error}=await sb.from('listing_images')
+      .select('id,listing_id,image_url,position,created_at')
+      .eq('listing_id',listing.id)
+      .order('position',{ascending:true});
+    if(error) console.warn('Erreur chargement listing_images:', error.message);
+    (data||[]).forEach(img=>{
+      const url=img.image_url||'';
+      if(url && !seen.has(url)){ seen.add(url); out.push({...img, source:'main'}); }
+    });
+  }
+
+  if(listing.original_id !== undefined && listing.original_id !== null && String(listing.original_id) !== ''){
+    const {data:staging,error:stErr}=await sb.from('listing_images_staging')
+      .select('listing_original_id,image_url,position')
+      .eq('listing_original_id', Number(listing.original_id))
+      .order('position',{ascending:true});
+    if(stErr) console.warn('Erreur chargement listing_images_staging:', stErr.message);
+    (staging||[]).forEach(img=>{
+      const url=img.image_url||'';
+      if(url && !seen.has(url)){ seen.add(url); out.push({...img, source:'staging'}); }
+    });
+  }
+
+  return out.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
 }
 async function uploadImageFile(file, listingId){
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
-
-  const {data:userData,error:userErr}=await sb.auth.getUser();
-  if(userErr || !userData || !userData.user){
-    throw new Error('Utilisateur non connecté : impossible d’envoyer l’image.');
-  }
-
-  const userId=userData.user.id;
-  const path=userId+'/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
   const bucketName='listing-images';
+  let imageUrl='';
 
-  const {error:upErr}=await sb.storage
-    .from(bucketName)
-    .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+  try{
+    const {data:userData,error:userErr}=await sb.auth.getUser();
+    if(userErr || !userData || !userData.user) throw new Error('Utilisateur non connecté.');
+    const userId=userData.user.id;
+    const path=userId+'/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
 
-  if(upErr){
-    if(upErr.message === 'Bucket not found'){
-      throw new Error('Storage bucket "'+bucketName+'" introuvable. Créez ce bucket dans Supabase Storage.');
-    }
-    if(String(upErr.message||'').toLowerCase().includes('row-level security')){
-      throw new Error('Storage RLS bloque l’upload. Ajoutez les policies Storage sur le bucket "'+bucketName+'".');
-    }
-    throw new Error('Erreur Storage : '+upErr.message);
+    const {error:upErr}=await sb.storage
+      .from(bucketName)
+      .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+
+    if(upErr) throw upErr;
+
+    const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
+    imageUrl=pub.publicUrl;
+  }catch(storageErr){
+    console.warn('Storage indisponible, fallback data URL:', storageErr.message || storageErr);
+    imageUrl=await fileToDataUrl(file);
   }
-
-  const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
-  const imageUrl=pub.publicUrl;
 
   const {error:insErr}=await sb.from('listing_images').insert({
     listing_id: listingId,
@@ -369,10 +413,7 @@ async function uploadImageFile(file, listingId){
   });
 
   if(insErr){
-    if(String(insErr.message||'').toLowerCase().includes('row-level security')){
-      throw new Error('RLS bloque l’insertion dans listing_images. Vérifiez les policies INSERT sur public.listing_images.');
-    }
-    throw new Error('Erreur listing_images : '+insErr.message);
+    throw new Error('Erreur insertion image dans listing_images : '+insErr.message);
   }
 
   return imageUrl;
@@ -423,17 +464,21 @@ async function openEdit(id){
 function closeEdit(){ $('listing-modal').classList.remove('is-open'); document.body.classList.remove('rss-no-scroll') }
 async function renderImages(listingId){
  const wrap=$('edit-images'); wrap.innerHTML='<p class="rss-muted">Chargement des images...</p>';
- const imgs=await loadListingImages(listingId); STATE.images[listingId]=imgs;
+ const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId)) || {id:listingId};
+ const imgs=await loadListingImages(listing); STATE.images[listingId]=imgs;
  wrap.innerHTML=imgs.length?imgs.map(img=>{
    const imageUrl = img.image_url || '';
+   const key = imageKey(img);
+   const badge = img.source === 'staging' ? '<div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.4);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px">legacy</div>' : '';
    return `<div class="rss-image-preview-card">
+     ${badge}
      <div class="rss-image-preview-actions">
-       <button class="rss-image-mini-btn" onclick="deleteImage('${img.id}')" type="button" title="Supprimer">×</button>
+       <button class="rss-image-mini-btn" onclick="deleteImage('${key}')" type="button" title="Supprimer">×</button>
      </div>
-     <img src="${esc(imageUrl)}" alt="" onerror="this.style.display='none'">
-     <input class="rss-input rss-image-url-input" id="img-url-${img.id}" value="${esc(imageUrl)}" placeholder="URL image">
+     <img src="${esc(imageUrl)}" alt="" onerror="this.closest('.rss-image-preview-card').classList.add('brand-img-fallback');this.style.display='none'">
+     <input class="rss-input rss-image-url-input" id="img-url-${key}" value="${esc(imageUrl)}" placeholder="URL image">
      <div style="padding:0 8px 8px">
-       <button class="rss-btn rss-btn-outline" style="width:100%;padding:8px 10px" onclick="replaceImageUrl('${img.id}')" type="button">Modifier URL</button>
+       <button class="rss-btn rss-btn-outline" style="width:100%;padding:8px 10px" onclick="replaceImageUrl('${key}')" type="button">Modifier URL</button>
      </div>
    </div>`;
  }).join(''):'<p class="rss-muted">Aucune image enregistrée pour cette annonce.</p>';
@@ -458,15 +503,41 @@ function removeNewEditImage(index){
  renderNewImagePreviews();
 }
 window.removeNewEditImage = removeNewEditImage;
-async function replaceImageUrl(id){
- const input=$('img-url-'+id); const url=input.value.trim();
- const {error}=await sb.from('listing_images').update({image_url:url}).eq('id',id);
- if(error){alert('Erreur image : '+error.message);return}
+async function replaceImageUrl(key){
+ const input=$('img-url-'+key);
+ const url=input?.value?.trim();
+ if(!url){alert('URL vide');return}
+ const info=parseImageKey(key);
+ let error=null;
+ if(info.source === 'staging'){
+   const res=await sb.from('listing_images_staging')
+     .update({image_url:url})
+     .eq('listing_original_id', Number(info.original_id))
+     .eq('image_url', info.image_url)
+     .eq('position', Number(info.position||0));
+   error=res.error;
+ }else{
+   const res=await sb.from('listing_images').update({image_url:url}).eq('id',info.id);
+   error=res.error;
+ }
+ if(error){alert('Erreur modification : '+error.message);return}
  await renderImages($('edit-id').value);
 }
-async function deleteImage(id){
+async function deleteImage(key){
  if(!confirm('Supprimer cette image ?')) return;
- const {error}=await sb.from('listing_images').delete().eq('id',id);
+ const info=parseImageKey(key);
+ let error=null;
+ if(info.source === 'staging'){
+   const res=await sb.from('listing_images_staging')
+     .delete()
+     .eq('listing_original_id', Number(info.original_id))
+     .eq('image_url', info.image_url)
+     .eq('position', Number(info.position||0));
+   error=res.error;
+ }else{
+   const res=await sb.from('listing_images').delete().eq('id',info.id);
+   error=res.error;
+ }
  if(error){alert('Erreur suppression : '+error.message);return}
  await renderImages($('edit-id').value);
 }

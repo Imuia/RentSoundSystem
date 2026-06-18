@@ -135,6 +135,12 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-dashboard-image-fallback-css">
+.brand-img-fallback{background:radial-gradient(circle at 50% 20%,rgba(252,3,109,.24),transparent 36%),linear-gradient(180deg,#242424,#101010)!important;display:flex!important;align-items:center!important;justify-content:center!important}
+.brand-img-fallback::after{content:'image indisponible';color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -249,6 +255,26 @@ async function loadPartnerListings(ctx){
   if(error){ alertBox('Impossible de charger les annonces : '+error.message,'error'); return []; }
   return data||[];
 }
+
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=()=>reject(new Error('Lecture image impossible'));
+    reader.readAsDataURL(file);
+  });
+}
+function imageKey(img){
+  if(img.source === 'staging'){
+    return 'staging|'+encodeURIComponent(img.listing_original_id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
+  }
+  return 'main|'+encodeURIComponent(img.id||'');
+}
+function parseImageKey(key){
+  const parts=String(key||'').split('|');
+  return {source:parts[0], id:decodeURIComponent(parts[1]||''), original_id:decodeURIComponent(parts[1]||''), position:decodeURIComponent(parts[2]||''), image_url:decodeURIComponent(parts[3]||'')};
+}
+
 async function loadListingImages(listingId){
   const {data,error}=await sb.from('listing_images')
     .select('id,listing_id,image_url,position,created_at')
@@ -262,32 +288,27 @@ async function loadListingImages(listingId){
 }
 async function uploadImageFile(file, listingId){
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
-
-  const {data:userData,error:userErr}=await sb.auth.getUser();
-  if(userErr || !userData || !userData.user){
-    throw new Error('Utilisateur non connecté : impossible d’envoyer l’image.');
-  }
-
-  const userId=userData.user.id;
-  const path=userId+'/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
   const bucketName='listing-images';
+  let imageUrl='';
 
-  const {error:upErr}=await sb.storage
-    .from(bucketName)
-    .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+  try{
+    const {data:userData,error:userErr}=await sb.auth.getUser();
+    if(userErr || !userData || !userData.user) throw new Error('Utilisateur non connecté.');
+    const userId=userData.user.id;
+    const path=userId+'/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
 
-  if(upErr){
-    if(upErr.message === 'Bucket not found'){
-      throw new Error('Storage bucket "'+bucketName+'" introuvable. Créez ce bucket dans Supabase Storage.');
-    }
-    if(String(upErr.message||'').toLowerCase().includes('row-level security')){
-      throw new Error('Storage RLS bloque l’upload. Ajoutez les policies Storage sur le bucket "'+bucketName+'".');
-    }
-    throw new Error('Erreur Storage : '+upErr.message);
+    const {error:upErr}=await sb.storage
+      .from(bucketName)
+      .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
+
+    if(upErr) throw upErr;
+
+    const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
+    imageUrl=pub.publicUrl;
+  }catch(storageErr){
+    console.warn('Storage indisponible, fallback data URL:', storageErr.message || storageErr);
+    imageUrl=await fileToDataUrl(file);
   }
-
-  const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
-  const imageUrl=pub.publicUrl;
 
   const {error:insErr}=await sb.from('listing_images').insert({
     listing_id: listingId,
@@ -296,10 +317,7 @@ async function uploadImageFile(file, listingId){
   });
 
   if(insErr){
-    if(String(insErr.message||'').toLowerCase().includes('row-level security')){
-      throw new Error('RLS bloque l’insertion dans listing_images. Vérifiez les policies INSERT sur public.listing_images.');
-    }
-    throw new Error('Erreur listing_images : '+insErr.message);
+    throw new Error('Erreur insertion image dans listing_images : '+insErr.message);
   }
 
   return imageUrl;
