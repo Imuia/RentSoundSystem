@@ -314,6 +314,8 @@
   body:not(.rss-product-loaded) main { opacity:.72; }
   body.rss-product-loaded main { opacity:1; transition:opacity .25s ease; }
 </style>
+
+<!-- rss-product-partner-email-lookup-v2 -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -583,6 +585,10 @@
     return '';
   }
 
+  function normEmailValue(value) {
+    return String(value || '').trim().toLowerCase();
+  }
+
   function looksLikeEmail(value) {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
   }
@@ -624,7 +630,7 @@
 
     if (publicName && !looksLikeEmail(publicName) && !looksLikeUuid(publicName)) return publicName;
 
-    return 'Loueur';
+    return 'Partenaire';
   }
 
   function ownerLocation(item) {
@@ -691,42 +697,81 @@
   async function fetchPartnerForListing(item) {
     if (!client || !item) return null;
 
-    const cleanEmail = String(firstFilled(item.owner_email, item.email, item.user_email, item.partner_email) || '').trim().toLowerCase();
-    const legacyId = firstFilled(item.legacy_user_id, item.wordpress_user_id, item.legacy_partner_id);
-    const userId = firstFilled(item.user_id, item.owner_id, item.partner_id);
+    const email = normEmailValue(firstFilled(
+      item.owner_email,
+      item.email,
+      item.user_email,
+      item.partner_email
+    ));
+
+    const legacyId = firstFilled(
+      item.legacy_user_id,
+      item.wordpress_user_id,
+      item.legacy_partner_id
+    );
+
+    const userId = firstFilled(
+      item.user_id,
+      item.owner_id,
+      item.partner_user_id
+    );
 
     const attempts = [];
 
-    if (cleanEmail) {
-      attempts.push(() => client.from('partners').select('*').or('email.ilike.' + cleanEmail + ',owner_email.ilike.' + cleanEmail).limit(1).maybeSingle());
-      attempts.push(() => client.from('partners').select('*').ilike('email', cleanEmail).limit(1).maybeSingle());
-      attempts.push(() => client.from('partners').select('*').ilike('owner_email', cleanEmail).limit(1).maybeSingle());
+    // 1) Priorité absolue : partners.email = listings.owner_email
+    if (email && looksLikeEmail(email)) {
+      attempts.push({
+        label: 'partners.email',
+        run: () => client.from('partners').select('*').ilike('email', email).limit(1)
+      });
     }
 
-    if (legacyId && !isNaN(Number(legacyId))) {
-      attempts.push(() => client.from('partners').select('*').eq('legacy_user_id', Number(legacyId)).limit(1).maybeSingle());
+    // 2) Anciennes annonces importées : legacy_user_id
+    if (legacyId !== undefined && legacyId !== null && String(legacyId).trim() !== '' && !isNaN(Number(legacyId))) {
+      attempts.push({
+        label: 'partners.legacy_user_id',
+        run: () => client.from('partners').select('*').eq('legacy_user_id', Number(legacyId)).limit(1)
+      });
     }
 
-    if (userId && !looksLikeEmail(userId) && !looksLikeUuid(userId) && !isNaN(Number(userId))) {
-      attempts.push(() => client.from('partners').select('*').eq('legacy_user_id', Number(userId)).limit(1).maybeSingle());
-    }
-
+    // 3) Auth user_id si présent.
     if (userId && looksLikeUuid(userId)) {
-      attempts.push(() => client.from('partners').select('*').eq('user_id', userId).limit(1).maybeSingle());
+      attempts.push({
+        label: 'partners.user_id',
+        run: () => client.from('partners').select('*').eq('user_id', userId).limit(1)
+      });
     }
 
-    for (const run of attempts) {
+    for (const attempt of attempts) {
       try {
-        const res = await run();
-        if (!res.error && res.data) return res.data;
-      } catch(e) {}
+        const res = await attempt.run();
+        if (!res.error && Array.isArray(res.data) && res.data.length) {
+          console.log('[RSS product] partenaire trouvé via', attempt.label, res.data[0]);
+          return res.data[0];
+        }
+        if (res.error) console.warn('[RSS product] lookup partenaire erreur', attempt.label, res.error.message);
+      } catch(e) {
+        console.warn('[RSS product] lookup partenaire exception', attempt.label, e.message || e);
+      }
     }
+
+    console.warn('[RSS product] aucun partenaire trouvé', {
+      owner_email: item.owner_email,
+      email: item.email,
+      user_email: item.user_email,
+      partner_email: item.partner_email,
+      legacy_user_id: item.legacy_user_id,
+      user_id: item.user_id
+    });
 
     return null;
   }
 
   function mergePartnerIntoListing(item, partner) {
-    if (!item || !partner) return item;
+    if (!item) return item;
+    const merged = Object.assign({}, item);
+
+    if (!partner) return merged;
 
     const partnerName = firstFilled(
       partner.name,
@@ -740,21 +785,23 @@
       partner.societe
     );
 
-    const merged = Object.assign({}, item);
+    if (partnerName && !looksLikeEmail(partnerName) && !looksLikeUuid(partnerName)) {
+      // On écrase volontairement owner_name si l'annonce contient l'email comme nom.
+      merged.owner_name = partnerName;
+      merged.partner_name = partnerName;
+    }
 
-    if (partnerName && !looksLikeEmail(partnerName) && !looksLikeUuid(partnerName)) merged.owner_name = partnerName;
-    if (!merged.company_name) merged.company_name = firstFilled(partner.company_name, partner.business_name, partner.company, partner.societe);
-    if (!merged.partner_name) merged.partner_name = partnerName;
-    if (!merged.owner_phone) merged.owner_phone = firstFilled(partner.owner_phone, partner.phone, partner.telephone, partner.mobile);
-    if (!merged.owner_email) merged.owner_email = firstFilled(partner.owner_email, partner.email);
-    if (!merged.owner_city) merged.owner_city = firstFilled(partner.owner_city, partner.city, partner.ville);
-    if (!merged.owner_country) merged.owner_country = firstFilled(partner.owner_country, partner.country, partner.pays);
-    if (!merged.owner_description) merged.owner_description = firstFilled(partner.owner_description, partner.description, partner.bio, partner.about);
-    if (!merged.owner_logo) merged.owner_logo = firstFilled(partner.owner_logo, partner.logo_url, partner.logo, partner.avatar_url);
-    if (!merged.owner_username) merged.owner_username = firstFilled(partner.owner_username, partner.username, partner.slug);
-    if (!merged.legacy_user_id) merged.legacy_user_id = partner.legacy_user_id;
-    if (!merged.partner_id && partner.id) merged.partner_id = partner.id;
-    if (!merged.user_id && partner.user_id) merged.user_id = partner.user_id;
+    merged.owner_email = firstFilled(merged.owner_email, partner.email, partner.owner_email);
+    merged.owner_phone = firstFilled(merged.owner_phone, partner.phone, partner.owner_phone, partner.telephone, partner.mobile);
+    merged.owner_city = firstFilled(merged.owner_city, partner.city, partner.owner_city, partner.ville);
+    merged.owner_country = firstFilled(merged.owner_country, partner.country, partner.owner_country, partner.pays);
+    merged.owner_description = firstFilled(merged.owner_description, partner.description, partner.owner_description, partner.bio, partner.about);
+    merged.owner_logo = firstFilled(merged.owner_logo, partner.logo_url, partner.logo, partner.owner_logo, partner.avatar_url);
+    merged.owner_username = firstFilled(merged.owner_username, partner.username, partner.slug, partner.owner_username);
+    merged.company_name = firstFilled(merged.company_name, partner.company_name, partner.business_name, partner.company, partner.societe);
+    merged.legacy_user_id = firstFilled(merged.legacy_user_id, partner.legacy_user_id);
+    merged.partner_id = firstFilled(merged.partner_id, partner.id);
+    merged.user_id = firstFilled(merged.user_id, partner.user_id);
 
     return merged;
   }
