@@ -339,6 +339,8 @@
 
 
 <!-- rss-product-overview-fix-v3 -->
+
+<!-- rss-markdown-clean-fix-v1 -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -627,14 +629,25 @@
     }
 
     lines.forEach(function(line){
-      const clean = line.trim();
+      let clean = line.trim();
+
       if (!clean) {
         flushList();
         return;
       }
 
-      const isListLine = /^[✅🎤🏢🎉📽️📊🎮🎓💍•\-]/.test(clean);
-      const isHeading = /^(Idéale pour|Caractéristiques principales|Service possible|Inclus|Applications|Points forts)/i.test(clean);
+      // Conversion simple du Markdown venant du WYSIWYG / IA :
+      // **texte** => gras, ### titre => titre propre sans caractères visibles.
+      clean = clean
+        .replace(/^###\s*/, '')
+        .replace(/^##\s*/, '')
+        .replace(/^#\s*/, '')
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+      const plainClean = clean.replace(/<[^>]+>/g, '').trim();
+
+      const isListLine = /^[✅🎤🏢🎉📽️📊🎮🎓💍📍📦🕹️🔌🍹🎧🔊💡•\-]/.test(plainClean);
+      const isHeading = /^(Idéale pour|Caractéristiques principales|Service possible|Inclus|Applications|Points forts|Disponible à|Contactez-nous|Service|Caractéristiques)/i.test(plainClean);
 
       if (isListLine) {
         list.push(clean);
