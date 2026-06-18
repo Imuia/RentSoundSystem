@@ -307,6 +307,8 @@
   .rss-date-required-message.active{display:block;}
   .rss-date-required-highlight{box-shadow:0 0 0 2px rgba(255,80,80,.35),0 0 24px rgba(252,3,109,.18);}
 </style>
+
+<!-- rss-product-partner-name-safe-fix -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -610,6 +612,10 @@
     return '';
   }
 
+  function looksLikeEmail(value) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+  }
+
   function looksLikeUuid(value) {
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(value || '').trim());
   }
@@ -631,22 +637,22 @@
   }
 
   function ownerName(item) {
-    const username = ownerUsername(item);
     const publicName = firstFilled(
       item.owner_name,
       item.company_name,
       item.partner_name,
       item.display_name,
-      item.nom
+      item.nom,
+      item.owner_company,
+      item.business_name,
+      item.company,
+      item.societe,
+      item.society_name
     );
 
-    if (publicName) return publicName;
+    if (publicName && !looksLikeEmail(publicName) && !looksLikeUuid(publicName)) return publicName;
 
-    // Si l'ancien username WordPress ressemble à un nom commercial, on peut l'utiliser.
-    // Sinon on affiche un libellé professionnel neutre.
-    if (username && !looksLikeUuid(username) && username.length <= 32) return username;
-
-    return 'Loueur RentSoundSystem';
+    return 'Partenaire RentSoundSystem';
   }
 
   function ownerLocation(item) {
@@ -710,6 +716,57 @@
     return '';
   }
 
+  async function fetchPartnerByEmail(email) {
+    const cleanEmail = String(email || '').trim().toLowerCase();
+    if (!client || !cleanEmail) return null;
+
+    const attempts = [
+      () => client.from('partners').select('*').or('email.ilike.' + cleanEmail + ',owner_email.ilike.' + cleanEmail).limit(1).maybeSingle(),
+      () => client.from('partners').select('*').ilike('email', cleanEmail).limit(1).maybeSingle(),
+      () => client.from('partners').select('*').ilike('owner_email', cleanEmail).limit(1).maybeSingle()
+    ];
+
+    for (const run of attempts) {
+      try {
+        const res = await run();
+        if (!res.error && res.data) return res.data;
+      } catch(e) {}
+    }
+    return null;
+  }
+
+  function mergePartnerIntoListing(item, partner) {
+    if (!item || !partner) return item;
+
+    const partnerName = firstFilled(
+      partner.owner_name,
+      partner.name,
+      partner.company_name,
+      partner.display_name,
+      partner.partner_name,
+      partner.nom,
+      partner.business_name,
+      partner.company,
+      partner.societe
+    );
+
+    const merged = Object.assign({}, item);
+
+    if (partnerName && !looksLikeEmail(partnerName)) merged.owner_name = partnerName;
+    if (!merged.company_name) merged.company_name = firstFilled(partner.company_name, partner.business_name, partner.company, partner.societe);
+    if (!merged.partner_name) merged.partner_name = partnerName;
+    if (!merged.owner_phone) merged.owner_phone = firstFilled(partner.owner_phone, partner.phone, partner.telephone, partner.mobile);
+    if (!merged.owner_email) merged.owner_email = firstFilled(partner.owner_email, partner.email);
+    if (!merged.owner_city) merged.owner_city = firstFilled(partner.owner_city, partner.city, partner.ville);
+    if (!merged.owner_country) merged.owner_country = firstFilled(partner.owner_country, partner.country, partner.pays);
+    if (!merged.owner_description) merged.owner_description = firstFilled(partner.owner_description, partner.description, partner.bio, partner.about);
+    if (!merged.owner_logo) merged.owner_logo = firstFilled(partner.owner_logo, partner.logo_url, partner.logo, partner.avatar_url);
+    if (!merged.owner_username) merged.owner_username = firstFilled(partner.owner_username, partner.username, partner.slug);
+    if (!merged.legacy_user_id) merged.legacy_user_id = partner.legacy_user_id;
+
+    return merged;
+  }
+
   function updateOwnerUI(item) {
     const username = ownerUsername(item);
     const name = ownerName(item);
@@ -724,7 +781,7 @@
 
     text(document.getElementById('rss-owner-name'), name);
     text(document.getElementById('rss-owner-location'), location);
-    text(document.getElementById('rss-owner-mini-name'), name.toUpperCase());
+    text(document.getElementById('rss-owner-mini-name'), name);
     text(document.getElementById('rss-owner-mini-location'), location.toUpperCase());
     text(document.getElementById('rss-owner-listing-id'), listingId ? '#' + listingId : '—');
     text(document.getElementById('rss-owner-description'), desc);
@@ -772,6 +829,7 @@
         username: username,
         legacy_user_id: legacyId,
         name: name,
+        owner_name: name,
         location: location,
         email: email,
         phone: phone,
@@ -783,8 +841,12 @@
   }
 
   function productUrl(item) {
-    if (item && item.original_id !== undefined && item.original_id !== null) return 'product.html?original_id=' + encodeURIComponent(item.original_id);
-    if (item && item.id) return 'product.html?id=' + encodeURIComponent(item.id);
+    const uuid = item && item.id ? String(item.id).trim() : '';
+    const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
+    const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
+
+    if (hasRealOriginalId) return 'product.html?original_id=' + encodeURIComponent(originalRaw);
+    if (uuid) return 'product.html?id=' + encodeURIComponent(uuid);
     return 'product.html';
   }
 
@@ -1090,7 +1152,7 @@
       const img = imgs[0] || '';
       const title = safe(item.title || 'Matériel professionnel');
       const desc = safe(cleanDescription(item.description || '').slice(0, 115));
-      const price = money(item.price || 0);
+      const price = money(enrichedItem.price || 0);
       const url = productUrl(item);
       const imageBlock = img
         ? `<img src="${safe(img)}" alt="${title}" loading="eager" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('rss-img-placeholder');this.remove();">`
@@ -1163,28 +1225,32 @@
       return;
     }
 
-    const images = getImages(item);
+    const partnerEmail = firstFilled(item.owner_email, item.email, item.user_email, item.partner_email);
+    const partnerData = await fetchPartnerByEmail(partnerEmail);
+    const enrichedItem = mergePartnerIntoListing(item, partnerData);
+
+    const images = getImages(enrichedItem);
     const firstImage = images[0] || '';
-    const title = item.title || 'Annonce RentSoundSystem';
-    const city = item.city || item.location || 'Votre ville';
-    const country = item.country || 'France';
-    const category = item.category || 'Matériel audio';
+    const title = enrichedItem.title || 'Annonce RentSoundSystem';
+    const city = enrichedItem.city || enrichedItem.location || 'Votre ville';
+    const country = enrichedItem.country || 'France';
+    const category = enrichedItem.category || 'Matériel audio';
     const price = money(item.price || 0);
 
     // Synchronisation prix réel Supabase -> interface + tunnel.
     const basePriceEl = document.getElementById('rss-base-price');
     const totalPriceEl = document.getElementById('rss-total-price');
-    const realBasePrice = Number(item.price || 0);
+    const realBasePrice = Number(enrichedItem.price || 0);
     if (basePriceEl) {
       basePriceEl.dataset.price = String(realBasePrice);
       basePriceEl.innerHTML = money(realBasePrice) + ' <span class="text-body-md text-on-surface-variant font-normal">/ jour</span>';
     }
     if (totalPriceEl) totalPriceEl.textContent = money(realBasePrice);
 
-    updateOwnerUI(item);
+    updateOwnerUI(enrichedItem);
 
-    window.RSS_CURRENT_PRODUCT = item;
-    window.dispatchEvent(new CustomEvent('rss:product-loaded', { detail: item }));
+    window.RSS_CURRENT_PRODUCT = enrichedItem;
+    window.dispatchEvent(new CustomEvent('rss:product-loaded', { detail: enrichedItem }));
 
     document.title = title + ' - RentSoundSystem.com';
 
@@ -1228,9 +1294,9 @@
     const overviewTitle = Array.from(document.querySelectorAll('h3')).find(el => el.textContent.includes('Qualité Sonore'));
     text(overviewTitle, title);
     const overviewP = overviewTitle ? overviewTitle.parentElement.querySelector('p') : null;
-    text(overviewP, cleanDescription(item.description));
+    text(overviewP, cleanDescription(enrichedItem.description));
 
-    updateRealProductTech(item);
+    updateRealProductTech(enrichedItem);
 
     const statBoxes = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 .font-headline');
 
@@ -1241,7 +1307,7 @@
     const totalRow = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim() === 'Total :');
     if (totalRow && totalRow.nextElementSibling) text(totalRow.nextElementSibling, price);
 
-    loadRelated(item);
+    loadRelated(enrichedItem);
   }
 
   ready(function () {
