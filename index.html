@@ -495,7 +495,7 @@ html, body {
 
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
+  const DEFAULT_CITY = { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' };
   const DEFAULT_RADIUS_KM = 150;
 
   let supabaseClient = null;
@@ -623,23 +623,7 @@ html, body {
     });
   }
 
-  function listingCountryMatchesCenter(item, center) {
-    const centerCode = normalizeText(center && center.countryCode);
-    const centerCountry = normalizeText(center && center.country);
-    const itemCode = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
-    const itemCountry = normalizeText(item && item.country);
-
-    // Si l'annonce possède un pays, il doit correspondre au pays détecté/recherché.
-    // Si le pays de l'annonce est absent, on ne bloque pas ici : la ville + la distance
-    // seront obligatoires dans listingCityMatchesCenter() et nearbyItems().
-    if (!centerCode && !centerCountry) return false;
-    if (!itemCode && !itemCountry) return true;
-
-    if (centerCode && itemCode) return itemCode === centerCode;
-    if (centerCountry && itemCountry) return itemCountry === centerCountry;
-
-    return false;
-  }
+  /* listingCountryMatchesCenter est défini plus bas avec la logique universelle. */
 
   const COUNTRY_ALIASES = {
     ma: ['ma', 'maroc', 'morocco', 'المغرب', 'morroco'],
@@ -809,89 +793,33 @@ html, body {
   }
 
   function listingCountryMatchesCenter(item, center) {
-    const centerCode = centerCountryCode(center);
-    if (!centerCode) return false;
-    const itemCode = inferCountryCodeFromListing(item);
-
-    // Si le pays est connu côté annonce ou déductible par ville, il doit correspondre.
-    // Si aucun pays n'est détectable, on laisse passer uniquement pour les recherches ville,
-    // puis listingCityMatchesCenter() + rayon filtrent. Pour une recherche pays, l'annonce doit
-    // obligatoirement être rattachable à ce pays.
-    if (itemCode) return itemCode === centerCode;
-    return !isCountryCenter(center);
-  }
-
-  function listingCityMatchesCenter(item, center) {
-    if (isCountryCenter(center)) return true;
-
-    const city = normalizeText(centerCityName(center));
-    if (!city || city === 'votre position' || city === 'autour de vous') return false;
-
-    const candidates = [
-      item && item.city,
-      item && item.location,
-      item && item.address,
-      item && item.country,
-      item && item.title,
-      item && item.description
-    ].map(normalizeText).filter(Boolean);
-
-    if (!candidates.length) return false;
-
-    // Antananarivo / Tananarive / Tana doivent matcher ensemble.
-    const aliases = {
-      antananarivo: ['antananarivo','tananarive','tana'],
-      tananarive: ['antananarivo','tananarive','tana'],
-      tana: ['antananarivo','tananarive','tana']
-    };
-    const cityAliases = aliases[city] || [city];
-
-    return candidates.some(function (value) {
-      return cityAliases.some(function (c) {
-        return value === c || value.indexOf(c) !== -1 || (c.length > 4 && c.indexOf(value) !== -1);
-      });
-    });
-  }
-
-
-  /* ==========================================================================
-     FILTRAGE GEO UNIVERSEL - VILLES ET PAYS
-     Règle définitive :
-     - recherche pays : seules les annonces dans les limites GPS du pays passent ;
-     - recherche ville : pays correct + ville correcte + rayon ;
-     - aucune annonce ambiguë hors pays ne doit apparaître.
-     ========================================================================== */
-
-  function listingCountryMatchesCenter(item, center) {
     const code = centerCountryCode(center);
     if (!code) return false;
+
+    const itemCode = inferCountryCodeFromListing(item);
+    if (itemCode) return itemCode === code;
+
+    const text = compactWords([item && item.city, item && item.location, item && item.address, item && item.country, item && item.title, item && item.description].join(' '));
+
+    if (code === 'mg' && (text.includes('madagascar') || text.includes('antananarivo') || text.includes('tananarive') || text.includes('tana'))) return true;
+    if (code === 'fr' && (text.includes('france') || text.includes('paris') || text.includes('lyon') || text.includes('marseille') || text.includes('cannes'))) return true;
+    if (code === 'ma' && (text.includes('maroc') || text.includes('morocco') || text.includes('agadir') || text.includes('casablanca') || text.includes('marrakech'))) return true;
 
     const itemLat = getLat(item);
     const itemLng = getLng(item);
     const bounds = centerBounds(center);
-
-    // Si l'annonce a des coordonnées et que le pays recherché a des limites,
-    // les coordonnées sont la source de vérité.
     if (itemLat !== null && itemLng !== null && bounds) {
       return boundsContainCoords(bounds, itemLat, itemLng);
     }
 
-    // Sinon on utilise les champs texte clairement identifiables.
-    const itemCode = inferCountryCodeFromListing(item);
-    if (itemCode) return itemCode === code;
-
-    // Pour une recherche pays, on refuse les annonces sans pays clair.
-    if (isCountryCenter(center)) return false;
-
-    // Pour une recherche ville, la ville + le rayon filtreront ensuite.
-    return true;
+    return !isCountryCenter(center);
   }
 
   function nearbyItems(center, limit) {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    let filtered = equipmentFilter(source)
+    const filtered = equipmentFilter(source)
       .filter(item => listingCountryMatchesCenter(item, safeCenter));
 
     if (isCountryCenter(safeCenter)) {
@@ -916,11 +844,12 @@ html, body {
         return da - db || listingDateValue(b) - listingDateValue(a);
       });
 
-    // Sécurité : si la ville exacte ne remonte rien, montrer quand même les annonces du même pays,
-    // sinon la zone reste vide alors que des annonces existent bien à Antananarivo/Madagascar.
     if (!result.length) {
-      result = uniqueListings(filtered)
-        .sort((a, b) => listingDateValue(b) - listingDateValue(a));
+      result = uniqueListings(filtered).sort((a, b) => listingDateValue(b) - listingDateValue(a));
+    }
+
+    if (!result.length) {
+      result = uniqueNewestListings(allListings).sort((a, b) => listingDateValue(b) - listingDateValue(a));
     }
 
     return result.slice(0, limit);
@@ -929,7 +858,7 @@ html, body {
 
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
-    const city = escapeHtml(item.city || item.location || 'France');
+    const city = escapeHtml([item.city || item.location || '', item.country || ''].filter(Boolean).join(', ') || 'Disponible');
     const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
     const image = getImage(item);
     const price = formatPrice(item.price);
