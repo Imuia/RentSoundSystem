@@ -322,9 +322,16 @@ async function getPartnerContext(){
   return {user, partner:p, email:clean(p.email||email), legacy:p.legacy_user_id};
 }
 async function loadPartnerListings(ctx){
-  let q=sb.from('listings').select('id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at').order('created_at',{ascending:false});
+  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
+  const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
+  let q=sb.from('listings').select(baseSelect).order('created_at',{ascending:false});
   q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
-  const {data,error}=await q;
+  let {data,error}=await q;
+  if(error){
+    let q2=sb.from('listings').select(safeSelect).order('created_at',{ascending:false});
+    q2=ctx.legacy?q2.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q2.ilike('owner_email',ctx.email);
+    const r2=await q2; data=r2.data; error=r2.error;
+  }
   if(error){ alertBox('Impossible de charger les annonces : '+error.message,'error'); return []; }
   return data||[];
 }
@@ -355,6 +362,10 @@ async function loadListingImages(listingOrId){
 
   const out = [];
   const seen = new Set();
+  function addImg(img){
+    const url=img && img.image_url ? img.image_url : '';
+    if(url && !seen.has(url)){ seen.add(url); out.push(img); }
+  }
 
   if(listing.id){
     const {data,error}=await sb.from('listing_images')
@@ -362,11 +373,12 @@ async function loadListingImages(listingOrId){
       .eq('listing_id',listing.id)
       .order('position',{ascending:true});
     if(error) console.warn('Erreur chargement listing_images:', error.message);
-    (data||[]).forEach(img=>{
-      const url=img.image_url||'';
-      if(url && !seen.has(url)){ seen.add(url); out.push({...img, source:'main'}); }
-    });
+    (data||[]).forEach(img=>addImg({...img, source:'main'}));
   }
+
+  [listing.image_url, listing.featured_image, listing.thumbnail, listing.cover_image].filter(Boolean).forEach((url,i)=>{
+    addImg({id:'listing-fallback-'+i, listing_id:listing.id, image_url:url, position:900+i, source:'listing'});
+  });
 
   if(listing.original_id !== undefined && listing.original_id !== null && String(listing.original_id) !== ''){
     const {data:staging,error:stErr}=await sb.from('listing_images_staging')
@@ -374,14 +386,28 @@ async function loadListingImages(listingOrId){
       .eq('listing_original_id', Number(listing.original_id))
       .order('position',{ascending:true});
     if(stErr) console.warn('Erreur chargement listing_images_staging:', stErr.message);
-    (staging||[]).forEach(img=>{
-      const url=img.image_url||'';
-      if(url && !seen.has(url)){ seen.add(url); out.push({...img, source:'staging'}); }
-    });
+    (staging||[]).forEach(img=>addImg({...img, source:'staging'}));
   }
 
   return out.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
 }
+
+async function setListingFallbackImage(listingId, imageUrl){
+  if(!listingId || !imageUrl) return;
+  const candidates=[
+    {image_url:imageUrl},
+    {featured_image:imageUrl},
+    {thumbnail:imageUrl},
+    {cover_image:imageUrl}
+  ];
+  for(const payload of candidates){
+    try{
+      const {error}=await sb.from('listings').update(payload).eq('id',listingId);
+      if(!error) return;
+    }catch(e){}
+  }
+}
+
 async function uploadImageFile(file, listingId){
   const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
   const bucketName='listing-images';
@@ -406,6 +432,8 @@ async function uploadImageFile(file, listingId){
     imageUrl=await fileToDataUrl(file);
   }
 
+  await setListingFallbackImage(listingId, imageUrl);
+
   const {error:insErr}=await sb.from('listing_images').insert({
     listing_id: listingId,
     image_url: imageUrl,
@@ -413,7 +441,8 @@ async function uploadImageFile(file, listingId){
   });
 
   if(insErr){
-    throw new Error('Erreur insertion image dans listing_images : '+insErr.message);
+    console.warn('listing_images bloqué, image conservée dans listings:', insErr.message);
+    return imageUrl;
   }
 
   return imageUrl;
@@ -549,7 +578,7 @@ async function saveListing(e){
  const {error}=await sb.from('listings').update(update).eq('id',id);
  if(error){$('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';return}
  const files=STATE.selectedEditFiles;
- try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée, mais erreur image : '+e.message; return; }
+ try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée. Image non ajoutée : '+e.message; return; }
  $('edit-message').textContent='Annonce mise à jour.';
  await loadPageListings(); await renderImages(id); STATE.selectedEditFiles=[]; renderNewImagePreviews(); $('new-images').value='';
 }

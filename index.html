@@ -552,9 +552,27 @@ html, body {
   }
 
   function productUrl(item) {
-    const originalId = encodeURIComponent(item.original_id || item.id || '');
-    const slug = encodeURIComponent(slugify(item.title));
-    return `/product.html?original_id=${originalId}&slug=${slug}`;
+    const slug = encodeURIComponent(slugify(item.title || 'annonce'));
+
+    // Les nouvelles annonces partenaires ont un id UUID.
+    // Les anciennes annonces importées utilisent original_id.
+    const uuid = item && item.id ? String(item.id).trim() : '';
+    const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
+    const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
+
+    if (uuid && !hasRealOriginalId) {
+      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    }
+
+    if (hasRealOriginalId) {
+      return `/product.html?original_id=${encodeURIComponent(originalRaw)}&slug=${slug}`;
+    }
+
+    if (uuid) {
+      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    }
+
+    return '/catalog.html';
   }
 
   function haversineKm(aLat, aLng, bLat, bLng) {
