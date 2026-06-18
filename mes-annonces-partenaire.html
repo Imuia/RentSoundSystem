@@ -227,38 +227,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-delete-listing-fix-v1 -->
-
-<style id="rss-listing-thumbnail-column-css">
-  .rss-listing-thumb{
-    width:96px;
-    height:72px;
-    object-fit:cover;
-    border-radius:12px;
-    border:1px solid rgba(255,255,255,.12);
-    background:#151515;
-    display:block;
-  }
-  .rss-listing-thumb-wrap{
-    width:104px;
-    min-width:104px;
-    display:flex;
-    align-items:center;
-  }
-  .rss-dashboard-card-thumb{
-    width:100%;
-    height:150px;
-    object-fit:cover;
-    display:block;
-    background:#151515;
-    border-bottom:1px solid rgba(255,255,255,.08);
-  }
-  .rss-image-fallback-box{
-    background:radial-gradient(circle at 50% 20%,rgba(252,3,109,.24),transparent 36%),linear-gradient(180deg,#242424,#101010)!important;
-  }
-</style>
-
-
-<!-- rss-listing-thumb-column-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -288,7 +256,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <a class="rss-btn rss-btn-primary" href="/ajouter-materiel-partenaire.html"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
   </div>
   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px"><input id="listing-search" class="rss-input" style="width:260px" placeholder="Rechercher..."><select id="status-filter" class="rss-input" style="width:180px"><option value="">Tous les statuts</option><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></div>
-  <div style="overflow-x:auto"><table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px"><thead><tr><th style="padding:0 12px 12px 0">Image</th><th style="padding:0 16px 12px 0">Annonce</th><th>Ville</th><th>Prix</th><th>Statut</th><th>Images</th><th style="text-align:right">Actions</th></tr></thead><tbody id="listings-table"></tbody></table></div>
+  <div style="overflow-x:auto"><table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px"><thead><tr><th style="padding:0 16px 12px 0">Annonce</th><th>Ville</th><th>Prix</th><th>Statut</th><th>Images</th><th style="text-align:right">Actions</th></tr></thead><tbody id="listings-table"></tbody></table></div>
   <div id="empty-listings" style="display:none;text-align:center;padding:48px;color:#e6bcc2">Aucune annonce trouvée.</div>
 </section>
 <div id="listing-modal" class="rss-modal" style="position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
@@ -462,26 +430,6 @@ async function loadPartnerListings(ctx){
   return data||[];
 }
 
-
-function listingPreviewImage(item){
-  if(!item) return '';
-  if(item.preview_image) return item.preview_image;
-  if(item.image_url) return item.image_url;
-  if(item.featured_image) return item.featured_image;
-  if(item.thumbnail) return item.thumbnail;
-  if(item.cover_image) return item.cover_image;
-  const imgs = STATE && STATE.images && item.id ? STATE.images[item.id] : null;
-  if(imgs && imgs.length) return imgs[0].image_url || '';
-  return '';
-}
-
-function imageFallback(el){
-  if(!el) return;
-  el.removeAttribute('src');
-  el.classList.add('rss-image-fallback-box');
-  el.alt='Image indisponible';
-}
-
 function fileToDataUrl(file){
   return new Promise((resolve,reject)=>{
     const reader=new FileReader();
@@ -641,24 +589,7 @@ async function repairOwnerInfoForCurrentPartner(ctx){
   }
 }
 
-
-async function hydrateListingPreviewImages(items){
-  const list = Array.isArray(items) ? items : [];
-  for(const item of list){
-    if(!item || listingPreviewImage(item)) continue;
-    try{
-      const imgs = await loadListingImages(item);
-      if(imgs && imgs.length){
-        item.preview_image = imgs[0].image_url || '';
-      }
-    }catch(e){
-      console.warn('Aperçu image impossible:', e.message || e);
-    }
-  }
-  return list;
-}
-
-async function loadPageListings(){await repairOwnerInfoForCurrentPartner(STATE.ctx); STATE.listings=await loadPartnerListings(STATE.ctx); await hydrateListingPreviewImages(STATE.listings); applyFilters();}
+async function loadPageListings(){await repairOwnerInfoForCurrentPartner(STATE.ctx); STATE.listings=await loadPartnerListings(STATE.ctx); applyFilters();}
 function applyFilters(){
  const q=clean($('listing-search')?.value), st=$('status-filter')?.value||'';
  STATE.filtered=STATE.listings.filter(i=>(!st||statusNorm(i.status)===st)&&(!q||[i.title,i.city,i.country,i.category,i.brand,i.model,String(i.original_id||'')].join(' ').toLowerCase().includes(q)));
@@ -669,14 +600,6 @@ function renderTable(){
  if(!STATE.filtered.length){body.innerHTML=''; empty.style.display='block'; return}
  empty.style.display='none';
  body.innerHTML=STATE.filtered.map(i=>`<tr>
-<td style="padding:12px 12px 12px 0">
-  <div class="rss-listing-thumb-wrap">
-    ${listingPreviewImage(i)
-      ? `<img class="rss-listing-thumb" src="${esc(listingPreviewImage(i))}" alt="${esc(i.title||'Annonce')}" onerror="imageFallback(this)">`
-      : `<div class="rss-listing-thumb rss-image-fallback-box"></div>`
-    }
-  </div>
-</td>
 <td style="padding:16px 16px 16px 0">
   <div style="font-weight:900">${esc(i.title||'Annonce')}</div>
   <div class="rss-muted" style="font-size:12px;margin-top:4px">ID original : ${esc(i.original_id||'-')} · ${esc(i.category||'-')}</div>
@@ -865,7 +788,7 @@ async function saveListing(e){
  $('edit-message').textContent='Annonce mise à jour.';
  await loadPageListings(); await renderImages(id); STATE.selectedEditFiles=[]; renderNewImagePreviews(); $('new-images').value='';
 }
-window.openEdit=openEdit; window.imageFallback=imageFallback; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
+window.openEdit=openEdit; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
 </script>
 
 <div id="footer-container"></div>
