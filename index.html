@@ -554,8 +554,6 @@ html, body {
   function productUrl(item) {
     const slug = encodeURIComponent(slugify(item.title || 'annonce'));
 
-    // Les nouvelles annonces partenaires ont un id UUID.
-    // Les anciennes annonces importées utilisent original_id.
     const uuid = item && item.id ? String(item.id).trim() : '';
     const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
     const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
@@ -886,20 +884,30 @@ html, body {
         .slice(0, limit);
     }
 
-    filtered = filtered
-      .filter(item => listingCityMatchesCenter(item, safeCenter))
-      .filter(item => hasCoordinates(item));
+    const cityMatched = uniqueListings(filtered)
+      .filter(item => listingCityMatchesCenter(item, safeCenter));
 
-    const sorted = enrichByDistance(filtered, safeCenter);
-    return sorted
-      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
+    const withCoords = cityMatched.filter(item => hasCoordinates(item));
+    const withoutCoords = cityMatched.filter(item => !hasCoordinates(item));
+
+    const sortedWithCoords = enrichByDistance(withCoords, safeCenter)
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+
+    // Important : les annonces partenaires récentes peuvent avoir ville/pays mais pas encore latitude/longitude.
+    // On les affiche après les annonces géolocalisées au lieu de les masquer.
+    return uniqueListings([...sortedWithCoords, ...withoutCoords])
+      .sort((a, b) => {
+        const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
+        const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
+        return da - db || listingDateValue(b) - listingDateValue(a);
+      })
       .slice(0, limit);
   }
 
 
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
-    const city = escapeHtml(item.city || item.location || 'France');
+    const city = escapeHtml([item.city || item.location || '', item.country || ''].filter(Boolean).join(', ') || 'Disponible');
     const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
     const image = getImage(item);
     const price = formatPrice(item.price);
@@ -1171,18 +1179,11 @@ html, body {
 
   function newestItems(limit, center) {
     /*
-      Section “Nouveaux équipements” :
-      - affiche les dernières annonces monde entier ;
-      - limite stricte à 4 ;
-      - évite les doublons visuels ;
-      - n'affiche pas ici les annonces qui ressemblent à la ville actuelle.
-        Si elles sont réellement autour de l'utilisateur, elles doivent apparaître
-        dans “Équipements à proximité”. Cela évite de montrer “Tananarive” dans
-        les nouveautés quand la proximité n'a aucune annonce validée.
+      Les nouveautés doivent montrer les dernières annonces publiées, toutes villes et tous pays confondus.
+      Avant, la page retirait les annonces qui ressemblaient à la ville actuelle :
+      résultat, les annonces Antananarivo / Madagascar pouvaient disparaître de l'accueil.
     */
-    const safeCenter = center || currentCenter;
     return uniqueNewestListings(allListings)
-      .filter(function (item) { return !listingLooksLikeCurrentCity(item, safeCenter); })
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
   }
