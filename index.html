@@ -495,7 +495,7 @@ html, body {
 
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const DEFAULT_CITY = { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' };
+  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
   const DEFAULT_RADIUS_KM = 150;
 
   let supabaseClient = null;
@@ -545,18 +545,6 @@ html, body {
   function getLng(item) { return toNumber(item.lng ?? item.lon ?? item.longitude); }
   function hasCoordinates(item) { return getLat(item) !== null && getLng(item) !== null; }
 
-  function fallbackCoordsForListing(item) {
-    const text = compactWords([item && item.city, item && item.location, item && item.address, item && item.country].join(' '));
-    if (!text) return null;
-    if (text.includes('antananarivo') || text.includes('tananarive') || text.includes('tana')) return {lat:-18.8792,lng:47.5079};
-    if (text.includes('madagascar')) return {lat:-18.7669,lng:46.8691};
-    if (text.includes('paris')) return {lat:48.8566,lng:2.3522};
-    if (text.includes('agadir')) return {lat:30.4278,lng:-9.5981};
-    if (text.includes('casablanca')) return {lat:33.5731,lng:-7.5898};
-    if (text.includes('cannes')) return {lat:43.5528,lng:7.0174};
-    return null;
-  }
-
   function getImage(item) {
     const imgs = Array.isArray(item.listing_images) ? [...item.listing_images] : [];
     imgs.sort((a, b) => Number(a.position || 0) - Number(b.position || 0));
@@ -565,13 +553,25 @@ html, body {
 
   function productUrl(item) {
     const slug = encodeURIComponent(slugify(item.title || 'annonce'));
+
+    // Les nouvelles annonces partenaires ont un id UUID.
+    // Les anciennes annonces importées utilisent original_id.
     const uuid = item && item.id ? String(item.id).trim() : '';
     const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
     const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
 
-    if (uuid && !hasRealOriginalId) return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
-    if (hasRealOriginalId) return `/product.html?original_id=${encodeURIComponent(originalRaw)}&slug=${slug}`;
-    if (uuid) return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    if (uuid && !hasRealOriginalId) {
+      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    }
+
+    if (hasRealOriginalId) {
+      return `/product.html?original_id=${encodeURIComponent(originalRaw)}&slug=${slug}`;
+    }
+
+    if (uuid) {
+      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    }
+
     return '/catalog.html';
   }
 
@@ -623,7 +623,23 @@ html, body {
     });
   }
 
-  /* listingCountryMatchesCenter est défini plus bas avec la logique universelle. */
+  function listingCountryMatchesCenter(item, center) {
+    const centerCode = normalizeText(center && center.countryCode);
+    const centerCountry = normalizeText(center && center.country);
+    const itemCode = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
+    const itemCountry = normalizeText(item && item.country);
+
+    // Si l'annonce possède un pays, il doit correspondre au pays détecté/recherché.
+    // Si le pays de l'annonce est absent, on ne bloque pas ici : la ville + la distance
+    // seront obligatoires dans listingCityMatchesCenter() et nearbyItems().
+    if (!centerCode && !centerCountry) return false;
+    if (!itemCode && !itemCountry) return true;
+
+    if (centerCode && itemCode) return itemCode === centerCode;
+    if (centerCountry && itemCountry) return itemCountry === centerCountry;
+
+    return false;
+  }
 
   const COUNTRY_ALIASES = {
     ma: ['ma', 'maroc', 'morocco', 'المغرب', 'morroco'],
@@ -793,33 +809,75 @@ html, body {
   }
 
   function listingCountryMatchesCenter(item, center) {
+    const centerCode = centerCountryCode(center);
+    if (!centerCode) return false;
+    const itemCode = inferCountryCodeFromListing(item);
+
+    // Si le pays est connu côté annonce ou déductible par ville, il doit correspondre.
+    // Si aucun pays n'est détectable, on laisse passer uniquement pour les recherches ville,
+    // puis listingCityMatchesCenter() + rayon filtrent. Pour une recherche pays, l'annonce doit
+    // obligatoirement être rattachable à ce pays.
+    if (itemCode) return itemCode === centerCode;
+    return !isCountryCenter(center);
+  }
+
+  function listingCityMatchesCenter(item, center) {
+    if (isCountryCenter(center)) return true;
+
+    const city = normalizeText(centerCityName(center));
+    if (!city || city === 'votre position' || city === 'autour de vous') return false;
+
+    const candidates = [item && item.city, item && item.location, item && item.address]
+      .map(normalizeText)
+      .filter(Boolean);
+
+    if (!candidates.length) return false;
+
+    // Recherche ville : la ville doit correspondre ET le rayon GPS s'applique ensuite.
+    return candidates.some(function (value) {
+      return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
+    });
+  }
+
+
+  /* ==========================================================================
+     FILTRAGE GEO UNIVERSEL - VILLES ET PAYS
+     Règle définitive :
+     - recherche pays : seules les annonces dans les limites GPS du pays passent ;
+     - recherche ville : pays correct + ville correcte + rayon ;
+     - aucune annonce ambiguë hors pays ne doit apparaître.
+     ========================================================================== */
+
+  function listingCountryMatchesCenter(item, center) {
     const code = centerCountryCode(center);
     if (!code) return false;
-
-    const itemCode = inferCountryCodeFromListing(item);
-    if (itemCode) return itemCode === code;
-
-    const text = compactWords([item && item.city, item && item.location, item && item.address, item && item.country, item && item.title, item && item.description].join(' '));
-
-    if (code === 'mg' && (text.includes('madagascar') || text.includes('antananarivo') || text.includes('tananarive') || text.includes('tana'))) return true;
-    if (code === 'fr' && (text.includes('france') || text.includes('paris') || text.includes('lyon') || text.includes('marseille') || text.includes('cannes'))) return true;
-    if (code === 'ma' && (text.includes('maroc') || text.includes('morocco') || text.includes('agadir') || text.includes('casablanca') || text.includes('marrakech'))) return true;
 
     const itemLat = getLat(item);
     const itemLng = getLng(item);
     const bounds = centerBounds(center);
+
+    // Si l'annonce a des coordonnées et que le pays recherché a des limites,
+    // les coordonnées sont la source de vérité.
     if (itemLat !== null && itemLng !== null && bounds) {
       return boundsContainCoords(bounds, itemLat, itemLng);
     }
 
-    return !isCountryCenter(center);
+    // Sinon on utilise les champs texte clairement identifiables.
+    const itemCode = inferCountryCodeFromListing(item);
+    if (itemCode) return itemCode === code;
+
+    // Pour une recherche pays, on refuse les annonces sans pays clair.
+    if (isCountryCenter(center)) return false;
+
+    // Pour une recherche ville, la ville + le rayon filtreront ensuite.
+    return true;
   }
 
   function nearbyItems(center, limit) {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    const filtered = equipmentFilter(source)
+    let filtered = equipmentFilter(source)
       .filter(item => listingCountryMatchesCenter(item, safeCenter));
 
     if (isCountryCenter(safeCenter)) {
@@ -828,37 +886,20 @@ html, body {
         .slice(0, limit);
     }
 
-    const cityMatched = uniqueListings(filtered)
-      .filter(item => listingCityMatchesCenter(item, safeCenter));
+    filtered = filtered
+      .filter(item => listingCityMatchesCenter(item, safeCenter))
+      .filter(item => hasCoordinates(item));
 
-    const withCoords = cityMatched.filter(item => hasCoordinates(item));
-    const withoutCoords = cityMatched.filter(item => !hasCoordinates(item));
-
-    const sortedWithCoords = enrichByDistance(withCoords, safeCenter)
-      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
-
-    let result = uniqueListings([...sortedWithCoords, ...withoutCoords])
-      .sort((a, b) => {
-        const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
-        const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
-        return da - db || listingDateValue(b) - listingDateValue(a);
-      });
-
-    if (!result.length) {
-      result = uniqueListings(filtered).sort((a, b) => listingDateValue(b) - listingDateValue(a));
-    }
-
-    if (!result.length) {
-      result = uniqueNewestListings(allListings).sort((a, b) => listingDateValue(b) - listingDateValue(a));
-    }
-
-    return result.slice(0, limit);
+    const sorted = enrichByDistance(filtered, safeCenter);
+    return sorted
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
+      .slice(0, limit);
   }
 
 
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
-    const city = escapeHtml([item.city || item.location || '', item.country || ''].filter(Boolean).join(', ') || 'Disponible');
+    const city = escapeHtml(item.city || item.location || 'France');
     const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
     const image = getImage(item);
     const price = formatPrice(item.price);
@@ -1184,39 +1225,146 @@ html, body {
   }
 
   function renderMapMarkers(center) {
-    if (!map || !listingsReady) return;
-
+    if (!mapReady || !map) return;
     clearProductMarkers();
 
-    const items = nearbyItems(center || currentCenter, 80);
-    const markers = [];
-
-    items.forEach(function (item, index) {
-      let lat = getLat(item);
-      let lng = getLng(item);
-
-      if (lat === null || lng === null) {
-        const fb = fallbackCoordsForListing(item) || {lat:(center || currentCenter).lat, lng:(center || currentCenter).lng};
-        lat = fb.lat + ((index % 5) - 2) * 0.006;
-        lng = fb.lng + ((index % 7) - 3) * 0.006;
-      }
-
-      if (lat === null || lng === null) return;
-
-      const marker = L.marker([lat, lng], { icon: productIcon() })
-        .addTo(map)
-        .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
-
-      productMarkers.push(marker);
-      markers.push(marker);
+    const productIcon = L.divIcon({
+      className: 'rss-product-marker',
+      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
+      popupAnchor: [0, -38]
     });
 
-    if (markers.length) {
-      const group = L.featureGroup(markers);
-      map.fitBounds(group.getBounds().pad(0.25), { maxZoom: 12 });
+    const safeCenter = center || currentCenter;
+    const items = nearbyItems(safeCenter, 30);
+    productMarkers = items.map(item => {
+      const lat = getLat(item);
+      const lng = getLng(item);
+      if (lat === null || lng === null) return null;
+      return L.marker([lat, lng], { icon: productIcon })
+        .addTo(map)
+        .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
+    }).filter(Boolean);
+
+    if (isCountryCenter(safeCenter) && productMarkers.length) {
+      const group = L.featureGroup(productMarkers);
+      map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 7, animate: true });
+    } else {
+      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 12, { animate: true });
     }
 
-    setTimeout(fixMapSize, 80);
+    setTimeout(fixMapSize, 50);
+    setTimeout(fixMapSize, 300);
+  }
+
+  function fixMapSize() {
+    const mapEl = document.getElementById('rss-map');
+    const mapWrap = document.getElementById('rss-map-wrap');
+    if (!mapEl || !mapWrap || !map) return;
+    const h = window.innerWidth < 768 ? '420px' : '600px';
+    mapEl.style.height = h;
+    mapEl.style.minHeight = h;
+    mapWrap.style.height = h;
+    mapWrap.style.minHeight = h;
+    map.invalidateSize(true);
+  }
+
+  function updateCenter(center, options) {
+    currentCenter = Object.assign({}, DEFAULT_CITY, { country: '', countryCode: '' }, center || {});
+    if (options && options.isGeolocation) saveLocation(currentCenter);
+    setLabels(currentCenter.name || 'Votre position');
+    setHeroCityInput(currentCenter.name || '');
+
+    if (mapReady && map) {
+      if (userMarker) {
+        map.removeLayer(userMarker);
+        userMarker = null;
+      }
+
+      if (options && options.isGeolocation) {
+        const userIcon = L.divIcon({
+          className: 'rss-user-marker',
+          html: '<div class="rss-user-dot"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          popupAnchor: [0, -10]
+        });
+
+        userMarker = L.marker([currentCenter.lat, currentCenter.lng], { icon: userIcon, zIndexOffset: 1000 })
+          .addTo(map)
+          .bindPopup('Votre position', { className: 'rss-popup' });
+      }
+
+      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 13, { animate: true });
+    }
+
+    if (listingsReady) {
+      renderProductGrids(currentCenter);
+      renderMapMarkers(currentCenter);
+    }
+  }
+
+  async function loadListings() {
+    if (!window.supabase) {
+      console.error('Supabase JS non chargé');
+      return;
+    }
+
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let { data, error } = await supabaseClient
+      .from('listings')
+      .select('*, listing_images ( image_url, position )')
+      .eq('status', 'publish')
+      .order('featured', { ascending: false })
+      .order('published_at', { ascending: false })
+      .limit(200);
+
+    if (error) {
+      console.warn('Chargement avec filtre lat/lng impossible, fallback sans filtre:', error);
+      const fallback = await supabaseClient
+        .from('listings')
+        .select('*, listing_images ( image_url, position )')
+        .eq('status', 'publish')
+        .order('featured', { ascending: false })
+        .order('published_at', { ascending: false })
+        .limit(200);
+      data = fallback.data || [];
+      error = fallback.error;
+    }
+
+    if (error) {
+      console.error('Erreur chargement produits Supabase:', error);
+      return;
+    }
+
+    data = Array.isArray(data) ? data : [];
+
+    const missingImages = data.every(item => !Array.isArray(item.listing_images) || !item.listing_images.length);
+    if (missingImages && data.length) {
+      const originalIds = data.map(item => item.original_id).filter(Boolean);
+      const staging = await supabaseClient
+        .from('listing_images_staging')
+        .select('listing_original_id,image_url,position')
+        .in('listing_original_id', originalIds);
+
+      if (!staging.error && staging.data && staging.data.length) {
+        const byOriginalId = {};
+        staging.data.forEach(img => {
+          const key = String(img.listing_original_id);
+          if (!byOriginalId[key]) byOriginalId[key] = [];
+          byOriginalId[key].push({ image_url: img.image_url, position: img.position });
+        });
+        data = data.map(item => ({ ...item, listing_images: byOriginalId[String(item.original_id)] || item.listing_images || [] }));
+      }
+    }
+
+    allListings = uniqueListings(data);
+    activeListings = allListings;
+    listingsReady = true;
+    renderProductGrids(currentCenter);
+    renderMapMarkers(currentCenter);
   }
 
   function initMap() {
