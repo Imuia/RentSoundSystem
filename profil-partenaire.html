@@ -71,15 +71,37 @@ tailwind.config = {
   function safe(v){return String(v||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
   function text(id,value){const el=document.getElementById(id);if(el&&value)el.textContent=value}
   function money(v){return Number(v||0).toLocaleString('fr-FR',{maximumFractionDigits:0})+'€'}
-  function productUrl(item){if(item.original_id)return'/product.html?original_id='+encodeURIComponent(item.original_id);return'/product.html?id='+encodeURIComponent(item.id)}
+  function productUrl(item){
+    const uuid = item && item.id ? String(item.id).trim() : '';
+    const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
+    const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
+    if (hasRealOriginalId) return '/product.html?original_id=' + encodeURIComponent(originalRaw);
+    if (uuid) return '/product.html?id=' + encodeURIComponent(uuid);
+    return '/catalog.html';
+  }
   function imageOf(item){const imgs=item.listing_images||[];return imgs[0]?.image_url||item.image_url||item.featured_image||''}
+
+  function normEmail(v){return String(v||'').trim().toLowerCase();}
+  function partnerKeyFromParams(){
+    const params = new URLSearchParams(location.search);
+    return {
+      email: normEmail(params.get('email') || params.get('owner_email') || ''),
+      username: String(params.get('username') || '').trim(),
+      legacy: String(params.get('legacy_user_id') || '').trim(),
+      partnerId: String(params.get('partner_id') || params.get('id') || '').trim()
+    };
+  }
+  function slugifyPartner(v){
+    return String(v||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+  }
+
   function loadFromLocal(){try{return JSON.parse(localStorage.getItem('rssLastPartnerProfile')||'null')}catch(e){return null}}
   function applyProfile(p){
     if(!p)return;
     text('partner-name',p.name||p.owner_name||p.owner_username||'Partenaire RentSoundSystem');
     text('partner-location',p.location||[p.owner_city,p.owner_country].filter(Boolean).join(', ')||'Localisation non précisée');
     text('partner-description',p.description||'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
-    const email=p.email||p.owner_email||'', phone=p.phone||p.owner_phone||''; let logo=p.logo||p.owner_logo||''; if(!logo && (p.username || p.owner_username)){ logo='/uploads/partners/'+String(p.username||p.owner_username).trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'')+'.png'; }
+    const email=p.email||p.owner_email||'', phone=p.phone||p.owner_phone||''; let logo=p.logo||p.owner_logo||''; if(!logo && (p.username || p.owner_username)){ logo='/uploads/partners/'+slugifyPartner(p.username||p.owner_username)+'.png'; }
     const emailEl=document.getElementById('partner-email'); if(emailEl&&email){emailEl.href='mailto:'+email;emailEl.classList.remove('hidden')}
     const phoneEl=document.getElementById('partner-phone'); if(phoneEl&&phone){phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);phoneEl.classList.remove('hidden')}
     const logoEl=document.getElementById('partner-logo'), fallback=document.getElementById('partner-logo-fallback');
@@ -97,23 +119,90 @@ tailwind.config = {
     }).join('');
   }
   async function loadProfile(){
-    const params=new URLSearchParams(location.search);
-    const username=params.get('username')||'', legacy=params.get('legacy_user_id')||'', cached=loadFromLocal();
-    if(cached)applyProfile(cached);
-    if(!window.supabase)return;
-    client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-    let query=client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(24);
-    if(username)query=query.eq('owner_username',username);
-    else if(legacy&&!isNaN(Number(legacy)))query=query.eq('legacy_user_id',Number(legacy));
-    else if(cached&&cached.username)query=query.eq('owner_username',cached.username);
-    else if(cached&&cached.legacy_user_id)query=query.eq('legacy_user_id',Number(cached.legacy_user_id));
-    const {data,error}=await query; if(error){console.warn(error);return}
-    const items=data||[];
-    if(items[0]){
-      const first=items[0];
-      applyProfile({name:first.owner_name||first.owner_username||cached?.name,location:[first.owner_city,first.owner_country].filter(Boolean).join(', ')||cached?.location,email:first.owner_email||cached?.email,phone:first.owner_phone||cached?.phone,description:first.owner_description||first.partner_description||cached?.description,logo:first.owner_logo||first.partner_logo||cached?.logo});
-      text('partner-specialty',first.category?String(first.category).replace(/-/g,' '):'Événementiel');
+    const key = partnerKeyFromParams();
+    const cached = loadFromLocal();
+
+    if (cached) applyProfile(cached);
+    if (!window.supabase) return;
+
+    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let partner = null;
+
+    try {
+      let pQuery = client.from('partners').select('*').limit(1);
+
+      if (key.email) {
+        pQuery = pQuery.or('owner_email.ilike.' + key.email + ',email.ilike.' + key.email);
+      } else if (key.partnerId) {
+        pQuery = pQuery.eq('id', key.partnerId);
+      } else if (key.username) {
+        pQuery = pQuery.or('username.eq.' + key.username + ',owner_username.eq.' + key.username + ',slug.eq.' + key.username);
+      } else if (key.legacy && !isNaN(Number(key.legacy))) {
+        pQuery = pQuery.eq('legacy_user_id', Number(key.legacy));
+      } else if (cached && (cached.email || cached.owner_email)) {
+        const cachedEmail = normEmail(cached.email || cached.owner_email);
+        pQuery = pQuery.or('owner_email.ilike.' + cachedEmail + ',email.ilike.' + cachedEmail);
+      } else if (cached && cached.username) {
+        pQuery = pQuery.or('username.eq.' + cached.username + ',owner_username.eq.' + cached.username + ',slug.eq.' + cached.username);
+      } else if (cached && cached.legacy_user_id) {
+        pQuery = pQuery.eq('legacy_user_id', Number(cached.legacy_user_id));
+      }
+
+      const pRes = await pQuery.maybeSingle();
+      if (!pRes.error && pRes.data) partner = pRes.data;
+    } catch(e) {
+      console.warn('partners profile lookup:', e.message || e);
     }
+
+    if (partner) {
+      applyProfile({
+        name: partner.name || partner.owner_name || partner.company_name || partner.display_name,
+        location: partner.location || [partner.city || partner.owner_city, partner.country || partner.owner_country].filter(Boolean).join(', '),
+        email: partner.email || partner.owner_email,
+        phone: partner.phone || partner.owner_phone,
+        description: partner.description || partner.owner_description || partner.bio,
+        logo: partner.logo || partner.logo_url || partner.owner_logo,
+        username: partner.username || partner.owner_username || partner.slug,
+        legacy_user_id: partner.legacy_user_id
+      });
+    }
+
+    let query = client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(24);
+
+    const email = key.email || normEmail(partner?.email || partner?.owner_email || cached?.email || cached?.owner_email);
+    const username = key.username || partner?.username || partner?.owner_username || partner?.slug || cached?.username;
+    const legacy = key.legacy || partner?.legacy_user_id || cached?.legacy_user_id;
+
+    if (email) {
+      query = query.ilike('owner_email', email);
+    } else if (username) {
+      query = query.or('owner_username.eq.' + username + ',partner_slug.eq.' + username);
+    } else if (legacy && !isNaN(Number(legacy))) {
+      query = query.eq('legacy_user_id', Number(legacy));
+    }
+
+    const {data,error} = await query;
+    if (error) { console.warn(error); return; }
+
+    const items = data || [];
+    if (items[0]) {
+      const first = items[0];
+      applyProfile({
+        name: first.owner_name || first.owner_username || partner?.name || partner?.owner_name || cached?.name,
+        location: [first.owner_city, first.owner_country].filter(Boolean).join(', ') || partner?.location || cached?.location,
+        email: first.owner_email || partner?.email || partner?.owner_email || cached?.email,
+        phone: first.owner_phone || partner?.phone || partner?.owner_phone || cached?.phone,
+        description: first.owner_description || first.partner_description || partner?.description || cached?.description,
+        logo: first.owner_logo || first.partner_logo || partner?.logo_url || partner?.logo || cached?.logo
+      });
+      text('partner-specialty', first.category ? String(first.category).replace(/-/g,' ') : 'Événementiel');
+    }
+
     renderListings(items);
   }
   ready(loadProfile);

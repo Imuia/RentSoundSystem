@@ -732,12 +732,9 @@
     const profileLink = document.getElementById('rss-owner-profile-link');
     if (profileLink) {
       const params = new URLSearchParams();
-      // Priorité absolue à l'email propriétaire : évite d'ouvrir le profil d'un autre partenaire
-      // quand un ancien legacy_user_id ou slug est incorrect sur une annonce importée.
-      if (email) params.set('email', email.toLowerCase());
-      if (!email && username) params.set('username', username);
-      if (!email && legacyId) params.set('legacy_user_id', legacyId);
-      if (!email && slug) params.set('slug', slug);
+      if (username) params.set('username', username);
+      if (legacyId) params.set('legacy_user_id', legacyId);
+      if (slug) params.set('slug', slug);
       profileLink.href = '/profil-partenaire.html' + (params.toString() ? '?' + params.toString() : '');
     }
 
