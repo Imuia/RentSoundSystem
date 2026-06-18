@@ -820,274 +820,47 @@ html, body {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    const filtered = equipmentFilter(source)
+    const filteredByCountry = equipmentFilter(source)
       .filter(item => listingCountryMatchesCenter(item, safeCenter));
 
     if (isCountryCenter(safeCenter)) {
-      return uniqueListings(filtered)
+      return uniqueListings(filteredByCountry)
         .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
         .slice(0, limit);
     }
 
-    const cityMatched = uniqueListings(filtered)
+    const cityMatched = uniqueListings(filteredByCountry)
       .filter(item => listingCityMatchesCenter(item, safeCenter));
 
     const withCoords = cityMatched.filter(item => hasCoordinates(item));
     const withoutCoords = cityMatched.filter(item => !hasCoordinates(item));
 
-    const sortedWithCoords = enrichByDistance(withCoords, safeCenter)
-      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+    const inRadius = enrichByDistance(withCoords, safeCenter)
+      .filter(item =>
+        typeof item._distanceKm === 'number' &&
+        item._distanceKm <= DEFAULT_RADIUS_KM
+      );
 
-    let result = uniqueListings([...sortedWithCoords, ...withoutCoords])
+    let result = uniqueListings([...inRadius, ...withoutCoords])
       .sort((a, b) => {
         const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
         const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
         return da - db || listingDateValue(b) - listingDateValue(a);
       });
 
+    // Si aucune annonce ne matche la ville exacte, afficher les annonces du même pays.
     if (!result.length) {
-      result = uniqueListings(filtered).sort((a, b) => listingDateValue(b) - listingDateValue(a));
+      result = uniqueListings(filteredByCountry)
+        .sort((a, b) => listingDateValue(b) - listingDateValue(a));
     }
 
+    // Sécurité finale : ne jamais laisser la zone vide si des annonces existent.
     if (!result.length) {
-      result = uniqueNewestListings(allListings).sort((a, b) => listingDateValue(b) - listingDateValue(a));
+      result = uniqueNewestListings(allListings)
+        .sort((a, b) => listingDateValue(b) - listingDateValue(a));
     }
 
     return result.slice(0, limit);
-  }
-
-
-  function productCard(item, badge) {
-    const title = escapeHtml(item.title || 'Matériel professionnel');
-    const city = escapeHtml([item.city || item.location || '', item.country || ''].filter(Boolean).join(', ') || 'Disponible');
-    const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
-    const image = getImage(item);
-    const price = formatPrice(item.price);
-    const distance = distanceText(item);
-    const locationLine = distance ? `${escapeHtml(distance)} • ${city}` : city;
-
-    return `
-      <a href="${productUrl(item)}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
-        <div class="rss-card-placeholder"></div>
-        ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
-        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
-        <div class="absolute top-4 left-4 z-10">
-          <span class="${badge === 'Nouveau' ? 'bg-primary text-on-primary' : 'bg-background/80 text-on-surface'} backdrop-blur-md text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">${badge || category}</span>
-        </div>
-        <div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
-          <h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md line-clamp-2">${title}</h3>
-          <div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
-            <span class="material-symbols-outlined text-[18px]">near_me</span>
-            <span>${locationLine}</span>
-          </div>
-          <div class="pt-3 border-t border-white/20 flex justify-between items-center">
-            <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
-            <span class="text-primary font-bold text-2xl drop-shadow">${price}</span>
-          </div>
-        </div>
-      </a>`;
-  }
-
-  function showLoading() {
-    const grid = document.getElementById('nearest-products-grid');
-    if (grid) grid.innerHTML = '<div class="rss-loading-products col-span-full">Recherche des équipements proches de votre position...</div>';
-  }
-
-  function cleanCityName(label) {
-    return String(label || '').replace(/\s*•.*$/, '').replace(', FR', '').trim();
-  }
-
-  function currentCatalogUrl() {
-    const params = new URLSearchParams();
-    const city = cleanCityName(currentCenter.name || '');
-    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
-    const q = equipmentInput && equipmentInput.value ? equipmentInput.value.trim() : '';
-    if (q) params.set('q', q);
-    if (city && city !== 'Votre position' && city !== 'Autour de vous') params.set('city', city);
-    if (currentCenter.lat && currentCenter.lng) {
-      params.set('lat', String(currentCenter.lat));
-      params.set('lng', String(currentCenter.lng));
-      params.set('radius', String(DEFAULT_RADIUS_KM));
-    }
-    return '/catalog.html' + (params.toString() ? '?' + params.toString() : '');
-  }
-
-  function setLabels(label) {
-    const clean = label || 'Autour de vous';
-    const text = clean + ' • Autour de vous';
-    const nearby = document.getElementById('nearby-city-label');
-    const mapLabel = document.getElementById('map-city-label');
-    if (nearby) nearby.textContent = text;
-    if (mapLabel) mapLabel.textContent = text;
-    document.querySelectorAll('a[href^="/catalog.html"]').forEach(a => { a.href = currentCatalogUrl(); });
-  }
-
-  function setHeroCityInput(label) {
-    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-    const clean = cleanCityName(label);
-    if (cityInput && clean && !cityInput.value) cityInput.value = clean;
-  }
-
-  function saveLocation(center) {
-    try {
-      localStorage.setItem('rssUserLocation', JSON.stringify({
-        name: center.name,
-        country: center.country || '',
-        countryCode: center.countryCode || '',
-        lat: center.lat,
-        lng: center.lng,
-        zoom: center.zoom || 13,
-        savedAt: Date.now()
-      }));
-    } catch (e) {}
-  }
-
-  function loadSavedLocation() {
-    try {
-      const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
-      if (!saved || !saved.lat || !saved.lng) return null;
-      return saved;
-    } catch (e) { return null; }
-  }
-
-  async function reversePlace(lat, lng) {
-    try {
-      const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng));
-      const data = await res.json();
-      const a = data && data.address ? data.address : {};
-      return {
-        name: a.city || a.town || a.village || a.municipality || a.county || 'Votre position',
-        country: a.country || '',
-        countryCode: a.country_code || ''
-      };
-    } catch (e) {
-      return { name: 'Votre position', country: '', countryCode: '' };
-    }
-  }
-
-  async function geocodeCity(query) {
-    const rawQuery = String(query || '').trim();
-    if (!rawQuery) return null;
-
-    // Priorité aux presets locaux : évite Cannes/Nice qui partent parfois en Espagne.
-    const preset = presetPlaceFromQuery(rawQuery);
-    if (preset) return preset;
-
-    const countryCode = countryCodeFromText(rawQuery);
-    if (countryCode && COUNTRY_DISPLAY[countryCode]) {
-      return Object.assign({ searchType: 'country' }, COUNTRY_DISPLAY[countryCode]);
-    }
-
-    const hintedCountryCode = cityCountryHintFromText(rawQuery);
-
-    async function nominatimSearch(params) {
-      const url = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams(params).toString();
-      const res = await fetch(url);
-      return await res.json();
-    }
-
-    let data = [];
-    if (hintedCountryCode) {
-      data = await nominatimSearch({
-        format: 'json',
-        addressdetails: '1',
-        limit: '5',
-        countrycodes: hintedCountryCode,
-        q: rawQuery
-      });
-    }
-
-    if (!data || !data.length) {
-      data = await nominatimSearch({
-        format: 'json',
-        addressdetails: '1',
-        limit: '5',
-        q: rawQuery
-      });
-    }
-
-    if (!data || !data.length) return null;
-
-    let result = data[0];
-
-    if (hintedCountryCode) {
-      const preferred = data.find(item => {
-        const a = item.address || {};
-        return normalizeText(a.country_code || '') === hintedCountryCode;
-      });
-      if (preferred) result = preferred;
-    }
-
-    const a = result.address || {};
-    const foundCountryCode = normalizeText(a.country_code || hintedCountryCode || '');
-    const foundCountry = a.country || (COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].country) || '';
-    const hasCity = Boolean(a.city || a.town || a.village || a.municipality || a.county);
-    const isCountryResult = Boolean(
-      result.type === 'country' ||
-      (result.class === 'boundary' && a.country && !hasCity && !hintedCountryCode)
-    );
-
-    return {
-      name: isCountryResult ? ((COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].name) || rawQuery) : rawQuery,
-      country: foundCountry,
-      countryCode: foundCountryCode,
-      lat: parseFloat(result.lat),
-      lng: parseFloat(result.lon),
-      zoom: isCountryResult ? 6 : 13,
-      searchType: isCountryResult ? 'country' : 'city',
-      bounds: boundsFromNominatim(result)
-    };
-  }
-
-  function equipmentFilter(items) {
-    const input = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
-    const q = input && input.value ? input.value.trim().toLowerCase() : '';
-    if (!q) return items;
-    return items.filter(item => {
-      const haystack = [item.title, item.description, item.category, item.brand, item.city, item.location].join(' ').toLowerCase();
-      return haystack.includes(q);
-    });
-  }
-
-  function enrichByDistance(items, center) {
-    return (items || []).map(item => {
-      const lat = getLat(item);
-      const lng = getLng(item);
-      const copy = Object.assign({}, item);
-      if (lat !== null && lng !== null && center) copy._distanceKm = haversineKm(center.lat, center.lng, lat, lng);
-      return copy;
-    }).sort((a, b) => {
-      const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
-      const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
-      return da - db;
-    });
-  }
-
-  function nearbyItems(center, limit) {
-    const safeCenter = center || currentCenter;
-    const source = activeListings.length ? activeListings : allListings;
-
-    let filtered = equipmentFilter(source)
-      .filter(item => listingCountryMatchesCenter(item, safeCenter))
-      .filter(item => listingCityMatchesCenter(item, safeCenter));
-
-    // Logique officielle :
-    // - recherche pays (ex: Maroc) : toutes les annonces du pays, même sans rayon ville ;
-    // - recherche ville (ex: Agadir) : ville + pays + rayon autour de la ville.
-    if (isCountryCenter(safeCenter)) {
-      return uniqueListings(filtered)
-        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
-        .slice(0, limit);
-    }
-
-    filtered = filtered.filter(item => hasCoordinates(item));
-    const sorted = enrichByDistance(filtered, safeCenter);
-    const inRadius = sorted.filter(item =>
-      typeof item._distanceKm === 'number' &&
-      item._distanceKm <= DEFAULT_RADIUS_KM
-    );
-
-    return inRadius.slice(0, limit);
   }
 
   function canonicalCity(value) {
@@ -1132,17 +905,10 @@ html, body {
   function newestItems(limit, center) {
     /*
       Section “Nouveaux équipements” :
-      - affiche les dernières annonces monde entier ;
-      - limite stricte à 4 ;
-      - évite les doublons visuels ;
-      - n'affiche pas ici les annonces qui ressemblent à la ville actuelle.
-        Si elles sont réellement autour de l'utilisateur, elles doivent apparaître
-        dans “Équipements à proximité”. Cela évite de montrer “Tananarive” dans
-        les nouveautés quand la proximité n'a aucune annonce validée.
+      affiche toujours les dernières annonces publiées, toutes villes et tous pays confondus.
+      On ne retire plus Antananarivo/Tananarive, sinon les nouvelles annonces partenaires disparaissent.
     */
-    const safeCenter = center || currentCenter;
     return uniqueNewestListings(allListings)
-      .filter(function (item) { return !listingLooksLikeCurrentCity(item, safeCenter); })
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
   }
@@ -1156,6 +922,7 @@ html, body {
     const newestGrid = document.getElementById('newest-products-grid');
     const nearest = nearbyItems(center || currentCenter, 4);
     const newest = newestNearbyItems(center || currentCenter, 4);
+    console.log('[RSS index] listings:', allListings.length, 'nearby:', nearest.length, 'newest:', newest.length, 'center:', center || currentCenter);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
