@@ -316,6 +316,29 @@
 </style>
 
 <!-- rss-product-partner-email-lookup-v2 -->
+
+<style id="rss-wysiwyg-description-css">
+  .rss-wysiwyg-description {
+    color:#e6bcc2;
+    font-size:16px;
+    line-height:1.75;
+    white-space:normal;
+  }
+  .rss-wysiwyg-description p { margin:0 0 18px; }
+  .rss-wysiwyg-description ul { margin:10px 0 18px 0; padding-left:0; list-style:none; }
+  .rss-wysiwyg-description li { margin:6px 0; color:#ffffff; }
+  .rss-wysiwyg-description strong,
+  .rss-wysiwyg-description b { color:#ffffff; font-weight:800; }
+  .rss-wysiwyg-description .rss-desc-heading {
+    display:block;
+    color:#ffffff;
+    font-weight:800;
+    margin:22px 0 10px;
+  }
+</style>
+
+
+<!-- rss-product-overview-fix-v3 -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -366,7 +389,7 @@
 </div>
 <div id="rss-tab-overview" class="rss-tab-panel active p-8 space-y-6">
 <h3 class="font-headline text-headline-lg text-on-surface">Chargement...</h3>
-<p class="font-body text-body-md text-on-surface-variant leading-relaxed">Chargement de la description dynamique...</p>
+<div id="rss-overview-description" class="rss-wysiwyg-description">Chargement de la description dynamique...</div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
 <div class="bg-surface p-4 rounded border border-outline-variant/20 flex items-start space-x-3">
 <span class="material-symbols-outlined text-primary">speaker</span>
@@ -571,6 +594,67 @@
     return String(value).replace(/<[^>]*>?/gm, '').replace(/&nbsp;/g, ' ').trim();
   }
 
+  function formatDescriptionHTML(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return '<p>Description détaillée prochainement disponible pour cette annonce.</p>';
+
+    let textValue = raw
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\r\n/g, '\n')
+      .replace(/\r/g, '\n')
+      .trim();
+
+    const hasHtml = /<\/?[a-z][\s\S]*>/i.test(textValue);
+    if (hasHtml) {
+      return textValue
+        .replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[\s\S]*?>[\s\S]*?<\/style>/gi, '')
+        .replace(/\son\w+="[^"]*"/gi, '')
+        .replace(/\son\w+='[^']*'/gi, '')
+        .replace(/javascript:/gi, '');
+    }
+
+    const safeText = safe(textValue);
+    const lines = safeText.split('\n');
+    const blocks = [];
+    let list = [];
+
+    function flushList() {
+      if (list.length) {
+        blocks.push('<ul>' + list.map(line => '<li>' + line + '</li>').join('') + '</ul>');
+        list = [];
+      }
+    }
+
+    lines.forEach(function(line){
+      const clean = line.trim();
+      if (!clean) {
+        flushList();
+        return;
+      }
+
+      const isListLine = /^[✅🎤🏢🎉📽️📊🎮🎓💍•\-]/.test(clean);
+      const isHeading = /^(Idéale pour|Caractéristiques principales|Service possible|Inclus|Applications|Points forts)/i.test(clean);
+
+      if (isListLine) {
+        list.push(clean);
+        return;
+      }
+
+      flushList();
+
+      if (isHeading) {
+        blocks.push('<p><span class="rss-desc-heading">' + clean + '</span></p>');
+      } else {
+        blocks.push('<p>' + clean + '</p>');
+      }
+    });
+
+    flushList();
+    return blocks.join('');
+  }
+
+
   function safe(value) {
     return String(value || '').replace(/[&<>"]/g, function (m) {
       return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[m];
@@ -721,7 +805,11 @@
     // 1) Priorité absolue : partners.email = listings.owner_email
     if (email && looksLikeEmail(email)) {
       attempts.push({
-        label: 'partners.email',
+        label: 'partners.email exact',
+        run: () => client.from('partners').select('*').eq('email', email).limit(1)
+      });
+      attempts.push({
+        label: 'partners.email ilike',
         run: () => client.from('partners').select('*').ilike('email', email).limit(1)
       });
     }
@@ -1330,10 +1418,11 @@
       });
     }
 
-    const overviewTitle = Array.from(document.querySelectorAll('h3')).find(el => el.textContent.includes('Qualité Sonore'));
-    text(overviewTitle, title);
-    const overviewP = overviewTitle ? overviewTitle.parentElement.querySelector('p') : null;
-    text(overviewP, cleanDescription(enrichedItem.description));
+    const overviewTitle = document.querySelector('#rss-tab-overview h3');
+    if (overviewTitle) overviewTitle.textContent = title;
+
+    const overviewDesc = document.getElementById('rss-overview-description') || document.querySelector('#rss-tab-overview p');
+    if (overviewDesc) overviewDesc.innerHTML = formatDescriptionHTML(enrichedItem.description);
 
     updateRealProductTech(enrichedItem);
 
@@ -1420,7 +1509,7 @@
     function productTextFromPage() {
       return normalizeText([
         document.querySelector('.lg\\:col-span-5 h1')?.textContent,
-        document.querySelector('#rss-tab-overview p')?.textContent,
+        document.querySelector('#rss-overview-description')?.textContent || document.querySelector('#rss-tab-overview p')?.textContent,
         document.querySelector('#rss-tab-specs')?.textContent,
         document.querySelector('.lg\\:col-span-5 .grid.grid-cols-2')?.textContent
       ].join(' '));
