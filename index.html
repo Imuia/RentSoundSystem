@@ -545,6 +545,18 @@ html, body {
   function getLng(item) { return toNumber(item.lng ?? item.lon ?? item.longitude); }
   function hasCoordinates(item) { return getLat(item) !== null && getLng(item) !== null; }
 
+  function fallbackCoordsForListing(item) {
+    const text = compactWords([item && item.city, item && item.location, item && item.address, item && item.country].join(' '));
+    if (!text) return null;
+    if (text.includes('antananarivo') || text.includes('tananarive') || text.includes('tana')) return {lat:-18.8792,lng:47.5079};
+    if (text.includes('madagascar')) return {lat:-18.7669,lng:46.8691};
+    if (text.includes('paris')) return {lat:48.8566,lng:2.3522};
+    if (text.includes('agadir')) return {lat:30.4278,lng:-9.5981};
+    if (text.includes('casablanca')) return {lat:33.5731,lng:-7.5898};
+    if (text.includes('cannes')) return {lat:43.5528,lng:7.0174};
+    return null;
+  }
+
   function getImage(item) {
     const imgs = Array.isArray(item.listing_images) ? [...item.listing_images] : [];
     imgs.sort((a, b) => Number(a.position || 0) - Number(b.position || 0));
@@ -553,23 +565,13 @@ html, body {
 
   function productUrl(item) {
     const slug = encodeURIComponent(slugify(item.title || 'annonce'));
-
     const uuid = item && item.id ? String(item.id).trim() : '';
     const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
     const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
 
-    if (uuid && !hasRealOriginalId) {
-      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
-    }
-
-    if (hasRealOriginalId) {
-      return `/product.html?original_id=${encodeURIComponent(originalRaw)}&slug=${slug}`;
-    }
-
-    if (uuid) {
-      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
-    }
-
+    if (uuid && !hasRealOriginalId) return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    if (hasRealOriginalId) return `/product.html?original_id=${encodeURIComponent(originalRaw)}&slug=${slug}`;
+    if (uuid) return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
     return '/catalog.html';
   }
 
@@ -825,15 +827,29 @@ html, body {
     const city = normalizeText(centerCityName(center));
     if (!city || city === 'votre position' || city === 'autour de vous') return false;
 
-    const candidates = [item && item.city, item && item.location, item && item.address]
-      .map(normalizeText)
-      .filter(Boolean);
+    const candidates = [
+      item && item.city,
+      item && item.location,
+      item && item.address,
+      item && item.country,
+      item && item.title,
+      item && item.description
+    ].map(normalizeText).filter(Boolean);
 
     if (!candidates.length) return false;
 
-    // Recherche ville : la ville doit correspondre ET le rayon GPS s'applique ensuite.
+    // Antananarivo / Tananarive / Tana doivent matcher ensemble.
+    const aliases = {
+      antananarivo: ['antananarivo','tananarive','tana'],
+      tananarive: ['antananarivo','tananarive','tana'],
+      tana: ['antananarivo','tananarive','tana']
+    };
+    const cityAliases = aliases[city] || [city];
+
     return candidates.some(function (value) {
-      return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
+      return cityAliases.some(function (c) {
+        return value === c || value.indexOf(c) !== -1 || (c.length > 4 && c.indexOf(value) !== -1);
+      });
     });
   }
 
@@ -893,21 +909,27 @@ html, body {
     const sortedWithCoords = enrichByDistance(withCoords, safeCenter)
       .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
 
-    // Important : les annonces partenaires récentes peuvent avoir ville/pays mais pas encore latitude/longitude.
-    // On les affiche après les annonces géolocalisées au lieu de les masquer.
-    return uniqueListings([...sortedWithCoords, ...withoutCoords])
+    let result = uniqueListings([...sortedWithCoords, ...withoutCoords])
       .sort((a, b) => {
         const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
         const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
         return da - db || listingDateValue(b) - listingDateValue(a);
-      })
-      .slice(0, limit);
+      });
+
+    // Sécurité : si la ville exacte ne remonte rien, montrer quand même les annonces du même pays,
+    // sinon la zone reste vide alors que des annonces existent bien à Antananarivo/Madagascar.
+    if (!result.length) {
+      result = uniqueListings(filtered)
+        .sort((a, b) => listingDateValue(b) - listingDateValue(a));
+    }
+
+    return result.slice(0, limit);
   }
 
 
   function productCard(item, badge) {
     const title = escapeHtml(item.title || 'Matériel professionnel');
-    const city = escapeHtml([item.city || item.location || '', item.country || ''].filter(Boolean).join(', ') || 'Disponible');
+    const city = escapeHtml(item.city || item.location || 'France');
     const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
     const image = getImage(item);
     const price = formatPrice(item.price);
@@ -1179,11 +1201,18 @@ html, body {
 
   function newestItems(limit, center) {
     /*
-      Les nouveautés doivent montrer les dernières annonces publiées, toutes villes et tous pays confondus.
-      Avant, la page retirait les annonces qui ressemblaient à la ville actuelle :
-      résultat, les annonces Antananarivo / Madagascar pouvaient disparaître de l'accueil.
+      Section “Nouveaux équipements” :
+      - affiche les dernières annonces monde entier ;
+      - limite stricte à 4 ;
+      - évite les doublons visuels ;
+      - n'affiche pas ici les annonces qui ressemblent à la ville actuelle.
+        Si elles sont réellement autour de l'utilisateur, elles doivent apparaître
+        dans “Équipements à proximité”. Cela évite de montrer “Tananarive” dans
+        les nouveautés quand la proximité n'a aucune annonce validée.
     */
+    const safeCenter = center || currentCenter;
     return uniqueNewestListings(allListings)
+      .filter(function (item) { return !listingLooksLikeCurrentCity(item, safeCenter); })
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, limit);
   }
@@ -1226,146 +1255,39 @@ html, body {
   }
 
   function renderMapMarkers(center) {
-    if (!mapReady || !map) return;
+    if (!map || !listingsReady) return;
+
     clearProductMarkers();
 
-    const productIcon = L.divIcon({
-      className: 'rss-product-marker',
-      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
-      iconSize: [38, 38],
-      iconAnchor: [19, 38],
-      popupAnchor: [0, -38]
-    });
+    const items = nearbyItems(center || currentCenter, 80);
+    const markers = [];
 
-    const safeCenter = center || currentCenter;
-    const items = nearbyItems(safeCenter, 30);
-    productMarkers = items.map(item => {
-      const lat = getLat(item);
-      const lng = getLng(item);
-      if (lat === null || lng === null) return null;
-      return L.marker([lat, lng], { icon: productIcon })
+    items.forEach(function (item, index) {
+      let lat = getLat(item);
+      let lng = getLng(item);
+
+      if (lat === null || lng === null) {
+        const fb = fallbackCoordsForListing(item) || {lat:(center || currentCenter).lat, lng:(center || currentCenter).lng};
+        lat = fb.lat + ((index % 5) - 2) * 0.006;
+        lng = fb.lng + ((index % 7) - 3) * 0.006;
+      }
+
+      if (lat === null || lng === null) return;
+
+      const marker = L.marker([lat, lng], { icon: productIcon() })
         .addTo(map)
         .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
-    }).filter(Boolean);
 
-    if (isCountryCenter(safeCenter) && productMarkers.length) {
-      const group = L.featureGroup(productMarkers);
-      map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 7, animate: true });
-    } else {
-      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 12, { animate: true });
+      productMarkers.push(marker);
+      markers.push(marker);
+    });
+
+    if (markers.length) {
+      const group = L.featureGroup(markers);
+      map.fitBounds(group.getBounds().pad(0.25), { maxZoom: 12 });
     }
 
-    setTimeout(fixMapSize, 50);
-    setTimeout(fixMapSize, 300);
-  }
-
-  function fixMapSize() {
-    const mapEl = document.getElementById('rss-map');
-    const mapWrap = document.getElementById('rss-map-wrap');
-    if (!mapEl || !mapWrap || !map) return;
-    const h = window.innerWidth < 768 ? '420px' : '600px';
-    mapEl.style.height = h;
-    mapEl.style.minHeight = h;
-    mapWrap.style.height = h;
-    mapWrap.style.minHeight = h;
-    map.invalidateSize(true);
-  }
-
-  function updateCenter(center, options) {
-    currentCenter = Object.assign({}, DEFAULT_CITY, { country: '', countryCode: '' }, center || {});
-    if (options && options.isGeolocation) saveLocation(currentCenter);
-    setLabels(currentCenter.name || 'Votre position');
-    setHeroCityInput(currentCenter.name || '');
-
-    if (mapReady && map) {
-      if (userMarker) {
-        map.removeLayer(userMarker);
-        userMarker = null;
-      }
-
-      if (options && options.isGeolocation) {
-        const userIcon = L.divIcon({
-          className: 'rss-user-marker',
-          html: '<div class="rss-user-dot"></div>',
-          iconSize: [20, 20],
-          iconAnchor: [10, 10],
-          popupAnchor: [0, -10]
-        });
-
-        userMarker = L.marker([currentCenter.lat, currentCenter.lng], { icon: userIcon, zIndexOffset: 1000 })
-          .addTo(map)
-          .bindPopup('Votre position', { className: 'rss-popup' });
-      }
-
-      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 13, { animate: true });
-    }
-
-    if (listingsReady) {
-      renderProductGrids(currentCenter);
-      renderMapMarkers(currentCenter);
-    }
-  }
-
-  async function loadListings() {
-    if (!window.supabase) {
-      console.error('Supabase JS non chargé');
-      return;
-    }
-
-    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let { data, error } = await supabaseClient
-      .from('listings')
-      .select('*, listing_images ( image_url, position )')
-      .eq('status', 'publish')
-      .order('featured', { ascending: false })
-      .order('published_at', { ascending: false })
-      .limit(200);
-
-    if (error) {
-      console.warn('Chargement avec filtre lat/lng impossible, fallback sans filtre:', error);
-      const fallback = await supabaseClient
-        .from('listings')
-        .select('*, listing_images ( image_url, position )')
-        .eq('status', 'publish')
-        .order('featured', { ascending: false })
-        .order('published_at', { ascending: false })
-        .limit(200);
-      data = fallback.data || [];
-      error = fallback.error;
-    }
-
-    if (error) {
-      console.error('Erreur chargement produits Supabase:', error);
-      return;
-    }
-
-    data = Array.isArray(data) ? data : [];
-
-    const missingImages = data.every(item => !Array.isArray(item.listing_images) || !item.listing_images.length);
-    if (missingImages && data.length) {
-      const originalIds = data.map(item => item.original_id).filter(Boolean);
-      const staging = await supabaseClient
-        .from('listing_images_staging')
-        .select('listing_original_id,image_url,position')
-        .in('listing_original_id', originalIds);
-
-      if (!staging.error && staging.data && staging.data.length) {
-        const byOriginalId = {};
-        staging.data.forEach(img => {
-          const key = String(img.listing_original_id);
-          if (!byOriginalId[key]) byOriginalId[key] = [];
-          byOriginalId[key].push({ image_url: img.image_url, position: img.position });
-        });
-        data = data.map(item => ({ ...item, listing_images: byOriginalId[String(item.original_id)] || item.listing_images || [] }));
-      }
-    }
-
-    allListings = uniqueListings(data);
-    activeListings = allListings;
-    listingsReady = true;
-    renderProductGrids(currentCenter);
-    renderMapMarkers(currentCenter);
+    setTimeout(fixMapSize, 80);
   }
 
   function initMap() {
