@@ -149,27 +149,139 @@ const clean = v => String(v||'').trim().toLowerCase();
 const esc = v => String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const num = v => (v===''||v==null?null:(Number.isFinite(Number(v))?Number(v):null));
 const price = v => euro.format(Number(v||0));
+
+function cleanEmail(v){ return String(v||'').trim().toLowerCase(); }
+function cleanText(v){ return String(v||'').trim(); }
+function firstText(){
+  for(const v of arguments){
+    const s=cleanText(v);
+    if(s) return s;
+  }
+  return '';
+}
+function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanText(v)); }
+
+async function fetchPartnerByEmailSafe(email){
+  const e = cleanEmail(email);
+  if(!sb || !e || !isEmail(e)) return null;
+
+  try{
+    const {data,error}=await sb.from('partners').select('*').ilike('email', e).limit(1);
+    if(error){
+      console.warn('Erreur recherche partenaire:', error.message);
+      return null;
+    }
+    return (data||[])[0] || null;
+  }catch(err){
+    console.warn('Exception recherche partenaire:', err.message || err);
+    return null;
+  }
+}
+
+function normalizePartnerRecord(partner, profile, authEmail){
+  const e = cleanEmail(partner?.email || profile?.email || authEmail);
+  const realName = firstText(
+    partner?.name,
+    partner?.owner_name,
+    partner?.company_name,
+    partner?.display_name,
+    partner?.partner_name,
+    profile?.company_name,
+    profile?.full_name
+  ) || e;
+
+  return Object.assign({}, partner || {}, {
+    email: e,
+    owner_email: e,
+    name: realName,
+    owner_name: realName,
+    phone: firstText(partner?.phone, partner?.owner_phone, profile?.phone),
+    owner_phone: firstText(partner?.phone, partner?.owner_phone, profile?.phone),
+    city: firstText(partner?.city, partner?.owner_city),
+    owner_city: firstText(partner?.city, partner?.owner_city),
+    country: firstText(partner?.country, partner?.owner_country),
+    owner_country: firstText(partner?.country, partner?.owner_country),
+    legacy_user_id: partner?.legacy_user_id ?? null,
+    user_id: partner?.user_id ?? null,
+    status: partner?.status || 'approved'
+  });
+}
+
+async function repairOwnerInfoForCurrentPartner(ctx){
+  if(!ctx || !ctx.email || !ctx.partner) return;
+  const partner = ctx.partner;
+  const realName = firstText(partner.name, partner.owner_name, partner.company_name, ctx.email);
+  if(!realName || isEmail(realName)) return;
+
+  const patch = {
+    owner_email: cleanEmail(ctx.email),
+    owner_name: realName,
+    owner_phone: firstText(partner.phone, partner.owner_phone),
+    owner_city: firstText(partner.city, partner.owner_city),
+    owner_country: firstText(partner.country, partner.owner_country),
+    legacy_user_id: partner.legacy_user_id || null
+  };
+
+  try{
+    await sb.from('listings').update(patch).ilike('owner_email', cleanEmail(ctx.email));
+  }catch(e){
+    console.warn('Réparation annonces impossible:', e.message || e);
+  }
+}
+
 const statusNorm = s => {s=String(s||'publish').toLowerCase(); return s==='published'?'publish':s};
 function badge(s){s=statusNorm(s); if(s==='publish') return '<span class="rss-badge">Publié</span>'; if(s==='draft') return '<span class="rss-badge" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12);color:#ddd">Brouillon</span>'; return '<span class="rss-badge">En attente</span>'}
 function alertBox(msg,type='info'){const b=$('auth-alert'); if(!b) return; b.style.display='block'; b.className='rss-card '+(type==='success'?'rss-success': type==='error'?'rss-danger':'rss-card-pink'); b.style.marginBottom='24px'; b.style.padding='18px'; b.innerHTML=msg}
 async function getPartnerContext(){
   if(!sb){ alertBox('Supabase JS n’est pas chargé.','error'); return null; }
+
   const {data:sessionData}=await sb.auth.getSession();
   const user=sessionData?.session?.user||null;
-  if(!user){ location.href='/connexion-inscription.html?redirect=/tableau-de-bord-partenaire-valide.html'; return null; }
-  const email=clean(user.email);
-  const {data:profile}=await sb.from('profiles').select('id,email,full_name,company_name,role,phone').eq('id',user.id).maybeSingle();
-  if(profile?.role==='client'){ alertBox('Ce compte est client. Connectez-vous avec un compte partenaire validé.','error'); return null; }
-  const {data:partner}=await sb.from('partners').select('*').ilike('email',email).maybeSingle();
-  if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){ alertBox('Aucun profil partenaire validé trouvé pour cet email.','error'); return null; }
-  const p=partner||{email,name:profile?.full_name||profile?.company_name||email,phone:profile?.phone||'',status:'approved'};
-  if(!['approved','active'].includes(String(p.status||'approved').toLowerCase()) && profile?.role!=='partner' && profile?.role!=='partenaire'){
-    location.href='/partenaire-soumis.html'; return null;
+  if(!user){
+    location.href='/connexion-inscription.html?redirect=/tableau-de-bord-partenaire-valide.html';
+    return null;
   }
-  const name=p.name||p.full_name||p.company_name||'Partenaire';
-  if($('top-partner-name')) $('top-partner-name').textContent=name;
-  if($('partner-status-label')) $('partner-status-label').textContent='Partenaire validé';
-  return {user, partner:p, email:clean(p.email||email), legacy:p.legacy_user_id};
+
+  const authEmail = cleanEmail(user.email);
+
+  const {data:profile,error:profileError}=await sb
+    .from('profiles')
+    .select('id,email,full_name,company_name,role,phone')
+    .eq('id',user.id)
+    .maybeSingle();
+
+  if(profileError) console.warn('Erreur profil:', profileError.message);
+
+  if(profile?.role==='client'){
+    alertBox('Ce compte est client. Connectez-vous avec un compte partenaire validé.','error');
+    return null;
+  }
+
+  const partner = await fetchPartnerByEmailSafe(authEmail);
+
+  if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){
+    alertBox('Aucun profil partenaire validé trouvé pour cet email.','error');
+    return null;
+  }
+
+  const p = normalizePartnerRecord(partner, profile, authEmail);
+
+  const status = String(p.status || 'approved').toLowerCase();
+  if(!['approved','active','validé','valide','validated'].includes(status) && profile?.role!=='partner' && profile?.role!=='partenaire'){
+    location.href='/partenaire-soumis.html';
+    return null;
+  }
+
+  if($('top-partner-name')) $('top-partner-name').textContent = p.owner_name;
+  if($('partner-status-label')) $('partner-status-label').textContent = 'Partenaire validé';
+
+  return {
+    user,
+    profile,
+    partner: p,
+    email: p.email,
+    legacy: p.legacy_user_id
+  };
 }
 async function loadPartnerListings(ctx){
   let q=sb.from('listings').select('id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at').order('created_at',{ascending:false});
@@ -179,7 +291,7 @@ async function loadPartnerListings(ctx){
   return data||[];
 }
 async function loadListingImages(listingId){
-  const {data,error}=await sb.from('listing_images').select('id,listing_id,url,src,alt,sort_order').eq('listing_id',listingId).order('sort_order',{ascending:true});
+  const {data,error}=await sb.from('listing_images').select('id,listing_id,image_url,position,created_at').eq('listing_id',listingId).order('position',{ascending:true});
   if(error) return [];
   return data||[];
 }
@@ -190,7 +302,7 @@ async function uploadImageFile(file, listingId){
   if(upErr) throw upErr;
   const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
   const url=pub.publicUrl;
-  const {error:insErr}=await sb.from('listing_images').insert({listing_id:listingId,url,src:url,alt:'Image annonce',sort_order:99});
+  const {error:insErr}=await sb.from('listing_images').insert({listing_id:listingId,image_url:url,position:99});
   if(insErr) throw insErr;
   return url;
 }
@@ -204,15 +316,56 @@ document.addEventListener('DOMContentLoaded',()=>{
 let CTX=null;
 document.addEventListener('DOMContentLoaded', async()=>{
  CTX=await getPartnerContext(); if(!CTX)return;
+
+ await repairOwnerInfoForCurrentPartner(CTX);
+
  const p=CTX.partner;
- $('partner-name-input').value=p.name||''; $('partner-phone-input').value=p.phone||''; $('partner-city-input').value=p.city||''; $('partner-country-input').value=p.country||'';
+ $('partner-name-input').value=p.name||p.owner_name||'';
+ $('partner-phone-input').value=p.phone||p.owner_phone||'';
+ $('partner-city-input').value=p.city||p.owner_city||'';
+ $('partner-country-input').value=p.country||p.owner_country||'';
+
+ const publicLink=document.querySelector('a[href="/profil-partenaire.html"]');
+ if(publicLink){
+   publicLink.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email);
+ }
+
  $('partner-form')?.addEventListener('submit',async e=>{
   e.preventDefault();
-  if(!p.id){alertBox('Aucun ID partners trouvé.','error');return}
-  const update={name:$('partner-name-input').value.trim(),phone:$('partner-phone-input').value.trim(),city:$('partner-city-input').value.trim(),country:$('partner-country-input').value.trim()};
-  const {error}=await sb.from('partners').update(update).eq('id',p.id);
+
+  const realName=$('partner-name-input').value.trim();
+  const phone=$('partner-phone-input').value.trim();
+  const city=$('partner-city-input').value.trim();
+  const country=$('partner-country-input').value.trim();
+
+  if(!realName || isEmail(realName)){
+    alertBox('Merci de mettre un vrai nom / enseigne, pas un email.','error');
+    return;
+  }
+
+  const update={name:realName,phone,city,country};
+
+  let error=null;
+  if(p.id){
+    const res=await sb.from('partners').update(update).eq('id',p.id);
+    error=res.error;
+  }else{
+    const res=await sb.from('partners').update(update).ilike('email',CTX.email);
+    error=res.error;
+  }
+
   if(error){alertBox('Erreur profil : '+error.message,'error');return}
-  alertBox('Profil partenaire mis à jour.','success');
+
+  CTX.partner = Object.assign({}, CTX.partner, update, {
+    owner_name: realName,
+    owner_phone: phone,
+    owner_city: city,
+    owner_country: country
+  });
+
+  await repairOwnerInfoForCurrentPartner(CTX);
+
+  alertBox('Profil partenaire et annonces mises à jour.','success');
  });
 });
 </script>
