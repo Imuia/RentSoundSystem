@@ -164,6 +164,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-mon-profil-partenaire-fill-supabase-v2 -->
 
 <!-- rss-profile-partner-lookup-by-email-user-legacy-v1 -->
+
+<!-- rss-profile-loading-speed-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -585,8 +587,10 @@ async function getPartnerContext(){
     return null;
   }
 
-  const partner = await fetchPartnerByKeysSafe(authEmail, user.id);
-  const partnerRequest = await fetchPartnerRequestByKeysSafe(authEmail, user.id);
+  const [partner, partnerRequest] = await Promise.all([
+    fetchPartnerByKeysSafe(authEmail, user.id),
+    fetchPartnerRequestByKeysSafe(authEmail, user.id)
+  ]);
 
   if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){
     alertBox('Aucun profil partenaire validé trouvé pour cet email.','error');
@@ -645,6 +649,82 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <script id="rss-partner-profile-expanded-script-v1">
 let CTX=null;
+
+
+const PARTNER_PROFILE_CACHE_KEY = 'rss_partner_profile_cache_v1';
+
+function cachePartnerProfileSnapshot(p){
+  try{
+    if(!p || !p.email) return;
+    localStorage.setItem(PARTNER_PROFILE_CACHE_KEY, JSON.stringify({
+      email:p.email,
+      name:firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name),
+      phone:firstText(p.phone,p.owner_phone),
+      country:firstText(p.country,p.owner_country),
+      address:firstText(p.address,p.address_1,p.owner_address),
+      city:firstText(p.city,p.owner_city),
+      postal_code:firstText(p.postal_code,p.zip,p.zip_code),
+      currency:firstText(p.currency,p.devise),
+      iban:firstText(p.iban,p.bank_iban),
+      bic:firstText(p.bic,p.swift,p.bank_bic),
+      account_holder:firstText(p.account_holder,p.bank_holder,p.bank_account_holder),
+      bank_name:firstText(p.bank_name,p.bank),
+      logo_url:firstText(p.logo_url,p.logo,p.avatar_url),
+      description:firstText(p.description,p.bio,p.presentation),
+      website:firstText(p.website,p.website_url),
+      facebook_url:firstText(p.facebook_url,p.facebook),
+      instagram_url:firstText(p.instagram_url,p.instagram),
+      linkedin_url:firstText(p.linkedin_url,p.linkedin),
+      saved_at:Date.now()
+    }));
+  }catch(e){}
+}
+
+function getCachedPartnerProfile(){
+  try{
+    const raw = localStorage.getItem(PARTNER_PROFILE_CACHE_KEY);
+    if(!raw) return null;
+    const p = JSON.parse(raw);
+    if(!p || !p.email) return null;
+    return p;
+  }catch(e){ return null; }
+}
+
+function fillPartnerFormFast(p){
+  if(!p) return;
+  setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name) || '');
+  setValue('partner-email-input', cleanEmail(p.email || ''));
+  setValue('partner-phone-input', pick(p.phone,p.owner_phone));
+  setValue('partner-country-input', pick(p.country,p.owner_country));
+  setValue('partner-address-input', pick(p.address,p.address_1,p.owner_address));
+  setValue('partner-city-input', pick(p.city,p.owner_city));
+  setValue('partner-postal-input', pick(p.postal_code,p.zip,p.zip_code));
+  setValue('partner-currency-input', pick(p.currency,p.devise,'euro'));
+  setValue('partner-website-input', pick(p.website,p.website_url));
+  setValue('partner-facebook-input', pick(p.facebook_url,p.facebook));
+  setValue('partner-instagram-input', pick(p.instagram_url,p.instagram));
+  setValue('partner-linkedin-input', pick(p.linkedin_url,p.linkedin));
+  setValue('partner-description-input', pick(p.description,p.bio,p.presentation));
+  setValue('partner-iban-input', pick(p.iban,p.bank_iban));
+  setValue('partner-bic-input', pick(p.bic,p.swift,p.bank_bic));
+  setValue('partner-account-holder-input', pick(p.account_holder,p.bank_holder,p.bank_account_holder));
+  setValue('partner-bank-name-input', pick(p.bank_name,p.bank));
+  setValue('partner-logo-url-input', pick(p.logo_url,p.logo,p.avatar_url));
+  const logo = getValue('partner-logo-url-input');
+  const logoImg = $('partner-logo-preview');
+  const logoPlaceholder = $('partner-logo-placeholder');
+  if(logo && logoImg){
+    logoImg.src = logo;
+    logoImg.style.display='block';
+    if(logoPlaceholder) logoPlaceholder.style.display='none';
+  }
+  if($('stat-city')) $('stat-city').textContent = pick(p.city,p.owner_city,'—');
+}
+
+function prefillPartnerProfileImmediately(){
+  const cached = getCachedPartnerProfile();
+  if(cached) fillPartnerFormFast(cached);
+}
 
 function pick(){
   for(const v of arguments){
@@ -705,10 +785,15 @@ async function uploadPartnerLogo(file, ctx){
 
 async function initPartnerProfilePage(){
   CTX=await getPartnerContext(); if(!CTX)return;
-  await repairOwnerInfoForCurrentPartner(CTX);
 
   const p=CTX.partner || {};
-  const listings = await loadPartnerListings(CTX).catch(()=>[]);
+  fillPartnerFormFast(p);
+  cachePartnerProfileSnapshot(p);
+
+  const listingsPromise = loadPartnerListings(CTX).catch(()=>[]);
+  repairOwnerInfoForCurrentPartner(CTX).catch(()=>{});
+
+  const listings = await listingsPromise;
 
   const publicLinks=[document.getElementById('public-profile-link'),document.getElementById('public-profile-link-bottom')].filter(Boolean);
   publicLinks.forEach(a=>{ a.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email); });
@@ -855,6 +940,7 @@ async function initPartnerProfilePage(){
         owner_country: payload.country
       });
 
+      cachePartnerProfileSnapshot(CTX.partner);
       await repairOwnerInfoForCurrentPartner(CTX);
       const bankStatus = $('bank-status');
       if(bankStatus){
@@ -871,7 +957,10 @@ async function initPartnerProfilePage(){
   });
 }
 
-document.addEventListener('DOMContentLoaded', initPartnerProfilePage);
+document.addEventListener('DOMContentLoaded', ()=>{
+  prefillPartnerProfileImmediately();
+  initPartnerProfilePage();
+});
 </script>
 
 
