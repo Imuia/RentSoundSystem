@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Yamaha Professional Audio — Consoles numériques, enceintes et sonorisation professionnelle | RentSoundSystem</title>
+<meta name="description" content="Découvrez Yamaha Professional Audio, marque de référence en mixage numérique et sonorisation professionnelle : consoles DM7 et TF5, enceintes DZR, DXR, subwoofers DXS et systèmes colonne STAGEPAS pour concerts, DJ, conférences, mariages et installations fixes."/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-tint": "#ffb2bf",
+                      "surface-container-low": "#1c1b1b",
+                      "secondary-container": "#454748",
+                      "on-tertiary-container": "#2a2a2a",
+                      "on-surface-variant": "#e6bcc2",
+                      "tertiary-container": "#929090",
+                      "surface-bright": "#393939",
+                      "on-secondary-fixed": "#1a1c1d",
+                      "on-surface-muted": "#E6BCC2",
+                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                      "on-secondary": "#2f3132",
+                      "surface-container-lowest": "#0e0e0e",
+                      "outline": "#ac878d",
+                      "surface": "#131313",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "on-surface": "#e5e2e1",
+                      "surface-container": "#201f1f",
+                      "inverse-primary": "#bc004f",
+                      "on-error": "#690005",
+                      "on-background": "#e5e2e1",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "error-container": "#93000a",
+                      "secondary-fixed": "#e3e2e3",
+                      "on-primary-container": "#5a0022",
+                      "on-primary-fixed": "#3f0016",
+                      "surface-dim": "#131313",
+                      "surface-container-high": "#2a2a2a",
+                      "primary-fixed-dim": "#ffb2bf",
+                      "tertiary": "#c8c6c5",
+                      "secondary": "#c6c6c7",
+                      "neon-glow": "rgba(252, 3, 109, 0.3)",
+                      "surface-glass": "rgba(31, 31, 31, 0.6)",
+                      "primary-container": "#ff4d80",
+                      "primary": "#ffb2bf",
+                      "on-secondary-container": "#b5b5b6",
+                      "inverse-on-surface": "#313030",
+                      "background": "#131313",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "on-primary": "#660028",
+                      "on-primary-fixed-variant": "#90003b",
+                      "inverse-surface": "#e5e2e1",
+                      "outline-variant": "#5d3f44",
+                      "on-secondary-fixed-variant": "#454748",
+                      "primary-fixed": "#ffd9de",
+                      "error": "#ffb4ab",
+                      "surface-container-highest": "#353534",
+                      "surface-variant": "#353534",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "on-tertiary": "#303030",
+                      "fuchsia": "#FC036D"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter-x": "2.5rem",
+                      "container-max": "1280px",
+                      "component-padding-x": "1.5rem",
+                      "component-padding-y": "0.625rem",
+                      "section-padding-y": "6rem",
+                      "card-gap": "1.5rem"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Manrope"],
+                      "body-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Manrope"],
+                      "display-hero-mobile": ["Manrope"],
+                      "body-md": ["Inter"],
+                      "display-hero": ["Manrope"]
+              },
+              "fontSize": {
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+        }
+    </style>
+
+<style id="rss-yamaha-page-fix">
+  #header-container{position:relative;z-index:9999;min-height:73px}
+  #footer-container{min-height:320px}
+  #header-container header,#footer-container footer{display:block}
+  @media(max-width:767px){body{padding-top:0!important}.text-display-hero-mobile{font-size:42px!important;line-height:1.15!important}}
+</style>
+
+<style id="rss-yamaha-products-css">
+.yamaha-product-card{min-height:390px}
+.yamaha-product-card img{transition:transform .55s ease,opacity .35s ease}
+.yamaha-product-card:hover img{transform:scale(1.04);opacity:.82}
+.yamaha-filter-active{background:#FC036D!important;color:#fff!important;border-color:#FC036D!important}
+.yamaha-product-empty{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(31,31,31,.6),rgba(19,19,19,.8));}
+@media(max-width:767px){.yamaha-product-card{min-height:430px}.yamaha-product-card .yamaha-product-content{min-height:430px;padding:24px!important}}
+</style>
+
+<style id="rss-yamaha-map-css">
+#yamaha-map-wrap{height:520px!important;min-height:520px!important}
+#yamaha-map{width:100%!important;height:520px!important;min-height:520px!important;display:block!important;position:relative!important;z-index:1!important;background:#111!important}
+#yamaha-map.leaflet-container{font-family:Inter,sans-serif!important;background:#111!important}
+#yamaha-map .leaflet-tile{filter:grayscale(100%) brightness(.45) contrast(1.2);max-width:none!important;max-height:none!important}
+#yamaha-map .leaflet-control-attribution{background:rgba(19,19,19,.75)!important;color:#aaa!important}
+#yamaha-map .leaflet-control-attribution a{color:#FC036D!important}
+.yamaha-map-marker{background:transparent!important;border:0!important}
+.yamaha-map-pin{color:#FC036D;font-size:38px;line-height:38px;filter:drop-shadow(0 0 10px rgba(252,3,109,.9))}
+.yamaha-map-popup .leaflet-popup-content-wrapper{background:#1f1f1f;color:#e2e2e2;border:1px solid rgba(255,255,255,.12);border-radius:12px}
+.yamaha-map-popup .leaflet-popup-tip{background:#1f1f1f}
+@media(max-width:767px){#yamaha-map-wrap,#yamaha-map,#yamaha-map.leaflet-container{height:420px!important;min-height:420px!important}}
+</style>
+
+<!-- rss-yamaha-dynamic-page-v1 -->
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center overflow-hidden py-section-padding-y">
+<div class="absolute inset-0 z-0">
+<img alt="Yamaha Club Installation" class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A massive, high-end Yamaha sound system installed in a premium, dimly lit nightclub. The iconic red fiberglass horns of the DM7 speakers are prominently featured against a dark, moody background. Atmospheric lighting casts deep shadows and highlights the sleek, alien-like curves of the equipment. The scene exudes exclusivity, raw acoustic power, and cutting-edge electronic music culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv3KYTPSkIiYDMRc8KGfV9_gz9VU3jra-Ank5JdLm_JZwNKW9B_vjGrYn2Ct4WaAPFBp6BI5ubdOCAdnooSrLa9GBv90nUdHfuRp1GqKjtXiOW9fwQ1oIOBech2Oeav3LSQkLeY3NP5DcLP3DHLPFDnDgD6KkitSpXRE7KSeQc7bmffHQTPfTrrry1xZvJmBJ5QacHkvLPKv72d1jdp7OgT3nLj8MFvnckomdUEMZWa8eNZ3Jma1QPOkZdB83W-wFSPGX2jqHl4Ms"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 text-center max-w-container-max mx-auto px-gutter-x">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-8">
+<span class="material-symbols-outlined text-primary text-sm">campaign</span>
+<span class="text-primary text-label-caps font-label-caps uppercase tracking-widest">Partenaire Officiel RentSoundSystem</span>
+</div>
+<h1 class="text-display-hero-mobile md:text-display-hero font-display-hero mb-6 neon-text-glow">
+                    Yamaha <span class="text-[#FC036D]">Excellence Digitale</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Consoles numériques, enceintes amplifiées, subwoofers, systèmes colonne et technologies DSP avancées pour concerts, conférences, mariages, DJ et installations fixes.
+                </p>
+<div class="flex gap-4 justify-center">
+<button class="bg-[#FC036D] text-white px-8 py-4 rounded text-label-caps font-label-caps uppercase neon-shadow hover:bg-opacity-90 transition-all">
+                        Explorer le Catalogue
+                    </button>
+<button class="bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded text-label-caps font-label-caps uppercase hover:bg-surface-container transition-all">
+                        Voir les Installations
+                    </button>
+</div>
+</div>
+</section>
+<!-- Geolocalisation Section -->
+<section id="yamaha-map-section" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
+<div class="max-w-container-max mx-auto px-gutter-x">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <div class="text-center md:text-left">
+      <h2 class="text-headline-lg font-headline-lg mb-4">Disponibilité RentSoundSystem</h2>
+      <p id="yamaha-map-label" class="text-body-md font-body-md text-on-surface-variant">Les annonces Yamaha s’affichent sur la carte dès leur chargement.</p>
+    </div>
+    <button id="yamaha-use-location" type="button" class="self-center md:self-auto bg-surface-container-high border border-white/10 text-on-surface px-4 py-3 rounded-lg hover:text-[#FC036D] hover:border-[#FC036D] transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined">my_location</span> Utiliser ma position
+    </button>
+  </div>
+  <div id="yamaha-map-wrap" class="glass-panel rounded-xl overflow-hidden relative">
+    <div id="yamaha-map" aria-label="Carte des annonces Yamaha disponibles"></div>
+  </div>
+</div>
+</section>
+
+<!-- Yamaha Brand Intro -->
+<section id="catalogue-yamaha" class="py-section-padding-y max-w-container-max mx-auto px-gutter-x">
+  <div class="mb-12">
+    <h2 class="text-headline-lg font-headline-lg mb-4">Yamaha — Excellence Digitale</h2>
+    <p class="text-body-lg font-body-lg text-on-surface-variant max-w-4xl">
+      Yamaha Professional Audio est une référence mondiale dans l’univers de la sonorisation, du mixage numérique et des systèmes audio professionnels. La marque est reconnue pour ses consoles numériques, ses enceintes amplifiées, ses subwoofers, ses systèmes colonne, ses processeurs audio et ses technologies DSP avancées.
+    </p>
+  </div>
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
+    <div class="glass-panel rounded-xl p-8 lg:col-span-2">
+      <h3 class="text-headline-md font-headline-md text-[#FC036D] mb-4">Son clair, intégration numérique et simplicité d’utilisation</h3>
+      <p class="text-body-md font-body-md text-on-surface-variant mb-4">
+        Yamaha se distingue par la fiabilité de ses produits, la clarté sonore, l’intégration numérique et la simplicité d’utilisation. Ses équipements sont utilisés pour les concerts, les tournées, les conférences, les lieux de culte, les bars, les restaurants, les clubs, les mariages, les événements corporate et les installations fixes.
+      </p>
+      <p class="text-body-md font-body-md text-on-surface-variant">
+        Grâce à ses consoles de mixage numériques, ses enceintes actives puissantes et ses systèmes portables faciles à déployer, Yamaha propose des solutions audio adaptées aux prestataires événementiels, ingénieurs du son, DJ, salles de spectacle, hôtels, restaurants et entreprises.
+      </p>
+    </div>
+    <div class="glass-panel rounded-xl p-8 border border-[#FC036D]/30">
+      <h3 class="text-headline-md font-headline-md mb-4">Phrase courte</h3>
+      <p class="text-body-lg font-body-lg text-on-surface italic">
+        Louez du matériel Yamaha professionnel pour vos concerts, conférences, mariages, soirées DJ, clubs, événements corporate et installations fixes.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Dynamic Yamaha Listings -->
+
+<section id="annonces-yamaha" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
+  <div class="max-w-container-max mx-auto px-gutter-x">
+    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+      <div>
+        <h2 class="text-headline-lg font-headline-lg mb-4">Annonces Yamaha disponibles</h2>
+        <p id="yamaha-products-count" class="text-body-md font-body-md text-on-surface-variant">Chargement des annonces Yamaha...</p>
+      </div>
+      <div id="yamaha-products-filters" class="flex flex-wrap gap-3">
+        <button type="button" data-yamaha-filter="all" class="void-filter-active border border-[#FC036D] bg-[#FC036D] text-white px-4 py-2 rounded text-label-caps font-label-caps uppercase">Tout</button>
+        <button type="button" data-yamaha-filter="console" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Consoles</button>
+        <button type="button" data-yamaha-filter="enceinte" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Enceintes</button>
+        <button type="button" data-yamaha-filter="sub" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Subwoofers</button>
+        <button type="button" data-yamaha-filter="colonne" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Systèmes colonne</button>
+      </div>
+    </div>
+    <div id="yamaha-products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap">
+      <div class="col-span-full text-center text-on-surface-variant py-16">Chargement des annonces...</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Yamaha Yamaha Professional Audio Content -->
+<section id="installations-yamaha" class="py-section-padding-y bg-surface-container-lowest">
+  <div class="max-w-container-max mx-auto px-gutter-x">
+    <div class="mb-12">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FC036D]/10 border border-[#FC036D]/20 mb-6">
+        <span class="material-symbols-outlined text-[#FC036D] text-sm">graphic_eq</span>
+        <span class="text-[#FC036D] text-label-caps font-label-caps uppercase tracking-widest">Yamaha — Yamaha Professional Audio</span>
+      </div>
+      <h2 class="text-headline-lg font-headline-lg mb-4">Design spectaculaire & performance audio professionnelle</h2>
+      <p class="text-body-lg font-body-lg text-on-surface-variant max-w-4xl">
+        La Yamaha Professional Audio de Yamaha est une gamme d’enceintes haut de gamme très reconnaissable par son design sculptural,
+        souvent utilisée dans les clubs, bars, restaurants, hôtels, lounges, événements premium et installations DJ.
+      </p>
+    </div>
+    <div class="glass-panel rounded-xl p-8 mb-8">
+      <p class="text-body-lg font-body-lg text-on-surface-variant mb-5">
+        La gamme Yamaha Professional Audio de Yamaha incarne le mariage entre design spectaculaire et performance audio professionnelle.
+        Avec ses formes sculptées, ses finitions personnalisables et sa signature sonore puissante, la série Air est conçue pour les lieux
+        qui veulent se démarquer : clubs, bars haut de gamme, restaurants, rooftops, hôtels, espaces événementiels et installations DJ.
+      </p>
+      <p class="text-body-md font-body-md text-on-surface-variant">
+        Au-delà de son esthétique iconique, la Yamaha Professional Audio propose des enceintes à haut rendement, des systèmes coaxiaux, des modèles full-range
+        et des subwoofers puissants capables d’assurer une diffusion sonore précise, dynamique et immersive. C’est une gamme idéale pour créer
+        une ambiance premium, renforcer l’identité visuelle d’un lieu et offrir une expérience sonore haut de gamme.
+      </p>
+    </div>
+    <div class="glass-panel rounded-xl overflow-hidden mb-8">
+      <div class="p-6 border-b border-surface-glass-border">
+        <h3 class="text-headline-md font-headline-md text-[#FC036D]">Caractéristiques techniques principales</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-surface-container-high text-on-surface">
+            <tr><th class="p-4">Modèle</th><th class="p-4">Type</th><th class="p-4">Réponse en fréquence</th><th class="p-4">Puissance</th><th class="p-4">SPL max</th><th class="p-4">Configuration</th></tr>
+          </thead>
+          <tbody class="text-on-surface-variant">
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air 8</td><td class="p-4">Enceinte passive 2 voies</td><td class="p-4">70 Hz – 20 kHz</td><td class="p-4">300 W AES</td><td class="p-4">125 dB peak</td><td class="p-4">1 x 8” + 1 x 1” coaxial</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air 12</td><td class="p-4">Enceinte coaxiale IP-54</td><td class="p-4">75 Hz – 20 kHz</td><td class="p-4">400 W AES</td><td class="p-4">130 dB peak</td><td class="p-4">1 x 12” + 1 x 1” coaxial</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">TF5</td><td class="p-4">Enceinte compacte haut rendement</td><td class="p-4">60 Hz – 20 kHz</td><td class="p-4">500 W AES</td><td class="p-4">131 dB peak</td><td class="p-4">2 x 10” LF + 1 x 1.3” HF</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DM7</td><td class="p-4">Enceinte 3 voies sculpturale</td><td class="p-4">140 Hz – 20 kHz</td><td class="p-4">LF 500 W + HMF 250 W AES</td><td class="p-4">138 dB peak</td><td class="p-4">1 x 12” LF + 1 x 8” MF + 1 x 1.5” HF</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DZR15</td><td class="p-4">Enceinte 3 voies haute puissance</td><td class="p-4">120 Hz – 20 kHz</td><td class="p-4">LF 700 W + MHF 250 W AES</td><td class="p-4">141 dB peak</td><td class="p-4">1 x 15” LF + 1 x 8” MF + 1 x 1.5” HF</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DXR15mkII</td><td class="p-4">Enceinte full range haute performance</td><td class="p-4">54 Hz – 20 kHz</td><td class="p-4">LF 700 W + MHF 500 W AES</td><td class="p-4">140 dB peak</td><td class="p-4">1 x 15” LF + 1 x 12” MF + 1 x 1.5” HF</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air Vantage</td><td class="p-4">Enceinte coaxiale premium</td><td class="p-4">140 Hz – 20 kHz</td><td class="p-4">500 W AES</td><td class="p-4">132 dB peak</td><td class="p-4">1 x 12” + 1 x 1.5” coaxial</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air 15</td><td class="p-4">Subwoofer 15”</td><td class="p-4">45 Hz – 160 Hz</td><td class="p-4">800 W</td><td class="p-4">129 dB peak</td><td class="p-4">1 x 15” LF, IPX3</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Sub Vantage</td><td class="p-4">Subwoofer très haute puissance</td><td class="p-4">40 Hz – 160 Hz</td><td class="p-4">2 x 1600 W AES</td><td class="p-4">148 dB peak</td><td class="p-4">4 x 15”</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DXS Xair</td><td class="p-4">Subwoofer double 18”</td><td class="p-4">30 Hz – 180 Hz</td><td class="p-4">3200 W AES</td><td class="p-4">145 dB peak</td><td class="p-4">2 x 18” LF</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
+      <div class="glass-panel rounded-xl p-6 lg:col-span-2">
+        <h3 class="text-headline-md font-headline-md mb-4">Points forts à mettre en avant</h3>
+        <p class="text-body-md font-body-md text-on-surface-variant mb-4">La Yamaha Professional Audio est surtout intéressante pour les clients qui recherchent une sonorisation qui ne ressemble pas à une enceinte classique. Les modèles comme DM7, TF5 ou Air Vantage deviennent de vrais éléments de décoration sonore, ce qui les rend très adaptés aux lieux premium.</p>
+        <p class="text-body-md font-body-md text-on-surface-variant">Pour une installation type bar, restaurant ou lounge, les modèles Air 8 et Air 12 sont les plus faciles à intégrer. Pour un club, rooftop ou événement DJ, les TF5, DM7, DZR15 ou DXR15mkII donnent plus d’impact visuel et sonore. Pour renforcer les basses, il faut les associer à des subwoofers comme Air 15, Sub Vantage ou DXS Xair selon la taille du lieu.</p>
+      </div>
+      <div class="glass-panel rounded-xl p-6 border border-[#FC036D]/30">
+        <h3 class="text-headline-md font-headline-md text-[#FC036D] mb-4">Phrase commerciale courte</h3>
+        <p class="text-body-lg font-body-lg text-on-surface italic">Yamaha Yamaha Professional Audio : une sonorisation haut de gamme qui transforme le son en expérience visuelle. Idéale pour clubs, bars, restaurants, rooftops et événements premium recherchant puissance, design et identité sonore unique.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="yamaha-technical-summary-final" class="py-section-padding-y bg-surface-container-lowest">
+  <div class="max-w-container-max mx-auto px-gutter-x">
+    <div class="glass-panel rounded-xl overflow-hidden">
+      <div class="p-6 border-b border-surface-glass-border">
+        <h3 class="text-headline-md font-headline-md text-[#FC036D]">Modèles Yamaha représentatifs</h3>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm">
+          <thead class="bg-surface-container-high text-on-surface">
+            <tr><th class="p-4">Modèle</th><th class="p-4">Type</th><th class="p-4">Usage recommandé</th></tr>
+          </thead>
+          <tbody class="text-on-surface-variant">
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DM7</td><td class="p-4">Console de mixage numérique</td><td class="p-4">Concert, tournée, broadcast, événement premium</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">TF5</td><td class="p-4">Console de mixage numérique intuitive</td><td class="p-4">Live, conférence, salle polyvalente, installation fixe</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DZR15</td><td class="p-4">Enceinte active 15 pouces</td><td class="p-4">Concert, DJ, club, événement professionnel</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DXS18XLF</td><td class="p-4">Subwoofer actif 18 pouces</td><td class="p-4">Renfort grave, concert, club, prestation live</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">STAGEPAS 1K mkII</td><td class="p-4">Système colonne actif portable</td><td class="p-4">Mariage, conférence, animation, événement mobile</td></tr>
+            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">DXR15mkII</td><td class="p-4">Enceinte active 15 pouces polyvalente</td><td class="p-4">DJ, conférence, live, prestation mobile</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+<div id="footer-container"></div>
+
+
+<script id="rss-yamaha-products-dynamic">
+(function(){
+  'use strict';
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  let allYamahaProducts = [];
+  let currentFilter = 'all';
+  let map = null;
+  let productMarkers = [];
+  let userMarker = null;
+
+  const $ = (s) => document.querySelector(s);
+  const $$ = (s) => Array.from(document.querySelectorAll(s));
+  const safe = (v) => String(v ?? '').replace(/[&<>\"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m] || m));
+  const clean = (v) => String(v ?? '').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+  const norm = (v) => String(v ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+
+  const CITY_COORDS = {
+    'paris':[48.8566,2.3522], 'saint denis':[48.9362,2.3574], 'boulogne':[48.8397,2.2399], 'lyon':[45.764,4.8357],
+    'marseille':[43.2965,5.3698], 'nice':[43.7102,7.262], 'cannes':[43.5528,7.0174], 'bordeaux':[44.8378,-0.5792],
+    'lille':[50.6292,3.0573], 'nantes':[47.2184,-1.5536], 'toulouse':[43.6047,1.4442], 'strasbourg':[48.5734,7.7521],
+    'montpellier':[43.6119,3.8772], 'rennes':[48.1173,-1.6778], 'bruxelles':[50.8503,4.3517], 'geneve':[46.2044,6.1432],
+    'lausanne':[46.5197,6.6323], 'zurich':[47.3769,8.5417], 'monaco':[43.7384,7.4246], 'ibiza':[38.9067,1.4206]
+  };
+
+  function firstImage(item){
+    const imgs = Array.isArray(item.listing_images) ? item.listing_images.slice() : [];
+    imgs.sort((a,b) => Number(a.position || 0) - Number(b.position || 0));
+    return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+  }
+  function price(item){
+    const value = item.price_per_day ?? item.price_day ?? item.daily_price ?? item.price ?? item.prix ?? 0;
+    const n = Number(value || 0);
+    return n ? n.toLocaleString('fr-FR', {maximumFractionDigits:0}) + '€' : 'Sur devis';
+  }
+  function productUrl(item){
+    if(item.original_id !== undefined && item.original_id !== null) return '/product.html?original_id=' + encodeURIComponent(item.original_id);
+    if(item.id) return '/product.html?id=' + encodeURIComponent(item.id);
+    return '/catalog.html?brand=yamaha';
+  }
+  function matchesYamaha(item){
+    const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
+    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
+    return brandText.includes('yamaha') || fullText.includes('yamaha') || fullText.includes('dm7') || fullText.includes('tf5') || fullText.includes('dzr15') || fullText.includes('dxr15') || fullText.includes('dxr15mkii') || fullText.includes('dxs18xlf') || fullText.includes('stagepas');
+  }
+  function brandSearchTerms(title){
+    return ['yamaha acoustics','yamaha','yamahaacoustics'];
+  }
+  function productMatchesBrand(item, terms){
+    const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
+    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.model, item.category, item.description].join(' '));
+    return (
+      brandText.includes('yamaha') ||
+      brandText.includes('yamaha acoustics') ||
+      fullText.includes('yamaha acoustics') ||
+      fullText.includes('yamahaacoustics')
+    );
+  }
+  function typeOf(item){
+    const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
+    if(text.includes('nexus')) return 'nexus';
+    if(text.includes('sub') || text.includes('stasys') || text.includes('bass') || text.includes('caisson')) return 'sub';
+    if(text.includes('air') || text.includes('motion') || text.includes('vantage') || text.includes('airten')) return 'air';
+    if(text.includes('tour') || text.includes('festival') || text.includes('incubus')) return 'touring';
+    return 'all';
+  }
+  function itemCity(item){ return clean(item.city || item.location || item.ville || item.address_city || item.locality || 'Disponible'); }
+  function itemCoords(item, index){
+    const lat = Number(item.latitude ?? item.lat ?? item.geo_lat ?? item.location_lat);
+    const lng = Number(item.longitude ?? item.lng ?? item.lon ?? item.geo_lng ?? item.location_lng);
+    if(Number.isFinite(lat) && Number.isFinite(lng)) return [lat, lng];
+    const city = norm(itemCity(item));
+    for(const key of Object.keys(CITY_COORDS)){ if(city.includes(key)) return CITY_COORDS[key]; }
+    const base = CITY_COORDS.paris;
+    const offsets = [[.012,.010],[-.010,.014],[.008,-.016],[-.014,-.012],[.018,.002],[-.018,-.006],[.004,.022],[-.006,-.024]];
+    const o = offsets[index % offsets.length];
+    return [base[0]+o[0], base[1]+o[1]];
+  }
+
+  function setCount(n){
+    const el = $('#yamaha-products-count');
+    if(el) el.textContent = n + ' annonce' + (n > 1 ? 's' : '') + ' Yamaha trouvée' + (n > 1 ? 's' : '');
+    const label = $('#yamaha-map-label');
+    if(label) label.textContent = n ? (n + ' annonce' + (n>1?'s':'') + ' Yamaha affichée' + (n>1?'s':'') + ' sur la carte') : 'Aucune annonce Yamaha à afficher sur la carte.';
+  }
+
+  function render(filter='all'){
+    currentFilter = filter;
+    const grid = $('#yamaha-products-grid');
+    if(!grid) return;
+    const list = filter === 'all' ? allYamahaProducts : allYamahaProducts.filter(p => typeOf(p) === filter);
+    setCount(list.length);
+    renderMapMarkers(list);
+    if(!list.length){
+      grid.innerHTML = '<div class="yamaha-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Yamaha disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces contenant réellement Yamaha ou Yamaha dans la marque, le titre, le modèle ou la description sont affichées ici.</p></div>';
+      return;
+    }
+    grid.innerHTML = list.map((item, index) => {
+      const title = safe(item.title || item.name || item.model || 'Matériel Yamaha');
+      const desc = safe(clean(item.description || item.short_description || '').slice(0, 160) || 'Annonce Yamaha disponible à la location sur RentSoundSystem.');
+      const img = firstImage(item);
+      const tag = safe(item.category || item.model || 'Yamaha');
+      const location = safe(itemCity(item));
+      const url = productUrl(item);
+      const eager = index < 3;
+      const imgHtml = img ? '<img src="'+safe(img)+'" alt="'+title+'" class="absolute inset-0 w-full h-full object-cover opacity-60" loading="'+(eager?'eager':'lazy')+'" '+(eager?'fetchpriority="high"':'')+' decoding="async" referrerpolicy="no-referrer" onerror="this.remove();">' : '';
+      return '<article data-url="'+safe(url)+'" class="yamaha-product-card '+(index===0?'lg:col-span-2 ':'')+'group relative overflow-hidden rounded-xl glass-panel cursor-pointer border border-surface-glass-border hover:border-[#FC036D] transition-all">' +
+        '<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>' + imgHtml +
+        '<div class="yamaha-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8">' +
+        '<div class="flex flex-wrap items-center gap-3 mb-4"><span class="bg-background/80 border border-outline-variant text-on-surface text-xs uppercase tracking-widest font-bold px-3 py-1 rounded">'+tag+'</span><span class="text-[#FC036D] text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span>'+location+'</span></div>' +
+        '<h3 class="text-headline-md font-headline-md mb-3 group-hover:text-[#FC036D] transition-colors">'+title+'</h3>' +
+        '<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-2xl">'+desc+'</p>' +
+        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-auto"><span class="text-headline-md font-headline-md text-on-surface">'+price(item)+' <span class="text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="w-fit bg-transparent border border-[#FC036D] text-[#FC036D] px-5 py-2 rounded text-label-caps font-label-caps uppercase hover:bg-[#FC036D] hover:text-white transition-all">Voir l’annonce</button></div>' +
+        '</div></article>';
+    }).join('');
+    $$('#yamaha-products-grid .yamaha-product-card').forEach(card => card.addEventListener('click', () => { window.location.href = card.dataset.url || '/catalog.html?brand=yamaha'; }));
+  }
+
+  function renderFastPlaceholders(){
+    const grid = $('#yamaha-products-grid');
+    if(!grid) return;
+    grid.innerHTML = Array.from({length:3}).map(()=>'<article class="yamaha-product-card group relative overflow-hidden rounded-xl glass-panel border border-surface-glass-border min-h-[390px]"><div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div><div class="yamaha-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8"><span class="w-32 h-5 bg-white/10 rounded mb-4 animate-pulse"></span><span class="w-3/4 h-8 bg-white/10 rounded mb-3 animate-pulse"></span><span class="w-full h-4 bg-white/10 rounded mb-2 animate-pulse"></span><span class="w-2/3 h-4 bg-white/10 rounded animate-pulse"></span></div></article>').join('');
+  }
+
+  async function loadYamahaProducts(){
+    renderFastPlaceholders();
+    try{
+      if(!window.supabase) throw new Error('Supabase JS non chargé');
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      let brandTitle = 'Yamaha';
+      try{
+        const brandRes = await client.from('brands').select('*').eq('slug','yamaha-acoustics').maybeSingle();
+        if(!brandRes.error && brandRes.data && brandRes.data.title) brandTitle = brandRes.data.title;
+      }catch(e){}
+
+      const fields = '*, listing_images(image_url, position)';
+      let listingsRes = await client
+        .from('listings')
+        .select(fields)
+        .eq('status','publish')
+        .limit(500);
+
+      if(listingsRes.error){
+        listingsRes = await client
+          .from('listings')
+          .select(fields)
+          .limit(500);
+      }
+
+      if(listingsRes.error) throw listingsRes.error;
+
+      const rows = listingsRes.data || [];
+      const terms = brandSearchTerms(brandTitle);
+
+      allYamahaProducts = rows.filter(item => matchesYamaha(item) || productMatchesBrand(item, terms));
+
+      if(!allYamahaProducts.length){
+        allYamahaProducts = rows.filter(item => {
+          const text = norm([item.brand,item.title,item.model,item.description].join(' '));
+          return text.includes('yamaha acoustics') || text.includes('yamahaacoustics') || norm(item.brand).includes('yamaha');
+        });
+      }
+
+      render(currentFilter);
+    }catch(error){
+      console.warn('Yamaha listings loading error:', error.message || error);
+      const grid = $('#yamaha-products-grid');
+      if(grid){
+        grid.innerHTML = '<div class="yamaha-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">warning</span><h3 class="text-headline-md font-headline-md mb-2">Impossible de charger les annonces Yamaha</h3><p class="text-body-md font-body-md text-on-surface-variant">Vérifiez les colonnes Supabase, la table brands et les politiques RLS de la table listings.</p></div>';
+      }
+      setCount(0);
+      renderMapMarkers([]);
+    }
+  }
+
+  function initMap(){
+    if(typeof L === 'undefined') return;
+    const mapEl = $('#yamaha-map');
+    if(!mapEl || map) return;
+    if(mapEl._leaflet_id){ mapEl._leaflet_id = null; mapEl.innerHTML = ''; }
+    map = L.map(mapEl, { zoomControl:false, scrollWheelZoom:true, maxZoom:18 }).setView([48.8566,2.3522], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { minZoom:2, maxZoom:18, tileSize:256, attribution:'&copy; OpenStreetMap' }).addTo(map);
+    L.control.zoom({ position:'bottomright' }).addTo(map);
+    setTimeout(fixMapSize, 80); setTimeout(fixMapSize, 450); window.addEventListener('resize', fixMapSize);
+  }
+  function fixMapSize(){ if(map){ const el = $('#yamaha-map'); if(el) el.style.height = '520px'; map.invalidateSize(true); } }
+  function markerIcon(){ return L.divIcon({ className:'yamaha-map-marker', html:'<span class="material-symbols-outlined yamaha-map-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>', iconSize:[38,38], iconAnchor:[19,38], popupAnchor:[0,-38] }); }
+  function userIcon(){ return L.divIcon({ className:'yamaha-map-marker', html:'<div style="width:20px;height:20px;background:#FC036D;border:3px solid #fff;border-radius:999px;box-shadow:0 0 0 8px rgba(252,3,109,.22),0 0 16px rgba(252,3,109,.8)"></div>', iconSize:[20,20], iconAnchor:[10,10] }); }
+  function renderMapMarkers(items){
+    if(!map) return;
+    productMarkers.forEach(m => map.removeLayer(m)); productMarkers = [];
+    const list = items.slice(0,80);
+    const icon = markerIcon();
+    productMarkers = list.map((item,index)=>{
+      const [lat,lng] = itemCoords(item,index);
+      return L.marker([lat,lng], {icon}).addTo(map).bindPopup('<strong style="color:#fff">'+safe(item.title||item.model||'Yamaha')+'</strong><br><span style="color:#b4b5b5">'+safe(itemCity(item))+'</span><br><strong style="color:#FC036D">'+price(item)+' / jour</strong><br><a style="color:#FC036D" href="'+productUrl(item)+'">Voir l’annonce</a>', {className:'yamaha-map-popup'});
+    });
+    if(productMarkers.length){ const group = L.featureGroup(productMarkers); map.fitBounds(group.getBounds().pad(0.25), {maxZoom:10}); } else { map.setView([48.8566,2.3522], 6); }
+    setTimeout(fixMapSize, 80);
+  }
+
+  function bindFilters(){
+    $$('#yamaha-products-filters [data-yamaha-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        $$('#yamaha-products-filters [data-yamaha-filter]').forEach(b => b.classList.remove('yamaha-filter-active'));
+        btn.classList.add('yamaha-filter-active');
+        render(btn.dataset.yamahaFilter || 'all');
+      });
+    });
+  }
+  function bindButtons(){
+    document.querySelectorAll('button').forEach(function(btn){
+      const t = btn.textContent.trim().toLowerCase();
+      if(t.includes('explorer le catalogue') || t.includes('voir les offres') || t === 'explorer'){
+        btn.addEventListener('click', function(){ document.getElementById('annonces-yamaha')?.scrollIntoView({behavior:'smooth', block:'start'}); });
+      }
+      if(t.includes('voir les installations')){
+        btn.addEventListener('click', function(){ document.getElementById('installations-yamaha')?.scrollIntoView({behavior:'smooth', block:'start'}); });
+      }
+    });
+    $('#yamaha-use-location')?.addEventListener('click', function(){
+      if(!navigator.geolocation){ alert('Géolocalisation non disponible.'); return; }
+      navigator.geolocation.getCurrentPosition(function(pos){
+        if(!map) return;
+        if(userMarker) map.removeLayer(userMarker);
+        userMarker = L.marker([pos.coords.latitude,pos.coords.longitude], {icon:userIcon(), zIndexOffset:1000}).addTo(map).bindPopup('Votre position', {className:'yamaha-map-popup'});
+        map.setView([pos.coords.latitude,pos.coords.longitude], 12, {animate:true});
+      }, function(){ alert('Position refusée.'); }, {enableHighAccuracy:true, timeout:10000, maximumAge:60000});
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => { bindButtons(); bindFilters(); initMap(); loadYamahaProducts(); });
+})();
+</script>
+<script src="/components.js"></script>
+</body></html>
