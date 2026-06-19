@@ -166,6 +166,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-profile-partner-lookup-by-email-user-legacy-v1 -->
 
 <!-- rss-profile-loading-speed-v1 -->
+
+<!-- rss-profile-product-partner-sync-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -352,6 +354,29 @@ function firstText(){
 function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanText(v)); }
 
 
+
+
+async function syncPartnerProfileToListings(ctx, partner){
+  if(!sb || !ctx || !partner) return;
+  const patch = {
+    owner_name: firstNonEmail(partner.name, partner.company_name, partner.owner_name),
+    owner_phone: firstText(partner.phone, partner.owner_phone),
+    owner_city: firstText(partner.city, partner.owner_city),
+    owner_country: firstText(partner.country, partner.owner_country),
+    owner_email: cleanEmail(partner.email || ctx.email)
+  };
+  Object.keys(patch).forEach(k => { if(!patch[k]) delete patch[k]; });
+
+  try{
+    if(partner.legacy_user_id){
+      await sb.from('listings').update(patch).or('owner_email.ilike.'+cleanEmail(ctx.email)+',legacy_user_id.eq.'+partner.legacy_user_id);
+    }else{
+      await sb.from('listings').update(patch).ilike('owner_email', cleanEmail(ctx.email));
+    }
+  }catch(e){
+    console.warn('Synchronisation annonces impossible:', e.message || e);
+  }
+}
 
 async function fetchPartnerRequestByKeysSafe(email, userId){
   const e = cleanEmail(email);
@@ -690,6 +715,16 @@ function getCachedPartnerProfile(){
   }catch(e){ return null; }
 }
 
+
+function updatePublicProfileLinks(p, ctx){
+  const key = firstText(p?.id, p?.legacy_user_id, p?.email, ctx?.email);
+  const href = '/profil-partenaire.html?partner=' + encodeURIComponent(key || '');
+  ['public-profile-link','public-profile-link-bottom'].forEach(id=>{
+    const a=$(id);
+    if(a) a.href=href;
+  });
+}
+
 function fillPartnerFormFast(p){
   if(!p) return;
   setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name) || '');
@@ -788,6 +823,7 @@ async function initPartnerProfilePage(){
 
   const p=CTX.partner || {};
   fillPartnerFormFast(p);
+  updatePublicProfileLinks(p, CTX);
   cachePartnerProfileSnapshot(p);
 
   const listingsPromise = loadPartnerListings(CTX).catch(()=>[]);
@@ -798,7 +834,7 @@ async function initPartnerProfilePage(){
   const publicLinks=[document.getElementById('public-profile-link'),document.getElementById('public-profile-link-bottom')].filter(Boolean);
   publicLinks.forEach(a=>{ a.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email); });
 
-  setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name,CTX.partner?.name,CTX.partner?.owner_name,CTX.partnerRequest?.company_name,CTX.partnerRequest?.name,CTX.partnerRequest?.business_name,CTX.partnerRequest?.enseigne) || '');
+  setValue('partner-name-input', firstNonEmail(p.name,p.company_name,p.owner_name,p.display_name,p.partner_name,CTX.partner?.name,CTX.partner?.company_name,CTX.partner?.owner_name,CTX.partnerRequest?.company_name,CTX.partnerRequest?.name,CTX.partnerRequest?.business_name,CTX.partnerRequest?.enseigne) || '');
   setValue('partner-email-input', cleanEmail(p.email || CTX.email));
   setValue('partner-phone-input', pick(p.phone,p.owner_phone,CTX.partnerRequest?.phone,CTX.partnerRequest?.telephone));
   setValue('partner-country-input', pick(p.country,p.owner_country,CTX.partnerRequest?.country,CTX.partnerRequest?.pays));
@@ -941,6 +977,8 @@ async function initPartnerProfilePage(){
       });
 
       cachePartnerProfileSnapshot(CTX.partner);
+      updatePublicProfileLinks(CTX.partner, CTX);
+      await syncPartnerProfileToListings(CTX, CTX.partner);
       await repairOwnerInfoForCurrentPartner(CTX);
       const bankStatus = $('bank-status');
       if(bankStatus){

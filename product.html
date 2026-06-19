@@ -341,6 +341,16 @@
 <!-- rss-product-overview-fix-v3 -->
 
 <!-- rss-markdown-clean-fix-v1 -->
+
+<style id="rss-product-real-partner-name-v3">
+  #rss-owner-name,
+  #rss-owner-mini-name{
+    text-transform:none!important;
+  }
+</style>
+
+
+<!-- rss-product-real-partner-lookup-v3 -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -694,6 +704,83 @@
     return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(String(value || '').trim());
   }
 
+
+async function fetchPartnerForProductOwner(item){
+  if(!client || !item) return null;
+
+  async function one(queryFn){
+    try{
+      const {data,error}=await queryFn();
+      if(error) return null;
+      return (data||[])[0] || null;
+    }catch(e){ return null; }
+  }
+
+  const emails = [
+    item.owner_email,
+    item.email,
+    item.partner_email,
+    item.user_email,
+    item.contact_email
+  ].map(normEmailValue).filter(Boolean);
+
+  for(const e of emails){
+    const p = await one(() => client.from('partners').select('*').ilike('email', e).limit(1));
+    if(p) return p;
+  }
+
+  const legacy = firstFilled(item.legacy_user_id, item.owner_legacy_user_id, item.original_author_id, item.author_id);
+  if(legacy){
+    const p = await one(() => client.from('partners').select('*').eq('legacy_user_id', legacy).limit(1));
+    if(p) return p;
+  }
+
+  const ownerUserId = firstFilled(item.owner_user_id, item.user_id, item.partner_user_id);
+  if(ownerUserId && looksLikeUuid(ownerUserId)){
+    const p = await one(() => client.from('partners').select('*').eq('user_id', ownerUserId).limit(1));
+    if(p) return p;
+  }
+
+  return null;
+}
+
+function mergePartnerIntoProduct(item, partner){
+  if(!partner) return item;
+
+  const partnerName = firstFilled(
+    partner.name,
+    partner.company_name,
+    partner.owner_name,
+    partner.display_name,
+    partner.partner_name,
+    partner.business_name
+  );
+
+  const partnerEmail = firstFilled(partner.email, item.owner_email, item.email);
+  const partnerPhone = firstFilled(partner.phone, partner.owner_phone, item.owner_phone, item.phone);
+  const partnerCity = firstFilled(partner.city, partner.owner_city, item.owner_city, item.city);
+  const partnerCountry = firstFilled(partner.country, partner.owner_country, item.owner_country, item.country);
+  const partnerDescription = firstFilled(partner.description, partner.bio, partner.presentation, item.owner_description, item.partner_description);
+  const partnerLogo = firstFilled(partner.logo_url, partner.logo, partner.avatar_url, item.owner_logo, item.logo_url);
+
+  return Object.assign({}, item, {
+    partner_record_id: partner.id || item.partner_record_id,
+    owner_name: partnerName || item.owner_name,
+    company_name: partnerName || item.company_name,
+    partner_name: partnerName || item.partner_name,
+    owner_email: partnerEmail || item.owner_email,
+    owner_phone: partnerPhone || item.owner_phone,
+    owner_city: partnerCity || item.owner_city,
+    owner_country: partnerCountry || item.owner_country,
+    owner_description: partnerDescription || item.owner_description,
+    partner_description: partnerDescription || item.partner_description,
+    owner_logo: partnerLogo || item.owner_logo,
+    logo_url: partnerLogo || item.logo_url,
+    legacy_user_id: firstFilled(item.legacy_user_id, partner.legacy_user_id),
+    owner_user_id: firstFilled(item.owner_user_id, partner.user_id)
+  });
+}
+
   function ownerUsername(item) {
     const username = firstFilled(
       item.owner_username,
@@ -713,21 +800,24 @@
   function ownerName(item) {
     const publicName = firstFilled(
       item.owner_name,
-      item.name,
       item.company_name,
       item.partner_name,
       item.display_name,
-      item.nom,
       item.owner_company,
       item.business_name,
       item.company,
       item.societe,
-      item.society_name
+      item.society_name,
+      item.name,
+      item.nom
     );
 
     if (publicName && !looksLikeEmail(publicName) && !looksLikeUuid(publicName)) return publicName;
 
-    return 'Partenaire';
+    const email = firstFilled(item.owner_email, item.email, item.partner_email);
+    if(email && looksLikeEmail(email)) return email.split('@')[0].replace(/[._-]+/g,' ').replace(/\b\w/g, c => c.toUpperCase());
+
+    return 'Partenaire RentSoundSystem';
   }
 
   function ownerLocation(item) {
@@ -735,6 +825,41 @@
       .filter(Boolean)
       .join(', ') || 'Localisation non précisée';
   }
+
+
+function applyOwnerDisplay(item){
+  const name = ownerName(item);
+  const location = ownerLocation(item);
+  const desc = ownerDescription(item);
+  const email = firstFilled(item.owner_email, item.email, item.partner_email);
+  const phone = firstFilled(item.owner_phone, item.phone, item.partner_phone);
+  const logo = ownerLogo(item);
+
+  text(document.getElementById('rss-owner-name'), name);
+  text(document.getElementById('rss-owner-mini-name'), name);
+  text(document.getElementById('rss-owner-mini-location'), location);
+  text(document.getElementById('rss-owner-description'), desc);
+
+  const miniLocation = document.getElementById('rss-owner-location');
+  if(miniLocation) miniLocation.textContent = location;
+
+  setOwnerLink('rss-owner-email', email ? 'mailto:' + email : '', 'Contacter par email');
+  setOwnerLink('rss-owner-phone', phone ? 'tel:' + String(phone).replace(/\s+/g,'') : '', phone || 'Téléphone');
+
+  const logoImg = document.getElementById('rss-owner-logo');
+  const logoFallback = document.getElementById('rss-owner-logo-fallback');
+  if(logo && logoImg){
+    logoImg.src = logo;
+    logoImg.classList.remove('hidden');
+    if(logoFallback) logoFallback.classList.add('hidden');
+  }
+
+  const profileLink = document.getElementById('rss-owner-profile-link');
+  if(profileLink){
+    const slugSource = firstFilled(item.partner_record_id, item.legacy_user_id, item.owner_username, item.owner_email, name);
+    profileLink.href = '/profil-partenaire.html?partner=' + encodeURIComponent(slugSource);
+  }
+}
 
   function setOwnerLink(id, href, label) {
     const el = document.getElementById(id);
