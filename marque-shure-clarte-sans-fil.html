@@ -154,6 +154,8 @@
 </style>
 
 <!-- rss-shure-like-other-brand-pages-v2 -->
+
+<!-- rss-shure-strict-brand-filter-v1 -->
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -363,29 +365,54 @@
   }
   function matchesShure(item){
     const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
-    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
-    return brandText.includes('shure') || fullText.includes('shure') || fullText.includes('sm58') || fullText.includes('beta 58') || fullText.includes('b58') || fullText.includes('sm7b') || fullText.includes('blx') || fullText.includes('slx d') || fullText.includes('slxd') || fullText.includes('qlx d') || fullText.includes('qlxd') || fullText.includes('ulx d') || fullText.includes('ulxd') || fullText.includes('axient');
+    const titleModelText = norm([item.title, item.name, item.model].join(' '));
+
+    const isShureBrand = brandText === 'shure' || brandText.includes('shure');
+
+    const hasShureInTitleOrModel =
+      titleModelText.includes('shure') ||
+      titleModelText.includes('sm58') ||
+      titleModelText.includes('sm 58') ||
+      titleModelText.includes('beta 58') ||
+      titleModelText.includes('b58') ||
+      titleModelText.includes('sm7b') ||
+      titleModelText.includes('blx') ||
+      titleModelText.includes('slx d') ||
+      titleModelText.includes('slxd') ||
+      titleModelText.includes('qlx d') ||
+      titleModelText.includes('qlxd') ||
+      titleModelText.includes('ulx d') ||
+      titleModelText.includes('ulxd') ||
+      titleModelText.includes('axient');
+
+    const excludedBrands = ['midas','yamaha','allen heath','allen and heath','soundcraft','behringer','presonus'];
+    const excludedGenericTitles =
+      titleModelText.includes('pack scene') ||
+      titleModelText.includes('pack son') ||
+      titleModelText.includes('son lumiere') ||
+      titleModelText.includes('midas') ||
+      titleModelText.includes('console m32') ||
+      titleModelText.includes('m32');
+
+    if(excludedBrands.some(b => brandText.includes(b))) return false;
+    if(excludedGenericTitles && !isShureBrand && !titleModelText.includes('shure')) return false;
+
+    return isShureBrand || hasShureInTitleOrModel;
   }
   function brandSearchTerms(title){
     return ['shure acoustics','shure','shureacoustics'];
   }
   function productMatchesBrand(item, terms){
     const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
-    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.model, item.category, item.description].join(' '));
-    return (
-      brandText.includes('shure') ||
-      brandText.includes('shure acoustics') ||
-      fullText.includes('shure acoustics') ||
-      fullText.includes('shureacoustics')
-    );
+    const titleModelText = norm([item.title, item.name, item.model].join(' '));
+    return brandText.includes('shure') || titleModelText.includes('shure');
   }
   function typeOf(item){
-    const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
-    if(text.includes('nexus')) return 'nexus';
-    if(text.includes('sub') || text.includes('stasys') || text.includes('bass') || text.includes('caisson')) return 'sub';
-    if(text.includes('air') || text.includes('motion') || text.includes('vantage') || text.includes('airten')) return 'air';
-    if(text.includes('tour') || text.includes('festival') || text.includes('incubus')) return 'touring';
-    return 'all';
+    const text = norm([item.title, item.name, item.model, item.category].join(' '));
+    if(text.includes('sm7b') || text.includes('broadcast') || text.includes('podcast') || text.includes('studio')) return 'broadcast';
+    if(text.includes('blx') || text.includes('slx') || text.includes('qlx') || text.includes('ulx') || text.includes('axient') || text.includes('sans fil') || text.includes('wireless')) return 'wireless';
+    if(text.includes('axient') || text.includes('ulx')) return 'premium';
+    return 'micro';
   }
   function itemCity(item){ return clean(item.city || item.location || item.ville || item.address_city || item.locality || 'Disponible'); }
   function itemCoords(item, index){
@@ -415,7 +442,7 @@
     setCount(list.length);
     renderMapMarkers(list);
     if(!list.length){
-      grid.innerHTML = '<div class="shure-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Shure disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces contenant réellement Shure ou Shure dans la marque, le titre, le modèle ou la description sont affichées ici.</p></div>';
+      grid.innerHTML = '<div class="shure-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Shure disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces dont la marque, le titre ou le modèle correspond réellement à Shure sont affichées ici.</p></div>';
       return;
     }
     grid.innerHTML = list.map((item, index) => {
@@ -477,13 +504,6 @@
       const terms = brandSearchTerms(brandTitle);
 
       allShureProducts = rows.filter(item => matchesShure(item) || productMatchesBrand(item, terms));
-
-      if(!allShureProducts.length){
-        allShureProducts = rows.filter(item => {
-          const text = norm([item.brand,item.title,item.model,item.description].join(' '));
-          return text.includes('shure acoustics') || text.includes('shureacoustics') || norm(item.brand).includes('shure');
-        });
-      }
 
       render(currentFilter);
     }catch(error){
