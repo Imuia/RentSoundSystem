@@ -227,6 +227,226 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-delete-listing-fix-v1 -->
+
+<style id="rss-mes-annonces-pro-design-v4">
+  body{
+    background:
+      radial-gradient(circle at 85% 8%, rgba(252,3,109,.13), transparent 28%),
+      radial-gradient(circle at 18% 0%, rgba(255,255,255,.035), transparent 24%),
+      #0b0b0c!important;
+  }
+  .rss-main{
+    max-width:none!important;
+    width:calc(100% - 280px)!important;
+    padding:28px 34px 64px!important;
+  }
+  .rss-dashboard-shell{
+    max-width:1320px;
+    margin:0 auto;
+  }
+  .rss-listings-card{
+    padding:30px!important;
+    border-radius:26px!important;
+    background:
+      linear-gradient(145deg, rgba(28,28,30,.96), rgba(12,12,13,.98))!important;
+    border:1px solid rgba(252,3,109,.22)!important;
+    box-shadow:
+      0 22px 80px rgba(0,0,0,.42),
+      inset 0 1px 0 rgba(255,255,255,.04)!important;
+  }
+  .rss-page-head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:22px;
+    margin-bottom:26px;
+  }
+  .rss-page-title{
+    font-size:clamp(32px,4vw,46px)!important;
+    line-height:1.04!important;
+    letter-spacing:-.04em!important;
+    margin:0 0 10px!important;
+  }
+  .rss-page-subtitle{
+    font-size:15px;
+    color:#d7aab8;
+    margin:0;
+  }
+  .rss-page-action-btn{
+    width:auto!important;
+    min-width:184px!important;
+    height:52px!important;
+    padding:0 22px!important;
+    border-radius:15px!important;
+    font-size:13px!important;
+    white-space:nowrap!important;
+    flex:0 0 auto!important;
+  }
+  .rss-toolbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    flex-wrap:wrap;
+    padding:14px;
+    margin-bottom:18px;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.025);
+    border-radius:18px;
+  }
+  .rss-toolbar-left{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    align-items:center;
+  }
+  .rss-search-input{
+    width:min(360px,100%)!important;
+    height:44px!important;
+    border-radius:13px!important;
+  }
+  .rss-status-select{
+    width:190px!important;
+    height:44px!important;
+    border-radius:13px!important;
+  }
+  .rss-summary-pill{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:10px 13px;
+    border-radius:999px;
+    background:rgba(252,3,109,.08);
+    border:1px solid rgba(252,3,109,.20);
+    color:#ffc0d9;
+    font-size:12px;
+    font-weight:800;
+  }
+  .rss-table-wrap{
+    overflow-x:auto;
+    border:1px solid rgba(255,255,255,.07);
+    border-radius:20px;
+    background:rgba(0,0,0,.18);
+  }
+  .rss-table{
+    border-collapse:separate!important;
+    border-spacing:0!important;
+    min-width:980px;
+  }
+  .rss-table thead th{
+    padding:16px 18px!important;
+    background:rgba(255,255,255,.025);
+    position:sticky;
+    top:0;
+    z-index:2;
+  }
+  .rss-table tbody tr{
+    transition:background .16s ease, transform .16s ease;
+  }
+  .rss-table tbody tr:hover{
+    background:rgba(252,3,109,.045);
+  }
+  .rss-table td{
+    padding:18px!important;
+    vertical-align:middle!important;
+    border-top:1px solid rgba(255,255,255,.065)!important;
+  }
+  .rss-listing-cell{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    min-width:360px;
+  }
+  .rss-listing-thumb{
+    width:78px;
+    height:58px;
+    flex:0 0 78px;
+    border-radius:14px;
+    object-fit:cover;
+    border:1px solid rgba(255,255,255,.10);
+    background:
+      radial-gradient(circle at 45% 20%, rgba(252,3,109,.25), transparent 40%),
+      linear-gradient(135deg,#222,#0e0e0e);
+  }
+  .rss-listing-title{
+    font-weight:900;
+    color:#fff;
+    line-height:1.25;
+    max-width:520px;
+  }
+  .rss-listing-meta{
+    color:#d9aebb;
+    font-size:12px;
+    margin-top:5px;
+  }
+  .rss-price{
+    font-size:15px;
+    font-weight:900;
+    color:#FC036D;
+    white-space:nowrap;
+  }
+  .rss-row-actions{
+    display:flex;
+    gap:8px;
+    justify-content:flex-end;
+    flex-wrap:nowrap;
+  }
+  .rss-row-actions .rss-btn,
+  .rss-img-btn{
+    height:38px!important;
+    padding:0 13px!important;
+    border-radius:12px!important;
+    white-space:nowrap;
+  }
+  .rss-img-count{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    min-width:22px;
+    height:22px;
+    margin-left:6px;
+    border-radius:999px;
+    background:rgba(252,3,109,.18);
+    color:#ffd0e3;
+    font-size:11px;
+    font-weight:900;
+  }
+  .rss-loading-row{
+    padding:34px!important;
+    text-align:center;
+    color:#e6bcc2;
+  }
+  .rss-skeleton{
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .rss-skeleton-img,
+  .rss-skeleton-line{
+    background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.10),rgba(255,255,255,.04));
+    background-size:200% 100%;
+    animation:rssShimmer 1.1s linear infinite;
+  }
+  .rss-skeleton-img{width:78px;height:58px;border-radius:14px;flex:0 0 78px}
+  .rss-skeleton-line{height:13px;border-radius:999px;margin:8px 0}
+  @keyframes rssShimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+  .rss-empty-state{
+    border:1px dashed rgba(252,3,109,.28);
+    background:rgba(252,3,109,.045);
+    border-radius:18px;
+  }
+  @media(max-width:900px){
+    .rss-main{width:100%!important;padding:24px 16px 44px!important}
+    .rss-page-head{flex-direction:column}
+    .rss-page-action-btn{width:100%!important}
+    .rss-toolbar{align-items:stretch}
+    .rss-toolbar-left,.rss-search-input,.rss-status-select{width:100%!important}
+    #footer-container{margin-left:0!important}
+  }
+</style>
+
+
+<!-- rss-mes-annonces-pro-speed-v4 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -247,16 +467,16 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <button id="logout-btn" class="rss-btn rss-btn-outline" style="width:100%"><span class="material-symbols-outlined">logout</span> Déconnexion</button>
   </div>
 </aside>
-<main class="rss-main">
+<main class="rss-main"><div class="rss-dashboard-shell">
   <div id="auth-alert" style="display:none"></div>
   
-<section class="rss-card" style="padding:24px">
-  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin-bottom:22px">
-    <div><h1 class="font-headline rss-page-title">Mes annonces</h1><p class="rss-muted">Modifiez vos annonces, images et informations.</p></div>
-    <a class="rss-btn rss-btn-primary" href="/ajouter-materiel-partenaire.html"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
+<section class="rss-card rss-card-pink rss-listings-card">
+  <div class="rss-page-head">
+    <div><h1 class="font-headline rss-page-title">Mes annonces</h1><p class="rss-page-subtitle">Gérez vos annonces, vos prix, vos statuts et vos images.</p></div>
+    <a class="rss-btn rss-btn-primary rss-page-action-btn" href="/ajouter-materiel-partenaire.html"><span class="material-symbols-outlined">add</span> Ajouter du matériel</a>
   </div>
-  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px"><input id="listing-search" class="rss-input" style="width:260px" placeholder="Rechercher..."><select id="status-filter" class="rss-input" style="width:180px"><option value="">Tous les statuts</option><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></div>
-  <div style="overflow-x:auto"><table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px"><thead><tr><th style="padding:0 16px 12px 0">Annonce</th><th>Ville</th><th>Prix</th><th>Statut</th><th>Images</th><th style="text-align:right">Actions</th></tr></thead><tbody id="listings-table"></tbody></table></div>
+  <div class="rss-toolbar"><div class="rss-toolbar-left"><input id="listing-search" class="rss-input rss-search-input" placeholder="Rechercher une annonce, ville, marque..."><select id="status-filter" class="rss-input rss-status-select"><option value="">Tous les statuts</option><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></div><div id="listings-count" class="rss-summary-pill"><span class="material-symbols-outlined" style="font-size:16px">inventory_2</span> Chargement...</div></div>
+  <div class="rss-table-wrap"><table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px"><thead><tr><th style="padding:0 16px 12px 0">Annonce</th><th>Ville</th><th>Prix</th><th>Statut</th><th>Images</th><th style="text-align:right">Actions</th></tr></thead><tbody id="listings-table"></tbody></table></div>
   <div id="empty-listings" style="display:none;text-align:center;padding:48px;color:#e6bcc2">Aucune annonce trouvée.</div>
 </section>
 <div id="listing-modal" class="rss-modal" style="position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
@@ -287,7 +507,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
  </div>
 </div>
 
-</main>
+</div></main>
 
 <script>
 const RSS_CONFIG = {
@@ -548,10 +768,62 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 
 <script>
+
+const LISTINGS_CACHE_KEY='rss_partner_listings_cache_v2';
+function cacheListingsForFastDisplay(){
+  try{
+    if(STATE && Array.isArray(STATE.listings)){
+      localStorage.setItem(LISTINGS_CACHE_KEY, JSON.stringify({
+        saved_at:Date.now(),
+        listings:STATE.listings.slice(0,80)
+      }));
+    }
+  }catch(e){}
+}
+function getCachedListingsForFastDisplay(){
+  try{
+    const raw=localStorage.getItem(LISTINGS_CACHE_KEY);
+    if(!raw) return [];
+    const parsed=JSON.parse(raw);
+    if(!parsed || !Array.isArray(parsed.listings)) return [];
+    return parsed.listings;
+  }catch(e){return []}
+}
+function showListingsLoadingSkeleton(){
+  const body=$('listings-table');
+  const empty=$('empty-listings');
+  if(empty) empty.style.display='none';
+  if(!body) return;
+  body.innerHTML=Array.from({length:5}).map(()=>`<tr>
+    <td><div class="rss-skeleton"><div class="rss-skeleton-img"></div><div style="width:260px"><div class="rss-skeleton-line" style="width:90%"></div><div class="rss-skeleton-line" style="width:55%"></div></div></div></td>
+    <td><div class="rss-skeleton-line" style="width:130px"></div></td>
+    <td><div class="rss-skeleton-line" style="width:80px"></div></td>
+    <td><div class="rss-skeleton-line" style="width:70px"></div></td>
+    <td><div class="rss-skeleton-line" style="width:85px"></div></td>
+    <td><div class="rss-skeleton-line" style="width:160px;margin-left:auto"></div></td>
+  </tr>`).join('');
+}
+function listingImageUrl(i){
+  return i?.image_url || i?.featured_image || i?.thumbnail || i?.cover_image || '';
+}
+function updateListingsCount(){
+  const el=$('listings-count');
+  if(!el) return;
+  const total=(STATE.listings||[]).length;
+  const shown=(STATE.filtered||[]).length;
+  el.innerHTML=`<span class="material-symbols-outlined" style="font-size:16px">inventory_2</span> ${shown} / ${total} annonce${total>1?'s':''}`;
+}
+
 let STATE={ctx:null,listings:[],filtered:[],images:{},selectedEditFiles:[]};
 document.addEventListener('DOMContentLoaded', async()=>{
+ showListingsLoadingSkeleton();
+ const cachedListings=getCachedListingsForFastDisplay();
+ if(cachedListings.length){
+   STATE.listings=cachedListings;
+   applyFilters();
+ }
  STATE.ctx=await getPartnerContext(); if(!STATE.ctx)return;
- await loadPageListings();
+ loadPageListings();
  $('listing-search')?.addEventListener('input',applyFilters);
  $('status-filter')?.addEventListener('change',applyFilters);
  $('close-modal')?.addEventListener('click',closeEdit);
@@ -562,7 +834,7 @@ document.addEventListener('DOMContentLoaded', async()=>{
    $('new-images').value = '';
    renderNewImagePreviews();
  });
- const params=new URLSearchParams(location.search); if(params.get('edit')) setTimeout(()=>openEdit(params.get('edit')),600);
+ const params=new URLSearchParams(location.search); if(params.get('edit')) setTimeout(()=>openEdit(params.get('edit')),150);
 });
 
 async function repairOwnerInfoForCurrentPartner(ctx){
@@ -589,31 +861,48 @@ async function repairOwnerInfoForCurrentPartner(ctx){
   }
 }
 
-async function loadPageListings(){await repairOwnerInfoForCurrentPartner(STATE.ctx); STATE.listings=await loadPartnerListings(STATE.ctx); applyFilters();}
+async function loadPageListings(){const listingsPromise=loadPartnerListings(STATE.ctx); repairOwnerInfoForCurrentPartner(STATE.ctx).catch(()=>{}); STATE.listings=await listingsPromise; cacheListingsForFastDisplay(); applyFilters();}
 function applyFilters(){
  const q=clean($('listing-search')?.value), st=$('status-filter')?.value||'';
  STATE.filtered=STATE.listings.filter(i=>(!st||statusNorm(i.status)===st)&&(!q||[i.title,i.city,i.country,i.category,i.brand,i.model,String(i.original_id||'')].join(' ').toLowerCase().includes(q)));
  renderTable();
+ updateListingsCount();
 }
 function renderTable(){
  const body=$('listings-table'), empty=$('empty-listings');
- if(!STATE.filtered.length){body.innerHTML=''; empty.style.display='block'; return}
- empty.style.display='none';
- body.innerHTML=STATE.filtered.map(i=>`<tr>
-<td style="padding:16px 16px 16px 0">
-  <div style="font-weight:900">${esc(i.title||'Annonce')}</div>
-  <div class="rss-muted" style="font-size:12px;margin-top:4px">ID original : ${esc(i.original_id||'-')} · ${esc(i.category||'-')}</div>
+ if(!body) return;
+ if(!STATE.filtered.length){
+   body.innerHTML='';
+   if(empty){empty.style.display='block'; empty.className='rss-empty-state'; empty.innerHTML='<strong>Aucune annonce trouvée.</strong><br><span style="color:#d7aab8">Essayez une autre recherche ou ajoutez un nouveau matériel.</span>';}
+   updateListingsCount();
+   return;
+ }
+ if(empty) empty.style.display='none';
+ body.innerHTML=STATE.filtered.map(i=>{
+   const img=listingImageUrl(i);
+   const imageHtml=img
+     ? `<img class="rss-listing-thumb" src="${esc(img)}" alt="" onerror="this.classList.add('brand-img-fallback');this.removeAttribute('src')">`
+     : `<div class="rss-listing-thumb brand-img-fallback"></div>`;
+   return `<tr>
+<td>
+  <div class="rss-listing-cell">
+    ${imageHtml}
+    <div>
+      <div class="rss-listing-title">${esc(i.title||'Annonce')}</div>
+      <div class="rss-listing-meta">ID original : ${esc(i.original_id||'-')} · ${esc(i.category||'-')}</div>
+    </div>
+  </div>
 </td>
 <td class="rss-muted">${esc([i.city,i.country].filter(Boolean).join(', ')||'-')}</td>
-<td style="font-weight:900;color:#FC036D">${price(i.price)}</td>
+<td><span class="rss-price">${price(i.price)}</span></td>
 <td>${badge(i.status)}</td>
 <td>
-  <button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')">
+  <button class="rss-btn rss-btn-outline rss-img-btn" onclick="openEdit('${i.id}')">
     <span class="material-symbols-outlined" style="font-size:16px">image</span> Gérer
   </button>
 </td>
 <td style="text-align:right">
-  <div style="display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap">
+  <div class="rss-row-actions">
     <button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')">
       <span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier
     </button>
@@ -622,7 +911,9 @@ function renderTable(){
     </button>
   </div>
 </td>
-</tr>`).join('');
+</tr>`;
+ }).join('');
+ updateListingsCount();
 }
 async function openEdit(id){
  const i=STATE.listings.find(x=>x.id===id); if(!i)return;
@@ -750,6 +1041,7 @@ async function deleteListing(id){
 
    STATE.listings = (STATE.listings || []).filter(x => String(x.id) !== String(id));
    STATE.filtered = (STATE.filtered || []).filter(x => String(x.id) !== String(id));
+   cacheListingsForFastDisplay();
    renderTable();
    alertBox('Annonce supprimée avec succès.','success');
  }catch(err){
