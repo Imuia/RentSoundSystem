@@ -100,6 +100,35 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+
+<style id="rss-partner-profile-expanded-v1">
+  .rss-profile-form{display:block}
+  .rss-profile-layout{display:grid;grid-template-columns:minmax(0,1fr) 390px;gap:22px;align-items:start}
+  .rss-profile-left,.rss-profile-right{display:grid;gap:18px}
+  .rss-form-section{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
+  .rss-section-title{font-size:18px;font-weight:900;margin:0 0 16px;display:flex;align-items:center;gap:10px;color:#fff}
+  .rss-section-title .material-symbols-outlined{color:#FC036D}
+  .rss-form-section label{font-weight:700;color:#e6bcc2;font-size:14px}
+  .rss-form-section textarea{resize:vertical}
+  .rss-check-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:16px}
+  .rss-check-grid label{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:11px 12px;color:#fff}
+  .rss-check-grid input{accent-color:#FC036D}
+  .rss-bank-card{border-color:rgba(252,3,109,.26)}
+  .rss-bank-success{display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(80,255,120,.16);border:1px solid rgba(80,255,120,.28);color:#baffcf;border-radius:12px;padding:14px;margin-bottom:14px;font-weight:800}
+  .rss-logo-box{height:132px;border:1px dashed rgba(252,3,109,.42);background:rgba(252,3,109,.05);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px}
+  .rss-logo-box img{width:100%;height:100%;object-fit:contain;background:#fff}
+  #partner-logo-placeholder{color:#e6bcc2;font-weight:800}
+  .rss-mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .rss-mini-stats div{background:#101010;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;text-align:center}
+  .rss-mini-stats strong{display:block;color:#FC036D;font-size:20px}
+  .rss-mini-stats span{font-size:12px;color:#e6bcc2}
+  .rss-save-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
+  @media(max-width:1100px){.rss-profile-layout{grid-template-columns:1fr}.rss-profile-right{grid-template-columns:1fr 1fr}.rss-save-bar{flex-direction:column;align-items:stretch}.rss-save-bar .rss-btn{width:100%}}
+  @media(max-width:760px){.rss-profile-right{grid-template-columns:1fr}.rss-mini-stats{grid-template-columns:1fr}.rss-form-section{padding:16px}}
+</style>
+
+
+<!-- rss-mon-profil-partenaire-officiel-fields-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -123,17 +152,134 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <main class="rss-main">
   <div id="auth-alert" style="display:none"></div>
   
+
 <section class="rss-card rss-card-pink" style="padding:26px">
-<h1 class="font-headline rss-page-title">Mon profil partenaire</h1>
-<p class="rss-muted" style="margin-bottom:24px">Gérez les informations internes de votre compte partenaire. Le profil public reste sur /profil-partenaire.html.</p>
-<form id="partner-form" class="rss-form-grid">
-<label>Nom / enseigne<input id="partner-name-input" class="rss-input" style="margin-top:6px"></label>
-<label>Téléphone<input id="partner-phone-input" class="rss-input" style="margin-top:6px"></label>
-<label>Ville<input id="partner-city-input" class="rss-input" style="margin-top:6px"></label>
-<label>Pays<input id="partner-country-input" class="rss-input" style="margin-top:6px"></label>
-<div style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px;align-items:center"><a class="rss-btn rss-btn-outline" href="/profil-partenaire.html">Voir mon profil public</a><button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer</button></div>
-</form>
+  <div style="display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap;margin-bottom:24px">
+    <div>
+      <h1 class="font-headline rss-page-title">Mon profil partenaire</h1>
+      <p class="rss-muted">Complétez les informations de votre compte partenaire. Ces champs reprennent les étapes d'inscription partenaire, sans la carte.</p>
+    </div>
+    <a class="rss-btn rss-btn-outline" id="public-profile-link" href="/profil-partenaire.html">
+      <span class="material-symbols-outlined">visibility</span> Voir mon profil public
+    </a>
+  </div>
+
+  <form id="partner-form" class="rss-profile-form">
+    <div class="rss-profile-layout">
+      <div class="rss-profile-left">
+        <div class="rss-form-section">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">business</span> Informations société</h2>
+          <div class="rss-form-grid">
+            <label>Nom / enseigne<input id="partner-name-input" class="rss-input" style="margin-top:6px" placeholder="Ex : IMUIA, RentSoundSystem, société..."></label>
+            <label>Email<input id="partner-email-input" class="rss-input" style="margin-top:6px" type="email" readonly></label>
+            <label>Téléphone<input id="partner-phone-input" class="rss-input" style="margin-top:6px" placeholder="+33..."></label>
+            <label>Pays<input id="partner-country-input" class="rss-input" style="margin-top:6px" placeholder="France"></label>
+            <label>Adresse<input id="partner-address-input" class="rss-input" style="margin-top:6px" placeholder="Adresse complète"></label>
+            <label>Ville<input id="partner-city-input" class="rss-input" style="margin-top:6px" placeholder="Paris"></label>
+            <label>Code postal<input id="partner-postal-input" class="rss-input" style="margin-top:6px" placeholder="75011"></label>
+            <label>Devise<input id="partner-currency-input" class="rss-input" style="margin-top:6px" placeholder="euro"></label>
+            <label>N° société / registre<input id="partner-reg-input" class="rss-input" style="margin-top:6px" placeholder="SIRET, registre, ICE..."></label>
+            <label>N° TVA<input id="partner-vat-input" class="rss-input" style="margin-top:6px" placeholder="TVA intracommunautaire"></label>
+          </div>
+        </div>
+
+        <div class="rss-form-section">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">local_shipping</span> Logistique & matériel</h2>
+          <div class="rss-form-grid">
+            <label>Taille moyenne de la flotte
+              <select id="partner-fleet-size-input" class="rss-input" style="margin-top:6px">
+                <option value="">Sélectionnez...</option>
+                <option value="boutique">Boutique (1-10 systèmes)</option>
+                <option value="medium">Moyenne (11-50 systèmes)</option>
+                <option value="large">Grande (50+ systèmes)</option>
+                <option value="enterprise">Entreprise / Tournée</option>
+              </select>
+            </label>
+            <label>Type d'équipement principal
+              <select id="partner-main-equipment-input" class="rss-input" style="margin-top:6px">
+                <option value="">Sélectionnez...</option>
+                <option value="sonorisation">Sonorisation</option>
+                <option value="eclairage">Éclairage</option>
+                <option value="dj">DJ Gear</option>
+                <option value="video">Vidéo / Multimédia</option>
+                <option value="scene">Scène & structures</option>
+                <option value="autre">Autre</option>
+              </select>
+            </label>
+            <label>Nombre d'équipements<input id="partner-equipment-count-input" class="rss-input" style="margin-top:6px" type="number" min="0" placeholder="Ex : 50"></label>
+            <label>Valeur estimée du parc<input id="partner-fleet-value-input" class="rss-input" style="margin-top:6px" placeholder="Ex : 50000"></label>
+          </div>
+          <label style="display:block;margin-top:16px">Description du parc matériel
+            <textarea id="partner-equipment-description-input" class="rss-input" rows="4" style="margin-top:6px" placeholder="Décrivez vos principales catégories, marques, capacités, prestations..."></textarea>
+          </label>
+        </div>
+
+        <div class="rss-form-section">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">public</span> Profil public & visibilité</h2>
+          <div class="rss-form-grid">
+            <label>Site web<input id="partner-website-input" class="rss-input" style="margin-top:6px" placeholder="https://..."></label>
+            <label>Facebook<input id="partner-facebook-input" class="rss-input" style="margin-top:6px" placeholder="https://facebook.com/..."></label>
+            <label>Instagram<input id="partner-instagram-input" class="rss-input" style="margin-top:6px" placeholder="https://instagram.com/..."></label>
+            <label>LinkedIn<input id="partner-linkedin-input" class="rss-input" style="margin-top:6px" placeholder="https://linkedin.com/..."></label>
+          </div>
+          <label style="display:block;margin-top:16px">Présentation publique
+            <textarea id="partner-description-input" class="rss-input" rows="6" style="margin-top:6px" placeholder="Présentez votre société, vos services, vos zones d’intervention et vos points forts."></textarea>
+          </label>
+          <div class="rss-check-grid">
+            <label><input id="partner-show-phone-input" type="checkbox"> Afficher le téléphone</label>
+            <label><input id="partner-show-email-input" type="checkbox"> Afficher l'email</label>
+            <label><input id="partner-show-city-input" type="checkbox"> Afficher la ville</label>
+            <label><input id="partner-allow-whatsapp-input" type="checkbox"> Recevoir demandes WhatsApp</label>
+            <label><input id="partner-allow-email-input" type="checkbox"> Recevoir demandes email</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="rss-profile-right">
+        <div class="rss-form-section rss-bank-card">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">account_balance</span> Compte banque</h2>
+          <div id="bank-status" class="rss-bank-success"><span class="material-symbols-outlined">check_circle</span> Compte bancaire à compléter</div>
+          <label>IBAN<input id="partner-iban-input" class="rss-input" style="margin-top:6px" placeholder="FR76..."></label>
+          <label>BIC / SWIFT<input id="partner-bic-input" class="rss-input" style="margin-top:6px" placeholder="XXXXXXXX"></label>
+          <label>Titulaire<input id="partner-account-holder-input" class="rss-input" style="margin-top:6px" placeholder="Nom du titulaire"></label>
+          <label>Nom de la banque<input id="partner-bank-name-input" class="rss-input" style="margin-top:6px" placeholder="QONTO, BNP, Attijari..."></label>
+        </div>
+
+        <div class="rss-form-section">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">image</span> Logo partenaire</h2>
+          <div class="rss-logo-box">
+            <img id="partner-logo-preview" alt="Logo partenaire" style="display:none">
+            <div id="partner-logo-placeholder">Aucun logo</div>
+          </div>
+          <label>URL logo<input id="partner-logo-url-input" class="rss-input" style="margin-top:6px" placeholder="/uploads/... ou https://..."></label>
+          <label style="margin-top:10px;display:block">Changer le logo<input id="partner-logo-file-input" class="rss-input" style="margin-top:6px" type="file" accept="image/*"></label>
+        </div>
+
+        <div class="rss-form-section">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">verified_user</span> Documents administratifs</h2>
+          <label>Kbis / registre société<input id="partner-kbis-url-input" class="rss-input" style="margin-top:6px" placeholder="URL du document"></label>
+          <label>Assurance RC Pro<input id="partner-insurance-url-input" class="rss-input" style="margin-top:6px" placeholder="URL du document"></label>
+          <label>Pièce d'identité<input id="partner-id-document-url-input" class="rss-input" style="margin-top:6px" placeholder="URL du document"></label>
+        </div>
+
+        <div class="rss-form-section">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">bar_chart</span> Résumé partenaire</h2>
+          <div class="rss-mini-stats">
+            <div><strong id="stat-listings">0</strong><span>Annonces</span></div>
+            <div><strong id="stat-city">—</strong><span>Ville</span></div>
+            <div><strong id="stat-status">Validé</strong><span>Statut</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rss-save-bar">
+      <a class="rss-btn rss-btn-outline" id="public-profile-link-bottom" href="/profil-partenaire.html"><span class="material-symbols-outlined">visibility</span> Voir mon profil public</a>
+      <button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer le profil</button>
+    </div>
+  </form>
 </section>
+
 
 </main>
 
@@ -312,63 +458,231 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 
-<script>
+
+<script id="rss-partner-profile-expanded-script-v1">
 let CTX=null;
-document.addEventListener('DOMContentLoaded', async()=>{
- CTX=await getPartnerContext(); if(!CTX)return;
 
- await repairOwnerInfoForCurrentPartner(CTX);
-
- const p=CTX.partner;
- $('partner-name-input').value=p.name||p.owner_name||'';
- $('partner-phone-input').value=p.phone||p.owner_phone||'';
- $('partner-city-input').value=p.city||p.owner_city||'';
- $('partner-country-input').value=p.country||p.owner_country||'';
-
- const publicLink=document.querySelector('a[href="/profil-partenaire.html"]');
- if(publicLink){
-   publicLink.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email);
- }
-
- $('partner-form')?.addEventListener('submit',async e=>{
-  e.preventDefault();
-
-  const realName=$('partner-name-input').value.trim();
-  const phone=$('partner-phone-input').value.trim();
-  const city=$('partner-city-input').value.trim();
-  const country=$('partner-country-input').value.trim();
-
-  if(!realName || isEmail(realName)){
-    alertBox('Merci de mettre un vrai nom / enseigne, pas un email.','error');
-    return;
+function pick(){
+  for(const v of arguments){
+    const s = String(v ?? '').trim();
+    if(s) return s;
   }
+  return '';
+}
+function boolVal(v, fallback=true){
+  if(v === false || v === 'false' || v === 0 || v === '0') return false;
+  if(v === true || v === 'true' || v === 1 || v === '1') return true;
+  return fallback;
+}
+function setValue(id,val){ const el=$(id); if(el) el.value = val ?? ''; }
+function setChecked(id,val){ const el=$(id); if(el) el.checked = boolVal(val,true); }
+function getValue(id){ const el=$(id); return el ? el.value.trim() : ''; }
+function getChecked(id){ const el=$(id); return !!(el && el.checked); }
 
-  const update={name:realName,phone,city,country};
+async function updatePartnerProfileBySafeColumns(rowId, email, payload){
+  // Essai complet : fonctionne si toutes les colonnes existent.
+  let res;
+  if(rowId) res = await sb.from('partners').update(payload).eq('id', rowId);
+  else res = await sb.from('partners').update(payload).ilike('email', email);
 
-  let error=null;
-  if(p.id){
-    const res=await sb.from('partners').update(update).eq('id',p.id);
-    error=res.error;
-  }else{
-    const res=await sb.from('partners').update(update).ilike('email',CTX.email);
-    error=res.error;
-  }
+  if(!res.error) return res;
 
-  if(error){alertBox('Erreur profil : '+error.message,'error');return}
+  // Fallback : si Supabase n'a pas encore toutes les colonnes, on sauvegarde les champs essentiels.
+  const basic = {
+    name: payload.name,
+    phone: payload.phone,
+    city: payload.city,
+    country: payload.country
+  };
+  if('address' in payload) basic.address = payload.address;
+  if('postal_code' in payload) basic.postal_code = payload.postal_code;
+  if('logo_url' in payload) basic.logo_url = payload.logo_url;
+  if('description' in payload) basic.description = payload.description;
 
-  CTX.partner = Object.assign({}, CTX.partner, update, {
-    owner_name: realName,
-    owner_phone: phone,
-    owner_city: city,
-    owner_country: country
-  });
+  if(rowId) res = await sb.from('partners').update(basic).eq('id', rowId);
+  else res = await sb.from('partners').update(basic).ilike('email', email);
 
+  if(res.error) throw res.error;
+
+  console.warn('Certaines colonnes partenaires manquent encore dans Supabase. Champs essentiels sauvegardés.', payload);
+  return res;
+}
+
+async function uploadPartnerLogo(file, ctx){
+  if(!file || !ctx?.email) return '';
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path='partners/logos/'+ctx.email.replace(/[^a-z0-9@._-]/gi,'_')+'-'+Date.now()+'.'+ext;
+  const {error:upErr}=await sb.storage.from('listing-images').upload(path,file,{upsert:true,contentType:file.type||'image/jpeg'});
+  if(upErr) throw upErr;
+  const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
+  return pub.publicUrl;
+}
+
+async function initPartnerProfilePage(){
+  CTX=await getPartnerContext(); if(!CTX)return;
   await repairOwnerInfoForCurrentPartner(CTX);
 
-  alertBox('Profil partenaire et annonces mises à jour.','success');
- });
-});
+  const p=CTX.partner || {};
+  const listings = await loadPartnerListings(CTX).catch(()=>[]);
+
+  const publicLinks=[document.getElementById('public-profile-link'),document.getElementById('public-profile-link-bottom')].filter(Boolean);
+  publicLinks.forEach(a=>{ a.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email); });
+
+  setValue('partner-name-input', pick(p.name,p.owner_name,p.company_name,CTX.email));
+  setValue('partner-email-input', pick(p.email,CTX.email));
+  setValue('partner-phone-input', pick(p.phone,p.owner_phone));
+  setValue('partner-country-input', pick(p.country,p.owner_country));
+  setValue('partner-address-input', pick(p.address,p.address_1,p.owner_address));
+  setValue('partner-city-input', pick(p.city,p.owner_city));
+  setValue('partner-postal-input', pick(p.postal_code,p.zip,p.zip_code));
+  setValue('partner-currency-input', pick(p.currency,p.devise,'euro'));
+  setValue('partner-reg-input', pick(p.reg_number,p.registration_number,p.siret,p.company_number));
+  setValue('partner-vat-input', pick(p.vat_number,p.tva_number,p.vat));
+
+  setValue('partner-fleet-size-input', pick(p.fleet_size,p.fleet_category));
+  setValue('partner-main-equipment-input', pick(p.main_equipment_type,p.equipment_type));
+  setValue('partner-equipment-count-input', pick(p.equipment_count,p.material_count));
+  setValue('partner-fleet-value-input', pick(p.fleet_value,p.equipment_value));
+  setValue('partner-equipment-description-input', pick(p.equipment_description,p.material_description));
+
+  setValue('partner-website-input', pick(p.website,p.website_url));
+  setValue('partner-facebook-input', pick(p.facebook_url,p.facebook));
+  setValue('partner-instagram-input', pick(p.instagram_url,p.instagram));
+  setValue('partner-linkedin-input', pick(p.linkedin_url,p.linkedin));
+  setValue('partner-description-input', pick(p.description,p.bio,p.presentation));
+
+  setChecked('partner-show-phone-input', p.show_phone);
+  setChecked('partner-show-email-input', p.show_email);
+  setChecked('partner-show-city-input', p.show_city);
+  setChecked('partner-allow-whatsapp-input', p.allow_whatsapp);
+  setChecked('partner-allow-email-input', p.allow_email);
+
+  setValue('partner-iban-input', pick(p.iban,p.bank_iban));
+  setValue('partner-bic-input', pick(p.bic,p.swift,p.bank_bic));
+  setValue('partner-account-holder-input', pick(p.account_holder,p.bank_holder,p.bank_account_holder));
+  setValue('partner-bank-name-input', pick(p.bank_name,p.bank));
+
+  setValue('partner-logo-url-input', pick(p.logo_url,p.logo,p.avatar_url));
+  setValue('partner-kbis-url-input', pick(p.kbis_url,p.kbis_document_url));
+  setValue('partner-insurance-url-input', pick(p.insurance_url,p.rc_pro_url,p.insurance_document_url));
+  setValue('partner-id-document-url-input', pick(p.id_document_url,p.identity_document_url));
+
+  const logo = getValue('partner-logo-url-input');
+  const logoImg = $('partner-logo-preview');
+  const logoPlaceholder = $('partner-logo-placeholder');
+  if(logo && logoImg){
+    logoImg.src = logo;
+    logoImg.style.display='block';
+    if(logoPlaceholder) logoPlaceholder.style.display='none';
+  }
+
+  const bankStatus = $('bank-status');
+  if(bankStatus){
+    const hasBank = getValue('partner-iban-input') && getValue('partner-bic-input') && getValue('partner-bank-name-input');
+    bankStatus.innerHTML = hasBank
+      ? '<span class="material-symbols-outlined">check_circle</span> Votre compte bancaire est enregistré'
+      : '<span class="material-symbols-outlined">info</span> Compte bancaire à compléter';
+  }
+
+  if($('stat-listings')) $('stat-listings').textContent = String(listings.length || 0);
+  if($('stat-city')) $('stat-city').textContent = pick(p.city,p.owner_city,'—');
+  if($('stat-status')) $('stat-status').textContent = 'Validé';
+
+  $('partner-logo-file-input')?.addEventListener('change', async (e)=>{
+    const file=e.target.files?.[0];
+    if(!file) return;
+    try{
+      const url=await uploadPartnerLogo(file, CTX);
+      setValue('partner-logo-url-input', url);
+      if(logoImg){
+        logoImg.src=url;
+        logoImg.style.display='block';
+        if(logoPlaceholder) logoPlaceholder.style.display='none';
+      }
+      alertBox('Logo chargé. Cliquez sur Enregistrer pour sauvegarder le profil.','success');
+    }catch(err){
+      alertBox('Erreur upload logo : '+(err.message||err),'error');
+    }
+  });
+
+  $('partner-form')?.addEventListener('submit',async e=>{
+    e.preventDefault();
+
+    const realName=getValue('partner-name-input');
+    if(!realName || isEmail(realName)){
+      alertBox('Merci de mettre un vrai nom / enseigne, pas un email.','error');
+      return;
+    }
+
+    const payload={
+      name: realName,
+      phone: getValue('partner-phone-input'),
+      country: getValue('partner-country-input'),
+      address: getValue('partner-address-input'),
+      city: getValue('partner-city-input'),
+      postal_code: getValue('partner-postal-input'),
+      currency: getValue('partner-currency-input'),
+      reg_number: getValue('partner-reg-input'),
+      vat_number: getValue('partner-vat-input'),
+
+      fleet_size: getValue('partner-fleet-size-input'),
+      main_equipment_type: getValue('partner-main-equipment-input'),
+      equipment_count: num(getValue('partner-equipment-count-input')),
+      fleet_value: getValue('partner-fleet-value-input'),
+      equipment_description: getValue('partner-equipment-description-input'),
+
+      website: getValue('partner-website-input'),
+      facebook_url: getValue('partner-facebook-input'),
+      instagram_url: getValue('partner-instagram-input'),
+      linkedin_url: getValue('partner-linkedin-input'),
+      description: getValue('partner-description-input'),
+
+      show_phone: getChecked('partner-show-phone-input'),
+      show_email: getChecked('partner-show-email-input'),
+      show_city: getChecked('partner-show-city-input'),
+      allow_whatsapp: getChecked('partner-allow-whatsapp-input'),
+      allow_email: getChecked('partner-allow-email-input'),
+
+      iban: getValue('partner-iban-input'),
+      bic: getValue('partner-bic-input'),
+      account_holder: getValue('partner-account-holder-input'),
+      bank_name: getValue('partner-bank-name-input'),
+
+      logo_url: getValue('partner-logo-url-input'),
+      kbis_url: getValue('partner-kbis-url-input'),
+      insurance_url: getValue('partner-insurance-url-input'),
+      id_document_url: getValue('partner-id-document-url-input')
+    };
+
+    try{
+      await updatePartnerProfileBySafeColumns(CTX.partner?.id, CTX.email, payload);
+
+      CTX.partner = Object.assign({}, CTX.partner, payload, {
+        owner_name: payload.name,
+        owner_phone: payload.phone,
+        owner_city: payload.city,
+        owner_country: payload.country
+      });
+
+      await repairOwnerInfoForCurrentPartner(CTX);
+      const bankStatus = $('bank-status');
+      if(bankStatus){
+        const hasBank = payload.iban && payload.bic && payload.bank_name;
+        bankStatus.innerHTML = hasBank
+          ? '<span class="material-symbols-outlined">check_circle</span> Votre compte bancaire est enregistré'
+          : '<span class="material-symbols-outlined">info</span> Compte bancaire à compléter';
+      }
+      if($('stat-city')) $('stat-city').textContent = payload.city || '—';
+      alertBox('Profil partenaire, informations société et annonces mises à jour.','success');
+    }catch(error){
+      alertBox('Erreur profil : '+(error.message||error),'error');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', initPartnerProfilePage);
 </script>
+
 
 <div id="footer-container"></div>
 <script src="/components.js"></script>
