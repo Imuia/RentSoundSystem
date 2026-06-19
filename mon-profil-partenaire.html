@@ -162,6 +162,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-mon-profil-partenaire-fill-supabase-v2 -->
+
+<!-- rss-profile-partner-lookup-by-email-user-legacy-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -348,6 +350,23 @@ function firstText(){
 function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanText(v)); }
 
 
+
+async function fetchPartnerRequestByKeysSafe(email, userId){
+  const e = cleanEmail(email);
+  if(!sb) return null;
+  try{
+    if(e && isEmail(e)){
+      const {data,error}=await sb.from('partner_requests').select('*').ilike('email', e).order('created_at',{ascending:false}).limit(1);
+      if(!error && (data||[])[0]) return data[0];
+    }
+    if(userId){
+      const {data,error}=await sb.from('partner_requests').select('*').eq('user_id', userId).order('created_at',{ascending:false}).limit(1);
+      if(!error && (data||[])[0]) return data[0];
+    }
+  }catch(err){ console.warn('Recherche partner_requests multi impossible:', err.message || err); }
+  return null;
+}
+
 async function fetchPartnerRequestByEmailSafe(email){
   const e = cleanEmail(email);
   if(!sb || !e || !isEmail(e)) return null;
@@ -369,6 +388,86 @@ async function fetchPartnerRequestByEmailSafe(email){
   }
 }
 
+
+async function fetchPartnerByKeysSafe(authEmail, userId){
+  const e = cleanEmail(authEmail);
+  if(!sb) return null;
+
+  async function one(queryFn, label){
+    try{
+      const {data,error}=await queryFn();
+      if(error){
+        console.warn('Erreur recherche partenaire '+label+':', error.message);
+        return null;
+      }
+      return (data||[])[0] || null;
+    }catch(err){
+      console.warn('Exception recherche partenaire '+label+':', err.message || err);
+      return null;
+    }
+  }
+
+  // 1. Recherche normale par email du compte connecté
+  if(e && isEmail(e)){
+    const byEmail = await one(
+      () => sb.from('partners').select('*').ilike('email', e).limit(1),
+      'email'
+    );
+    if(byEmail) return byEmail;
+  }
+
+  // 2. Recherche par user_id Supabase si la colonne est renseignée
+  if(userId){
+    const byUser = await one(
+      () => sb.from('partners').select('*').eq('user_id', userId).limit(1),
+      'user_id'
+    );
+    if(byUser) return byUser;
+  }
+
+  // 3. Recherche via les annonces du compte connecté : owner_email ou legacy_user_id
+  if(e && isEmail(e)){
+    const listing = await one(
+      () => sb.from('listings').select('owner_email,legacy_user_id,owner_name,owner_phone,owner_city,owner_country').ilike('owner_email', e).limit(1),
+      'listing owner_email'
+    );
+
+    if(listing?.legacy_user_id){
+      const byLegacy = await one(
+        () => sb.from('partners').select('*').eq('legacy_user_id', listing.legacy_user_id).limit(1),
+        'legacy_user_id from listing'
+      );
+      if(byLegacy) return byLegacy;
+    }
+
+    if(listing?.owner_email){
+      const byListingEmail = await one(
+        () => sb.from('partners').select('*').ilike('email', cleanEmail(listing.owner_email)).limit(1),
+        'listing owner_email partner'
+      );
+      if(byListingEmail) return byListingEmail;
+    }
+
+    // 4. Fallback: fabriquer un partner minimal depuis listing si aucune ligne partner ne matche
+    if(listing){
+      return {
+        email: e,
+        name: listing.owner_name || '',
+        owner_name: listing.owner_name || '',
+        phone: listing.owner_phone || '',
+        owner_phone: listing.owner_phone || '',
+        city: listing.owner_city || '',
+        country: listing.owner_country || '',
+        legacy_user_id: listing.legacy_user_id || null,
+        status: 'approved',
+        source: 'listing_fallback'
+      };
+    }
+  }
+
+  return null;
+}
+
 async function fetchPartnerByEmailSafe(email){
   const e = cleanEmail(email);
   if(!sb || !e || !isEmail(e)) return null;
@@ -387,7 +486,7 @@ async function fetchPartnerByEmailSafe(email){
 }
 
 function normalizePartnerRecord(partner, profile, authEmail, request){
-  const e = cleanEmail(partner?.email || profile?.email || authEmail);
+  const e = cleanEmail(authEmail || profile?.email || partner?.email);
   const realName = firstNonEmail(
     partner?.name,
     partner?.owner_name,
@@ -408,6 +507,10 @@ function normalizePartnerRecord(partner, profile, authEmail, request){
     owner_email: e,
     name: realName,
     owner_name: realName,
+
+    company_name: firstNonEmail(partner?.company_name, partner?.name, partner?.owner_name, request?.company_name, request?.name, request?.business_name, request?.enseigne),
+    display_name: firstNonEmail(partner?.display_name, partner?.name, partner?.owner_name, partner?.company_name),
+    partner_name: firstNonEmail(partner?.partner_name, partner?.name, partner?.owner_name, partner?.company_name),
     phone: firstText(partner?.phone, partner?.owner_phone, request?.phone, request?.telephone, profile?.phone),
     owner_phone: firstText(partner?.phone, partner?.owner_phone, request?.phone, request?.telephone, profile?.phone),
     city: firstText(partner?.city, partner?.owner_city, request?.city, request?.ville),
@@ -444,7 +547,11 @@ async function repairOwnerInfoForCurrentPartner(ctx){
   };
 
   try{
-    await sb.from('listings').update(patch).ilike('owner_email', cleanEmail(ctx.email));
+    if(partner.legacy_user_id){
+      await sb.from('listings').update(patch).or('owner_email.ilike.'+cleanEmail(ctx.email)+',legacy_user_id.eq.'+partner.legacy_user_id);
+    }else{
+      await sb.from('listings').update(patch).ilike('owner_email', cleanEmail(ctx.email));
+    }
   }catch(e){
     console.warn('Réparation annonces impossible:', e.message || e);
   }
@@ -478,8 +585,8 @@ async function getPartnerContext(){
     return null;
   }
 
-  const partner = await fetchPartnerByEmailSafe(authEmail);
-  const partnerRequest = await fetchPartnerRequestByEmailSafe(authEmail);
+  const partner = await fetchPartnerByKeysSafe(authEmail, user.id);
+  const partnerRequest = await fetchPartnerRequestByKeysSafe(authEmail, user.id);
 
   if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){
     alertBox('Aucun profil partenaire validé trouvé pour cet email.','error');
@@ -606,7 +713,7 @@ async function initPartnerProfilePage(){
   const publicLinks=[document.getElementById('public-profile-link'),document.getElementById('public-profile-link-bottom')].filter(Boolean);
   publicLinks.forEach(a=>{ a.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email); });
 
-  setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name,CTX.partnerRequest?.company_name,CTX.partnerRequest?.name,CTX.partnerRequest?.business_name,CTX.partnerRequest?.enseigne) || '');
+  setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name,CTX.partner?.name,CTX.partner?.owner_name,CTX.partnerRequest?.company_name,CTX.partnerRequest?.name,CTX.partnerRequest?.business_name,CTX.partnerRequest?.enseigne) || '');
   setValue('partner-email-input', cleanEmail(p.email || CTX.email));
   setValue('partner-phone-input', pick(p.phone,p.owner_phone,CTX.partnerRequest?.phone,CTX.partnerRequest?.telephone));
   setValue('partner-country-input', pick(p.country,p.owner_country,CTX.partnerRequest?.country,CTX.partnerRequest?.pays));
@@ -665,6 +772,11 @@ async function initPartnerProfilePage(){
   if($('stat-listings')) $('stat-listings').textContent = String(listings.length || 0);
   if($('stat-city')) $('stat-city').textContent = pick(p.city,p.owner_city,'—');
   if($('stat-status')) $('stat-status').textContent = 'Validé';
+
+  window.rssPartnerProfileDebug = { partner:p, request:CTX.partnerRequest, email:CTX.email };
+  if(!getValue('partner-name-input')){
+    console.warn('Nom partenaire vide : vérifiez que la ligne partners correspondant à cet email/user_id/legacy_user_id contient bien name.');
+  }
 
   $('partner-logo-file-input')?.addEventListener('change', async (e)=>{
     const file=e.target.files?.[0];
