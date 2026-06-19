@@ -129,6 +129,39 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-mon-profil-partenaire-officiel-fields-v1 -->
+
+<style id="rss-partner-profile-input-dark-fix-v2">
+  #partner-form .rss-input,
+  #partner-form input.rss-input,
+  #partner-form textarea.rss-input,
+  #partner-form select.rss-input{
+    background:#101010!important;
+    color:#ffffff!important;
+    -webkit-text-fill-color:#ffffff!important;
+    border:1px solid rgba(255,255,255,.14)!important;
+    caret-color:#ffffff!important;
+  }
+  #partner-form .rss-input[readonly],
+  #partner-form input.rss-input[readonly]{
+    background:#101010!important;
+    color:#ffffff!important;
+    -webkit-text-fill-color:#ffffff!important;
+    opacity:1!important;
+  }
+  #partner-form input.rss-input:-webkit-autofill,
+  #partner-form input.rss-input:-webkit-autofill:hover,
+  #partner-form input.rss-input:-webkit-autofill:focus{
+    -webkit-box-shadow:0 0 0 1000px #101010 inset!important;
+    box-shadow:0 0 0 1000px #101010 inset!important;
+    -webkit-text-fill-color:#ffffff!important;
+    color:#ffffff!important;
+    transition:background-color 9999s ease-in-out 0s!important;
+  }
+  #partner-form .rss-input::placeholder{color:#9ca3af!important;-webkit-text-fill-color:#9ca3af!important;}
+</style>
+
+
+<!-- rss-mon-profil-partenaire-fill-supabase-v2 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -298,6 +331,13 @@ const price = v => euro.format(Number(v||0));
 
 function cleanEmail(v){ return String(v||'').trim().toLowerCase(); }
 function cleanText(v){ return String(v||'').trim(); }
+function firstNonEmail(){
+  for(const v of arguments){
+    const s=cleanText(v);
+    if(s && !isEmail(s)) return s;
+  }
+  return '';
+}
 function firstText(){
   for(const v of arguments){
     const s=cleanText(v);
@@ -306,6 +346,28 @@ function firstText(){
   return '';
 }
 function isEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanText(v)); }
+
+
+async function fetchPartnerRequestByEmailSafe(email){
+  const e = cleanEmail(email);
+  if(!sb || !e || !isEmail(e)) return null;
+  try{
+    const {data,error}=await sb
+      .from('partner_requests')
+      .select('*')
+      .ilike('email', e)
+      .order('created_at', {ascending:false})
+      .limit(1);
+    if(error){
+      console.warn('Erreur recherche partner_requests:', error.message);
+      return null;
+    }
+    return (data||[])[0] || null;
+  }catch(err){
+    console.warn('Exception recherche partner_requests:', err.message || err);
+    return null;
+  }
+}
 
 async function fetchPartnerByEmailSafe(email){
   const e = cleanEmail(email);
@@ -324,14 +386,19 @@ async function fetchPartnerByEmailSafe(email){
   }
 }
 
-function normalizePartnerRecord(partner, profile, authEmail){
+function normalizePartnerRecord(partner, profile, authEmail, request){
   const e = cleanEmail(partner?.email || profile?.email || authEmail);
-  const realName = firstText(
+  const realName = firstNonEmail(
     partner?.name,
     partner?.owner_name,
     partner?.company_name,
     partner?.display_name,
     partner?.partner_name,
+    request?.name,
+    request?.company_name,
+    request?.business_name,
+    request?.brand_name,
+    request?.enseigne,
     profile?.company_name,
     profile?.full_name
   ) || e;
@@ -341,12 +408,20 @@ function normalizePartnerRecord(partner, profile, authEmail){
     owner_email: e,
     name: realName,
     owner_name: realName,
-    phone: firstText(partner?.phone, partner?.owner_phone, profile?.phone),
-    owner_phone: firstText(partner?.phone, partner?.owner_phone, profile?.phone),
-    city: firstText(partner?.city, partner?.owner_city),
-    owner_city: firstText(partner?.city, partner?.owner_city),
-    country: firstText(partner?.country, partner?.owner_country),
-    owner_country: firstText(partner?.country, partner?.owner_country),
+    phone: firstText(partner?.phone, partner?.owner_phone, request?.phone, request?.telephone, profile?.phone),
+    owner_phone: firstText(partner?.phone, partner?.owner_phone, request?.phone, request?.telephone, profile?.phone),
+    city: firstText(partner?.city, partner?.owner_city, request?.city, request?.ville),
+    owner_city: firstText(partner?.city, partner?.owner_city, request?.city, request?.ville),
+    country: firstText(partner?.country, partner?.owner_country, request?.country, request?.pays),
+    owner_country: firstText(partner?.country, partner?.owner_country, request?.country, request?.pays),
+    address: firstText(partner?.address, partner?.address_1, partner?.owner_address, request?.address, request?.adresse),
+    postal_code: firstText(partner?.postal_code, partner?.zip, partner?.zip_code, request?.postal_code, request?.zip, request?.code_postal),
+    currency: firstText(partner?.currency, partner?.devise, request?.currency, request?.devise),
+    logo_url: firstText(partner?.logo_url, partner?.logo, partner?.avatar_url, request?.logo_url, request?.logo),
+    iban: firstText(partner?.iban, partner?.bank_iban, request?.iban),
+    bic: firstText(partner?.bic, partner?.swift, partner?.bank_bic, request?.bic, request?.swift),
+    account_holder: firstText(partner?.account_holder, partner?.bank_holder, partner?.bank_account_holder, request?.account_holder, request?.titulaire),
+    bank_name: firstText(partner?.bank_name, partner?.bank, request?.bank_name, request?.bank),
     legacy_user_id: partner?.legacy_user_id ?? null,
     user_id: partner?.user_id ?? null,
     status: partner?.status || 'approved'
@@ -404,13 +479,14 @@ async function getPartnerContext(){
   }
 
   const partner = await fetchPartnerByEmailSafe(authEmail);
+  const partnerRequest = await fetchPartnerRequestByEmailSafe(authEmail);
 
   if(!partner && profile?.role!=='partner' && profile?.role!=='partenaire'){
     alertBox('Aucun profil partenaire validé trouvé pour cet email.','error');
     return null;
   }
 
-  const p = normalizePartnerRecord(partner, profile, authEmail);
+  const p = normalizePartnerRecord(partner, profile, authEmail, partnerRequest);
 
   const status = String(p.status || 'approved').toLowerCase();
   if(!['approved','active','validé','valide','validated'].includes(status) && profile?.role!=='partner' && profile?.role!=='partenaire'){
@@ -425,6 +501,7 @@ async function getPartnerContext(){
     user,
     profile,
     partner: p,
+    partnerRequest,
     email: p.email,
     legacy: p.legacy_user_id
   };
@@ -489,6 +566,7 @@ async function updatePartnerProfileBySafeColumns(rowId, email, payload){
 
   // Fallback : si Supabase n'a pas encore toutes les colonnes, on sauvegarde les champs essentiels.
   const basic = {
+    email: payload.email,
     name: payload.name,
     phone: payload.phone,
     city: payload.city,
@@ -528,28 +606,28 @@ async function initPartnerProfilePage(){
   const publicLinks=[document.getElementById('public-profile-link'),document.getElementById('public-profile-link-bottom')].filter(Boolean);
   publicLinks.forEach(a=>{ a.href='/profil-partenaire.html?email='+encodeURIComponent(CTX.email); });
 
-  setValue('partner-name-input', pick(p.name,p.owner_name,p.company_name,CTX.email));
-  setValue('partner-email-input', pick(p.email,CTX.email));
-  setValue('partner-phone-input', pick(p.phone,p.owner_phone));
-  setValue('partner-country-input', pick(p.country,p.owner_country));
-  setValue('partner-address-input', pick(p.address,p.address_1,p.owner_address));
-  setValue('partner-city-input', pick(p.city,p.owner_city));
-  setValue('partner-postal-input', pick(p.postal_code,p.zip,p.zip_code));
-  setValue('partner-currency-input', pick(p.currency,p.devise,'euro'));
-  setValue('partner-reg-input', pick(p.reg_number,p.registration_number,p.siret,p.company_number));
-  setValue('partner-vat-input', pick(p.vat_number,p.tva_number,p.vat));
+  setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name,CTX.partnerRequest?.company_name,CTX.partnerRequest?.name,CTX.partnerRequest?.business_name,CTX.partnerRequest?.enseigne) || '');
+  setValue('partner-email-input', cleanEmail(p.email || CTX.email));
+  setValue('partner-phone-input', pick(p.phone,p.owner_phone,CTX.partnerRequest?.phone,CTX.partnerRequest?.telephone));
+  setValue('partner-country-input', pick(p.country,p.owner_country,CTX.partnerRequest?.country,CTX.partnerRequest?.pays));
+  setValue('partner-address-input', pick(p.address,p.address_1,p.owner_address,CTX.partnerRequest?.address,CTX.partnerRequest?.adresse));
+  setValue('partner-city-input', pick(p.city,p.owner_city,CTX.partnerRequest?.city,CTX.partnerRequest?.ville));
+  setValue('partner-postal-input', pick(p.postal_code,p.zip,p.zip_code,CTX.partnerRequest?.postal_code,CTX.partnerRequest?.zip,CTX.partnerRequest?.code_postal));
+  setValue('partner-currency-input', pick(p.currency,p.devise,CTX.partnerRequest?.currency,CTX.partnerRequest?.devise,'euro'));
+  setValue('partner-reg-input', pick(p.reg_number,p.registration_number,p.siret,p.company_number,CTX.partnerRequest?.reg_number,CTX.partnerRequest?.registration_number,CTX.partnerRequest?.siret));
+  setValue('partner-vat-input', pick(p.vat_number,p.tva_number,p.vat,CTX.partnerRequest?.vat_number,CTX.partnerRequest?.tva_number,CTX.partnerRequest?.vat));
 
-  setValue('partner-fleet-size-input', pick(p.fleet_size,p.fleet_category));
-  setValue('partner-main-equipment-input', pick(p.main_equipment_type,p.equipment_type));
-  setValue('partner-equipment-count-input', pick(p.equipment_count,p.material_count));
-  setValue('partner-fleet-value-input', pick(p.fleet_value,p.equipment_value));
-  setValue('partner-equipment-description-input', pick(p.equipment_description,p.material_description));
+  setValue('partner-fleet-size-input', pick(p.fleet_size,p.fleet_category,CTX.partnerRequest?.fleet_size,CTX.partnerRequest?.fleet_category));
+  setValue('partner-main-equipment-input', pick(p.main_equipment_type,p.equipment_type,CTX.partnerRequest?.main_equipment_type,CTX.partnerRequest?.equipment_type));
+  setValue('partner-equipment-count-input', pick(p.equipment_count,p.material_count,CTX.partnerRequest?.equipment_count,CTX.partnerRequest?.material_count));
+  setValue('partner-fleet-value-input', pick(p.fleet_value,p.equipment_value,CTX.partnerRequest?.fleet_value,CTX.partnerRequest?.equipment_value));
+  setValue('partner-equipment-description-input', pick(p.equipment_description,p.material_description,CTX.partnerRequest?.equipment_description,CTX.partnerRequest?.material_description));
 
-  setValue('partner-website-input', pick(p.website,p.website_url));
+  setValue('partner-website-input', pick(p.website,p.website_url,CTX.partnerRequest?.website,CTX.partnerRequest?.website_url));
   setValue('partner-facebook-input', pick(p.facebook_url,p.facebook));
   setValue('partner-instagram-input', pick(p.instagram_url,p.instagram));
   setValue('partner-linkedin-input', pick(p.linkedin_url,p.linkedin));
-  setValue('partner-description-input', pick(p.description,p.bio,p.presentation));
+  setValue('partner-description-input', pick(p.description,p.bio,p.presentation,CTX.partnerRequest?.description,CTX.partnerRequest?.bio,CTX.partnerRequest?.presentation));
 
   setChecked('partner-show-phone-input', p.show_phone);
   setChecked('partner-show-email-input', p.show_email);
@@ -557,15 +635,15 @@ async function initPartnerProfilePage(){
   setChecked('partner-allow-whatsapp-input', p.allow_whatsapp);
   setChecked('partner-allow-email-input', p.allow_email);
 
-  setValue('partner-iban-input', pick(p.iban,p.bank_iban));
-  setValue('partner-bic-input', pick(p.bic,p.swift,p.bank_bic));
-  setValue('partner-account-holder-input', pick(p.account_holder,p.bank_holder,p.bank_account_holder));
-  setValue('partner-bank-name-input', pick(p.bank_name,p.bank));
+  setValue('partner-iban-input', pick(p.iban,p.bank_iban,CTX.partnerRequest?.iban));
+  setValue('partner-bic-input', pick(p.bic,p.swift,p.bank_bic,CTX.partnerRequest?.bic,CTX.partnerRequest?.swift));
+  setValue('partner-account-holder-input', pick(p.account_holder,p.bank_holder,p.bank_account_holder,CTX.partnerRequest?.account_holder,CTX.partnerRequest?.titulaire));
+  setValue('partner-bank-name-input', pick(p.bank_name,p.bank,CTX.partnerRequest?.bank_name,CTX.partnerRequest?.bank));
 
-  setValue('partner-logo-url-input', pick(p.logo_url,p.logo,p.avatar_url));
-  setValue('partner-kbis-url-input', pick(p.kbis_url,p.kbis_document_url));
-  setValue('partner-insurance-url-input', pick(p.insurance_url,p.rc_pro_url,p.insurance_document_url));
-  setValue('partner-id-document-url-input', pick(p.id_document_url,p.identity_document_url));
+  setValue('partner-logo-url-input', pick(p.logo_url,p.logo,p.avatar_url,CTX.partnerRequest?.logo_url,CTX.partnerRequest?.logo));
+  setValue('partner-kbis-url-input', pick(p.kbis_url,p.kbis_document_url,CTX.partnerRequest?.kbis_url,CTX.partnerRequest?.kbis_document_url));
+  setValue('partner-insurance-url-input', pick(p.insurance_url,p.rc_pro_url,p.insurance_document_url,CTX.partnerRequest?.insurance_url,CTX.partnerRequest?.rc_pro_url,CTX.partnerRequest?.insurance_document_url));
+  setValue('partner-id-document-url-input', pick(p.id_document_url,p.identity_document_url,CTX.partnerRequest?.id_document_url,CTX.partnerRequest?.identity_document_url));
 
   const logo = getValue('partner-logo-url-input');
   const logoImg = $('partner-logo-preview');
@@ -615,6 +693,7 @@ async function initPartnerProfilePage(){
     }
 
     const payload={
+      email: cleanEmail(CTX.email),
       name: realName,
       phone: getValue('partner-phone-input'),
       country: getValue('partner-country-input'),
