@@ -332,6 +332,8 @@ transition: all .3s ease;mix-blend-mode:multiply;}
 </style>
 
 <!-- rss-marques-canonical-links-v2 -->
+
+<!-- rss-marques-canonical-links-v3-fix -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -417,7 +419,19 @@ transition: all .3s ease;mix-blend-mode:multiply;}
   function brandPageUrl(brand){
     const titleKey = normalizeBrandKey(brand && (brand.title || brand.titre || brand.name));
     const slugKey = normalizeBrandKey(brand && brand.slug);
-    return BRAND_PAGE_URLS[slugKey] || BRAND_PAGE_URLS[titleKey] || ("/marque-detail?slug=" + encodeURIComponent((brand && brand.slug) || slugKey || titleKey));
+    const combined = normalizeBrandKey([brand && brand.title, brand && brand.titre, brand && brand.slug].filter(Boolean).join(" "));
+
+    if (BRAND_PAGE_URLS[slugKey]) return BRAND_PAGE_URLS[slugKey];
+    if (BRAND_PAGE_URLS[titleKey]) return BRAND_PAGE_URLS[titleKey];
+
+    if (combined.includes("meyer")) return "/marque-meyer-sound";
+    if (combined.includes("yamaha")) return "/marque-yamaha-excellence-digitale";
+    if (combined.includes("shure")) return "/marque-shure-clarte-sans-fil";
+    if (combined.includes("void")) return "/marque-void-acoustics";
+    if (combined === "jbl" || combined.includes("jbl")) return "/marque-jbl";
+    if (combined.includes("electro-voice") || combined.includes("electrovoice")) return "/marque-electrovoice";
+
+    return "/marque-detail?slug=" + encodeURIComponent((brand && brand.slug) || slugKey || titleKey);
   }
 
   const SPECIAL_BRAND_CARDS=[{"id": 9001, "titre": "Void Acoustics", "title": "Void Acoustics", "slug": "void-acoustics", "lettre": "V", "letter": "V", "libelle": "Sonorisation design premium.", "description": "Sonorisation design premium.", "url_logo": "/public/uploads/abouts/void-acoustics.png", "renamed_logo": "/public/uploads/abouts/void-acoustics.png"}, {"id": 9002, "titre": "JBL", "title": "JBL", "slug": "jbl", "lettre": "J", "letter": "J", "libelle": "Sonorisation professionnelle JBL.", "description": "Sonorisation professionnelle JBL.", "url_logo": "/uploads/abouts/jbl.jpg", "renamed_logo": "/uploads/abouts/jbl.jpg"}, {"id": 9003, "titre": "Electro-Voice", "title": "Electro-Voice", "slug": "electrovoice", "lettre": "E", "letter": "E", "libelle": "Sonorisation professionnelle Electro-Voice.", "description": "Sonorisation professionnelle Electro-Voice.", "url_logo": "/public/uploads/abouts/electrovoice.png", "renamed_logo": "/public/uploads/abouts/electrovoice.png"}, {"id": 9004, "titre": "Meyer Sound", "title": "Meyer Sound", "slug": "meyer-sound", "lettre": "M", "letter": "M", "libelle": "Sonorisation professionnelle haut de gamme.", "description": "Sonorisation professionnelle haut de gamme.", "url_logo": "/public/uploads/abouts/meyer-sound.png", "renamed_logo": "/public/uploads/abouts/meyer-sound.png"}, {"id": 9005, "titre": "Yamaha", "title": "Yamaha", "slug": "yamaha", "lettre": "Y", "letter": "Y", "libelle": "Excellence digitale en audio professionnel.", "description": "Excellence digitale en audio professionnel.", "url_logo": "/public/uploads/abouts/yamaha.png", "renamed_logo": "/public/uploads/abouts/yamaha.png"}, {"id": 9006, "titre": "Shure", "title": "Shure", "slug": "shure", "lettre": "S", "letter": "S", "libelle": "Microphones et systèmes sans fil professionnels.", "description": "Microphones et systèmes sans fil professionnels.", "url_logo": "/public/uploads/abouts/shure.png", "renamed_logo": "/public/uploads/abouts/shure.png"}];
@@ -435,8 +449,18 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     });
     return Array.from(byKey.values()).map(function(b){
       const key = normalizeBrandKey(b.slug || b.title || b.titre);
-      const canonical = SPECIAL_BRAND_CARDS.find(function(s){ return normalizeBrandKey(s.slug) === key || normalizeBrandKey(s.title) === key || BRAND_PAGE_URLS[key]; });
-      return canonical ? Object.assign({}, b, { slug: canonical.slug || b.slug, title: canonical.title || b.title, titre: canonical.titre || b.titre }) : b;
+      const canonical = SPECIAL_BRAND_CARDS.find(function(s){
+        const sSlug = normalizeBrandKey(s.slug);
+        const sTitle = normalizeBrandKey(s.title || s.titre);
+        return sSlug === key || sTitle === key;
+      });
+      return canonical ? Object.assign({}, b, {
+        slug: canonical.slug || b.slug,
+        title: canonical.title || b.title,
+        titre: canonical.titre || b.titre,
+        letter: canonical.letter || b.letter,
+        lettre: canonical.lettre || b.lettre
+      }) : b;
     });
   }
 
@@ -564,5 +588,13 @@ transition: all .3s ease;mix-blend-mode:multiply;}
 
 
 <script src="/components.js"></script>
+
+<script id="rss-marques-link-debug-v1">
+  window.rssBrandPageUrlCheck = function(){
+    if(typeof BRAND_PAGE_URLS === 'undefined') return 'BRAND_PAGE_URLS non accessible hors closure';
+    return BRAND_PAGE_URLS;
+  };
+</script>
+
 </body>
 </html>
