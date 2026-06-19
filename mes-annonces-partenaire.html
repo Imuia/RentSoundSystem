@@ -814,6 +814,34 @@ function updateListingsCount(){
   el.innerHTML=`<span class="material-symbols-outlined" style="font-size:16px">inventory_2</span> ${shown} / ${total} annonce${total>1?'s':''}`;
 }
 
+
+async function enrichListingsWithImages(listings){
+  try{
+    const ids=(listings||[]).map(x=>x.id).filter(Boolean);
+    if(!ids.length) return listings;
+
+    const {data}=await sb.from('listing_images')
+      .select('listing_id,image_url,position')
+      .in('listing_id', ids)
+      .order('position',{ascending:true});
+
+    const byId={};
+    (data||[]).forEach(img=>{
+      if(!byId[img.listing_id] && img.image_url){
+        byId[img.listing_id]=img.image_url;
+      }
+    });
+
+    return (listings||[]).map(item=>({
+      ...item,
+      image_url:item.image_url || item.featured_image || item.thumbnail || item.cover_image || byId[item.id] || ''
+    }));
+  }catch(e){
+    console.warn('enrichListingsWithImages',e);
+    return listings;
+  }
+}
+
 let STATE={ctx:null,listings:[],filtered:[],images:{},selectedEditFiles:[]};
 document.addEventListener('DOMContentLoaded', async()=>{
  showListingsLoadingSkeleton();
@@ -861,7 +889,7 @@ async function repairOwnerInfoForCurrentPartner(ctx){
   }
 }
 
-async function loadPageListings(){const listingsPromise=loadPartnerListings(STATE.ctx); repairOwnerInfoForCurrentPartner(STATE.ctx).catch(()=>{}); STATE.listings=await listingsPromise; cacheListingsForFastDisplay(); applyFilters();}
+async function loadPageListings(){const listingsPromise=loadPartnerListings(STATE.ctx); repairOwnerInfoForCurrentPartner(STATE.ctx).catch(()=>{}); STATE.listings=await listingsPromise; STATE.listings=await enrichListingsWithImages(STATE.listings); cacheListingsForFastDisplay(); applyFilters();}
 function applyFilters(){
  const q=clean($('listing-search')?.value), st=$('status-filter')?.value||'';
  STATE.filtered=STATE.listings.filter(i=>(!st||statusNorm(i.status)===st)&&(!q||[i.title,i.city,i.country,i.category,i.brand,i.model,String(i.original_id||'')].join(' ').toLowerCase().includes(q)));
