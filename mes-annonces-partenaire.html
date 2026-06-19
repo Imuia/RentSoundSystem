@@ -447,6 +447,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-mes-annonces-pro-speed-v4 -->
+
+<!-- rss-new-listing-storage-thumbnails-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -804,7 +806,19 @@ function showListingsLoadingSkeleton(){
   </tr>`).join('');
 }
 function listingImageUrl(i){
-  return i?.image_url || i?.featured_image || i?.thumbnail || i?.cover_image || '';
+  if(i?.image_url) return i.image_url;
+  if(i?.featured_image) return i.featured_image;
+  if(i?.thumbnail) return i.thumbnail;
+  if(i?.cover_image) return i.cover_image;
+
+  if(Array.isArray(i?.images) && i.images.length) return i.images[0];
+  if(typeof i?.images === 'string'){
+    try{
+      const arr=JSON.parse(i.images);
+      if(Array.isArray(arr) && arr.length) return arr[0];
+    }catch(e){}
+  }
+  return '';
 }
 function updateListingsCount(){
   const el=$('listings-count');
@@ -815,27 +829,73 @@ function updateListingsCount(){
 }
 
 
-async function enrichListingsWithImages(listings){
+
+async function findStorageImageForListing(item){
   try{
-    const ids=(listings||[]).map(x=>x.id).filter(Boolean);
-    if(!ids.length) return listings;
+    if(!item || !item.id || !sb || !STATE?.ctx?.user?.id) return '';
+    const bucket='listing-images';
+    const folder = STATE.ctx.user.id + '/' + item.id;
 
-    const {data}=await sb.from('listing_images')
-      .select('listing_id,image_url,position')
-      .in('listing_id', ids)
-      .order('position',{ascending:true});
-
-    const byId={};
-    (data||[]).forEach(img=>{
-      if(!byId[img.listing_id] && img.image_url){
-        byId[img.listing_id]=img.image_url;
-      }
+    const {data,error}=await sb.storage.from(bucket).list(folder, {
+      limit: 20,
+      sortBy: { column: 'created_at', order: 'desc' }
     });
 
-    return (listings||[]).map(item=>({
-      ...item,
-      image_url:item.image_url || item.featured_image || item.thumbnail || item.cover_image || byId[item.id] || ''
-    }));
+    if(error || !Array.isArray(data) || !data.length) return '';
+
+    const img = data.find(f => /\.(avif|webp|png|jpe?g|gif)$/i.test(f.name || '')) || data[0];
+    if(!img || !img.name) return '';
+
+    const {data:pub}=sb.storage.from(bucket).getPublicUrl(folder + '/' + img.name);
+    return pub?.publicUrl || '';
+  }catch(e){
+    console.warn('findStorageImageForListing', e.message || e);
+    return '';
+  }
+}
+
+async function enrichListingsWithImages(listings){
+  try{
+    const list = listings || [];
+    const ids=list.map(x=>x.id).filter(Boolean);
+
+    const byId={};
+
+    if(ids.length){
+      const {data,error}=await sb.from('listing_images')
+        .select('listing_id,image_url,position')
+        .in('listing_id', ids)
+        .order('position',{ascending:true});
+
+      if(error) console.warn('listing_images thumbnails:', error.message);
+
+      (data||[]).forEach(img=>{
+        if(!byId[img.listing_id] && img.image_url){
+          byId[img.listing_id]=img.image_url;
+        }
+      });
+    }
+
+    const enriched = [];
+    for(const item of list){
+      let image =
+        item.image_url ||
+        item.featured_image ||
+        item.thumbnail ||
+        item.cover_image ||
+        byId[item.id] ||
+        '';
+
+      // Nouvelles annonces : souvent image uploadée en storage listing-images/user_id/listing_id/fichier.avif
+      // mais pas encore copiée dans listing_images.
+      if(!image){
+        image = await findStorageImageForListing(item);
+      }
+
+      enriched.push({...item, image_url:image || ''});
+    }
+
+    return enriched;
   }catch(e){
     console.warn('enrichListingsWithImages',e);
     return listings;
