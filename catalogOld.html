@@ -309,8 +309,6 @@ html, body {
 }
 </style>
 
-
-<!-- rss-catalog-categories-table-v1 -->
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -328,7 +326,24 @@ html, body {
 <!-- Category Filter -->
 <div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
 <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Catégorie</h3>
-<div id="catalog-category-list" class="space-y-2"></div>
+<div class="space-y-2">
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="sonorisation" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Haut-parleurs &amp; Moniteurs</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="console" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Tables de Mixage &amp; Consoles</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="microphone" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Microphones</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer group">
+<input data-category="amplificateur" class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">Amplificateurs</span>
+</label>
+</div>
 </div>
 <!-- Price Filter -->
 <div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
@@ -346,6 +361,11 @@ html, body {
 <span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="location_on">location_on</span>
 <select id="filter-city" class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm pl-8 pr-2 py-2 appearance-none text-on-surface">
 <option value="">Toutes les villes</option>
+<option>Paris</option>
+<option>Agadir</option>
+<option>Hell-Ville</option>
+<option>Antananarivo</option>
+<option>Cannes</option>
 </select>
 </div>
 </div>
@@ -638,66 +658,6 @@ html, body {
     });
   }
 
-
-  async function loadDynamicCategories() {
-    const catBox = document.getElementById("catalog-category-list");
-    if (!catBox) return;
-
-    function renderCategories(values) {
-      const cats = [...new Set((values || []).map(function (c) { return String(c || "").trim(); }).filter(Boolean))]
-        .sort(function (a, b) { return a.localeCompare(b, "fr"); });
-
-      if (!cats.length) {
-        catBox.innerHTML = '<div class="text-body-sm text-on-surface-variant">Aucune catégorie disponible.</div>';
-        return;
-      }
-
-      catBox.innerHTML = cats.map(function (c) {
-        return '<label class="flex items-center gap-2 cursor-pointer group">' +
-          '<input class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" data-category="' + safe(c.toLowerCase()) + '" type="checkbox">' +
-          '<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">' + safe(c) + '</span>' +
-        '</label>';
-      }).join("");
-
-      catBox.querySelectorAll(".catalog-category").forEach(function (input) {
-        input.addEventListener("change", applyFilters);
-      });
-    }
-
-    try {
-      const result = await supabaseClient
-        .from("categories")
-        .select("name,title,slug")
-        .order("name", { ascending: true });
-
-      if (!result.error && Array.isArray(result.data) && result.data.length) {
-        renderCategories(result.data.map(function (c) {
-          return c.name || c.title || c.slug;
-        }));
-        return;
-      }
-    } catch (e) {
-      console.warn("Fallback catégories depuis listings.category", e);
-    }
-
-    renderCategories(allItems.map(function (i) { return i.category; }));
-  }
-
-  function loadDynamicCities() {
-    const city = document.getElementById("filter-city");
-    if (!city) return;
-
-    const cities = [...new Set(allItems.map(function (i) {
-      return String(i.city || i.location || "").trim();
-    }).filter(Boolean))].sort(function (a, b) { return a.localeCompare(b, "fr"); });
-
-    city.innerHTML = '<option value="">Toutes les villes</option>' + cities.map(function (v) {
-      return '<option>' + safe(v) + '</option>';
-    }).join("");
-
-    city.onchange = applyFilters;
-  }
-
   function bindFilters() {
     ["filter-min-price", "filter-max-price", "filter-city", "catalog-sort", "filter-start-date", "filter-end-date"].forEach(function (id) {
       const el = $(id);
@@ -755,10 +715,6 @@ html, body {
 
     allItems = result.data || [];
     filteredItems = allItems.slice();
-
-    await loadDynamicCategories();
-    loadDynamicCities();
-
     applyFilters();
   }
 
