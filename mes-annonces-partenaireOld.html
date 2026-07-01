@@ -449,31 +449,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-mes-annonces-pro-speed-v4 -->
 
 <!-- rss-new-listing-storage-thumbnails-v1 -->
-
-<style id="rss-delivery-install-fields-v1">
-  .rss-option-card{
-    border:1px solid rgba(252,3,109,.20);
-    background:rgba(252,3,109,.045);
-    border-radius:14px;
-    padding:14px;
-  }
-  .rss-option-card .rss-option-head{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:900;
-    color:#fff;
-    margin-bottom:10px;
-  }
-  .rss-option-card input[type="checkbox"]{
-    width:18px;
-    height:18px;
-    accent-color:#FC036D;
-  }
-</style>
-
-
-<!-- rss-step1-delivery-install-options -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -515,26 +490,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <label style="grid-column:1/-1">Description<textarea id="edit-description" class="rss-input" style="margin-top:6px;min-height:140px"></textarea></label>
     <label>Prix / jour<input id="edit-price" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
     <label>Caution<input id="edit-caution" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
-
-      <div class="rss-option-card">
-        <label class="rss-option-head">
-          <input id="edit-delivery-enabled" type="checkbox">
-          <span>Frais de livraison</span>
-        </label>
-        <label>Prix livraison (€)
-          <input id="edit-delivery-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="50">
-        </label>
-      </div>
-      <div class="rss-option-card">
-        <label class="rss-option-head">
-          <input id="edit-installation-enabled" type="checkbox">
-          <span>Installation technique</span>
-        </label>
-        <label>Prix installation (€)
-          <input id="edit-installation-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="150">
-        </label>
-      </div>
-
     <label>Marque<input id="edit-brand" class="rss-input" style="margin-top:6px"></label>
     <label>Modèle<input id="edit-model" class="rss-input" style="margin-top:6px"></label>
     <label>Catégorie<input id="edit-category" class="rss-input" style="margin-top:6px"></label>
@@ -1050,13 +1005,7 @@ function renderTable(){
 }
 async function openEdit(id){
  const i=STATE.listings.find(x=>x.id===id); if(!i)return;
- $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??'';
-
-  if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked = item.delivery_enabled !== false;
-  if($('edit-delivery-price')) $('edit-delivery-price').value = item.delivery_price ?? 50;
-  if($('edit-installation-enabled')) $('edit-installation-enabled').checked = item.installation_enabled !== false;
-  if($('edit-installation-price')) $('edit-installation-price').value = item.installation_price ?? 150;
- $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
+ $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??''; $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
  STATE.selectedEditFiles=[];
  renderNewImagePreviews();
  await renderImages(id);
@@ -1197,10 +1146,6 @@ async function saveListing(e){
    description:$('edit-description').value.trim(),
    price:num($('edit-price').value),
    caution:num($('edit-caution').value),
-      delivery_enabled: rssEditBool('edit-delivery-enabled'),
-      delivery_price: rssEditNumber('edit-delivery-price', 50),
-      installation_enabled: rssEditBool('edit-installation-enabled'),
-      installation_price: rssEditNumber('edit-installation-price', 150),
    brand:$('edit-brand').value.trim(),
    model:$('edit-model').value.trim(),
    category:$('edit-category').value.trim(),
@@ -1250,30 +1195,6 @@ using (
   )
 );
 -->
-
-
-<script id="rss-option-columns-fallback-helper-v1">
-window.rssRetryWithoutOptionColumns = window.rssRetryWithoutOptionColumns || function(payload){
-  const clean = Object.assign({}, payload || {});
-  delete clean.delivery_enabled;
-  delete clean.delivery_price;
-  delete clean.installation_enabled;
-  delete clean.installation_price;
-  return clean;
-};
-</script>
-
-
-<script id="rss-option-columns-fallback-function-v1">
-function rssRetryWithoutOptionColumns(payload){
-  const clean = Object.assign({}, payload || {});
-  delete clean.delivery_enabled;
-  delete clean.delivery_price;
-  delete clean.installation_enabled;
-  delete clean.installation_price;
-  return clean;
-}
-</script>
 
 </body>
 </html>

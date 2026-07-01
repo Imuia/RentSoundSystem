@@ -141,31 +141,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 .brand-img-fallback::after{content:'image indisponible';color:rgba(255,255,255,.55);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
 </style>
 
-
-<style id="rss-delivery-install-fields-v1">
-  .rss-option-card{
-    border:1px solid rgba(252,3,109,.20);
-    background:rgba(252,3,109,.045);
-    border-radius:14px;
-    padding:14px;
-  }
-  .rss-option-card .rss-option-head{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-weight:900;
-    color:#fff;
-    margin-bottom:10px;
-  }
-  .rss-option-card input[type="checkbox"]{
-    width:18px;
-    height:18px;
-    accent-color:#FC036D;
-  }
-</style>
-
-
-<!-- rss-step1-delivery-install-options -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -214,26 +189,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <label>Modèle<input id="model" class="rss-input" style="margin-top:6px"></label>
     <label>Prix / jour<input id="price" class="rss-input" style="margin-top:6px" type="number" step="0.01" required></label>
     <label>Caution<input id="caution" class="rss-input" style="margin-top:6px" type="number" step="0.01" value="0"></label>
-
-    <div class="rss-option-card">
-      <label class="rss-option-head">
-        <input id="delivery_enabled" type="checkbox" checked>
-        <span>Frais de livraison</span>
-      </label>
-      <label>Prix livraison (€)
-        <input id="delivery_price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="50">
-      </label>
-    </div>
-    <div class="rss-option-card">
-      <label class="rss-option-head">
-        <input id="installation_enabled" type="checkbox" checked>
-        <span>Installation technique</span>
-      </label>
-      <label>Prix installation (€)
-        <input id="installation_price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="150">
-      </label>
-    </div>
-
     <label>Prix week-end<input id="price_weekend" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
     <label>Prix semaine<input id="price_week" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
     <label>Ville<input id="city" class="rss-input" style="margin-top:6px" required></label>
@@ -540,11 +495,7 @@ async function saveNewListing(e){
  const payload={
   title:$('title').value.trim(),description:$('description').value.trim(),status:$('status').value,
   category:$('category').value.trim(),type:$('type').value,brand:$('brand').value.trim(),model:$('model').value.trim(),
-  price:num($('price').value)||0,price_label:'per_day',caution:num($('caution').value)||0,
-      delivery_enabled: rssBool('delivery_enabled'),
-      delivery_price: rssNumber('delivery_price', 50),
-      installation_enabled: rssBool('installation_enabled'),
-      installation_price: rssNumber('installation_price', 150),price_weekend:num($('price_weekend').value),price_week:num($('price_week').value),
+  price:num($('price').value)||0,price_label:'per_day',caution:num($('caution').value)||0,price_weekend:num($('price_weekend').value),price_week:num($('price_week').value),
   city:$('city').value.trim(),location:$('city').value.trim(),country:$('country').value.trim(),address:$('address').value.trim(),
   lat:num($('lat').value),lng:num($('lng').value),zip:($('zip')?.value||'').trim(),min_duration:num($('min_duration')?.value)||1,max_duration:num($('max_duration')?.value)||999,owner_email:cleanEmail(CTX.email),owner_name:firstText(partner.name,partner.owner_name,partner.company_name,CTX.email),owner_phone:firstText(partner.phone,partner.owner_phone),owner_city:firstText(partner.city,partner.owner_city),owner_country:firstText(partner.country,partner.owner_country),legacy_user_id:partner.legacy_user_id||null,user_id:partner.user_id||CTX.user?.id||null
  };
@@ -567,29 +518,5 @@ async function saveNewListing(e){
 
 <div id="footer-container"></div>
 <script src="/components.js"></script>
-
-<script id="rss-option-columns-fallback-helper-v1">
-window.rssRetryWithoutOptionColumns = window.rssRetryWithoutOptionColumns || function(payload){
-  const clean = Object.assign({}, payload || {});
-  delete clean.delivery_enabled;
-  delete clean.delivery_price;
-  delete clean.installation_enabled;
-  delete clean.installation_price;
-  return clean;
-};
-</script>
-
-
-<script id="rss-option-columns-fallback-function-v1">
-function rssRetryWithoutOptionColumns(payload){
-  const clean = Object.assign({}, payload || {});
-  delete clean.delivery_enabled;
-  delete clean.delivery_price;
-  delete clean.installation_enabled;
-  delete clean.installation_price;
-  return clean;
-}
-</script>
-
 </body>
 </html>
