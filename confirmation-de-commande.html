@@ -3,8 +3,9 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<title>Paiement Validé - RentSoundSystem</title>
+<title>Commande confirmée - RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
@@ -125,6 +126,8 @@
   body{background:radial-gradient(circle at 20% 0%,rgba(252,3,109,.16),transparent 32%),linear-gradient(180deg,#131313 0%,#0e0e0e 100%)!important}
   @media(max-width:767px){body{padding-top:72px!important}}
 </style>
+
+<!-- rss-confirmation-pro-sync-v2 -->
 </head>
 <body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased pt-20">
 <div id="header-container"></div>
@@ -139,8 +142,8 @@
 <div class="w-24 h-24 rounded-full bg-surface-container-highest border border-surface-glass-border flex items-center justify-center mb-8 glow-shadow relative z-10">
 <span class="material-symbols-outlined text-5xl text-[#FC036D]" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
 </div>
-<h1 class="font-headline-lg text-headline-lg md:font-display-hero-mobile md:text-display-hero-mobile text-on-surface mb-4 relative z-10">Paiement Validé</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 relative z-10">Votre commande a été traitée avec succès. Merci de votre confiance.</p>
+<h1 class="font-headline-lg text-headline-lg md:font-display-hero-mobile md:text-display-hero-mobile text-on-surface mb-4 relative z-10">Commande confirmée</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 relative z-10">Votre demande de réservation a bien été enregistrée. Les informations de paiement et de caution sont synchronisées dès qu’elles sont disponibles.</p>
 <!-- Order Summary Bento -->
 <div class="w-full bg-surface-container-low border border-surface-glass-border rounded-lg p-6 mb-8 text-left relative z-10">
 <h2 class="font-label-caps text-label-caps text-primary tracking-widest uppercase mb-6 border-b border-surface-glass-border pb-2">Résumé de la commande <span id="order-id">#RS-84920</span></h2>
@@ -162,7 +165,7 @@
 </div>
 </div>
 <div class="flex justify-between items-center pt-4 border-t border-surface-glass-border mt-4">
-<span class="font-body-lg text-body-lg text-on-surface-variant">Montant Payé</span>
+<span class="font-body-lg text-body-lg text-on-surface-variant">Montant de la commande</span>
 <span class="font-headline-md text-headline-md text-on-surface"><span id="order-total">3 450,00 €</span></span>
 </div>
 <div class="flex justify-between items-center bg-surface-container-highest p-3 rounded-DEFAULT border border-outline-variant/30">
@@ -172,13 +175,28 @@
 </div>
 <span class="font-body-md text-body-md text-secondary"><span id="order-deposit">5 000,00 € (Non débité)</span></span>
 </div>
+
+<div id="stripe-status-box" class="hidden flex-col gap-2 bg-surface-container-highest p-3 rounded-DEFAULT border border-outline-variant/30">
+  <div class="flex justify-between items-center gap-4">
+    <span class="font-body-md text-body-md text-secondary">Statut Stripe</span>
+    <span class="font-body-md text-body-md text-secondary text-right" id="stripe-status">En attente</span>
+  </div>
+  <div class="flex justify-between items-center gap-4">
+    <span class="font-body-md text-body-md text-secondary">Paiement location</span>
+    <span class="font-body-md text-body-md text-secondary text-right" id="stripe-rental-id">—</span>
+  </div>
+  <div class="flex justify-between items-center gap-4">
+    <span class="font-body-md text-body-md text-secondary">Empreinte caution</span>
+    <span class="font-body-md text-body-md text-secondary text-right" id="stripe-deposit-id">—</span>
+  </div>
+</div>
 </div>
 </div>
 <!-- Next Steps -->
 <div class="w-full flex items-start gap-4 mb-10 bg-surface-container/50 p-4 rounded-lg border border-surface-glass-border relative z-10">
 <span class="material-symbols-outlined text-primary mt-1">mail</span>
 <p class="font-body-md text-body-md text-on-surface-variant text-left">
-                        Un email de confirmation contenant votre facture détaillée et les instructions de retrait logistique vient de vous être envoyé.
+                        Un récapitulatif de commande est disponible. L’envoi automatique de facture/reçu Stripe sera activé dès que Stripe sera finalisé.
                     </p>
 </div>
 <!-- Actions -->
@@ -197,46 +215,185 @@
 <div id="footer-container"></div>
 
 
+
 <script id="rss-confirmation-sync">
 (function(){
   'use strict';
+
+  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+
   const qs=(s)=>document.querySelector(s);
   const money=(v)=>Number(v||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
+
   function dateFR(v){
     if(!v) return 'À confirmer';
     const d=new Date(String(v)+'T00:00:00');
     return Number.isNaN(d.getTime()) ? String(v) : d.toLocaleDateString('fr-FR',{day:'2-digit',month:'short',year:'numeric'});
   }
-  function set(sel,value){ const el=qs(sel); if(el && value!==undefined && value!==null && String(value).trim()!=='') el.textContent=value; }
-  function getOrder(){
+
+  function set(sel,value){
+    const el=qs(sel);
+    if(el && value!==undefined && value!==null && String(value).trim()!=='') el.textContent=value;
+  }
+
+  function readJson(key){
     try{
-      const order=JSON.parse(localStorage.getItem('rssLastOrder')||'null');
-      return order && typeof order==='object' ? order : null;
+      const value=localStorage.getItem(key);
+      return value ? JSON.parse(value) : null;
     }catch(e){ return null; }
   }
-  function sync(){
+
+  function writeJson(key,value){
+    try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+  }
+
+  function shortId(id){
+    if(!id) return '—';
+    const s=String(id);
+    return s.length>18 ? s.slice(0,10)+'…'+s.slice(-6) : s;
+  }
+
+  function getOrder(){
+    const order = readJson('rssLastOrder') || readJson('rssCheckoutDraft') || null;
+    return order && typeof order==='object' ? order : null;
+  }
+
+  function getStripeResult(){
+    return readJson('rssStripePaymentResult') || readJson('rssStripeTestResult') || null;
+  }
+
+  function normalizeOrder(order, params, stripeResult){
+    const orderId=params.get('order') || order?.id || 'RS-'+Date.now().toString().slice(-6);
+    const item=order?.item || order?.product || {};
+    const rental=order?.rental || {};
+    const amounts=order?.amounts || {};
+    const status = params.get('stripe') ? 'confirmed' : (order?.status || 'pending');
+
+    return {
+      id: orderId,
+      createdAt: order?.createdAt || new Date().toISOString(),
+      status,
+      customer: order?.customer || {},
+      payment: Object.assign({}, order?.payment || {}, { stripe: stripeResult || null }),
+      item: {
+        name: item.name || item.title || 'Matériel réservé',
+        ownerName: item.ownerName || item.owner_name || '',
+        id: item.id || '',
+        original_id: item.original_id || null
+      },
+      rental: {
+        startDate: rental.startDate || rental.start_date || '',
+        endDate: rental.endDate || rental.end_date || '',
+        city: rental.city || rental.location || '',
+        delivery: rental.delivery || ''
+      },
+      amounts: {
+        total: Number(amounts.total || amounts.amount_total || 0),
+        deposit: Number(amounts.deposit || amounts.caution || amounts.deposit_amount || 0),
+        rental: Number(amounts.rental || 0),
+        tax: Number(amounts.tax || 0)
+      },
+      stripe: stripeResult || null
+    };
+  }
+
+  function renderStripe(stripeResult){
+    const box=qs('#stripe-status-box');
+    if(!box || !stripeResult) return;
+
+    box.classList.remove('hidden');
+    box.classList.add('flex');
+
+    const rentalId = stripeResult.rental_payment_intent_id || stripeResult.rentalPaymentIntentId || '';
+    const depositId = stripeResult.deposit_payment_intent_id || stripeResult.depositPaymentIntentId || '';
+    const rentalStatus = stripeResult.rental_status || stripeResult.status || '';
+    const depositStatus = stripeResult.deposit_status || '';
+
+    let label = 'Stripe synchronisé';
+    if(depositStatus === 'requires_capture') label = 'Paiement validé + caution autorisée';
+    else if(rentalStatus === 'succeeded') label = 'Paiement validé';
+    else if(stripeResult.status) label = stripeResult.status;
+
+    set('#stripe-status', label);
+    set('#stripe-rental-id', shortId(rentalId));
+    set('#stripe-deposit-id', shortId(depositId));
+  }
+
+  async function syncSupabase(order){
+    try{
+      if(!window.supabase || !order) return;
+      const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      const {data:{session}}=await sb.auth.getSession();
+
+      const stripe=order.stripe || {};
+      const payload={
+        equipment_name: order.item.name,
+        renter_name: order.item.ownerName || 'RentSoundSystem',
+        start_date: order.rental.startDate || null,
+        end_date: order.rental.endDate || null,
+        status: order.status || 'pending',
+        total_price: order.amounts.total || 0,
+        stripe_customer_id: stripe.customer_id || null,
+        rental_payment_intent_id: stripe.rental_payment_intent_id || stripe.rentalPaymentIntentId || null,
+        deposit_payment_intent_id: stripe.deposit_payment_intent_id || stripe.depositPaymentIntentId || null,
+        payment_status: stripe.rental_status || stripe.status || order.status || 'pending',
+        deposit_status: stripe.deposit_status || null,
+        deposit_amount: order.amounts.deposit || 0
+      };
+
+      if(session?.user) payload.user_id=session.user.id;
+      await sb.from('reservations').insert(payload);
+    }catch(e){
+      console.warn('Synchronisation Supabase confirmation non bloquante:', e.message || e);
+    }
+  }
+
+  async function sync(){
     const params=new URLSearchParams(window.location.search);
-    const order=getOrder();
-    if(!order){
+    const rawOrder=getOrder();
+    const stripeResult=getStripeResult();
+
+    if(!rawOrder && !stripeResult){
       set('#order-id','#'+(params.get('order')||'RS-CONFIRMÉ'));
+      set('#order-equipment','Commande RentSoundSystem');
+      set('#order-dates','À confirmer');
+      set('#order-location','À confirmer');
+      set('#order-total',money(0));
+      set('#order-deposit',money(0)+' (Non débité)');
       return;
     }
-    const orderId=params.get('order') || order.id || 'RS-CONFIRMÉ';
-    const item=order.item||{};
-    const rental=order.rental||{};
-    const amounts=order.amounts||{};
-    const deliveryLabel = rental.delivery === 'delivery' ? (rental.city ? 'Livraison : '+rental.city : 'Livraison & reprise') : (rental.city ? 'Retrait / lieu : '+rental.city : 'Retrait en entrepôt');
-    set('#order-id','#'+orderId);
-    set('#order-equipment', item.name || 'Matériel réservé');
-    set('#order-dates', dateFR(rental.startDate)+' - '+dateFR(rental.endDate));
+
+    const order=normalizeOrder(rawOrder || {}, params, stripeResult);
+    const deliveryLabel = order.rental.delivery === 'delivery'
+      ? (order.rental.city ? 'Livraison : '+order.rental.city : 'Livraison & reprise')
+      : (order.rental.city ? 'Retrait / lieu : '+order.rental.city : 'Retrait en entrepôt');
+
+    set('#order-id','#'+order.id);
+    set('#order-equipment', order.item.name);
+    set('#order-dates', dateFR(order.rental.startDate)+' - '+dateFR(order.rental.endDate));
     set('#order-location', deliveryLabel);
-    set('#order-total', money(amounts.total));
-    set('#order-deposit', money(amounts.deposit)+' (Non débité)');
-    const title=qs('title'); if(title) title.textContent='Commande '+orderId+' validée - RentSoundSystem'; try{const list=JSON.parse(localStorage.getItem('rssOrders')||'[]'); const normalized=Object.assign({},order,{id:orderId,status:order.status||'confirmed'}); const next=[normalized].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(orderId))).slice(0,50); localStorage.setItem('rssOrders',JSON.stringify(next)); localStorage.setItem('rssLastOrder',JSON.stringify(normalized));}catch(e){}
+    set('#order-total', money(order.amounts.total));
+    set('#order-deposit', money(order.amounts.deposit)+' (Non débité)');
+    renderStripe(stripeResult);
+
+    const title=qs('title');
+    if(title) title.textContent='Commande '+order.id+' confirmée - RentSoundSystem';
+
+    try{
+      const list=readJson('rssOrders') || [];
+      const next=[order].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(order.id))).slice(0,50);
+      writeJson('rssOrders', next);
+      writeJson('rssLastOrder', order);
+    }catch(e){}
+
+    await syncSupabase(order);
   }
+
   document.addEventListener('DOMContentLoaded',sync);
 })();
 </script>
+
 <script src="/components.js"></script>
 
 </body></html>
