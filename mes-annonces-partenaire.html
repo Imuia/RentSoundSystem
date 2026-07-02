@@ -478,6 +478,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-fix-openedit-options-v2 -->
 
 <!-- rss-fix-load-without-missing-option-columns-v1 -->
+
+<!-- rss-options-sql-aware-save-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -691,7 +693,7 @@ async function getPartnerContext(){
   };
 }
 async function loadPartnerListings(ctx){
-  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
+  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,delivery_enabled,delivery_price,installation_enabled,installation_price,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
   const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
   let q=sb.from('listings').select(baseSelect).order('created_at',{ascending:false});
   q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
@@ -1225,9 +1227,11 @@ async function saveListing(e){
  };
  $('edit-message').textContent='Sauvegarde...';
  let {error}=await sb.from('listings').update(update).eq('id',id);
+ let optionsNotSaved = false;
  if(error){
    const msg = String(error.message || '');
    if(msg.includes('delivery_') || msg.includes('installation_') || msg.includes('column')){
+     optionsNotSaved = true;
      const updateFallback = rssRetryWithoutOptionColumns(update);
      const retry = await sb.from('listings').update(updateFallback).eq('id',id);
      error = retry.error;
@@ -1238,7 +1242,9 @@ async function saveListing(e){
  try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée. Image non ajoutée : '+e.message; return; }
  const currentSavedListing = STATE.listings.find(x => String(x.id) === String(id));
  if(currentSavedListing) Object.assign(currentSavedListing, update);
- $('edit-message').textContent='Annonce mise à jour.';
+ $('edit-message').textContent = optionsNotSaved
+   ? 'Annonce mise à jour, mais les frais livraison / installation ne sont pas enregistrés car les colonnes SQL manquent dans Supabase.'
+   : 'Annonce mise à jour.';
  await loadPageListings(); await renderImages(id); STATE.selectedEditFiles=[]; renderNewImagePreviews(); $('new-images').value='';
 }
 window.openEdit=openEdit; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
@@ -1292,6 +1298,19 @@ function rssRetryWithoutOptionColumns(payload){
   return clean;
 }
 </script>
+
+
+<!--
+SQL obligatoire pour enregistrer livraison / installation dans Supabase :
+
+alter table public.listings
+add column if not exists delivery_enabled boolean default true,
+add column if not exists delivery_price numeric default 50,
+add column if not exists installation_enabled boolean default true,
+add column if not exists installation_price numeric default 150;
+
+Après avoir lancé ce SQL, les champs seront sauvegardés et rechargés automatiquement.
+-->
 
 </body>
 </html>
