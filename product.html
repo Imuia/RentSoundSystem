@@ -355,6 +355,12 @@
 <!-- rss-product-dynamic-delivery-install-v1 -->
 
 <!-- rss-product-options-select-note-v1 -->
+
+<style id="rss-product-options-click-fix-v1">
+  .rss-price-option{appearance:auto!important;-webkit-appearance:checkbox!important;cursor:pointer!important;pointer-events:auto!important;}
+  .rss-price-option.closest{pointer-events:auto!important;}
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -2198,4 +2204,98 @@ function applyOwnerDisplay(item){
 </script>
 
 <script src="/components.js"></script>
+
+<script id="rss-product-options-live-sync-v2">
+(function(){
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+
+  function moneyOpt(value){
+    const n = Number(value || 0);
+    return n.toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' €';
+  }
+  function boolOpt(value, def=true){
+    if(value === undefined || value === null || value === '') return def;
+    if(typeof value === 'boolean') return value;
+    const s = String(value).toLowerCase();
+    return ['true','1','yes','oui','on'].includes(s);
+  }
+  function priceOpt(value, def){
+    const n = Number(value);
+    return Number.isFinite(n) ? n : def;
+  }
+  function recalcTotalSafe(){
+    const baseEl = document.getElementById('rss-base-price');
+    const qtyEl = document.getElementById('rss-qty-value');
+    const totalEl = document.getElementById('rss-total-price');
+    const base = Number(baseEl?.dataset.price || String(baseEl?.textContent || '0').replace(/[^\d.,]/g,'').replace(',','.')) || 0;
+    const qty = Number(qtyEl?.textContent || 1) || 1;
+    let total = base * qty;
+    document.querySelectorAll('.rss-price-option').forEach(input=>{
+      if(input.checked && input.closest('label')?.style.display !== 'none'){
+        total += Number(input.dataset.optionPrice || 0);
+      }
+    });
+    if(totalEl) totalEl.textContent = moneyOpt(total);
+  }
+  function applyOptions(item){
+    const deliveryInput = document.getElementById('rss-option-delivery');
+    const installInput = document.getElementById('rss-option-install');
+    if(!deliveryInput || !installInput) return false;
+
+    const deliveryRow = deliveryInput.closest('label');
+    const installRow = installInput.closest('label');
+
+    const deliveryEnabled = boolOpt(item.delivery_enabled, true);
+    const installEnabled = boolOpt(item.installation_enabled, true);
+    const deliveryPrice = priceOpt(item.delivery_price, 50);
+    const installPrice = priceOpt(item.installation_price, 150);
+
+    if(deliveryRow) deliveryRow.style.display = deliveryEnabled ? 'flex' : 'none';
+    if(installRow) installRow.style.display = installEnabled ? 'flex' : 'none';
+
+    deliveryInput.dataset.optionPrice = String(deliveryPrice);
+    installInput.dataset.optionPrice = String(installPrice);
+
+    const deliveryPriceSpan = deliveryRow?.querySelector('span:last-child');
+    const installPriceSpan = installRow?.querySelector('span:last-child');
+    if(deliveryPriceSpan) deliveryPriceSpan.textContent = '+' + moneyOpt(deliveryPrice);
+    if(installPriceSpan) installPriceSpan.textContent = '+' + moneyOpt(installPrice);
+
+    deliveryInput.addEventListener('change', recalcTotalSafe);
+    installInput.addEventListener('change', recalcTotalSafe);
+    recalcTotalSafe();
+    return true;
+  }
+
+  async function loadOptions(){
+    try{
+      if(!window.supabase || !window.supabase.createClient) return;
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      const originalId = params.get('original_id');
+      let query = client.from('listings').select('*').limit(1);
+      if(id) query = query.eq('id', id);
+      else if(originalId) query = query.eq('original_id', originalId);
+      else return;
+
+      const {data, error} = await query;
+      if(error) throw error;
+      const item = (data || [])[0];
+      if(item) applyOptions(item);
+    }catch(e){
+      console.warn('Options livraison/installation non chargées:', e.message || e);
+    }
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', loadOptions);
+  }else{
+    loadOptions();
+  }
+  setTimeout(loadOptions, 900);
+})();
+</script>
+
 </body></html>

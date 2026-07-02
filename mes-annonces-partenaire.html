@@ -482,6 +482,32 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-options-sql-aware-save-v1 -->
 
 <!-- rss-mes-options-real-save-v2 -->
+
+<style id="rss-options-checkbox-click-fix-v1">
+  #listing-edit-form .rss-option-card,
+  #listing-edit-form .rss-option-card * { pointer-events:auto!important; }
+  #listing-edit-form .rss-option-card input[type="checkbox"]{
+    appearance:auto!important;
+    -webkit-appearance:checkbox!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+  }
+  #listing-edit-form .rss-option-head{cursor:pointer!important; user-select:none;}
+</style>
+
+
+<style id="rss-options-checkbox-click-fix-v2">
+  #listing-edit-form .rss-option-card,
+  #listing-edit-form .rss-option-card * { pointer-events:auto!important; }
+  #listing-edit-form .rss-option-card input[type="checkbox"]{
+    appearance:auto!important;
+    -webkit-appearance:checkbox!important;
+    cursor:pointer!important;
+    pointer-events:auto!important;
+  }
+  #listing-edit-form .rss-option-head{cursor:pointer!important; user-select:none;}
+</style>
+
 </head>
 <body>
 <div id="header-container"></div>
@@ -1221,52 +1247,81 @@ async function deleteListing(id){
 }
 
 async function saveListing(e){
- e.preventDefault();
- const id=$('edit-id').value;
- const partner=STATE.ctx?.partner||{};
- const update={
-   title:$('edit-title').value.trim(),
-   description:$('edit-description').value.trim(),
-   price:num($('edit-price').value),
-   caution:num($('edit-caution').value),
-      delivery_enabled: rssEditBool('edit-delivery-enabled'),
-      delivery_price: rssEditNumber('edit-delivery-price', 50),
-      installation_enabled: rssEditBool('edit-installation-enabled'),
-      installation_price: rssEditNumber('edit-installation-price', 150),
-   brand:$('edit-brand').value.trim(),
-   model:$('edit-model').value.trim(),
-   category:$('edit-category').value.trim(),
-   status:$('edit-status').value,
-   city:$('edit-city').value.trim(),
-   country:$('edit-country').value.trim(),
-   address:$('edit-address').value.trim(),
-   owner_email:cleanEmail(STATE.ctx.email),
-   owner_name:firstText(partner.name,partner.owner_name,partner.company_name,STATE.ctx.email),
-   owner_phone:firstText(partner.phone,partner.owner_phone),
-   owner_city:firstText(partner.city,partner.owner_city),
-   owner_country:firstText(partner.country,partner.owner_country),
-   legacy_user_id:partner.legacy_user_id||null
- };
- $('edit-message').textContent='Sauvegarde...';
- let {error}=await sb.from('listings').update(update).eq('id',id);
- if(error){
-   if(rssOptionColumnsMissing(error)){
-     const note = $('rss-options-save-note');
-     if(note){ note.style.display='block'; note.textContent = rssOptionsSqlMessage(); }
-     $('edit-message').textContent='Erreur : colonnes SQL livraison / installation manquantes. Le SQL est affiché ci-dessus.';
-     return;
-   }
-   $('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';
-   return;
- }
- const files=STATE.selectedEditFiles;
- try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée. Image non ajoutée : '+e.message; return; }
- const currentSavedListing = STATE.listings.find(x => String(x.id) === String(id));
- if(currentSavedListing) Object.assign(currentSavedListing, update);
- $('edit-message').textContent = optionsNotSaved
-   ? 'Annonce mise à jour, mais les frais livraison / installation ne sont pas enregistrés car les colonnes SQL manquent dans Supabase.'
-   : 'Annonce mise à jour.';
- await loadPageListings(); await renderImages(id); STATE.selectedEditFiles=[]; renderNewImagePreviews(); $('new-images').value='';
+  e.preventDefault();
+
+  const saveBtn = e.submitter || document.querySelector('#listing-edit-form button[type="submit"]');
+  const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
+  if(saveBtn){
+    saveBtn.disabled = true;
+    saveBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Sauvegarde...';
+  }
+
+  const note = $('rss-options-save-note');
+  if(note){ note.style.display='none'; note.textContent=''; }
+  $('edit-message').textContent='Sauvegarde...';
+
+  try{
+    const id=$('edit-id').value;
+    if(!id) throw new Error('ID annonce manquant.');
+
+    const partner=STATE.ctx?.partner||{};
+    const update={
+      title:$('edit-title').value.trim(),
+      description:$('edit-description').value.trim(),
+      price:num($('edit-price').value),
+      caution:num($('edit-caution').value),
+      delivery_enabled:rssEditBool('edit-delivery-enabled'),
+      delivery_price:rssEditNumber('edit-delivery-price',50),
+      installation_enabled:rssEditBool('edit-installation-enabled'),
+      installation_price:rssEditNumber('edit-installation-price',150),
+      brand:$('edit-brand').value.trim(),
+      model:$('edit-model').value.trim(),
+      category:$('edit-category').value.trim(),
+      status:$('edit-status').value,
+      city:$('edit-city').value.trim(),
+      country:$('edit-country').value.trim(),
+      address:$('edit-address').value.trim(),
+      owner_email:cleanEmail(STATE.ctx.email),
+      owner_name:firstText(partner.name,partner.owner_name,partner.company_name,STATE.ctx.email),
+      owner_phone:firstText(partner.phone,partner.owner_phone),
+      owner_city:firstText(partner.city,partner.owner_city),
+      owner_country:firstText(partner.country,partner.owner_country),
+      legacy_user_id:partner.legacy_user_id||null
+    };
+
+    const {error}=await sb.from('listings').update(update).eq('id',id);
+    if(error){
+      if(rssOptionColumnsMissing(error)){
+        if(note){ note.style.display='block'; note.textContent=rssOptionsSqlMessage(); }
+        throw new Error('Colonnes SQL livraison / installation manquantes. Lancez le SQL indiqué.');
+      }
+      throw error;
+    }
+
+    const files=STATE.selectedEditFiles || [];
+    for(const file of files){
+      await uploadImageFile(file,id);
+    }
+
+    const currentSavedListing = STATE.listings.find(x => String(x.id) === String(id));
+    if(currentSavedListing) Object.assign(currentSavedListing, update);
+
+    STATE.selectedEditFiles=[];
+    if($('new-images')) $('new-images').value='';
+    renderNewImagePreviews();
+
+    $('edit-message').textContent='Annonce mise à jour.';
+    await loadPageListings();
+    if(typeof renderImages === 'function') await renderImages(id);
+  }catch(err){
+    console.error('Erreur sauvegarde annonce:', err);
+    $('edit-message').textContent='Erreur : '+(err.message || err);
+  }finally{
+    if(saveBtn){
+      saveBtn.disabled = false;
+      saveBtn.innerHTML = originalBtnText || '<span class="material-symbols-outlined">save</span> Enregistrer';
+    }
+  }
 }
 window.openEdit=openEdit; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
 </script>
