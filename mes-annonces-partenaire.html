@@ -480,6 +480,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-fix-load-without-missing-option-columns-v1 -->
 
 <!-- rss-options-sql-aware-save-v1 -->
+
+<!-- rss-mes-options-real-save-v2 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -541,6 +543,9 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
         </label>
       </div>
 
+
+      <div id="rss-options-save-note" style="grid-column:1/-1;display:none;padding:12px 14px;border:1px solid rgba(255,180,80,.35);background:rgba(255,180,80,.08);color:#ffd7a6;border-radius:12px;font-size:12px;line-height:1.5"></div>
+
     <label>Marque<input id="edit-brand" class="rss-input" style="margin-top:6px"></label>
     <label>Modèle<input id="edit-model" class="rss-input" style="margin-top:6px"></label>
     <label>Catégorie<input id="edit-category" class="rss-input" style="margin-top:6px"></label>
@@ -574,6 +579,23 @@ const clean = v => String(v||'').trim().toLowerCase();
 const esc = v => String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const num = v => (v===''||v==null?null:(Number.isFinite(Number(v))?Number(v):null));
 const price = v => euro.format(Number(v||0));
+
+
+function rssOptionsSqlMessage(){
+  return `Les champs livraison / installation ne peuvent pas être enregistrés car les colonnes SQL manquent dans Supabase.
+
+Lancez ce SQL dans Supabase > SQL Editor :
+
+alter table public.listings
+add column if not exists delivery_enabled boolean default true,
+add column if not exists delivery_price numeric default 50,
+add column if not exists installation_enabled boolean default true,
+add column if not exists installation_price numeric default 150;`;
+}
+function rssOptionColumnsMissing(error){
+  const msg = String(error?.message || error || '').toLowerCase();
+  return msg.includes('delivery_') || msg.includes('installation_') || msg.includes('column') || msg.includes('schema cache');
+}
 
 function rssEditBool(id){ const el=document.getElementById(id); return !!(el && el.checked); }
 function rssEditNumber(id, def=0){ const el=document.getElementById(id); const n=parseFloat(el?.value || def); return Number.isFinite(n) ? n : def; }
@@ -1066,7 +1088,7 @@ async function openEdit(id){
   if($('edit-delivery-price')) $('edit-delivery-price').value = i.delivery_price ?? 50;
   if($('edit-installation-enabled')) $('edit-installation-enabled').checked = (i.installation_enabled ?? true) !== false;
   if($('edit-installation-price')) $('edit-installation-price').value = i.installation_price ?? 150;
- $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
+ $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent=''; if($('rss-options-save-note')){$('rss-options-save-note').style.display='none';$('rss-options-save-note').textContent='';}
  STATE.selectedEditFiles=[];
  renderNewImagePreviews();
  await renderImages(id);
@@ -1227,17 +1249,16 @@ async function saveListing(e){
  };
  $('edit-message').textContent='Sauvegarde...';
  let {error}=await sb.from('listings').update(update).eq('id',id);
- let optionsNotSaved = false;
  if(error){
-   const msg = String(error.message || '');
-   if(msg.includes('delivery_') || msg.includes('installation_') || msg.includes('column')){
-     optionsNotSaved = true;
-     const updateFallback = rssRetryWithoutOptionColumns(update);
-     const retry = await sb.from('listings').update(updateFallback).eq('id',id);
-     error = retry.error;
+   if(rssOptionColumnsMissing(error)){
+     const note = $('rss-options-save-note');
+     if(note){ note.style.display='block'; note.textContent = rssOptionsSqlMessage(); }
+     $('edit-message').textContent='Erreur : colonnes SQL livraison / installation manquantes. Le SQL est affiché ci-dessus.';
+     return;
    }
+   $('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';
+   return;
  }
- if(error){$('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';return}
  const files=STATE.selectedEditFiles;
  try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée. Image non ajoutée : '+e.message; return; }
  const currentSavedListing = STATE.listings.find(x => String(x.id) === String(id));
@@ -1274,30 +1295,6 @@ using (
   )
 );
 -->
-
-
-<script id="rss-option-columns-fallback-helper-v1">
-window.rssRetryWithoutOptionColumns = window.rssRetryWithoutOptionColumns || function(payload){
-  const clean = Object.assign({}, payload || {});
-  delete clean.delivery_enabled;
-  delete clean.delivery_price;
-  delete clean.installation_enabled;
-  delete clean.installation_price;
-  return clean;
-};
-</script>
-
-
-<script id="rss-option-columns-fallback-function-v1">
-function rssRetryWithoutOptionColumns(payload){
-  const clean = Object.assign({}, payload || {});
-  delete clean.delivery_enabled;
-  delete clean.delivery_price;
-  delete clean.installation_enabled;
-  delete clean.installation_price;
-  return clean;
-}
-</script>
 
 
 <!--

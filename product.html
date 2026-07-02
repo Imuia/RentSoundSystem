@@ -351,6 +351,10 @@
 
 
 <!-- rss-product-real-partner-lookup-v3 -->
+
+<!-- rss-product-dynamic-delivery-install-v1 -->
+
+<!-- rss-product-options-select-note-v1 -->
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -797,7 +801,44 @@ function mergePartnerIntoProduct(item, partner){
     return '';
   }
 
-  function ownerName(item) {
+  
+function optionBool(value, def=true){
+  if(value === undefined || value === null || value === '') return def;
+  if(typeof value === 'boolean') return value;
+  const s = String(value).toLowerCase();
+  return ['true','1','yes','oui','on'].includes(s);
+}
+function optionPrice(value, def){
+  const n = Number(value);
+  return Number.isFinite(n) ? n : def;
+}
+function setProductOptions(item){
+  const deliveryInput = document.getElementById('rss-option-delivery');
+  const installInput = document.getElementById('rss-option-install');
+  const deliveryRow = deliveryInput ? deliveryInput.closest('label') : null;
+  const installRow = installInput ? installInput.closest('label') : null;
+
+  const deliveryEnabled = optionBool(item.delivery_enabled, true);
+  const installEnabled = optionBool(item.installation_enabled, true);
+  const deliveryPrice = optionPrice(item.delivery_price, 50);
+  const installPrice = optionPrice(item.installation_price, 150);
+
+  if(deliveryRow) deliveryRow.style.display = deliveryEnabled ? 'flex' : 'none';
+  if(installRow) installRow.style.display = installEnabled ? 'flex' : 'none';
+
+  if(deliveryInput){
+    deliveryInput.dataset.optionPrice = String(deliveryPrice);
+    const priceSpan = deliveryInput.closest('label')?.querySelector('span:last-child');
+    if(priceSpan) priceSpan.textContent = '+' + money(deliveryPrice).replace('€',' €');
+  }
+  if(installInput){
+    installInput.dataset.optionPrice = String(installPrice);
+    const priceSpan = installInput.closest('label')?.querySelector('span:last-child');
+    if(priceSpan) priceSpan.textContent = '+' + money(installPrice).replace('€',' €');
+  }
+}
+
+function ownerName(item) {
     const publicName = firstFilled(
       item.owner_name,
       item.company_name,
@@ -1487,6 +1528,7 @@ function applyOwnerDisplay(item){
     if (error || !item) {
       console.error('Produit introuvable', error);
       text(document.querySelector('.lg\\:col-span-5 h1'), 'Produit introuvable');
+      setProductOptions(itemWithPartner || item);
       document.body.classList.add('rss-product-loaded');
       return;
     }
