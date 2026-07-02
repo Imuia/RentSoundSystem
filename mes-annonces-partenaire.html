@@ -476,6 +476,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-step1-delivery-install-options -->
 
 <!-- rss-fix-openedit-options-v2 -->
+
+<!-- rss-fix-load-without-missing-option-columns-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -689,8 +691,8 @@ async function getPartnerContext(){
   };
 }
 async function loadPartnerListings(ctx){
-  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,delivery_enabled,delivery_price,installation_enabled,installation_price,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
-  const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,delivery_enabled,delivery_price,installation_enabled,installation_price,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
+  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
+  const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
   let q=sb.from('listings').select(baseSelect).order('created_at',{ascending:false});
   q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
   let {data,error}=await q;
@@ -1058,9 +1060,9 @@ async function openEdit(id){
  const i=STATE.listings.find(x=>x.id===id); if(!i)return;
  $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??'';
 
-  if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked = i.delivery_enabled !== false;
+  if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked = (i.delivery_enabled ?? true) !== false;
   if($('edit-delivery-price')) $('edit-delivery-price').value = i.delivery_price ?? 50;
-  if($('edit-installation-enabled')) $('edit-installation-enabled').checked = i.installation_enabled !== false;
+  if($('edit-installation-enabled')) $('edit-installation-enabled').checked = (i.installation_enabled ?? true) !== false;
   if($('edit-installation-price')) $('edit-installation-price').value = i.installation_price ?? 150;
  $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
  STATE.selectedEditFiles=[];
