@@ -474,6 +474,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-step1-delivery-install-options -->
+
+<!-- rss-fix-openedit-options-v2 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -568,6 +570,10 @@ const clean = v => String(v||'').trim().toLowerCase();
 const esc = v => String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
 const num = v => (v===''||v==null?null:(Number.isFinite(Number(v))?Number(v):null));
 const price = v => euro.format(Number(v||0));
+
+function rssEditBool(id){ const el=document.getElementById(id); return !!(el && el.checked); }
+function rssEditNumber(id, def=0){ const el=document.getElementById(id); const n=parseFloat(el?.value || def); return Number.isFinite(n) ? n : def; }
+
 
 function cleanEmail(v){ return String(v||'').trim().toLowerCase(); }
 function cleanText(v){ return String(v||'').trim(); }
@@ -683,8 +689,8 @@ async function getPartnerContext(){
   };
 }
 async function loadPartnerListings(ctx){
-  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
-  const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
+  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,delivery_enabled,delivery_price,installation_enabled,installation_price,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
+  const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,delivery_enabled,delivery_price,installation_enabled,installation_price,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
   let q=sb.from('listings').select(baseSelect).order('created_at',{ascending:false});
   q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
   let {data,error}=await q;
@@ -1052,10 +1058,10 @@ async function openEdit(id){
  const i=STATE.listings.find(x=>x.id===id); if(!i)return;
  $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??'';
 
-  if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked = item.delivery_enabled !== false;
-  if($('edit-delivery-price')) $('edit-delivery-price').value = item.delivery_price ?? 50;
-  if($('edit-installation-enabled')) $('edit-installation-enabled').checked = item.installation_enabled !== false;
-  if($('edit-installation-price')) $('edit-installation-price').value = item.installation_price ?? 150;
+  if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked = i.delivery_enabled !== false;
+  if($('edit-delivery-price')) $('edit-delivery-price').value = i.delivery_price ?? 50;
+  if($('edit-installation-enabled')) $('edit-installation-enabled').checked = i.installation_enabled !== false;
+  if($('edit-installation-price')) $('edit-installation-price').value = i.installation_price ?? 150;
  $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent='';
  STATE.selectedEditFiles=[];
  renderNewImagePreviews();
@@ -1216,10 +1222,20 @@ async function saveListing(e){
    legacy_user_id:partner.legacy_user_id||null
  };
  $('edit-message').textContent='Sauvegarde...';
- const {error}=await sb.from('listings').update(update).eq('id',id);
+ let {error}=await sb.from('listings').update(update).eq('id',id);
+ if(error){
+   const msg = String(error.message || '');
+   if(msg.includes('delivery_') || msg.includes('installation_') || msg.includes('column')){
+     const updateFallback = rssRetryWithoutOptionColumns(update);
+     const retry = await sb.from('listings').update(updateFallback).eq('id',id);
+     error = retry.error;
+   }
+ }
  if(error){$('edit-message').textContent='Erreur : '+error.message+' — vérifiez la policy UPDATE sur listings.';return}
  const files=STATE.selectedEditFiles;
  try{ for(const file of files) await uploadImageFile(file,id); }catch(e){ $('edit-message').textContent='Annonce sauvegardée. Image non ajoutée : '+e.message; return; }
+ const currentSavedListing = STATE.listings.find(x => String(x.id) === String(id));
+ if(currentSavedListing) Object.assign(currentSavedListing, update);
  $('edit-message').textContent='Annonce mise à jour.';
  await loadPageListings(); await renderImages(id); STATE.selectedEditFiles=[]; renderNewImagePreviews(); $('new-images').value='';
 }
