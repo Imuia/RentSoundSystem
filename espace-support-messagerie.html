@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Boîte de réception support – RentSoundSystem</title>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}
+:root{--pink:#fc036d;--muted:#cdb5c0;--line:rgba(255,255,255,.09);--text:#f7eff3}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:linear-gradient(180deg,#191016,#101012 58%,#0b0b0d);color:var(--text);font-family:Inter,system-ui,sans-serif}body{padding-top:74px}
+#header-container,#footer-container{width:100%;max-width:none}.shell{max-width:1320px;margin:0 auto;padding:46px 28px 64px}.kicker{display:inline-flex;gap:8px;align-items:center;padding:9px 13px;border:1px solid rgba(252,3,109,.32);border-radius:999px;color:#ff82b2;background:rgba(252,3,109,.1);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase}.title{font-family:Manrope,sans-serif;font-size:clamp(36px,5vw,60px);line-height:1.05;letter-spacing:-.045em;margin:18px 0 12px}.subtitle{max-width:700px;color:var(--muted);line-height:1.6;font-size:16px}.layout{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;margin-top:34px}.card{background:linear-gradient(145deg,rgba(31,31,36,.96),rgba(17,17,20,.99));border:1px solid var(--line);border-radius:18px;box-shadow:0 20px 58px rgba(0,0,0,.24)}.toolbar{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px}.toolbar h2{margin:0;font:800 21px Manrope,sans-serif}.toolbar p{color:var(--muted);font-size:12px;margin:4px 0 0}.filter{min-height:36px;border:1px solid var(--line);border-radius:8px;padding:0 10px;background:rgba(255,255,255,.03);color:var(--muted);font-weight:800;cursor:pointer}.filter.active{background:rgba(252,3,109,.15);color:#fff;border-color:rgba(252,3,109,.55)}.thread-list{padding:9px;max-height:680px;overflow:auto}.thread{width:100%;border:1px solid transparent;border-radius:11px;background:transparent;text-align:left;padding:14px;color:var(--text);cursor:pointer}.thread:hover,.thread.active{background:rgba(252,3,109,.08);border-color:rgba(252,3,109,.28)}.thread strong{display:block;font:800 14px Manrope,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.thread span{display:block;color:var(--muted);font-size:11px;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.thread small{display:inline-block;margin-top:8px;padding:3px 6px;border:1px solid rgba(252,3,109,.30);border-radius:999px;color:#ff7eaf;font-weight:900;font-size:9px;text-transform:uppercase}.thread small.closed{color:#c5c5c5;border-color:var(--line)}.panel{min-height:650px;display:flex;flex-direction:column}.meta{padding:20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:18px}.meta h2{margin:0;font:800 22px Manrope,sans-serif}.meta p{color:var(--muted);font-size:12px;margin:5px 0 0}.button{min-height:40px;border:1px solid var(--line);border-radius:9px;background:rgba(255,255,255,.03);color:var(--text);padding:0 12px;font-weight:800;cursor:pointer}.button:hover{border-color:rgba(252,3,109,.55)}.button.primary{background:linear-gradient(135deg,#fc036d,#ff3d8a);border-color:#fc036d}.stream{flex:1;min-height:390px;max-height:540px;overflow:auto;padding:20px;display:flex;flex-direction:column;gap:12px}.bubble{max-width:min(76%,640px);border:1px solid var(--line);background:#202025;border-radius:13px;padding:12px 14px;font-size:13px;line-height:1.55}.bubble.self{align-self:flex-end;background:linear-gradient(135deg,#fc036d,#e7005f);border-color:#fc036d}.bubble .who{margin-top:6px;font-size:10px;color:var(--muted);font-weight:800}.bubble.self .who{color:rgba(255,255,255,.78)}.composer{display:flex;gap:10px;align-items:flex-end;border-top:1px solid var(--line);padding:15px}.textarea{width:100%;min-height:60px;max-height:130px;padding:12px;border:1px solid var(--line);border-radius:9px;background:#101012;color:#fff;font:inherit;resize:vertical}.textarea:focus{outline:none;border-color:rgba(252,3,109,.65);box-shadow:0 0 0 3px rgba(252,3,109,.12)}.empty{margin:auto;max-width:420px;text-align:center;color:var(--muted);line-height:1.55}.notice{margin-top:16px;color:var(--muted);font-size:12px;line-height:1.55}.error{color:#ffaea7}.hidden{display:none!important}@media(max-width:940px){.layout{grid-template-columns:1fr}.thread-list{max-height:260px}}@media(max-width:700px){body{padding-top:72px}.shell{padding:30px 16px 48px}.composer{flex-direction:column;align-items:stretch}.bubble{max-width:90%}.meta{flex-direction:column}}
+</style>
+</head>
+<body>
+<div id="header-container"></div>
+<main class="shell">
+  <div class="kicker"><span class="material-symbols-outlined">support_agent</span> Accès équipe RentSoundSystem</div>
+  <h1 class="title">Boîte de réception support</h1>
+  <p class="subtitle">Répondez aux demandes des clients depuis un seul espace. Cette page est réservée aux comptes support autorisés.</p>
+  <section id="support-app" class="layout">
+    <aside class="card">
+      <div class="toolbar"><div><h2>Demandes clients</h2><p id="inbox-count">Chargement…</p></div><button id="refresh-inbox" class="button" type="button">Actualiser</button></div>
+      <div style="padding:10px;display:flex;gap:7px;border-bottom:1px solid var(--line)"><button class="filter active" data-filter="open">Ouvertes</button><button class="filter" data-filter="all">Toutes</button><button class="filter" data-filter="closed">Clôturées</button></div>
+      <div id="support-thread-list" class="thread-list"><div class="empty">Chargement de la boîte de réception…</div></div>
+    </aside>
+    <section class="card panel">
+      <div class="meta">
+        <div><h2 id="support-title">Sélectionnez une demande</h2><p id="support-client">Les demandes des clients apparaîtront ici.</p></div>
+        <button id="toggle-thread-status" class="button" type="button" disabled>Clôturer</button>
+      </div>
+      <div id="support-stream" class="stream"><div class="empty">Sélectionnez une demande dans la colonne de gauche pour consulter et répondre au client.</div></div>
+      <form id="support-reply-form" class="composer">
+        <textarea id="support-reply" class="textarea" placeholder="Écrivez votre réponse au client…" disabled></textarea>
+        <button id="support-send" class="button primary" type="submit" disabled>Répondre</button>
+      </form>
+    </section>
+  </section>
+  <p id="support-note" class="notice">Connexion à la messagerie sécurisée…</p>
+</main>
+<div id="footer-container"></div>
+<script src="/assets/js/support-inbox.js"></script>
+<script src="/components.js"></script>
+</body></html>

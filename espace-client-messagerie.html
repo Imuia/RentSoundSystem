@@ -154,6 +154,19 @@ body{
 @media(max-width:1080px){.messages-layout{grid-template-columns:1fr}.thread-list{max-height:250px}.inventory-summary{grid-template-columns:1fr}.client-layout{grid-template-columns:1fr}.client-sidebar{position:relative;top:auto}.sidebar-nav{flex-direction:row;overflow-x:auto;padding-bottom:5px}.client-nav-link{flex:0 0 auto}.sidebar-user{display:none}.calendar-layout{grid-template-columns:1fr!important}}
 @media(max-width:720px){body{padding-top:72px}.client-shell{padding:30px 16px 48px}.portal-header{align-items:flex-start;flex-direction:column}.stats-grid{grid-template-columns:1fr}.toolbar{align-items:flex-start;flex-direction:column}.reservation-card,.order-card{grid-template-columns:1fr}.reservation-right,.order-right{text-align:left}.status-row{justify-content:flex-start}.settings-grid,.inventory-edit-form{grid-template-columns:1fr}.inventory-edit-form .full{grid-column:auto}.form-footer{align-items:flex-start;flex-direction:column}.calendar-cell{min-height:78px;padding:6px}.calendar-event{font-size:9px}.calendar-head div{font-size:9px;padding:10px 3px}.message-bubble{max-width:90%}.message-panel{min-height:540px}.portal-title{font-size:40px}}
 
+
+
+/* Messagerie : clarification du service et lecture plus stable des demandes. */
+.support-notice{
+  display:flex;gap:11px;align-items:flex-start;margin:0 0 18px;padding:14px 16px;
+  border:1px solid rgba(252,3,109,.30);border-radius:12px;background:rgba(252,3,109,.08);
+  color:var(--rss-muted);font-size:13px;line-height:1.55;
+}
+.support-notice .material-symbols-outlined{color:#ff78aa;font-size:20px;flex:0 0 auto}
+.support-notice strong{color:#fff}
+.thread-item .thread-status{display:inline-flex;margin-top:7px;padding:3px 6px;border:1px solid rgba(252,3,109,.30);border-radius:999px;color:#ff83b4;font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.06em}
+.thread-item .thread-status.closed{color:#c7c7c7;border-color:rgba(255,255,255,.14)}
+
 </style>
 </head>
 <body data-rss-page="messages" class="font-body antialiased min-h-screen flex flex-col">
@@ -162,8 +175,8 @@ body{
   <header class="portal-header">
     <div>
       <div class="portal-kicker"><span class="material-symbols-outlined">verified_user</span>Espace client sécurisé</div>
-      <h1 class="portal-title">Messagerie de réservation.</h1>
-      <p class="portal-subtitle">Centralisez vos échanges avec RentSoundSystem : demandes techniques, logistique, documents à prévoir et questions liées à vos locations.</p>
+      <h1 class="portal-title">Messagerie avec RentSoundSystem</h1>
+      <p class="portal-subtitle">Envoyez vos demandes à l’équipe RentSoundSystem. Vos réponses apparaîtront ici et une notification e-mail vous sera envoyée.</p>
     </div>
     
   </header>
@@ -195,10 +208,11 @@ body{
 </aside>
 
     <div class="min-w-0">
+<div class="support-notice"><span class="material-symbols-outlined">support_agent</span><div><strong>Équipe RentSoundSystem</strong><br>Chaque demande est enregistrée dans votre dossier client et signalée à notre équipe. Le partenaire peut être informé lorsqu’une réservation lui est liée, mais les réponses client sont centralisées par RentSoundSystem.</div></div>
 <div class="messages-layout">
   <aside class="portal-card">
     <div class="toolbar">
-      <div><h2>Conversations</h2><p>Service client et suivi de location</p></div>
+      <div><h2>Conversations</h2><p>Demandes et réponses de l’équipe</p></div>
       <button id="new-thread-btn" type="button" class="icon-button" title="Nouvelle conversation"><span class="material-symbols-outlined">add</span></button>
     </div>
     <div id="thread-list" class="thread-list"><div class="empty-state"><span class="material-symbols-outlined">sync</span><p>Chargement des conversations…</p></div></div>
@@ -217,7 +231,7 @@ body{
     </form>
   </section>
 </div>
-<p id="messages-sync-note" class="sync-note">Messagerie privée liée à votre compte.</p>
+<p id="messages-sync-note" class="sync-note">Vos demandes sont enregistrées dans votre dossier client.</p>
 </div>
   </section>
 </main>

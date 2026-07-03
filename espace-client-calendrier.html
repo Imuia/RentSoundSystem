@@ -154,6 +154,23 @@ body{
 @media(max-width:1080px){.messages-layout{grid-template-columns:1fr}.thread-list{max-height:250px}.inventory-summary{grid-template-columns:1fr}.client-layout{grid-template-columns:1fr}.client-sidebar{position:relative;top:auto}.sidebar-nav{flex-direction:row;overflow-x:auto;padding-bottom:5px}.client-nav-link{flex:0 0 auto}.sidebar-user{display:none}.calendar-layout{grid-template-columns:1fr!important}}
 @media(max-width:720px){body{padding-top:72px}.client-shell{padding:30px 16px 48px}.portal-header{align-items:flex-start;flex-direction:column}.stats-grid{grid-template-columns:1fr}.toolbar{align-items:flex-start;flex-direction:column}.reservation-card,.order-card{grid-template-columns:1fr}.reservation-right,.order-right{text-align:left}.status-row{justify-content:flex-start}.settings-grid,.inventory-edit-form{grid-template-columns:1fr}.inventory-edit-form .full{grid-column:auto}.form-footer{align-items:flex-start;flex-direction:column}.calendar-cell{min-height:78px;padding:6px}.calendar-event{font-size:9px}.calendar-head div{font-size:9px;padding:10px 3px}.message-bubble{max-width:90%}.message-panel{min-height:540px}.portal-title{font-size:40px}}
 
+
+
+/* Correctif calendrier : empêche les colonnes et événements de déborder sur la fiche détail. */
+.calendar-layout{width:100%;max-width:100%;min-width:0}
+.calendar-layout > *{min-width:0}
+.calendar-wrap{max-width:100%;overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;padding-bottom:2px}
+.calendar-head,.calendar-grid{grid-template-columns:repeat(7,minmax(0,1fr));min-width:620px}
+.calendar-cell{min-width:0;overflow:hidden}
+.calendar-event{min-width:0;max-width:100%;box-sizing:border-box}
+@media(max-width:1320px){
+  .calendar-layout{grid-template-columns:minmax(0,1fr)!important}
+  .calendar-side{width:100%}
+}
+@media(max-width:720px){
+  .calendar-head,.calendar-grid{min-width:560px}
+}
+
 </style>
 </head>
 <body data-rss-page="calendar" class="font-body antialiased min-h-screen flex flex-col">

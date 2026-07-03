@@ -72,6 +72,28 @@
     element.classList.toggle("is-error", Boolean(error));
   }
 
+  async function notifySupport(threadId, messageId, eventType) {
+    try {
+      const {data:{session}} = await state.sb.auth.getSession();
+      if (!session?.access_token) return;
+      await fetch("/api/support/notify", {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json",
+          "Authorization":"Bearer " + session.access_token
+        },
+        body:JSON.stringify({
+          thread_id:threadId,
+          message_id:messageId || null,
+          event:eventType || "client_message"
+        })
+      });
+    } catch (error) {
+      // La demande reste enregistrée même si la notification e-mail rencontre un retard.
+      console.warn("Notification support non bloquante :", error);
+    }
+  }
+
   function initials(name) {
     return String(name || "Client").split(/\s+/).filter(Boolean).slice(0,2).map((word) => word[0]).join("").toUpperCase() || "CL";
   }
@@ -385,8 +407,12 @@
 
   function renderThreads() {
     const box=$("#thread-list");if(!box)return;
-    if(!state.threads.length){box.innerHTML=`<div class="empty-state"><span class="material-symbols-outlined">forum</span><h3>Aucune conversation</h3><p>Démarrez une demande pour échanger avec notre équipe.</p></div>`;return;}
-    box.innerHTML=state.threads.map((thread)=>`<button type="button" class="thread-item${String(thread.id)===String(state.activeThreadId)?" is-active":""}" data-thread-id="${escapeHtml(thread.id)}"><strong>${escapeHtml(threadName(thread))}</strong><span>${thread.reservation_label?escapeHtml(thread.reservation_label):"Service client RentSoundSystem"}</span><time>${dateTimeFR(thread.last_message_at||thread.created_at)}</time></button>`).join("");
+    if(!state.threads.length){box.innerHTML=`<div class="empty-state"><span class="material-symbols-outlined">forum</span><h3>Aucune demande</h3><p>Créez une demande pour échanger avec l’équipe RentSoundSystem.</p></div>`;return;}
+    box.innerHTML=state.threads.map((thread)=>{
+      const closed=String(thread.status||"open")==="closed";
+      const statusLabel=closed?"Clôturée":"En attente de réponse";
+      return `<button type="button" class="thread-item${String(thread.id)===String(state.activeThreadId)?" is-active":""}" data-thread-id="${escapeHtml(thread.id)}"><strong>${escapeHtml(threadName(thread))}</strong><span>${thread.reservation_label?escapeHtml(thread.reservation_label):"Équipe RentSoundSystem"}</span><span class="thread-status${closed?" closed":""}">${statusLabel}</span><time>${dateTimeFR(thread.last_message_at||thread.created_at)}</time></button>`;
+    }).join("");
     $$("[data-thread-id]").forEach((button)=>button.addEventListener("click",()=>selectThread(button.dataset.threadId)));
   }
 
@@ -401,8 +427,17 @@
       return;
     }
     state.threads=(data||[]).map((row)=>({...row,reservation_label:reservationLabel(row.reservation_id)}));
-    renderThreads();
-    if(!state.activeThreadId && state.threads[0])await selectThread(state.threads[0].id);
+    const activeStillExists=state.threads.some((thread)=>String(thread.id)===String(state.activeThreadId));
+    if(activeStillExists) await selectThread(state.activeThreadId);
+    else if(state.threads[0]) await selectThread(state.threads[0].id);
+    else {
+      state.activeThreadId=null;
+      renderThreads();
+      const stream=$("#message-stream");
+      if(stream)stream.innerHTML=`<div class="message-empty"><span class="material-symbols-outlined">forum</span><h3>Aucune conversation ouverte</h3><p>Créez une demande pour échanger avec l’équipe RentSoundSystem.</p></div>`;
+      if($("#message-input"))$("#message-input").disabled=true;
+      if($("#send-message-btn"))$("#send-message-btn").disabled=true;
+    }
     setNote("#messages-sync-note","Messagerie synchronisée.",false);
   }
 
@@ -416,7 +451,11 @@
     renderThreads();
     const thread=state.threads.find((item)=>String(item.id)===String(threadId));
     if($("#message-title"))$("#message-title").textContent=threadName(thread||{});
-    if($("#message-subtitle"))$("#message-subtitle").textContent=thread?.reservation_label||"Service client RentSoundSystem";
+    if($("#message-subtitle")){
+      const topic=thread?.reservation_label||"Équipe RentSoundSystem";
+      const status=String(thread?.status||"open")==="closed" ? "Demande clôturée" : "En attente de réponse";
+      $("#message-subtitle").textContent=topic+" · "+status;
+    }
     if($("#message-input"))$("#message-input").disabled=false;
     if($("#send-message-btn"))$("#send-message-btn").disabled=false;
     const stream=$("#message-stream");if(stream)stream.innerHTML=`<div class="message-empty"><span class="material-symbols-outlined">sync</span><p>Chargement des messages…</p></div>`;
@@ -431,7 +470,8 @@
     if(!state.messages.length){stream.innerHTML=`<div class="message-empty"><span class="material-symbols-outlined">mark_chat_unread</span><h3>Conversation ouverte</h3><p>Envoyez le premier message pour préciser votre besoin.</p></div>`;return;}
     stream.innerHTML=state.messages.map((message)=>{
       const self=String(message.sender_id)===String(state.user.id)||message.sender_role==="client";
-      return `<div class="message-bubble${self?" self":""}"><div>${escapeHtml(message.body||"")}</div><div class="message-meta"><span>${self?"Vous":"RentSoundSystem"}</span><span>${dateTimeFR(message.created_at)}</span></div></div>`;
+      const author=self ? "Vous" : (message.sender_role==="partner" ? "Partenaire" : "RentSoundSystem");
+      return `<div class="message-bubble${self?" self":""}"><div>${escapeHtml(message.body||"")}</div><div class="message-meta"><span>${author}</span><span>${dateTimeFR(message.created_at)}</span></div></div>`;
     }).join("");
     stream.scrollTop=stream.scrollHeight;
   }
@@ -444,7 +484,7 @@
         <label class="full"><span class="field-label">Objet</span><input class="field-input" name="subject" required placeholder="Ex. Question sur la livraison"></label>
         <label class="full"><span class="field-label">Réservation concernée</span><select class="field-select" name="reservation_id"><option value="">Aucune réservation précise</option>${options}</select></label>
         <label class="full"><span class="field-label">Votre message</span><textarea class="field-textarea" name="body" required placeholder="Décrivez votre demande avec les informations utiles…"></textarea></label>
-        <div class="full form-footer"><p class="form-note">Votre demande est rattachée à votre compte et peut être suivie dans cette messagerie.</p><button type="submit" class="portal-primary"><span class="material-symbols-outlined">send</span>Envoyer la demande</button></div>
+        <div class="full form-footer"><p class="form-note">Votre demande est signalée à l’équipe RentSoundSystem et reste suivie dans cette messagerie.</p><button type="submit" class="portal-primary"><span class="material-symbols-outlined">send</span>Envoyer la demande</button></div>
       </form>
     </section></div>`;
   }
@@ -462,12 +502,29 @@
     const body=String(form.get("body")||"").trim();
     const reservationId=String(form.get("reservation_id")||"").trim()||null;
     if(!subject||!body)return;
+    const reservation=state.reservations.find((item)=>String(item.id)===String(reservationId));
+    const clientName=state.profile?.full_name||state.user?.user_metadata?.full_name||"Client RentSoundSystem";
+    const clientEmail=state.user?.email||"";
+    const partnerName=reservation?.raw?.partner_name||reservation?.raw?.renter_name||reservation?.partner||"";
+    const partnerEmail=reservation?.raw?.partner_email||"";
     try{
-      const {data:thread,error:threadError}=await state.sb.from("support_threads").insert({user_id:state.user.id,reservation_id:reservationId,subject,status:"open"}).select("*").single();
+      const {data:thread,error:threadError}=await state.sb.from("support_threads").insert({
+        user_id:state.user.id,
+        reservation_id:reservationId,
+        subject,
+        status:"open",
+        client_name:clientName,
+        client_email:clientEmail,
+        partner_name:partnerName,
+        partner_email:partnerEmail
+      }).select("*").single();
       if(threadError)throw threadError;
-      const {error:messageError}=await state.sb.from("support_messages").insert({thread_id:thread.id,sender_id:state.user.id,sender_role:"client",body});
+      const {data:firstMessage,error:messageError}=await state.sb.from("support_messages")
+        .insert({thread_id:thread.id,sender_id:state.user.id,sender_role:"client",body})
+        .select("id").single();
       if(messageError)throw messageError;
-      closeModal();state.activeThreadId=thread.id;await loadThreads();await selectThread(thread.id);toast("Votre demande a été envoyée.");
+      await notifySupport(thread.id,firstMessage?.id,"client_message");
+      closeModal();state.activeThreadId=thread.id;await loadThreads();toast("Votre demande a été envoyée à RentSoundSystem.");
     }catch(error){console.error("Création conversation",error);toast("Impossible de créer cette conversation.");}
   }
 
@@ -477,9 +534,13 @@
     if(!body||!state.activeThreadId)return;
     const button=$("#send-message-btn");if(button){button.disabled=true;button.innerHTML='<span class="material-symbols-outlined">hourglass_top</span>Envoi…';}
     try{
-      const {error}=await state.sb.from("support_messages").insert({thread_id:state.activeThreadId,sender_id:state.user.id,sender_role:"client",body});
+      const {data:message,error}=await state.sb.from("support_messages")
+        .insert({thread_id:state.activeThreadId,sender_id:state.user.id,sender_role:"client",body})
+        .select("id").single();
       if(error)throw error;
-      input.value="";await selectThread(state.activeThreadId);await loadThreads();
+      input.value="";
+      await notifySupport(state.activeThreadId,message?.id,"client_message");
+      await loadThreads();
     }catch(error){console.error("Envoi message",error);toast("Impossible d’envoyer ce message.");}finally{if(button){button.disabled=false;button.innerHTML='<span class="material-symbols-outlined">send</span>Envoyer';}}
   }
 
@@ -516,7 +577,9 @@
 
   function subscribe(table,callback,filter) {
     try{
-      const channel=state.sb.channel("rss-"+table+"-"+state.user.id+"-"+Date.now()).on("postgres_changes",{event:"*",schema:"public",table,filter},callback).subscribe();
+      const config={event:"*",schema:"public",table};
+      if(filter) config.filter=filter;
+      const channel=state.sb.channel("rss-"+table+"-"+state.user.id+"-"+Date.now()).on("postgres_changes",config,callback).subscribe();
       state.realtimeChannels.push(channel);
     }catch(error){console.warn("Realtime indisponible",error);}
   }
@@ -546,11 +609,18 @@
       if(["reservations","orders","calendar","messages"].includes(page()))await loadReservations();
       if(page()==="calendar")renderCalendarDetail(null);
       if(page()==="inventory")await loadInventory();
-      if(page()==="messages")await loadThreads();
+      if(page()==="messages"){
+        const requestedThread=new URLSearchParams(window.location.search).get("thread");
+        if(requestedThread)state.activeThreadId=requestedThread;
+        await loadThreads();
+      }
       if(page()==="settings")renderSettings();
       if(["reservations","orders","calendar"].includes(page()))subscribe("reservations",loadReservations,"user_id=eq."+state.user.id);
       if(page()==="inventory")subscribe("inventory_items",loadInventory,"owner_user_id=eq."+state.user.id);
-      if(page()==="messages"){subscribe("support_threads",loadThreads,"user_id=eq."+state.user.id);}
+      if(page()==="messages"){
+        subscribe("support_threads",loadThreads,"user_id=eq."+state.user.id);
+        subscribe("support_messages",()=>{if(state.activeThreadId)selectThread(state.activeThreadId);});
+      }
       window.addEventListener("focus",()=>{if(["reservations","orders","calendar"].includes(page()))loadReservations();if(page()==="inventory")loadInventory();if(page()==="messages")loadThreads();},{passive:true});
     }catch(error){console.error("Espace client",error);toast("Votre espace client est temporairement indisponible.");}
   }
