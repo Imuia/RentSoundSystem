@@ -508,6 +508,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   #listing-edit-form .rss-option-head{cursor:pointer!important; user-select:none;}
 </style>
 
+
+<!-- rss-image-delete-fallback-columns-fix-v1 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -767,11 +769,20 @@ function imageKey(img){
   if(img.source === 'staging'){
     return 'staging|'+encodeURIComponent(img.listing_original_id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
   }
-  return 'main|'+encodeURIComponent(img.id||'');
+  if(img.source === 'listing'){
+    return 'listing|'+encodeURIComponent(img.id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
+  }
+  return 'main|'+encodeURIComponent(img.id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
 }
 function parseImageKey(key){
   const parts=String(key||'').split('|');
-  return {source:parts[0], id:decodeURIComponent(parts[1]||''), original_id:decodeURIComponent(parts[1]||''), position:decodeURIComponent(parts[2]||''), image_url:decodeURIComponent(parts[3]||'')};
+  return {
+    source:parts[0],
+    id:decodeURIComponent(parts[1]||''),
+    original_id:decodeURIComponent(parts[1]||''),
+    position:decodeURIComponent(parts[2]||''),
+    image_url:decodeURIComponent(parts[3]||'')
+  };
 }
 
 async function loadListingImages(listingOrId){
@@ -1162,12 +1173,36 @@ function removeNewEditImage(index){
  renderNewImagePreviews();
 }
 window.removeNewEditImage = removeNewEditImage;
+
+async function clearListingImageColumns(listingId, imageUrl){
+  if(!listingId || !imageUrl) return null;
+  const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId)) || {};
+  const fields=['image_url','featured_image','thumbnail','cover_image'];
+  const payload={};
+
+  fields.forEach(field=>{
+    if(String(listing[field]||'') === String(imageUrl||'')){
+      payload[field]=null;
+    }
+  });
+
+  if(!Object.keys(payload).length) return null;
+
+  const {error}=await sb.from('listings').update(payload).eq('id',listingId);
+  if(error) return error;
+
+  Object.keys(payload).forEach(field=>{ listing[field]=null; });
+  return null;
+}
+
 async function replaceImageUrl(key){
  const input=$('img-url-'+key);
  const url=input?.value?.trim();
  if(!url){alert('URL vide');return}
  const info=parseImageKey(key);
+ const listingId=$('edit-id')?.value;
  let error=null;
+
  if(info.source === 'staging'){
    const res=await sb.from('listing_images_staging')
      .update({image_url:url})
@@ -1175,30 +1210,83 @@ async function replaceImageUrl(key){
      .eq('image_url', info.image_url)
      .eq('position', Number(info.position||0));
    error=res.error;
+ }else if(info.source === 'listing'){
+   const current=(STATE.images?.[listingId]||[]).find(img=>imageKey(img)===key) || {};
+   const oldUrl=current.image_url || info.image_url || '';
+   const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId)) || {};
+   const fields=['image_url','featured_image','thumbnail','cover_image'];
+   const payload={};
+   fields.forEach(field=>{
+     if(String(listing[field]||'') === String(oldUrl||'')){
+       payload[field]=url;
+     }
+   });
+   if(!Object.keys(payload).length){
+     payload.image_url=url;
+   }
+   const res=await sb.from('listings').update(payload).eq('id',listingId);
+   error=res.error;
+   if(!error) Object.assign(listing,payload);
  }else{
    const res=await sb.from('listing_images').update({image_url:url}).eq('id',info.id);
    error=res.error;
+   if(!error && info.image_url){
+     await clearListingImageColumns(listingId, info.image_url);
+   }
  }
+
  if(error){alert('Erreur modification : '+error.message);return}
- await renderImages($('edit-id').value);
+ await loadPageListings();
+ await renderImages(listingId);
 }
 async function deleteImage(key){
  if(!confirm('Supprimer cette image ?')) return;
+ const listingId=$('edit-id')?.value;
  const info=parseImageKey(key);
+ const current=(STATE.images?.[listingId]||[]).find(img=>imageKey(img)===key) || {};
+ const imageUrl=current.image_url || info.image_url || '';
  let error=null;
- if(info.source === 'staging'){
-   const res=await sb.from('listing_images_staging')
-     .delete()
-     .eq('listing_original_id', Number(info.original_id))
-     .eq('image_url', info.image_url)
-     .eq('position', Number(info.position||0));
-   error=res.error;
- }else{
-   const res=await sb.from('listing_images').delete().eq('id',info.id);
-   error=res.error;
+
+ try{
+   if(info.source === 'staging'){
+     const res=await sb.from('listing_images_staging')
+       .delete()
+       .eq('listing_original_id', Number(info.original_id))
+       .eq('image_url', info.image_url)
+       .eq('position', Number(info.position||0));
+     error=res.error;
+   }else if(info.source === 'listing'){
+     error=await clearListingImageColumns(listingId, imageUrl);
+   }else{
+     const res=await sb.from('listing_images').delete().eq('id',info.id);
+     error=res.error;
+     if(!error && imageUrl){
+       const err2=await clearListingImageColumns(listingId, imageUrl);
+       if(err2) console.warn('Nettoyage colonnes listings impossible:', err2.message);
+     }
+   }
+
+   if(error){
+     alert('Erreur suppression image : '+error.message);
+     return;
+   }
+
+   if(STATE.images && STATE.images[listingId]){
+     STATE.images[listingId]=STATE.images[listingId].filter(img=>imageKey(img)!==key);
+   }
+
+   const item=(STATE.listings||[]).find(x=>String(x.id)===String(listingId));
+   if(item && imageUrl){
+     ['image_url','featured_image','thumbnail','cover_image'].forEach(field=>{
+       if(String(item[field]||'')===String(imageUrl)) item[field]='';
+     });
+   }
+
+   await loadPageListings();
+   await renderImages(listingId);
+ }catch(err){
+   alert('Erreur suppression image : '+(err.message || err));
  }
- if(error){alert('Erreur suppression : '+error.message);return}
- await renderImages($('edit-id').value);
 }
 
 async function deleteListing(id){
