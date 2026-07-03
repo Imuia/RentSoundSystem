@@ -234,9 +234,23 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <script src="https://js.stripe.com/v3/"></script>
 
 <style id="rss-stripe-hide-old-card-fields">
+  /* Champs Stripe Elements actifs : aucun changement fonctionnel. */
   #card-number,#card-expiry,#card-cvc,#card-name{display:none!important;}
+
+  /* Masque complètement l'ancien bloc visuel « Numéro de carte » resté sous Stripe. */
+  #card-payment-fields > .flex.flex-col.gap-1{display:none!important;}
   #card-payment-fields .grid.grid-cols-2.gap-4,
   #card-payment-fields .flex.flex-col.gap-1.mt-2{display:none!important;}
+
+  /* Le descriptif produit du résumé reste lisible sans allonger la colonne. */
+  #summary-item-desc{
+    display:-webkit-box!important;
+    -webkit-box-orient:vertical!important;
+    -webkit-line-clamp:4!important;
+    overflow:hidden!important;
+    line-height:1.35!important;
+    max-height:5.4em!important;
+  }
 </style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
