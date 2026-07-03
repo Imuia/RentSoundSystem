@@ -263,7 +263,7 @@
     const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     const { data, error } = await client
       .from("listings")
-      .select("id, original_id, title, description, city, location, country, category, brand, model, price, featured, image_url, featured_image, listing_images(image_url, position)")
+      .select("*, listing_images(image_url, position)")
       .eq("status", "publish")
       .limit(1000);
 
