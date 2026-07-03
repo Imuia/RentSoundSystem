@@ -512,6 +512,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 <!-- rss-image-delete-fallback-columns-fix-v1 -->
 
 <!-- rss-image-delete-schema-cache-safe-v2 -->
+
+<!-- rss-storage-delete-images-v3 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -774,6 +776,9 @@ function imageKey(img){
   if(img.source === 'listing'){
     return 'listing|'+encodeURIComponent(img.id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
   }
+  if(img.source === 'storage'){
+    return 'storage|'+encodeURIComponent(img.id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
+  }
   return 'main|'+encodeURIComponent(img.id||'')+'|'+encodeURIComponent(img.position||0)+'|'+encodeURIComponent(img.image_url||'');
 }
 function parseImageKey(key){
@@ -799,6 +804,7 @@ async function loadListingImages(listingOrId){
     if(url && !seen.has(url)){ seen.add(url); out.push(img); }
   }
 
+  // 1. Images enregistrées dans la table listing_images
   if(listing.id){
     const {data,error}=await sb.from('listing_images')
       .select('id,listing_id,image_url,position,created_at')
@@ -808,10 +814,40 @@ async function loadListingImages(listingOrId){
     (data||[]).forEach(img=>addImg({...img, source:'main'}));
   }
 
+  // 2. Images directes si ces colonnes existent dans une ancienne version locale/cache
   [listing.image_url, listing.featured_image, listing.thumbnail, listing.cover_image].filter(Boolean).forEach((url,i)=>{
     addImg({id:'listing-fallback-'+i, listing_id:listing.id, image_url:url, position:900+i, source:'listing'});
   });
 
+  // 3. Images uploadées dans Storage mais pas encore reliées à listing_images
+  // Exemple : listing-images/user_id/listing_id/fichier.avif
+  try{
+    if(listing.id && STATE?.ctx?.user?.id){
+      const folder=STATE.ctx.user.id + '/' + listing.id;
+      const {data,error}=await sb.storage.from('listing-images').list(folder,{
+        limit:100,
+        sortBy:{column:'created_at',order:'asc'}
+      });
+      if(error) console.warn('Erreur listing storage images:', error.message);
+      (data||[])
+        .filter(f=>f && f.name && /\.(avif|webp|png|jpe?g|gif)$/i.test(f.name))
+        .forEach((file,index)=>{
+          const {data:pub}=sb.storage.from('listing-images').getPublicUrl(folder + '/' + file.name);
+          addImg({
+            id:'storage-'+index+'-'+file.name,
+            listing_id:listing.id,
+            image_url:pub.publicUrl,
+            position:700+index,
+            source:'storage',
+            storage_path:folder + '/' + file.name
+          });
+        });
+    }
+  }catch(e){
+    console.warn('Storage images ignorées:', e.message || e);
+  }
+
+  // 4. Anciennes images importées
   if(listing.original_id !== undefined && listing.original_id !== null && String(listing.original_id) !== ''){
     const {data:staging,error:stErr}=await sb.from('listing_images_staging')
       .select('listing_original_id,image_url,position')
@@ -945,6 +981,34 @@ function updateListingsCount(){
 }
 
 
+
+
+function storagePathFromPublicUrl(url){
+  try{
+    const u=new URL(String(url||''));
+    const marker='/storage/v1/object/public/listing-images/';
+    const idx=u.pathname.indexOf(marker);
+    if(idx === -1) return '';
+    return decodeURIComponent(u.pathname.slice(idx + marker.length));
+  }catch(e){
+    const s=String(url||'');
+    const marker='/storage/v1/object/public/listing-images/';
+    const idx=s.indexOf(marker);
+    return idx === -1 ? '' : decodeURIComponent(s.slice(idx + marker.length).split('?')[0]);
+  }
+}
+
+async function removeStorageImageByUrl(imageUrl){
+  const path=storagePathFromPublicUrl(imageUrl);
+  if(!path) return null;
+  try{
+    const {error}=await sb.storage.from('listing-images').remove([path]);
+    if(error) return error;
+    return null;
+  }catch(e){
+    return e;
+  }
+}
 
 async function findStorageImageForListing(item){
   try{
@@ -1141,7 +1205,11 @@ async function renderImages(listingId){
  wrap.innerHTML=imgs.length?imgs.map(img=>{
    const imageUrl = img.image_url || '';
    const key = imageKey(img);
-   const badge = img.source === 'staging' ? '<div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.4);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px">legacy</div>' : '';
+   const badge = img.source === 'staging'
+     ? '<div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.4);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px">legacy</div>'
+     : (img.source === 'storage'
+       ? '<div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.4);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px">storage</div>'
+       : '');
    return `<div class="rss-image-preview-card">
      ${badge}
      <div class="rss-image-preview-actions">
@@ -1281,6 +1349,7 @@ async function deleteImage(key){
  let error=null;
 
  try{
+   // Anciennes images importées
    if(info.source === 'staging'){
      const res=await sb.from('listing_images_staging')
        .delete()
@@ -1288,17 +1357,31 @@ async function deleteImage(key){
        .eq('image_url', info.image_url)
        .eq('position', Number(info.position||0));
      error=res.error;
-   }else if(info.source === 'listing'){
-     // Source directe depuis listings : on tente de nettoyer les colonnes existantes, sans bloquer si elles n'existent pas.
+   }
+
+   // Images directes/Storage : on supprime aussi le fichier Storage si l'URL vient du bucket listing-images
+   else if(info.source === 'storage' || info.source === 'listing'){
+     const storageError=await removeStorageImageByUrl(imageUrl);
+     if(storageError){
+       alert("Erreur suppression fichier Storage : " + storageError.message + "\\nVérifiez la policy DELETE sur le bucket listing-images.");
+       return;
+     }
+     // Nettoyage complémentaire non bloquant des colonnes listings si elles existent
      await clearListingImageColumns(listingId, imageUrl);
      error=null;
-   }else{
-     // Source normale public.listing_images : c'est cette suppression qui compte.
+   }
+
+   // Images normales en base listing_images
+   else{
      const res=await sb.from('listing_images').delete().eq('id',info.id);
      error=res.error;
 
-     // Nettoyage complémentaire non bloquant.
      if(!error && imageUrl){
+       // Important : si l'image existe aussi physiquement dans Storage, on la supprime pour éviter qu'elle réapparaisse.
+       const storageError=await removeStorageImageByUrl(imageUrl);
+       if(storageError){
+         console.warn('Suppression fichier Storage impossible:', storageError.message || storageError);
+       }
        await clearListingImageColumns(listingId, imageUrl);
      }
    }
@@ -1488,6 +1571,29 @@ add column if not exists installation_enabled boolean default true,
 add column if not exists installation_price numeric default 150;
 
 Après avoir lancé ce SQL, les champs seront sauvegardés et rechargés automatiquement.
+-->
+
+
+<!--
+SQL utile si la suppression des fichiers Storage est bloquée :
+
+create policy "partners can delete own listing storage images"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'listing-images'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
+
+create policy "partners can read own listing storage images"
+on storage.objects
+for select
+to authenticated
+using (
+  bucket_id = 'listing-images'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
 -->
 
 </body>
