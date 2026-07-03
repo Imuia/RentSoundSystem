@@ -510,6 +510,8 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
 
 
 <!-- rss-image-delete-fallback-columns-fix-v1 -->
+
+<!-- rss-image-delete-schema-cache-safe-v2 -->
 </head>
 <body>
 <div id="header-container"></div>
@@ -1175,23 +1177,42 @@ function removeNewEditImage(index){
 window.removeNewEditImage = removeNewEditImage;
 
 async function clearListingImageColumns(listingId, imageUrl){
+  // Nettoyage NON BLOQUANT.
+  // Selon les versions de la table listings, certaines colonnes image_url / thumbnail / cover_image peuvent ne pas exister.
+  // On tente chaque colonne séparément et on ignore les colonnes absentes pour ne pas casser la suppression réelle.
   if(!listingId || !imageUrl) return null;
+
   const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId)) || {};
   const fields=['image_url','featured_image','thumbnail','cover_image'];
-  const payload={};
+  let cleaned=false;
 
-  fields.forEach(field=>{
-    if(String(listing[field]||'') === String(imageUrl||'')){
+  for(const field of fields){
+    try{
+      // Si la donnée locale existe et ne correspond pas à l'URL, on ne touche pas à cette colonne.
+      if(listing[field] && String(listing[field]) !== String(imageUrl)) continue;
+
+      const payload={};
       payload[field]=null;
+
+      const {error}=await sb.from('listings').update(payload).eq('id',listingId);
+
+      if(error){
+        const msg=String(error.message || '').toLowerCase();
+        // Colonne absente : on ignore, ce n'est pas une erreur de suppression image.
+        if(msg.includes('could not find') || msg.includes('schema cache') || msg.includes('column')){
+          continue;
+        }
+        console.warn('Nettoyage colonne image impossible:', field, error.message);
+        continue;
+      }
+
+      if(listing[field]) listing[field]=null;
+      cleaned=true;
+    }catch(e){
+      console.warn('Nettoyage colonne image ignoré:', field, e.message || e);
     }
-  });
+  }
 
-  if(!Object.keys(payload).length) return null;
-
-  const {error}=await sb.from('listings').update(payload).eq('id',listingId);
-  if(error) return error;
-
-  Object.keys(payload).forEach(field=>{ listing[field]=null; });
   return null;
 }
 
@@ -1211,22 +1232,34 @@ async function replaceImageUrl(key){
      .eq('position', Number(info.position||0));
    error=res.error;
  }else if(info.source === 'listing'){
-   const current=(STATE.images?.[listingId]||[]).find(img=>imageKey(img)===key) || {};
-   const oldUrl=current.image_url || info.image_url || '';
-   const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId)) || {};
+   // Les colonnes d'image dans listings peuvent varier selon le schéma.
+   // On essaie seulement les colonnes réellement acceptées par Supabase.
+   const oldUrl=info.image_url || '';
    const fields=['image_url','featured_image','thumbnail','cover_image'];
-   const payload={};
-   fields.forEach(field=>{
-     if(String(listing[field]||'') === String(oldUrl||'')){
+   let updated=false;
+
+   for(const field of fields){
+     try{
+       const payload={};
        payload[field]=url;
-     }
-   });
-   if(!Object.keys(payload).length){
-     payload.image_url=url;
+       const res=await sb.from('listings').update(payload).eq('id',listingId);
+       if(res.error){
+         const msg=String(res.error.message || '').toLowerCase();
+         if(msg.includes('could not find') || msg.includes('schema cache') || msg.includes('column')) continue;
+         error=res.error;
+         break;
+       }
+       updated=true;
+       const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId));
+       if(listing) listing[field]=url;
+       break;
+     }catch(e){}
    }
-   const res=await sb.from('listings').update(payload).eq('id',listingId);
-   error=res.error;
-   if(!error) Object.assign(listing,payload);
+
+   if(!updated && !error){
+     alert("Impossible de modifier cette URL : aucune colonne image compatible n'existe dans listings.");
+     return;
+   }
  }else{
    const res=await sb.from('listing_images').update({image_url:url}).eq('id',info.id);
    error=res.error;
@@ -1256,13 +1289,17 @@ async function deleteImage(key){
        .eq('position', Number(info.position||0));
      error=res.error;
    }else if(info.source === 'listing'){
-     error=await clearListingImageColumns(listingId, imageUrl);
+     // Source directe depuis listings : on tente de nettoyer les colonnes existantes, sans bloquer si elles n'existent pas.
+     await clearListingImageColumns(listingId, imageUrl);
+     error=null;
    }else{
+     // Source normale public.listing_images : c'est cette suppression qui compte.
      const res=await sb.from('listing_images').delete().eq('id',info.id);
      error=res.error;
+
+     // Nettoyage complémentaire non bloquant.
      if(!error && imageUrl){
-       const err2=await clearListingImageColumns(listingId, imageUrl);
-       if(err2) console.warn('Nettoyage colonnes listings impossible:', err2.message);
+       await clearListingImageColumns(listingId, imageUrl);
      }
    }
 
@@ -1271,6 +1308,7 @@ async function deleteImage(key){
      return;
    }
 
+   // Retrait immédiat dans l'interface.
    if(STATE.images && STATE.images[listingId]){
      STATE.images[listingId]=STATE.images[listingId].filter(img=>imageKey(img)!==key);
    }
