@@ -204,7 +204,7 @@
 </div>
 <!-- Actions -->
 <div class="w-full flex flex-col sm:flex-row gap-4 relative z-10">
-<a class="flex-1 bg-[#FC036D] text-white font-label-caps text-label-caps uppercase py-4 px-6 rounded-DEFAULT flex items-center justify-center gap-2 glow-shadow hover:bg-[#d6005a] transition-colors" href="/espace-client.html">
+<a class="flex-1 bg-[#FC036D] text-white font-label-caps text-label-caps uppercase py-4 px-6 rounded-DEFAULT flex items-center justify-center gap-2 glow-shadow hover:bg-[#d6005a] transition-colors" id="client-reservations-link" href="/espace-client-reservations.html">
 <span class="material-symbols-outlined">receipt_long</span>
                         Voir mes réservations
                     </a>
@@ -412,6 +412,9 @@
     set('#order-total', money(order.amounts.total));
     set('#order-deposit', money(order.amounts.deposit)+' (Non débité)');
     renderStripe(stripeResult);
+
+    const portalLink=qs('#client-reservations-link');
+    if(portalLink) portalLink.href='/espace-client-reservations.html?order='+encodeURIComponent(order.id);
 
     const title=qs('title');
     if(title) title.textContent='Commande '+order.id+' confirmée - RentSoundSystem';
