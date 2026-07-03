@@ -70,9 +70,77 @@
     "eclairage":"soundlight"
   };
 
-  function canonicalCategory(value){
+  /*
+    Les annonces peuvent contenir :
+    - un slug historique : "deejay", "sonorisation-eclairage" ;
+    - un libellé : "DJ & DJing" ;
+    - un identifiant de la table categories.
+    Le catalogue gère déjà cette correspondance : on applique la même logique ici.
+  */
+  function canonicalCategory(value, lookup){
     const key = normalizeKey(value);
+    if (lookup && lookup[key]) return lookup[key];
     return aliases[key] || key;
+  }
+
+  function categoryValues(value){
+    if (Array.isArray(value)) return value;
+
+    if (value && typeof value === "object") {
+      return Object.values(value);
+    }
+
+    const raw = String(value ?? "").trim();
+    if (!raw) return [];
+
+    // Supporte aussi une ancienne valeur JSON ou plusieurs catégories séparées.
+    if (raw.startsWith("[") && raw.endsWith("]")) {
+      try {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed)) return parsed;
+      } catch (error) {}
+    }
+
+    return raw.split(/[,;|]/).map((part) => part.trim()).filter(Boolean);
+  }
+
+  async function loadCategoryLookup(client){
+    const lookup = Object.create(null);
+
+    try {
+      const result = await client
+        .from("categories")
+        .select("id,name,title,slug")
+        .order("name", { ascending: true });
+
+      if (result.error) {
+        console.warn("Catégories Supabase indisponibles :", result.error.message || result.error);
+        return lookup;
+      }
+
+      (result.data || []).forEach((category) => {
+        const canonical = canonicalCategory(
+          category.slug || category.name || category.title || "",
+          null
+        );
+
+        if (!canonical) return;
+
+        [category.id, category.name, category.title, category.slug].forEach((value) => {
+          const key = normalizeKey(value);
+          if (key) lookup[key] = canonical;
+        });
+      });
+    } catch (error) {
+      console.warn("Catégories Supabase indisponibles :", error);
+    }
+
+    return lookup;
+  }
+
+  function listingMatchesCategory(item, lookup){
+    const values = categoryValues(item?.category);
+    return values.some((value) => canonicalCategory(value, lookup) === targetKey);
   }
 
   function money(value){
@@ -205,9 +273,11 @@
       return;
     }
 
+    const categoryLookup = await loadCategoryLookup(client);
+
     const items = (data || [])
-      .filter((item) => canonicalCategory(item.category) === targetKey)
-      .sort((a,b) => Number(b.featured || 0) - Number(a.featured || 0) || Number(b.original_id || 0) - Number(a.original_id || 0));
+      .filter((item) => listingMatchesCategory(item, categoryLookup))
+      .sort((a,b) => Number(b.featured || 0) - Number(a.featured || 0) || Number(b.original_id || 0) - Number(a.original_id || a.id || 0));
 
     render(items);
     applySearch(items);
