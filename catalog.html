@@ -310,6 +310,14 @@ html, body {
 </style>
 
 
+<style id="rss-catalog-category-city-display-fix">
+#catalog-category-list {max-height:260px;overflow-y:auto;padding-right:4px}
+#catalog-category-list label{padding:7px 8px;border:1px solid transparent;border-radius:8px}
+#catalog-category-list label:hover{background:rgba(252,3,109,.08);border-color:rgba(252,3,109,.22)}
+#filter-city{cursor:pointer}
+#filter-city option{background:#131313;color:#e2e2e2}
+</style>
+
 <!-- rss-catalog-categories-table-v1 -->
 </head>
 <body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-20">
@@ -418,6 +426,7 @@ html, body {
   let currentPage = 1;
   let allItems = [];
   let filteredItems = [];
+  let categoryLookup = Object.create(null);
 
   function $(id) {
     return document.getElementById(id);
@@ -440,6 +449,86 @@ html, body {
     const n = Number(value || 0);
     return n.toLocaleString("fr-FR", { maximumFractionDigits: 0 }) + "€";
   }
+
+  function normalizeKey(value) {
+    return clean(value)
+      .toLocaleLowerCase("fr-FR")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[’']/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function looksLikeIdentifier(value) {
+    const v = String(value || "").trim();
+    return /^[0-9]+$/.test(v) ||
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+  }
+
+  function formatLocationLabel(value) {
+    const v = clean(value).replace(/\s+/g, " ").trim();
+    if (!v) return "";
+    if (v === v.toLocaleUpperCase("fr-FR") && v.length > 2) {
+      return v.toLocaleLowerCase("fr-FR").replace(/(^|[\s-])([a-zà-ÿ])/gu, function (_, separator, letter) {
+        return separator + letter.toLocaleUpperCase("fr-FR");
+      });
+    }
+    return v;
+  }
+
+  function resolveCategoryLabel(value) {
+    const raw = clean(value);
+    if (!raw) return "Matériel professionnel";
+    const mapped = categoryLookup[normalizeKey(raw)];
+    if (mapped) return mapped;
+    return looksLikeIdentifier(raw) ? "Matériel professionnel" : raw;
+  }
+
+  function resolveCityLabel(item) {
+    return formatLocationLabel(item.city || item.location || "");
+  }
+
+  function normalizeListing(item) {
+    const categoryLabel = resolveCategoryLabel(item.category);
+    const cityLabel = resolveCityLabel(item);
+    return Object.assign({}, item, {
+      category_label: categoryLabel,
+      category_key: normalizeKey(categoryLabel),
+      city_label: cityLabel,
+      city_key: normalizeKey(cityLabel)
+    });
+  }
+
+  async function loadCategoryLookup() {
+    const lookup = Object.create(null);
+
+    try {
+      const result = await supabaseClient
+        .from("categories")
+        .select("id,name,title,slug")
+        .order("name", { ascending: true });
+
+      if (result.error) {
+        console.warn("Catégories Supabase indisponibles :", result.error.message || result.error);
+        return lookup;
+      }
+
+      (result.data || []).forEach(function (category) {
+        const label = clean(category.name || category.title || category.slug || "");
+        if (!label) return;
+        [category.id, category.name, category.title, category.slug].forEach(function (key) {
+          const normalized = normalizeKey(key);
+          if (normalized) lookup[normalized] = label;
+        });
+      });
+    } catch (error) {
+      console.warn("Catégories Supabase indisponibles :", error);
+    }
+
+    return lookup;
+  }
+
 
   function productUrl(item) {
     if (item.original_id !== undefined && item.original_id !== null) {
@@ -467,13 +556,13 @@ html, body {
 
   function getFilters() {
     return {
-      search: ($("catalog-search") && $("catalog-search").value || "").trim().toLowerCase(),
+      search: ($("catalog-search") && $("catalog-search").value || "").trim().toLocaleLowerCase("fr-FR"),
       min: Number(($("filter-min-price") && $("filter-min-price").value) || 0),
       max: Number(($("filter-max-price") && $("filter-max-price").value) || 0),
-      city: ($("filter-city") && $("filter-city").value || "").trim().toLowerCase(),
+      city: ($("filter-city") && $("filter-city").value || "").trim(),
       sort: ($("catalog-sort") && $("catalog-sort").value || "Recommandé"),
       categories: Array.from(document.querySelectorAll(".catalog-category:checked"))
-        .map(function (el) { return (el.dataset.category || "").toLowerCase(); })
+        .map(function (element) { return element.dataset.categoryKey || ""; })
         .filter(Boolean)
     };
   }
@@ -485,22 +574,21 @@ html, body {
       const text = [
         item.title,
         item.description,
-        item.city,
-        item.location,
-        item.category,
+        item.city_label,
+        item.category_label,
         item.brand,
         item.model
-      ].join(" ").toLowerCase();
+      ].join(" ").toLocaleLowerCase("fr-FR");
 
       const price = Number(item.price || 0);
-      const city = String(item.city || item.location || "").toLowerCase();
-      const category = String(item.category || "").toLowerCase();
+      const cityKey = item.city_key || "";
+      const categoryKey = item.category_key || "";
 
       if (f.search && text.indexOf(f.search) === -1) return false;
-      if (f.city && city.indexOf(f.city) === -1) return false;
+      if (f.city && cityKey !== f.city) return false;
       if (f.min && price < f.min) return false;
       if (f.max && price > f.max) return false;
-      if (f.categories.length && !f.categories.some(function (c) { return category.indexOf(c) !== -1 || text.indexOf(c) !== -1; })) return false;
+      if (f.categories.length && f.categories.indexOf(categoryKey) === -1) return false;
 
       return true;
     });
@@ -545,8 +633,8 @@ html, body {
       const img = firstImage(item);
       const title = safe(item.title || "Matériel professionnel");
       const desc = safe(clean(item.description).slice(0, 145));
-      const category = safe(item.category || "Matériel");
-      const city = safe(item.city || item.location || "Ville non précisée");
+      const category = safe(item.category_label || "Matériel professionnel");
+      const city = safe(item.city_label || "Ville non précisée");
       const price = money(item.price || 0);
       const url = productUrl(item);
 
@@ -639,60 +727,55 @@ html, body {
   }
 
 
-  async function loadDynamicCategories() {
+  function loadDynamicCategories() {
     const catBox = document.getElementById("catalog-category-list");
     if (!catBox) return;
 
-    function renderCategories(values) {
-      const cats = [...new Set((values || []).map(function (c) { return String(c || "").trim(); }).filter(Boolean))]
-        .sort(function (a, b) { return a.localeCompare(b, "fr"); });
+    const categories = new Map();
+    allItems.forEach(function (item) {
+      const key = item.category_key || "";
+      const label = item.category_label || "";
+      if (key && label && !categories.has(key)) categories.set(key, label);
+    });
 
-      if (!cats.length) {
-        catBox.innerHTML = '<div class="text-body-sm text-on-surface-variant">Aucune catégorie disponible.</div>';
-        return;
-      }
+    const entries = Array.from(categories.entries())
+      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); });
 
-      catBox.innerHTML = cats.map(function (c) {
-        return '<label class="flex items-center gap-2 cursor-pointer group">' +
-          '<input class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" data-category="' + safe(c.toLowerCase()) + '" type="checkbox">' +
-          '<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">' + safe(c) + '</span>' +
-        '</label>';
-      }).join("");
-
-      catBox.querySelectorAll(".catalog-category").forEach(function (input) {
-        input.addEventListener("change", applyFilters);
-      });
+    if (!entries.length) {
+      catBox.innerHTML = '<div class="text-body-sm text-on-surface-variant">Aucune catégorie disponible.</div>';
+      return;
     }
 
-    try {
-      const result = await supabaseClient
-        .from("categories")
-        .select("name,title,slug")
-        .order("name", { ascending: true });
+    catBox.innerHTML = entries.map(function (entry) {
+      const key = entry[0];
+      const label = entry[1];
+      return '<label class="flex items-center gap-2 cursor-pointer group">' +
+        '<input class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" data-category-key="' + safe(key) + '" type="checkbox">' +
+        '<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">' + safe(label) + '</span>' +
+      '</label>';
+    }).join("");
 
-      if (!result.error && Array.isArray(result.data) && result.data.length) {
-        renderCategories(result.data.map(function (c) {
-          return c.name || c.title || c.slug;
-        }));
-        return;
-      }
-    } catch (e) {
-      console.warn("Fallback catégories depuis listings.category", e);
-    }
-
-    renderCategories(allItems.map(function (i) { return i.category; }));
+    catBox.querySelectorAll(".catalog-category").forEach(function (input) {
+      input.addEventListener("change", applyFilters);
+    });
   }
 
   function loadDynamicCities() {
     const city = document.getElementById("filter-city");
     if (!city) return;
 
-    const cities = [...new Set(allItems.map(function (i) {
-      return String(i.city || i.location || "").trim();
-    }).filter(Boolean))].sort(function (a, b) { return a.localeCompare(b, "fr"); });
+    const cities = new Map();
+    allItems.forEach(function (item) {
+      const key = item.city_key || "";
+      const label = item.city_label || "";
+      if (key && label && !cities.has(key)) cities.set(key, label);
+    });
 
-    city.innerHTML = '<option value="">Toutes les villes</option>' + cities.map(function (v) {
-      return '<option>' + safe(v) + '</option>';
+    const entries = Array.from(cities.entries())
+      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); });
+
+    city.innerHTML = '<option value="">Tous les lieux</option>' + entries.map(function (entry) {
+      return '<option value="' + safe(entry[0]) + '">' + safe(entry[1]) + '</option>';
     }).join("");
 
     city.onchange = applyFilters;
@@ -713,10 +796,6 @@ html, body {
       });
     }
 
-    document.querySelectorAll(".catalog-category").forEach(function (input) {
-      input.addEventListener("change", applyFilters);
-    });
-
     const clear = $("clear-filters");
     if (clear) {
       clear.addEventListener("click", function () {
@@ -725,7 +804,7 @@ html, body {
         if ($("filter-max-price")) $("filter-max-price").value = "";
         if ($("filter-city")) $("filter-city").value = "";
         if ($("catalog-sort")) $("catalog-sort").selectedIndex = 0;
-        document.querySelectorAll(".catalog-category").forEach(function (i) { i.checked = false; });
+        document.querySelectorAll(".catalog-category").forEach(function (input) { input.checked = false; });
         applyFilters();
       });
     }
@@ -753,12 +832,12 @@ html, body {
       return;
     }
 
-    allItems = result.data || [];
+    categoryLookup = await loadCategoryLookup();
+    allItems = (result.data || []).map(normalizeListing);
     filteredItems = allItems.slice();
 
-    await loadDynamicCategories();
+    loadDynamicCategories();
     loadDynamicCities();
-
     applyFilters();
   }
 
