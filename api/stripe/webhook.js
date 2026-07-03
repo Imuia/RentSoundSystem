@@ -13,11 +13,12 @@ function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY);
 }
 
-function text(value, fallback = "") {
+function text(value, fallback = "", maxLength = 500) {
   const result = String(value ?? "")
     .replace(/[\r\n\t]+/g, " ")
     .replace(/\s+/g, " ")
-    .trim();
+    .trim()
+    .slice(0, maxLength);
   return result || fallback;
 }
 
@@ -128,7 +129,7 @@ async function resendEmail({ to, subject, html, idempotencyKey }) {
 
   const data = await response.json().catch(() => ({}));
   if (!response.ok) {
-    throw new Error(data?.message || data?.error || "Erreur Resend lors de l'envoi de l'e-mail.");
+    throw new Error(text(data?.message || data?.error || "Erreur Resend lors de l'envoi de l'e-mail."));
   }
   return data;
 }
@@ -149,24 +150,71 @@ async function getReceiptUrl(stripe, paymentIntent) {
   if (!chargeId) return "";
   try {
     const charge = await stripe.charges.retrieve(chargeId);
-    return text(charge.receipt_url);
+    return text(charge.receipt_url, "", 1000);
   } catch {
     return "";
   }
 }
 
-async function updateEmailState(stripe, paymentIntent, key, value) {
-  await stripe.paymentIntents.update(paymentIntent.id, {
+async function patchMetadata(stripe, paymentIntentId, patch) {
+  const current = await stripe.paymentIntents.retrieve(paymentIntentId);
+  const updated = await stripe.paymentIntents.update(paymentIntentId, {
     metadata: {
-      ...paymentIntent.metadata,
-      [key]: value
+      ...(current.metadata || {}),
+      ...patch,
+      notifications_updated_at: new Date().toISOString()
     }
   });
-  paymentIntent.metadata[key] = value;
+  return updated;
+}
+
+function recipientStatus(metadata, recipient) {
+  const modern = text(metadata?.[`email_${recipient}_status`]);
+  if (modern) return modern;
+  const legacy = text(metadata?.[`email_${recipient}_sent`]);
+  if (legacy === "true") return "sent";
+  if (legacy === "not_applicable") return "not_applicable";
+  return "pending";
+}
+
+async function sendOne({ stripe, rental, recipient, to, subject, html, idempotencyKey }) {
+  const currentStatus = recipientStatus(rental.metadata || {}, recipient);
+  if (currentStatus === "sent" || currentStatus === "not_applicable") {
+    return { recipient, status: currentStatus, skipped: true, rental };
+  }
+
+  if (!isEmail(to)) {
+    const updated = await patchMetadata(stripe, rental.id, {
+      [`email_${recipient}_status`]: "not_applicable",
+      [`email_${recipient}_sent`]: "not_applicable"
+    });
+    return { recipient, status: "not_applicable", skipped: true, rental: updated };
+  }
+
+  let updated = await patchMetadata(stripe, rental.id, {
+    [`email_${recipient}_status`]: "sending",
+    notification_status: "sending"
+  });
+
+  try {
+    await resendEmail({ to, subject, html, idempotencyKey });
+    updated = await patchMetadata(stripe, rental.id, {
+      [`email_${recipient}_status`]: "sent",
+      [`email_${recipient}_sent`]: "true"
+    });
+    return { recipient, status: "sent", rental: updated };
+  } catch (error) {
+    updated = await patchMetadata(stripe, rental.id, {
+      [`email_${recipient}_status`]: "error",
+      notification_status: "error",
+      notification_last_error: text(error?.message || error, "Erreur d’envoi e-mail", 450)
+    });
+    throw Object.assign(new Error(text(error?.message || error)), { rental: updated, recipient });
+  }
 }
 
 async function sendNotificationsWhenReady(stripe, rentalIntentId) {
-  const rental = await stripe.paymentIntents.retrieve(rentalIntentId);
+  let rental = await stripe.paymentIntents.retrieve(rentalIntentId);
   const metadata = rental.metadata || {};
 
   if (metadata.type !== "rental_payment") {
@@ -185,24 +233,38 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     }
   }
 
-  const orderId = text(metadata.order_id, rental.id);
+  if (text(rental.metadata?.notification_status) === "sent") {
+    return { sent: true, skipped: "already_sent", orderId: text(rental.metadata?.order_id, rental.id) };
+  }
+
+  rental = await patchMetadata(stripe, rental.id, {
+    notification_status: "sending",
+    notification_last_error: ""
+  });
+
+  const currentMetadata = rental.metadata || {};
+  const orderId = text(currentMetadata.order_id, rental.id);
   const customer = await getCustomer(stripe, rental.customer);
-  const customerEmail = text(rental.receipt_email || customer.email);
-  const customerName = text(customer.name, "Client");
-  const customerPhone = text(customer.phone, "Non indiqué");
-  const partnerEmail = text(metadata.partner_email);
-  const partnerName = text(metadata.partner_name, "Partenaire");
-  const adminEmail = text(process.env.ADMIN_EMAIL);
+  const customerEmail = text(rental.receipt_email || customer.email, "", 254);
+  const customerName = text(customer.name, "Client", 200);
+  const customerPhone = text(customer.phone, "Non indiqué", 80);
+  const partnerEmail = text(currentMetadata.partner_email, "", 254);
+  const partnerName = text(currentMetadata.partner_name, "Partenaire", 200);
+  const adminEmail = text(process.env.ADMIN_EMAIL, "", 254);
   const currency = rental.currency || "eur";
   const receiptUrl = await getReceiptUrl(stripe, rental);
 
-  if (!adminEmail || !isEmail(adminEmail)) {
-    throw new Error("ADMIN_EMAIL manquante ou invalide dans Vercel.");
+  if (!isEmail(adminEmail)) {
+    rental = await patchMetadata(stripe, rental.id, {
+      notification_status: "error",
+      notification_last_error: "ADMIN_EMAIL manquante ou invalide dans Vercel."
+    });
+    throw Object.assign(new Error("ADMIN_EMAIL manquante ou invalide dans Vercel."), { rental });
   }
 
-  const rentalDates = `${formatDate(metadata.rental_start)} → ${formatDate(metadata.rental_end)}`;
-  const location = text(metadata.rental_city, "Non indiqué");
-  const product = text(metadata.listing_name, "Matériel RentSoundSystem");
+  const rentalDates = `${formatDate(currentMetadata.rental_start)} → ${formatDate(currentMetadata.rental_end)}`;
+  const location = text(currentMetadata.rental_city, "Non indiqué", 200);
+  const product = text(currentMetadata.listing_name, "Matériel RentSoundSystem", 300);
   const depositText = deposit
     ? `${formatMoney(deposit.amount, deposit.currency)} — autorisée, non débitée`
     : "Aucune caution demandée";
@@ -216,12 +278,17 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     ["Caution", depositText]
   ]);
 
-  if (isEmail(customerEmail) && metadata.email_customer_sent !== "true") {
+  const errors = [];
+
+  try {
     const receiptBlock = receiptUrl
       ? `<p style="margin:20px 0 0;"><a href="${escapeHtml(receiptUrl)}" style="display:inline-block;background:#fc036d;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:6px;font-weight:700;">Voir le reçu Stripe</a></p>`
       : "";
 
-    await resendEmail({
+    const result = await sendOne({
+      stripe,
+      rental,
+      recipient: "customer",
       to: customerEmail,
       subject: `Confirmation de réservation ${orderId} – RentSoundSystem`,
       idempotencyKey: `rss:${orderId}:customer-confirmation`,
@@ -231,22 +298,24 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
         `${publicDetails}${receiptBlock}<p style="font-size:14px;line-height:1.5;margin-top:22px;">Notre équipe ou le partenaire vous contactera pour l’organisation pratique de la location.</p>`
       )
     });
-
-    await updateEmailState(stripe, rental, "email_customer_sent", "true");
+    rental = result.rental;
+  } catch (error) {
+    errors.push(`client: ${text(error?.message || error, "Erreur", 220)}`);
+    rental = error.rental || rental;
   }
 
-  if (metadata.email_admin_sent !== "true") {
+  try {
     const adminDetails = detailsTable([
       ["Référence", orderId],
       ["Client", customerName],
       ["E-mail client", customerEmail || "Non indiqué"],
       ["Téléphone", customerPhone],
-      ["Société", text(metadata.customer_company, "Non indiquée")],
+      ["Société", text(currentMetadata.customer_company, "Non indiquée", 200)],
       ["Matériel", product],
       ["Dates", rentalDates],
       ["Lieu", location],
-      ["Livraison", text(metadata.delivery_method, "Non indiqué")],
-      ["Technicien", metadata.technician === "yes" ? "Oui" : "Non"],
+      ["Livraison", text(currentMetadata.delivery_method, "Non indiqué", 80)],
+      ["Technicien", currentMetadata.technician === "yes" ? "Oui" : "Non"],
       ["Partenaire", partnerName],
       ["E-mail partenaire", partnerEmail || "Non indiqué"],
       ["Paiement reçu", formatMoney(rental.amount, currency)],
@@ -255,7 +324,10 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       ["PaymentIntent caution", deposit?.id || "Aucun"]
     ]);
 
-    await resendEmail({
+    const result = await sendOne({
+      stripe,
+      rental,
+      recipient: "admin",
       to: adminEmail,
       subject: `Nouvelle réservation payée ${orderId} – ${product}`,
       idempotencyKey: `rss:${orderId}:admin-notification`,
@@ -265,18 +337,20 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
         `${adminDetails}<p style="font-size:14px;line-height:1.5;margin-top:22px;">Aucun numéro de carte ou donnée bancaire sensible n’est transmis dans cet e-mail.</p>`
       )
     });
-
-    await updateEmailState(stripe, rental, "email_admin_sent", "true");
+    rental = result.rental;
+  } catch (error) {
+    errors.push(`admin: ${text(error?.message || error, "Erreur", 220)}`);
+    rental = error.rental || rental;
   }
 
-  if (isEmail(partnerEmail) && metadata.email_partner_sent !== "true") {
+  try {
     const partnerDetails = detailsTable([
       ["Référence", orderId],
       ["Matériel", product],
       ["Dates", rentalDates],
       ["Lieu", location],
-      ["Livraison", text(metadata.delivery_method, "Non indiqué")],
-      ["Technicien", metadata.technician === "yes" ? "Oui" : "Non"],
+      ["Livraison", text(currentMetadata.delivery_method, "Non indiqué", 80)],
+      ["Technicien", currentMetadata.technician === "yes" ? "Oui" : "Non"],
       ["Client", customerName],
       ["E-mail client", customerEmail || "Non indiqué"],
       ["Téléphone", customerPhone],
@@ -284,7 +358,10 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       ["Caution", deposit ? "Autorisée, non débitée" : "Non applicable"]
     ]);
 
-    await resendEmail({
+    const result = await sendOne({
+      stripe,
+      rental,
+      recipient: "partner",
       to: partnerEmail,
       subject: `Nouvelle réservation à préparer ${orderId} – ${product}`,
       idempotencyKey: `rss:${orderId}:partner-notification`,
@@ -294,10 +371,28 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
         `${partnerDetails}<p style="font-size:14px;line-height:1.5;margin-top:22px;">Merci de contacter le client pour confirmer les modalités opérationnelles.</p>`
       )
     });
+    rental = result.rental;
+  } catch (error) {
+    errors.push(`partenaire: ${text(error?.message || error, "Erreur", 220)}`);
+    rental = error.rental || rental;
+  }
 
-    await updateEmailState(stripe, rental, "email_partner_sent", "true");
-  } else if (!isEmail(partnerEmail) && metadata.email_partner_sent !== "not_applicable") {
-    await updateEmailState(stripe, rental, "email_partner_sent", "not_applicable");
+  const finalMetadata = rental.metadata || {};
+  const customerStatus = recipientStatus(finalMetadata, "customer");
+  const adminStatus = recipientStatus(finalMetadata, "admin");
+  const partnerStatus = recipientStatus(finalMetadata, "partner");
+  const complete =
+    customerStatus === "sent" &&
+    adminStatus === "sent" &&
+    (partnerStatus === "sent" || partnerStatus === "not_applicable");
+
+  rental = await patchMetadata(stripe, rental.id, {
+    notification_status: complete ? "sent" : "error",
+    notification_last_error: complete ? "" : text(errors.join(" | "), "Envoi e-mail incomplet", 450)
+  });
+
+  if (!complete) {
+    throw Object.assign(new Error(text(errors.join(" | "), "Envoi e-mail incomplet")), { rental });
   }
 
   return { sent: true, orderId };
@@ -348,10 +443,10 @@ export default async function handler(req, res) {
     }
 
     return res.status(200).json({ received: true, skipped: "event_not_used" });
-  } catch (err) {
-    console.error("stripe-webhook", err);
-    return res.status(400).json({
-      error: err.message || "Erreur de traitement du webhook Stripe."
-    });
+  } catch (error) {
+    const message = text(error?.message || error, "Erreur de traitement du webhook.");
+    console.error("stripe-webhook", error);
+    const isSignatureProblem = /signature|webhook secret|corps brut/i.test(message);
+    return res.status(isSignatureProblem ? 400 : 500).json({ error: message });
   }
 }

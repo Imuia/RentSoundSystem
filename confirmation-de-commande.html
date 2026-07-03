@@ -127,7 +127,7 @@
   @media(max-width:767px){body{padding-top:72px!important}}
 </style>
 
-<!-- rss-confirmation-pro-sync-v2 -->
+<!-- rss-confirmation-email-status-v3 -->
 </head>
 <body class="bg-background text-on-surface min-h-screen flex flex-col font-body-md antialiased pt-20">
 <div id="header-container"></div>
@@ -143,7 +143,7 @@
 <span class="material-symbols-outlined text-5xl text-[#FC036D]" style="font-variation-settings: &quot;FILL&quot; 1;">check_circle</span>
 </div>
 <h1 class="font-headline-lg text-headline-lg md:font-display-hero-mobile md:text-display-hero-mobile text-on-surface mb-4 relative z-10">Commande confirmée</h1>
-<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 relative z-10">Votre demande de réservation a bien été enregistrée. Les informations de paiement et de caution sont synchronisées dès qu’elles sont disponibles.</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 relative z-10">Votre paiement de location est validé. La caution est autorisée et reste non débitée. Vous pouvez retrouver ci-dessous le récapitulatif de votre réservation.</p>
 <!-- Order Summary Bento -->
 <div class="w-full bg-surface-container-low border border-surface-glass-border rounded-lg p-6 mb-8 text-left relative z-10">
 <h2 class="font-label-caps text-label-caps text-primary tracking-widest uppercase mb-6 border-b border-surface-glass-border pb-2">Résumé de la commande <span id="order-id">#RS-84920</span></h2>
@@ -192,12 +192,15 @@
 </div>
 </div>
 </div>
-<!-- Next Steps -->
-<div class="w-full flex items-start gap-4 mb-10 bg-surface-container/50 p-4 rounded-lg border border-surface-glass-border relative z-10">
+<!-- Notification e-mail -->
+<div id="email-status-card" class="w-full flex items-start gap-4 mb-10 bg-surface-container/50 p-4 rounded-lg border border-surface-glass-border relative z-10">
 <span class="material-symbols-outlined text-primary mt-1">mail</span>
-<p class="font-body-md text-body-md text-on-surface-variant text-left">
-                        Un récapitulatif de commande est disponible. L’envoi automatique de facture/reçu Stripe sera activé dès que Stripe sera finalisé.
-                    </p>
+<div class="flex-1 text-left">
+<p id="email-status-title" class="font-body-md text-body-md text-on-surface font-semibold">E-mail de confirmation en cours</p>
+<p id="email-status-text" class="font-body-md text-body-md text-on-surface-variant mt-1">Nous finalisons l’envoi de votre récapitulatif de réservation.</p>
+<p id="email-status-detail" class="text-xs text-on-surface-variant mt-2">Actualisez ce statut dans quelques instants. Vérifiez également le dossier indésirables.</p>
+</div>
+<button id="refresh-email-status" type="button" class="shrink-0 border border-outline-variant text-on-surface text-xs font-semibold px-3 py-2 rounded-DEFAULT hover:bg-surface-container transition-colors">Actualiser</button>
 </div>
 <!-- Actions -->
 <div class="w-full flex flex-col sm:flex-row gap-4 relative z-10">
@@ -219,9 +222,6 @@
 <script id="rss-confirmation-sync">
 (function(){
   'use strict';
-
-  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
 
   const qs=(s)=>document.querySelector(s);
   const money=(v)=>Number(v||0).toLocaleString('fr-FR',{style:'currency',currency:'EUR'});
@@ -261,6 +261,10 @@
 
   function getStripeResult(){
     return readJson('rssStripePaymentResult') || readJson('rssStripeTestResult') || null;
+  }
+
+  function getOrderStripe(order, stripeResult){
+    return stripeResult || order?.stripe || order?.payment?.stripe || null;
   }
 
   function normalizeOrder(order, params, stripeResult){
@@ -320,39 +324,70 @@
     set('#stripe-deposit-id', shortId(depositId));
   }
 
-  async function syncSupabase(order){
+  function updateEmailStatus(kind, email){
+    const card=qs('#email-status-card');
+    const title=qs('#email-status-title');
+    const text=qs('#email-status-text');
+    const detail=qs('#email-status-detail');
+    if(!card || !title || !text || !detail) return;
+
+    card.classList.remove('border-error/40','bg-error-container/20','border-primary/40','bg-primary/10');
+    if(kind==='sent'){
+      card.classList.add('border-primary/40','bg-primary/10');
+      title.textContent='E-mail de confirmation envoyé';
+      text.textContent=email ? 'Un récapitulatif a été envoyé à '+email+'.' : 'Un récapitulatif de commande a été envoyé.';
+      detail.textContent='Conservez cet e-mail : il contient la référence de votre réservation.';
+      return;
+    }
+    if(kind==='error'){
+      card.classList.add('border-error/40','bg-error-container/20');
+      title.textContent='Commande confirmée';
+      text.textContent='La commande est bien validée. L’e-mail de confirmation doit encore être finalisé côté serveur.';
+      detail.textContent='Notre équipe peut vérifier l’envoi à partir de la référence affichée ci-dessus.';
+      return;
+    }
+    title.textContent='E-mail de confirmation en cours';
+    text.textContent='Nous finalisons l’envoi de votre récapitulatif de réservation.';
+    detail.textContent='Actualisez ce statut dans quelques instants. Vérifiez également le dossier indésirables.';
+  }
+
+  async function refreshEmailStatus(order){
+    const stripe=order?.stripe || {};
+    const paymentIntentId=stripe.rental_payment_intent_id || stripe.rentalPaymentIntentId || '';
+    const button=qs('#refresh-email-status');
+    if(button) button.disabled=true;
+
+    if(!paymentIntentId){
+      updateEmailStatus('pending', order?.customer?.email || '');
+      if(button) button.disabled=false;
+      return;
+    }
+
     try{
-      if(!window.supabase || !order) return;
-      const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-      const {data:{session}}=await sb.auth.getSession();
+      const url='/api/stripe/notification-status?payment_intent='+encodeURIComponent(paymentIntentId)+'&order='+encodeURIComponent(order.id || '');
+      const response=await fetch(url,{headers:{'Cache-Control':'no-cache'}});
+      const data=await response.json().catch(()=>({}));
+      if(!response.ok) throw new Error(data.error || 'Statut non disponible');
 
-      const stripe=order.stripe || {};
-      const payload={
-        equipment_name: order.item.name,
-        renter_name: order.item.ownerName || 'RentSoundSystem',
-        start_date: order.rental.startDate || null,
-        end_date: order.rental.endDate || null,
-        status: order.status || 'pending',
-        total_price: order.amounts.total || 0,
-        stripe_customer_id: stripe.customer_id || null,
-        rental_payment_intent_id: stripe.rental_payment_intent_id || stripe.rentalPaymentIntentId || null,
-        deposit_payment_intent_id: stripe.deposit_payment_intent_id || stripe.depositPaymentIntentId || null,
-        payment_status: stripe.rental_status || stripe.status || order.status || 'pending',
-        deposit_status: stripe.deposit_status || null,
-        deposit_amount: order.amounts.deposit || 0
-      };
-
-      if(session?.user) payload.user_id=session.user.id;
-      await sb.from('reservations').insert(payload);
-    }catch(e){
-      console.warn('Synchronisation Supabase confirmation non bloquante:', e.message || e);
+      const state=data?.notifications?.customer || data?.notifications?.overall || 'pending';
+      if(state==='sent') updateEmailStatus('sent',order?.customer?.email || '');
+      else if(state==='error') updateEmailStatus('error',order?.customer?.email || '');
+      else updateEmailStatus('pending',order?.customer?.email || '');
+    }catch(error){
+      // La page reste honnête : la commande est confirmée, mais le statut e-mail
+      // ne peut pas être consulté tant que l'API serveur n'est pas déployée.
+      updateEmailStatus('pending',order?.customer?.email || '');
+      console.warn('Statut e-mail indisponible:',error?.message || error);
+    }finally{
+      if(button) button.disabled=false;
     }
   }
 
   async function sync(){
     const params=new URLSearchParams(window.location.search);
     const rawOrder=getOrder();
-    const stripeResult=getStripeResult();
+    const rawStripe=getStripeResult();
+    const stripeResult=getOrderStripe(rawOrder,rawStripe);
 
     if(!rawOrder && !stripeResult){
       set('#order-id','#'+(params.get('order')||'RS-CONFIRMÉ'));
@@ -361,6 +396,7 @@
       set('#order-location','À confirmer');
       set('#order-total',money(0));
       set('#order-deposit',money(0)+' (Non débité)');
+      updateEmailStatus('pending','');
       return;
     }
 
@@ -387,11 +423,14 @@
       writeJson('rssLastOrder', order);
     }catch(e){}
 
-    await syncSupabase(order);
+    const refresh=()=>refreshEmailStatus(order);
+    qs('#refresh-email-status')?.addEventListener('click',refresh);
+    await refresh();
   }
 
   document.addEventListener('DOMContentLoaded',sync);
 })();
+
 </script>
 
 <script src="/components.js"></script>
