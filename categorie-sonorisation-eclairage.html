@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Location de sonorisation et éclairage professionnel pour événements, concerts et installations temporaires.">
+<title>Sonorisation & éclairage – Location | RentSoundSystem</title>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/category-pages.css">
+</head>
+<body data-category-key="soundlight" data-category-layout="soundlight" class="min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="category-shell flex-grow">
+  <section class="category-hero">
+    <div class="category-copy">
+      <div class="category-kicker"><span class="material-symbols-outlined" style="font-size:17px">category</span>Puissance, scène & lumière</div>
+      <h1 class="category-title">Sonorisation & éclairage</h1>
+      <p class="category-intro">Enceintes, line arrays, micros, éclairage scénique et systèmes complets pour créer une expérience sonore et visuelle à la hauteur de votre événement.</p>
+      <div class="category-stat"><strong id="category-listings-count">—</strong><span>annonces publiées par nos partenaires</span></div>
+      <div class="category-actions">
+        <a href="#category-listings" class="category-primary"><span class="material-symbols-outlined" style="font-size:18px">inventory_2</span>Voir les annonces</a>
+        <a href="/catalog.html" class="category-secondary"><span class="material-symbols-outlined" style="font-size:18px">arrow_back</span>Catalogue complet</a>
+      </div>
+    </div>
+    <div class="category-hero-art"><div class="sound-stage"></div><div class="sound-speakers"><i></i><i></i></div></div>
+  </section>
+
+  <section id="category-listings" style="margin-top:38px">
+    <div class="category-tools">
+      <div class="category-tools-copy">
+        <h2>Matériel disponible</h2>
+        <p id="category-live-subtitle">Chargement des annonces de cette catégorie…</p>
+      </div>
+      <input id="category-search" class="category-search" type="search" placeholder="Rechercher dans Sonorisation & éclairage…" aria-label="Rechercher dans cette catégorie">
+    </div>
+    <div id="category-grid" class="category-grid">
+      <div class="category-loading"><span class="material-symbols-outlined">sync</span></div>
+    </div>
+  </section>
+</main>
+<div id="footer-container"></div>
+<script src="/assets/js/category-pages.js"></script>
+<script src="/components.js"></script>
+</body>
+</html>
