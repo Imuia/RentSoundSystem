@@ -843,6 +843,14 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   async function prefillConnectedUser(){try{const sb=await getSupabase(); if(!sb)return; const {data:{session}}=await sb.auth.getSession(); if(!session?.user)return; const user=session.user; if(qs('#email')&&!qs('#email').value)qs('#email').value=user.email||''; const {data:profile}=await sb.from('profiles').select('full_name,company_name,email').eq('id',user.id).maybeSingle(); const full=(profile?.full_name||user.user_metadata?.full_name||'').trim(); const parts=full.split(/\s+/); if(full&&qs('#first-name')&&!qs('#first-name').value)qs('#first-name').value=parts.shift()||full; if(parts.length&&qs('#last-name')&&!qs('#last-name').value)qs('#last-name').value=parts.join(' '); if(profile?.company_name&&qs('#company-name')&&!qs('#company-name').value)qs('#company-name').value=profile.company_name; updateSummary();}catch(e){console.warn('Préremplissage client impossible',e);}}
   function bind(){initDates(); applyDraft(); qsa('input,select,textarea').forEach(el=>el.addEventListener('input',()=>{el.classList.remove('rss-field-error'); updateSummary(); updatePaymentUI();})); qsa('input[name="delivery"],#technician,select').forEach(el=>el.addEventListener('change',()=>{updateSummary(); updatePaymentUI();})); qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();})); qs('#confirm-order-btn')?.addEventListener('click',submit); qs('#copy-bank-details')?.addEventListener('click',()=>{const text='Bénéficiaire : RentSoundSystem / IMUIA LLC\nIBAN : '+(qs('#bank-iban')?.textContent||'')+'\nBIC : '+(qs('#bank-bic')?.textContent||'')+'\nRéférence : '+(qs('#bank-reference')?.textContent||''); navigator.clipboard?.writeText(text); showMessage('RIB copié.','success');}); qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)}); qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v}); updatePaymentUI(); updateSummary(); prefillConnectedUser();}
+
+  // API publique du tunnel : le module Stripe est dans un script séparé et ne peut pas accéder
+  // directement aux fonctions enfermées dans cette IIFE.
+  window.rssCheckoutApi={
+    buildOrder:buildOrder,
+    validate:validate,
+    saveReservation:saveReservation
+  };
   document.addEventListener('DOMContentLoaded',async()=>{await loadListingFromUrl(); const ok=await requireLogin(); if(!ok)return; bind();});
 })();
 </script>
@@ -902,9 +910,16 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return !!(el && el.checked);
   }
 
+  function getCheckoutApi(){
+    const api=window.rssCheckoutApi;
+    if(!api || typeof api.buildOrder !== 'function'){
+      throw new Error('Le tunnel de commande n’est pas prêt. Rechargez la page puis réessayez.');
+    }
+    return api;
+  }
+
   function buildMarketplaceOrderPayload(){
-    if(typeof buildOrder !== 'function') throw new Error('buildOrder introuvable dans le tunnel.');
-    const order=buildOrder();
+    const order=getCheckoutApi().buildOrder();
     const stripePayload={
       order_id:order.id,
       currency:'eur',
@@ -944,7 +959,8 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   }
 
   async function payMarketplaceStripe(){
-    if(typeof validate === 'function' && !validate()) return null;
+    const checkoutApi=getCheckoutApi();
+    if(typeof checkoutApi.validate === 'function' && !checkoutApi.validate()) return null;
     if(!termsAccepted()) throw new Error('Vous devez accepter les conditions de caution.');
     if(!stripeReady || !stripe || !card) throw new Error('Stripe n’est pas prêt. Vérifiez /api/stripe/config puis rechargez la page.');
 
@@ -996,8 +1012,9 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
     // Sauvegarde Supabase non bloquante avec les IDs Stripe
     try{
-      if(typeof saveReservation === 'function'){
-        await saveReservation(finalOrder);
+      const checkoutApi=window.rssCheckoutApi;
+      if(checkoutApi && typeof checkoutApi.saveReservation === 'function'){
+        await checkoutApi.saveReservation(finalOrder);
       }
     }catch(e){
       console.warn('Sauvegarde réservation post Stripe non bloquante:',e.message || e);

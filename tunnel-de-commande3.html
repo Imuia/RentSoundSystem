@@ -231,6 +231,13 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   .rss-field-error{border-color:#ff6b6b!important; box-shadow:0 0 0 1px rgba(255,107,107,.6),0 0 22px rgba(252,3,109,.20)!important;}
   .rss-caution-note{font-size:11px;color:#C9A5B5;margin-top:3px;}
 </style>
+<script src="https://js.stripe.com/v3/"></script>
+
+<style id="rss-stripe-hide-old-card-fields">
+  #card-number,#card-expiry,#card-cvc,#card-name{display:none!important;}
+  #card-payment-fields .grid.grid-cols-2.gap-4,
+  #card-payment-fields .flex.flex-col.gap-1.mt-2{display:none!important;}
+</style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -353,9 +360,24 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <div id="payment-note" class="mb-5 rounded border border-primary/30 bg-primary/10 text-primary px-4 py-3 text-sm">Carte bancaire sélectionnée.</div>
 <div id="payment-panels" class="space-y-4">
 <form class="payment-panel active flex-col gap-4" id="card-payment-fields" data-panel="card">
-<div class="payment-info-card flex items-start gap-3">
-<span class="material-symbols-outlined text-primary">verified_user</span>
-<p class="text-sm text-on-surface-variant">Paiement sécurisé par carte bancaire. Les champs ci-dessous simulent la saisie checkout ; à brancher ensuite sur Stripe/PayPal Checkout selon votre prestataire.</p>
+<div id="rss-stripe-test-panel" class="payment-info-card flex flex-col gap-4">
+  <div class="flex items-start gap-3">
+    <span class="material-symbols-outlined text-primary">verified_user</span>
+    <div>
+      <h3 class="font-headline font-bold text-inverse-surface mb-1">Paiement Stripe Test</h3>
+      <p class="text-sm text-on-surface-variant">Test CB Stripe avec paiement + empreinte bancaire de caution en capture manuelle.</p>
+    </div>
+  </div>
+  <div class="rounded border border-primary/30 bg-primary/10 p-4 text-sm text-on-surface-variant">
+    <strong class="text-primary">Information caution obligatoire :</strong><br>
+    Une empreinte bancaire correspondant au montant de la caution sera autorisée. Elle n’est pas débitée automatiquement.
+  </div>
+  <label class="flex items-start gap-3 text-sm text-on-surface-variant">
+    <input id="accept-deposit-terms" type="checkbox" class="mt-1">
+    <span>J’accepte les conditions de caution et l’empreinte bancaire.</span>
+  </label>
+  <div id="stripe-card-element" class="bg-surface border border-outline-variant rounded px-4 py-4"></div>
+  <div id="stripe-card-errors" class="text-error text-sm"></div>
 </div>
 <div class="flex flex-col gap-1">
 <label class="font-label text-label-caps text-on-surface-variant">Numéro de carte</label>
@@ -789,11 +811,11 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return true;
   }
 
-  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const card=(qs('#card-number')?.value||'').replace(/\s/g,''); const exp=qs('#card-expiry')?.value||''; const cvc=qs('#card-cvc')?.value||''; const name=qs('#card-name')?.value||''; if(card.length<12||!/^[0-9]+$/.test(card)){qs('#card-number')?.focus(); showMessage('Numéro de carte invalide.'); return false;} if(!/^\d{2}\/\d{2}$/.test(exp)){qs('#card-expiry')?.focus(); showMessage('Date d’expiration invalide. Format attendu : MM/AA.'); return false;} if(!/^\d{3,4}$/.test(cvc)){qs('#card-cvc')?.focus(); showMessage('CVC invalide.'); return false;} if(!name.trim()){qs('#card-name')?.focus(); showMessage('Indiquez le nom sur la carte.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
+  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const terms=qs('#accept-deposit-terms'); if(terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
 
   async function requireLogin(){const sb=await getSupabase(); if(!sb){showMessage('Connexion obligatoire : Supabase JS n’est pas chargé. Rechargez la page.','error'); return false;} const {data:{session}}=await sb.auth.getSession(); if(!session?.user){try{persistDraftFromCheckout();}catch(e){} const redirect=(window.location.pathname||'/tunnel-de-commande.html')+(window.location.search||''); window.location.href='/connexion-inscription.html?redirect='+encodeURIComponent(redirect); return false;} return true;}
 
-  async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return{saved:false,reason:'no_supabase'}; const {data:{session}}=await sb.auth.getSession(); const payload={equipment_name:order.item.name,renter_name:order.item.ownerName||'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:'pending',total_price:order.amounts.total}; if(session?.user)payload.user_id=session.user.id; const {error}=await sb.from('reservations').insert(payload); if(error){console.warn('Reservation Supabase:',error); return{saved:false,reason:error.message};} return{saved:true};}catch(e){console.warn('Reservation non sauvegardée:',e); return{saved:false,reason:e.message||String(e)}}}
+  async function saveReservation(order){try{const sb=await getSupabase(); if(!sb)return{saved:false,reason:'no_supabase'}; const {data:{session}}=await sb.auth.getSession(); const stripe=order.stripe || order.payment?.stripe || {}; const payload={equipment_name:order.item.name,renter_name:order.item.ownerName||'RentSoundSystem',start_date:order.rental.startDate,end_date:order.rental.endDate,status:order.status||'pending',total_price:order.amounts.total}; if(session?.user)payload.user_id=session.user.id; const optional={customer_email:order.customer?.email||null,customer_name:[order.customer?.firstName||'',order.customer?.lastName||''].join(' ').trim()||null,customer_phone:order.customer?.phone||null,listing_id:order.item?.id||null,partner_email:order.item?.ownerEmail||null,partner_name:order.item?.ownerName||null,stripe_customer_id:stripe.customer_id||null,rental_payment_intent_id:stripe.rental_payment_intent_id||null,deposit_payment_intent_id:stripe.deposit_payment_intent_id||null,payment_status:stripe.rental_status||stripe.status||null,deposit_status:stripe.deposit_status||null,deposit_amount:order.amounts?.deposit||0}; const tryPayload=Object.assign({},payload,optional); let r=await sb.from('reservations').insert(tryPayload); if(r.error){const msg=String(r.error.message||'').toLowerCase(); if(msg.includes('schema cache')||msg.includes('could not find')||msg.includes('column')){r=await sb.from('reservations').insert(payload);} } if(r.error){console.warn('Reservation Supabase:',r.error); return{saved:false,reason:r.error.message};} return{saved:true};}catch(e){console.warn('Reservation non sauvegardée:',e); return{saved:false,reason:e.message||String(e)}}}
 
   function buildOrder(){const t=totals(),ref=getOrderRef(),p=t.product; return{id:ref,createdAt:new Date().toISOString(),status:'pending',customer:{firstName:qs('#first-name')?.value.trim(),lastName:qs('#last-name')?.value.trim(),company:qs('#company-name')?.value.trim(),email:qs('#email')?.value.trim(),phone:qs('#phone')?.value.trim()},rental:{startDate:qs('#rental-start')?.value,endDate:qs('#rental-end')?.value,city:qs('#event-city')?.value.trim(),days:t.d,delivery:qs('#delivery-transport')?.checked?'delivery':'pickup',technician:!!qs('#technician')?.checked},payment:{method:selectedPayment,mode:'reservation_request',details:getPaymentDetails()},item:{id:p.id||'',original_id:p.original_id??null,name:p.name,description:p.description,dailyPrice:p.dailyPrice,priceWeekend:p.priceWeekend||0,priceWeek:p.priceWeek||0,priceMonth:p.priceMonth||0,priceLabel:p.priceLabel||'per_day',quantity:p.quantity,deposit:t.deposit,caution:t.deposit,image:p.image||'',url:p.url||'',category:p.category||'',type:p.type||'',brand:p.brand||'',model:p.model||'',city:p.city||'',country:p.country||'',address:p.address||'',ownerName:p.ownerName||'',ownerEmail:p.ownerEmail||'',ownerPhone:p.ownerPhone||'',ownerUsername:p.ownerUsername||'',partnerId:p.partnerId||''},amounts:{rental:t.rental,rentalLabel:t.rentalLabel,pricingMode:t.pricingMode,delivery:t.delivery,technician:t.technician,subtotal:t.subtotal,vatRate:t.vatRate,tax:t.tax,total:t.total,deposit:t.deposit,caution:t.deposit}};}
 
@@ -825,4 +847,200 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 })();
 </script>
 <script src="/components.js"></script>
+
+
+<script id="rss-marketplace-stripe-v1">
+(function(){
+  let stripe=null;
+  let card=null;
+  let stripeReady=false;
+
+  function qs(s){return document.querySelector(s);}
+  function showStripeMessage(message,type='error'){
+    const el=qs('#checkout-message');
+    if(!el) return;
+    el.classList.remove('hidden','text-error','text-primary','border-error/40','border-primary/40','bg-error-container/20','bg-primary/10');
+    el.textContent=message;
+    if(type==='success') el.classList.add('text-primary','border-primary/40','bg-primary/10');
+    else el.classList.add('text-error','border-error/40','bg-error-container/20');
+  }
+  function toCents(v){return Math.max(0, Math.round(Number(v||0)*100));}
+  function readJson(key){try{const v=localStorage.getItem(key);return v?JSON.parse(v):null;}catch(e){return null;}}
+  function writeJson(key,val){try{localStorage.setItem(key,JSON.stringify(val));}catch(e){}}
+
+  async function initStripeMarketplace(){
+    try{
+      if(!window.Stripe) throw new Error('Stripe.js non chargé.');
+      const res=await fetch('/api/stripe/config');
+      const cfg=await res.json();
+      if(!cfg.publishableKey || !String(cfg.publishableKey).startsWith('pk_')){
+        throw new Error('/api/stripe/config doit retourner la vraie clé publique pk_test_ ou pk_live_.');
+      }
+      stripe=Stripe(cfg.publishableKey);
+      const elements=stripe.elements();
+      card=elements.create('card',{
+        style:{
+          base:{color:'#e2e2e2',fontFamily:'Inter, sans-serif',fontSize:'16px','::placeholder':{color:'#C9A5B5'}},
+          invalid:{color:'#ffb4ab'}
+        }
+      });
+      const mount=qs('#stripe-card-element');
+      if(mount){card.mount('#stripe-card-element');stripeReady=true;}
+      card.on('change',function(event){
+        const err=qs('#stripe-card-errors');
+        if(err) err.textContent=event.error ? event.error.message : '';
+      });
+    }catch(e){
+      const err=qs('#stripe-card-errors');
+      if(err) err.textContent=e.message || String(e);
+      console.warn('Stripe marketplace init:',e);
+    }
+  }
+
+  function termsAccepted(){
+    const el=qs('#accept-deposit-terms');
+    return !!(el && el.checked);
+  }
+
+  function buildMarketplaceOrderPayload(){
+    if(typeof buildOrder !== 'function') throw new Error('buildOrder introuvable dans le tunnel.');
+    const order=buildOrder();
+    const stripePayload={
+      order_id:order.id,
+      currency:'eur',
+      rental_amount:toCents(order.amounts.total),
+      deposit_amount:toCents(order.amounts.deposit),
+      customer:{
+        email:order.customer.email || '',
+        name:[order.customer.firstName || '', order.customer.lastName || ''].join(' ').trim(),
+        phone:order.customer.phone || ''
+      },
+      listing:{
+        id:order.item.id || '',
+        original_id:order.item.original_id || '',
+        name:order.item.name || '',
+        partner_name:order.item.ownerName || '',
+        partner_email:order.item.ownerEmail || ''
+      },
+      reservation:order,
+      metadata:{
+        source:'rentsoundsystem_marketplace',
+        order_id:order.id,
+        listing_id:order.item.id || '',
+        original_id:String(order.item.original_id || ''),
+        partner_email:order.item.ownerEmail || '',
+        customer_email:order.customer.email || ''
+      }
+    };
+    return {order, stripePayload};
+  }
+
+  async function confirmPayment(clientSecret, billing){
+    const result=await stripe.confirmCardPayment(clientSecret,{
+      payment_method:{card:card,billing_details:billing}
+    });
+    if(result.error) throw new Error(result.error.message);
+    return result.paymentIntent;
+  }
+
+  async function payMarketplaceStripe(){
+    if(typeof validate === 'function' && !validate()) return null;
+    if(!termsAccepted()) throw new Error('Vous devez accepter les conditions de caution.');
+    if(!stripeReady || !stripe || !card) throw new Error('Stripe n’est pas prêt. Vérifiez /api/stripe/config puis rechargez la page.');
+
+    const {order,stripePayload}=buildMarketplaceOrderPayload();
+    writeJson('rssLastOrder',order);
+
+    const res=await fetch('/api/stripe/create-reservation-payment',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify(stripePayload)
+    });
+    const data=await res.json();
+    if(!res.ok || data.error) throw new Error(data.error || 'Erreur création paiement Stripe.');
+
+    let rentalPI=null, depositPI=null;
+    const billing={name:stripePayload.customer.name,email:stripePayload.customer.email,phone:stripePayload.customer.phone};
+
+    if(data.rental_client_secret){
+      rentalPI=await confirmPayment(data.rental_client_secret,billing);
+    }
+    if(data.deposit_client_secret && stripePayload.deposit_amount > 0){
+      depositPI=await confirmPayment(data.deposit_client_secret,billing);
+    }
+
+    const stripeResult={
+      customer_id:data.customer_id || '',
+      rental_payment_intent_id:rentalPI?.id || data.rental_payment_intent_id || '',
+      rental_status:rentalPI?.status || '',
+      deposit_payment_intent_id:depositPI?.id || data.deposit_payment_intent_id || '',
+      deposit_status:depositPI?.status || '',
+      reservation_id:data.reservation_id || order.id,
+      status:'stripe_confirmed',
+      created_at:new Date().toISOString()
+    };
+
+    const finalOrder=Object.assign({},order,{
+      status:'confirmed',
+      payment:Object.assign({},order.payment,{method:'card',mode:'stripe',stripe:stripeResult}),
+      stripe:stripeResult
+    });
+
+    writeJson('rssStripePaymentResult',stripeResult);
+    writeJson('rssLastOrder',finalOrder);
+    try{
+      const list=readJson('rssOrders') || [];
+      const next=[finalOrder].concat((Array.isArray(list)?list:[]).filter(o=>o&&String(o.id)!==String(finalOrder.id))).slice(0,50);
+      writeJson('rssOrders',next);
+    }catch(e){}
+
+    // Sauvegarde Supabase non bloquante avec les IDs Stripe
+    try{
+      if(typeof saveReservation === 'function'){
+        await saveReservation(finalOrder);
+      }
+    }catch(e){
+      console.warn('Sauvegarde réservation post Stripe non bloquante:',e.message || e);
+    }
+
+    return finalOrder;
+  }
+
+  document.addEventListener('DOMContentLoaded',initStripeMarketplace);
+
+  document.addEventListener('click',async function(e){
+    const btn=e.target.closest('#confirm-order-btn');
+    if(!btn) return;
+    const activeMethod=document.querySelector('.payment-method[aria-pressed="true"]')?.dataset?.method || 'card';
+    if(activeMethod !== 'card') return;
+
+    e.preventDefault();
+    e.stopImmediatePropagation();
+
+    const original=btn.innerHTML;
+    btn.disabled=true;
+    btn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Paiement Stripe...';
+
+    try{
+      const finalOrder=await payMarketplaceStripe();
+      if(!finalOrder){
+        btn.disabled=false;
+        btn.innerHTML=original;
+        return;
+      }
+      showStripeMessage('Paiement validé et caution autorisée. Redirection vers la confirmation...','success');
+      btn.innerHTML='<span class="material-symbols-outlined">check_circle</span> Paiement validé';
+      setTimeout(function(){
+        window.location.href='/confirmation-de-commande.html?order='+encodeURIComponent(finalOrder.id)+'&stripe=confirmed';
+      },700);
+    }catch(err){
+      console.error('Paiement Stripe marketplace:',err);
+      showStripeMessage('Stripe : '+(err.message || err));
+      btn.disabled=false;
+      btn.innerHTML=original;
+    }
+  },true);
+})();
+</script>
+
 </body></html>
