@@ -1,4 +1,5 @@
 import Stripe from "stripe";
+import { createHash } from "crypto";
 
 function amount(value) {
   const n = Number(value || 0);
@@ -19,6 +20,13 @@ function getStripe() {
     throw new Error("STRIPE_SECRET_KEY manquante dans Vercel.");
   }
   return new Stripe(process.env.STRIPE_SECRET_KEY);
+}
+
+function hash(value) {
+  return createHash("sha256")
+    .update(JSON.stringify(value))
+    .digest("hex")
+    .slice(0, 24);
 }
 
 function buildMetadata(body, paymentType) {
@@ -45,6 +53,38 @@ function buildMetadata(body, paymentType) {
     quantity: text(reservation.item?.quantity || 1, 20),
     customer_company: text(reservation.customer?.company || customer.company, 200)
   };
+}
+
+function requestFingerprint({
+  orderId,
+  currency,
+  rentalAmount,
+  depositAmount,
+  customerEmail,
+  customerName,
+  customerPhone,
+  metadata
+}) {
+  return hash({
+    orderId,
+    currency,
+    rentalAmount,
+    depositAmount,
+    customerEmail,
+    customerName,
+    customerPhone,
+    listingId: metadata.listing_id,
+    originalId: metadata.original_id,
+    listingName: metadata.listing_name,
+    partnerEmail: metadata.partner_email,
+    rentalStart: metadata.rental_start,
+    rentalEnd: metadata.rental_end,
+    rentalCity: metadata.rental_city,
+    rentalDays: metadata.rental_days,
+    delivery: metadata.delivery_method,
+    technician: metadata.technician,
+    quantity: metadata.quantity
+  });
 }
 
 export default async function handler(req, res) {
@@ -80,8 +120,22 @@ export default async function handler(req, res) {
     const stripe = getStripe();
     const baseMetadata = buildMetadata(body, "reservation");
 
-    // Les clés d'idempotence empêchent la création de doublons si le client
-    // clique deux fois ou si le navigateur relance la même requête.
+    /*
+      Une même requête renvoie les mêmes objets Stripe.
+      En revanche, dès que le panier, le client, les dates ou les montants
+      changent, la clé change aussi : Stripe ne bloque plus la nouvelle commande.
+    */
+    const fingerprint = requestFingerprint({
+      orderId,
+      currency,
+      rentalAmount,
+      depositAmount,
+      customerEmail,
+      customerName,
+      customerPhone,
+      metadata: baseMetadata
+    });
+
     const customer = await stripe.customers.create(
       {
         email: customerEmail,
@@ -90,10 +144,11 @@ export default async function handler(req, res) {
         metadata: {
           source: baseMetadata.source,
           order_id: orderId,
-          listing_id: baseMetadata.listing_id
+          listing_id: baseMetadata.listing_id,
+          checkout_fingerprint: fingerprint
         }
       },
-      { idempotencyKey: `rss:${orderId}:customer` }
+      { idempotencyKey: `rss:${orderId}:${fingerprint}:customer` }
     );
 
     let rentalIntent = null;
@@ -108,10 +163,11 @@ export default async function handler(req, res) {
           description: `Location RentSoundSystem – commande ${orderId}`,
           metadata: {
             ...baseMetadata,
-            type: "rental_payment"
+            type: "rental_payment",
+            checkout_fingerprint: fingerprint
           }
         },
-        { idempotencyKey: `rss:${orderId}:rental` }
+        { idempotencyKey: `rss:${orderId}:${fingerprint}:rental` }
       );
     }
 
@@ -127,15 +183,14 @@ export default async function handler(req, res) {
           description: `Caution RentSoundSystem – commande ${orderId}`,
           metadata: {
             ...baseMetadata,
-            type: "deposit_authorization"
+            type: "deposit_authorization",
+            checkout_fingerprint: fingerprint
           }
         },
-        { idempotencyKey: `rss:${orderId}:deposit` }
+        { idempotencyKey: `rss:${orderId}:${fingerprint}:deposit` }
       );
     }
 
-    // Les deux PaymentIntents sont liés. Le webhook pourra attendre que la
-    // location soit payée ET que la caution soit bien autorisée avant d'envoyer les e-mails.
     if (rentalIntent && depositIntent) {
       await Promise.all([
         stripe.paymentIntents.update(rentalIntent.id, {
