@@ -477,12 +477,51 @@ html, body {
     return v;
   }
 
+  /*
+    Les anciennes catégories importées sont parfois des slugs techniques
+    (ex. « instruments-a-percussion »). On les affiche toujours avec
+    un libellé métier lisible, sans modifier la valeur stockée dans Supabase.
+  */
+  const CATEGORY_DISPLAY_NAMES = {
+    "casque": "Casques & écouteurs",
+    "casques": "Casques & écouteurs",
+    "deejay": "DJ & DJing",
+    "dj": "DJ & DJing",
+    "dj-gear": "DJ & DJing",
+    "evenement-production": "Événementiel & production",
+    "evenementiel-production": "Événementiel & production",
+    "instruments-a-percussion": "Instruments & percussion",
+    "multimedia-digital": "Multimédia & digital",
+    "sonorisation-eclairage": "Sonorisation & éclairage"
+  };
+
+  function categoryDisplayLabel(value) {
+    const raw = clean(value);
+    if (!raw) return "Matériel professionnel";
+
+    const key = normalizeKey(raw).replace(/[ _]+/g, "-");
+    if (CATEGORY_DISPLAY_NAMES[key]) return CATEGORY_DISPLAY_NAMES[key];
+
+    // Sécurité pour les autres anciens slugs : aucun tiret technique n'est affiché.
+    return raw
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/(^|\s)([a-zà-ÿ])/gu, function (_, separator, letter) {
+        return separator + letter.toLocaleUpperCase("fr-FR");
+      })
+      .trim();
+  }
+
   function resolveCategoryLabel(value) {
     const raw = clean(value);
     if (!raw) return "Matériel professionnel";
+
     const mapped = categoryLookup[normalizeKey(raw)];
-    if (mapped) return mapped;
-    return looksLikeIdentifier(raw) ? "Matériel professionnel" : raw;
+    if (mapped) return categoryDisplayLabel(mapped);
+
+    return looksLikeIdentifier(raw)
+      ? "Matériel professionnel"
+      : categoryDisplayLabel(raw);
   }
 
   function resolveCityLabel(item) {
@@ -515,7 +554,7 @@ html, body {
       }
 
       (result.data || []).forEach(function (category) {
-        const label = clean(category.name || category.title || category.slug || "");
+        const label = categoryDisplayLabel(category.name || category.title || category.slug || "");
         if (!label) return;
         [category.id, category.name, category.title, category.slug].forEach(function (key) {
           const normalized = normalizeKey(key);
