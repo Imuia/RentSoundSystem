@@ -517,13 +517,9 @@
 <div class="flex justify-between items-end mb-6 border-b border-outline-variant/20 pb-4">
 <div>
 <div class="font-label text-label-caps text-on-surface-variant mb-1">Tarif de base</div>
-<div id="rss-base-price" class="font-headline text-headline-lg text-primary font-bold" data-price="850">0.00€ <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
+<div id="rss-base-price" class="font-headline text-headline-lg text-primary font-bold" data-price="0">— <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
 </div>
-<div id="rss-qty-controls" class="flex items-center space-x-2">
-<button id="rss-qty-minus" type="button" class="rss-qty-btn w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">-</button>
-<span id="rss-qty-value" class="font-body text-body-lg w-8 text-center">1</span>
-<button id="rss-qty-plus" type="button" class="rss-qty-btn w-8 h-8 rounded bg-surface-container flex items-center justify-center border border-outline-variant/30 text-on-surface hover:border-primary transition-colors">+</button>
-</div>
+
 </div>
 <!-- Date Picker Placeholder -->
 <div class="mb-6">
@@ -1542,6 +1538,9 @@ function applyOwnerDisplay(item){
     const partnerData = await fetchPartnerForListing(item);
     const enrichedItem = mergePartnerIntoListing(item, partnerData);
 
+    // Options affichées depuis les valeurs réelles de l'annonce Supabase.
+    setProductOptions(enrichedItem);
+
     const images = getImages(enrichedItem);
     const firstImage = images[0] || '';
     const title = enrichedItem.title || 'Annonce RentSoundSystem';
@@ -1760,7 +1759,7 @@ function applyOwnerDisplay(item){
 
     function getBasePrice() {
       const dynamic = basePriceEl ? parseMoney(basePriceEl.textContent) : 0;
-      return dynamic || 850;
+      return dynamic;
     }
 
     function dateKey(year, monthIndex, day) {
