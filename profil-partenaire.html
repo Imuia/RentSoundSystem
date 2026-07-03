@@ -79,7 +79,38 @@ tailwind.config = {
     if (uuid) return '/product.html?id=' + encodeURIComponent(uuid);
     return '/catalog.html';
   }
-  function imageOf(item){const imgs=item.listing_images||[];return imgs[0]?.image_url||item.image_url||item.featured_image||''}
+  function imageOf(item){
+    const imgs=Array.isArray(item?.listing_images)?item.listing_images.slice():[];
+    imgs.sort((a,b)=>Number(a?.position||0)-Number(b?.position||0));
+    return imgs[0]?.image_url||item?.image_url||item?.featured_image||'';
+  }
+
+  function cleanImageUrl(value){
+    const url=String(value||'').trim();
+    if(!url)return '';
+    // Les chemins Vercel doivent commencer après /public.
+    return url.replace(/^\/public\//,'/');
+  }
+
+  function profileImageOf(profile){
+    if(!profile)return '';
+    return cleanImageUrl(
+      profile.avatar_url ||
+      profile.profile_image_url ||
+      profile.profile_picture_url ||
+      profile.profile_photo_url ||
+      profile.photo_url ||
+      profile.picture_url ||
+      profile.image_url ||
+      profile.image ||
+      profile.avatar ||
+      profile.logo_url ||
+      profile.logo ||
+      profile.owner_logo ||
+      profile.partner_logo ||
+      ''
+    );
+  }
 
   function normEmail(v){return String(v||'').trim().toLowerCase();}
   function partnerKeyFromParams(){
@@ -101,17 +132,45 @@ tailwind.config = {
     text('partner-name',p.name||p.owner_name||p.owner_username||'Partenaire RentSoundSystem');
     text('partner-location',p.location||[p.owner_city,p.owner_country].filter(Boolean).join(', ')||'Localisation non précisée');
     text('partner-description',p.description||'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
-    const email=p.email||p.owner_email||'', phone=p.phone||p.owner_phone||''; let logo=p.logo||p.owner_logo||''; if(!logo && (p.username || p.owner_username)){ logo='/uploads/partners/'+slugifyPartner(p.username||p.owner_username)+'.png'; }
-    const emailEl=document.getElementById('partner-email'); if(emailEl&&email){emailEl.href='mailto:'+email;emailEl.classList.remove('hidden')}
-    const phoneEl=document.getElementById('partner-phone'); if(phoneEl&&phone){phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);phoneEl.classList.remove('hidden')}
-    const logoEl=document.getElementById('partner-logo'), fallback=document.getElementById('partner-logo-fallback');
-    if(logoEl&&logo){logoEl.src=logo;logoEl.onload=function(){logoEl.classList.remove('hidden');fallback?.classList.add('hidden')};logoEl.onerror=function(){logoEl.classList.add('hidden');fallback?.classList.remove('hidden')}}
+
+    const email=p.email||p.owner_email||'';
+    const phone=p.phone||p.owner_phone||'';
+    const logo=profileImageOf(p);
+
+    const emailEl=document.getElementById('partner-email');
+    if(emailEl&&email){emailEl.href='mailto:'+email;emailEl.classList.remove('hidden')}
+
+    const phoneEl=document.getElementById('partner-phone');
+    if(phoneEl&&phone){
+      phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');
+      phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);
+      phoneEl.classList.remove('hidden');
+    }
+
+    const logoEl=document.getElementById('partner-logo');
+    const fallback=document.getElementById('partner-logo-fallback');
+    if(logoEl&&logo){
+      logoEl.src=logo;
+      logoEl.onload=function(){
+        logoEl.classList.remove('hidden');
+        fallback?.classList.add('hidden');
+      };
+      logoEl.onerror=function(){
+        logoEl.removeAttribute('src');
+        logoEl.classList.add('hidden');
+        fallback?.classList.remove('hidden');
+      };
+    }else if(logoEl){
+      logoEl.removeAttribute('src');
+      logoEl.classList.add('hidden');
+      fallback?.classList.remove('hidden');
+    }
   }
   function renderListings(items){
     const grid=document.getElementById('partner-listings-grid'); if(!grid)return;
     document.getElementById('partner-listings-count').textContent=String(items.length||0);
     if(!items.length){grid.innerHTML='<div class="rss-card rounded-xl p-6 text-on-surface-variant">Aucune annonce publique pour ce partenaire.</div>';return}
-    grid.innerHTML=items.slice(0,12).map(item=>{
+    grid.innerHTML=items.map(item=>{
       const img=imageOf(item);
       return '<article class="rss-card rss-listing-card rounded-xl overflow-hidden" onclick="location.href=\''+productUrl(item)+'\'"><div class="aspect-video bg-surface-container-lowest overflow-hidden">'+
         (img?'<img src="'+safe(img)+'" class="w-full h-full object-cover" alt="'+safe(item.title)+'" loading="lazy">':'<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[42px]">inventory_2</span></div>')+
@@ -162,34 +221,67 @@ tailwind.config = {
         email: partner.email || partner.owner_email,
         phone: partner.phone || partner.owner_phone,
         description: partner.description || partner.owner_description || partner.bio,
-        logo: partner.logo || partner.logo_url || partner.owner_logo,
+        avatar_url: partner.avatar_url,
+        profile_image_url: partner.profile_image_url || partner.profile_picture_url || partner.profile_photo_url,
+        photo_url: partner.photo_url || partner.picture_url,
+        image_url: partner.image_url || partner.image,
+        logo: partner.logo || partner.logo_url || partner.owner_logo || partner.partner_logo,
         username: partner.username || partner.owner_username || partner.slug,
         legacy_user_id: partner.legacy_user_id
       });
     }
 
-    let query = client
-      .from('listings')
-      .select('*, listing_images(image_url, position)')
-      .eq('status','publish')
-      .limit(24);
-
+    /*
+      Toutes les annonces publiées du partenaire sont récupérées sans aucun
+      filtre de catégorie. Certains anciens imports utilisent owner_email,
+      d'autres owner_username, partner_slug ou legacy_user_id : on regroupe
+      donc les résultats de chaque identifiant et on retire les doublons.
+    */
     const email = key.email || normEmail(partner?.email || partner?.owner_email || cached?.email || cached?.owner_email);
-    const username = key.username || partner?.username || partner?.owner_username || partner?.slug || cached?.username;
+    const username = String(key.username || partner?.username || partner?.owner_username || partner?.slug || cached?.username || '').trim();
     const legacy = key.legacy || partner?.legacy_user_id || cached?.legacy_user_id;
 
-    if (email) {
-      query = query.ilike('owner_email', email);
-    } else if (username) {
-      query = query.or('owner_username.eq.' + username + ',partner_slug.eq.' + username);
-    } else if (legacy && !isNaN(Number(legacy))) {
-      query = query.eq('legacy_user_id', Number(legacy));
+    const listingQueries = [];
+    const listingsBase = function(){
+      return client
+        .from('listings')
+        .select('*, listing_images(image_url, position)')
+        .eq('status','publish')
+        .limit(1000);
+    };
+
+    if(email) listingQueries.push(listingsBase().ilike('owner_email', email));
+    if(username){
+      listingQueries.push(listingsBase().eq('owner_username', username));
+      listingQueries.push(listingsBase().eq('partner_slug', username));
+    }
+    if(legacy && !isNaN(Number(legacy))){
+      listingQueries.push(listingsBase().eq('legacy_user_id', Number(legacy)));
     }
 
-    const {data,error} = await query;
-    if (error) { console.warn(error); return; }
+    if(!listingQueries.length){
+      console.warn('Impossible d’identifier le partenaire : aucune annonce n’est chargée.');
+      renderListings([]);
+      return;
+    }
 
-    const items = data || [];
+    const results = await Promise.all(listingQueries);
+    const listingMap = new Map();
+
+    results.forEach(function(result){
+      if(result.error){
+        console.warn('Chargement annonces partenaire :', result.error.message || result.error);
+        return;
+      }
+      (result.data || []).forEach(function(item){
+        const uniqueId=String(item.id || item.original_id || '');
+        if(uniqueId) listingMap.set(uniqueId,item);
+      });
+    });
+
+    const items = Array.from(listingMap.values()).sort(function(a,b){
+      return Number(b.original_id || 0) - Number(a.original_id || 0);
+    });
     if (items[0]) {
       const first = items[0];
       applyProfile({
@@ -198,6 +290,10 @@ tailwind.config = {
         email: first.owner_email || partner?.email || partner?.owner_email || cached?.email,
         phone: first.owner_phone || partner?.phone || partner?.owner_phone || cached?.phone,
         description: first.owner_description || first.partner_description || partner?.description || cached?.description,
+        avatar_url: first.owner_avatar_url || first.partner_avatar_url || partner?.avatar_url || cached?.avatar_url,
+        profile_image_url: first.owner_profile_image_url || first.partner_profile_image_url || partner?.profile_image_url || cached?.profile_image_url,
+        photo_url: first.owner_photo_url || first.partner_photo_url || partner?.photo_url || cached?.photo_url,
+        image_url: first.owner_image_url || first.partner_image_url || partner?.image_url || cached?.image_url,
         logo: first.owner_logo || first.partner_logo || partner?.logo_url || partner?.logo || cached?.logo
       });
       text('partner-specialty', first.category ? String(first.category).replace(/-/g,' ') : 'Événementiel');
