@@ -162,6 +162,11 @@ async function updateEmailState(stripe, paymentIntent, key, value) {
 
 async function sendNotificationsWhenReady(stripe, rentalIntentId) {
   const rental = await stripe.paymentIntents.retrieve(rentalIntentId);
+
+  // Chaque PaymentIntent Stripe représente une tentative de paiement distincte.
+  // L'identifiant Stripe est donc la bonne clé d'idempotence pour les e-mails :
+  // un retry du webhook ne renvoie pas d'e-mail, mais une nouvelle réservation
+  // avec une ancienne référence RSS peut bien recevoir une nouvelle confirmation.
   const metadata = rental.metadata || {};
 
   if (metadata.type !== "rental_payment") {
@@ -217,7 +222,7 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     await resendEmail({
       to: customerEmail,
       subject: `Confirmation de réservation ${orderId} – RentSoundSystem`,
-      idempotencyKey: `rss:${orderId}:customer-confirmation`,
+      idempotencyKey: `rss:${rental.id}:customer-confirmation`,
       html: emailLayout(
         "Votre réservation est confirmée",
         `Bonjour ${escapeHtml(customerName)}, votre paiement est validé et votre caution est autorisée sans être débitée.`,
@@ -251,7 +256,7 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     await resendEmail({
       to: adminEmail,
       subject: `Nouvelle réservation payée ${orderId} – ${product}`,
-      idempotencyKey: `rss:${orderId}:admin-notification`,
+      idempotencyKey: `rss:${rental.id}:admin-notification`,
       html: emailLayout(
         "Nouvelle réservation payée",
         "Le paiement de location est validé et la caution est autorisée.",
@@ -280,7 +285,7 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     await resendEmail({
       to: partnerEmail,
       subject: `Nouvelle réservation à préparer ${orderId} – ${product}`,
-      idempotencyKey: `rss:${orderId}:partner-notification`,
+      idempotencyKey: `rss:${rental.id}:partner-notification`,
       html: emailLayout(
         "Nouvelle réservation à préparer",
         `Bonjour ${escapeHtml(partnerName)}, une réservation payée vous est attribuée.`,

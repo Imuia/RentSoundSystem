@@ -846,10 +846,15 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   // API publique du tunnel : le module Stripe est dans un script séparé et ne peut pas accéder
   // directement aux fonctions enfermées dans cette IIFE.
+  function clearOrderReference(){
+    try{localStorage.removeItem(ORDER_REF_KEY);}catch(e){}
+  }
+
   window.rssCheckoutApi={
     buildOrder:buildOrder,
     validate:validate,
-    saveReservation:saveReservation
+    saveReservation:saveReservation,
+    clearOrderReference:clearOrderReference
   };
   document.addEventListener('DOMContentLoaded',async()=>{await loadListingFromUrl(); const ok=await requireLogin(); if(!ok)return; bind();});
 })();
@@ -1015,6 +1020,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
       const checkoutApi=window.rssCheckoutApi;
       if(checkoutApi && typeof checkoutApi.saveReservation === 'function'){
         await checkoutApi.saveReservation(finalOrder);
+      }
+
+      // La transaction Stripe est terminée : la prochaine réservation devra
+      // obtenir une nouvelle référence RSS et ne pas réutiliser l'ancienne.
+      if(checkoutApi && typeof checkoutApi.clearOrderReference === 'function'){
+        checkoutApi.clearOrderReference();
       }
     }catch(e){
       console.warn('Sauvegarde réservation post Stripe non bloquante:',e.message || e);
