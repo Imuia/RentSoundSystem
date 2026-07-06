@@ -263,9 +263,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
         <div id="address-suggestions" class="rss-address-suggestions" role="listbox" aria-label="Résultats de recherche d’adresse"></div>
       </div>
       <div class="rss-address-actions">
-        <button id="search-address-btn" type="button" class="rss-btn rss-btn-outline"><span class="material-symbols-outlined">search</span>Rechercher l’adresse</button>
-        <button id="use-address-location-btn" type="button" class="rss-btn rss-btn-outline"><span class="material-symbols-outlined">my_location</span>Utiliser ma position</button>
-        <span id="address-map-status" class="rss-address-status">Recherchez une adresse puis choisissez un résultat sur la carte.</span>
+        <span id="address-map-status" class="rss-address-status">Votre position est recherchée automatiquement. Vous pouvez aussi commencer à saisir une adresse.</span>
       </div>
       <div id="address-map" aria-label="Carte OpenStreetMap pour définir l’adresse de l’annonce"></div>
     </label>
@@ -529,6 +527,8 @@ let selectedImageFiles=[];
 let addressMap=null;
 let addressMarker=null;
 let lastNominatimRequestAt=0;
+let addressTypingTimer=null;
+let addressSearchSequence=0;
 
 function rssBool(id){return Boolean($(id)?.checked);}
 function rssNumber(id,fallback=0){const value=num($(id)?.value);return value===null?fallback:value;}
@@ -583,12 +583,56 @@ function renderAddressSuggestions(items){
     const item=items[Number(button.dataset.resultIndex)];if(!item)return;clearAddressSuggestions();applyAddressResult(item);setAddressStatus('Adresse sélectionnée : ville, pays, code postal et coordonnées remplis.','success');
   }));
 }
-async function searchAddress(){
+function scheduleAutomaticAddressSearch(){
+  clearTimeout(addressTypingTimer);
+
   const query=String($('address')?.value||'').trim();
-  if(query.length<3){setAddressStatus('Saisissez au moins 3 caractères pour rechercher une adresse.','error');return;}
-  setAddressStatus('Recherche d’adresse OpenStreetMap…');clearAddressSuggestions();
-  try{const results=await nominatimFetch('search',{format:'jsonv2',addressdetails:'1',limit:'5',q:query});renderAddressSuggestions(Array.isArray(results)?results:[]);}
-  catch(error){setAddressStatus('Recherche indisponible : '+(error.message||error)+'. Vous pouvez compléter les champs manuellement.','error');}
+  if(query.length<4){
+    clearAddressSuggestions();
+    if(query.length>0) setAddressStatus('Continuez à saisir l’adresse…');
+    return;
+  }
+
+  setAddressStatus('Recherche automatique de l’adresse…');
+  addressTypingTimer=setTimeout(()=>searchAddress(true),850);
+}
+
+async function searchAddress(fromTyping=false){
+  const query=String($('address')?.value||'').trim();
+  const requestNumber=++addressSearchSequence;
+
+  if(query.length<4){
+    if(!fromTyping) setAddressStatus('Saisissez au moins 4 caractères pour rechercher une adresse.','error');
+    return;
+  }
+
+  if(!fromTyping) setAddressStatus('Recherche d’adresse OpenStreetMap…');
+  clearAddressSuggestions();
+
+  try{
+    const results=await nominatimFetch('search',{
+      format:'jsonv2',
+      addressdetails:'1',
+      limit:'5',
+      q:query
+    });
+
+    // Ignore un résultat devenu ancien pendant que la personne continue à écrire.
+    if(requestNumber!==addressSearchSequence) return;
+
+    const items=Array.isArray(results)?results:[];
+    renderAddressSuggestions(items);
+
+    // Quand OpenStreetMap retourne une seule adresse précise, elle est remplie immédiatement.
+    if(items.length===1){
+      clearAddressSuggestions();
+      applyAddressResult(items[0]);
+      setAddressStatus('Adresse remplie automatiquement : ville, pays, code postal et coordonnées mis à jour.','success');
+    }
+  }catch(error){
+    if(requestNumber!==addressSearchSequence) return;
+    setAddressStatus('Recherche indisponible : '+(error.message||error)+'. Vous pouvez compléter les champs manuellement.','error');
+  }
 }
 function initializeAddressMap(){
   if(typeof L==='undefined'){setAddressStatus('Carte OpenStreetMap non chargée. Vous pouvez compléter l’adresse manuellement.','error');return;}
@@ -602,14 +646,44 @@ function initializeAddressMap(){
   });
   setTimeout(()=>addressMap.invalidateSize(),150);
 }
-function useMyAddressLocation(){
-  if(!navigator.geolocation){setAddressStatus('La géolocalisation n’est pas disponible sur ce navigateur.','error');return;}
-  setAddressStatus('Recherche de votre position…');
+function useMyAddressLocation(automatic=false){
+  if(!navigator.geolocation){
+    setAddressStatus('La géolocalisation n’est pas disponible. Saisissez directement une adresse.','error');
+    return;
+  }
+
+  setAddressStatus(
+    automatic
+      ? 'Autorisez la localisation du navigateur pour préremplir votre adresse.'
+      : 'Recherche de votre position…'
+  );
+
   navigator.geolocation.getCurrentPosition(async(pos)=>{
-    const lat=pos.coords.latitude,lng=pos.coords.longitude;setAddressMarker(lat,lng,16);setField('lat',lat.toFixed(7));setField('lng',lng.toFixed(7));
-    try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(lat),lon:String(lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Position récupérée et adresse complétée.','success');}
-    catch(error){setAddressStatus('Position récupérée. Complétez l’adresse manuellement si nécessaire.','error');}
-  },()=>setAddressStatus('Position refusée ou indisponible.','error'),{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+    const lat=pos.coords.latitude;
+    const lng=pos.coords.longitude;
+
+    setAddressMarker(lat,lng,16);
+    setField('lat',lat.toFixed(7));
+    setField('lng',lng.toFixed(7));
+
+    try{
+      const data=await nominatimFetch('reverse',{
+        format:'jsonv2',
+        addressdetails:'1',
+        lat:String(lat),
+        lon:String(lng),
+        zoom:'18'
+      });
+
+      // Exemple obtenu : « Antananarivo, Analamanga, Province d’Antananarivo, 101, Madagascar ».
+      applyAddressResult(data,false);
+      setAddressStatus('Adresse de votre position remplie automatiquement.','success');
+    }catch(error){
+      setAddressStatus('Position récupérée. Saisissez une adresse pour compléter les informations.','error');
+    }
+  },()=>{
+    setAddressStatus('Position non utilisée. Saisissez directement une adresse : la recherche se lancera automatiquement.');
+  },{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
 }
 async function fetchPartnerRequestByEmail(email,userId){
   const e=cleanEmail(email);if(!e)return null;
@@ -673,7 +747,31 @@ async function saveNewListing(event){
   finally{if(submitButton){submitButton.disabled=false;submitButton.style.opacity='';submitButton.innerHTML=originalButtonHtml;}}
 }
 document.addEventListener('DOMContentLoaded',async()=>{
-  CTX=await getPartnerPublishContext();if(!CTX)return;initializeAddressMap();$('add-form')?.addEventListener('submit',saveNewListing);$('search-address-btn')?.addEventListener('click',searchAddress);$('use-address-location-btn')?.addEventListener('click',useMyAddressLocation);$('address')?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();searchAddress();}});const imageInput=$('images');imageInput?.addEventListener('change',()=>{selectedImageFiles=selectedImageFiles.concat(Array.from(imageInput.files||[]));imageInput.value='';renderSelectedImagePreviews();});
+  CTX=await getPartnerPublishContext();
+  if(!CTX)return;
+
+  initializeAddressMap();
+  $('add-form')?.addEventListener('submit',saveNewListing);
+
+  const addressInput=$('address');
+  addressInput?.addEventListener('input',scheduleAutomaticAddressSearch);
+  addressInput?.addEventListener('keydown',event=>{
+    if(event.key==='Enter'){
+      event.preventDefault();
+      clearTimeout(addressTypingTimer);
+      searchAddress(false);
+    }
+  });
+
+  const imageInput=$('images');
+  imageInput?.addEventListener('change',()=>{
+    selectedImageFiles=selectedImageFiles.concat(Array.from(imageInput.files||[]));
+    imageInput.value='';
+    renderSelectedImagePreviews();
+  });
+
+  // Aucun bouton requis : le navigateur demande l'autorisation une seule fois.
+  setTimeout(()=>useMyAddressLocation(true),500);
 });
 </script>
 
