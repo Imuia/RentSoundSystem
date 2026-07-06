@@ -1216,7 +1216,10 @@ function isEditModalOpen(){
   return Boolean($('listing-modal')?.classList.contains('is-open'));
 }
 function markEditDirty(){
-  if(STATE.editingId) STATE.editDirty=true;
+  if(STATE.editingId){
+    STATE.editDirty=true;
+    scheduleEditDraftSave();
+  }
 }
 function currentEditScrollTop(){
   return $('listing-modal-panel')?.scrollTop||0;
@@ -1233,6 +1236,99 @@ function clearEditUrl(){
     history.replaceState({},'',url.pathname+(url.search||'')+(url.hash||''));
   }catch(e){}
 }
+
+
+const EDIT_LOCAL_DRAFT_PREFIX='rss_partner_listing_edit_draft_v1';
+let editDraftSaveTimer=null;
+const EDIT_DRAFT_FIELD_IDS=[
+  'edit-title','edit-description','edit-category','edit-type','edit-brand','edit-model',
+  'edit-price','edit-caution','edit-delivery-enabled','edit-delivery-price',
+  'edit-installation-enabled','edit-installation-price','edit-price-weekend','edit-price-week',
+  'edit-city','edit-country','edit-address','edit-place-id','edit-lat','edit-lng',
+  'edit-zip','edit-min-duration','edit-max-duration','edit-status'
+];
+
+function editDraftKey(listingId){
+  return EDIT_LOCAL_DRAFT_PREFIX+':'+cleanEmail(STATE?.ctx?.email||'unknown')+':'+String(listingId||'');
+}
+
+function collectEditDraft(){
+  const fields={};
+  EDIT_DRAFT_FIELD_IDS.forEach(id=>{
+    const element=$(id);
+    if(!element) return;
+    fields[id]=element.type==='checkbox' ? Boolean(element.checked) : element.value;
+  });
+
+  return {
+    saved_at:Date.now(),
+    fields,
+    pending_images_count:(STATE.selectedEditFiles||[]).length
+  };
+}
+
+function persistEditDraft(){
+  const listingId=STATE.editingId||$('edit-id')?.value;
+  if(!listingId || !STATE?.ctx?.email) return;
+
+  try{
+    localStorage.setItem(editDraftKey(listingId),JSON.stringify(collectEditDraft()));
+  }catch(error){
+    console.warn('Brouillon local modification non sauvegardé :',error.message||error);
+  }
+}
+
+function scheduleEditDraftSave(){
+  clearTimeout(editDraftSaveTimer);
+  editDraftSaveTimer=setTimeout(persistEditDraft,350);
+}
+
+function clearEditDraft(listingId){
+  if(!listingId) return;
+  try{localStorage.removeItem(editDraftKey(listingId));}catch(error){}
+}
+
+function restoreEditDraft(listingId){
+  if(!listingId || !STATE?.ctx?.email) return false;
+
+  try{
+    const raw=localStorage.getItem(editDraftKey(listingId));
+    if(!raw) return false;
+
+    const draft=JSON.parse(raw);
+    if(!draft?.fields || typeof draft.fields!=='object') return false;
+
+    EDIT_DRAFT_FIELD_IDS.forEach(id=>{
+      if(!(id in draft.fields)) return;
+      const element=$(id);
+      if(!element) return;
+
+      if(element.type==='checkbox') element.checked=Boolean(draft.fields[id]);
+      else element.value=draft.fields[id] ?? '';
+    });
+
+    STATE.editDirty=true;
+    const date=draft.saved_at ? new Date(draft.saved_at).toLocaleString('fr-FR') : '';
+    const extra=draft.pending_images_count
+      ? ' Les images non enregistrées doivent être sélectionnées à nouveau.'
+      : '';
+    if($('edit-message')){
+      $('edit-message').textContent='Brouillon local restauré'+(date?' ('+date+').':'')+extra;
+    }
+    return true;
+  }catch(error){
+    console.warn('Brouillon local modification illisible :',error.message||error);
+    return false;
+  }
+}
+
+window.addEventListener('beforeunload',event=>{
+  if(STATE?.editingId && STATE.editDirty){
+    persistEditDraft();
+    event.preventDefault();
+    event.returnValue='';
+  }
+});
 
 document.addEventListener('DOMContentLoaded', async()=>{
  showListingsLoadingSkeleton();
@@ -1252,7 +1348,7 @@ document.addEventListener('DOMContentLoaded', async()=>{
 
  $('listing-search')?.addEventListener('input',applyFilters);
  $('status-filter')?.addEventListener('change',applyFilters);
- $('close-modal')?.addEventListener('click',closeEdit);
+ $('close-modal')?.addEventListener('click',()=>closeEdit());
  $('listing-modal')?.addEventListener('click',e=>{if(e.target.id==='listing-modal')closeEdit()});
  $('listing-edit-form')?.addEventListener('submit',saveListing);
  $('listing-edit-form')?.addEventListener('input',markEditDirty);
@@ -1752,6 +1848,10 @@ async function openEdit(id){
  }
  renderNewImagePreviews();
 
+ // Les changements non enregistrés du même partenaire sont restaurés
+ // avant l’ouverture de la fiche. Aucun autre compte n’est concerné.
+ restoreEditDraft(listing.id);
+
  $('listing-modal').classList.add('is-open');
  document.body.classList.add('rss-no-scroll');
  setEditUrl(listing.id);
@@ -1771,7 +1871,19 @@ async function openEdit(id){
    console.warn('Images annonce :',error.message||error);
  });
 }
-function closeEdit(){
+function closeEdit(force=false){
+  const listingId=STATE.editingId||$('edit-id')?.value||'';
+
+  if(!force && STATE.editDirty){
+    // Le brouillon reste disponible à la prochaine ouverture de cette fiche.
+    persistEditDraft();
+    const proceed=confirm(
+      'Les modifications ne sont pas encore enregistrées sur le site.\n\n' +
+      'Elles sont conservées localement sur cet appareil. Fermer la fiche ?'
+    );
+    if(!proceed) return;
+  }
+
   clearEditAddressSuggestions();
   $('listing-modal').classList.remove('is-open');
   document.body.classList.remove('rss-no-scroll');
@@ -2070,11 +2182,12 @@ async function deleteListing(id){
       if(storageError) console.warn('Fichier Storage non supprimé :',storageError.message||storageError);
     }
 
-    if(String(STATE.editingId||'')===String(id)) closeEdit();
+    if(String(STATE.editingId||'')===String(id)) closeEdit(true);
 
     STATE.listings=(STATE.listings||[]).filter(listing=>String(listing.id)!==String(id));
     STATE.filtered=(STATE.filtered||[]).filter(listing=>String(listing.id)!==String(id));
     delete STATE.images[String(id)];
+    clearEditDraft(id);
 
     cacheListingsForFastDisplay();
     renderTable();
@@ -2170,6 +2283,7 @@ async function saveListing(e){
     if($('new-images')) $('new-images').value='';
     renderNewImagePreviews();
     STATE.editDirty=false;
+    clearEditDraft(id);
     cacheListingsForFastDisplay();
 
     // Pas de rechargement global : la modal reste stable et ne saute pas.

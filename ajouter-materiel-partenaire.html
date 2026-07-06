@@ -779,15 +779,109 @@ function renderSelectedImagePreviews(){
   const wrap=$('image-preview-grid');if(!wrap)return;if(!selectedImageFiles.length){wrap.innerHTML='';return;}
   wrap.innerHTML=selectedImageFiles.map((file,index)=>{const url=URL.createObjectURL(file);return `<div class="rss-preview-card"><button type="button" class="rss-preview-remove" onclick="removeSelectedImage(${index})" title="Supprimer cette image">×</button><img src="${url}" alt=""><div class="rss-preview-name">${esc(file.name)}</div></div>`;}).join('');
 }
-function removeSelectedImage(index){selectedImageFiles.splice(index,1);renderSelectedImagePreviews();}
+function removeSelectedImage(index){
+  selectedImageFiles.splice(index,1);
+  scheduleAddDraftSave();
+  renderSelectedImagePreviews();
+}
 window.removeSelectedImage=removeSelectedImage;
 function publicationErrorMessage(error){const message=String(error?.message||error||'');return message.toLowerCase().includes('create_my_partner_listing')?'Configuration Supabase incomplète : exécutez le fichier SQL fourni une seule fois.':message;}
+
+const ADD_LOCAL_DRAFT_PREFIX='rss_partner_new_listing_draft_v1';
+let addDraftSaveTimer=null;
+let addDraftDirty=false;
+
+function addDraftKey(){
+  return ADD_LOCAL_DRAFT_PREFIX+':'+cleanEmail(CTX?.email||'unknown');
+}
+
+function collectAddDraft(){
+  const form=$('add-form');
+  const fields={};
+  if(!form) return {saved_at:Date.now(),fields,pending_images_count:0};
+
+  form.querySelectorAll('input,textarea,select').forEach(element=>{
+    if(!element.id || element.type==='file') return;
+    fields[element.id]=element.type==='checkbox' ? Boolean(element.checked) : element.value;
+  });
+
+  return {
+    saved_at:Date.now(),
+    fields,
+    pending_images_count:(selectedImageFiles||[]).length
+  };
+}
+
+function persistAddDraft(){
+  if(!CTX?.email) return;
+  try{
+    localStorage.setItem(addDraftKey(),JSON.stringify(collectAddDraft()));
+  }catch(error){
+    console.warn('Brouillon local dépôt non sauvegardé :',error.message||error);
+  }
+}
+
+function scheduleAddDraftSave(){
+  addDraftDirty=true;
+  clearTimeout(addDraftSaveTimer);
+  addDraftSaveTimer=setTimeout(persistAddDraft,350);
+}
+
+function clearAddDraft(){
+  try{localStorage.removeItem(addDraftKey());}catch(error){}
+  addDraftDirty=false;
+}
+
+function restoreAddDraft(){
+  if(!CTX?.email) return false;
+
+  try{
+    const raw=localStorage.getItem(addDraftKey());
+    if(!raw) return false;
+
+    const draft=JSON.parse(raw);
+    if(!draft?.fields || typeof draft.fields!=='object') return false;
+
+    Object.entries(draft.fields).forEach(([id,value])=>{
+      const element=$(id);
+      if(!element) return;
+      if(element.type==='checkbox') element.checked=Boolean(value);
+      else element.value=value ?? '';
+    });
+
+    addDraftDirty=true;
+    const date=draft.saved_at ? new Date(draft.saved_at).toLocaleString('fr-FR') : '';
+    const extra=draft.pending_images_count
+      ? ' Les images non enregistrées doivent être sélectionnées à nouveau.'
+      : '';
+    if($('add-message')){
+      $('add-message').textContent='Brouillon local restauré'+(date?' ('+date+').':'')+extra;
+    }
+    return true;
+  }catch(error){
+    console.warn('Brouillon local dépôt illisible :',error.message||error);
+    return false;
+  }
+}
+
+window.addEventListener('beforeunload',event=>{
+  if(addDraftDirty){
+    persistAddDraft();
+    event.preventDefault();
+    event.returnValue='';
+  }
+});
+
 async function saveNewListing(event){
   event.preventDefault();const form=event.currentTarget,submitButton=form.querySelector('button[type="submit"]'),originalButtonHtml=submitButton?.innerHTML||'',message=$('add-message');
   const payload={title:String($('title')?.value||'').trim(),description:String($('description')?.value||'').trim(),status:String($('status')?.value||'publish'),category:String($('category')?.value||'').trim(),type:String($('type')?.value||'rental'),brand:String($('brand')?.value||'').trim(),model:String($('model')?.value||'').trim(),price:num($('price')?.value),price_label:'per_day',caution:num($('caution')?.value)||0,delivery_enabled:rssBool('delivery_enabled'),delivery_price:rssNumber('delivery_price',50),installation_enabled:rssBool('installation_enabled'),installation_price:rssNumber('installation_price',150),price_weekend:num($('price_weekend')?.value),price_week:num($('price_week')?.value),city:String($('city')?.value||'').trim(),location:String($('city')?.value||'').trim(),country:String($('country')?.value||'').trim(),address:String($('address')?.value||'').trim(),place_id:String($('place_id')?.value||'').trim(),lat:num($('lat')?.value),lng:num($('lng')?.value),zip:String($('zip')?.value||'').trim(),min_duration:num($('min_duration')?.value)||1,max_duration:num($('max_duration')?.value)||999};
   if(!payload.title||!payload.description||!payload.category||payload.price===null||payload.price<0||!payload.city||!payload.country){message.textContent='Merci de compléter le titre, la description, la catégorie, le prix, la ville et le pays.';return;}
   if(submitButton){submitButton.disabled=true;submitButton.style.opacity='.65';submitButton.innerHTML='<span class="material-symbols-outlined">sync</span> Publication…';}message.textContent='Création sécurisée de l’annonce…';
-  try{const {data,error}=await sb.rpc('create_my_partner_listing',{p_payload:payload});if(error)throw error;const listing=data&&typeof data==='object'?data:null,listingId=listing?.id;if(!listingId)throw new Error('Annonce créée sans identifiant de retour.');const files=selectedImageFiles.slice();for(let i=0;i<files.length;i++){message.textContent='Publication de l’annonce… Image '+(i+1)+' / '+files.length;await uploadImageFile(files[i],listingId,i);}selectedImageFiles=[];renderSelectedImagePreviews();message.textContent='Annonce publiée avec succès.';setTimeout(()=>location.href='/mes-annonces-partenaire.html?edit='+encodeURIComponent(listingId),650);}
+  try{const {data,error}=await sb.rpc('create_my_partner_listing',{p_payload:payload});if(error)throw error;const listing=data&&typeof data==='object'?data:null,listingId=listing?.id;if(!listingId)throw new Error('Annonce créée sans identifiant de retour.');const files=selectedImageFiles.slice();for(let i=0;i<files.length;i++){message.textContent='Publication de l’annonce… Image '+(i+1)+' / '+files.length;await uploadImageFile(files[i],listingId,i);}selectedImageFiles=[];
+    renderSelectedImagePreviews();
+    clearAddDraft();
+    message.textContent='Annonce publiée avec succès.';
+    setTimeout(()=>location.href='/mes-annonces-partenaire.html?edit='+encodeURIComponent(listingId),650);}
   catch(error){console.error('Publication annonce :',error);message.textContent='Erreur de publication : '+publicationErrorMessage(error);}
   finally{if(submitButton){submitButton.disabled=false;submitButton.style.opacity='';submitButton.innerHTML=originalButtonHtml;}}
 }
@@ -796,7 +890,18 @@ document.addEventListener('DOMContentLoaded',async()=>{
   if(!CTX)return;
 
   initializeAddressMap();
-  $('add-form')?.addEventListener('submit',saveNewListing);
+
+  const restoredDraft=restoreAddDraft();
+  const restoredLat=num($('lat')?.value);
+  const restoredLng=num($('lng')?.value);
+  if(restoredLat!==null && restoredLng!==null){
+    setAddressMarker(restoredLat,restoredLng,15);
+  }
+
+  const addForm=$('add-form');
+  addForm?.addEventListener('submit',saveNewListing);
+  addForm?.addEventListener('input',scheduleAddDraftSave);
+  addForm?.addEventListener('change',scheduleAddDraftSave);
 
   const addressInput=$('address');
   addressInput?.addEventListener('input',scheduleAutomaticAddressSearch);
@@ -812,11 +917,14 @@ document.addEventListener('DOMContentLoaded',async()=>{
   imageInput?.addEventListener('change',()=>{
     selectedImageFiles=selectedImageFiles.concat(Array.from(imageInput.files||[]));
     imageInput.value='';
+    scheduleAddDraftSave();
     renderSelectedImagePreviews();
   });
 
-  // Aucun bouton requis : le navigateur demande l'autorisation une seule fois.
-  setTimeout(()=>useMyAddressLocation(true),500);
+  // La géolocalisation automatique ne doit jamais écraser un brouillon restauré.
+  if(!restoredDraft){
+    setTimeout(()=>useMyAddressLocation(true),500);
+  }
 });
 </script>
 
