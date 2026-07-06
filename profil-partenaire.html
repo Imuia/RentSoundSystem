@@ -3,344 +3,532 @@
 <head>
 <meta charset="utf-8">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Profil partenaire | RentSoundSystem</title>
+<meta name="description" content="Découvrez les partenaires RentSoundSystem : matériel, services, zones d’intervention et annonces disponibles.">
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<title>Profil partenaire - RentSoundSystem.com</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
 tailwind.config = {
-  darkMode: "class",
-  theme: { extend: { colors: { background:"#131313", surface:"#131313", primary:"#fc036d", "on-primary":"#ffffff", "on-surface":"#e2e2e2", "on-surface-variant":"#e6bcc2", "surface-container":"#1f1f1f", "surface-container-low":"#1b1b1b", "surface-container-lowest":"#0e0e0e", "outline-variant":"#5d3f44" }, fontFamily:{ headline:["Manrope"], body:["Inter"] } } }
+  darkMode:"class",
+  theme:{extend:{
+    colors:{primary:"#fc036d",background:"#0d0d0f",surface:"#171719","on-surface":"#f4f1f2","on-surface-variant":"#d9b6c0"},
+    fontFamily:{headline:["Manrope"],body:["Inter"]}
+  }}
 }
 </script>
 <style>
-  body{font-family:Inter,sans-serif;background:#131313;color:#e2e2e2}
-  .font-headline{font-family:Manrope,sans-serif}
-  #header-container{min-height:auto}
-  #footer-container{min-height:320px}
-  .partner-hero{background:radial-gradient(circle at 85% 0%, rgba(252,3,109,.18), transparent 34%),linear-gradient(145deg, rgba(31,31,31,.96), rgba(14,14,14,.98));border:1px solid rgba(252,3,109,.22);box-shadow:0 22px 70px rgba(0,0,0,.34),0 0 28px rgba(252,3,109,.08)}
-  .partner-logo{background:linear-gradient(180deg,#252525,#101010);border:1px solid rgba(252,3,109,.35);box-shadow:0 0 22px rgba(252,3,109,.14), inset 0 0 0 1px rgba(255,255,255,.04)}
-  .rss-card{background:linear-gradient(145deg, rgba(31,31,31,.92), rgba(14,14,14,.96));border:1px solid rgba(255,255,255,.07)}
-  .rss-btn{background:#fc036d;color:#fff;border-radius:999px;padding:.75rem 1.2rem;font-weight:800;display:inline-flex;align-items:center;gap:.4rem}
-  .rss-btn-secondary{border:1px solid rgba(255,255,255,.12);color:#e2e2e2;border-radius:999px;padding:.75rem 1.2rem;font-weight:700;display:inline-flex;align-items:center;gap:.4rem}
-  .rss-listing-card{cursor:pointer;transition:.25s ease}
-  .rss-listing-card:hover{transform:translateY(-4px);border-color:rgba(252,3,109,.65)}
+:root{--pink:#fc036d;--pink-light:#ff6aa8;--bg:#0d0d0f;--card:#171719;--muted:#d9b6c0}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),transparent 26%),radial-gradient(circle at 8% 16%,rgba(255,255,255,.045),transparent 18%),var(--bg);color:#f4f1f2;font-family:Inter,sans-serif}
+.font-headline{font-family:Manrope,sans-serif}
+#header-container{min-height:80px;position:relative;z-index:20}
+#footer-container{min-height:300px;margin-top:72px}
+.profile-shell{width:min(1320px,calc(100% - 40px));margin:0 auto;padding:46px 0 10px}
+.partner-hero{position:relative;overflow:hidden;border:1px solid rgba(252,3,109,.30);border-radius:30px;padding:34px;background:linear-gradient(135deg,rgba(38,27,33,.96),rgba(18,18,20,.98) 52%,rgba(10,10,12,.99));box-shadow:0 34px 100px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.05)}
+.partner-hero:after{content:"";position:absolute;width:420px;height:420px;right:-160px;top:-200px;border-radius:50%;background:radial-gradient(circle,rgba(252,3,109,.22),transparent 68%);pointer-events:none}
+.partner-hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:152px minmax(0,1fr);gap:30px;align-items:center}
+.partner-logo{height:152px;width:152px;border-radius:28px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#fff,#ded9dc);border:1px solid rgba(252,3,109,.55);box-shadow:0 14px 36px rgba(0,0,0,.35),0 0 0 8px rgba(252,3,109,.08)}
+.partner-logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:10px}
+.partner-logo .material-symbols-outlined{font-size:58px;color:var(--pink)}
+.partner-kicker{display:inline-flex;align-items:center;gap:7px;color:#ffc7df;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:11px}
+.partner-kicker .material-symbols-outlined{font-size:17px;color:var(--pink)}
+.partner-title{font-family:Manrope,sans-serif;font-size:clamp(34px,5vw,58px);line-height:1.04;letter-spacing:-.045em;margin:0 0 12px;font-weight:800}
+.partner-description{max-width:850px;color:#e7c9d3;font-size:16px;line-height:1.75;margin:0}
+.partner-meta{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0 0}
+.meta-pill{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);color:#f3e7ea;font-size:13px;font-weight:700}
+.meta-pill .material-symbols-outlined{font-size:17px;color:var(--pink)}
+.partner-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.rss-btn{border:0;text-decoration:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:12px;padding:12px 15px;font-weight:900;font-size:13px;transition:.2s}
+.rss-btn-primary{background:linear-gradient(135deg,var(--pink),#ff2d86);color:#fff;box-shadow:0 14px 30px rgba(252,3,109,.25)}
+.rss-btn-secondary{background:rgba(255,255,255,.055);color:#fff;border:1px solid rgba(255,255,255,.14)}
+.rss-btn:hover{transform:translateY(-2px)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:20px 0}
+.stat-card,.profile-card{border:1px solid rgba(255,255,255,.09);border-radius:20px;background:linear-gradient(145deg,rgba(29,29,31,.96),rgba(14,14,16,.98));box-shadow:0 18px 45px rgba(0,0,0,.18)}
+.stat-card{padding:20px}
+.stat-label{color:#d7aab8;font-size:11px;letter-spacing:.13em;text-transform:uppercase;font-weight:800}
+.stat-value{font-family:Manrope,sans-serif;font-size:25px;font-weight:800;margin-top:9px;color:#fff;word-break:break-word}
+.stat-value.primary{color:var(--pink)}
+.profile-grid{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(310px,.72fr);gap:20px;margin-top:20px}
+.profile-card{padding:25px}
+.section-title{display:flex;align-items:center;gap:10px;font-family:Manrope,sans-serif;font-size:23px;font-weight:800;margin:0 0 14px}
+.section-title .material-symbols-outlined{color:var(--pink)}
+.section-copy{margin:0;color:#dfc1ca;line-height:1.75;font-size:15px;white-space:pre-line}
+.expertise-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin-top:18px}
+.expertise-card{padding:16px;border-radius:15px;background:rgba(252,3,109,.055);border:1px solid rgba(252,3,109,.16)}
+.expertise-card span{display:block;color:#d9aeba;font-size:11px;text-transform:uppercase;letter-spacing:.12em;font-weight:800;margin-bottom:7px}
+.expertise-card strong{font-size:15px;color:#fff;line-height:1.35}
+.link-list{display:grid;gap:10px}
+.info-link{display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;color:#fff;padding:13px 14px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.09);font-size:14px;font-weight:750}
+.info-link:hover{border-color:rgba(252,3,109,.62);background:rgba(252,3,109,.08)}
+.info-link .left{display:flex;gap:10px;align-items:center;min-width:0}.info-link .material-symbols-outlined{color:var(--pink);font-size:20px}.info-link .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.info-link>.material-symbols-outlined:last-child{color:#e6bcc2}
+.listings-section{margin-top:20px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:16px}
+.section-subtitle{color:#d9b6c0;margin:5px 0 0;font-size:15px}
+.catalog-link{color:var(--pink-light);font-weight:900;text-decoration:none;white-space:nowrap}
+.listings-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.listing-card{overflow:hidden;cursor:pointer;transition:.24s;border:1px solid rgba(255,255,255,.08);border-radius:20px;background:linear-gradient(145deg,rgba(29,29,31,.96),rgba(14,14,16,.98))}
+.listing-card:hover{transform:translateY(-5px);border-color:rgba(252,3,109,.65);box-shadow:0 22px 48px rgba(0,0,0,.28)}
+.listing-photo{height:190px;position:relative;background:radial-gradient(circle at 45% 15%,rgba(252,3,109,.25),transparent 42%),#151517;overflow:hidden}
+.listing-photo img{height:100%;width:100%;object-fit:cover;transition:transform .5s}.listing-card:hover .listing-photo img{transform:scale(1.06)}
+.listing-category{position:absolute;left:12px;top:12px;border:1px solid rgba(255,255,255,.14);background:rgba(12,12,13,.75);backdrop-filter:blur(8px);border-radius:999px;padding:6px 9px;text-transform:uppercase;letter-spacing:.1em;font-size:10px;font-weight:900}
+.listing-content{padding:18px}.listing-title{font-family:Manrope,sans-serif;font-size:19px;line-height:1.25;font-weight:800;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.listing-location{margin:9px 0 15px;color:#d9b6c0;font-size:13px;display:flex;gap:6px;align-items:center}.listing-location .material-symbols-outlined{font-size:16px;color:var(--pink)}.listing-bottom{display:flex;justify-content:space-between;gap:10px;padding-top:13px;border-top:1px solid rgba(255,255,255,.1);align-items:center}.listing-price{font-family:Manrope,sans-serif;color:var(--pink);font-size:22px;font-weight:800}.listing-label{font-size:11px;color:#d9b6c0;text-transform:uppercase;letter-spacing:.1em;font-weight:800}
+.empty-state{grid-column:1/-1;padding:34px;border-radius:18px;background:rgba(252,3,109,.045);border:1px dashed rgba(252,3,109,.32);color:#dfc1ca;display:flex;align-items:flex-start;gap:14px}.empty-state .material-symbols-outlined{font-size:28px;color:var(--pink)}
+.hidden{display:none!important}
+@media(max-width:1000px){.stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.profile-grid{grid-template-columns:1fr}.listings-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.profile-shell{width:min(100% - 28px,1320px);padding-top:26px}.partner-hero{padding:22px;border-radius:22px}.partner-hero-grid{grid-template-columns:1fr;gap:18px}.partner-logo{width:112px;height:112px;border-radius:22px}.partner-title{font-size:36px}.stats-grid,.listings-grid{grid-template-columns:1fr}.profile-card{padding:20px}.section-head{align-items:flex-start;flex-direction:column}.partner-actions .rss-btn{width:100%}}
 </style>
 </head>
-<body class="bg-background text-on-surface min-h-screen flex flex-col pt-20">
+<body class="min-h-screen flex flex-col">
 <div id="header-container"></div>
-<main class="flex-grow max-w-[1280px] mx-auto w-full px-6 py-10 md:py-14">
-  <section class="partner-hero rounded-xl p-6 md:p-10 mb-8">
-    <div class="flex flex-col md:flex-row gap-8 md:items-center">
-      <div class="w-28 h-28 md:w-36 md:h-36 rounded-full partner-logo flex items-center justify-center overflow-hidden shrink-0">
-        <img id="partner-logo" class="hidden w-full h-full object-cover" alt="Logo partenaire">
-        <span id="partner-logo-fallback" class="material-symbols-outlined text-primary text-[54px]">storefront</span>
+
+<main class="profile-shell flex-grow">
+  <section class="partner-hero">
+    <div class="partner-hero-grid">
+      <div class="partner-logo">
+        <img id="partner-logo" class="hidden" alt="Logo du partenaire">
+        <span id="partner-logo-fallback" class="material-symbols-outlined">storefront</span>
       </div>
-      <div class="flex-1">
-        <p class="text-primary uppercase tracking-[.18em] text-xs font-bold mb-3">Profil partenaire</p>
-        <h1 id="partner-name" class="font-headline text-4xl md:text-5xl font-extrabold mb-3">Partenaire RentSoundSystem</h1>
-        <p id="partner-location" class="text-on-surface-variant flex items-center gap-2 mb-4"><span class="material-symbols-outlined text-primary">location_on</span>Localisation non précisée</p>
-        <p id="partner-description" class="text-on-surface-variant max-w-3xl leading-relaxed">Partenaire spécialisé dans la location de matériel événementiel professionnel.</p>
-        <div class="flex flex-wrap gap-3 mt-6">
-          <a id="partner-email" class="rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">mail</span>Contacter par email</a>
-          <a id="partner-phone" class="rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">call</span>Téléphone</a>
+
+      <div>
+        <div class="partner-kicker"><span class="material-symbols-outlined">verified</span> Partenaire RentSoundSystem</div>
+        <h1 id="partner-name" class="partner-title">Partenaire RentSoundSystem</h1>
+        <p id="partner-description" class="partner-description">Location de matériel et services événementiels professionnels.</p>
+        <div id="partner-meta" class="partner-meta"></div>
+        <div id="partner-actions" class="partner-actions">
+          <a id="partner-email" class="rss-btn rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">mail</span> Contacter par e-mail</a>
+          <a id="partner-phone" class="rss-btn rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">call</span> Appeler</a>
+          <a id="partner-whatsapp" class="rss-btn rss-btn-primary hidden" href="#" target="_blank" rel="noopener"><span class="material-symbols-outlined">chat</span> WhatsApp</a>
         </div>
       </div>
     </div>
   </section>
-  <section class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-    <div class="rss-card rounded-xl p-6"><div class="text-on-surface-variant text-xs uppercase tracking-[.16em] mb-2">Annonces publiées</div><div id="partner-listings-count" class="font-headline text-4xl font-extrabold text-primary">0</div></div>
-    <div class="rss-card rounded-xl p-6"><div class="text-on-surface-variant text-xs uppercase tracking-[.16em] mb-2">Statut</div><div class="font-headline text-2xl font-bold text-primary">Partenaire vérifié</div></div>
-    <div class="rss-card rounded-xl p-6"><div class="text-on-surface-variant text-xs uppercase tracking-[.16em] mb-2">Spécialité</div><div id="partner-specialty" class="font-headline text-2xl font-bold">Événementiel</div></div>
+
+  <section class="stats-grid">
+    <article class="stat-card"><div class="stat-label">Annonces publiées</div><div id="partner-listings-count" class="stat-value primary">0</div></article>
+    <article class="stat-card"><div class="stat-label">Zone d’intervention</div><div id="partner-location-stat" class="stat-value">À définir</div></article>
+    <article class="stat-card"><div class="stat-label">Spécialité</div><div id="partner-specialty" class="stat-value">Événementiel</div></article>
+    <article class="stat-card"><div class="stat-label">Statut</div><div class="stat-value primary">Vérifié</div></article>
   </section>
-  <section class="mb-8">
-    <div class="flex items-center justify-between gap-4 mb-5"><h2 class="font-headline text-3xl font-bold">Annonces du partenaire</h2><a href="/index.html" class="text-primary font-bold">Voir le catalogue</a></div>
-    <div id="partner-listings-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6"><div class="rss-card rounded-xl p-6 text-on-surface-variant">Chargement des annonces...</div></div>
+
+  <section class="profile-grid">
+    <div class="profile-card">
+      <h2 class="section-title"><span class="material-symbols-outlined">business_center</span> À propos du partenaire</h2>
+      <p id="partner-about" class="section-copy">Les informations de ce partenaire seront affichées ici.</p>
+
+      <div id="partner-expertise-wrap" class="hidden">
+        <div class="expertise-grid">
+          <article class="expertise-card"><span>Équipement principal</span><strong id="partner-main-equipment">—</strong></article>
+          <article class="expertise-card"><span>Parc / flotte</span><strong id="partner-fleet-size">—</strong></article>
+          <article class="expertise-card"><span>Équipements annoncés</span><strong id="partner-equipment-count">—</strong></article>
+        </div>
+      </div>
+
+      <div id="partner-equipment-description-wrap" class="hidden" style="margin-top:22px">
+        <h2 class="section-title" style="font-size:19px;margin-bottom:10px"><span class="material-symbols-outlined">speaker_group</span> Matériel & savoir-faire</h2>
+        <p id="partner-equipment-description" class="section-copy"></p>
+      </div>
+    </div>
+
+    <aside class="profile-card">
+      <h2 class="section-title"><span class="material-symbols-outlined">language</span> Informations & liens</h2>
+      <div id="partner-links" class="link-list">
+        <div class="section-copy">Aucun lien public renseigné pour le moment.</div>
+      </div>
+    </aside>
+  </section>
+
+  <section class="listings-section">
+    <div class="section-head">
+      <div>
+        <h2 class="section-title" style="margin-bottom:0"><span class="material-symbols-outlined">inventory_2</span> Annonces du partenaire</h2>
+        <p id="partner-listings-subtitle" class="section-subtitle">Matériel actuellement disponible à la location.</p>
+      </div>
+      <a href="/catalog.html" class="catalog-link">Voir le catalogue <span class="material-symbols-outlined" style="vertical-align:middle;font-size:18px">arrow_forward</span></a>
+    </div>
+    <div id="partner-listings-grid" class="listings-grid">
+      <div class="empty-state"><span class="material-symbols-outlined">hourglass_top</span><div><strong>Chargement des annonces…</strong><br>Nous récupérons le matériel disponible de ce partenaire.</div></div>
+    </div>
   </section>
 </main>
+
 <div id="footer-container"></div>
+
 <script>
 (function(){
+  'use strict';
+
   const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const PUBLIC_PROFILE_RPC='get_partner_public_profile';
   let client=null;
-  function ready(fn){if(document.readyState!=='loading')fn();else document.addEventListener('DOMContentLoaded',fn)}
-  function safe(v){return String(v||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
-  function text(id,value){
-    const el=document.getElementById(id);
-    if(el) el.textContent = value || '';
+
+  const $=id=>document.getElementById(id);
+  const normEmail=value=>String(value||'').trim().toLowerCase();
+  const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char]));
+  const cleanText=value=>String(value||'').trim();
+
+  function ready(fn){
+    if(document.readyState!=='loading') fn();
+    else document.addEventListener('DOMContentLoaded',fn);
   }
-  function money(v){return Number(v||0).toLocaleString('fr-FR',{maximumFractionDigits:0})+'€'}
+
+  function formatPrice(value){
+    const amount=Number(value||0);
+    return amount ? amount.toLocaleString('fr-FR',{maximumFractionDigits:0})+'€' : 'Sur demande';
+  }
+
+  function normalizeImageUrl(value){
+    const url=cleanText(value);
+    return url ? url.replace(/^\/public\//,'/') : '';
+  }
+
+  function validPublicUrl(value){
+    const url=cleanText(value);
+    if(!url) return '';
+    try{
+      const parsed=new URL(url.startsWith('http') ? url : 'https://'+url);
+      return ['http:','https:'].includes(parsed.protocol) ? parsed.href : '';
+    }catch(error){
+      return '';
+    }
+  }
+
   function productUrl(item){
-    const uuid = item && item.id ? String(item.id).trim() : '';
-    const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
-    const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
-    if (hasRealOriginalId) return '/product.html?original_id=' + encodeURIComponent(originalRaw);
-    if (uuid) return '/product.html?id=' + encodeURIComponent(uuid);
+    const id=cleanText(item?.id);
+    const originalId=cleanText(item?.original_id);
+    if(originalId && /^\d+$/.test(originalId)) return '/product.html?original_id='+encodeURIComponent(originalId);
+    if(id) return '/product.html?id='+encodeURIComponent(id);
     return '/catalog.html';
   }
-  function imageOf(item){
-    const imgs=Array.isArray(item?.listing_images)?item.listing_images.slice():[];
-    imgs.sort((a,b)=>Number(a?.position||0)-Number(b?.position||0));
-    return imgs[0]?.image_url||item?.image_url||item?.featured_image||'';
+
+  function listingImage(item){
+    const images=Array.isArray(item?.listing_images)?item.listing_images.slice():[];
+    images.sort((a,b)=>Number(a?.position||0)-Number(b?.position||0));
+    return normalizeImageUrl(images[0]?.image_url || item?.image_url || item?.featured_image || item?.thumbnail || item?.cover_image);
   }
 
-  function cleanImageUrl(value){
-    const url=String(value||'').trim();
-    if(!url)return '';
-    // Les chemins Vercel doivent commencer après /public.
-    return url.replace(/^\/public\//,'/');
-  }
-
-  function profileImageOf(profile){
-    if(!profile)return '';
-    return cleanImageUrl(
-      profile.avatar_url ||
-      profile.profile_image_url ||
-      profile.profile_picture_url ||
-      profile.profile_photo_url ||
-      profile.photo_url ||
-      profile.picture_url ||
-      profile.image_url ||
-      profile.image ||
-      profile.avatar ||
-      profile.logo_url ||
-      profile.logo ||
-      profile.owner_logo ||
-      profile.partner_logo ||
-      ''
-    );
-  }
-
-  function normEmail(v){return String(v||'').trim().toLowerCase();}
-  function partnerKeyFromParams(){
-    const params = new URLSearchParams(location.search);
+  function partnerKey(){
+    const params=new URLSearchParams(location.search);
     return {
-      email: normEmail(params.get('email') || params.get('owner_email') || ''),
-      username: String(params.get('username') || '').trim(),
-      legacy: String(params.get('legacy_user_id') || '').trim(),
-      partnerId: String(params.get('partner_id') || params.get('id') || params.get('partner') || '').trim()
+      email:normEmail(params.get('email')||params.get('owner_email')||''),
+      username:cleanText(params.get('username')||''),
+      legacy:cleanText(params.get('legacy_user_id')||''),
+      partnerId:cleanText(params.get('partner_id')||params.get('id')||params.get('partner')||'')
     };
   }
-  function slugifyPartner(v){
-    return String(v||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+
+  async function tryQuery(build){
+    try{
+      const result=await build();
+      return result?.error ? null : (result?.data||null);
+    }catch(error){
+      return null;
+    }
   }
 
-  function applyProfile(p){
-    if(!p)return;
+  async function findLegacyPartner(key){
+    if(!client) return null;
 
-    text('partner-name',p.name||p.owner_name||p.owner_username||'Partenaire RentSoundSystem');
-    text('partner-location',p.location||[p.owner_city,p.owner_country].filter(Boolean).join(', ')||'Localisation non précisée');
-    text('partner-description',p.description||'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
+    if(key.email){
+      let result=await tryQuery(()=>client.from('partners').select('*').ilike('email',key.email).limit(1));
+      if(Array.isArray(result) && result[0]) return result[0];
+      result=await tryQuery(()=>client.from('partners').select('*').ilike('owner_email',key.email).limit(1));
+      if(Array.isArray(result) && result[0]) return result[0];
+    }
 
-    const email=p.email||p.owner_email||'';
-    const phone=p.phone||p.owner_phone||'';
-    const logo=profileImageOf(p);
+    if(key.partnerId){
+      const result=await tryQuery(()=>client.from('partners').select('*').eq('id',key.partnerId).limit(1));
+      if(Array.isArray(result) && result[0]) return result[0];
+    }
 
-    // Réinitialisation complète des contacts : aucun e-mail/téléphone d'un
-    // précédent partenaire ne peut rester visible après le chargement.
-    const emailEl=document.getElementById('partner-email');
-    if(emailEl){
-      emailEl.classList.add('hidden');
-      emailEl.removeAttribute('href');
-      if(email){
-        emailEl.href='mailto:'+email;
-        emailEl.classList.remove('hidden');
+    if(key.username){
+      for(const field of ['username','owner_username','slug']){
+        const result=await tryQuery(()=>client.from('partners').select('*').eq(field,key.username).limit(1));
+        if(Array.isArray(result) && result[0]) return result[0];
       }
     }
 
-    const phoneEl=document.getElementById('partner-phone');
-    if(phoneEl){
-      phoneEl.classList.add('hidden');
-      phoneEl.removeAttribute('href');
-      phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>Téléphone';
-      if(phone){
-        phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');
-        phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);
-        phoneEl.classList.remove('hidden');
-      }
+    if(key.legacy && /^\d+$/.test(key.legacy)){
+      const result=await tryQuery(()=>client.from('partners').select('*').eq('legacy_user_id',Number(key.legacy)).limit(1));
+      if(Array.isArray(result) && result[0]) return result[0];
     }
 
-    const logoEl=document.getElementById('partner-logo');
-    const fallback=document.getElementById('partner-logo-fallback');
-    if(logoEl&&logo){
-      logoEl.src=logo;
-      logoEl.onload=function(){
-        logoEl.classList.remove('hidden');
-        fallback?.classList.add('hidden');
-      };
-      logoEl.onerror=function(){
-        logoEl.removeAttribute('src');
-        logoEl.classList.add('hidden');
-        fallback?.classList.remove('hidden');
-      };
-    }else if(logoEl){
-      logoEl.removeAttribute('src');
-      logoEl.classList.add('hidden');
+    return null;
+  }
+
+  async function getPublicProfile(email){
+    if(!email) return null;
+    try{
+      const {data,error}=await client.rpc(PUBLIC_PROFILE_RPC,{p_email:email});
+      if(error){
+        console.warn('Profil public partenaire non disponible :',error.message);
+        return null;
+      }
+      return Array.isArray(data) ? (data[0]||null) : data;
+    }catch(error){
+      console.warn('Profil public partenaire non disponible :',error.message||error);
+      return null;
+    }
+  }
+
+  function first(){
+    for(const value of arguments){
+      const text=cleanText(value);
+      if(text) return text;
+    }
+    return '';
+  }
+
+  function equipmentLabel(value){
+    const map={
+      sonorisation:'Sonorisation',
+      eclairage:'Éclairage',
+      dj:'DJ Gear',
+      video:'Vidéo / Multimédia',
+      scene:'Scène & structures',
+      autre:'Équipement événementiel'
+    };
+    return map[cleanText(value)] || cleanText(value).replace(/-/g,' ') || '';
+  }
+
+  function fleetLabel(value){
+    const map={
+      boutique:'Boutique (1–10 systèmes)',
+      medium:'Parc moyen (11–50 systèmes)',
+      large:'Grand parc (50+ systèmes)',
+      enterprise:'Entreprise / tournée'
+    };
+    return map[cleanText(value)] || cleanText(value);
+  }
+
+  function baseLocation(profile, hasPublicProfile){
+    if(hasPublicProfile){
+      return profile.show_city
+        ? [profile.city,profile.country].filter(Boolean).join(', ')
+        : 'Zone d’intervention communiquée sur demande';
+    }
+    return first(profile.location,[profile.city||profile.owner_city,profile.country||profile.owner_country].filter(Boolean).join(', '));
+  }
+
+  function buildProfile(publicData, legacy, listing, lookupEmail){
+    const hasPublicProfile=Boolean(publicData?.profile_exists);
+    const source=Object.assign({},legacy||{},listing||{});
+    const profile=Object.assign({},source,publicData||{});
+    profile.has_public_profile=hasPublicProfile;
+    profile.name=first(publicData?.name,source.name,source.owner_name,source.company_name,source.display_name,source.owner_username,'Partenaire RentSoundSystem');
+    profile.description=first(publicData?.description,source.description,source.owner_description,source.partner_description,'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
+    profile.logo_url=normalizeImageUrl(first(publicData?.logo_url,source.logo_url,source.logo,source.owner_logo,source.partner_logo,source.avatar_url,source.owner_avatar_url));
+    profile.location=baseLocation(profile,hasPublicProfile) || 'Localisation non précisée';
+    profile.email=hasPublicProfile ? first(publicData?.email) : first(source.email,source.owner_email,lookupEmail);
+    profile.phone=hasPublicProfile ? first(publicData?.phone) : first(source.phone,source.owner_phone);
+    profile.allow_whatsapp=Boolean(publicData?.allow_whatsapp);
+    profile.website=first(publicData?.website,source.website,source.website_url);
+    profile.facebook_url=first(publicData?.facebook_url,source.facebook_url,source.facebook);
+    profile.instagram_url=first(publicData?.instagram_url,source.instagram_url,source.instagram);
+    profile.linkedin_url=first(publicData?.linkedin_url,source.linkedin_url,source.linkedin);
+    profile.main_equipment_type=first(publicData?.main_equipment_type,source.main_equipment_type,source.equipment_type);
+    profile.fleet_size=first(publicData?.fleet_size,source.fleet_size,source.fleet_category);
+    profile.equipment_count=publicData?.equipment_count ?? source.equipment_count ?? source.material_count ?? null;
+    profile.equipment_description=first(publicData?.equipment_description,source.equipment_description,source.material_description);
+    return profile;
+  }
+
+  function setLogo(url){
+    const image=$('partner-logo');
+    const fallback=$('partner-logo-fallback');
+    if(!image) return;
+
+    image.classList.add('hidden');
+    image.removeAttribute('src');
+    fallback?.classList.remove('hidden');
+
+    if(!url) return;
+    image.onload=()=>{
+      image.classList.remove('hidden');
+      fallback?.classList.add('hidden');
+    };
+    image.onerror=()=>{
+      image.classList.add('hidden');
+      image.removeAttribute('src');
       fallback?.classList.remove('hidden');
-    }
+    };
+    image.src=url;
   }
-  function renderListings(items){
-    const grid=document.getElementById('partner-listings-grid'); if(!grid)return;
-    document.getElementById('partner-listings-count').textContent=String(items.length||0);
-    if(!items.length){grid.innerHTML='<div class="rss-card rounded-xl p-6 text-on-surface-variant">Aucune annonce publique pour ce partenaire.</div>';return}
-    grid.innerHTML=items.map(item=>{
-      const img=imageOf(item);
-      return '<article class="rss-card rss-listing-card rounded-xl overflow-hidden" onclick="location.href=\''+productUrl(item)+'\'"><div class="aspect-video bg-surface-container-lowest overflow-hidden">'+
-        (img?'<img src="'+safe(img)+'" class="w-full h-full object-cover" alt="'+safe(item.title)+'" loading="lazy">':'<div class="w-full h-full flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[42px]">inventory_2</span></div>')+
-        '</div><div class="p-5"><h3 class="font-headline text-xl font-bold mb-2 line-clamp-2">'+safe(item.title||'Annonce')+'</h3><p class="text-on-surface-variant mb-4">'+safe([item.city||item.location,item.country].filter(Boolean).join(', '))+'</p><div class="text-primary font-headline font-bold text-2xl">'+money(item.price)+'</div></div></article>';
-    }).join('');
-  }
-  async function loadProfile(){
-    const key = partnerKeyFromParams();
 
-    /*
-      Le partenaire public est identifié uniquement par l'URL.
-      L'ancien cache rssLastPartnerProfile est retiré car il pouvait
-      appartenir à un autre compte utilisé auparavant dans ce navigateur.
-    */
-    try { localStorage.removeItem('rssLastPartnerProfile'); } catch(e) {}
-
-    const hasPartnerKey = Boolean(key.email || key.username || key.legacy || key.partnerId);
-    if (!hasPartnerKey) {
-      applyProfile({
-        name: 'Profil partenaire indisponible',
-        location: 'Lien partenaire incomplet',
-        description: 'Utilisez un lien partenaire valide depuis une annonce ou depuis votre espace partenaire.'
-      });
-      renderListings([]);
+  function setContactLink(id, href, label, icon){
+    const element=$(id);
+    if(!element) return;
+    if(!href){
+      element.classList.add('hidden');
+      element.removeAttribute('href');
       return;
     }
+    element.href=href;
+    element.innerHTML='<span class="material-symbols-outlined">'+icon+'</span> '+escapeHtml(label);
+    element.classList.remove('hidden');
+  }
 
-    if (!window.supabase) {
-      applyProfile({
-        name: 'Profil partenaire indisponible',
-        location: 'Chargement impossible',
-        description: 'Le service de données est momentanément indisponible.'
-      });
-      renderListings([]);
-      return;
-    }
-
-    client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    let partner = null;
-
-    try {
-      let pQuery = client.from('partners').select('*').limit(1);
-
-      if (key.email) {
-        pQuery = pQuery.or('owner_email.ilike.' + key.email + ',email.ilike.' + key.email);
-      } else if (key.partnerId) {
-        pQuery = pQuery.eq('id', key.partnerId);
-      } else if (key.username) {
-        pQuery = pQuery.or('username.eq.' + key.username + ',owner_username.eq.' + key.username + ',slug.eq.' + key.username);
-      } else if (key.legacy && !isNaN(Number(key.legacy))) {
-        pQuery = pQuery.eq('legacy_user_id', Number(key.legacy));
-      }
-
-      const pRes = await pQuery.maybeSingle();
-      if (!pRes.error && pRes.data) partner = pRes.data;
-    } catch(e) {
-      console.warn('partners profile lookup:', e.message || e);
-    }
-
-    if (partner) {
-      applyProfile({
-        name: partner.name || partner.owner_name || partner.company_name || partner.display_name,
-        location: partner.location || [partner.city || partner.owner_city, partner.country || partner.owner_country].filter(Boolean).join(', '),
-        email: partner.email || partner.owner_email,
-        phone: partner.phone || partner.owner_phone,
-        description: partner.description || partner.owner_description || partner.bio,
-        avatar_url: partner.avatar_url,
-        profile_image_url: partner.profile_image_url || partner.profile_picture_url || partner.profile_photo_url,
-        photo_url: partner.photo_url || partner.picture_url,
-        image_url: partner.image_url || partner.image,
-        logo: partner.logo || partner.logo_url || partner.owner_logo || partner.partner_logo,
-        username: partner.username || partner.owner_username || partner.slug,
-        legacy_user_id: partner.legacy_user_id
-      });
-    }
-
-    /*
-      Toutes les annonces publiées du partenaire sont récupérées sans aucun
-      filtre de catégorie. Certains anciens imports utilisent owner_email,
-      d'autres owner_username, partner_slug ou legacy_user_id : on regroupe
-      donc les résultats de chaque identifiant et on retire les doublons.
-    */
-    const email = key.email || normEmail(partner?.email || partner?.owner_email || '');
-    const username = String(key.username || partner?.username || partner?.owner_username || partner?.slug || '').trim();
-    const legacy = key.legacy || partner?.legacy_user_id || '';
-
-    const listingQueries = [];
-    const listingsBase = function(){
-      return client
-        .from('listings')
-        .select('*, listing_images(image_url, position)')
-        .eq('status','publish')
-        .limit(1000);
+  function renderLinks(profile){
+    const links=[];
+    const add=(url,label,icon)=>{
+      const href=validPublicUrl(url);
+      if(!href) return;
+      links.push('<a class="info-link" href="'+escapeHtml(href)+'" target="_blank" rel="noopener"><span class="left"><span class="material-symbols-outlined">'+icon+'</span><span class="name">'+escapeHtml(label)+'</span></span><span class="material-symbols-outlined">open_in_new</span></a>');
     };
 
-    if(email) listingQueries.push(listingsBase().ilike('owner_email', email));
-    if(username){
-      listingQueries.push(listingsBase().eq('owner_username', username));
-      listingQueries.push(listingsBase().eq('partner_slug', username));
-    }
-    if(legacy && !isNaN(Number(legacy))){
-      listingQueries.push(listingsBase().eq('legacy_user_id', Number(legacy)));
-    }
+    add(profile.website,'Site internet','language');
+    add(profile.facebook_url,'Facebook','public');
+    add(profile.instagram_url,'Instagram','photo_camera');
+    add(profile.linkedin_url,'LinkedIn','business_center');
 
-    if(!listingQueries.length){
-      console.warn('Impossible d’identifier le partenaire : aucune annonce n’est chargée.');
-      applyProfile({
-        name: partner?.name || 'Profil partenaire indisponible',
-        location: partner?.location || 'Identifiant partenaire invalide',
-        description: partner?.description || 'Aucune information publique n’a été trouvée pour ce partenaire.'
-      });
-      renderListings([]);
+    const target=$('partner-links');
+    if(target) target.innerHTML=links.length ? links.join('') : '<div class="section-copy">Aucun lien public renseigné pour le moment.</div>';
+  }
+
+  function renderProfile(profile){
+    $('partner-name').textContent=profile.name;
+    $('partner-description').textContent=profile.description;
+    $('partner-about').textContent=profile.description;
+    $('partner-location-stat').textContent=profile.location;
+    $('partner-specialty').textContent=equipmentLabel(profile.main_equipment_type) || 'Événementiel';
+    $('partner-listings-subtitle').textContent=profile.location && profile.location!=='Localisation non précisée'
+      ? 'Matériel disponible depuis '+profile.location+'.'
+      : 'Matériel actuellement disponible à la location.';
+
+    const meta=[];
+    if(profile.location && profile.location!=='Localisation non précisée'){
+      meta.push('<span class="meta-pill"><span class="material-symbols-outlined">location_on</span>'+escapeHtml(profile.location)+'</span>');
+    }
+    const specialty=equipmentLabel(profile.main_equipment_type);
+    if(specialty){
+      meta.push('<span class="meta-pill"><span class="material-symbols-outlined">speaker_group</span>'+escapeHtml(specialty)+'</span>');
+    }
+    meta.push('<span class="meta-pill"><span class="material-symbols-outlined">verified</span>Partenaire vérifié</span>');
+    $('partner-meta').innerHTML=meta.join('');
+
+    setLogo(profile.logo_url);
+    setContactLink('partner-email',profile.email?'mailto:'+profile.email:'','Contacter par e-mail','mail');
+    setContactLink('partner-phone',profile.phone?'tel:'+profile.phone.replace(/\s+/g,''):'',profile.phone,'call');
+
+    const whatsapp=profile.allow_whatsapp && profile.phone
+      ? 'https://wa.me/'+profile.phone.replace(/[^\d]/g,'')
+      : '';
+    setContactLink('partner-whatsapp',whatsapp,'WhatsApp','chat');
+
+    const fields=[
+      ['partner-main-equipment',specialty],
+      ['partner-fleet-size',fleetLabel(profile.fleet_size)],
+      ['partner-equipment-count',profile.equipment_count!==null && profile.equipment_count!==undefined && profile.equipment_count!=='' ? String(profile.equipment_count)+' équipements' : '—']
+    ];
+    fields.forEach(([id,value])=>{$(id).textContent=value||'—';});
+
+    const hasExpertise=Boolean(specialty || profile.fleet_size || profile.equipment_count);
+    $('partner-expertise-wrap').classList.toggle('hidden',!hasExpertise);
+
+    const equipmentDescription=cleanText(profile.equipment_description);
+    $('partner-equipment-description-wrap').classList.toggle('hidden',!equipmentDescription);
+    $('partner-equipment-description').textContent=equipmentDescription;
+
+    renderLinks(profile);
+  }
+
+  function renderListings(items){
+    const grid=$('partner-listings-grid');
+    $('partner-listings-count').textContent=String(items.length||0);
+
+    if(!items.length){
+      grid.innerHTML='<div class="empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucune annonce publique pour ce partenaire.</strong><br>Les prochains équipements disponibles apparaîtront ici.</div></div>';
       return;
     }
 
-    const results = await Promise.all(listingQueries);
-    const listingMap = new Map();
+    grid.innerHTML=items.map(item=>{
+      const image=listingImage(item);
+      const title=escapeHtml(item.title||'Matériel professionnel');
+      const category=escapeHtml(String(item.category||'Équipement pro').replace(/-/g,' '));
+      const location=escapeHtml([item.city||item.location,item.country].filter(Boolean).join(', ') || 'Localisation à confirmer');
+      return '<article class="listing-card" role="link" tabindex="0" data-url="'+escapeHtml(productUrl(item))+'">'+
+        '<div class="listing-photo">'+
+          (image ? '<img src="'+escapeHtml(image)+'" alt="'+title+'" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : '<div style="height:100%;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:48px;color:#fc036d">inventory_2</span></div>')+
+          '<span class="listing-category">'+category+'</span></div>'+
+        '<div class="listing-content"><h3 class="listing-title">'+title+'</h3>'+
+        '<p class="listing-location"><span class="material-symbols-outlined">location_on</span>'+location+'</p>'+
+        '<div class="listing-bottom"><span class="listing-label">Prix / jour</span><strong class="listing-price">'+formatPrice(item.price)+'</strong></div></div></article>';
+    }).join('');
 
-    results.forEach(function(result){
+    grid.querySelectorAll('[data-url]').forEach(card=>{
+      const go=()=>{location.href=card.dataset.url;};
+      card.addEventListener('click',go);
+      card.addEventListener('keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();go();}});
+    });
+  }
+
+  async function loadPartnerListings(key, legacy, lookupEmail){
+    const base=()=>client.from('listings').select('*, listing_images(image_url,position)').eq('status','publish').limit(1000);
+    const queries=[];
+
+    if(lookupEmail) queries.push(base().ilike('owner_email',lookupEmail));
+    const username=first(key.username,legacy?.username,legacy?.owner_username,legacy?.slug);
+    if(username){
+      queries.push(base().eq('owner_username',username));
+      queries.push(base().eq('partner_slug',username));
+    }
+    const legacyId=first(key.legacy,legacy?.legacy_user_id);
+    if(legacyId && /^\d+$/.test(String(legacyId))) queries.push(base().eq('legacy_user_id',Number(legacyId)));
+
+    const results=await Promise.all(queries);
+    const unique=new Map();
+    results.forEach(result=>{
       if(result.error){
-        console.warn('Chargement annonces partenaire :', result.error.message || result.error);
+        console.warn('Chargement annonces partenaire :',result.error.message||result.error);
         return;
       }
-      (result.data || []).forEach(function(item){
-        const uniqueId=String(item.id || item.original_id || '');
-        if(uniqueId) listingMap.set(uniqueId,item);
+      (result.data||[]).forEach(item=>{
+        const id=String(item.id||item.original_id||'');
+        if(id) unique.set(id,item);
       });
     });
 
-    const items = Array.from(listingMap.values()).sort(function(a,b){
-      return Number(b.original_id || 0) - Number(a.original_id || 0);
+    return Array.from(unique.values()).sort((a,b)=>{
+      const dA=new Date(a.created_at||a.published_at||a.updated_at||0).getTime()||0;
+      const dB=new Date(b.created_at||b.published_at||b.updated_at||0).getTime()||0;
+      return dB-dA;
     });
-    if (items[0]) {
-      const first = items[0];
-      applyProfile({
-        name: first.owner_name || first.owner_username || partner?.name || partner?.owner_name,
-        location: [first.owner_city, first.owner_country].filter(Boolean).join(', ') || partner?.location,
-        email: first.owner_email || partner?.email || partner?.owner_email,
-        phone: first.owner_phone || partner?.phone || partner?.owner_phone,
-        description: first.owner_description || first.partner_description || partner?.description,
-        avatar_url: first.owner_avatar_url || first.partner_avatar_url || partner?.avatar_url,
-        profile_image_url: first.owner_profile_image_url || first.partner_profile_image_url || partner?.profile_image_url,
-        photo_url: first.owner_photo_url || first.partner_photo_url || partner?.photo_url,
-        image_url: first.owner_image_url || first.partner_image_url || partner?.image_url,
-        logo: first.owner_logo || first.partner_logo || partner?.logo_url || partner?.logo
-      });
-      text('partner-specialty', first.category ? String(first.category).replace(/-/g,' ') : 'Événementiel');
+  }
+
+  async function load(){
+    const key=partnerKey();
+    if(!(key.email||key.username||key.legacy||key.partnerId)){
+      renderProfile(buildProfile(null,null,null,''));
+      renderListings([]);
+      $('partner-name').textContent='Profil partenaire indisponible';
+      $('partner-description').textContent='Le lien de ce partenaire est incomplet.';
+      return;
     }
 
-    renderListings(items);
+    if(!window.supabase){
+      $('partner-name').textContent='Profil partenaire indisponible';
+      $('partner-description').textContent='Le service de données est momentanément indisponible.';
+      renderListings([]);
+      return;
+    }
+
+    client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+    const legacy=await findLegacyPartner(key);
+    const lookupEmail=first(key.email,legacy?.email,legacy?.owner_email);
+    const publicData=await getPublicProfile(lookupEmail);
+    const listings=await loadPartnerListings(key,legacy,lookupEmail);
+    const profile=buildProfile(publicData,legacy,listings[0],lookupEmail);
+
+    renderProfile(profile);
+    renderListings(listings);
   }
-  ready(loadProfile);
+
+  ready(load);
 })();
 </script>
 <script src="/components.js"></script>

@@ -198,9 +198,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
       <h1 class="font-headline rss-page-title">Mon profil partenaire</h1>
       <p class="rss-muted">Complétez les informations de votre compte partenaire. Ces champs reprennent les étapes d'inscription partenaire, sans la carte.</p>
     </div>
-    <a class="rss-btn rss-btn-outline" id="public-profile-link" href="/profil-partenaire.html?email=" aria-disabled="true">
-      <span class="material-symbols-outlined">visibility</span> Voir mon profil public
-    </a>
   </div>
 
   <form id="partner-form" class="rss-profile-form">
@@ -825,6 +822,56 @@ async function syncAuthProfileCore(ctx, payload){
   return true;
 }
 
+
+const PARTNER_PUBLIC_PROFILE_TABLE = 'partner_public_profiles';
+const PARTNER_LOGO_BUCKET = 'partner-assets';
+const PARTNER_LOGO_MAX_BYTES = 5 * 1024 * 1024;
+const PARTNER_LOGO_TYPES = new Set(['image/jpeg','image/png','image/webp','image/svg+xml']);
+
+async function syncPartnerPublicProfile(ctx, source){
+  if(!ctx?.user?.id) throw new Error('Session partenaire introuvable.');
+
+  const p = source || {};
+  const row = {
+    user_id: ctx.user.id,
+    email: cleanEmail(ctx.email),
+    name: firstNonEmail(p.name, p.company_name, p.owner_name, p.display_name, p.partner_name),
+    phone: firstText(p.phone, p.owner_phone),
+    city: firstText(p.city, p.owner_city),
+    country: firstText(p.country, p.owner_country),
+    logo_url: firstText(p.logo_url, p.logo, p.avatar_url),
+    description: firstText(p.description, p.bio, p.presentation),
+    website: firstText(p.website, p.website_url),
+    facebook_url: firstText(p.facebook_url, p.facebook),
+    instagram_url: firstText(p.instagram_url, p.instagram),
+    linkedin_url: firstText(p.linkedin_url, p.linkedin),
+    fleet_size: firstText(p.fleet_size, p.fleet_category),
+    main_equipment_type: firstText(p.main_equipment_type, p.equipment_type),
+    equipment_count: num(p.equipment_count ?? p.material_count),
+    equipment_description: firstText(p.equipment_description, p.material_description),
+    show_phone: boolVal(p.show_phone, true),
+    show_email: boolVal(p.show_email, true),
+    show_city: boolVal(p.show_city, true),
+    allow_whatsapp: boolVal(p.allow_whatsapp, false),
+    allow_email: boolVal(p.allow_email, true),
+    updated_at: new Date().toISOString()
+  };
+
+  const {error} = await sb
+    .from(PARTNER_PUBLIC_PROFILE_TABLE)
+    .upsert(row, {onConflict:'user_id'});
+
+  if(error){
+    const message = String(error.message || '').toLowerCase();
+    if(message.includes('does not exist') || message.includes('schema cache') || message.includes('relation')){
+      throw new Error('Le profil public nécessite le fichier SQL supabase-profils-partenaires-publics.sql.');
+    }
+    throw error;
+  }
+
+  return true;
+}
+
 function updatePublicProfileLinks(p, ctx){
   // Aucun cache ni ancien partenaire : le lien est construit avec l'e-mail
   // certifié par la session Supabase du partenaire actuellement connecté.
@@ -959,12 +1006,24 @@ async function updatePartnerProfileBySafeColumns(rowId, email, payload){
 }
 
 async function uploadPartnerLogo(file, ctx){
-  if(!file || !ctx?.email) return '';
-  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
-  const path='partners/logos/'+ctx.email.replace(/[^a-z0-9@._-]/gi,'_')+'-'+Date.now()+'.'+ext;
-  const {error:upErr}=await sb.storage.from('listing-images').upload(path,file,{upsert:true,contentType:file.type||'image/jpeg'});
-  if(upErr) throw upErr;
-  const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
+  if(!file || !ctx?.user?.id) throw new Error('Session partenaire introuvable.');
+  if(file.size > PARTNER_LOGO_MAX_BYTES) throw new Error('Le logo dépasse 5 Mo.');
+  if(file.type && !PARTNER_LOGO_TYPES.has(file.type)){
+    throw new Error('Le logo doit être au format JPG, PNG, WEBP ou SVG.');
+  }
+
+  const ext=(file.name.split('.').pop()||'png').toLowerCase().replace(/[^a-z0-9]/g,'') || 'png';
+  const safeName=String(file.name||'logo').replace(/[^a-z0-9._-]/gi,'_').slice(0,48);
+  const path=ctx.user.id+'/logos/'+Date.now()+'-'+safeName.replace(/\.[^.]+$/,'')+'.'+ext;
+
+  const {error:upErr}=await sb.storage
+    .from(PARTNER_LOGO_BUCKET)
+    .upload(path,file,{upsert:false,contentType:file.type||'image/png',cacheControl:'3600'});
+
+  if(upErr) throw new Error('Téléversement logo impossible : '+upErr.message);
+
+  const {data:pub}=sb.storage.from(PARTNER_LOGO_BUCKET).getPublicUrl(path);
+  if(!pub?.publicUrl) throw new Error('URL publique du logo introuvable.');
   return pub.publicUrl;
 }
 
@@ -979,6 +1038,14 @@ async function initPartnerProfilePage(){
   fillPartnerFormFast(p);
   updatePublicProfileLinks(p, CTX);
   cachePartnerProfileSnapshot(p);
+
+  // Migration transparente : les données déjà enregistrées dans le profil
+  // deviennent visibles sur la fiche publique, sans exposer les données bancaires.
+  if(Object.keys(savedDetails || {}).length){
+    syncPartnerPublicProfile(CTX, p).catch(error=>{
+      console.warn('Synchronisation profil public à terminer :', error.message || error);
+    });
+  }
 
   const listingsPromise = loadPartnerListings(CTX).catch(()=>[]);
   repairOwnerInfoForCurrentPartner(CTX).catch(()=>{});
@@ -1147,6 +1214,7 @@ async function initPartnerProfilePage(){
 
       // Les sources historiques restent synchronisées sans bloquer l'enregistrement.
       const tasks = await Promise.allSettled([
+        syncPartnerPublicProfile(CTX, CTX.partner),
         updatePartnerProfileBySafeColumns(CTX.partner?.id, CTX.email, payload),
         syncPartnerRequestCore(CTX, payload),
         syncAuthProfileCore(CTX, payload),
@@ -1154,8 +1222,9 @@ async function initPartnerProfilePage(){
         repairOwnerInfoForCurrentPartner(CTX)
       ]);
 
-      const publicPartnerSaved = tasks[0].status === 'fulfilled' && Boolean(tasks[0].value);
-      const requestSaved = tasks[1].status === 'fulfilled' && Boolean(tasks[1].value);
+      const publicProfileSaved = tasks[0].status === 'fulfilled' && Boolean(tasks[0].value);
+      const publicPartnerSaved = tasks[1].status === 'fulfilled' && Boolean(tasks[1].value);
+      const requestSaved = tasks[2].status === 'fulfilled' && Boolean(tasks[2].value);
 
       const bankStatus = $('bank-status');
       if(bankStatus){
@@ -1167,9 +1236,11 @@ async function initPartnerProfilePage(){
 
       if($('stat-city')) $('stat-city').textContent = payload.city || '—';
 
-      const syncText = (publicPartnerSaved || requestSaved)
-        ? ' Les informations publiques et historiques ont été synchronisées.'
-        : ' Vos données sont enregistrées de manière sécurisée pour ce compte.';
+      const syncText = publicProfileSaved
+        ? ' Votre fiche publique a été mise à jour.'
+        : ((publicPartnerSaved || requestSaved)
+          ? ' Les informations historiques ont été synchronisées.'
+          : ' Vos données sont enregistrées de manière sécurisée pour ce compte.');
       alertBox('Profil partenaire enregistré.' + syncText,'success');
     }catch(error){
       alertBox('Erreur profil : '+(error.message||error),'error');
