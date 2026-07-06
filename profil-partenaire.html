@@ -34,6 +34,7 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
 .partner-logo{height:152px;width:152px;border-radius:28px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#fff,#ded9dc);border:1px solid rgba(252,3,109,.55);box-shadow:0 14px 36px rgba(0,0,0,.35),0 0 0 8px rgba(252,3,109,.08)}
 .partner-logo img{width:100%;height:100%;object-fit:contain;background:#fff;padding:10px}
 .partner-logo .material-symbols-outlined{font-size:58px;color:var(--pink)}
+.partner-logo-initials{font-family:Manrope,sans-serif;font-size:42px;line-height:1;font-weight:800;letter-spacing:-.08em;color:var(--pink);text-transform:uppercase}
 .partner-kicker{display:inline-flex;align-items:center;gap:7px;color:#ffc7df;font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:11px}
 .partner-kicker .material-symbols-outlined{font-size:17px;color:var(--pink)}
 .partner-title{font-family:Manrope,sans-serif;font-size:clamp(34px,5vw,58px);line-height:1.04;letter-spacing:-.045em;margin:0 0 12px;font-weight:800}
@@ -90,6 +91,7 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
     <div class="partner-hero-grid">
       <div class="partner-logo">
         <img id="partner-logo" class="hidden" alt="Logo du partenaire">
+        <span id="partner-logo-initials" class="partner-logo-initials hidden" aria-hidden="true"></span>
         <span id="partner-logo-fallback" class="material-symbols-outlined">storefront</span>
       </div>
 
@@ -179,6 +181,40 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
   function formatPrice(value){
     const amount=Number(value||0);
     return amount ? amount.toLocaleString('fr-FR',{maximumFractionDigits:0})+'€' : 'Sur demande';
+  }
+
+  /*
+    Les anciennes descriptions peuvent contenir <p>, <br>, <strong>, etc.
+    La fiche publique les convertit en texte lisible et n'affiche jamais
+    les balises HTML.
+  */
+  function plainProfileText(value){
+    const raw=cleanText(value);
+    if(!raw) return '';
+
+    const holder=document.createElement('div');
+    holder.innerHTML=raw
+      .replace(/<\s*br\s*\/?\s*>/gi,'\n')
+      .replace(/<\/\s*(p|div|li|h[1-6]|blockquote)\s*>/gi,'\n')
+      .replace(/<\s*li[^>]*>/gi,'• ');
+
+    return String(holder.textContent||holder.innerText||'')
+      .replace(/\u00a0/g,' ')
+      .replace(/[ \t]+\n/g,'\n')
+      .replace(/\n[ \t]+/g,'\n')
+      .replace(/\n{3,}/g,'\n\n')
+      .replace(/[ \t]{2,}/g,' ')
+      .trim();
+  }
+
+  function initialsFromName(name){
+    const words=plainProfileText(name)
+      .split(/[\s\-_/]+/)
+      .filter(Boolean);
+
+    if(!words.length) return 'RS';
+    if(words.length===1) return words[0].slice(0,2).toUpperCase();
+    return (words[0][0]+words[1][0]).toUpperCase();
   }
 
   function normalizeImageUrl(value){
@@ -320,8 +356,21 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
     const profile=Object.assign({},source,publicData||{});
     profile.has_public_profile=hasPublicProfile;
     profile.name=first(publicData?.name,source.name,source.owner_name,source.company_name,source.display_name,source.owner_username,'Partenaire RentSoundSystem');
-    profile.description=first(publicData?.description,source.description,source.owner_description,source.partner_description,'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
-    profile.logo_url=normalizeImageUrl(first(publicData?.logo_url,source.logo_url,source.logo,source.owner_logo,source.partner_logo,source.avatar_url,source.owner_avatar_url));
+    profile.description=plainProfileText(first(publicData?.description,source.description,source.owner_description,source.partner_description,'Partenaire spécialisé dans la location de matériel événementiel professionnel.'));
+    profile.logo_url=normalizeImageUrl(first(
+      publicData?.logo_url,
+      source.logo_url,
+      source.logo,
+      source.owner_logo,
+      source.partner_logo,
+      source.avatar_url,
+      source.owner_avatar_url,
+      source.profile_image_url,
+      source.profile_picture_url,
+      source.profile_photo_url,
+      source.image_url,
+      source.image
+    ));
     profile.location=baseLocation(profile,hasPublicProfile) || 'Localisation non précisée';
     profile.email=hasPublicProfile ? first(publicData?.email) : first(source.email,source.owner_email,lookupEmail);
     profile.phone=hasPublicProfile ? first(publicData?.phone) : first(source.phone,source.owner_phone);
@@ -333,29 +382,43 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
     profile.main_equipment_type=first(publicData?.main_equipment_type,source.main_equipment_type,source.equipment_type);
     profile.fleet_size=first(publicData?.fleet_size,source.fleet_size,source.fleet_category);
     profile.equipment_count=publicData?.equipment_count ?? source.equipment_count ?? source.material_count ?? null;
-    profile.equipment_description=first(publicData?.equipment_description,source.equipment_description,source.material_description);
+    profile.equipment_description=plainProfileText(first(publicData?.equipment_description,source.equipment_description,source.material_description));
     return profile;
   }
 
-  function setLogo(url){
+  function setLogo(url,name){
     const image=$('partner-logo');
     const fallback=$('partner-logo-fallback');
+    const initials=$('partner-logo-initials');
     if(!image) return;
+
+    const showFallback=()=>{
+      image.classList.add('hidden');
+      image.removeAttribute('src');
+      fallback?.classList.add('hidden');
+
+      if(initials){
+        initials.textContent=initialsFromName(name);
+        initials.classList.remove('hidden');
+      }
+    };
 
     image.classList.add('hidden');
     image.removeAttribute('src');
-    fallback?.classList.remove('hidden');
+    initials?.classList.add('hidden');
+    fallback?.classList.add('hidden');
 
-    if(!url) return;
+    if(!url){
+      showFallback();
+      return;
+    }
+
     image.onload=()=>{
       image.classList.remove('hidden');
+      initials?.classList.add('hidden');
       fallback?.classList.add('hidden');
     };
-    image.onerror=()=>{
-      image.classList.add('hidden');
-      image.removeAttribute('src');
-      fallback?.classList.remove('hidden');
-    };
+    image.onerror=showFallback;
     image.src=url;
   }
 
@@ -410,7 +473,7 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
     meta.push('<span class="meta-pill"><span class="material-symbols-outlined">verified</span>Partenaire vérifié</span>');
     $('partner-meta').innerHTML=meta.join('');
 
-    setLogo(profile.logo_url);
+    setLogo(profile.logo_url,profile.name);
     setContactLink('partner-email',profile.email?'mailto:'+profile.email:'','Contacter par e-mail','mail');
     setContactLink('partner-phone',profile.phone?'tel:'+profile.phone.replace(/\s+/g,''):'',profile.phone,'call');
 
