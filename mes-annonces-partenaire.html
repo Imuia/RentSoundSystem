@@ -208,6 +208,51 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   .rss-modal-panel{overscroll-behavior:contain}
 </style>
 
+<style id="rss-modal-below-header-fix">
+  /*
+    Le header reste visible. La fenêtre commence juste en dessous,
+    sans le couper ni passer derrière.
+  */
+  #listing-modal{
+    top:80px!important;
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+    inset:80px 0 0 0!important;
+    z-index:900!important;
+    padding:20px 22px!important;
+  }
+  #listing-modal.is-open{
+    align-items:flex-start!important;
+    overflow-y:auto!important;
+  }
+  #listing-modal-panel{
+    position:relative;
+    z-index:901;
+    width:min(1040px,100%)!important;
+    max-height:calc(100dvh - 120px)!important;
+    margin:18px auto 28px!important;
+    overflow:auto!important;
+    box-shadow:0 32px 100px rgba(0,0,0,.72)!important;
+  }
+  body.rss-no-scroll #header-container,
+  body.rss-no-scroll .rss-sidebar{
+    pointer-events:none!important;
+  }
+  @media(max-width:900px){
+    #listing-modal{
+      inset:72px 0 0 0!important;
+      top:72px!important;
+      padding:12px!important;
+    }
+    #listing-modal-panel{
+      max-height:calc(100dvh - 96px)!important;
+      margin:10px auto 18px!important;
+      border-radius:18px!important;
+    }
+  }
+</style>
+
 
 <style id="rss-real-schema-image-fixes">
   input.rss-input,
@@ -570,7 +615,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   <div class="rss-table-wrap"><table class="rss-table" style="width:100%;border-collapse:collapse;text-align:left;font-size:14px"><thead><tr><th style="padding:0 16px 12px 0">Annonce</th><th>Ville</th><th>Prix</th><th>Statut</th><th>Images</th><th style="text-align:right">Actions</th></tr></thead><tbody id="listings-table"></tbody></table></div>
   <div id="empty-listings" style="display:none;text-align:center;padding:48px;color:#e6bcc2">Aucune annonce trouvée.</div>
 </section>
-<div id="listing-modal" class="rss-modal" style="position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
+<div id="listing-modal" class="rss-modal" style="position:fixed;inset:80px 0 0 0;z-index:900;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
  <div id="listing-modal-panel" class="rss-card rss-card-pink rss-modal-panel" style="width:100%;max-width:1040px;max-height:92vh;overflow:auto;padding:24px">
   <div style="display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:18px"><div><h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0">Modifier l’annonce</h2><p class="rss-muted">Texte, prix, statut et images.</p></div><button id="close-modal" class="rss-btn rss-btn-outline" type="button"><span class="material-symbols-outlined">close</span></button></div>
   <form id="listing-edit-form" class="rss-form-grid">
