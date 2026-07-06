@@ -715,6 +715,111 @@ function getCachedPartnerProfile(){
   }catch(e){ return null; }
 }
 
+// Stockage stable de tous les champs de Mon profil partenaire.
+// Il évite qu'un ancien partenaire, présent seulement dans partner_requests,
+// reçoive un faux message de succès alors qu'aucune ligne partners n'existe.
+const PARTNER_PROFILE_DETAILS_TABLE = 'partner_profile_details';
+
+function profileDetailsFromRow(row){
+  const data = row?.data;
+  return data && typeof data === 'object' && !Array.isArray(data) ? data : {};
+}
+
+async function loadPartnerProfileDetails(userId){
+  if(!sb || !userId) return {};
+  const {data, error} = await sb
+    .from(PARTNER_PROFILE_DETAILS_TABLE)
+    .select('data')
+    .eq('user_id', userId)
+    .maybeSingle();
+
+  if(error){
+    const message = String(error.message || '').toLowerCase();
+    if(!(message.includes('does not exist') || message.includes('schema cache') || message.includes('relation'))){
+      console.warn('Lecture profil partenaire impossible :', error.message);
+    }
+    return {};
+  }
+  return profileDetailsFromRow(data);
+}
+
+async function savePartnerProfileDetails(ctx, payload){
+  if(!ctx?.user?.id) throw new Error('Session partenaire introuvable.');
+
+  const row = {
+    user_id: ctx.user.id,
+    email: cleanEmail(ctx.email),
+    data: payload,
+    updated_at: new Date().toISOString()
+  };
+
+  const {data, error} = await sb
+    .from(PARTNER_PROFILE_DETAILS_TABLE)
+    .upsert(row, {onConflict:'user_id'})
+    .select('data, updated_at')
+    .single();
+
+  if(error){
+    const message = String(error.message || '').toLowerCase();
+    if(message.includes('does not exist') || message.includes('schema cache') || message.includes('relation')){
+      throw new Error('Configuration Supabase incomplète : exécutez une seule fois le fichier SQL fourni avec cette correction.');
+    }
+    throw error;
+  }
+  return profileDetailsFromRow(data);
+}
+
+async function syncPartnerRequestCore(ctx, payload){
+  if(!ctx?.partnerRequest?.id) return false;
+
+  // Colonnes déjà utilisées par le parcours d'inscription partenaire existant.
+  const requestPayload = {
+    company_name: payload.name,
+    phone: payload.phone,
+    country: payload.country,
+    city: payload.city,
+    website: payload.website,
+    registration_number: payload.reg_number,
+    tax_id: payload.vat_number,
+    address_1: payload.address,
+    postal_code: payload.postal_code,
+    equipment_count: payload.equipment_count,
+    fleet_value: payload.fleet_value,
+    equipment_description: payload.equipment_description
+  };
+
+  const {data, error} = await sb
+    .from('partner_requests')
+    .update(requestPayload)
+    .eq('id', ctx.partnerRequest.id)
+    .select('id')
+    .maybeSingle();
+
+  if(error){
+    console.warn('Synchronisation dossier partenaire impossible :', error.message);
+    return false;
+  }
+  return Boolean(data);
+}
+
+async function syncAuthProfileCore(ctx, payload){
+  if(!ctx?.user?.id) return false;
+  const {error} = await sb
+    .from('profiles')
+    .upsert({
+      id: ctx.user.id,
+      email: cleanEmail(ctx.email),
+      full_name: ctx.profile?.full_name || payload.name,
+      company_name: payload.name,
+      updated_at: new Date().toISOString()
+    }, {onConflict:'id'});
+
+  if(error){
+    console.warn('Synchronisation profil compte impossible :', error.message);
+    return false;
+  }
+  return true;
+}
 
 function updatePublicProfileLinks(p, ctx){
   const key = firstText(p?.id, p?.legacy_user_id, p?.email, ctx?.email);
@@ -778,34 +883,69 @@ function setChecked(id,val){ const el=$(id); if(el) el.checked = boolVal(val,tru
 function getValue(id){ const el=$(id); return el ? el.value.trim() : ''; }
 function getChecked(id){ const el=$(id); return !!(el && el.checked); }
 
+function isUnknownPartnerColumnError(error){
+  const message = String(error?.message || error || '').toLowerCase();
+  return message.includes('column') || message.includes('schema cache') || message.includes('could not find');
+}
+
 async function updatePartnerProfileBySafeColumns(rowId, email, payload){
-  // Essai complet : fonctionne si toutes les colonnes existent.
-  let res;
-  if(rowId) res = await sb.from('partners').update(payload).eq('id', rowId);
-  else res = await sb.from('partners').update(payload).ilike('email', email);
+  // Cette table reste la source publique/legacy quand une ligne partenaire existe.
+  // La sauvegarde privée principale est réalisée dans partner_profile_details.
+  const runUpdate = async (data) => {
+    const query = rowId
+      ? sb.from('partners').update(data).eq('id', rowId)
+      : sb.from('partners').update(data).ilike('email', cleanEmail(email));
 
-  if(!res.error) return res;
-
-  // Fallback : si Supabase n'a pas encore toutes les colonnes, on sauvegarde les champs essentiels.
-  const basic = {
-    email: payload.email,
-    name: payload.name,
-    phone: payload.phone,
-    city: payload.city,
-    country: payload.country
+    const {data: saved, error} = await query.select('id').maybeSingle();
+    if(error) throw error;
+    return saved || null; // null = aucune ligne partners correspondante, sans faux succès
   };
-  if('address' in payload) basic.address = payload.address;
-  if('postal_code' in payload) basic.postal_code = payload.postal_code;
-  if('logo_url' in payload) basic.logo_url = payload.logo_url;
-  if('description' in payload) basic.description = payload.description;
 
-  if(rowId) res = await sb.from('partners').update(basic).eq('id', rowId);
-  else res = await sb.from('partners').update(basic).ilike('email', email);
+  try{
+    const saved = await runUpdate(payload);
+    if(saved) return saved;
+  }catch(error){
+    if(!isUnknownPartnerColumnError(error)) throw error;
+  }
 
-  if(res.error) throw res.error;
+  // Les anciennes bases partenaires ne possèdent pas toutes les colonnes.
+  // On synchronise alors les champs publics essentiels sans empêcher
+  // la vraie sauvegarde du profil privé.
+  const variants = [
+    {
+      email: payload.email,
+      name: payload.name,
+      phone: payload.phone,
+      city: payload.city,
+      country: payload.country,
+      address: payload.address,
+      postal_code: payload.postal_code,
+      logo_url: payload.logo_url,
+      description: payload.description
+    },
+    {
+      email: payload.email,
+      name: payload.name,
+      phone: payload.phone,
+      city: payload.city,
+      country: payload.country
+    },
+    {
+      email: payload.email,
+      name: payload.name
+    }
+  ];
 
-  console.warn('Certaines colonnes partenaires manquent encore dans Supabase. Champs essentiels sauvegardés.', payload);
-  return res;
+  for(const candidate of variants){
+    try{
+      const saved = await runUpdate(candidate);
+      if(saved) return saved;
+    }catch(error){
+      if(!isUnknownPartnerColumnError(error)) throw error;
+    }
+  }
+
+  return null;
 }
 
 async function uploadPartnerLogo(file, ctx){
@@ -821,7 +961,11 @@ async function uploadPartnerLogo(file, ctx){
 async function initPartnerProfilePage(){
   CTX=await getPartnerContext(); if(!CTX)return;
 
-  const p=CTX.partner || {};
+  const savedDetails = await loadPartnerProfileDetails(CTX.user?.id);
+  let p = Object.assign({}, CTX.partner || {}, savedDetails || {});
+  p.email = cleanEmail(p.email || CTX.email);
+  CTX.partner = p;
+
   fillPartnerFormFast(p);
   updatePublicProfileLinks(p, CTX);
   cachePartnerProfileSnapshot(p);
@@ -966,10 +1110,22 @@ async function initPartnerProfilePage(){
       id_document_url: getValue('partner-id-document-url-input')
     };
 
-    try{
-      await updatePartnerProfileBySafeColumns(CTX.partner?.id, CTX.email, payload);
+    const submitButton = e.currentTarget.querySelector('button[type="submit"]');
+    const originalButtonHtml = submitButton ? submitButton.innerHTML : '';
 
-      CTX.partner = Object.assign({}, CTX.partner, payload, {
+    if(submitButton){
+      submitButton.disabled = true;
+      submitButton.style.opacity = '.65';
+      submitButton.innerHTML = '<span class="material-symbols-outlined">sync</span> Enregistrement…';
+    }
+
+    try{
+      // Sauvegarde principale : une ligne privée par utilisateur Auth.
+      // Cette étape est obligatoire et vérifiée avant tout message de succès.
+      const savedDetails = await savePartnerProfileDetails(CTX, payload);
+
+      CTX.partner = Object.assign({}, CTX.partner || {}, savedDetails, payload, {
+        email: cleanEmail(CTX.email),
         owner_name: payload.name,
         owner_phone: payload.phone,
         owner_city: payload.city,
@@ -978,8 +1134,19 @@ async function initPartnerProfilePage(){
 
       cachePartnerProfileSnapshot(CTX.partner);
       updatePublicProfileLinks(CTX.partner, CTX);
-      await syncPartnerProfileToListings(CTX, CTX.partner);
-      await repairOwnerInfoForCurrentPartner(CTX);
+
+      // Les sources historiques restent synchronisées sans bloquer l'enregistrement.
+      const tasks = await Promise.allSettled([
+        updatePartnerProfileBySafeColumns(CTX.partner?.id, CTX.email, payload),
+        syncPartnerRequestCore(CTX, payload),
+        syncAuthProfileCore(CTX, payload),
+        syncPartnerProfileToListings(CTX, CTX.partner),
+        repairOwnerInfoForCurrentPartner(CTX)
+      ]);
+
+      const publicPartnerSaved = tasks[0].status === 'fulfilled' && Boolean(tasks[0].value);
+      const requestSaved = tasks[1].status === 'fulfilled' && Boolean(tasks[1].value);
+
       const bankStatus = $('bank-status');
       if(bankStatus){
         const hasBank = payload.iban && payload.bic && payload.bank_name;
@@ -987,10 +1154,21 @@ async function initPartnerProfilePage(){
           ? '<span class="material-symbols-outlined">check_circle</span> Votre compte bancaire est enregistré'
           : '<span class="material-symbols-outlined">info</span> Compte bancaire à compléter';
       }
+
       if($('stat-city')) $('stat-city').textContent = payload.city || '—';
-      alertBox('Profil partenaire, informations société et annonces mises à jour.','success');
+
+      const syncText = (publicPartnerSaved || requestSaved)
+        ? ' Les informations publiques et historiques ont été synchronisées.'
+        : ' Vos données sont enregistrées de manière sécurisée pour ce compte.';
+      alertBox('Profil partenaire enregistré.' + syncText,'success');
     }catch(error){
       alertBox('Erreur profil : '+(error.message||error),'error');
+    }finally{
+      if(submitButton){
+        submitButton.disabled = false;
+        submitButton.style.opacity = '';
+        submitButton.innerHTML = originalButtonHtml;
+      }
     }
   });
 }
