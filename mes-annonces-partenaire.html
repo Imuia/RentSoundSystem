@@ -7,6 +7,8 @@
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
@@ -182,6 +184,28 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     font-size:11px!important;
     padding:7px!important;
   }
+  .rss-address-wrap{position:relative}
+  .rss-address-suggestions{
+    display:none;position:absolute;z-index:200;left:0;right:0;top:calc(100% + 6px);
+    max-height:230px;overflow:auto;border:1px solid rgba(252,3,109,.38);
+    background:#171717;border-radius:12px;box-shadow:0 18px 44px rgba(0,0,0,.45)
+  }
+  .rss-address-suggestions.is-open{display:block}
+  .rss-address-suggestion{
+    width:100%;border:0;border-bottom:1px solid rgba(255,255,255,.08);background:transparent;
+    color:#fff;padding:12px 14px;text-align:left;cursor:pointer;font:inherit
+  }
+  .rss-address-suggestion:last-child{border-bottom:0}
+  .rss-address-suggestion:hover,.rss-address-suggestion:focus{background:rgba(252,3,109,.12);outline:none}
+  .rss-address-suggestion strong{display:block;font-size:13px}
+  .rss-address-suggestion span{display:block;color:#e6bcc2;font-size:12px;margin-top:3px}
+  .rss-address-status{display:block;margin-top:8px;color:#e6bcc2;font-size:12px;line-height:1.45}
+  .rss-address-status.is-success{color:#9fffc8}
+  .rss-address-status.is-error{color:#ffb4ab}
+  #edit-address-map{height:280px;margin-top:12px;border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;background:#111}
+  #edit-address-map .leaflet-control-attribution{background:rgba(16,16,16,.75);color:#bbb}
+  #edit-address-map .leaflet-control-attribution a{color:#FC036D}
+  .rss-modal-panel{overscroll-behavior:contain}
 </style>
 
 
@@ -547,44 +571,88 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   <div id="empty-listings" style="display:none;text-align:center;padding:48px;color:#e6bcc2">Aucune annonce trouvée.</div>
 </section>
 <div id="listing-modal" class="rss-modal" style="position:fixed;inset:0;z-index:100;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.78);backdrop-filter:blur(6px)">
- <div class="rss-card rss-card-pink" style="width:100%;max-width:920px;max-height:92vh;overflow:auto;padding:24px">
+ <div id="listing-modal-panel" class="rss-card rss-card-pink rss-modal-panel" style="width:100%;max-width:1040px;max-height:92vh;overflow:auto;padding:24px">
   <div style="display:flex;justify-content:space-between;gap:16px;align-items:start;margin-bottom:18px"><div><h2 class="font-headline" style="font-size:32px;font-weight:900;margin:0">Modifier l’annonce</h2><p class="rss-muted">Texte, prix, statut et images.</p></div><button id="close-modal" class="rss-btn rss-btn-outline" type="button"><span class="material-symbols-outlined">close</span></button></div>
   <form id="listing-edit-form" class="rss-form-grid">
     <input type="hidden" id="edit-id">
     <label style="grid-column:1/-1">Titre<input id="edit-title" class="rss-input" style="margin-top:6px" required></label>
-    <label style="grid-column:1/-1">Description<textarea id="edit-description" class="rss-input" style="margin-top:6px;min-height:140px"></textarea></label>
-    <label>Prix / jour<input id="edit-price" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
-    <label>Caution<input id="edit-caution" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
+    <label style="grid-column:1/-1">Description<textarea id="edit-description" class="rss-input" style="margin-top:6px;min-height:140px" required></textarea></label>
 
-      <div class="rss-option-card">
-        <label class="rss-option-head">
-          <input id="edit-delivery-enabled" type="checkbox">
-          <span>Frais de livraison</span>
-        </label>
-        <label>Prix livraison (€)
-          <input id="edit-delivery-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="50">
-        </label>
-      </div>
-      <div class="rss-option-card">
-        <label class="rss-option-head">
-          <input id="edit-installation-enabled" type="checkbox">
-          <span>Installation technique</span>
-        </label>
-        <label>Prix installation (€)
-          <input id="edit-installation-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="150">
-        </label>
-      </div>
-
-
-      <div id="rss-options-save-note" style="grid-column:1/-1;display:none;padding:12px 14px;border:1px solid rgba(255,180,80,.35);background:rgba(255,180,80,.08);color:#ffd7a6;border-radius:12px;font-size:12px;line-height:1.5"></div>
-
+    <label>Catégorie
+      <select id="edit-category" class="rss-input" style="margin-top:6px" required>
+        <option value="">Choisir une catégorie</option>
+        <option value="deejay">Deejay</option>
+        <option value="evenementiel-production">Evènementiel &amp; Production</option>
+        <option value="mobilier">Mobilier</option>
+        <option value="casque">Casque</option>
+        <option value="keyboards">Keyboards</option>
+        <option value="multimedia-digital">Multimédia Digital</option>
+        <option value="sonorisation-eclairage">Sonorisation &amp; Eclairage</option>
+        <option value="instruments-cordes">Instruments à cordes</option>
+        <option value="studio">Studio</option>
+        <option value="instruments-musique">Instruments de musique</option>
+      </select>
+    </label>
+    <label>Type
+      <select id="edit-type" class="rss-input" style="margin-top:6px">
+        <option value="rental">Location</option>
+        <option value="service">Service événementiel</option>
+      </select>
+    </label>
     <label>Marque<input id="edit-brand" class="rss-input" style="margin-top:6px"></label>
     <label>Modèle<input id="edit-model" class="rss-input" style="margin-top:6px"></label>
-    <label>Catégorie<input id="edit-category" class="rss-input" style="margin-top:6px"></label>
-    <label>Statut<select id="edit-status" class="rss-input" style="margin-top:6px"><option value="publish">Publié</option><option value="draft">Brouillon</option><option value="pending">En attente</option></select></label>
-    <label>Ville<input id="edit-city" class="rss-input" style="margin-top:6px"></label>
-    <label>Pays<input id="edit-country" class="rss-input" style="margin-top:6px"></label>
-    <label style="grid-column:1/-1">Adresse<input id="edit-address" class="rss-input" style="margin-top:6px"></label>
+
+    <label>Prix / jour<input id="edit-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" required></label>
+    <label>Caution<input id="edit-caution" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0"></label>
+
+    <div class="rss-option-card">
+      <label class="rss-option-head">
+        <input id="edit-delivery-enabled" type="checkbox">
+        <span>Frais de livraison</span>
+      </label>
+      <label>Prix livraison (€)
+        <input id="edit-delivery-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="50">
+      </label>
+    </div>
+
+    <div class="rss-option-card">
+      <label class="rss-option-head">
+        <input id="edit-installation-enabled" type="checkbox">
+        <span>Installation technique</span>
+      </label>
+      <label>Prix installation (€)
+        <input id="edit-installation-price" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0" value="150">
+      </label>
+    </div>
+
+    <label>Prix week-end<input id="edit-price-weekend" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0"></label>
+    <label>Prix semaine<input id="edit-price-week" class="rss-input" style="margin-top:6px" type="number" step="0.01" min="0"></label>
+
+    <label>Ville<input id="edit-city" class="rss-input" style="margin-top:6px" required></label>
+    <label>Pays<input id="edit-country" class="rss-input" style="margin-top:6px" required></label>
+
+    <label style="grid-column:1/-1">Adresse / zone de location
+      <div class="rss-address-wrap">
+        <input id="edit-address" class="rss-input" style="margin-top:6px" autocomplete="street-address" placeholder="Ville, région, code postal, pays">
+        <input id="edit-place-id" type="hidden">
+        <div id="edit-address-suggestions" class="rss-address-suggestions" role="listbox" aria-label="Résultats de recherche d’adresse"></div>
+      </div>
+      <span id="edit-address-map-status" class="rss-address-status">La carte utilise OpenStreetMap. Seule la zone publique de location est affichée.</span>
+      <div id="edit-address-map" aria-label="Carte de la localisation de l’annonce"></div>
+    </label>
+
+    <label>Latitude<input id="edit-lat" class="rss-input" style="margin-top:6px" type="number" step="any"></label>
+    <label>Longitude<input id="edit-lng" class="rss-input" style="margin-top:6px" type="number" step="any"></label>
+    <label>Code postal<input id="edit-zip" class="rss-input" style="margin-top:6px"></label>
+    <label>Durée minimum<input id="edit-min-duration" class="rss-input" style="margin-top:6px" type="number" min="1" value="1"></label>
+    <label>Durée maximum<input id="edit-max-duration" class="rss-input" style="margin-top:6px" type="number" min="1" value="999"></label>
+    <label>Statut
+      <select id="edit-status" class="rss-input" style="margin-top:6px">
+        <option value="publish">Publié</option>
+        <option value="draft">Brouillon</option>
+        <option value="pending">En attente</option>
+      </select>
+    </label>
     <div style="grid-column:1/-1;border-top:1px solid rgba(255,255,255,.1);padding-top:16px">
       <h3 class="font-headline" style="font-size:22px;font-weight:900;margin:0 0 10px">Images</h3>
       <div id="edit-images" class="rss-existing-images-grid"></div>
@@ -747,17 +815,18 @@ async function getPartnerContext(){
   };
 }
 async function loadPartnerListings(ctx){
-  const baseSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,delivery_enabled,delivery_price,installation_enabled,installation_price,views,legacy_user_id,owner_email,owner_name,owner_phone,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
-  const safeSelect='id,original_id,title,description,status,category,location,city,country,address,price,price_label,type,brand,model,caution,views,legacy_user_id,owner_email,owner_name,owner_phone,created_at,updated_at';
-  let q=sb.from('listings').select(baseSelect).order('created_at',{ascending:false});
-  q=ctx.legacy?q.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q.ilike('owner_email',ctx.email);
-  let {data,error}=await q;
+  // select('*') évite qu'une colonne ajoutée récemment (GPS, durée, tarifs)
+  // fasse échouer le chargement des anciennes annonces.
+  let query=sb.from('listings').select('*').order('created_at',{ascending:false});
+  query=ctx.legacy
+    ? query.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy)
+    : query.ilike('owner_email',ctx.email);
+
+  const {data,error}=await query;
   if(error){
-    let q2=sb.from('listings').select(safeSelect).order('created_at',{ascending:false});
-    q2=ctx.legacy?q2.or('owner_email.ilike.'+ctx.email+',legacy_user_id.eq.'+ctx.legacy):q2.ilike('owner_email',ctx.email);
-    const r2=await q2; data=r2.data; error=r2.error;
+    alertBox('Impossible de charger les annonces : '+error.message,'error');
+    return [];
   }
-  if(error){ alertBox('Impossible de charger les annonces : '+error.message,'error'); return []; }
   return data||[];
 }
 
@@ -876,43 +945,39 @@ async function setListingFallbackImage(listingId, imageUrl){
   }
 }
 
-async function uploadImageFile(file, listingId){
-  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
-  const bucketName='listing-images';
-  let imageUrl='';
+const LISTING_IMAGE_BUCKET='listing-images';
+const LISTING_IMAGE_MAX_BYTES=8*1024*1024;
+const LISTING_IMAGE_TYPES=new Set(['image/jpeg','image/png','image/webp']);
 
-  try{
-    const {data:userData,error:userErr}=await sb.auth.getUser();
-    if(userErr || !userData || !userData.user) throw new Error('Utilisateur non connecté.');
-    const userId=userData.user.id;
-    const path=userId+'/'+listingId+'/'+Date.now()+'-'+Math.random().toString(36).slice(2)+'.'+ext;
-
-    const {error:upErr}=await sb.storage
-      .from(bucketName)
-      .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg'});
-
-    if(upErr) throw upErr;
-
-    const {data:pub}=sb.storage.from(bucketName).getPublicUrl(path);
-    imageUrl=pub.publicUrl;
-  }catch(storageErr){
-    console.warn('Storage indisponible, fallback data URL:', storageErr.message || storageErr);
-    imageUrl=await fileToDataUrl(file);
+async function uploadImageFile(file,listingId,position){
+  if(!file) throw new Error('Image introuvable.');
+  if(file.size>LISTING_IMAGE_MAX_BYTES) throw new Error(file.name+' dépasse 8 Mo.');
+  if(file.type && !LISTING_IMAGE_TYPES.has(file.type)){
+    throw new Error(file.name+' doit être au format JPG, PNG ou WEBP.');
   }
 
-  await setListingFallbackImage(listingId, imageUrl);
+  const {data:userData,error:userErr}=await sb.auth.getUser();
+  if(userErr || !userData?.user) throw new Error('Utilisateur non connecté.');
 
-  const {error:insErr}=await sb.from('listing_images').insert({
-    listing_id: listingId,
-    image_url: imageUrl,
-    position: 999
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const safeName=String(file.name||'image').replace(/[^a-z0-9._-]/gi,'_').slice(0,60);
+  const path=userData.user.id+'/'+listingId+'/'+Date.now()+'-'+safeName.replace(/\.[^.]+$/,'')+'.'+ext;
+
+  const {error:uploadError}=await sb.storage
+    .from(LISTING_IMAGE_BUCKET)
+    .upload(path,file,{upsert:false,contentType:file.type||'image/jpeg',cacheControl:'3600'});
+  if(uploadError) throw new Error('Téléversement de '+file.name+' impossible : '+uploadError.message);
+
+  const {data:publicData}=sb.storage.from(LISTING_IMAGE_BUCKET).getPublicUrl(path);
+  const imageUrl=publicData?.publicUrl;
+  if(!imageUrl) throw new Error('URL publique introuvable pour '+file.name+'.');
+
+  const {error:linkError}=await sb.rpc('add_my_listing_image',{
+    p_listing_id:listingId,
+    p_image_url:imageUrl,
+    p_position:Number.isFinite(Number(position)) ? Number(position) : null
   });
-
-  if(insErr){
-    console.warn('listing_images bloqué, image conservée dans listings:', insErr.message);
-    return imageUrl;
-  }
-
+  if(linkError) throw new Error('Image téléversée mais non liée à l’annonce : '+linkError.message);
   return imageUrl;
 }
 document.addEventListener('DOMContentLoaded',()=>{
@@ -923,20 +988,23 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <script>
 
-const LISTINGS_CACHE_KEY='rss_partner_listings_cache_v2';
+const LISTINGS_CACHE_KEY='rss_partner_listings_cache_v3';
+function listingsCacheKey(email){
+  return LISTINGS_CACHE_KEY+':'+cleanEmail(email||'unknown');
+}
 function cacheListingsForFastDisplay(){
   try{
-    if(STATE && Array.isArray(STATE.listings)){
-      localStorage.setItem(LISTINGS_CACHE_KEY, JSON.stringify({
+    if(STATE?.ctx?.email && Array.isArray(STATE.listings)){
+      localStorage.setItem(listingsCacheKey(STATE.ctx.email),JSON.stringify({
         saved_at:Date.now(),
         listings:STATE.listings.slice(0,80)
       }));
     }
   }catch(e){}
 }
-function getCachedListingsForFastDisplay(){
+function getCachedListingsForFastDisplay(email){
   try{
-    const raw=localStorage.getItem(LISTINGS_CACHE_KEY);
+    const raw=localStorage.getItem(listingsCacheKey(email));
     if(!raw) return [];
     const parsed=JSON.parse(raw);
     if(!parsed || !Array.isArray(parsed.listings)) return [];
@@ -1082,27 +1150,76 @@ async function enrichListingsWithImages(listings){
   }
 }
 
-let STATE={ctx:null,listings:[],filtered:[],images:{},selectedEditFiles:[]};
+let STATE={
+  ctx:null,
+  listings:[],
+  filtered:[],
+  images:{},
+  selectedEditFiles:[],
+  editingId:null,
+  editDirty:false,
+  isLoadingListings:false,
+  pendingEditId:'',
+  editMap:null,
+  editMarker:null,
+  editLastNominatimAt:0,
+  editAddressTimer:null,
+  editAddressSequence:0
+};
+
+function isEditModalOpen(){
+  return Boolean($('listing-modal')?.classList.contains('is-open'));
+}
+function markEditDirty(){
+  if(STATE.editingId) STATE.editDirty=true;
+}
+function currentEditScrollTop(){
+  return $('listing-modal-panel')?.scrollTop||0;
+}
+function restoreEditScrollTop(value){
+  const panel=$('listing-modal-panel');
+  if(panel) panel.scrollTop=value||0;
+}
+function clearEditUrl(){
+  try{
+    const url=new URL(location.href);
+    if(!url.searchParams.has('edit')) return;
+    url.searchParams.delete('edit');
+    history.replaceState({},'',url.pathname+(url.search||'')+(url.hash||''));
+  }catch(e){}
+}
+
 document.addEventListener('DOMContentLoaded', async()=>{
  showListingsLoadingSkeleton();
- const cachedListings=getCachedListingsForFastDisplay();
+
+ STATE.ctx=await getPartnerContext();
+ if(!STATE.ctx)return;
+
+ // Cache isolé par email : une annonce d'un ancien partenaire ne s'affiche plus.
+ const cachedListings=getCachedListingsForFastDisplay(STATE.ctx.email);
  if(cachedListings.length){
    STATE.listings=cachedListings;
    applyFilters();
  }
- STATE.ctx=await getPartnerContext(); if(!STATE.ctx)return;
- loadPageListings();
+
+ const params=new URLSearchParams(location.search);
+ STATE.pendingEditId=params.get('edit')||'';
+
  $('listing-search')?.addEventListener('input',applyFilters);
  $('status-filter')?.addEventListener('change',applyFilters);
  $('close-modal')?.addEventListener('click',closeEdit);
  $('listing-modal')?.addEventListener('click',e=>{if(e.target.id==='listing-modal')closeEdit()});
  $('listing-edit-form')?.addEventListener('submit',saveListing);
+ $('listing-edit-form')?.addEventListener('input',markEditDirty);
+ $('listing-edit-form')?.addEventListener('change',markEditDirty);
  $('new-images')?.addEventListener('change',()=>{
    STATE.selectedEditFiles = STATE.selectedEditFiles.concat(Array.from($('new-images').files || []));
    $('new-images').value = '';
+   markEditDirty();
    renderNewImagePreviews();
  });
- const params=new URLSearchParams(location.search); if(params.get('edit')) setTimeout(()=>openEdit(params.get('edit')),150);
+
+ await loadPageListings();
 });
 
 async function repairOwnerInfoForCurrentPartner(ctx){
@@ -1129,7 +1246,43 @@ async function repairOwnerInfoForCurrentPartner(ctx){
   }
 }
 
-async function loadPageListings(){const listingsPromise=loadPartnerListings(STATE.ctx); repairOwnerInfoForCurrentPartner(STATE.ctx).catch(()=>{}); STATE.listings=await listingsPromise; STATE.listings=await enrichListingsWithImages(STATE.listings); cacheListingsForFastDisplay(); applyFilters();}
+async function loadPageListings(){
+  if(STATE.isLoadingListings || !STATE.ctx) return;
+  STATE.isLoadingListings=true;
+
+  try{
+    const listingsPromise=loadPartnerListings(STATE.ctx);
+    repairOwnerInfoForCurrentPartner(STATE.ctx).catch(()=>{});
+
+    const freshListings=await listingsPromise;
+    const enrichedListings=await enrichListingsWithImages(freshListings);
+
+    // Quand une fiche est ouverte, on ne reconstruit jamais la table ni le formulaire.
+    // Cela évite la fiche qui « saute » et les champs écrasés pendant l'édition.
+    if(isEditModalOpen()){
+      const editingId=STATE.editingId;
+      const current=STATE.listings.find(item=>String(item.id)===String(editingId));
+      const fresh= enrichedListings.find(item=>String(item.id)===String(editingId));
+      if(current && fresh && !STATE.editDirty){
+        Object.assign(current,fresh);
+      }
+      cacheListingsForFastDisplay();
+      return;
+    }
+
+    STATE.listings=enrichedListings;
+    cacheListingsForFastDisplay();
+    applyFilters();
+
+    if(STATE.pendingEditId){
+      const targetId=STATE.pendingEditId;
+      STATE.pendingEditId='';
+      openEdit(targetId);
+    }
+  }finally{
+    STATE.isLoadingListings=false;
+  }
+}
 function applyFilters(){
  const q=clean($('listing-search')?.value), st=$('status-filter')?.value||'';
  STATE.filtered=STATE.listings.filter(i=>(!st||statusNorm(i.status)===st)&&(!q||[i.title,i.city,i.country,i.category,i.brand,i.model,String(i.original_id||'')].join(' ').toLowerCase().includes(q)));
@@ -1183,45 +1336,403 @@ function renderTable(){
  }).join('');
  updateListingsCount();
 }
-async function openEdit(id){
- const i=STATE.listings.find(x=>x.id===id); if(!i)return;
- $('edit-id').value=i.id; $('edit-title').value=i.title||''; $('edit-description').value=i.description||''; $('edit-price').value=i.price??''; $('edit-caution').value=i.caution??'';
-
-  if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked = (i.delivery_enabled ?? true) !== false;
-  if($('edit-delivery-price')) $('edit-delivery-price').value = i.delivery_price ?? 50;
-  if($('edit-installation-enabled')) $('edit-installation-enabled').checked = (i.installation_enabled ?? true) !== false;
-  if($('edit-installation-price')) $('edit-installation-price').value = i.installation_price ?? 150;
- $('edit-brand').value=i.brand||''; $('edit-model').value=i.model||''; $('edit-category').value=i.category||''; $('edit-status').value=statusNorm(i.status); $('edit-city').value=i.city||''; $('edit-country').value=i.country||''; $('edit-address').value=i.address||''; $('edit-message').textContent=''; if($('rss-options-save-note')){$('rss-options-save-note').style.display='none';$('rss-options-save-note').textContent='';}
- STATE.selectedEditFiles=[];
- renderNewImagePreviews();
- await renderImages(id);
- $('listing-modal').classList.add('is-open'); document.body.classList.add('rss-no-scroll');
+function setEditField(id,value){
+  const el=$(id);
+  if(el) el.value=value??'';
 }
-function closeEdit(){ $('listing-modal').classList.remove('is-open'); document.body.classList.remove('rss-no-scroll') }
-async function renderImages(listingId){
- const wrap=$('edit-images'); wrap.innerHTML='<p class="rss-muted">Chargement des images...</p>';
- const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId)) || {id:listingId};
- const imgs=await loadListingImages(listing); STATE.images[listingId]=imgs;
- wrap.innerHTML=imgs.length?imgs.map(img=>{
-   const imageUrl = img.image_url || '';
-   const key = imageKey(img);
-   const badge = img.source === 'staging'
-     ? '<div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.4);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px">legacy</div>'
-     : (img.source === 'storage'
-       ? '<div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.4);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px">storage</div>'
-       : '');
-   return `<div class="rss-image-preview-card">
-     ${badge}
-     <div class="rss-image-preview-actions">
-       <button class="rss-image-mini-btn" onclick="deleteImage('${key}')" type="button" title="Supprimer">×</button>
-     </div>
-     <img src="${esc(imageUrl)}" alt="" onerror="this.closest('.rss-image-preview-card').classList.add('brand-img-fallback');this.style.display='none'">
-     <input class="rss-input rss-image-url-input" id="img-url-${key}" value="${esc(imageUrl)}" placeholder="URL image">
-     <div style="padding:0 8px 8px">
-       <button class="rss-btn rss-btn-outline" style="width:100%;padding:8px 10px" onclick="replaceImageUrl('${key}')" type="button">Modifier URL</button>
-     </div>
-   </div>`;
- }).join(''):'<p class="rss-muted">Aucune image enregistrée pour cette annonce.</p>';
+function normalizeEditType(value){
+  const raw=String(value||'').trim();
+  const normalized=clean(raw);
+  if(!raw || normalized==='location' || normalized==='location de materiel' || normalized==='location de matériel' || normalized==='rental') return 'rental';
+  if(normalized==='service' || normalized.includes('événement') || normalized.includes('evenement')) return 'service';
+  return raw;
+}
+function setEditSelectValue(id,value,labelPrefix){
+  const select=$(id);
+  if(!select) return;
+  const valueText=String(value??'').trim();
+  if(!valueText){
+    select.value='';
+    return;
+  }
+  const known=Array.from(select.options).some(option=>option.value===valueText);
+  if(!known){
+    const option=document.createElement('option');
+    option.value=valueText;
+    option.textContent=(labelPrefix||'Valeur existante')+' : '+valueText;
+    option.dataset.legacy='1';
+    select.appendChild(option);
+  }
+  select.value=valueText;
+}
+function setEditAddressStatus(message,type=''){
+  const el=$('edit-address-map-status');
+  if(!el) return;
+  el.textContent=message||'';
+  el.classList.toggle('is-success',type==='success');
+  el.classList.toggle('is-error',type==='error');
+}
+function clearEditAddressSuggestions(){
+  const box=$('edit-address-suggestions');
+  if(!box) return;
+  box.innerHTML='';
+  box.classList.remove('is-open');
+}
+function uniqueEditLocationParts(parts){
+  const seen=new Set();
+  return parts.filter(Boolean).filter(value=>{
+    const key=String(value).trim().toLowerCase();
+    if(!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+function editAddressParts(item){
+  const address=item?.address||{};
+  const city=address.city||address.town||address.village||address.municipality||address.city_district||address.county||'';
+  const region=address.state||address.region||address.county||'';
+  const province=address.state_district||address.province||'';
+  const zip=address.postcode||'';
+  const country=address.country||'';
+
+  return {
+    publicAddress:uniqueEditLocationParts([city,region,province,zip,country]).join(', '),
+    city,
+    country,
+    zip,
+    lat:item?.lat==null?'':Number(item.lat),
+    lng:item?.lon==null?'':Number(item.lon),
+    placeId:String(item?.place_id||'')
+  };
+}
+function setEditAddressMarker(lat,lng,zoom=15){
+  if(!STATE.editMap || !Number.isFinite(Number(lat)) || !Number.isFinite(Number(lng))) return;
+  const point=[Number(lat),Number(lng)];
+
+  if(!STATE.editMarker){
+    STATE.editMarker=L.marker(point,{draggable:true}).addTo(STATE.editMap);
+    STATE.editMarker.on('dragend',async()=>{
+      const pointNow=STATE.editMarker.getLatLng();
+      setEditField('edit-lat',pointNow.lat.toFixed(7));
+      setEditField('edit-lng',pointNow.lng.toFixed(7));
+      markEditDirty();
+      setEditAddressStatus('Point déplacé. Mise à jour de la zone de location…');
+      try{
+        const data=await nominatimEditFetch('reverse',{
+          format:'jsonv2',
+          addressdetails:'1',
+          lat:String(pointNow.lat),
+          lon:String(pointNow.lng),
+          zoom:'18'
+        });
+        applyEditAddressResult(data);
+        setEditAddressStatus('Zone de location mise à jour depuis le point sélectionné.','success');
+      }catch(error){
+        setEditAddressStatus('Coordonnées enregistrées. Vérifiez la zone de location.','error');
+      }
+    });
+  }else{
+    STATE.editMarker.setLatLng(point);
+  }
+  STATE.editMap.setView(point,zoom);
+}
+function applyEditAddressResult(item){
+  const location=editAddressParts(item);
+  setEditField('edit-address',location.publicAddress);
+  setEditField('edit-city',location.city);
+  setEditField('edit-country',location.country);
+  setEditField('edit-zip',location.zip);
+  setEditField('edit-lat',location.lat);
+  setEditField('edit-lng',location.lng);
+  setEditField('edit-place-id',location.placeId);
+  setEditAddressMarker(location.lat,location.lng,16);
+  markEditDirty();
+}
+async function waitForEditNominatimSlot(){
+  const delay=Math.max(0,1100-(Date.now()-STATE.editLastNominatimAt));
+  if(delay) await new Promise(resolve=>setTimeout(resolve,delay));
+  STATE.editLastNominatimAt=Date.now();
+}
+async function nominatimEditFetch(path,params){
+  await waitForEditNominatimSlot();
+  const url='https://nominatim.openstreetmap.org/'+path+'?'+new URLSearchParams(params).toString();
+  const response=await fetch(url,{headers:{'Accept-Language':'fr'}});
+  if(!response.ok) throw new Error('Service d’adresse OpenStreetMap indisponible.');
+  return response.json();
+}
+function renderEditAddressSuggestions(items){
+  const box=$('edit-address-suggestions');
+  if(!box) return;
+
+  if(!items.length){
+    clearEditAddressSuggestions();
+    setEditAddressStatus('Aucune zone trouvée. Vous pouvez compléter les champs manuellement.');
+    return;
+  }
+
+  box.innerHTML=items.map((item,index)=>{
+    const area=editAddressParts(item);
+    const primary=esc(area.city||area.publicAddress||'Zone de location');
+    const secondary=esc(area.publicAddress||'');
+    return '<button type="button" class="rss-address-suggestion" data-edit-address-index="'+index+'" role="option">'+
+      '<strong>'+primary+'</strong><span>'+secondary+'</span></button>';
+  }).join('');
+  box.classList.add('is-open');
+
+  box.querySelectorAll('[data-edit-address-index]').forEach(button=>{
+    button.addEventListener('mousedown',event=>{
+      event.preventDefault();
+      const item=items[Number(button.dataset.editAddressIndex)];
+      if(!item) return;
+      clearEditAddressSuggestions();
+      applyEditAddressResult(item);
+      setEditAddressStatus('Zone de location mise à jour : ville, région, code postal, pays et coordonnées.','success');
+    });
+  });
+}
+function scheduleEditAddressSearch(){
+  clearTimeout(STATE.editAddressTimer);
+  const query=String($('edit-address')?.value||'').trim();
+  if(query.length<4){
+    clearEditAddressSuggestions();
+    return;
+  }
+  setEditAddressStatus('Recherche automatique de la zone de location…');
+  STATE.editAddressTimer=setTimeout(()=>searchEditAddress(true),850);
+}
+async function searchEditAddress(fromTyping=false){
+  const query=String($('edit-address')?.value||'').trim();
+  const requestNumber=++STATE.editAddressSequence;
+
+  if(query.length<4){
+    if(!fromTyping) setEditAddressStatus('Saisissez au moins 4 caractères pour rechercher une adresse.','error');
+    return;
+  }
+
+  clearEditAddressSuggestions();
+  if(!fromTyping) setEditAddressStatus('Recherche d’adresse OpenStreetMap…');
+
+  try{
+    const data=await nominatimEditFetch('search',{
+      format:'jsonv2',
+      addressdetails:'1',
+      limit:'5',
+      q:query
+    });
+    if(requestNumber!==STATE.editAddressSequence) return;
+
+    const items=Array.isArray(data)?data:[];
+    renderEditAddressSuggestions(items);
+    if(items.length===1){
+      clearEditAddressSuggestions();
+      applyEditAddressResult(items[0]);
+      setEditAddressStatus('Zone de location remplie automatiquement.','success');
+    }
+  }catch(error){
+    if(requestNumber!==STATE.editAddressSequence) return;
+    setEditAddressStatus('Recherche indisponible : '+(error.message||error)+'.','error');
+  }
+}
+function initializeEditAddressMap(){
+  if(typeof L==='undefined'){
+    setEditAddressStatus('Carte OpenStreetMap non chargée.','error');
+    return;
+  }
+
+  const mapEl=$('edit-address-map');
+  if(!mapEl) return;
+
+  if(!STATE.editMap){
+    STATE.editMap=L.map(mapEl,{zoomControl:true,scrollWheelZoom:true}).setView([20,0],2);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+      maxZoom:19,
+      attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'
+    }).addTo(STATE.editMap);
+
+    STATE.editMap.on('click',async (event)=>{
+      const {lat,lng}=event.latlng;
+      setEditAddressMarker(lat,lng,16);
+      setEditField('edit-lat',lat.toFixed(7));
+      setEditField('edit-lng',lng.toFixed(7));
+      markEditDirty();
+      setEditAddressStatus('Point sélectionné. Mise à jour de la zone…');
+      try{
+        const data=await nominatimEditFetch('reverse',{
+          format:'jsonv2',
+          addressdetails:'1',
+          lat:String(lat),
+          lon:String(lng),
+          zoom:'18'
+        });
+        applyEditAddressResult(data);
+        setEditAddressStatus('Zone de location mise à jour depuis la carte.','success');
+      }catch(error){
+        setEditAddressStatus('Coordonnées enregistrées. Complétez la zone de location si nécessaire.','error');
+      }
+    });
+  }
+
+  setTimeout(()=>STATE.editMap?.invalidateSize(),80);
+}
+function locateEditListingIfEmpty(){
+  const existingLat=num($('edit-lat')?.value);
+  const existingLng=num($('edit-lng')?.value);
+  if(existingLat!==null && existingLng!==null){
+    setEditAddressMarker(existingLat,existingLng,15);
+    return;
+  }
+
+  const hasPublicLocation=Boolean(
+    String($('edit-address')?.value||'').trim() ||
+    String($('edit-city')?.value||'').trim() ||
+    String($('edit-country')?.value||'').trim()
+  );
+  if(hasPublicLocation) return;
+
+  if(!navigator.geolocation){
+    setEditAddressStatus('Saisissez une zone de location : la recherche se lance automatiquement.');
+    return;
+  }
+
+  setEditAddressStatus('Autorisez la localisation pour préremplir la zone de location.');
+  navigator.geolocation.getCurrentPosition(async (position)=>{
+    const lat=position.coords.latitude;
+    const lng=position.coords.longitude;
+    setEditAddressMarker(lat,lng,16);
+    setEditField('edit-lat',lat.toFixed(7));
+    setEditField('edit-lng',lng.toFixed(7));
+
+    try{
+      const data=await nominatimEditFetch('reverse',{
+        format:'jsonv2',
+        addressdetails:'1',
+        lat:String(lat),
+        lon:String(lng),
+        zoom:'18'
+      });
+      applyEditAddressResult(data);
+      STATE.editDirty=false; // Préremplissage initial, pas une modification de l'utilisateur.
+      setEditAddressStatus('Zone de location remplie automatiquement.','success');
+    }catch(error){
+      setEditAddressStatus('Position récupérée. Saisissez une zone de location pour compléter.','error');
+    }
+  },()=>{
+    setEditAddressStatus('Position non utilisée. Saisissez directement une zone de location.');
+  },{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+}
+function bindEditAddressFields(){
+  const address=$('edit-address');
+  if(address && address.dataset.bound!=='1'){
+    address.dataset.bound='1';
+    address.addEventListener('input',scheduleEditAddressSearch);
+    address.addEventListener('keydown',event=>{
+      if(event.key==='Enter'){
+        event.preventDefault();
+        clearTimeout(STATE.editAddressTimer);
+        searchEditAddress(false);
+      }
+    });
+    address.addEventListener('blur',()=>setTimeout(clearEditAddressSuggestions,180));
+  }
+
+  ['edit-lat','edit-lng'].forEach(id=>{
+    const field=$(id);
+    if(field && field.dataset.bound!=='1'){
+      field.dataset.bound='1';
+      field.addEventListener('change',()=>{
+        const lat=num($('edit-lat')?.value);
+        const lng=num($('edit-lng')?.value);
+        if(lat!==null && lng!==null){
+          setEditAddressMarker(lat,lng,15);
+          markEditDirty();
+        }
+      });
+    }
+  });
+}
+function setEditUrl(id){
+  try{
+    const url=new URL(location.href);
+    url.searchParams.set('edit',id);
+    history.replaceState({},'',url.pathname+(url.search||'')+(url.hash||''));
+  }catch(e){}
+}
+
+async function openEdit(id){
+ const listing=(STATE.listings||[]).find(item=>String(item.id)===String(id));
+ if(!listing) return;
+
+ if(STATE.editingId && String(STATE.editingId)===String(id) && isEditModalOpen()) return;
+
+ STATE.editingId=listing.id;
+ STATE.editDirty=false;
+ STATE.selectedEditFiles=[];
+ $('edit-id').value=listing.id;
+ setEditField('edit-title',listing.title||'');
+ setEditField('edit-description',listing.description||'');
+ setEditField('edit-price',listing.price??'');
+ setEditField('edit-caution',listing.caution??'');
+
+ if($('edit-delivery-enabled')) $('edit-delivery-enabled').checked=(listing.delivery_enabled??true)!==false;
+ setEditField('edit-delivery-price',listing.delivery_price??50);
+ if($('edit-installation-enabled')) $('edit-installation-enabled').checked=(listing.installation_enabled??true)!==false;
+ setEditField('edit-installation-price',listing.installation_price??150);
+
+ setEditField('edit-price-weekend',listing.price_weekend??'');
+ setEditField('edit-price-week',listing.price_week??'');
+
+ setEditField('edit-brand',listing.brand||'');
+ setEditField('edit-model',listing.model||'');
+ setEditSelectValue('edit-category',listing.category||'','Catégorie existante');
+ setEditSelectValue('edit-type',normalizeEditType(listing.type),'Type existant');
+ setEditSelectValue('edit-status',statusNorm(listing.status),'Statut existant');
+
+ setEditField('edit-city',listing.city||listing.location||'');
+ setEditField('edit-country',listing.country||'');
+ setEditField('edit-address',listing.address||'');
+ setEditField('edit-place-id',listing.place_id||'');
+ setEditField('edit-lat',listing.lat??listing.latitude??'');
+ setEditField('edit-lng',listing.lng??listing.longitude??listing.lon??'');
+ setEditField('edit-zip',listing.zip??listing.postal_code??'');
+ setEditField('edit-min-duration',listing.min_duration??1);
+ setEditField('edit-max-duration',listing.max_duration??999);
+
+ $('edit-message').textContent='';
+ if($('rss-options-save-note')){
+   $('rss-options-save-note').style.display='none';
+   $('rss-options-save-note').textContent='';
+ }
+ renderNewImagePreviews();
+
+ $('listing-modal').classList.add('is-open');
+ document.body.classList.add('rss-no-scroll');
+ setEditUrl(listing.id);
+
+ const panel=$('listing-modal-panel');
+ if(panel) panel.scrollTop=0;
+
+ initializeEditAddressMap();
+ bindEditAddressFields();
+ const lat=num($('edit-lat')?.value);
+ const lng=num($('edit-lng')?.value);
+ if(lat!==null && lng!==null) setEditAddressMarker(lat,lng,15);
+ else locateEditListingIfEmpty();
+
+ // L'ouverture est immédiate ; les images se chargent ensuite sans déplacer la fiche.
+ renderImages(listing.id).catch(error=>{
+   console.warn('Images annonce :',error.message||error);
+ });
+}
+function closeEdit(){
+  clearEditAddressSuggestions();
+  $('listing-modal').classList.remove('is-open');
+  document.body.classList.remove('rss-no-scroll');
+  STATE.editingId=null;
+  STATE.editDirty=false;
+  STATE.selectedEditFiles=[];
+  cacheListingsForFastDisplay();
+  applyFilters();
+  clearEditUrl();
 }
 function renderNewImagePreviews(){
  const wrap=$('new-images-preview');
@@ -1337,7 +1848,7 @@ async function replaceImageUrl(key){
  }
 
  if(error){alert('Erreur modification : '+error.message);return}
- await loadPageListings();
+ cacheListingsForFastDisplay();
  await renderImages(listingId);
 }
 async function deleteImage(key){
@@ -1403,7 +1914,7 @@ async function deleteImage(key){
      });
    }
 
-   await loadPageListings();
+   cacheListingsForFastDisplay();
    await renderImages(listingId);
  }catch(err){
    alert('Erreur suppression image : '+(err.message || err));
@@ -1455,80 +1966,103 @@ async function deleteListing(id){
  }
 }
 
+function updateListingErrorMessage(error){
+  const message=String(error?.message||error||'');
+  const lower=message.toLowerCase();
+  if(lower.includes('update_my_partner_listing') || lower.includes('function')){
+    return 'Configuration Supabase incomplète : exécutez le fichier SQL fourni pour la modification des annonces.';
+  }
+  return message;
+}
+
 async function saveListing(e){
   e.preventDefault();
 
-  const saveBtn = e.submitter || document.querySelector('#listing-edit-form button[type="submit"]');
-  const originalBtnText = saveBtn ? saveBtn.innerHTML : '';
+  const saveBtn=e.submitter||document.querySelector('#listing-edit-form button[type="submit"]');
+  const originalBtnText=saveBtn?saveBtn.innerHTML:'';
   if(saveBtn){
-    saveBtn.disabled = true;
-    saveBtn.innerHTML = '<span class="material-symbols-outlined">hourglass_top</span> Sauvegarde...';
+    saveBtn.disabled=true;
+    saveBtn.innerHTML='<span class="material-symbols-outlined">hourglass_top</span> Sauvegarde...';
   }
 
-  const note = $('rss-options-save-note');
-  if(note){ note.style.display='none'; note.textContent=''; }
-  $('edit-message').textContent='Sauvegarde...';
+  const note=$('rss-options-save-note');
+  if(note){note.style.display='none';note.textContent='';}
+  $('edit-message').textContent='Sauvegarde de la fiche…';
 
   try{
-    const id=$('edit-id').value;
+    const id=String($('edit-id')?.value||'').trim();
     if(!id) throw new Error('ID annonce manquant.');
 
-    const partner=STATE.ctx?.partner||{};
     const update={
-      title:$('edit-title').value.trim(),
-      description:$('edit-description').value.trim(),
-      price:num($('edit-price').value),
-      caution:num($('edit-caution').value),
+      title:String($('edit-title')?.value||'').trim(),
+      description:String($('edit-description')?.value||'').trim(),
+      category:String($('edit-category')?.value||'').trim(),
+      type:String($('edit-type')?.value||'rental').trim(),
+      status:String($('edit-status')?.value||'publish').trim(),
+      brand:String($('edit-brand')?.value||'').trim(),
+      model:String($('edit-model')?.value||'').trim(),
+      price:num($('edit-price')?.value),
+      caution:num($('edit-caution')?.value)||0,
       delivery_enabled:rssEditBool('edit-delivery-enabled'),
       delivery_price:rssEditNumber('edit-delivery-price',50),
       installation_enabled:rssEditBool('edit-installation-enabled'),
       installation_price:rssEditNumber('edit-installation-price',150),
-      brand:$('edit-brand').value.trim(),
-      model:$('edit-model').value.trim(),
-      category:$('edit-category').value.trim(),
-      status:$('edit-status').value,
-      city:$('edit-city').value.trim(),
-      country:$('edit-country').value.trim(),
-      address:$('edit-address').value.trim(),
-      owner_email:cleanEmail(STATE.ctx.email),
-      owner_name:firstText(partner.name,partner.owner_name,partner.company_name,STATE.ctx.email),
-      owner_phone:firstText(partner.phone,partner.owner_phone),
-      owner_city:firstText(partner.city,partner.owner_city),
-      owner_country:firstText(partner.country,partner.owner_country),
-      legacy_user_id:partner.legacy_user_id||null
+      price_weekend:num($('edit-price-weekend')?.value),
+      price_week:num($('edit-price-week')?.value),
+      city:String($('edit-city')?.value||'').trim(),
+      location:String($('edit-city')?.value||'').trim(),
+      country:String($('edit-country')?.value||'').trim(),
+      address:String($('edit-address')?.value||'').trim(),
+      place_id:String($('edit-place-id')?.value||'').trim(),
+      lat:num($('edit-lat')?.value),
+      lng:num($('edit-lng')?.value),
+      zip:String($('edit-zip')?.value||'').trim(),
+      min_duration:num($('edit-min-duration')?.value)||1,
+      max_duration:num($('edit-max-duration')?.value)||999
     };
 
-    const {error}=await sb.from('listings').update(update).eq('id',id);
-    if(error){
-      if(rssOptionColumnsMissing(error)){
-        if(note){ note.style.display='block'; note.textContent=rssOptionsSqlMessage(); }
-        throw new Error('Colonnes SQL livraison / installation manquantes. Lancez le SQL indiqué.');
-      }
-      throw error;
+    if(!update.title || !update.description || !update.category || update.price===null || update.price<0 || !update.city || !update.country){
+      throw new Error('Complétez le titre, la description, la catégorie, le prix, la ville et le pays.');
     }
 
-    const files=STATE.selectedEditFiles || [];
-    for(const file of files){
-      await uploadImageFile(file,id);
+    if(update.max_duration<update.min_duration){
+      throw new Error('La durée maximum doit être supérieure ou égale à la durée minimum.');
     }
 
-    const currentSavedListing = STATE.listings.find(x => String(x.id) === String(id));
-    if(currentSavedListing) Object.assign(currentSavedListing, update);
+    const {data,error}=await sb.rpc('update_my_partner_listing',{
+      p_listing_id:id,
+      p_payload:update
+    });
+    if(error) throw error;
+
+    const saved=data&&typeof data==='object'?data:null;
+    const current=(STATE.listings||[]).find(item=>String(item.id)===String(id));
+    if(current) Object.assign(current,update,saved||{});
+
+    const files=(STATE.selectedEditFiles||[]).slice();
+    const existingImageCount=(STATE.images?.[id]||[]).length;
+    for(let index=0;index<files.length;index++){
+      $('edit-message').textContent='Sauvegarde… image '+(index+1)+' / '+files.length;
+      const imageUrl=await uploadImageFile(files[index],id,existingImageCount+index);
+      if(current && !listingImageUrl(current)) current.image_url=imageUrl;
+    }
 
     STATE.selectedEditFiles=[];
     if($('new-images')) $('new-images').value='';
     renderNewImagePreviews();
+    STATE.editDirty=false;
+    cacheListingsForFastDisplay();
 
+    // Pas de rechargement global : la modal reste stable et ne saute pas.
     $('edit-message').textContent='Annonce mise à jour.';
-    await loadPageListings();
-    if(typeof renderImages === 'function') await renderImages(id);
-  }catch(err){
-    console.error('Erreur sauvegarde annonce:', err);
-    $('edit-message').textContent='Erreur : '+(err.message || err);
+    await renderImages(id);
+  }catch(error){
+    console.error('Erreur sauvegarde annonce:',error);
+    $('edit-message').textContent='Erreur : '+updateListingErrorMessage(error);
   }finally{
     if(saveBtn){
-      saveBtn.disabled = false;
-      saveBtn.innerHTML = originalBtnText || '<span class="material-symbols-outlined">save</span> Enregistrer';
+      saveBtn.disabled=false;
+      saveBtn.innerHTML=originalBtnText||'<span class="material-symbols-outlined">save</span> Sauvegarder';
     }
   }
 }
