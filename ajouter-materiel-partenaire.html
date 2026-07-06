@@ -263,7 +263,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
         <div id="address-suggestions" class="rss-address-suggestions" role="listbox" aria-label="Résultats de recherche d’adresse"></div>
       </div>
       <div class="rss-address-actions">
-        <span id="address-map-status" class="rss-address-status">Votre position est recherchée automatiquement. Vous pouvez aussi commencer à saisir une adresse.</span>
+        <span id="address-map-status" class="rss-address-status">Votre position est recherchée automatiquement. Le champ affichera uniquement ville, région, code postal et pays.</span>
       </div>
       <div id="address-map" aria-label="Carte OpenStreetMap pour définir l’adresse de l’annonce"></div>
     </label>
@@ -548,9 +548,44 @@ async function nominatimFetch(path,params){
   return response.json();
 }
 function setField(id,value){const el=$(id);if(el)el.value=value??'';}
+function uniquePublicLocationParts(parts){
+  const seen=new Set();
+  return parts.filter(Boolean).filter(value=>{
+    const key=String(value).trim().toLowerCase();
+    if(!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 function addressParts(item){
   const a=item?.address||{};
-  return {address:item?.display_name||'',city:a.city||a.town||a.village||a.municipality||a.county||a.state_district||'',country:a.country||'',zip:a.postcode||'',lat:item?.lat==null?'':Number(item.lat),lng:item?.lon==null?'':Number(item.lon),place_id:String(item?.place_id||'')};
+
+  // Adresse publique uniquement : jamais rue, numéro, résidence ou quartier.
+  const city=a.city||a.town||a.village||a.municipality||a.city_district||a.county||'';
+  const region=a.state||a.region||a.county||'';
+  const province=a.state_district||a.province||'';
+  const zip=a.postcode||'';
+  const country=a.country||'';
+
+  // Exemple : Antananarivo, Analamanga, Province d’Antananarivo, 101, Madagascar
+  const publicLocation=uniquePublicLocationParts([
+    city,
+    region,
+    province,
+    zip,
+    country
+  ]).join(', ');
+
+  return {
+    address:publicLocation,
+    city,
+    country,
+    zip,
+    lat:item?.lat==null?'':Number(item.lat),
+    lng:item?.lon==null?'':Number(item.lon),
+    place_id:String(item?.place_id||'')
+  };
 }
 function setAddressMarker(lat,lng,zoom=16){
   if(!addressMap||!Number.isFinite(Number(lat))||!Number.isFinite(Number(lng)))return;
@@ -560,27 +595,37 @@ function setAddressMarker(lat,lng,zoom=16){
     addressMarker.on('dragend',async()=>{
       const pos=addressMarker.getLatLng();setField('lat',pos.lat.toFixed(7));setField('lng',pos.lng.toFixed(7));
       setAddressStatus('Point déplacé. Mise à jour de l’adresse…');
-      try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(pos.lat),lon:String(pos.lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Adresse mise à jour depuis le point sélectionné.','success');}
+      try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(pos.lat),lon:String(pos.lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Zone de location mise à jour depuis le point sélectionné.','success');}
       catch(error){setAddressStatus('Coordonnées enregistrées. Complétez l’adresse manuellement si nécessaire.','error');}
     });
   }else{addressMarker.setLatLng(point);}
   addressMap.setView(point,zoom);
 }
-function applyAddressResult(item,keepCurrentAddress=false){
+function applyAddressResult(item){
   const p=addressParts(item);
-  if(!keepCurrentAddress||!String($('address')?.value||'').trim())setField('address',p.address);
-  setField('city',p.city);setField('country',p.country);setField('zip',p.zip);setField('lat',p.lat);setField('lng',p.lng);setField('place_id',p.place_id);setAddressMarker(p.lat,p.lng,16);
+
+  // Dès qu'une position est validée, le champ ne garde que la zone publique.
+  setField('address',p.address);
+  setField('city',p.city);
+  setField('country',p.country);
+  setField('zip',p.zip);
+  setField('lat',p.lat);
+  setField('lng',p.lng);
+  setField('place_id',p.place_id);
+  setAddressMarker(p.lat,p.lng,16);
 }
 function renderAddressSuggestions(items){
   const box=$('address-suggestions');if(!box)return;
   if(!items.length){clearAddressSuggestions();setAddressStatus('Aucune adresse trouvée. Vérifiez l’orthographe ou complétez les champs manuellement.');return;}
   box.innerHTML=items.map((item,index)=>{
-    const label=esc(item.display_name||'Adresse');const primary=esc((item.display_name||'Adresse').split(',').slice(0,2).join(','));
+    const publicParts=addressParts(item);
+    const label=esc(publicParts.address||'Zone de location');
+    const primary=esc(publicParts.city||publicParts.address||'Zone de location');
     return '<button type="button" class="rss-address-suggestion" data-result-index="'+index+'" role="option"><strong>'+primary+'</strong><span>'+label+'</span></button>';
   }).join('');
   box.classList.add('is-open');
   box.querySelectorAll('[data-result-index]').forEach(button=>button.addEventListener('click',()=>{
-    const item=items[Number(button.dataset.resultIndex)];if(!item)return;clearAddressSuggestions();applyAddressResult(item);setAddressStatus('Adresse sélectionnée : ville, pays, code postal et coordonnées remplis.','success');
+    const item=items[Number(button.dataset.resultIndex)];if(!item)return;clearAddressSuggestions();applyAddressResult(item);setAddressStatus('Zone de location sélectionnée : ville, région, code postal, pays et coordonnées remplis.','success');
   }));
 }
 function scheduleAutomaticAddressSearch(){
@@ -627,7 +672,7 @@ async function searchAddress(fromTyping=false){
     if(items.length===1){
       clearAddressSuggestions();
       applyAddressResult(items[0]);
-      setAddressStatus('Adresse remplie automatiquement : ville, pays, code postal et coordonnées mis à jour.','success');
+      setAddressStatus('Zone de location remplie automatiquement : ville, région, code postal, pays et coordonnées mis à jour.','success');
     }
   }catch(error){
     if(requestNumber!==addressSearchSequence) return;
@@ -641,7 +686,7 @@ function initializeAddressMap(){
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'}).addTo(addressMap);
   addressMap.on('click',async(event)=>{
     const {lat,lng}=event.latlng;setAddressMarker(lat,lng,16);setField('lat',lat.toFixed(7));setField('lng',lng.toFixed(7));setAddressStatus('Point sélectionné. Recherche de l’adresse…');
-    try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(lat),lon:String(lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Adresse mise à jour depuis le point sélectionné.','success');}
+    try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(lat),lon:String(lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Zone de location mise à jour depuis le point sélectionné.','success');}
     catch(error){setAddressStatus('Coordonnées enregistrées. Complétez l’adresse manuellement si nécessaire.','error');}
   });
   setTimeout(()=>addressMap.invalidateSize(),150);
@@ -677,7 +722,7 @@ function useMyAddressLocation(automatic=false){
 
       // Exemple obtenu : « Antananarivo, Analamanga, Province d’Antananarivo, 101, Madagascar ».
       applyAddressResult(data,false);
-      setAddressStatus('Adresse de votre position remplie automatiquement.','success');
+      setAddressStatus('Zone de location de votre position remplie automatiquement.','success');
     }catch(error){
       setAddressStatus('Position récupérée. Saisissez une adresse pour compléter les informations.','error');
     }
