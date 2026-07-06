@@ -308,7 +308,18 @@
       } else {
         localStorage.setItem('rss_password_reset_done', '1');
         showMessage('Mot de passe mis à jour. Redirection vers la connexion...', 'success');
-        setTimeout(function(){ window.location.href = '/mot-de-passe-reinitialise.html'; }, 1600);
+
+        // Le lien de récupération ouvre une session temporaire Supabase.
+        // On la ferme avant de revenir à la connexion afin que le header
+        // affiche bien « S’inscrire / Connexion » et non « Mon compte ».
+        setTimeout(async function () {
+          try {
+            await client.auth.signOut({ scope: 'local' });
+          } catch (signOutError) {
+            console.warn('Déconnexion après réinitialisation non bloquante :', signOutError);
+          }
+          window.location.href = '/connexion-inscription.html?force=1&reset=success';
+        }, 1600);
       }
 
       submitBtn.disabled = false;
