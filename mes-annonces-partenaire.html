@@ -1327,6 +1327,9 @@ function renderTable(){
     <button class="rss-btn rss-btn-outline" onclick="openEdit('${i.id}')">
       <span class="material-symbols-outlined" style="font-size:16px">edit</span> Modifier
     </button>
+    <button class="rss-btn rss-btn-outline" onclick="duplicateListing('${i.id}')" type="button">
+      <span class="material-symbols-outlined" style="font-size:16px">content_copy</span> Dupliquer
+    </button>
     <button class="rss-btn rss-danger" onclick="deleteListing('${i.id}')" type="button">
       <span class="material-symbols-outlined" style="font-size:16px">delete</span> Supprimer
     </button>
@@ -1734,6 +1737,83 @@ function closeEdit(){
   applyFilters();
   clearEditUrl();
 }
+
+let imageRenderSequence=0;
+
+function imageSourceLabel(source){
+  if(source==='staging') return 'importée';
+  if(source==='storage') return 'Storage';
+  if(source==='listing') return 'ancienne fiche';
+  return 'image';
+}
+
+function imageCanChangeUrl(source){
+  return source !== 'storage';
+}
+
+function imageHtmlCard(img){
+  const key=imageKey(img);
+  const imageUrl=String(img?.image_url||'');
+  const source=String(img?.source||'main');
+  const sourceLabel=imageSourceLabel(source);
+  const updateUrl=imageCanChangeUrl(source);
+
+  return `<div class="rss-image-preview-card" data-image-key="${esc(key)}">
+    <div style="position:absolute;left:7px;top:7px;background:rgba(0,0,0,.72);border:1px solid rgba(252,3,109,.38);color:#fff;border-radius:999px;padding:4px 7px;font-size:10px;z-index:2">${esc(sourceLabel)}</div>
+    <div class="rss-image-preview-actions">
+      <button class="rss-image-mini-btn" onclick="deleteImage('${key}')" type="button" title="Supprimer cette image">×</button>
+    </div>
+    <img src="${esc(imageUrl)}" alt="" loading="lazy" referrerpolicy="no-referrer"
+      onerror="this.closest('.rss-image-preview-card').classList.add('brand-img-fallback');this.style.display='none'">
+    ${updateUrl ? `
+      <input class="rss-input rss-image-url-input" id="img-url-${key}" value="${esc(imageUrl)}" placeholder="URL image">
+      <div style="padding:0 8px 8px">
+        <button class="rss-btn rss-btn-outline" style="width:100%;padding:8px 10px" onclick="replaceImageUrl('${key}')" type="button">Modifier URL</button>
+      </div>` : `
+      <div class="rss-image-preview-name">Image Storage : supprimez-la puis importez la nouvelle image.</div>`}
+  </div>`;
+}
+
+async function refreshListingImagePreview(listingId, imgs){
+  const item=(STATE.listings||[]).find(x=>String(x.id)===String(listingId));
+  if(!item) return;
+  item.image_url=(imgs||[])[0]?.image_url||'';
+  if(!item.image_url){
+    ['featured_image','thumbnail','cover_image'].forEach(field=>{
+      if(item[field] && !(imgs||[]).some(img=>String(img.image_url||'')===String(item[field]))) item[field]='';
+    });
+  }
+  cacheListingsForFastDisplay();
+}
+
+async function renderImages(listingId){
+  const currentListingId=String(listingId||'');
+  const wrap=$('edit-images');
+  if(!wrap || !currentListingId) return;
+
+  const requestId=++imageRenderSequence;
+  wrap.innerHTML='<p class="rss-muted">Chargement des images…</p>';
+
+  try{
+    const listing=(STATE.listings||[]).find(item=>String(item.id)===currentListingId)||{id:currentListingId};
+    const images=await loadListingImages(listing);
+
+    if(requestId!==imageRenderSequence || String(STATE.editingId||'')!==currentListingId) return;
+
+    STATE.images[currentListingId]=images;
+    await refreshListingImagePreview(currentListingId,images);
+
+    wrap.innerHTML=images.length
+      ? images.map(imageHtmlCard).join('')
+      : '<p class="rss-muted">Aucune image enregistrée pour cette annonce.</p>';
+  }catch(error){
+    console.error('Chargement images annonce :',error);
+    if(requestId===imageRenderSequence){
+      wrap.innerHTML='<p class="rss-muted" style="color:#ffb4ab">Impossible de charger les images : '+esc(error?.message||error)+'</p>';
+    }
+  }
+}
+
 function renderNewImagePreviews(){
  const wrap=$('new-images-preview');
  if(!wrap) return;
@@ -1796,174 +1876,168 @@ async function clearListingImageColumns(listingId, imageUrl){
 }
 
 async function replaceImageUrl(key){
- const input=$('img-url-'+key);
- const url=input?.value?.trim();
- if(!url){alert('URL vide');return}
- const info=parseImageKey(key);
- const listingId=$('edit-id')?.value;
- let error=null;
+  const input=$('img-url-'+key);
+  const newUrl=String(input?.value||'').trim();
+  if(!newUrl){
+    alert('URL vide.');
+    return;
+  }
 
- if(info.source === 'staging'){
-   const res=await sb.from('listing_images_staging')
-     .update({image_url:url})
-     .eq('listing_original_id', Number(info.original_id))
-     .eq('image_url', info.image_url)
-     .eq('position', Number(info.position||0));
-   error=res.error;
- }else if(info.source === 'listing'){
-   // Les colonnes d'image dans listings peuvent varier selon le schéma.
-   // On essaie seulement les colonnes réellement acceptées par Supabase.
-   const oldUrl=info.image_url || '';
-   const fields=['image_url','featured_image','thumbnail','cover_image'];
-   let updated=false;
+  const listingId=String($('edit-id')?.value||'').trim();
+  const info=parseImageKey(key);
+  const current=(STATE.images?.[listingId]||[]).find(image=>imageKey(image)===key)||{};
+  const oldUrl=current.image_url||info.image_url||'';
 
-   for(const field of fields){
-     try{
-       const payload={};
-       payload[field]=url;
-       const res=await sb.from('listings').update(payload).eq('id',listingId);
-       if(res.error){
-         const msg=String(res.error.message || '').toLowerCase();
-         if(msg.includes('could not find') || msg.includes('schema cache') || msg.includes('column')) continue;
-         error=res.error;
-         break;
-       }
-       updated=true;
-       const listing=(STATE.listings||[]).find(x=>String(x.id)===String(listingId));
-       if(listing) listing[field]=url;
-       break;
-     }catch(e){}
-   }
+  if(!listingId) return;
 
-   if(!updated && !error){
-     alert("Impossible de modifier cette URL : aucune colonne image compatible n'existe dans listings.");
-     return;
-   }
- }else{
-   const res=await sb.from('listing_images').update({image_url:url}).eq('id',info.id);
-   error=res.error;
-   if(!error && info.image_url){
-     await clearListingImageColumns(listingId, info.image_url);
-   }
- }
+  try{
+    const imageId=(info.source==='main' && /^[0-9a-f-]{36}$/i.test(info.id)) ? info.id : null;
+    const {error}=await sb.rpc('update_my_listing_image',{
+      p_listing_id:listingId,
+      p_image_id:imageId,
+      p_source:info.source,
+      p_listing_original_id:info.source==='staging' && /^\d+$/.test(String(info.original_id||'')) ? Number(info.original_id) : null,
+      p_old_image_url:oldUrl,
+      p_new_image_url:newUrl,
+      p_position:Number.isFinite(Number(info.position)) ? Number(info.position) : null
+    });
 
- if(error){alert('Erreur modification : '+error.message);return}
- cacheListingsForFastDisplay();
- await renderImages(listingId);
+    if(error) throw error;
+
+    if(STATE.images?.[listingId]){
+      STATE.images[listingId]=STATE.images[listingId].map(image=>
+        imageKey(image)===key ? Object.assign({},image,{image_url:newUrl}) : image
+      );
+    }
+
+    const item=(STATE.listings||[]).find(listing=>String(listing.id)===listingId);
+    if(item && String(item.image_url||'')===String(oldUrl)) item.image_url=newUrl;
+
+    cacheListingsForFastDisplay();
+    await renderImages(listingId);
+    $('edit-message').textContent='URL image mise à jour.';
+  }catch(error){
+    console.error('Modification URL image :',error);
+    alert('Erreur modification image : '+(error?.message||error));
+  }
 }
+
 async function deleteImage(key){
- if(!confirm('Supprimer cette image ?')) return;
- const listingId=$('edit-id')?.value;
- const info=parseImageKey(key);
- const current=(STATE.images?.[listingId]||[]).find(img=>imageKey(img)===key) || {};
- const imageUrl=current.image_url || info.image_url || '';
- let error=null;
+  if(!confirm('Supprimer cette image ?')) return;
 
- try{
-   // Anciennes images importées
-   if(info.source === 'staging'){
-     const res=await sb.from('listing_images_staging')
-       .delete()
-       .eq('listing_original_id', Number(info.original_id))
-       .eq('image_url', info.image_url)
-       .eq('position', Number(info.position||0));
-     error=res.error;
-   }
+  const listingId=String($('edit-id')?.value||'').trim();
+  const info=parseImageKey(key);
+  const current=(STATE.images?.[listingId]||[]).find(image=>imageKey(image)===key)||{};
+  const imageUrl=current.image_url||info.image_url||'';
 
-   // Images directes/Storage : on supprime aussi le fichier Storage si l'URL vient du bucket listing-images
-   else if(info.source === 'storage' || info.source === 'listing'){
-     const storageError=await removeStorageImageByUrl(imageUrl);
-     if(storageError){
-       alert("Erreur suppression fichier Storage : " + storageError.message + "\\nVérifiez la policy DELETE sur le bucket listing-images.");
-       return;
-     }
-     // Nettoyage complémentaire non bloquant des colonnes listings si elles existent
-     await clearListingImageColumns(listingId, imageUrl);
-     error=null;
-   }
+  if(!listingId) return;
 
-   // Images normales en base listing_images
-   else{
-     const res=await sb.from('listing_images').delete().eq('id',info.id);
-     error=res.error;
+  try{
+    $('edit-message').textContent='Suppression de l’image…';
 
-     if(!error && imageUrl){
-       // Important : si l'image existe aussi physiquement dans Storage, on la supprime pour éviter qu'elle réapparaisse.
-       const storageError=await removeStorageImageByUrl(imageUrl);
-       if(storageError){
-         console.warn('Suppression fichier Storage impossible:', storageError.message || storageError);
-       }
-       await clearListingImageColumns(listingId, imageUrl);
-     }
-   }
+    const imageId=(info.source==='main' && /^[0-9a-f-]{36}$/i.test(info.id)) ? info.id : null;
+    const {data,error}=await sb.rpc('delete_my_listing_image',{
+      p_listing_id:listingId,
+      p_image_id:imageId,
+      p_source:info.source,
+      p_listing_original_id:info.source==='staging' && /^\d+$/.test(String(info.original_id||'')) ? Number(info.original_id) : null,
+      p_image_url:imageUrl,
+      p_position:Number.isFinite(Number(info.position)) ? Number(info.position) : null
+    });
 
-   if(error){
-     alert('Erreur suppression image : '+error.message);
-     return;
-   }
+    if(error) throw error;
 
-   // Retrait immédiat dans l'interface.
-   if(STATE.images && STATE.images[listingId]){
-     STATE.images[listingId]=STATE.images[listingId].filter(img=>imageKey(img)!==key);
-   }
+    if(data?.remove_storage && imageUrl){
+      const storageError=await removeStorageImageByUrl(imageUrl);
+      if(storageError) console.warn('Suppression Storage à terminer :',storageError.message||storageError);
+    }
 
-   const item=(STATE.listings||[]).find(x=>String(x.id)===String(listingId));
-   if(item && imageUrl){
-     ['image_url','featured_image','thumbnail','cover_image'].forEach(field=>{
-       if(String(item[field]||'')===String(imageUrl)) item[field]='';
-     });
-   }
+    STATE.images[listingId]=(STATE.images?.[listingId]||[]).filter(image=>imageKey(image)!==key);
+    await refreshListingImagePreview(listingId,STATE.images[listingId]);
+    await renderImages(listingId);
 
-   cacheListingsForFastDisplay();
-   await renderImages(listingId);
- }catch(err){
-   alert('Erreur suppression image : '+(err.message || err));
- }
+    $('edit-message').textContent='Image supprimée.';
+  }catch(error){
+    console.error('Suppression image :',error);
+    $('edit-message').textContent='Erreur suppression image : '+(error?.message||error);
+  }
+}
+
+async function duplicateListing(id){
+  const source=(STATE.listings||[]).find(item=>String(item.id)===String(id));
+  if(!source) return;
+
+  const confirmed=confirm(
+    'Dupliquer « '+(source.title||'cette annonce')+' » ?\n\n' +
+    'La copie sera créée en brouillon et ses images seront reprises.'
+  );
+  if(!confirmed) return;
+
+  try{
+    alertBox('Duplication de l’annonce en cours…','info');
+
+    const {data,error}=await sb.rpc('duplicate_my_partner_listing',{
+      p_listing_id:String(id)
+    });
+    if(error) throw error;
+    if(!data?.id) throw new Error('La copie a été créée sans identifiant.');
+
+    const copy=Object.assign({},data,{
+      image_url:listingImageUrl(source),
+      featured_image:'',
+      thumbnail:'',
+      cover_image:''
+    });
+
+    STATE.listings.unshift(copy);
+    cacheListingsForFastDisplay();
+    applyFilters();
+
+    alertBox('Annonce dupliquée en brouillon. Vous pouvez maintenant modifier la copie.','success');
+    await openEdit(copy.id);
+  }catch(error){
+    console.error('Duplication annonce :',error);
+    alertBox('Erreur duplication : '+(error?.message||error),'error');
+  }
 }
 
 async function deleteListing(id){
- if(!id) return;
- const item = (STATE.listings || []).find(x => String(x.id) === String(id));
- const title = item?.title || 'cette annonce';
+  if(!id) return;
 
- const ok = confirm(
-   'Supprimer définitivement l’annonce : "' + title + '" ?\n\n' +
-   'Cette action supprimera aussi les images liées dans la base de données.'
- );
- if(!ok) return;
+  const item=(STATE.listings||[]).find(listing=>String(listing.id)===String(id));
+  const title=item?.title||'cette annonce';
 
- try{
-   const msg = $('edit-message');
-   if(msg) msg.textContent='Suppression en cours...';
+  const confirmed=confirm(
+    'Supprimer définitivement l’annonce : "'+title+'" ?\n\n' +
+    'Les images liées seront également supprimées.'
+  );
+  if(!confirmed) return;
 
-   // Sécurité propriétaire : on ne supprime que les annonces du partenaire connecté.
-   let query = sb.from('listings').delete().eq('id', id);
-   if(STATE.ctx?.email) query = query.ilike('owner_email', cleanEmail(STATE.ctx.email));
+  try{
+    const {data,error}=await sb.rpc('delete_my_partner_listing',{
+      p_listing_id:String(id)
+    });
+    if(error) throw error;
 
-   // Nettoyage des images liées. Si RLS bloque, on continue quand même la suppression annonce.
-   try{
-     await sb.from('listing_images').delete().eq('listing_id', id);
-   }catch(e){
-     console.warn('Suppression listing_images impossible:', e.message || e);
-   }
+    const storageUrls=Array.isArray(data?.storage_urls) ? data.storage_urls : [];
+    for(const url of storageUrls){
+      const storageError=await removeStorageImageByUrl(url);
+      if(storageError) console.warn('Fichier Storage non supprimé :',storageError.message||storageError);
+    }
 
-   const {error} = await query;
-   if(error){
-     alert('Erreur suppression annonce : ' + error.message + '\\nVérifiez la policy DELETE sur listings.');
-     return;
-   }
+    if(String(STATE.editingId||'')===String(id)) closeEdit();
 
-   // Fermer le modal si l’annonce supprimée était ouverte.
-   if($('edit-id') && String($('edit-id').value) === String(id)) closeEdit();
+    STATE.listings=(STATE.listings||[]).filter(listing=>String(listing.id)!==String(id));
+    STATE.filtered=(STATE.filtered||[]).filter(listing=>String(listing.id)!==String(id));
+    delete STATE.images[String(id)];
 
-   STATE.listings = (STATE.listings || []).filter(x => String(x.id) !== String(id));
-   STATE.filtered = (STATE.filtered || []).filter(x => String(x.id) !== String(id));
-   cacheListingsForFastDisplay();
-   renderTable();
-   alertBox('Annonce supprimée avec succès.','success');
- }catch(err){
-   alert('Erreur suppression : ' + (err.message || err));
- }
+    cacheListingsForFastDisplay();
+    renderTable();
+    alertBox('Annonce supprimée avec succès.','success');
+  }catch(error){
+    console.error('Suppression annonce :',error);
+    alert('Erreur suppression annonce : '+(error?.message||error));
+  }
 }
 
 function updateListingErrorMessage(error){
@@ -2066,7 +2140,7 @@ async function saveListing(e){
     }
   }
 }
-window.openEdit=openEdit; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
+window.openEdit=openEdit; window.deleteImage=deleteImage; window.deleteListing=deleteListing; window.duplicateListing=duplicateListing; window.replaceImageUrl=replaceImageUrl; window.removeNewEditImage=removeNewEditImage;
 </script>
 
 <div id="footer-container"></div>
