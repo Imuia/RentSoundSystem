@@ -7,6 +7,8 @@
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 <script>
@@ -164,6 +166,22 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   }
 </style>
 
+<style id="rss-openstreetmap-address-style">
+  .rss-address-wrap{position:relative}
+  .rss-address-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:9px}
+  .rss-address-actions .rss-btn{padding:9px 12px}
+  .rss-address-status{font-size:12px;color:#e6bcc2;line-height:1.5}
+  .rss-address-status.is-error{color:#ffb4ab}.rss-address-status.is-success{color:#9fffc8}
+  .rss-address-suggestions{display:none;position:absolute;z-index:90;left:0;right:0;top:calc(100% + 6px);border:1px solid rgba(252,3,109,.35);background:#171717;border-radius:12px;overflow:hidden;box-shadow:0 18px 44px rgba(0,0,0,.42)}
+  .rss-address-suggestions.is-open{display:block}
+  .rss-address-suggestion{display:block;width:100%;border:0;border-bottom:1px solid rgba(255,255,255,.08);background:transparent;text-align:left;color:#fff;padding:12px 14px;cursor:pointer;font:inherit}
+  .rss-address-suggestion:last-child{border-bottom:0}.rss-address-suggestion:hover,.rss-address-suggestion:focus{background:rgba(252,3,109,.12);outline:none}
+  .rss-address-suggestion strong{display:block;font-size:13px}.rss-address-suggestion span{display:block;color:#e6bcc2;font-size:12px;margin-top:3px}
+  #address-map{height:310px;margin-top:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#111;overflow:hidden}
+  #address-map .leaflet-control-attribution{background:rgba(16,16,16,.75);color:#bbb}#address-map .leaflet-control-attribution a{color:#FC036D}
+  @media(max-width:700px){#address-map{height:260px}}
+</style>
+
 
 <!-- rss-step1-delivery-install-options -->
 </head>
@@ -238,7 +256,19 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     <label>Prix semaine<input id="price_week" class="rss-input" style="margin-top:6px" type="number" step="0.01"></label>
     <label>Ville<input id="city" class="rss-input" style="margin-top:6px" required></label>
     <label>Pays<input id="country" class="rss-input" style="margin-top:6px" required></label>
-    <label style="grid-column:1/-1">Adresse<input id="address" class="rss-input" style="margin-top:6px"></label>
+    <label style="grid-column:1/-1">Adresse
+      <div class="rss-address-wrap">
+        <input id="address" class="rss-input" style="margin-top:6px" autocomplete="street-address" placeholder="Ex : 61 rue de Lyon, 75012 Paris">
+        <input id="place_id" type="hidden">
+        <div id="address-suggestions" class="rss-address-suggestions" role="listbox" aria-label="Résultats de recherche d’adresse"></div>
+      </div>
+      <div class="rss-address-actions">
+        <button id="search-address-btn" type="button" class="rss-btn rss-btn-outline"><span class="material-symbols-outlined">search</span>Rechercher l’adresse</button>
+        <button id="use-address-location-btn" type="button" class="rss-btn rss-btn-outline"><span class="material-symbols-outlined">my_location</span>Utiliser ma position</button>
+        <span id="address-map-status" class="rss-address-status">Recherchez une adresse puis choisissez un résultat sur la carte.</span>
+      </div>
+      <div id="address-map" aria-label="Carte OpenStreetMap pour définir l’adresse de l’annonce"></div>
+    </label>
     <label>Latitude<input id="lat" class="rss-input" style="margin-top:6px" type="number" step="any"></label>
     <label>Longitude<input id="lng" class="rss-input" style="margin-top:6px" type="number" step="any"></label>
     <label>Durée minimum<input id="min_duration" class="rss-input" style="margin-top:6px" type="number" value="1" min="1"></label>
@@ -495,74 +525,156 @@ document.addEventListener('DOMContentLoaded',()=>{
 
 <script>
 let CTX=null;
-let selectedImageFiles = [];
-document.addEventListener('DOMContentLoaded', async()=>{
- CTX=await getPartnerContext(); if(!CTX)return;
- $('add-form')?.addEventListener('submit',saveNewListing);
- const imageInput = $('images');
- imageInput?.addEventListener('change', () => {
-   selectedImageFiles = selectedImageFiles.concat(Array.from(imageInput.files || []));
-   imageInput.value = '';
-   renderSelectedImagePreviews();
- });
-});
+let selectedImageFiles=[];
+let addressMap=null;
+let addressMarker=null;
+let lastNominatimRequestAt=0;
+
+function rssBool(id){return Boolean($(id)?.checked);}
+function rssNumber(id,fallback=0){const value=num($(id)?.value);return value===null?fallback:value;}
+function setAddressStatus(message,type=''){
+  const el=$('address-map-status');if(!el)return;
+  el.textContent=message||'';
+  el.classList.toggle('is-error',type==='error');
+  el.classList.toggle('is-success',type==='success');
+}
+function clearAddressSuggestions(){const box=$('address-suggestions');if(!box)return;box.innerHTML='';box.classList.remove('is-open');}
+function delayForNominatim(){return new Promise(resolve=>setTimeout(resolve,Math.max(0,1100-(Date.now()-lastNominatimRequestAt))));}
+async function nominatimFetch(path,params){
+  await delayForNominatim();lastNominatimRequestAt=Date.now();
+  const url='https://nominatim.openstreetmap.org/'+path+'?'+new URLSearchParams(params).toString();
+  const response=await fetch(url,{headers:{'Accept-Language':'fr'}});
+  if(!response.ok)throw new Error('Service d’adresse OpenStreetMap indisponible.');
+  return response.json();
+}
+function setField(id,value){const el=$(id);if(el)el.value=value??'';}
+function addressParts(item){
+  const a=item?.address||{};
+  return {address:item?.display_name||'',city:a.city||a.town||a.village||a.municipality||a.county||a.state_district||'',country:a.country||'',zip:a.postcode||'',lat:item?.lat==null?'':Number(item.lat),lng:item?.lon==null?'':Number(item.lon),place_id:String(item?.place_id||'')};
+}
+function setAddressMarker(lat,lng,zoom=16){
+  if(!addressMap||!Number.isFinite(Number(lat))||!Number.isFinite(Number(lng)))return;
+  const point=[Number(lat),Number(lng)];
+  if(!addressMarker){
+    addressMarker=L.marker(point,{draggable:true}).addTo(addressMap);
+    addressMarker.on('dragend',async()=>{
+      const pos=addressMarker.getLatLng();setField('lat',pos.lat.toFixed(7));setField('lng',pos.lng.toFixed(7));
+      setAddressStatus('Point déplacé. Mise à jour de l’adresse…');
+      try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(pos.lat),lon:String(pos.lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Adresse mise à jour depuis le point sélectionné.','success');}
+      catch(error){setAddressStatus('Coordonnées enregistrées. Complétez l’adresse manuellement si nécessaire.','error');}
+    });
+  }else{addressMarker.setLatLng(point);}
+  addressMap.setView(point,zoom);
+}
+function applyAddressResult(item,keepCurrentAddress=false){
+  const p=addressParts(item);
+  if(!keepCurrentAddress||!String($('address')?.value||'').trim())setField('address',p.address);
+  setField('city',p.city);setField('country',p.country);setField('zip',p.zip);setField('lat',p.lat);setField('lng',p.lng);setField('place_id',p.place_id);setAddressMarker(p.lat,p.lng,16);
+}
+function renderAddressSuggestions(items){
+  const box=$('address-suggestions');if(!box)return;
+  if(!items.length){clearAddressSuggestions();setAddressStatus('Aucune adresse trouvée. Vérifiez l’orthographe ou complétez les champs manuellement.');return;}
+  box.innerHTML=items.map((item,index)=>{
+    const label=esc(item.display_name||'Adresse');const primary=esc((item.display_name||'Adresse').split(',').slice(0,2).join(','));
+    return '<button type="button" class="rss-address-suggestion" data-result-index="'+index+'" role="option"><strong>'+primary+'</strong><span>'+label+'</span></button>';
+  }).join('');
+  box.classList.add('is-open');
+  box.querySelectorAll('[data-result-index]').forEach(button=>button.addEventListener('click',()=>{
+    const item=items[Number(button.dataset.resultIndex)];if(!item)return;clearAddressSuggestions();applyAddressResult(item);setAddressStatus('Adresse sélectionnée : ville, pays, code postal et coordonnées remplis.','success');
+  }));
+}
+async function searchAddress(){
+  const query=String($('address')?.value||'').trim();
+  if(query.length<3){setAddressStatus('Saisissez au moins 3 caractères pour rechercher une adresse.','error');return;}
+  setAddressStatus('Recherche d’adresse OpenStreetMap…');clearAddressSuggestions();
+  try{const results=await nominatimFetch('search',{format:'jsonv2',addressdetails:'1',limit:'5',q:query});renderAddressSuggestions(Array.isArray(results)?results:[]);}
+  catch(error){setAddressStatus('Recherche indisponible : '+(error.message||error)+'. Vous pouvez compléter les champs manuellement.','error');}
+}
+function initializeAddressMap(){
+  if(typeof L==='undefined'){setAddressStatus('Carte OpenStreetMap non chargée. Vous pouvez compléter l’adresse manuellement.','error');return;}
+  const mapEl=$('address-map');if(!mapEl)return;
+  addressMap=L.map(mapEl,{zoomControl:true,scrollWheelZoom:true}).setView([20,0],2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap contributors</a>'}).addTo(addressMap);
+  addressMap.on('click',async(event)=>{
+    const {lat,lng}=event.latlng;setAddressMarker(lat,lng,16);setField('lat',lat.toFixed(7));setField('lng',lng.toFixed(7));setAddressStatus('Point sélectionné. Recherche de l’adresse…');
+    try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(lat),lon:String(lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Adresse mise à jour depuis le point sélectionné.','success');}
+    catch(error){setAddressStatus('Coordonnées enregistrées. Complétez l’adresse manuellement si nécessaire.','error');}
+  });
+  setTimeout(()=>addressMap.invalidateSize(),150);
+}
+function useMyAddressLocation(){
+  if(!navigator.geolocation){setAddressStatus('La géolocalisation n’est pas disponible sur ce navigateur.','error');return;}
+  setAddressStatus('Recherche de votre position…');
+  navigator.geolocation.getCurrentPosition(async(pos)=>{
+    const lat=pos.coords.latitude,lng=pos.coords.longitude;setAddressMarker(lat,lng,16);setField('lat',lat.toFixed(7));setField('lng',lng.toFixed(7));
+    try{const data=await nominatimFetch('reverse',{format:'jsonv2',addressdetails:'1',lat:String(lat),lon:String(lng),zoom:'18'});applyAddressResult(data,true);setAddressStatus('Position récupérée et adresse complétée.','success');}
+    catch(error){setAddressStatus('Position récupérée. Complétez l’adresse manuellement si nécessaire.','error');}
+  },()=>setAddressStatus('Position refusée ou indisponible.','error'),{enableHighAccuracy:true,timeout:10000,maximumAge:60000});
+}
+async function fetchPartnerRequestByEmail(email,userId){
+  const e=cleanEmail(email);if(!e)return null;
+  try{
+    let {data,error}=await sb.from('partner_requests').select('*').ilike('email',e).order('created_at',{ascending:false}).limit(1);
+    if(!error&&data?.[0])return data[0];
+    if(userId){({data,error}=await sb.from('partner_requests').select('*').eq('user_id',userId).order('created_at',{ascending:false}).limit(1));if(!error&&data?.[0])return data[0];}
+  }catch(error){console.warn('Recherche demande partenaire :',error.message||error);}
+  return null;
+}
+async function getPartnerPublishContext(){
+  const {data:sessionData}=await sb.auth.getSession();const user=sessionData?.session?.user||null;
+  if(!user){location.href='/connexion-inscription.html?redirect=/ajouter-materiel-partenaire.html';return null;}
+  const email=cleanEmail(user.email);
+  const [{data:profile,error:profileError},partner,request]=await Promise.all([
+    sb.from('profiles').select('id,email,full_name,company_name,role,phone').eq('id',user.id).maybeSingle(),
+    fetchPartnerByEmailSafe(email),
+    fetchPartnerRequestByEmail(email,user.id)
+  ]);
+  if(profileError)console.warn('Profil compte :',profileError.message);
+  if(profile?.role==='client'){alertBox('Ce compte est client. Connectez-vous avec un compte partenaire validé.','error');return null;}
+  const status=String(partner?.status||request?.status||'').toLowerCase();
+  const validRole=['partner','partenaire'].includes(String(profile?.role||'').toLowerCase());
+  const validStatus=['approved','active','validé','valide','validated'].includes(status);
+  if(!validRole&&!validStatus){alertBox('Votre compte partenaire doit être validé avant de publier.','error');return null;}
+  return {user,email,profile,partner:partner||{},partnerRequest:request||{}};
+}
+const LISTING_IMAGE_BUCKET='listing-images';
+const LISTING_IMAGE_MAX_BYTES=8*1024*1024;
+const LISTING_IMAGE_TYPES=new Set(['image/jpeg','image/png','image/webp']);
+async function uploadImageFile(file,listingId,position){
+  if(!file)throw new Error('Image introuvable.');
+  if(file.size>LISTING_IMAGE_MAX_BYTES)throw new Error(file.name+' dépasse 8 Mo.');
+  if(file.type&&!LISTING_IMAGE_TYPES.has(file.type))throw new Error(file.name+' doit être au format JPG, PNG ou WEBP.');
+  const {data:userData,error:userErr}=await sb.auth.getUser();if(userErr||!userData?.user)throw new Error('Utilisateur non connecté.');
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';
+  const safeName=String(file.name||'image').replace(/[^a-z0-9._-]/gi,'_').slice(0,60);
+  const path=userData.user.id+'/'+listingId+'/'+Date.now()+'-'+safeName.replace(/\.[^.]+$/,'')+'.'+ext;
+  const {error:uploadError}=await sb.storage.from(LISTING_IMAGE_BUCKET).upload(path,file,{upsert:false,contentType:file.type||'image/jpeg',cacheControl:'3600'});
+  if(uploadError)throw new Error('Téléversement de '+file.name+' impossible : '+uploadError.message);
+  const {data:publicData}=sb.storage.from(LISTING_IMAGE_BUCKET).getPublicUrl(path);const imageUrl=publicData?.publicUrl;
+  if(!imageUrl)throw new Error('URL publique introuvable pour '+file.name+'.');
+  const {error:linkError}=await sb.rpc('add_my_listing_image',{p_listing_id:listingId,p_image_url:imageUrl,p_position:position});
+  if(linkError)throw new Error('Image téléversée mais non liée à l’annonce : '+linkError.message);
+  return imageUrl;
+}
 function renderSelectedImagePreviews(){
- const wrap = $('image-preview-grid');
- if(!wrap) return;
- if(!selectedImageFiles.length){ wrap.innerHTML=''; return; }
- wrap.innerHTML = selectedImageFiles.map((file,index)=>{
-   const url = URL.createObjectURL(file);
-   return `<div class="rss-preview-card">
-     <button type="button" class="rss-preview-remove" onclick="removeSelectedImage(${index})" title="Supprimer cette image">×</button>
-     <img src="${url}" alt="">
-     <div class="rss-preview-name">${esc(file.name)}</div>
-   </div>`;
- }).join('');
+  const wrap=$('image-preview-grid');if(!wrap)return;if(!selectedImageFiles.length){wrap.innerHTML='';return;}
+  wrap.innerHTML=selectedImageFiles.map((file,index)=>{const url=URL.createObjectURL(file);return `<div class="rss-preview-card"><button type="button" class="rss-preview-remove" onclick="removeSelectedImage(${index})" title="Supprimer cette image">×</button><img src="${url}" alt=""><div class="rss-preview-name">${esc(file.name)}</div></div>`;}).join('');
 }
-function removeSelectedImage(index){
- selectedImageFiles.splice(index,1);
- renderSelectedImagePreviews();
+function removeSelectedImage(index){selectedImageFiles.splice(index,1);renderSelectedImagePreviews();}
+window.removeSelectedImage=removeSelectedImage;
+function publicationErrorMessage(error){const message=String(error?.message||error||'');return message.toLowerCase().includes('create_my_partner_listing')?'Configuration Supabase incomplète : exécutez le fichier SQL fourni une seule fois.':message;}
+async function saveNewListing(event){
+  event.preventDefault();const form=event.currentTarget,submitButton=form.querySelector('button[type="submit"]'),originalButtonHtml=submitButton?.innerHTML||'',message=$('add-message');
+  const payload={title:String($('title')?.value||'').trim(),description:String($('description')?.value||'').trim(),status:String($('status')?.value||'publish'),category:String($('category')?.value||'').trim(),type:String($('type')?.value||'rental'),brand:String($('brand')?.value||'').trim(),model:String($('model')?.value||'').trim(),price:num($('price')?.value),price_label:'per_day',caution:num($('caution')?.value)||0,delivery_enabled:rssBool('delivery_enabled'),delivery_price:rssNumber('delivery_price',50),installation_enabled:rssBool('installation_enabled'),installation_price:rssNumber('installation_price',150),price_weekend:num($('price_weekend')?.value),price_week:num($('price_week')?.value),city:String($('city')?.value||'').trim(),location:String($('city')?.value||'').trim(),country:String($('country')?.value||'').trim(),address:String($('address')?.value||'').trim(),place_id:String($('place_id')?.value||'').trim(),lat:num($('lat')?.value),lng:num($('lng')?.value),zip:String($('zip')?.value||'').trim(),min_duration:num($('min_duration')?.value)||1,max_duration:num($('max_duration')?.value)||999};
+  if(!payload.title||!payload.description||!payload.category||payload.price===null||payload.price<0||!payload.city||!payload.country){message.textContent='Merci de compléter le titre, la description, la catégorie, le prix, la ville et le pays.';return;}
+  if(submitButton){submitButton.disabled=true;submitButton.style.opacity='.65';submitButton.innerHTML='<span class="material-symbols-outlined">sync</span> Publication…';}message.textContent='Création sécurisée de l’annonce…';
+  try{const {data,error}=await sb.rpc('create_my_partner_listing',{p_payload:payload});if(error)throw error;const listing=data&&typeof data==='object'?data:null,listingId=listing?.id;if(!listingId)throw new Error('Annonce créée sans identifiant de retour.');const files=selectedImageFiles.slice();for(let i=0;i<files.length;i++){message.textContent='Publication de l’annonce… Image '+(i+1)+' / '+files.length;await uploadImageFile(files[i],listingId,i);}selectedImageFiles=[];renderSelectedImagePreviews();message.textContent='Annonce publiée avec succès.';setTimeout(()=>location.href='/mes-annonces-partenaire.html?edit='+encodeURIComponent(listingId),650);}
+  catch(error){console.error('Publication annonce :',error);message.textContent='Erreur de publication : '+publicationErrorMessage(error);}
+  finally{if(submitButton){submitButton.disabled=false;submitButton.style.opacity='';submitButton.innerHTML=originalButtonHtml;}}
 }
-window.removeSelectedImage = removeSelectedImage;
-
-async function saveNewListing(e){
- e.preventDefault();
-
- // On recharge le partenaire au moment de l'enregistrement pour ne jamais sauver owner_name = email.
- const refreshedPartner = await fetchPartnerByEmailSafe(CTX.email);
- if(refreshedPartner){
-   CTX.partner = normalizePartnerRecord(refreshedPartner, CTX.profile, CTX.email);
-   CTX.email = CTX.partner.email;
-   CTX.legacy = CTX.partner.legacy_user_id;
- }
-
- const partner=CTX.partner||{};
- const payload={
-  title:$('title').value.trim(),description:$('description').value.trim(),status:$('status').value,
-  category:$('category').value.trim(),type:$('type').value,brand:$('brand').value.trim(),model:$('model').value.trim(),
-  price:num($('price').value)||0,price_label:'per_day',caution:num($('caution').value)||0,
-      delivery_enabled: rssBool('delivery_enabled'),
-      delivery_price: rssNumber('delivery_price', 50),
-      installation_enabled: rssBool('installation_enabled'),
-      installation_price: rssNumber('installation_price', 150),price_weekend:num($('price_weekend').value),price_week:num($('price_week').value),
-  city:$('city').value.trim(),location:$('city').value.trim(),country:$('country').value.trim(),address:$('address').value.trim(),
-  lat:num($('lat').value),lng:num($('lng').value),zip:($('zip')?.value||'').trim(),min_duration:num($('min_duration')?.value)||1,max_duration:num($('max_duration')?.value)||999,owner_email:cleanEmail(CTX.email),owner_name:firstText(partner.name,partner.owner_name,partner.company_name,CTX.email),owner_phone:firstText(partner.phone,partner.owner_phone),owner_city:firstText(partner.city,partner.owner_city),owner_country:firstText(partner.country,partner.owner_country),legacy_user_id:partner.legacy_user_id||null,user_id:partner.user_id||CTX.user?.id||null
- };
- $('add-message').textContent='Création de l’annonce...';
- let {data,error}=await sb.from('listings').insert(payload).select('id,original_id').single();
- if(error && String(error.message||'').includes('user_id')){
-   const fallbackPayload=Object.assign({},payload);
-   delete fallbackPayload.user_id;
-   const retry=await sb.from('listings').insert(fallbackPayload).select('id,original_id').single();
-   data=retry.data; error=retry.error;
- }
- if(error){$('add-message').textContent='Erreur : '+error.message+' — vérifiez la policy INSERT sur listings.';return}
- const files=selectedImageFiles;
- try{ for(const file of files) await uploadImageFile(file,data.id); }catch(e){$('add-message').textContent='Annonce créée, mais erreur image : '+e.message; return}
- selectedImageFiles=[]; renderSelectedImagePreviews();
- $('add-message').textContent='Annonce créée avec succès.';
- setTimeout(()=>location.href='/mes-annonces-partenaire.html?edit='+data.id,600);
-}
+document.addEventListener('DOMContentLoaded',async()=>{
+  CTX=await getPartnerPublishContext();if(!CTX)return;initializeAddressMap();$('add-form')?.addEventListener('submit',saveNewListing);$('search-address-btn')?.addEventListener('click',searchAddress);$('use-address-location-btn')?.addEventListener('click',useMyAddressLocation);$('address')?.addEventListener('keydown',event=>{if(event.key==='Enter'){event.preventDefault();searchAddress();}});const imageInput=$('images');imageInput?.addEventListener('change',()=>{selectedImageFiles=selectedImageFiles.concat(Array.from(imageInput.files||[]));imageInput.value='';renderSelectedImagePreviews();});
+});
 </script>
 
 <div id="footer-container"></div>
