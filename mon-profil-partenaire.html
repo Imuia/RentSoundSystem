@@ -118,9 +118,6 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   .rss-logo-box{height:132px;border:1px dashed rgba(252,3,109,.42);background:rgba(252,3,109,.05);border-radius:14px;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:12px}
   .rss-logo-box img{width:100%;height:100%;object-fit:contain;background:#fff}
   #partner-logo-placeholder{color:#e6bcc2;font-weight:800}
-  .rss-logo-status{display:none;margin:10px 0 0;padding:10px 11px;border-radius:10px;font-size:12px;line-height:1.45;border:1px solid rgba(80,255,160,.30);background:rgba(80,255,160,.08);color:#baffcf}
-  .rss-logo-status.is-visible{display:block}
-  .rss-logo-status.is-error{border-color:rgba(255,80,80,.42);background:rgba(255,80,80,.08);color:#ffb4ab}
   .rss-mini-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
   .rss-mini-stats div{background:#101010;border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;text-align:center}
   .rss-mini-stats strong{display:block;color:#FC036D;font-size:20px}
@@ -201,7 +198,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
       <h1 class="font-headline rss-page-title">Mon profil partenaire</h1>
       <p class="rss-muted">Complétez les informations de votre compte partenaire. Ces champs reprennent les étapes d'inscription partenaire, sans la carte.</p>
     </div>
-    <a class="rss-btn rss-btn-outline" id="public-profile-link" href="/profil-partenaire.html">
+    <a class="rss-btn rss-btn-outline" id="public-profile-link" href="/profil-partenaire.html?email=" aria-disabled="true">
       <span class="material-symbols-outlined">visibility</span> Voir mon profil public
     </a>
   </div>
@@ -294,8 +291,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
             <div id="partner-logo-placeholder">Aucun logo</div>
           </div>
           <label>URL logo<input id="partner-logo-url-input" class="rss-input" style="margin-top:6px" placeholder="/uploads/... ou https://..."></label>
-          <label style="margin-top:10px;display:block">Changer le logo<input id="partner-logo-file-input" class="rss-input" style="margin-top:6px" type="file" accept="image/png,image/jpeg,image/webp,image/svg+xml"></label>
-          <p id="partner-logo-upload-status" class="rss-logo-status" role="status"></p>
+          <label style="margin-top:10px;display:block">Changer le logo<input id="partner-logo-file-input" class="rss-input" style="margin-top:6px" type="file" accept="image/*"></label>
         </div>
 
         <div class="rss-form-section">
@@ -317,7 +313,7 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
     </div>
 
     <div class="rss-save-bar">
-      <a class="rss-btn rss-btn-outline" id="public-profile-link-bottom" href="/profil-partenaire.html"><span class="material-symbols-outlined">visibility</span> Voir mon profil public</a>
+      <a class="rss-btn rss-btn-outline" id="public-profile-link-bottom" href="/profil-partenaire.html?email=" aria-disabled="true"><span class="material-symbols-outlined">visibility</span> Voir mon profil public</a>
       <button class="rss-btn rss-btn-primary" type="submit"><span class="material-symbols-outlined">save</span> Enregistrer le profil</button>
     </div>
   </form>
@@ -682,44 +678,33 @@ let CTX=null;
 
 const PARTNER_PROFILE_CACHE_KEY = 'rss_partner_profile_cache_v1';
 
+function partnerProfileCacheKey(email){
+  return PARTNER_PROFILE_CACHE_KEY + ':' + cleanEmail(email || 'unknown');
+}
+
 function cachePartnerProfileSnapshot(p){
   try{
     if(!p || !p.email) return;
-    localStorage.setItem(PARTNER_PROFILE_CACHE_KEY, JSON.stringify({
-      email: cleanEmail(p.email),
-      name: firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name),
-      phone: firstText(p.phone,p.owner_phone),
-      country: firstText(p.country,p.owner_country),
-      address: firstText(p.address,p.address_1,p.owner_address),
-      city: firstText(p.city,p.owner_city),
-      postal_code: firstText(p.postal_code,p.zip,p.zip_code),
-      currency: firstText(p.currency,p.devise),
-      reg_number: firstText(p.reg_number,p.registration_number,p.siret,p.company_number),
-      vat_number: firstText(p.vat_number,p.tva_number,p.vat),
-      fleet_size: firstText(p.fleet_size,p.fleet_category),
-      main_equipment_type: firstText(p.main_equipment_type,p.equipment_type),
-      equipment_count: p.equipment_count ?? p.material_count ?? '',
-      fleet_value: firstText(p.fleet_value,p.equipment_value),
-      equipment_description: firstText(p.equipment_description,p.material_description),
-      website: firstText(p.website,p.website_url),
-      facebook_url: firstText(p.facebook_url,p.facebook),
-      instagram_url: firstText(p.instagram_url,p.instagram),
-      linkedin_url: firstText(p.linkedin_url,p.linkedin),
-      description: firstText(p.description,p.bio,p.presentation),
-      show_phone: p.show_phone,
-      show_email: p.show_email,
-      show_city: p.show_city,
-      allow_whatsapp: p.allow_whatsapp,
-      allow_email: p.allow_email,
-      iban: firstText(p.iban,p.bank_iban),
-      bic: firstText(p.bic,p.swift,p.bank_bic),
-      account_holder: firstText(p.account_holder,p.bank_holder,p.bank_account_holder),
-      bank_name: firstText(p.bank_name,p.bank),
-      logo_url: firstText(p.logo_url,p.logo,p.avatar_url),
-      kbis_url: firstText(p.kbis_url,p.kbis_document_url),
-      insurance_url: firstText(p.insurance_url,p.rc_pro_url,p.insurance_document_url),
-      id_document_url: firstText(p.id_document_url,p.identity_document_url),
-      saved_at: Date.now()
+    localStorage.setItem(partnerProfileCacheKey(p.email), JSON.stringify({
+      email:p.email,
+      name:firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name),
+      phone:firstText(p.phone,p.owner_phone),
+      country:firstText(p.country,p.owner_country),
+      address:firstText(p.address,p.address_1,p.owner_address),
+      city:firstText(p.city,p.owner_city),
+      postal_code:firstText(p.postal_code,p.zip,p.zip_code),
+      currency:firstText(p.currency,p.devise),
+      iban:firstText(p.iban,p.bank_iban),
+      bic:firstText(p.bic,p.swift,p.bank_bic),
+      account_holder:firstText(p.account_holder,p.bank_holder,p.bank_account_holder),
+      bank_name:firstText(p.bank_name,p.bank),
+      logo_url:firstText(p.logo_url,p.logo,p.avatar_url),
+      description:firstText(p.description,p.bio,p.presentation),
+      website:firstText(p.website,p.website_url),
+      facebook_url:firstText(p.facebook_url,p.facebook),
+      instagram_url:firstText(p.instagram_url,p.instagram),
+      linkedin_url:firstText(p.linkedin_url,p.linkedin),
+      saved_at:Date.now()
     }));
   }catch(e){}
 }
@@ -841,54 +826,22 @@ async function syncAuthProfileCore(ctx, payload){
 }
 
 function updatePublicProfileLinks(p, ctx){
-  const key = firstText(p?.id, p?.legacy_user_id, p?.email, ctx?.email);
-  const href = '/profil-partenaire.html?partner=' + encodeURIComponent(key || '');
+  // Aucun cache ni ancien partenaire : le lien est construit avec l'e-mail
+  // certifié par la session Supabase du partenaire actuellement connecté.
+  const email = cleanEmail(ctx?.email || p?.email || '');
+  const href = '/profil-partenaire.html?email=' + encodeURIComponent(email);
+
   ['public-profile-link','public-profile-link-bottom'].forEach(id=>{
     const a=$(id);
-    if(a) a.href=href;
+    if(a){
+      a.href = href;
+      a.removeAttribute('aria-disabled');
+    }
   });
-}
-
-function setLogoUploadStatus(message, isError=false){
-  const status = $('partner-logo-upload-status');
-  if(!status) return;
-  status.textContent = message || '';
-  status.classList.toggle('is-visible', Boolean(message));
-  status.classList.toggle('is-error', Boolean(isError));
-}
-
-function setLogoPreview(url){
-  const logoImg = $('partner-logo-preview');
-  const logoPlaceholder = $('partner-logo-placeholder');
-  const value = cleanText(url);
-
-  if(!logoImg) return;
-
-  if(!value){
-    logoImg.removeAttribute('src');
-    logoImg.style.display='none';
-    if(logoPlaceholder) logoPlaceholder.style.display='block';
-    return;
-  }
-
-  logoImg.onload = function(){
-    logoImg.style.display='block';
-    if(logoPlaceholder) logoPlaceholder.style.display='none';
-  };
-
-  logoImg.onerror = function(){
-    logoImg.removeAttribute('src');
-    logoImg.style.display='none';
-    if(logoPlaceholder) logoPlaceholder.style.display='block';
-    setLogoUploadStatus('L’URL du logo est enregistrée, mais l’image ne peut pas être affichée. Vérifiez le lien ou utilisez le téléversement de fichier.', true);
-  };
-
-  logoImg.src = value;
 }
 
 function fillPartnerFormFast(p){
   if(!p) return;
-
   setValue('partner-name-input', firstNonEmail(p.name,p.owner_name,p.company_name,p.display_name,p.partner_name) || '');
   setValue('partner-email-input', cleanEmail(p.email || ''));
   setValue('partner-phone-input', pick(p.phone,p.owner_phone));
@@ -897,38 +850,24 @@ function fillPartnerFormFast(p){
   setValue('partner-city-input', pick(p.city,p.owner_city));
   setValue('partner-postal-input', pick(p.postal_code,p.zip,p.zip_code));
   setValue('partner-currency-input', pick(p.currency,p.devise,'euro'));
-  setValue('partner-reg-input', pick(p.reg_number,p.registration_number,p.siret,p.company_number));
-  setValue('partner-vat-input', pick(p.vat_number,p.tva_number,p.vat));
-
-  setValue('partner-fleet-size-input', pick(p.fleet_size,p.fleet_category));
-  setValue('partner-main-equipment-input', pick(p.main_equipment_type,p.equipment_type));
-  setValue('partner-equipment-count-input', p.equipment_count ?? p.material_count ?? '');
-  setValue('partner-fleet-value-input', pick(p.fleet_value,p.equipment_value));
-  setValue('partner-equipment-description-input', pick(p.equipment_description,p.material_description));
-
   setValue('partner-website-input', pick(p.website,p.website_url));
   setValue('partner-facebook-input', pick(p.facebook_url,p.facebook));
   setValue('partner-instagram-input', pick(p.instagram_url,p.instagram));
   setValue('partner-linkedin-input', pick(p.linkedin_url,p.linkedin));
   setValue('partner-description-input', pick(p.description,p.bio,p.presentation));
-
-  setChecked('partner-show-phone-input', p.show_phone);
-  setChecked('partner-show-email-input', p.show_email);
-  setChecked('partner-show-city-input', p.show_city);
-  setChecked('partner-allow-whatsapp-input', p.allow_whatsapp);
-  setChecked('partner-allow-email-input', p.allow_email);
-
   setValue('partner-iban-input', pick(p.iban,p.bank_iban));
   setValue('partner-bic-input', pick(p.bic,p.swift,p.bank_bic));
   setValue('partner-account-holder-input', pick(p.account_holder,p.bank_holder,p.bank_account_holder));
   setValue('partner-bank-name-input', pick(p.bank_name,p.bank));
-
   setValue('partner-logo-url-input', pick(p.logo_url,p.logo,p.avatar_url));
-  setValue('partner-kbis-url-input', pick(p.kbis_url,p.kbis_document_url));
-  setValue('partner-insurance-url-input', pick(p.insurance_url,p.rc_pro_url,p.insurance_document_url));
-  setValue('partner-id-document-url-input', pick(p.id_document_url,p.identity_document_url));
-
-  setLogoPreview(getValue('partner-logo-url-input'));
+  const logo = getValue('partner-logo-url-input');
+  const logoImg = $('partner-logo-preview');
+  const logoPlaceholder = $('partner-logo-placeholder');
+  if(logo && logoImg){
+    logoImg.src = logo;
+    logoImg.style.display='block';
+    if(logoPlaceholder) logoPlaceholder.style.display='none';
+  }
   if($('stat-city')) $('stat-city').textContent = pick(p.city,p.owner_city,'—');
 }
 
@@ -1019,39 +958,14 @@ async function updatePartnerProfileBySafeColumns(rowId, email, payload){
   return null;
 }
 
-const PARTNER_LOGO_BUCKET = 'partner-assets';
-const PARTNER_LOGO_MAX_BYTES = 5 * 1024 * 1024;
-const PARTNER_LOGO_TYPES = new Set(['image/jpeg','image/png','image/webp','image/svg+xml']);
-
 async function uploadPartnerLogo(file, ctx){
-  if(!file || !ctx?.user?.id) throw new Error('Session partenaire introuvable pour le téléversement.');
-
-  if(file.size > PARTNER_LOGO_MAX_BYTES){
-    throw new Error('Le logo dépasse 5 Mo. Choisissez une image plus légère.');
-  }
-
-  if(file.type && !PARTNER_LOGO_TYPES.has(file.type)){
-    throw new Error('Format de logo non pris en charge. Utilisez PNG, JPG, WEBP ou SVG.');
-  }
-
-  const ext = (file.name.split('.').pop() || 'png').toLowerCase().replace(/[^a-z0-9]/g,'') || 'png';
-  const safeName = String(file.name || 'logo').replace(/[^a-z0-9._-]/gi,'_').slice(0,60);
-  const path = ctx.user.id + '/logos/' + Date.now() + '-' + safeName.replace(/\.[^.]+$/, '') + '.' + ext;
-
-  const {error:upErr} = await sb.storage
-    .from(PARTNER_LOGO_BUCKET)
-    .upload(path, file, {
-      upsert: false,
-      contentType: file.type || 'image/png',
-      cacheControl: '3600'
-    });
-
+  if(!file || !ctx?.email) return '';
+  const ext=(file.name.split('.').pop()||'jpg').toLowerCase();
+  const path='partners/logos/'+ctx.email.replace(/[^a-z0-9@._-]/gi,'_')+'-'+Date.now()+'.'+ext;
+  const {error:upErr}=await sb.storage.from('listing-images').upload(path,file,{upsert:true,contentType:file.type||'image/jpeg'});
   if(upErr) throw upErr;
-
-  const {data:pub} = sb.storage.from(PARTNER_LOGO_BUCKET).getPublicUrl(path);
-  const publicUrl = pub?.publicUrl || '';
-  if(!publicUrl) throw new Error('URL publique du logo introuvable après téléversement.');
-  return publicUrl;
+  const {data:pub}=sb.storage.from('listing-images').getPublicUrl(path);
+  return pub.publicUrl;
 }
 
 async function initPartnerProfilePage(){
@@ -1114,7 +1028,13 @@ async function initPartnerProfilePage(){
   setValue('partner-id-document-url-input', pick(p.id_document_url,p.identity_document_url,CTX.partnerRequest?.id_document_url,CTX.partnerRequest?.identity_document_url));
 
   const logo = getValue('partner-logo-url-input');
-  setLogoPreview(logo);
+  const logoImg = $('partner-logo-preview');
+  const logoPlaceholder = $('partner-logo-placeholder');
+  if(logo && logoImg){
+    logoImg.src = logo;
+    logoImg.style.display='block';
+    if(logoPlaceholder) logoPlaceholder.style.display='none';
+  }
 
   const bankStatus = $('bank-status');
   if(bankStatus){
@@ -1133,29 +1053,20 @@ async function initPartnerProfilePage(){
     console.warn('Nom partenaire vide : vérifiez que la ligne partners correspondant à cet email/user_id/legacy_user_id contient bien name.');
   }
 
-  $('partner-logo-url-input')?.addEventListener('input', (e)=>{
-    setLogoPreview(e.target.value);
-  });
-
   $('partner-logo-file-input')?.addEventListener('change', async (e)=>{
-    const fileInput = e.currentTarget;
-    const file = fileInput.files?.[0];
+    const file=e.target.files?.[0];
     if(!file) return;
-
-    fileInput.disabled = true;
-    setLogoUploadStatus('Téléversement du logo en cours…');
     try{
-      const url = await uploadPartnerLogo(file, CTX);
+      const url=await uploadPartnerLogo(file, CTX);
       setValue('partner-logo-url-input', url);
-      setLogoPreview(url);
-      setLogoUploadStatus('Logo téléversé. Cliquez sur « Enregistrer le profil » pour l’associer définitivement à votre compte.');
-      alertBox('Logo téléversé. Enregistrez le profil pour finaliser.','success');
+      if(logoImg){
+        logoImg.src=url;
+        logoImg.style.display='block';
+        if(logoPlaceholder) logoPlaceholder.style.display='none';
+      }
+      alertBox('Logo chargé. Cliquez sur Enregistrer pour sauvegarder le profil.','success');
     }catch(err){
-      const message = err?.message || String(err);
-      setLogoUploadStatus('Échec du téléversement : ' + message, true);
-      alertBox('Erreur upload logo : ' + message,'error');
-    }finally{
-      fileInput.disabled = false;
+      alertBox('Erreur upload logo : '+(err.message||err),'error');
     }
   });
 
@@ -1259,10 +1170,6 @@ async function initPartnerProfilePage(){
       const syncText = (publicPartnerSaved || requestSaved)
         ? ' Les informations publiques et historiques ont été synchronisées.'
         : ' Vos données sont enregistrées de manière sécurisée pour ce compte.';
-      if(payload.logo_url){
-        setLogoPreview(payload.logo_url);
-        setLogoUploadStatus('Logo associé à votre profil partenaire et enregistré.');
-      }
       alertBox('Profil partenaire enregistré.' + syncText,'success');
     }catch(error){
       alertBox('Erreur profil : '+(error.message||error),'error');
@@ -1277,7 +1184,10 @@ async function initPartnerProfilePage(){
 }
 
 document.addEventListener('DOMContentLoaded', ()=>{
-  prefillPartnerProfileImmediately();
+  /*
+    Aucun ancien profil n'est affiché avant la vérification du compte connecté.
+    Les champs sont remplis uniquement après getPartnerContext().
+  */
   initPartnerProfilePage();
 });
 </script>

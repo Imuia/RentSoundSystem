@@ -69,7 +69,10 @@ tailwind.config = {
   let client=null;
   function ready(fn){if(document.readyState!=='loading')fn();else document.addEventListener('DOMContentLoaded',fn)}
   function safe(v){return String(v||'').replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]))}
-  function text(id,value){const el=document.getElementById(id);if(el&&value)el.textContent=value}
+  function text(id,value){
+    const el=document.getElementById(id);
+    if(el) el.textContent = value || '';
+  }
   function money(v){return Number(v||0).toLocaleString('fr-FR',{maximumFractionDigits:0})+'€'}
   function productUrl(item){
     const uuid = item && item.id ? String(item.id).trim() : '';
@@ -119,16 +122,16 @@ tailwind.config = {
       email: normEmail(params.get('email') || params.get('owner_email') || ''),
       username: String(params.get('username') || '').trim(),
       legacy: String(params.get('legacy_user_id') || '').trim(),
-      partnerId: String(params.get('partner_id') || params.get('id') || '').trim()
+      partnerId: String(params.get('partner_id') || params.get('id') || params.get('partner') || '').trim()
     };
   }
   function slugifyPartner(v){
     return String(v||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
   }
 
-  function loadFromLocal(){try{return JSON.parse(localStorage.getItem('rssLastPartnerProfile')||'null')}catch(e){return null}}
   function applyProfile(p){
     if(!p)return;
+
     text('partner-name',p.name||p.owner_name||p.owner_username||'Partenaire RentSoundSystem');
     text('partner-location',p.location||[p.owner_city,p.owner_country].filter(Boolean).join(', ')||'Localisation non précisée');
     text('partner-description',p.description||'Partenaire spécialisé dans la location de matériel événementiel professionnel.');
@@ -137,14 +140,28 @@ tailwind.config = {
     const phone=p.phone||p.owner_phone||'';
     const logo=profileImageOf(p);
 
+    // Réinitialisation complète des contacts : aucun e-mail/téléphone d'un
+    // précédent partenaire ne peut rester visible après le chargement.
     const emailEl=document.getElementById('partner-email');
-    if(emailEl&&email){emailEl.href='mailto:'+email;emailEl.classList.remove('hidden')}
+    if(emailEl){
+      emailEl.classList.add('hidden');
+      emailEl.removeAttribute('href');
+      if(email){
+        emailEl.href='mailto:'+email;
+        emailEl.classList.remove('hidden');
+      }
+    }
 
     const phoneEl=document.getElementById('partner-phone');
-    if(phoneEl&&phone){
-      phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');
-      phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);
-      phoneEl.classList.remove('hidden');
+    if(phoneEl){
+      phoneEl.classList.add('hidden');
+      phoneEl.removeAttribute('href');
+      phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>Téléphone';
+      if(phone){
+        phoneEl.href='tel:'+String(phone).replace(/\s+/g,'');
+        phoneEl.innerHTML='<span class="material-symbols-outlined">call</span>'+safe(phone);
+        phoneEl.classList.remove('hidden');
+      }
     }
 
     const logoEl=document.getElementById('partner-logo');
@@ -179,10 +196,34 @@ tailwind.config = {
   }
   async function loadProfile(){
     const key = partnerKeyFromParams();
-    const cached = loadFromLocal();
 
-    if (cached) applyProfile(cached);
-    if (!window.supabase) return;
+    /*
+      Le partenaire public est identifié uniquement par l'URL.
+      L'ancien cache rssLastPartnerProfile est retiré car il pouvait
+      appartenir à un autre compte utilisé auparavant dans ce navigateur.
+    */
+    try { localStorage.removeItem('rssLastPartnerProfile'); } catch(e) {}
+
+    const hasPartnerKey = Boolean(key.email || key.username || key.legacy || key.partnerId);
+    if (!hasPartnerKey) {
+      applyProfile({
+        name: 'Profil partenaire indisponible',
+        location: 'Lien partenaire incomplet',
+        description: 'Utilisez un lien partenaire valide depuis une annonce ou depuis votre espace partenaire.'
+      });
+      renderListings([]);
+      return;
+    }
+
+    if (!window.supabase) {
+      applyProfile({
+        name: 'Profil partenaire indisponible',
+        location: 'Chargement impossible',
+        description: 'Le service de données est momentanément indisponible.'
+      });
+      renderListings([]);
+      return;
+    }
 
     client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
@@ -199,13 +240,6 @@ tailwind.config = {
         pQuery = pQuery.or('username.eq.' + key.username + ',owner_username.eq.' + key.username + ',slug.eq.' + key.username);
       } else if (key.legacy && !isNaN(Number(key.legacy))) {
         pQuery = pQuery.eq('legacy_user_id', Number(key.legacy));
-      } else if (cached && (cached.email || cached.owner_email)) {
-        const cachedEmail = normEmail(cached.email || cached.owner_email);
-        pQuery = pQuery.or('owner_email.ilike.' + cachedEmail + ',email.ilike.' + cachedEmail);
-      } else if (cached && cached.username) {
-        pQuery = pQuery.or('username.eq.' + cached.username + ',owner_username.eq.' + cached.username + ',slug.eq.' + cached.username);
-      } else if (cached && cached.legacy_user_id) {
-        pQuery = pQuery.eq('legacy_user_id', Number(cached.legacy_user_id));
       }
 
       const pRes = await pQuery.maybeSingle();
@@ -237,9 +271,9 @@ tailwind.config = {
       d'autres owner_username, partner_slug ou legacy_user_id : on regroupe
       donc les résultats de chaque identifiant et on retire les doublons.
     */
-    const email = key.email || normEmail(partner?.email || partner?.owner_email || cached?.email || cached?.owner_email);
-    const username = String(key.username || partner?.username || partner?.owner_username || partner?.slug || cached?.username || '').trim();
-    const legacy = key.legacy || partner?.legacy_user_id || cached?.legacy_user_id;
+    const email = key.email || normEmail(partner?.email || partner?.owner_email || '');
+    const username = String(key.username || partner?.username || partner?.owner_username || partner?.slug || '').trim();
+    const legacy = key.legacy || partner?.legacy_user_id || '';
 
     const listingQueries = [];
     const listingsBase = function(){
@@ -261,6 +295,11 @@ tailwind.config = {
 
     if(!listingQueries.length){
       console.warn('Impossible d’identifier le partenaire : aucune annonce n’est chargée.');
+      applyProfile({
+        name: partner?.name || 'Profil partenaire indisponible',
+        location: partner?.location || 'Identifiant partenaire invalide',
+        description: partner?.description || 'Aucune information publique n’a été trouvée pour ce partenaire.'
+      });
       renderListings([]);
       return;
     }
@@ -285,16 +324,16 @@ tailwind.config = {
     if (items[0]) {
       const first = items[0];
       applyProfile({
-        name: first.owner_name || first.owner_username || partner?.name || partner?.owner_name || cached?.name,
-        location: [first.owner_city, first.owner_country].filter(Boolean).join(', ') || partner?.location || cached?.location,
-        email: first.owner_email || partner?.email || partner?.owner_email || cached?.email,
-        phone: first.owner_phone || partner?.phone || partner?.owner_phone || cached?.phone,
-        description: first.owner_description || first.partner_description || partner?.description || cached?.description,
-        avatar_url: first.owner_avatar_url || first.partner_avatar_url || partner?.avatar_url || cached?.avatar_url,
-        profile_image_url: first.owner_profile_image_url || first.partner_profile_image_url || partner?.profile_image_url || cached?.profile_image_url,
-        photo_url: first.owner_photo_url || first.partner_photo_url || partner?.photo_url || cached?.photo_url,
-        image_url: first.owner_image_url || first.partner_image_url || partner?.image_url || cached?.image_url,
-        logo: first.owner_logo || first.partner_logo || partner?.logo_url || partner?.logo || cached?.logo
+        name: first.owner_name || first.owner_username || partner?.name || partner?.owner_name,
+        location: [first.owner_city, first.owner_country].filter(Boolean).join(', ') || partner?.location,
+        email: first.owner_email || partner?.email || partner?.owner_email,
+        phone: first.owner_phone || partner?.phone || partner?.owner_phone,
+        description: first.owner_description || first.partner_description || partner?.description,
+        avatar_url: first.owner_avatar_url || first.partner_avatar_url || partner?.avatar_url,
+        profile_image_url: first.owner_profile_image_url || first.partner_profile_image_url || partner?.profile_image_url,
+        photo_url: first.owner_photo_url || first.partner_photo_url || partner?.photo_url,
+        image_url: first.owner_image_url || first.partner_image_url || partner?.image_url,
+        logo: first.owner_logo || first.partner_logo || partner?.logo_url || partner?.logo
       });
       text('partner-specialty', first.category ? String(first.category).replace(/-/g,' ') : 'Événementiel');
     }
