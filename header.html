@@ -70,6 +70,63 @@
   .rss-header-logo{font-size:14px!important}
   .rss-mobile-actions{grid-template-columns:1fr!important}
 }
+
+/* Préférences langue / devise — autonomes, sans toucher au reste du site */
+.rss-preference-controls{
+  display:flex!important;align-items:center!important;gap:8px!important;margin-right:2px!important;
+}
+.rss-pref{position:relative!important;display:inline-flex!important;align-items:center!important}
+.rss-pref-toggle{
+  min-height:34px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  gap:6px!important;padding:7px 9px!important;border:1px solid rgba(255,255,255,.14)!important;border-radius:7px!important;
+  background:rgba(255,255,255,.035)!important;color:var(--rss-text)!important;cursor:pointer!important;
+  font-size:12px!important;line-height:16px!important;font-weight:900!important;font-family:inherit!important;
+  transition:background .2s ease,border-color .2s ease,color .2s ease!important;
+}
+.rss-pref-toggle:hover,.rss-pref-toggle[aria-expanded="true"]{
+  border-color:rgba(252,3,109,.62)!important;background:rgba(252,3,109,.10)!important;color:#fff!important;
+}
+.rss-pref-toggle .material-symbols-outlined{font-size:17px!important;color:var(--rss-pink)!important}
+.rss-pref-chevron{font-size:16px!important;color:var(--rss-muted)!important;transition:transform .2s ease!important}
+.rss-pref-toggle[aria-expanded="true"] .rss-pref-chevron{transform:rotate(180deg)!important}
+.rss-pref-menu{
+  display:none!important;position:absolute!important;top:calc(100% + 10px)!important;right:0!important;width:230px!important;
+  padding:8px!important;border:1px solid rgba(252,3,109,.30)!important;border-radius:12px!important;
+  background:rgba(20,20,22,.98)!important;box-shadow:0 24px 70px rgba(0,0,0,.52)!important;backdrop-filter:blur(14px)!important;
+}
+.rss-pref-menu.is-open{display:block!important}
+.rss-pref-option{
+  width:100%!important;display:flex!important;align-items:center!important;justify-content:space-between!important;gap:12px!important;
+  padding:10px 10px!important;border:0!important;border-radius:8px!important;background:transparent!important;color:var(--rss-muted)!important;
+  text-align:left!important;cursor:pointer!important;font:700 13px/18px Inter,system-ui,sans-serif!important;transition:background .18s ease,color .18s ease!important;
+}
+.rss-pref-option:hover,.rss-pref-option[aria-pressed="true"]{background:rgba(252,3,109,.12)!important;color:#fff!important}
+.rss-pref-option-mark{display:none!important;color:var(--rss-pink)!important;font-size:17px!important}
+.rss-pref-option[aria-pressed="true"] .rss-pref-option-mark{display:inline-block!important}
+.rss-pref-note{
+  margin:8px 4px 2px!important;padding-top:9px!important;border-top:1px solid rgba(255,255,255,.09)!important;
+  color:var(--rss-muted)!important;font:500 11px/15px Inter,system-ui,sans-serif!important;
+}
+.rss-mobile-preferences{
+  display:none!important;grid-template-columns:1fr 1fr!important;gap:10px!important;padding:12px 0 2px!important;border-top:1px solid var(--rss-border)!important;
+}
+.rss-mobile-preferences .rss-pref{display:block!important}
+.rss-mobile-preferences .rss-pref-toggle{width:100%!important;justify-content:space-between!important}
+.rss-mobile-preferences .rss-pref-menu{position:relative!important;top:auto!important;right:auto!important;width:100%!important;margin-top:8px!important}
+@media(max-width:1160px){
+  .rss-desktop-nav{gap:19px!important}
+  .rss-preference-controls{gap:6px!important}
+  .rss-pref-toggle{padding:7px 8px!important}
+}
+@media(max-width:900px){
+  .rss-preference-controls{display:flex!important}
+  .rss-header-actions{gap:9px!important}
+}
+@media(max-width:650px){
+  .rss-preference-controls{display:none!important}
+  .rss-mobile-preferences{display:grid!important}
+}
+
 </style>
 
 <header class="rss-site-header bg-surface/80 backdrop-blur-md border-b border-white/10 fixed top-0 z-50 w-full transition-all">
@@ -83,13 +140,46 @@
     </div>
 
     <nav class="rss-desktop-nav hidden md:flex items-center gap-8">
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/catalog.html">Louer du matériel</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/demande-de-devis">Demande de Devis</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/marques.html">Nos marques</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/centre-assistance.html">Assistance</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/catalog.html"><span data-rss-header-i18n="rent">Louer du matériel</span></a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/demande-de-devis"><span data-rss-header-i18n="quote">Demande de Devis</span></a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/marques.html"><span data-rss-header-i18n="brands">Nos marques</span></a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md" href="/centre-assistance.html"><span data-rss-header-i18n="support">Assistance</span></a>
     </nav>
 
     <div class="rss-header-actions flex items-center gap-stack-sm">
+      <div class="rss-preference-controls" aria-label="Préférences de langue et devise">
+        <div class="rss-pref">
+          <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="language" aria-expanded="false" aria-controls="rss-language-menu">
+            <span class="material-symbols-outlined" aria-hidden="true">language</span>
+            <span data-rss-language-label>FR</span>
+            <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
+          </button>
+          <div id="rss-language-menu" class="rss-pref-menu" data-rss-pref-menu="language" role="menu" aria-label="Choisir la langue">
+            <button type="button" class="rss-pref-option" data-rss-language-choice="fr" role="menuitemradio" aria-pressed="true">
+              <span>Français</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+            <button type="button" class="rss-pref-option" data-rss-language-choice="en" role="menuitemradio" aria-pressed="false">
+              <span>English</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+          </div>
+        </div>
+        <div class="rss-pref">
+          <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="currency" aria-expanded="false" aria-controls="rss-currency-menu">
+            <span data-rss-currency-label>€</span>
+            <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
+          </button>
+          <div id="rss-currency-menu" class="rss-pref-menu" data-rss-pref-menu="currency" role="menu" aria-label="Choisir la devise">
+            <button type="button" class="rss-pref-option" data-rss-currency-choice="EUR" role="menuitemradio" aria-pressed="true">
+              <span>€ EUR</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+            <button type="button" class="rss-pref-option" data-rss-currency-choice="USD" role="menuitemradio" aria-pressed="false">
+              <span>$ USD</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+            <p class="rss-pref-note" data-rss-currency-note>Les paiements restent en EUR tant que la conversion n’est pas activée.</p>
+          </div>
+        </div>
+      </div>
+
       <a href="/centre-assistance.html" class="rss-header-icon hidden sm:flex text-on-surface hover:text-primary transition-colors duration-200 p-2" aria-label="Notifications">
         <span class="material-symbols-outlined">notifications</span>
       </a>
@@ -111,10 +201,43 @@
 
   <nav class="rss-mobile-nav hidden peer-checked:block md:hidden border-t border-white/10 bg-surface/95 backdrop-blur-md">
     <div class="rss-mobile-nav-inner px-margin-mobile py-4 flex flex-col gap-3">
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/catalog.html">Louer du matériel</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/demande-de-devis">Demande de Devis</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/marques.html">Nos marques</a>
-      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/centre-assistance.html">Assistance</a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/catalog.html"><span data-rss-header-i18n="rent">Louer du matériel</span></a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/demande-de-devis"><span data-rss-header-i18n="quote">Demande de Devis</span></a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/marques.html"><span data-rss-header-i18n="brands">Nos marques</span></a>
+      <a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-body-md text-body-md py-2" href="/centre-assistance.html"><span data-rss-header-i18n="support">Assistance</span></a>
+
+      <div class="rss-mobile-preferences" aria-label="Préférences de langue et devise">
+        <div class="rss-pref">
+          <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="language" aria-expanded="false" aria-controls="rss-language-menu-mobile">
+            <span class="material-symbols-outlined" aria-hidden="true">language</span>
+            <span data-rss-language-label>FR</span>
+            <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
+          </button>
+          <div id="rss-language-menu-mobile" class="rss-pref-menu" data-rss-pref-menu="language" role="menu" aria-label="Choisir la langue">
+            <button type="button" class="rss-pref-option" data-rss-language-choice="fr" role="menuitemradio" aria-pressed="true">
+              <span>Français</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+            <button type="button" class="rss-pref-option" data-rss-language-choice="en" role="menuitemradio" aria-pressed="false">
+              <span>English</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+          </div>
+        </div>
+        <div class="rss-pref">
+          <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="currency" aria-expanded="false" aria-controls="rss-currency-menu-mobile">
+            <span data-rss-currency-label>€</span>
+            <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
+          </button>
+          <div id="rss-currency-menu-mobile" class="rss-pref-menu" data-rss-pref-menu="currency" role="menu" aria-label="Choisir la devise">
+            <button type="button" class="rss-pref-option" data-rss-currency-choice="EUR" role="menuitemradio" aria-pressed="true">
+              <span>€ EUR</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+            <button type="button" class="rss-pref-option" data-rss-currency-choice="USD" role="menuitemradio" aria-pressed="false">
+              <span>$ USD</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+            </button>
+            <p class="rss-pref-note" data-rss-currency-note>Les paiements restent en EUR tant que la conversion n’est pas activée.</p>
+          </div>
+        </div>
+      </div>
 
       <div class="rss-mobile-actions grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
         <a id="rss-auth-link-mobile" data-rss-auth-link="mobile" href="/connexion-inscription.html" class="rss-auth-button text-center border border-[#fc036d]/70 text-on-surface px-4 py-3 rounded font-label-md text-label-md hover:border-primary hover:text-primary transition-colors flex items-center justify-center gap-2">
@@ -122,12 +245,122 @@
           <span id="rss-auth-label-mobile" data-rss-auth-label="mobile">S'inscrire / Connexion</span>
         </a>
         <a href="/catalog.html" class="rss-catalog-button text-center bg-primary text-on-primary px-4 py-3 rounded font-label-md text-label-md hover:bg-primary-container transition-colors">
-          Catalogue
+          <span data-rss-header-i18n="catalog">Catalogue</span>
         </a>
       </div>
     </div>
   </nav>
 
-  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){if(window.__rssHeaderAuthBoot)return;window.__rssHeaderAuthBoot=true;var U='https://crxofkxinsspfgdsxpiy.supabase.co',K='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj',A='/espace-client.html',P='/tableau-de-bord-partenaire-valide.html',L='/connexion-inscription.html';function q(s){return Array.prototype.slice.call(document.querySelectorAll(s))}function clean(v){return String(v||'').trim().toLowerCase()}function set(ok,user,url){url=url||A;q('[data-rss-auth-link]').forEach(function(a){a.href=ok?url:L;a.title=ok&&user&&user.email?user.email:(ok?'Mon compte':'S\'inscrire / Connexion');a.setAttribute('aria-label',ok?'Mon compte':'S\'inscrire / Connexion');a.classList.toggle('bg-[#fc036d]',!!ok);a.classList.toggle('text-white',!!ok);a.classList.toggle('shadow-[0_0_18px_rgba(252,3,109,0.35)]',!!ok)});q('[data-rss-auth-label]').forEach(function(e){e.textContent=ok?'Mon compte':'S\'inscrire / Connexion'});q('[data-rss-auth-icon]').forEach(function(e){e.textContent=ok?'account_circle':'login'})}function load(cb){if(window.supabase)return cb();var s=document.querySelector('script[data-rss-supabase-sdk]');if(s){s.addEventListener('load',cb,{once:true});return} s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';s.async=true;s.dataset.rssSupabaseSdk='true';s.onload=cb;s.onerror=function(){set(false)};document.head.appendChild(s)}function resolveAccountUrl(sess,cb){if(!sess||!sess.user){cb(L);return}var email=clean(sess.user.email);window.__rssHeaderClient.from('partners').select('id,status,email').ilike('email',email).maybeSingle().then(function(r){var p=r&&r.data;var st=clean(p&&p.status);if(p&&(st==='approved'||st==='active'||st==='validé'||st==='valide')){cb(P);return}window.__rssHeaderClient.from('profiles').select('role,email').eq('id',sess.user.id).maybeSingle().then(function(pr){var role=clean(pr&&pr.data&&pr.data.role);cb((role==='partner'||role==='partenaire')?P:A)}).catch(function(){cb(A)})}).catch(function(){cb(A)})}window.rssHeaderAuthSync=function(){load(function(){try{window.__rssHeaderClient=window.__rssHeaderClient||window.supabase.createClient(U,K);window.__rssHeaderClient.auth.getSession().then(function(r){var sess=r&&r.data&&r.data.session;if(!sess){set(false);return}resolveAccountUrl(sess,function(url){set(true,sess.user,url)})});if(!window.__rssHeaderAuthListener){window.__rssHeaderAuthListener=true;window.__rssHeaderClient.auth.onAuthStateChange(function(ev,sess){if(!sess){set(false);return}resolveAccountUrl(sess,function(url){set(true,sess.user,url)})})}}catch(e){set(false)}})};document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-rss-auth-link]');if(!a)return;if(window.__rssHeaderClient){e.preventDefault();window.__rssHeaderClient.auth.getSession().then(function(r){var sess=r&&r.data&&r.data.session;if(!sess){window.location.href=L;return}resolveAccountUrl(sess,function(url){window.location.href=url})})}},true);window.rssHeaderAuthSync();setTimeout(window.rssHeaderAuthSync,600);setTimeout(window.rssHeaderAuthSync,1600)})();this.remove();" />
+  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){if(window.__rssHeaderAuthBoot)return;window.__rssHeaderAuthBoot=true;var U='https://crxofkxinsspfgdsxpiy.supabase.co',K='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj',A='/espace-client.html',P='/tableau-de-bord-partenaire-valide.html',L='/connexion-inscription.html';function q(s){return Array.prototype.slice.call(document.querySelectorAll(s))}function clean(v){return String(v||'').trim().toLowerCase()}function authLabel(ok){var isEn=window.rssHeaderLanguage==='en';return ok?(isEn?'My account':'Mon compte'):(isEn?'Register / Sign in':'S\'inscrire / Connexion')}function set(ok,user,url){url=url||A;var l=authLabel(ok);q('[data-rss-auth-link]').forEach(function(a){a.href=ok?url:L;a.title=ok&&user&&user.email?user.email:l;a.setAttribute('aria-label',l);a.classList.toggle('bg-[#fc036d]',!!ok);a.classList.toggle('text-white',!!ok);a.classList.toggle('shadow-[0_0_18px_rgba(252,3,109,0.35)]',!!ok)});q('[data-rss-auth-label]').forEach(function(e){e.textContent=l});q('[data-rss-auth-icon]').forEach(function(e){e.textContent=ok?'account_circle':'login'})}function load(cb){if(window.supabase)return cb();var s=document.querySelector('script[data-rss-supabase-sdk]');if(s){s.addEventListener('load',cb,{once:true});return} s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';s.async=true;s.dataset.rssSupabaseSdk='true';s.onload=cb;s.onerror=function(){set(false)};document.head.appendChild(s)}function resolveAccountUrl(sess,cb){if(!sess||!sess.user){cb(L);return}var email=clean(sess.user.email);window.__rssHeaderClient.from('partners').select('id,status,email').ilike('email',email).maybeSingle().then(function(r){var p=r&&r.data;var st=clean(p&&p.status);if(p&&(st==='approved'||st==='active'||st==='validé'||st==='valide')){cb(P);return}window.__rssHeaderClient.from('profiles').select('role,email').eq('id',sess.user.id).maybeSingle().then(function(pr){var role=clean(pr&&pr.data&&pr.data.role);cb((role==='partner'||role==='partenaire')?P:A)}).catch(function(){cb(A)})}).catch(function(){cb(A)})}window.rssHeaderAuthSync=function(){load(function(){try{window.__rssHeaderClient=window.__rssHeaderClient||window.supabase.createClient(U,K);window.__rssHeaderClient.auth.getSession().then(function(r){var sess=r&&r.data&&r.data.session;if(!sess){set(false);return}resolveAccountUrl(sess,function(url){set(true,sess.user,url)})});if(!window.__rssHeaderAuthListener){window.__rssHeaderAuthListener=true;window.__rssHeaderClient.auth.onAuthStateChange(function(ev,sess){if(!sess){set(false);return}resolveAccountUrl(sess,function(url){set(true,sess.user,url)})})}}catch(e){set(false)}})};document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('[data-rss-auth-link]');if(!a)return;if(window.__rssHeaderClient){e.preventDefault();window.__rssHeaderClient.auth.getSession().then(function(r){var sess=r&&r.data&&r.data.session;if(!sess){window.location.href=L;return}resolveAccountUrl(sess,function(url){window.location.href=url})})}},true);window.rssHeaderAuthSync();setTimeout(window.rssHeaderAuthSync,600);setTimeout(window.rssHeaderAuthSync,1600)})();this.remove();" />
+  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){
+    function build(){
+      function all(selector){return Array.prototype.slice.call(document.querySelectorAll(selector))}
+      function read(key,fallback,allowed){
+        try{var value=String(localStorage.getItem(key)||fallback).toLowerCase();return allowed.indexOf(value)!==-1?value:fallback}catch(error){return fallback}
+      }
+      function write(key,value){try{localStorage.setItem(key,value)}catch(error){}}
+      function labels(language){
+        return language==='en'?{
+          rent:'Rent equipment',quote:'Request a quote',brands:'Brands',support:'Help',catalog:'Catalog',
+          guest:'Register / Sign in',account:'My account',
+          currencyNotice:'Payments remain in EUR until conversion is enabled.'
+        }:{
+          rent:'Louer du matériel',quote:'Demande de Devis',brands:'Nos marques',support:'Assistance',catalog:'Catalogue',
+          guest:'S\'inscrire / Connexion',account:'Mon compte',
+          currencyNotice:'Les paiements restent en EUR tant que la conversion n’est pas activée.'
+        }
+      }
+      function currentLanguage(){return read('rss_language','fr',['fr','en'])}
+      function currentCurrency(){return read('rss_currency','eur',['eur','usd']).toUpperCase()}
+      function closeMenus(except){
+        all('[data-rss-pref-menu]').forEach(function(menu){
+          if(menu!==except)menu.classList.remove('is-open')
+        });
+        all('[data-rss-pref-toggle]').forEach(function(button){
+          var id=button.getAttribute('aria-controls');
+          var menu=id?document.getElementById(id):null;
+          button.setAttribute('aria-expanded',menu&&menu.classList.contains('is-open')?'true':'false')
+        });
+      }
+      function updateAuthLabels(dictionary){
+        all('[data-rss-auth-label]').forEach(function(label){
+          var account=label.closest('[data-rss-auth-link]');
+          var active=account&&account.classList.contains('bg-[#fc036d]');
+          label.textContent=active?dictionary.account:dictionary.guest
+        })
+      }
+      function apply(options){
+        var language=currentLanguage(),currency=currentCurrency(),dictionary=labels(language);
+        window.rssHeaderLanguage=language;
+        window.rssHeaderCurrency=currency;
+        document.documentElement.setAttribute('lang',language);
+        all('[data-rss-header-i18n]').forEach(function(node){
+          var key=node.getAttribute('data-rss-header-i18n');
+          if(dictionary[key])node.textContent=dictionary[key]
+        });
+        all('[data-rss-language-label]').forEach(function(node){node.textContent=language.toUpperCase()});
+        all('[data-rss-currency-label]').forEach(function(node){node.textContent=currency==='USD'?'$':'€'});
+        all('[data-rss-language-choice]').forEach(function(button){
+          button.setAttribute('aria-pressed',button.getAttribute('data-rss-language-choice')===language?'true':'false')
+        });
+        all('[data-rss-currency-choice]').forEach(function(button){
+          button.setAttribute('aria-pressed',button.getAttribute('data-rss-currency-choice')===currency?'true':'false')
+        });
+        all('[data-rss-currency-note]').forEach(function(note){note.textContent=dictionary.currencyNotice});
+        updateAuthLabels(dictionary);
+        if(options&&options.emit){
+          window.dispatchEvent(new CustomEvent(options.emit,{detail:{
+            language:language,currency:currency,source:'header'
+          }}))
+        }
+      }
+      function setLanguage(language){
+        var normalized=String(language||'').toLowerCase()==='en'?'en':'fr';
+        write('rss_language',normalized);apply({emit:'rss:language-change'});closeMenus()
+      }
+      function setCurrency(currency){
+        var normalized=String(currency||'').toUpperCase()==='USD'?'USD':'EUR';
+        write('rss_currency',normalized.toLowerCase());apply({emit:'rss:currency-change'});closeMenus()
+      }
+      window.RSSPreferences={
+        getLanguage:currentLanguage,
+        getCurrency:currentCurrency,
+        setLanguage:setLanguage,
+        setCurrency:setCurrency
+      };
+      all('[data-rss-pref-toggle]').forEach(function(button){
+        if(button.dataset.rssPrefBound==='1')return;
+        button.dataset.rssPrefBound='1';
+        button.addEventListener('click',function(event){
+          event.preventDefault();event.stopPropagation();
+          var menu=document.getElementById(button.getAttribute('aria-controls'));
+          if(!menu)return;
+          var opening=!menu.classList.contains('is-open');closeMenus(opening?menu:null);
+          menu.classList.toggle('is-open',opening);button.setAttribute('aria-expanded',opening?'true':'false')
+        })
+      });
+      all('[data-rss-language-choice]').forEach(function(button){
+        if(button.dataset.rssPrefBound==='1')return;
+        button.dataset.rssPrefBound='1';
+        button.addEventListener('click',function(){setLanguage(button.getAttribute('data-rss-language-choice'))})
+      });
+      all('[data-rss-currency-choice]').forEach(function(button){
+        if(button.dataset.rssPrefBound==='1')return;
+        button.dataset.rssPrefBound='1';
+        button.addEventListener('click',function(){setCurrency(button.getAttribute('data-rss-currency-choice'))})
+      });
+      if(!window.__rssHeaderPreferencesDocumentBound){
+        window.__rssHeaderPreferencesDocumentBound=true;
+        document.addEventListener('click',function(event){
+          if(!event.target.closest('[data-rss-pref-toggle],[data-rss-pref-menu]'))closeMenus()
+        });
+        document.addEventListener('keydown',function(event){if(event.key==='Escape')closeMenus()});
+      }
+      apply();
+    }
+    window.rssHeaderPreferencesBoot=window.rssHeaderPreferencesBoot||build;
+    window.rssHeaderPreferencesBoot();
+  })();this.remove();" />
+
 </header>
 
