@@ -1784,6 +1784,9 @@ function applyOwnerDisplay(item){
 
       if (qtyValue) qtyValue.textContent = qty;
       if (totalPriceEl) totalPriceEl.textContent = formatMoney(total);
+      if (typeof window.RSS_PRODUCT_PRICING_REFRESH === 'function') {
+        window.RSS_PRODUCT_PRICING_REFRESH();
+      }
     }
 
     function renderCalendar() {
@@ -1953,19 +1956,8 @@ function applyOwnerDisplay(item){
       return btn.textContent.includes('Faire une demande de devis');
     });
 
-    if (reserveBtn) {
-      reserveBtn.addEventListener('click', function () {
-        const subject = encodeURIComponent('Réservation RentSoundSystem');
-        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + buildBookingBody('réservation');
-      });
-    }
-
-    if (quoteBtn) {
-      quoteBtn.addEventListener('click', function () {
-        const subject = encodeURIComponent('Demande de devis RentSoundSystem');
-        window.location.href = 'mailto:contact@rentsoundsystem.com?subject=' + subject + '&body=' + buildBookingBody('demande de devis');
-      });
-    }
+    // Les boutons Réserver / Demande de devis sont gérés plus bas par
+    // rss-product-to-checkout-sync afin de conserver dates, quantité et options.
 
     // Accessoires : cartes et boutons cliquables
     function bindRelatedClick() {
@@ -2060,6 +2052,8 @@ function applyOwnerDisplay(item){
       caution: Number(item.caution || item.deposit || item.security_deposit || 0),
       deposit: Number(item.caution || item.deposit || item.security_deposit || 0),
       vatRate: Number(item.vat_rate || item.tva_rate || item.tax_rate || 0),
+      taxMode: item.price_tax_mode || item.tax_mode || 'legacy_public_price',
+      currency: String(item.currency || 'eur').toLowerCase(),
       quantity: qty,
       image: firstLoadedImage || firstImage(),
       url: location.href,
@@ -2099,22 +2093,33 @@ function applyOwnerDisplay(item){
     const deliveryPrice = delivery ? deliveryUnitPrice : 0;
     const installationPrice = install ? installationUnitPrice : 0;
     const city = product.city || txt('.font-headline.text-body-md.font-bold.text-on-surface.uppercase') || '';
-    const rentalAmount = Number(product.dailyPrice || 0) * dayCount * Math.max(1, Number(product.quantity || 1));
-    const subtotal = rentalAmount + deliveryPrice + installationPrice;
-    const vatRate = Number(product.vatRate || 0);
-    const tax = subtotal * vatRate;
-    const total = subtotal + tax;
+
+    const fallbackRaw = Number(product.dailyPrice || 0) * dayCount * Math.max(1, Number(product.quantity || 1))
+      + deliveryPrice + installationPrice;
+    const pricing = typeof window.RSS_PRODUCT_PRICING_CALCULATE === 'function'
+      ? window.RSS_PRODUCT_PRICING_CALCULATE(product, dates, product.quantity, deliveryPrice, installationPrice)
+      : {
+          rawAmount: fallbackRaw,
+          amountExclTax: fallbackRaw,
+          tax: 0,
+          total: fallbackRaw,
+          vatRate: Number(product.vatRate || 0),
+          taxMode: product.taxMode || 'legacy_public_price',
+          taxPending: false
+        };
 
     product.selectedDates = dates;
     product.caution = Number(product.caution || product.deposit || 0);
     product.deposit = product.caution;
-    product.vatRate = vatRate;
+    product.vatRate = Number(pricing.vatRate || 0);
+    product.taxMode = pricing.taxMode || product.taxMode || 'legacy_public_price';
 
     return {
       product: product,
       rental:{
         startDate:startDate,
         endDate:endDate,
+        selectedDates: dates,
         city:city,
         days:dayCount,
         hasDates:hasSelectedDates,
@@ -2130,14 +2135,17 @@ function applyOwnerDisplay(item){
       },
       amounts:{
         hasDates:hasSelectedDates,
-        rental:rentalAmount,
+        rental:Number(product.dailyPrice || 0) * dayCount * Math.max(1, Number(product.quantity || 1)),
         delivery:deliveryPrice,
         technician:installationPrice,
         installation:installationPrice,
-        subtotal:subtotal,
-        vatRate:vatRate,
-        tax:tax,
-        total:total,
+        subtotal:pricing.rawAmount,
+        amountExclTax:pricing.amountExclTax,
+        vatRate:pricing.vatRate,
+        taxMode:pricing.taxMode,
+        taxPending:!!pricing.taxPending,
+        tax:pricing.tax,
+        total:pricing.total,
         deposit:product.caution,
         caution:product.caution
       },
@@ -2236,6 +2244,9 @@ function applyOwnerDisplay(item){
       }
     });
     if(totalEl) totalEl.textContent = moneyOpt(total);
+    if (typeof window.RSS_PRODUCT_PRICING_REFRESH === 'function') {
+      window.RSS_PRODUCT_PRICING_REFRESH();
+    }
   }
   function applyOptions(item){
     const deliveryInput = document.getElementById('rss-option-delivery');
@@ -2294,6 +2305,204 @@ function applyOwnerDisplay(item){
     loadOptions();
   }
   setTimeout(loadOptions, 900);
+})();
+</script>
+
+
+<style id="rss-product-pricing-professional-css">
+  #rss-product-pricing-breakdown{
+    margin:18px 0 4px;padding:15px;border:1px solid rgba(252,3,109,.22);
+    background:rgba(252,3,109,.055);border-radius:10px;color:#e6bcc2;font-size:13px;
+  }
+  #rss-product-pricing-breakdown .rss-price-line{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:7px 0;}
+  #rss-product-pricing-breakdown .rss-price-line strong{color:#fff;}
+  #rss-product-pricing-breakdown .rss-price-total{padding-top:10px;margin-top:10px;border-top:1px solid rgba(255,255,255,.10);font-size:15px;}
+  #rss-product-pricing-breakdown .rss-price-total strong{color:#fc036d;font-size:17px;}
+  #rss-product-pricing-breakdown .rss-price-note{margin-top:10px;color:#c9a5b5;font-size:12px;line-height:1.45;}
+  #rss-product-pricing-breakdown .rss-price-caution{color:#ffd6e6;}
+</style>
+<script id="rss-product-pricing-professional-v1">
+(function(){
+  'use strict';
+
+  function num(value){
+    var n = Number(String(value == null ? '' : value).replace(',', '.'));
+    return Number.isFinite(n) ? n : 0;
+  }
+  function money(value){
+    return Number(value || 0).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €';
+  }
+  function normalizedRate(value){
+    var rate = num(value);
+    return rate > 1 ? rate / 100 : Math.max(0, rate);
+  }
+  function normalizedMode(value){
+    var mode = String(value || '').trim().toLowerCase();
+    if (mode === 'legacy_public_price' || mode === 'legacy' || mode === 'prix_public' || mode === 'prix_affiche') return 'legacy_public_price';
+    if (mode === 'tax_included' || mode === 'tva_incluse' || mode === 'included') return 'tax_included';
+    if (mode === 'tax_excluded' || mode === 'tva_exclue' || mode === 'excluded') return 'tax_excluded';
+    if (mode === 'tax_exempt' || mode === 'exempt' || mode === 'non_taxable') return 'tax_exempt';
+    return 'legacy_public_price';
+  }
+  function calculate(product, selectedDates, quantity, deliveryAmount, installationAmount){
+    var dates = Array.isArray(selectedDates) ? selectedDates.filter(Boolean) : [];
+    var days = dates.length;
+    var unit = num(product && (product.dailyPrice || product.price));
+    var qty = Math.max(1, num(quantity || (product && product.quantity) || 1));
+    var rawAmount = unit * days * qty + num(deliveryAmount) + num(installationAmount);
+    var vatRate = normalizedRate(product && product.vatRate);
+    var taxMode = normalizedMode(product && product.taxMode);
+    var amountExclTax = rawAmount;
+    var tax = 0;
+    var total = rawAmount;
+    var taxPending = false;
+
+    /*
+      Mode historique RentSoundSystem :
+      le tarif affiché est repris tel quel, sans ajout automatique de TVA.
+      Ce mode est destiné aux anciennes annonces et aux essais Stripe.
+    */
+    if (taxMode === 'legacy_public_price') {
+      return {
+        days: days,
+        rawAmount: rawAmount,
+        amountExclTax: rawAmount,
+        tax: 0,
+        total: rawAmount,
+        vatRate: 0,
+        taxMode: taxMode,
+        taxPending: false
+      };
+    }
+
+    if (taxMode === 'tax_included' && vatRate > 0) {
+      amountExclTax = rawAmount / (1 + vatRate);
+      tax = rawAmount - amountExclTax;
+      total = rawAmount;
+    } else if (taxMode === 'tax_excluded' && vatRate > 0) {
+      amountExclTax = rawAmount;
+      tax = rawAmount * vatRate;
+      total = rawAmount + tax;
+    } else if (taxMode === 'tax_exempt') {
+      amountExclTax = rawAmount;
+      tax = 0;
+      total = rawAmount;
+    } else {
+      amountExclTax = rawAmount;
+      tax = 0;
+      total = rawAmount;
+      taxPending = true;
+      taxMode = 'not_configured';
+    }
+    return {
+      days: days,
+      rawAmount: rawAmount,
+      amountExclTax: amountExclTax,
+      tax: tax,
+      total: total,
+      vatRate: vatRate,
+      taxMode: taxMode,
+      taxPending: taxPending
+    };
+  }
+
+  window.RSS_PRODUCT_PRICING_CALCULATE = calculate;
+
+  function getSelectedDates(){
+    return Array.from(document.querySelectorAll('.rss-selected-day[data-date]'))
+      .map(function(el){ return el.dataset.date || ''; })
+      .filter(Boolean)
+      .sort();
+  }
+  function product(){
+    var item = window.RSS_CURRENT_PRODUCT || {};
+    var base = Number(document.querySelector('#rss-base-price')?.dataset.price || 0) || num(item.price || item.dailyPrice);
+    return {
+      dailyPrice: base,
+      price: base,
+      quantity: Math.max(1, num(document.querySelector('#rss-qty-value')?.textContent || item.quantity || 1)),
+      caution: num(item.caution || item.deposit || item.security_deposit),
+      deposit: num(item.caution || item.deposit || item.security_deposit),
+      vatRate: item.vat_rate ?? item.tva_rate ?? item.tax_rate ?? item.vatRate ?? 0,
+      taxMode: item.price_tax_mode || item.tax_mode || item.taxMode || 'not_configured'
+    };
+  }
+  function ensureBreakdown(){
+    var total = document.getElementById('rss-total-price');
+    if (!total) return null;
+    var host = total.closest('.bg-surface-container-lowest') || total.parentElement?.parentElement;
+    if (!host) return null;
+    var box = document.getElementById('rss-product-pricing-breakdown');
+    if (!box) {
+      box = document.createElement('div');
+      box.id = 'rss-product-pricing-breakdown';
+      var totalRow = total.closest('.flex.justify-between.items-center');
+      if (totalRow) host.insertBefore(box, totalRow);
+      else host.appendChild(box);
+    }
+    return box;
+  }
+  function render(){
+    var p = product();
+    var dates = getSelectedDates();
+    var delivery = document.getElementById('rss-option-delivery')?.checked
+      ? num(document.getElementById('rss-option-delivery')?.dataset.optionPrice) : 0;
+    var installation = document.getElementById('rss-option-install')?.checked
+      ? num(document.getElementById('rss-option-install')?.dataset.optionPrice) : 0;
+    var data = calculate(p, dates, p.quantity, delivery, installation);
+    window.RSS_PRODUCT_PRICING = data;
+
+    var total = document.getElementById('rss-total-price');
+    if (total) total.textContent = money(data.total);
+
+    var box = ensureBreakdown();
+    if (!box) return;
+    var dayLabel = data.days ? data.days + ' jour' + (data.days > 1 ? 's' : '') : '1 jour estimé';
+    var rental = p.dailyPrice * Math.max(1, data.days) * p.quantity;
+    var lines = [
+      '<div class="rss-price-line"><span>Location ('+ dayLabel +')</span><strong>'+ money(rental) +'</strong></div>'
+    ];
+    if (delivery) lines.push('<div class="rss-price-line"><span>Livraison / reprise</span><strong>'+ money(delivery) +'</strong></div>');
+    if (installation) lines.push('<div class="rss-price-line"><span>Installation technique</span><strong>'+ money(installation) +'</strong></div>');
+
+    if (data.taxMode === 'tax_included') {
+      lines.push('<div class="rss-price-line"><span>Sous-total HT</span><strong>'+ money(data.amountExclTax) +'</strong></div>');
+      lines.push('<div class="rss-price-line"><span>TVA incluse ('+ Math.round(data.vatRate * 100) +'%)</span><strong>'+ money(data.tax) +'</strong></div>');
+    } else if (data.taxMode === 'tax_excluded') {
+      lines.push('<div class="rss-price-line"><span>Sous-total HT</span><strong>'+ money(data.amountExclTax) +'</strong></div>');
+      lines.push('<div class="rss-price-line"><span>TVA ('+ Math.round(data.vatRate * 100) +'%)</span><strong>'+ money(data.tax) +'</strong></div>');
+    } else if (data.taxMode === 'tax_exempt') {
+      lines.push('<div class="rss-price-line"><span>TVA</span><strong>Non facturée</strong></div>');
+    } else if (data.taxMode === 'not_configured') {
+      lines.push('<div class="rss-price-line"><span>Taxes</span><strong>À confirmer</strong></div>');
+    }
+
+    var totalLabel = data.taxMode === 'legacy_public_price'
+      ? 'Total à payer'
+      : (data.taxPending ? 'Total estimatif' : 'Total TTC');
+    var note = data.taxMode === 'legacy_public_price'
+      ? (data.days ? 'Tarif public repris tel qu’affiché. La caution éventuelle est distincte.' : 'Sélectionnez vos dates pour obtenir le montant de location.')
+      : (data.taxPending
+        ? 'Les taxes applicables doivent être confirmées par l’émetteur de la facture avant un paiement réel.'
+        : (data.days ? 'Montant calculé pour les dates sélectionnées.' : 'Sélectionnez vos dates pour obtenir le montant définitif.'));
+    var caution = p.caution > 0
+      ? '<div class="rss-price-note rss-price-caution">Caution : '+money(p.caution)+' — non comprise dans le total de location.</div>'
+      : '';
+    box.innerHTML = lines.join('') + '<div class="rss-price-line rss-price-total"><span>'+totalLabel+'</span><strong>'+money(data.total)+'</strong></div>' + caution + '<div class="rss-price-note">'+note+'</div>';
+  }
+
+  function schedule(){ window.setTimeout(render, 0); }
+  function init(){
+    render();
+    window.addEventListener('rss:product-loaded', schedule);
+    document.addEventListener('change', schedule, true);
+    document.addEventListener('click', function(event){
+      if (event.target.closest('.rss-day, .rss-qty-btn, .rss-calendar-nav, #rss-option-delivery, #rss-option-install')) schedule();
+    }, true);
+  }
+  window.RSS_PRODUCT_PRICING_REFRESH = schedule;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+  else init();
 })();
 </script>
 

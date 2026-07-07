@@ -1,10 +1,27 @@
 import Stripe from "stripe";
-import { createHash } from "crypto";
+
+/*
+  RentSoundSystem — création sécurisée du paiement de réservation
+
+  - Le serveur relit l'annonce publiée depuis Supabase.
+  - Le montant envoyé par le navigateur est contrôlé avant la création Stripe.
+  - Les taxes sont calculées selon les champs de l'annonce :
+      price_tax_mode = legacy_public_price | tax_included | tax_excluded | tax_exempt | not_configured
+      vat_rate = 0.20 ou 20 pour 20 %
+  - legacy_public_price reprend le tarif affiché du site historique sans ajout de TVA.
+  - En mode Stripe live, legacy_public_price ou une taxe non configurée bloque le paiement
+    tant que l'émetteur de facture n'a pas défini son régime fiscal.
+*/
 
 function amount(value) {
   const n = Number(value || 0);
   if (!Number.isFinite(n) || n < 0) return 0;
   return Math.round(n);
+}
+
+function number(value, fallback = 0) {
+  const n = Number(String(value ?? "").replace(",", "."));
+  return Number.isFinite(n) ? n : fallback;
 }
 
 function text(value, maxLength = 500) {
@@ -15,6 +32,227 @@ function text(value, maxLength = 500) {
     .slice(0, maxLength);
 }
 
+function boolean(value, fallback = false) {
+  if (value === undefined || value === null || value === "") return fallback;
+  if (typeof value === "boolean") return value;
+  const normalized = String(value).trim().toLowerCase();
+  if (["true", "1", "yes", "oui"].includes(normalized)) return true;
+  if (["false", "0", "no", "non"].includes(normalized)) return false;
+  return fallback;
+}
+
+function optionPrice(value, fallback) {
+  const n = number(value, NaN);
+  return Number.isFinite(n) && n >= 0 ? n : fallback;
+}
+
+function normalizeVatRate(value) {
+  const rate = number(value, 0);
+  return rate > 1 ? rate / 100 : Math.max(0, rate);
+}
+
+function normalizeTaxMode(value) {
+  const mode = String(value || "").trim().toLowerCase();
+  if (["legacy_public_price", "legacy", "prix_public", "prix_affiche"].includes(mode)) return "legacy_public_price";
+  if (["tax_included", "tva_incluse", "included"].includes(mode)) return "tax_included";
+  if (["tax_excluded", "tva_exclue", "excluded"].includes(mode)) return "tax_excluded";
+  if (["tax_exempt", "exempt", "non_taxable"].includes(mode)) return "tax_exempt";
+  return "legacy_public_price";
+}
+
+function moneyToCents(value) {
+  return Math.max(0, Math.round(Number(value || 0) * 100));
+}
+
+function isoDate(value) {
+  const date = String(value || "").slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(date) ? date : "";
+}
+
+function dateAtMidnight(value) {
+  const date = isoDate(value);
+  if (!date) return null;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+function todayUtc() {
+  const now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+}
+
+function dateDiffInclusive(start, end) {
+  const startDate = dateAtMidnight(start);
+  const endDate = dateAtMidnight(end);
+  if (!startDate || !endDate || endDate < startDate) return 0;
+  return Math.floor((endDate - startDate) / 86400000) + 1;
+}
+
+function rentalDates(rental) {
+  const selected = Array.isArray(rental?.selectedDates)
+    ? Array.from(new Set(rental.selectedDates.map(isoDate).filter(Boolean))).sort()
+    : [];
+
+  const today = todayUtc();
+  if (selected.length) {
+    if (selected.some((value) => dateAtMidnight(value) < today)) {
+      throw new Error("Une date de location est déjà passée.");
+    }
+    return {
+      dates: selected,
+      days: selected.length,
+      startDate: selected[0],
+      endDate: selected[selected.length - 1]
+    };
+  }
+
+  const startDate = isoDate(rental?.startDate);
+  const endDate = isoDate(rental?.endDate);
+  const days = dateDiffInclusive(startDate, endDate);
+  if (!days) throw new Error("Dates de location invalides.");
+  if (dateAtMidnight(startDate) < today) throw new Error("La date de début est déjà passée.");
+
+  return { dates: [], days, startDate, endDate };
+}
+
+function computePricing(listing, reservation) {
+  const rental = reservation?.rental || {};
+  const dates = rentalDates(rental);
+  const quantity = Math.max(1, Math.floor(number(reservation?.item?.quantity, 1)));
+
+  const maxQuantity = Math.floor(number(listing.available_quantity ?? listing.max_rental_quantity, 0));
+  if (maxQuantity > 0 && quantity > maxQuantity) {
+    throw new Error(`Quantité indisponible : maximum ${maxQuantity}.`);
+  }
+
+  const minDuration = Math.floor(number(listing.min_duration, 0));
+  const maxDuration = Math.floor(number(listing.max_duration, 0));
+  if (minDuration > 0 && dates.days < minDuration) {
+    throw new Error(`Durée minimale : ${minDuration} jour(s).`);
+  }
+  if (maxDuration > 0 && dates.days > maxDuration) {
+    throw new Error(`Durée maximale : ${maxDuration} jour(s).`);
+  }
+
+  const dailyPrice = optionPrice(
+    listing.price ?? listing.dailyPrice ?? listing.price_day ?? listing.price_per_day,
+    0
+  );
+  if (dailyPrice <= 0) throw new Error("Prix de location de l'annonce invalide.");
+
+  const deliveryRequested = String(rental.delivery || "pickup") === "delivery";
+  const deliveryEnabled = boolean(listing.delivery_enabled, true);
+  const installationRequested = boolean(rental.technician, false);
+  const installationEnabled = boolean(listing.installation_enabled, true);
+
+  if (deliveryRequested && !deliveryEnabled) {
+    throw new Error("La livraison n'est pas disponible pour cette annonce.");
+  }
+  if (installationRequested && !installationEnabled) {
+    throw new Error("L'installation technique n'est pas disponible pour cette annonce.");
+  }
+
+  // Compatibilité avec les annonces existantes : mêmes valeurs par défaut que la fiche produit.
+  const delivery = deliveryRequested ? optionPrice(listing.delivery_price, 50) : 0;
+  const installation = installationRequested ? optionPrice(listing.installation_price, 150) : 0;
+  const rentalAmount = dailyPrice * dates.days * quantity;
+  const rawSubtotal = rentalAmount + delivery + installation;
+
+  const vatRate = normalizeVatRate(listing.vat_rate ?? listing.tva_rate ?? listing.tax_rate);
+  const taxMode = normalizeTaxMode(listing.price_tax_mode ?? listing.tax_mode);
+  let amountExclTax = rawSubtotal;
+  let tax = 0;
+  let total = rawSubtotal;
+  let taxPending = false;
+  const taxReviewRequired = taxMode === "legacy_public_price";
+
+  // Reprise du fonctionnement public du site historique :
+  // aucun montant de TVA n'est ajouté au tarif affiché dans le tunnel.
+  if (taxMode === "legacy_public_price") {
+    amountExclTax = rawSubtotal;
+    tax = 0;
+    total = rawSubtotal;
+  } else if (taxMode === "tax_included" && vatRate > 0) {
+    amountExclTax = rawSubtotal / (1 + vatRate);
+    tax = rawSubtotal - amountExclTax;
+    total = rawSubtotal;
+  } else if (taxMode === "tax_excluded" && vatRate > 0) {
+    amountExclTax = rawSubtotal;
+    tax = rawSubtotal * vatRate;
+    total = rawSubtotal + tax;
+  } else if (taxMode === "tax_exempt") {
+    amountExclTax = rawSubtotal;
+    tax = 0;
+    total = rawSubtotal;
+  } else {
+    amountExclTax = rawSubtotal;
+    tax = 0;
+    total = rawSubtotal;
+    taxPending = true;
+  }
+
+  const deposit = optionPrice(
+    listing.caution ?? listing.deposit ?? listing.security_deposit ?? listing.deposit_amount,
+    0
+  );
+
+  return {
+    dates,
+    quantity,
+    currency: String(listing.currency || "eur").toLowerCase(),
+    daily_price: dailyPrice,
+    rental: rentalAmount,
+    delivery,
+    installation,
+    subtotal: rawSubtotal,
+    amount_excl_tax: amountExclTax,
+    tax,
+    total,
+    deposit,
+    vat_rate: (taxPending || taxMode === "legacy_public_price") ? 0 : vatRate,
+    tax_mode: taxPending ? "not_configured" : taxMode,
+    tax_pending: taxPending,
+    tax_review_required: taxReviewRequired || taxPending,
+    rental_cents: moneyToCents(total),
+    deposit_cents: moneyToCents(deposit)
+  };
+}
+
+async function getPublishedListing(body) {
+  const supabaseUrl = String(process.env.SUPABASE_URL || "").replace(/\/$/, "");
+  const anonKey = String(process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "");
+
+  if (!supabaseUrl || !anonKey) {
+    throw new Error("SUPABASE_URL ou SUPABASE_ANON_KEY manquante dans Vercel pour vérifier le tarif serveur.");
+  }
+
+  const listing = body.listing || body.reservation?.item || {};
+  const listingId = text(listing.id || body.metadata?.listing_id, 100);
+  const originalId = text(listing.original_id || body.metadata?.original_id, 100);
+  if (!listingId && !originalId) throw new Error("Annonce manquante pour vérifier le tarif.");
+
+  const url = new URL(`${supabaseUrl}/rest/v1/listings`);
+  url.searchParams.set("select", "*");
+  url.searchParams.set("status", "eq.publish");
+  if (listingId) url.searchParams.set("id", `eq.${listingId}`);
+  else url.searchParams.set("original_id", `eq.${originalId}`);
+  url.searchParams.set("limit", "1");
+
+  const response = await fetch(url, {
+    headers: {
+      apikey: anonKey,
+      Authorization: `Bearer ${anonKey}`,
+      Accept: "application/json"
+    }
+  });
+  if (!response.ok) throw new Error(`Impossible de vérifier l'annonce (${response.status}).`);
+
+  const rows = await response.json();
+  const item = Array.isArray(rows) ? rows[0] : null;
+  if (!item) throw new Error("Annonce introuvable ou non publiée.");
+  return item;
+}
+
 function getStripe() {
   if (!process.env.STRIPE_SECRET_KEY) {
     throw new Error("STRIPE_SECRET_KEY manquante dans Vercel.");
@@ -22,14 +260,7 @@ function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY);
 }
 
-function hash(value) {
-  return createHash("sha256")
-    .update(JSON.stringify(value))
-    .digest("hex")
-    .slice(0, 24);
-}
-
-function buildMetadata(body, paymentType) {
+function buildMetadata(body, paymentType, pricing) {
   const reservation = body.reservation || {};
   const rental = reservation.rental || {};
   const item = body.listing || reservation.item || {};
@@ -44,47 +275,43 @@ function buildMetadata(body, paymentType) {
     listing_name: text(item.name || reservation.item?.name, 300),
     partner_name: text(item.partner_name || reservation.item?.ownerName, 200),
     partner_email: text(item.partner_email || reservation.item?.ownerEmail, 254),
-    rental_start: text(rental.startDate, 20),
-    rental_end: text(rental.endDate, 20),
+    rental_start: text(pricing.dates.startDate || rental.startDate, 20),
+    rental_end: text(pricing.dates.endDate || rental.endDate, 20),
+    rental_days: text(pricing.dates.days, 20),
     rental_city: text(rental.city, 200),
-    rental_days: text(rental.days, 20),
     delivery_method: text(rental.delivery, 40),
     technician: rental.technician ? "yes" : "no",
-    quantity: text(reservation.item?.quantity || 1, 20),
-    customer_company: text(reservation.customer?.company || customer.company, 200)
+    quantity: text(pricing.quantity, 20),
+    customer_company: text(reservation.customer?.company || customer.company, 200),
+    tax_mode: text(pricing.tax_mode, 40),
+    tax_review_required: pricing.tax_review_required ? "yes" : "no",
+    vat_rate: text(pricing.vat_rate, 20),
+    amount_excl_tax: text(pricing.amount_excl_tax.toFixed(2), 30),
+    tax_amount: text(pricing.tax.toFixed(2), 30),
+    total_amount: text(pricing.total.toFixed(2), 30)
   };
 }
 
-function requestFingerprint({
-  orderId,
-  currency,
-  rentalAmount,
-  depositAmount,
-  customerEmail,
-  customerName,
-  customerPhone,
-  metadata
-}) {
-  return hash({
-    orderId,
-    currency,
-    rentalAmount,
-    depositAmount,
-    customerEmail,
-    customerName,
-    customerPhone,
-    listingId: metadata.listing_id,
-    originalId: metadata.original_id,
-    listingName: metadata.listing_name,
-    partnerEmail: metadata.partner_email,
-    rentalStart: metadata.rental_start,
-    rentalEnd: metadata.rental_end,
-    rentalCity: metadata.rental_city,
-    rentalDays: metadata.rental_days,
-    delivery: metadata.delivery_method,
-    technician: metadata.technician,
-    quantity: metadata.quantity
-  });
+function publicPricing(pricing) {
+  return {
+    currency: pricing.currency,
+    days: pricing.dates.days,
+    selected_dates: pricing.dates.dates,
+    rental: pricing.rental,
+    delivery: pricing.delivery,
+    installation: pricing.installation,
+    subtotal: pricing.subtotal,
+    amount_excl_tax: pricing.amount_excl_tax,
+    tax: pricing.tax,
+    total: pricing.total,
+    deposit: pricing.deposit,
+    vat_rate: pricing.vat_rate,
+    tax_mode: pricing.tax_mode,
+    tax_pending: pricing.tax_pending,
+    tax_review_required: pricing.tax_review_required,
+    total_cents: pricing.rental_cents,
+    deposit_cents: pricing.deposit_cents
+  };
 }
 
 export default async function handler(req, res) {
@@ -93,48 +320,44 @@ export default async function handler(req, res) {
       return res.status(405).json({ error: "Method not allowed" });
     }
 
-    const body =
-      typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
-
-    const currency = String(body.currency || "eur").toLowerCase();
-    const rentalAmount = amount(body.rental_amount);
-    const depositAmount = amount(body.deposit_amount);
+    const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body || {};
     const orderId = text(body.order_id, 100);
     const customerEmail = text(body.customer?.email, 254);
     const customerName = text(body.customer?.name, 200);
     const customerPhone = text(body.customer?.phone, 50);
 
-    if (!orderId) {
-      return res.status(400).json({ error: "Référence de commande manquante." });
-    }
-    if (!/^[a-z]{3}$/i.test(currency)) {
-      return res.status(400).json({ error: "Devise Stripe invalide." });
-    }
+    if (!orderId) return res.status(400).json({ error: "Référence de commande manquante." });
     if (!customerEmail || !/^\S+@\S+\.\S+$/.test(customerEmail)) {
       return res.status(400).json({ error: "E-mail client invalide." });
     }
-    if (rentalAmount < 50 && depositAmount < 50) {
+
+    const listing = await getPublishedListing(body);
+    const pricing = computePricing(listing, body.reservation || {});
+    const currency = pricing.currency;
+    if (!/^[a-z]{3}$/i.test(currency)) return res.status(400).json({ error: "Devise Stripe invalide." });
+
+    const clientRentalAmount = amount(body.rental_amount);
+    const clientDepositAmount = amount(body.deposit_amount);
+    if (Math.abs(clientRentalAmount - pricing.rental_cents) > 1 || Math.abs(clientDepositAmount - pricing.deposit_cents) > 1) {
+      return res.status(409).json({
+        error: "Le tarif a été actualisé. Rechargez la page pour afficher le montant vérifié.",
+        pricing: publicPricing(pricing)
+      });
+    }
+    if (pricing.rental_cents < 50 && pricing.deposit_cents < 50) {
       return res.status(400).json({ error: "Montant Stripe insuffisant." });
     }
 
-    const stripe = getStripe();
-    const baseMetadata = buildMetadata(body, "reservation");
+    const isLive = String(process.env.STRIPE_SECRET_KEY || "").startsWith("sk_live_");
+    if (isLive && pricing.tax_review_required && process.env.RSS_ALLOW_LIVE_TAX_PENDING !== "true") {
+      return res.status(422).json({
+        error: "Régime fiscal et facture de l’émetteur à définir avant un paiement live.",
+        pricing: publicPricing(pricing)
+      });
+    }
 
-    /*
-      Une même requête renvoie les mêmes objets Stripe.
-      En revanche, dès que le panier, le client, les dates ou les montants
-      changent, la clé change aussi : Stripe ne bloque plus la nouvelle commande.
-    */
-    const fingerprint = requestFingerprint({
-      orderId,
-      currency,
-      rentalAmount,
-      depositAmount,
-      customerEmail,
-      customerName,
-      customerPhone,
-      metadata: baseMetadata
-    });
+    const stripe = getStripe();
+    const baseMetadata = buildMetadata(body, "reservation", pricing);
 
     const customer = await stripe.customers.create(
       {
@@ -145,17 +368,17 @@ export default async function handler(req, res) {
           source: baseMetadata.source,
           order_id: orderId,
           listing_id: baseMetadata.listing_id,
-          checkout_fingerprint: fingerprint
+          customer_company: baseMetadata.customer_company
         }
       },
-      { idempotencyKey: `rss:${orderId}:${fingerprint}:customer` }
+      { idempotencyKey: `rss:${orderId}:customer` }
     );
 
     let rentalIntent = null;
-    if (rentalAmount >= 50) {
+    if (pricing.rental_cents >= 50) {
       rentalIntent = await stripe.paymentIntents.create(
         {
-          amount: rentalAmount,
+          amount: pricing.rental_cents,
           currency,
           customer: customer.id,
           receipt_email: customerEmail,
@@ -163,19 +386,18 @@ export default async function handler(req, res) {
           description: `Location RentSoundSystem – commande ${orderId}`,
           metadata: {
             ...baseMetadata,
-            type: "rental_payment",
-            checkout_fingerprint: fingerprint
+            type: "rental_payment"
           }
         },
-        { idempotencyKey: `rss:${orderId}:${fingerprint}:rental` }
+        { idempotencyKey: `rss:${orderId}:rental` }
       );
     }
 
     let depositIntent = null;
-    if (depositAmount >= 50) {
+    if (pricing.deposit_cents >= 50) {
       depositIntent = await stripe.paymentIntents.create(
         {
-          amount: depositAmount,
+          amount: pricing.deposit_cents,
           currency,
           customer: customer.id,
           capture_method: "manual",
@@ -183,11 +405,10 @@ export default async function handler(req, res) {
           description: `Caution RentSoundSystem – commande ${orderId}`,
           metadata: {
             ...baseMetadata,
-            type: "deposit_authorization",
-            checkout_fingerprint: fingerprint
+            type: "deposit_authorization"
           }
         },
-        { idempotencyKey: `rss:${orderId}:${fingerprint}:deposit` }
+        { idempotencyKey: `rss:${orderId}:deposit` }
       );
     }
 
@@ -214,7 +435,8 @@ export default async function handler(req, res) {
       rental_payment_intent_id: rentalIntent?.id || null,
       rental_client_secret: rentalIntent?.client_secret || null,
       deposit_payment_intent_id: depositIntent?.id || null,
-      deposit_client_secret: depositIntent?.client_secret || null
+      deposit_client_secret: depositIntent?.client_secret || null,
+      pricing: publicPricing(pricing)
     });
   } catch (err) {
     console.error("create-reservation-payment", err);
