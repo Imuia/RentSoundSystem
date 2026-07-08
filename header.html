@@ -90,8 +90,15 @@
 .rss-flag{
   display:inline-flex!important;align-items:center!important;justify-content:center!important;
   width:22px!important;height:22px!important;border-radius:999px!important;
-  background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.12)!important;
-  font-size:15px!important;line-height:1!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)!important;
+  background-color:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.12)!important;
+  background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)!important;overflow:hidden!important;
+}
+.rss-flag-fr{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 3 2'%3E%3Cpath fill='%23002395' d='M0 0h1v2H0z'/%3E%3Cpath fill='%23fff' d='M1 0h1v2H1z'/%3E%3Cpath fill='%23ed2939' d='M2 0h1v2H2z'/%3E%3C/svg%3E")!important;
+}
+.rss-flag-en{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='a'%3E%3Cpath d='M0 0v30h60V0z'/%3E%3C/clipPath%3E%3Cpath fill='%23012169' d='M0 0h60v30H0z'/%3E%3Cg clip-path='url(%23a)'%3E%3Cpath stroke='%23fff' stroke-width='6' d='M0 0l60 30m0-30L0 30'/%3E%3Cpath stroke='%23C8102E' stroke-width='4' d='M0 0l60 30m0-30L0 30'/%3E%3Cpath stroke='%23fff' stroke-width='10' d='M30 0v30M0 15h60'/%3E%3Cpath stroke='%23C8102E' stroke-width='6' d='M30 0v30M0 15h60'/%3E%3C/g%3E%3C/svg%3E")!important;
 }
 .rss-pref-option-main{
   display:flex!important;align-items:center!important;gap:9px!important;min-width:0!important;
@@ -159,16 +166,16 @@
       <div class="rss-preference-controls" aria-label="Préférences de langue et devise">
         <div class="rss-pref">
           <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="language" aria-expanded="false" aria-controls="rss-language-menu">
-            <span class="rss-flag" data-rss-language-flag aria-hidden="true">🇫🇷</span>
+            <span class="rss-flag rss-flag-fr" data-rss-language-flag aria-hidden="true"></span>
             <span data-rss-language-label>FR</span>
             <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
           </button>
           <div id="rss-language-menu" class="rss-pref-menu" data-rss-pref-menu="language" role="menu" aria-label="Choisir la langue">
             <button type="button" class="rss-pref-option" data-rss-language-choice="fr" role="menuitemradio" aria-pressed="true">
-              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇫🇷</span><span>Français</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag rss-flag-fr" aria-hidden="true"></span><span>Français</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
             <button type="button" class="rss-pref-option" data-rss-language-choice="en" role="menuitemradio" aria-pressed="false">
-              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇬🇧</span><span>English</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag rss-flag-en" aria-hidden="true"></span><span>English</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
           </div>
         </div>
@@ -219,16 +226,16 @@
       <div class="rss-mobile-preferences" aria-label="Préférences de langue et devise">
         <div class="rss-pref">
           <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="language" aria-expanded="false" aria-controls="rss-language-menu-mobile">
-            <span class="rss-flag" data-rss-language-flag aria-hidden="true">🇫🇷</span>
+            <span class="rss-flag rss-flag-fr" data-rss-language-flag aria-hidden="true"></span>
             <span data-rss-language-label>FR</span>
             <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
           </button>
           <div id="rss-language-menu-mobile" class="rss-pref-menu" data-rss-pref-menu="language" role="menu" aria-label="Choisir la langue">
             <button type="button" class="rss-pref-option" data-rss-language-choice="fr" role="menuitemradio" aria-pressed="true">
-              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇫🇷</span><span>Français</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag rss-flag-fr" aria-hidden="true"></span><span>Français</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
             <button type="button" class="rss-pref-option" data-rss-language-choice="en" role="menuitemradio" aria-pressed="false">
-              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇬🇧</span><span>English</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag rss-flag-en" aria-hidden="true"></span><span>English</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
           </div>
         </div>
@@ -309,7 +316,11 @@
           if(dictionary[key])node.textContent=dictionary[key]
         });
         all('[data-rss-language-label]').forEach(function(node){node.textContent=language.toUpperCase()});
-        all('[data-rss-language-flag]').forEach(function(node){node.textContent=language==='en'?'🇬🇧':'🇫🇷'});
+        all('[data-rss-language-flag]').forEach(function(node){
+          node.classList.toggle('rss-flag-en',language==='en');
+          node.classList.toggle('rss-flag-fr',language!=='en');
+          node.setAttribute('aria-label',language==='en'?'English':'Français');
+        });
         all('[data-rss-currency-label]').forEach(function(node){node.textContent=currency==='USD'?'$':'€'});
         all('[data-rss-language-choice]').forEach(function(button){
           button.setAttribute('aria-pressed',button.getAttribute('data-rss-language-choice')===language?'true':'false')
@@ -414,6 +425,23 @@
       var current=typeof window.Weglot.getCurrentLang==='function'?window.Weglot.getCurrentLang():'';
       if(current!==language)window.Weglot.switchTo(language);
     }
+    function resyncWeglotSoon(){
+      var language=readLanguage();
+      clearTimeout(window.__rssWeglotResyncTimer);
+      window.__rssWeglotResyncTimer=setTimeout(function(){applyWeglotLanguage(language)},350);
+    }
+    function watchDynamicContent(){
+      if(window.__rssWeglotMutationObserver||!window.MutationObserver)return;
+      window.__rssWeglotMutationObserver=new MutationObserver(function(mutations){
+        if(readLanguage()!=='en')return;
+        var relevant=false;
+        for(var i=0;i<mutations.length;i++){
+          if(mutations[i].addedNodes&&mutations[i].addedNodes.length){relevant=true;break}
+        }
+        if(relevant)resyncWeglotSoon();
+      });
+      if(document.body)window.__rssWeglotMutationObserver.observe(document.body,{childList:true,subtree:true});
+    }
     function initWeglot(){
       if(!window.Weglot||window.__rssWeglotInitialized)return;
       window.__rssWeglotInitialized=true;
@@ -422,21 +450,39 @@
           var wanted=readLanguage();
           syncHeader(wanted);
           applyWeglotLanguage(wanted);
+          setTimeout(function(){applyWeglotLanguage(readLanguage())},700);
+          setTimeout(function(){applyWeglotLanguage(readLanguage())},1800);
+          watchDynamicContent();
         });
         window.Weglot.on('languageChanged',function(newLanguage){
           var language=newLanguage==='en'?'en':'fr';
           syncHeader(language);
+          if(language==='en'){
+            setTimeout(resyncWeglotSoon,700);
+            setTimeout(resyncWeglotSoon,1800);
+          }
         });
         window.Weglot.initialize({
           api_key:WEGLOT_API_KEY,
           hide_switcher:true,
           cache:true,
-          wait_transition:true,
+          wait_transition:false,
+          translate_search:true,
+          search_forms:'form',
+          extra_definitions:[
+            {selector:'input[placeholder]',attribute:'placeholder',type:1},
+            {selector:'textarea[placeholder]',attribute:'placeholder',type:1},
+            {selector:'button[title]',attribute:'title',type:1},
+            {selector:'a[title]',attribute:'title',type:1},
+            {selector:'[aria-label]',attribute:'aria-label',type:1}
+          ],
           excluded_blocks:[
             {value:'.rss-preference-controls'},
             {value:'.rss-mobile-preferences'},
             {value:'.rss-auth-button'},
-            {value:'.notranslate'}
+            {value:'.notranslate'},
+            {value:'.StripeElement'},
+            {value:'#stripe-card-element'}
           ]
         });
       }catch(error){
