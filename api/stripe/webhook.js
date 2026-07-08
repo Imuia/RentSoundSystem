@@ -206,6 +206,13 @@ function issuerInfo() {
   };
 }
 
+function labelDeliveryMethod(value) {
+  const method = String(value || "").trim().toLowerCase();
+  if (["delivery", "livraison", "transport"].includes(method)) return "Livraison et reprise";
+  if (["pickup", "retreat", "retrait", "warehouse"].includes(method)) return "Retrait en entrepot";
+  return text(value, "Non indique");
+}
+
 function invoiceNumberFor(rental) {
   const metadata = rental.metadata || {};
   const existing = text(metadata.invoice_number);
@@ -262,8 +269,9 @@ function buildInvoiceData(rental, deposit, customer = {}) {
     days,
     rentalDates: `${formatDate(metadata.rental_start)} - ${formatDate(metadata.rental_end)}`,
     location: text(metadata.rental_city, "Non indique"),
-    deliveryMethod: text(metadata.delivery_method, "Non indique"),
+    deliveryMethod: labelDeliveryMethod(metadata.delivery_method),
     technician: metadata.technician === "yes" ? "Oui" : "Non",
+    serviceNature: "Prestation de services - location de materiel audio professionnel",
     currency,
     amountExclTax,
     taxAmount,
@@ -285,30 +293,32 @@ function buildInvoicePdf(invoice) {
   const pageWidth = 595;
   const pageHeight = 842;
   const commands = [];
-  const black = "0 0 0";
-  const textBlack = "0.09 0.09 0.09";
-  const muted = "0.43 0.43 0.43";
-  const light = "0.96 0.96 0.965";
-  const border = "0.82 0.82 0.84";
   const fuchsia = "0.988 0.012 0.427";
+  const black = "0 0 0";
+  const textBlack = "0.09 0.09 0.10";
+  const muted = "0.38 0.38 0.42";
+  const light = "0.975 0.975 0.982";
+  const border = "0.82 0.82 0.86";
+  const paleFuchsia = "1 0.955 0.980";
 
-  function color(rgb, stroke = false) {
-    commands.push(`${rgb} ${stroke ? "RG" : "rg"}`);
+  function pdfEscape(value) {
+    return stripAccents(value).replace(/\\/g, "\\\\").replace(/\(/g, "\\(").replace(/\)/g, "\\)");
   }
 
-  function rect(x, y, w, h, fill = null, stroke = null, lineWidth = 0.6) {
+  function color(rgb) {
+    commands.push(`${rgb} rg ${rgb} RG`);
+  }
+
+  function rect(x, y, w, h, fillRgb = null, strokeRgb = null, lineWidth = 0.5) {
     commands.push("q");
-    if (fill) color(fill);
-    if (stroke) color(stroke, true);
-    commands.push(`${lineWidth} w ${x} ${y} ${w} ${h} re ${fill && stroke ? "B" : fill ? "f" : "S"}`);
+    if (fillRgb) commands.push(`${fillRgb} rg`);
+    if (strokeRgb) commands.push(`${strokeRgb} RG ${lineWidth} w`);
+    commands.push(`${x} ${y} ${w} ${h} re ${fillRgb && strokeRgb ? "B" : fillRgb ? "f" : "S"}`);
     commands.push("Q");
   }
 
-  function line(x1, y1, x2, y2, rgb = border, lineWidth = 0.6) {
-    commands.push("q");
-    color(rgb, true);
-    commands.push(`${lineWidth} w ${x1} ${y1} m ${x2} ${y2} l S`);
-    commands.push("Q");
+  function line(x1, y1, x2, y2, rgb = border, w = 0.5) {
+    commands.push(`q ${rgb} RG ${w} w ${x1} ${y1} m ${x2} ${y2} l S Q`);
   }
 
   function drawText(x, y, size, value, bold = false, rgb = textBlack) {
@@ -320,7 +330,7 @@ function buildInvoicePdf(invoice) {
 
   function drawRight(xRight, y, size, value, bold = false, rgb = textBlack) {
     const clean = stripAccents(value);
-    const approxWidth = clean.length * size * 0.52;
+    const approxWidth = clean.length * size * 0.50;
     drawText(Math.max(40, xRight - approxWidth), y, size, value, bold, rgb);
   }
 
@@ -334,141 +344,153 @@ function buildInvoicePdf(invoice) {
     return formatMajor(value, invoice.currency);
   }
 
+  function percent(rate) {
+    const n = Number(rate || 0);
+    if (!Number.isFinite(n) || n <= 0) return "0%";
+    return `${Math.round(n * 10000) / 100}%`;
+  }
+
   const issueDate = new Intl.DateTimeFormat("fr-FR").format(invoice.issueDate);
   const paymentDate = new Intl.DateTimeFormat("fr-FR").format(invoice.paymentDate || invoice.issueDate);
+  const unitHt = invoice.quantity > 0 && invoice.days > 0
+    ? invoice.amountExclTax / (invoice.quantity * invoice.days)
+    : invoice.amountExclTax;
+  const taxColumn = invoice.taxAmount > 0 ? `${percent(invoice.vatRate)} - ${money(invoice.taxAmount)}` : `${percent(invoice.vatRate)} - ${money(0)}`;
 
-  // Page background
+  // Page background and top identity line.
   rect(0, 0, pageWidth, pageHeight, "1 1 1");
+  rect(0, 812, pageWidth, 30, black);
+  drawText(46, 823, 8.2, "RENTSOUNDSYSTEM - LOCATION DE MATERIEL AUDIO PROFESSIONNEL", true, "1 1 1");
+  drawRight(549, 823, 8.2, invoice.issuer.website.replace(/^https?:\/\//, ""), false, "1 1 1");
 
-  // Embedded brand logo. The image is stored as base64 to avoid any external file dependency in Vercel functions.
-  commands.push("q 118 0 0 105 46 696 cm /Im1 Do Q");
-  drawText(46, 684, 8, "Location de materiel audio professionnel", false, muted);
+  // Header: smaller logo, clear invoice status.
+  commands.push("q 94 0 0 84 46 705 cm /Im1 Do Q");
+  drawText(46, 694, 7.6, invoice.issuer.name, true, textBlack);
+  drawWrapped(46, 682, 6.8, invoice.issuer.address, 42, 8, false, muted, 2);
 
-  // Invoice title and metadata.
-  drawRight(549, 790, 30, "FACTURE", true, fuchsia);
-  drawRight(549, 770, 11, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "ACQUITTEE", true, textBlack);
-  drawRight(549, 752, 9, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
-  drawRight(549, 737, 9, `Date d'emission : ${issueDate}`, false, muted);
-  drawRight(549, 722, 9, `Reservation : ${invoice.orderId}`, false, muted);
-  drawRight(549, 707, 9, `Date de paiement : ${paymentDate}`, false, muted);
+  drawRight(549, 760, 32, "FACTURE", true, fuchsia);
+  rect(391, 736, 158, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
+  drawRight(541, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
+  drawRight(549, 720, 8.8, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
+  drawRight(549, 706, 8.2, `Date d'emission : ${issueDate}`, false, muted);
+  drawRight(549, 692, 8.2, `Reservation : ${invoice.orderId}`, false, muted);
+  drawRight(549, 678, 8.2, `Date de prestation : ${invoice.rentalDates}`, false, muted);
+  drawRight(549, 664, 8.2, `Date de paiement : ${paymentDate}`, false, muted);
 
   if (invoice.testMode) {
-    rect(46, 666, 503, 22, "1 0.94 0.97", fuchsia, 0.7);
-    drawText(56, 673, 8.5, "DOCUMENT TEST STRIPE - aucun debit reel hors environnement de test.", true, fuchsia);
+    rect(46, 632, 503, 22, "1 0.94 0.97", fuchsia, 0.7);
+    drawText(56, 639, 8.3, "DOCUMENT TEST STRIPE - aucun debit reel hors environnement de test.", true, fuchsia);
   }
 
   // Issuer / client cards.
-  const cardsY = 524;
+  const cardsY = 492;
   rect(46, cardsY, 238, 122, light, border, 0.6);
   rect(310, cardsY, 239, 122, light, border, 0.6);
   drawText(58, cardsY + 101, 10, "EMETTEUR", true, fuchsia);
   drawWrapped(58, cardsY + 84, 8.2, invoice.issuer.name, 34, 11, true, textBlack, 2);
   let yIssuer = cardsY + 61;
   for (const lineText of wrapText(invoice.issuer.address, 40).slice(0, 3)) {
-    drawText(58, yIssuer, 7.6, lineText, false, muted);
-    yIssuer -= 10;
+    drawText(58, yIssuer, 7.3, lineText, false, muted);
+    yIssuer -= 9.5;
   }
-  if (invoice.issuer.registration) {
-    drawText(58, yIssuer, 7.6, `ID entreprise : ${invoice.issuer.registration}`, false, muted);
-    yIssuer -= 10;
-  }
-  if (invoice.issuer.vatNumber) {
-    drawText(58, yIssuer, 7.6, `TVA / Tax ID : ${invoice.issuer.vatNumber}`, false, muted);
-    yIssuer -= 10;
-  }
-  drawText(58, yIssuer, 7.6, `Email : ${invoice.issuer.email}`, false, muted);
-  yIssuer -= 10;
-  drawText(58, yIssuer, 7.6, `Site : ${invoice.issuer.website}`, false, muted);
+  drawText(58, yIssuer, 7.3, `Email : ${invoice.issuer.email}`, false, muted);
+  yIssuer -= 9.5;
+  drawText(58, yIssuer, 7.3, `Site : ${invoice.issuer.website}`, false, muted);
+  yIssuer -= 9.5;
+  drawText(58, yIssuer, 7.1, `ID entreprise : ${invoice.issuer.registration || "a renseigner avant production"}`, false, muted);
+  yIssuer -= 9.5;
+  drawText(58, yIssuer, 7.1, `TVA / Tax ID : ${invoice.issuer.vatNumber || "a confirmer avant production"}`, false, muted);
 
   drawText(322, cardsY + 101, 10, "CLIENT / FACTURATION", true, fuchsia);
   let yClient = cardsY + 84;
   if (invoice.customerCompany) {
     drawText(322, yClient, 8.5, invoice.customerCompany, true, textBlack);
-    yClient -= 12;
+    yClient -= 11;
   }
   drawText(322, yClient, 8.2, invoice.customerName, false, textBlack);
-  yClient -= 11;
+  yClient -= 10.5;
   for (const lineText of invoice.customerAddress.slice(0, 4)) {
-    drawText(322, yClient, 7.6, lineText, false, muted);
-    yClient -= 10;
+    drawText(322, yClient, 7.3, lineText, false, muted);
+    yClient -= 9.5;
   }
-  if (invoice.customerVat) {
-    drawText(322, yClient, 7.6, `TVA / Tax ID client : ${invoice.customerVat}`, false, muted);
-    yClient -= 10;
-  }
+  drawText(322, yClient, 7.1, `TVA / Tax ID client : ${invoice.customerVat || "non renseigne"}`, false, muted);
+  yClient -= 9.5;
   if (invoice.customerEmail) {
-    drawText(322, yClient, 7.6, `Email : ${invoice.customerEmail}`, false, muted);
-    yClient -= 10;
+    drawText(322, yClient, 7.3, `Email : ${invoice.customerEmail}`, false, muted);
+    yClient -= 9.5;
   }
-  if (invoice.customerPhone) drawText(322, yClient, 7.6, `Telephone : ${invoice.customerPhone}`, false, muted);
+  if (invoice.customerPhone) drawText(322, yClient, 7.3, `Telephone : ${invoice.customerPhone}`, false, muted);
 
-  // Service table.
-  drawText(46, 490, 12, "DETAIL DE LA PRESTATION", true, textBlack);
+  // Service table: more complete EU-style line with unit price and VAT rate/amount.
+  drawText(46, 458, 12, "DETAIL DE LA PRESTATION", true, textBlack);
+  drawRight(549, 458, 7.4, invoice.serviceNature || "Prestation de services", false, muted);
   const tableX = 46;
-  const tableY = 455;
-  const widths = [214, 36, 56, 70, 48, 79];
+  const tableY = 424;
+  const widths = [190, 28, 34, 58, 62, 63, 68];
   const cols = [tableX];
   for (let i = 0; i < widths.length - 1; i++) cols.push(cols[i] + widths[i]);
-  const headers = ["Designation", "Qte", "Duree", "Montant HT", "TVA", "Total TTC"];
-  rect(tableX, tableY, 503, 24, black);
+  const headers = ["Designation", "Qte", "Jours", "PU HT", "Total HT", "TVA", "Total TTC"];
+  rect(tableX, tableY, 503, 23, black);
   let cursorX = tableX;
   headers.forEach((h, i) => {
-    drawText(cursorX + 6, tableY + 8, 7.4, h, true, "1 1 1");
+    drawText(cursorX + 5, tableY + 8, 6.8, h, true, "1 1 1");
     cursorX += widths[i];
   });
-  rect(tableX, tableY - 88, 503, 88, "1 1 1", border, 0.6);
+  rect(tableX, tableY - 96, 503, 96, "1 1 1", border, 0.6);
   let vline = tableX;
   for (const w of widths.slice(0, -1)) {
     vline += w;
-    line(vline, tableY - 88, vline, tableY, "0.90 0.90 0.92", 0.5);
+    line(vline, tableY - 96, vline, tableY, "0.90 0.90 0.92", 0.5);
   }
-  let detailY = tableY - 18;
-  drawWrapped(tableX + 7, detailY, 8.2, invoice.product, 37, 10.5, true, textBlack, 4);
-  drawText(tableX + 7, tableY - 68, 7.2, `Periode : ${invoice.rentalDates}`, false, muted);
-  drawText(tableX + 7, tableY - 79, 7.2, `Lieu : ${invoice.location} - Livraison : ${invoice.deliveryMethod} - Technicien : ${invoice.technician}`, false, muted);
-  drawText(cols[1] + 8, detailY, 8.2, String(invoice.quantity), false, textBlack);
-  drawText(cols[2] + 7, detailY, 8.2, `${invoice.days} j`, false, textBlack);
-  drawRight(cols[3] + widths[3] - 7, detailY, 8.2, money(invoice.amountExclTax), false, textBlack);
-  drawRight(cols[4] + widths[4] - 7, detailY, 8.2, money(invoice.taxAmount), false, textBlack);
-  drawRight(cols[5] + widths[5] - 7, detailY, 8.2, money(invoice.totalAmount), true, textBlack);
+  const detailY = tableY - 18;
+  drawWrapped(tableX + 6, detailY, 7.8, invoice.product, 33, 10, true, textBlack, 3);
+  drawText(tableX + 6, tableY - 65, 6.8, `Periode : ${invoice.rentalDates}`, false, muted);
+  drawText(tableX + 6, tableY - 76, 6.8, `Lieu : ${invoice.location}`, false, muted);
+  drawText(tableX + 6, tableY - 87, 6.8, `Logistique : ${invoice.deliveryMethod} - Technicien : ${invoice.technician}`, false, muted);
+  drawText(cols[1] + 8, detailY, 7.8, String(invoice.quantity), false, textBlack);
+  drawText(cols[2] + 7, detailY, 7.8, `${invoice.days}`, false, textBlack);
+  drawRight(cols[3] + widths[3] - 5, detailY, 7.6, money(unitHt), false, textBlack);
+  drawRight(cols[4] + widths[4] - 5, detailY, 7.6, money(invoice.amountExclTax), false, textBlack);
+  drawRight(cols[5] + widths[5] - 5, detailY, 7.2, taxColumn, false, textBlack);
+  drawRight(cols[6] + widths[6] - 6, detailY, 7.8, money(invoice.totalAmount), true, textBlack);
 
   // VAT note and totals.
-  rect(46, 293, 268, 62, "0.985 0.985 0.99", border, 0.6);
-  drawText(58, 333, 10, "REGIME TVA", true, fuchsia);
-  drawWrapped(58, 317, 7.5, invoice.taxMention, 58, 10, false, muted, 3);
+  rect(46, 260, 278, 54, "0.985 0.985 0.99", border, 0.6);
+  drawText(58, 297, 9.5, "REGIME TVA / MENTION FISCALE", true, fuchsia);
+  drawWrapped(58, 282, 7.0, invoice.taxMention, 66, 9, false, muted, 3);
 
-  rect(340, 270, 209, 86, "0.985 0.985 0.99", border, 0.6);
-  drawText(352, 336, 10, "RECAPITULATIF", true, fuchsia);
-  drawText(352, 318, 8.5, "Total HT", false, muted);
-  drawRight(538, 318, 8.5, money(invoice.amountExclTax), false, textBlack);
-  drawText(352, 302, 8.5, "TVA", false, muted);
-  drawRight(538, 302, 8.5, money(invoice.taxAmount), false, textBlack);
-  line(352, 292, 538, 292, border, 0.5);
-  drawText(352, 277, 10.5, "TOTAL TTC PAYE", true, textBlack);
-  drawRight(538, 277, 11.5, money(invoice.totalAmount), true, fuchsia);
+  rect(350, 238, 199, 76, "0.985 0.985 0.99", border, 0.6);
+  drawText(362, 297, 9.5, "RECAPITULATIF", true, fuchsia);
+  drawText(362, 281, 8.0, "Total HT", false, muted);
+  drawRight(538, 281, 8.0, money(invoice.amountExclTax), false, textBlack);
+  drawText(362, 266, 8.0, "TVA", false, muted);
+  drawRight(538, 266, 8.0, money(invoice.taxAmount), false, textBlack);
+  line(362, 257, 538, 257, border, 0.5);
+  drawText(362, 244, 9.5, "TOTAL TTC PAYE", true, textBlack);
+  drawRight(538, 244, 10.8, money(invoice.totalAmount), true, fuchsia);
 
   // Deposit block.
-  rect(46, 205, 503, 48, "1 0.98 0.99", fuchsia, 0.6);
-  drawText(58, 235, 10, "CAUTION - HORS TOTAL FACTURE", true, fuchsia);
-  drawWrapped(58, 220, 7.4, `${invoice.depositText}. Autorisation bancaire distincte, non incluse dans le total facture tant qu'elle n'est pas capturee.`, 108, 10, false, muted, 2);
+  rect(46, 184, 503, 38, "1 0.98 0.99", fuchsia, 0.6);
+  drawText(58, 207, 9.5, "CAUTION - HORS TOTAL FACTURE", true, fuchsia);
+  drawWrapped(58, 194, 6.9, `${invoice.depositText}. Autorisation bancaire distincte, non incluse dans le total facture tant qu'elle n'est pas capturee.`, 128, 8, false, muted, 2);
 
-  // Payment references.
-  drawText(46, 176, 12, "PAIEMENT", true, textBlack);
-  rect(46, 84, 503, 76, "1 1 1", border, 0.6);
-  drawText(58, 140, 8.2, "Statut", false, muted);
-  drawText(180, 140, 8.2, "Paye par carte bancaire via Stripe", true, textBlack);
-  drawText(58, 124, 8.2, "Reference location", false, muted);
-  drawText(180, 124, 7.8, invoice.rentalPaymentIntentId, false, textBlack);
-  drawText(58, 108, 8.2, "Reference caution", false, muted);
-  drawText(180, 108, 7.8, invoice.depositPaymentIntentId || "Aucune", false, textBlack);
-  drawText(58, 92, 8.2, "Facture", false, muted);
-  drawText(180, 92, 7.8, `${invoice.invoiceNumber} - document genere automatiquement`, false, textBlack);
+  // Payment and commercial terms.
+  drawText(46, 158, 11, "PAIEMENT ET CONDITIONS", true, textBlack);
+  rect(46, 72, 503, 74, "1 1 1", border, 0.6);
+  drawText(58, 127, 7.8, "Statut", false, muted);
+  drawText(190, 127, 7.8, "Paye par carte bancaire via Stripe", true, textBlack);
+  drawText(58, 112, 7.8, "Conditions de reglement", false, muted);
+  drawText(190, 112, 7.8, "Facture acquittee - paiement comptant", false, textBlack);
+  drawText(58, 97, 7.8, "Reference location", false, muted);
+  drawText(190, 97, 7.2, invoice.rentalPaymentIntentId, false, textBlack);
+  drawText(58, 82, 7.8, "Reference caution", false, muted);
+  drawText(190, 82, 7.2, invoice.depositPaymentIntentId || "Aucune", false, textBlack);
 
   // Footer/legal.
-  line(46, 66, 549, 66, border, 0.5);
+  line(46, 56, 549, 56, border, 0.5);
   const footer = `${invoice.issuer.name} - ${invoice.issuer.address} - ${invoice.issuer.email} - ${invoice.issuer.website}`;
-  drawWrapped(46, 53, 6.1, footer, 140, 7, false, muted, 2);
-  drawWrapped(46, 35, 6.1, "Facture etablie selon les informations transmises lors de la reservation. Pour toute correction, contactez l'emetteur avant cloture comptable.", 140, 7, false, muted, 2);
+  drawWrapped(46, 44, 5.8, footer, 146, 6.6, false, muted, 2);
+  drawWrapped(46, 30, 5.8, "Facture etablie selon les informations transmises lors de la reservation. Pour toute correction, contactez l'emetteur avant cloture comptable.", 146, 6.6, false, muted, 2);
 
   const content = [
     "q",
