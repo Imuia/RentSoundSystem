@@ -425,23 +425,6 @@
       var current=typeof window.Weglot.getCurrentLang==='function'?window.Weglot.getCurrentLang():'';
       if(current!==language)window.Weglot.switchTo(language);
     }
-    function resyncWeglotSoon(){
-      var language=readLanguage();
-      clearTimeout(window.__rssWeglotResyncTimer);
-      window.__rssWeglotResyncTimer=setTimeout(function(){applyWeglotLanguage(language)},350);
-    }
-    function watchDynamicContent(){
-      if(window.__rssWeglotMutationObserver||!window.MutationObserver)return;
-      window.__rssWeglotMutationObserver=new MutationObserver(function(mutations){
-        if(readLanguage()!=='en')return;
-        var relevant=false;
-        for(var i=0;i<mutations.length;i++){
-          if(mutations[i].addedNodes&&mutations[i].addedNodes.length){relevant=true;break}
-        }
-        if(relevant)resyncWeglotSoon();
-      });
-      if(document.body)window.__rssWeglotMutationObserver.observe(document.body,{childList:true,subtree:true});
-    }
     function initWeglot(){
       if(!window.Weglot||window.__rssWeglotInitialized)return;
       window.__rssWeglotInitialized=true;
@@ -450,39 +433,21 @@
           var wanted=readLanguage();
           syncHeader(wanted);
           applyWeglotLanguage(wanted);
-          setTimeout(function(){applyWeglotLanguage(readLanguage())},700);
-          setTimeout(function(){applyWeglotLanguage(readLanguage())},1800);
-          watchDynamicContent();
         });
         window.Weglot.on('languageChanged',function(newLanguage){
           var language=newLanguage==='en'?'en':'fr';
           syncHeader(language);
-          if(language==='en'){
-            setTimeout(resyncWeglotSoon,700);
-            setTimeout(resyncWeglotSoon,1800);
-          }
         });
         window.Weglot.initialize({
           api_key:WEGLOT_API_KEY,
           hide_switcher:true,
           cache:true,
           wait_transition:false,
-          translate_search:true,
-          search_forms:'form',
-          extra_definitions:[
-            {selector:'input[placeholder]',attribute:'placeholder',type:1},
-            {selector:'textarea[placeholder]',attribute:'placeholder',type:1},
-            {selector:'button[title]',attribute:'title',type:1},
-            {selector:'a[title]',attribute:'title',type:1},
-            {selector:'[aria-label]',attribute:'aria-label',type:1}
-          ],
           excluded_blocks:[
             {value:'.rss-preference-controls'},
             {value:'.rss-mobile-preferences'},
             {value:'.rss-auth-button'},
-            {value:'.notranslate'},
-            {value:'.StripeElement'},
-            {value:'#stripe-card-element'}
+            {value:'.notranslate'}
           ]
         });
       }catch(error){
@@ -515,6 +480,85 @@
     script.onerror=function(){window.__rssWeglotStatus='sdk-load-error'};
     document.head.appendChild(script);
   })();this.remove();" />
+
+  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="
+(function(){
+    if(window.__rssDynamicI18nBoot)return;
+    window.__rssDynamicI18nBoot=true;
+
+    var pairs=[[&quot;Aucune annonce disponible pour cette zone.&quot;, &quot;No listings available in this area.&quot;], [&quot;Aucune annonce n’est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.&quot;, &quot;No listing is currently available for this city or country. Try another destination or browse the latest listings published worldwide.&quot;], [&quot;Aucune annonce n&#x27;est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.&quot;, &quot;No listing is currently available for this city or country. Try another destination or browse the latest listings published worldwide.&quot;], [&quot;Autour de vous&quot;, &quot;Around you&quot;], [&quot;Voir tout&quot;, &quot;See all&quot;], [&quot;Tout voir&quot;, &quot;See all&quot;], [&quot;Utiliser ma position&quot;, &quot;Use my location&quot;], [&quot;Dernières annonces publiées dans le monde&quot;, &quot;Latest listings published worldwide&quot;], [&quot;Aucune annonce disponible&quot;, &quot;No listings available&quot;], [&quot;Aucune annonce n’est actuellement disponible&quot;, &quot;No listing is currently available&quot;], [&quot;Aucune annonce n&#x27;est actuellement disponible&quot;, &quot;No listing is currently available&quot;]];
+
+    function lang(){
+      try{
+        var v=String(localStorage.getItem(&#x27;rss_language&#x27;)||document.documentElement.lang||&#x27;fr&#x27;).toLowerCase();
+        return v===&#x27;en&#x27;?&#x27;en&#x27;:&#x27;fr&#x27;;
+      }catch(e){return&#x27;fr&#x27;}
+    }
+    function isIgnored(node){
+      var el=node.nodeType===1?node:node.parentElement;
+      if(!el)return true;
+      return !!(el.closest(&#x27;script,style,noscript,textarea,input,select,.notranslate,.StripeElement,#stripe-card-element,.rss-preference-controls,.rss-mobile-preferences&#x27;));
+    }
+    function replaceText(value,toEnglish){
+      var output=value;
+      pairs.forEach(function(pair){
+        var from=toEnglish?pair[0]:pair[1];
+        var to=toEnglish?pair[1]:pair[0];
+        if(output.indexOf(from)!==-1)output=output.split(from).join(to);
+      });
+      return output;
+    }
+    function translateNodeText(node,toEnglish){
+      if(!node||isIgnored(node))return;
+      if(node.nodeType===3){
+        var next=replaceText(node.nodeValue,toEnglish);
+        if(next!==node.nodeValue)node.nodeValue=next;
+        return;
+      }
+      if(node.nodeType!==1)return;
+      [&#x27;placeholder&#x27;,&#x27;title&#x27;,&#x27;aria-label&#x27;].forEach(function(attr){
+        if(node.hasAttribute&amp;&amp;node.hasAttribute(attr)){
+          var oldValue=node.getAttribute(attr);
+          var newValue=replaceText(oldValue,toEnglish);
+          if(newValue!==oldValue)node.setAttribute(attr,newValue);
+        }
+      });
+    }
+    function walk(root,toEnglish){
+      if(!root||isIgnored(root))return;
+      translateNodeText(root,toEnglish);
+      var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{
+        acceptNode:function(node){
+          return isIgnored(node)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      var node;
+      while((node=walker.nextNode()))translateNodeText(node,toEnglish);
+    }
+    function apply(){
+      if(!document.body)return;
+      walk(document.body,lang()===&#x27;en&#x27;);
+    }
+
+    window.rssApplyDynamicTranslations=apply;
+    window.addEventListener(&#x27;rss:language-change&#x27;,function(){setTimeout(apply,120);setTimeout(apply,650);setTimeout(apply,1600)});
+    window.addEventListener(&#x27;load&#x27;,function(){setTimeout(apply,300);setTimeout(apply,1500)});
+    if(window.MutationObserver){
+      new MutationObserver(function(mutations){
+        if(lang()!==&#x27;en&#x27;)return;
+        clearTimeout(window.__rssDynamicI18nTimer);
+        window.__rssDynamicI18nTimer=setTimeout(function(){
+          mutations.forEach(function(mutation){
+            Array.prototype.slice.call(mutation.addedNodes||[]).forEach(function(node){walk(node,true)});
+          });
+          apply();
+        },220);
+      }).observe(document.documentElement,{childList:true,subtree:true});
+    }
+    setTimeout(apply,500);
+    setTimeout(apply,1800);
+  })();
+this.remove();" />
 
 </header>
 
