@@ -41,6 +41,23 @@ function boolean(value, fallback = false) {
   return fallback;
 }
 
+function countryCode(value) {
+  const code = text(value, 10).toUpperCase();
+  return /^[A-Z]{2}$/.test(code) ? code : "";
+}
+
+function billingFromCustomer(customer = {}, reservationCustomer = {}) {
+  const billing = customer.billing || customer.address || reservationCustomer.billing || reservationCustomer.address || {};
+  return {
+    addressLine1: text(billing.addressLine1 || billing.line1 || billing.address || billing.street, 300),
+    postalCode: text(billing.postalCode || billing.postal_code || billing.zip || billing.zipCode, 40),
+    city: text(billing.city || billing.town, 120),
+    country: countryCode(billing.country || billing.countryCode),
+    countryName: text(billing.countryName || billing.country_name || billing.country || "", 120),
+    vatNumber: text(billing.vatNumber || billing.vat_number || billing.taxId || billing.tax_id, 80)
+  };
+}
+
 function optionPrice(value, fallback) {
   const n = number(value, NaN);
   return Number.isFinite(n) && n >= 0 ? n : fallback;
@@ -265,6 +282,7 @@ function buildMetadata(body, paymentType, pricing) {
   const rental = reservation.rental || {};
   const item = body.listing || reservation.item || {};
   const customer = body.customer || reservation.customer || {};
+  const billing = billingFromCustomer(customer, reservation.customer || {});
 
   return {
     source: text(body.metadata?.source || "rentsoundsystem_marketplace", 80),
@@ -282,7 +300,16 @@ function buildMetadata(body, paymentType, pricing) {
     delivery_method: text(rental.delivery, 40),
     technician: rental.technician ? "yes" : "no",
     quantity: text(pricing.quantity, 20),
+    customer_name: text(customer.name || [reservation.customer?.firstName, reservation.customer?.lastName].filter(Boolean).join(" "), 200),
+    customer_email: text(customer.email || reservation.customer?.email, 254),
+    customer_phone: text(customer.phone || reservation.customer?.phone, 50),
     customer_company: text(reservation.customer?.company || customer.company, 200),
+    customer_billing_address: billing.addressLine1,
+    customer_billing_postal_code: billing.postalCode,
+    customer_billing_city: billing.city,
+    customer_billing_country: billing.country,
+    customer_billing_country_name: billing.countryName,
+    customer_vat_number: billing.vatNumber,
     tax_mode: text(pricing.tax_mode, 40),
     tax_review_required: pricing.tax_review_required ? "yes" : "no",
     vat_rate: text(pricing.vat_rate, 20),
@@ -325,6 +352,7 @@ export default async function handler(req, res) {
     const customerEmail = text(body.customer?.email, 254);
     const customerName = text(body.customer?.name, 200);
     const customerPhone = text(body.customer?.phone, 50);
+    const billing = billingFromCustomer(body.customer || {}, body.reservation?.customer || {});
 
     if (!orderId) return res.status(400).json({ error: "Référence de commande manquante." });
     if (!customerEmail || !/^\S+@\S+\.\S+$/.test(customerEmail)) {
@@ -364,11 +392,24 @@ export default async function handler(req, res) {
         email: customerEmail,
         name: customerName || undefined,
         phone: customerPhone || undefined,
+        address: billing.addressLine1 || billing.city || billing.postalCode || billing.country
+          ? {
+              line1: billing.addressLine1 || undefined,
+              postal_code: billing.postalCode || undefined,
+              city: billing.city || undefined,
+              country: billing.country || undefined
+            }
+          : undefined,
         metadata: {
           source: baseMetadata.source,
           order_id: orderId,
           listing_id: baseMetadata.listing_id,
-          customer_company: baseMetadata.customer_company
+          customer_company: baseMetadata.customer_company,
+          customer_billing_address: baseMetadata.customer_billing_address,
+          customer_billing_postal_code: baseMetadata.customer_billing_postal_code,
+          customer_billing_city: baseMetadata.customer_billing_city,
+          customer_billing_country: baseMetadata.customer_billing_country,
+          customer_vat_number: baseMetadata.customer_vat_number
         }
       },
       { idempotencyKey: `rss:${orderId}:customer` }

@@ -204,7 +204,11 @@
 </div>
 <!-- Actions -->
 <div class="w-full flex flex-col sm:flex-row gap-4 relative z-10">
-<a class="flex-1 bg-[#FC036D] text-white font-label-caps text-label-caps uppercase py-4 px-6 rounded-DEFAULT flex items-center justify-center gap-2 glow-shadow hover:bg-[#d6005a] transition-colors" id="client-reservations-link" href="/espace-client-reservations.html">
+<a class="flex-1 bg-[#FC036D] text-white font-label-caps text-label-caps uppercase py-4 px-6 rounded-DEFAULT flex items-center justify-center gap-2 glow-shadow hover:bg-[#d6005a] transition-colors opacity-50 pointer-events-none" id="download-invoice-link" href="#" target="_blank" rel="noopener">
+<span class="material-symbols-outlined">download</span>
+                        Télécharger ma facture
+                    </a>
+<a class="flex-1 bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase py-4 px-6 rounded-DEFAULT flex items-center justify-center gap-2 hover:bg-surface-container transition-colors" id="client-reservations-link" href="/espace-client-reservations.html">
 <span class="material-symbols-outlined">receipt_long</span>
                         Voir mes réservations
                     </a>
@@ -335,8 +339,8 @@
     if(kind==='sent'){
       card.classList.add('border-primary/40','bg-primary/10');
       title.textContent='E-mail de confirmation envoyé';
-      text.textContent=email ? 'Un récapitulatif a été envoyé à '+email+'.' : 'Un récapitulatif de commande a été envoyé.';
-      detail.textContent='Conservez cet e-mail : il contient la référence de votre réservation.';
+      text.textContent=email ? 'Un récapitulatif avec la facture a été envoyé à '+email+'.' : 'Un récapitulatif de commande avec la facture a été envoyé.';
+      detail.textContent='Conservez cet e-mail : il contient la référence de votre réservation et votre facture.';
       return;
     }
     if(kind==='error'){
@@ -349,6 +353,28 @@
     title.textContent='E-mail de confirmation en cours';
     text.textContent='Nous finalisons l’envoi de votre récapitulatif de réservation.';
     detail.textContent='Actualisez ce statut dans quelques instants. Vérifiez également le dossier indésirables.';
+  }
+
+  function updateInvoiceLink(order, stripeResult){
+    const link=qs('#download-invoice-link');
+    if(!link) return;
+
+    const stripe=stripeResult || order?.stripe || order?.payment?.stripe || {};
+    const rentalId=stripe.rental_payment_intent_id || stripe.rentalPaymentIntentId || '';
+    if(!rentalId){
+      link.href='#';
+      link.classList.add('opacity-50','pointer-events-none');
+      link.title='La facture sera disponible après synchronisation Stripe.';
+      return;
+    }
+
+    const params=new URLSearchParams({
+      payment_intent:rentalId,
+      order:order?.id || ''
+    });
+    link.href='/api/stripe/invoice?'+params.toString();
+    link.classList.remove('opacity-50','pointer-events-none');
+    link.title='Télécharger la facture PDF';
   }
 
   async function refreshEmailStatus(order){
@@ -412,6 +438,7 @@
     set('#order-total', money(order.amounts.total));
     set('#order-deposit', money(order.amounts.deposit)+' (Non débité)');
     renderStripe(stripeResult);
+    updateInvoiceLink(order, stripeResult);
 
     const portalLink=qs('#client-reservations-link');
     if(portalLink) portalLink.href='/espace-client-reservations.html?order='+encodeURIComponent(order.id);
