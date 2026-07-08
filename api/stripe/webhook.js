@@ -383,7 +383,7 @@ function buildInvoicePdf(invoice) {
 function invoiceDownloadUrl(paymentIntentId, orderId) {
   const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
   const params = new URLSearchParams({ payment_intent: paymentIntentId, order: orderId });
-  return `${base}/api/stripe/invoice?${params.toString()}`;
+  return `${base}/api/stripe/webhook?invoice=1&${params.toString()}`;
 }
 
 
@@ -570,7 +570,61 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
   return { sent: true, orderId };
 }
 
+async function handleInvoiceDownload(req, res) {
+  const paymentIntentId = text(req.query?.payment_intent);
+  const order = text(req.query?.order);
+
+  if (!/^pi_[A-Za-z0-9_]+$/.test(paymentIntentId)) {
+    return res.status(400).json({ error: "PaymentIntent invalide." });
+  }
+
+  const stripe = getStripe();
+  const rental = await stripe.paymentIntents.retrieve(paymentIntentId);
+
+  if (!rental || rental.metadata?.type !== "rental_payment") {
+    return res.status(404).json({ error: "Facture introuvable pour cette réservation." });
+  }
+
+  if (order && text(rental.metadata?.order_id) && order !== text(rental.metadata?.order_id)) {
+    return res.status(403).json({ error: "Référence de commande incorrecte." });
+  }
+
+  if (rental.status !== "succeeded") {
+    return res.status(409).json({ error: "La facture sera disponible après validation du paiement." });
+  }
+
+  let deposit = null;
+  const depositId = text(rental.metadata?.linked_deposit_payment_intent_id);
+  if (depositId && /^pi_[A-Za-z0-9_]+$/.test(depositId)) {
+    try {
+      deposit = await stripe.paymentIntents.retrieve(depositId);
+    } catch {
+      deposit = null;
+    }
+  }
+
+  const customer = await getCustomer(stripe, rental.customer);
+  const invoice = buildInvoiceData(rental, deposit, customer);
+  const pdf = buildInvoicePdf(invoice);
+
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader("Content-Disposition", `attachment; filename="${invoice.invoiceNumber}.pdf"`);
+  res.setHeader("Cache-Control", "private, no-store");
+  return res.status(200).send(pdf);
+}
+
 export default async function handler(req, res) {
+  if (req.method === "GET" && text(req.query?.invoice) === "1") {
+    try {
+      return await handleInvoiceDownload(req, res);
+    } catch (err) {
+      console.error("stripe-webhook-invoice", err);
+      return res.status(500).json({
+        error: err.message || "Erreur lors de la génération de la facture."
+      });
+    }
+  }
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
