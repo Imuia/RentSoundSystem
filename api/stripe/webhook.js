@@ -334,6 +334,12 @@ function buildInvoicePdf(invoice) {
     drawText(Math.max(40, xRight - approxWidth), y, size, value, bold, rgb);
   }
 
+  function drawCenter(x, width, y, size, value, bold = false, rgb = textBlack) {
+    const clean = stripAccents(value);
+    const approxWidth = clean.length * size * 0.50;
+    drawText(x + Math.max(0, (width - approxWidth) / 2), y, size, value, bold, rgb);
+  }
+
   function drawWrapped(x, y, size, value, maxChars, lineHeight = size + 4, bold = false, rgb = textBlack, maxLines = 5) {
     const lines = wrapText(value, maxChars).slice(0, maxLines);
     lines.forEach((lineText, index) => drawText(x, y - index * lineHeight, size, lineText, bold, rgb));
@@ -368,10 +374,14 @@ function buildInvoicePdf(invoice) {
   drawText(46, 694, 7.6, invoice.issuer.name, true, textBlack);
   drawWrapped(46, 682, 6.8, invoice.issuer.address, 42, 8, false, muted, 2);
 
-  drawRight(549, 760, 32, "FACTURE", true, fuchsia);
-  rect(391, 736, 158, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
-  drawRight(541, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
-  drawRight(549, 720, 8.8, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
+  // Right invoice block: fixed right edge so title, status badge and metadata align cleanly.
+  const headRight = 549;
+  const statusW = invoice.testMode ? 128 : 134;
+  const statusX = headRight - statusW;
+  drawRight(headRight, 760, 32, "FACTURE", true, fuchsia);
+  rect(statusX, 736, statusW, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
+  drawCenter(statusX, statusW, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
+  drawRight(headRight, 720, 8.8, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
   drawRight(549, 706, 8.2, `Date d'emission : ${issueDate}`, false, muted);
   drawRight(549, 692, 8.2, `Reservation : ${invoice.orderId}`, false, muted);
   drawRight(549, 678, 8.2, `Date de prestation : ${invoice.rentalDates}`, false, muted);
