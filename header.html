@@ -87,6 +87,15 @@
   border-color:rgba(252,3,109,.62)!important;background:rgba(252,3,109,.10)!important;color:#fff!important;
 }
 .rss-pref-toggle .material-symbols-outlined{font-size:17px!important;color:var(--rss-pink)!important}
+.rss-flag{
+  display:inline-flex!important;align-items:center!important;justify-content:center!important;
+  width:22px!important;height:22px!important;border-radius:999px!important;
+  background:rgba(255,255,255,.07)!important;border:1px solid rgba(255,255,255,.12)!important;
+  font-size:15px!important;line-height:1!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)!important;
+}
+.rss-pref-option-main{
+  display:flex!important;align-items:center!important;gap:9px!important;min-width:0!important;
+}
 .rss-pref-chevron{font-size:16px!important;color:var(--rss-muted)!important;transition:transform .2s ease!important}
 .rss-pref-toggle[aria-expanded="true"] .rss-pref-chevron{transform:rotate(180deg)!important}
 .rss-pref-menu{
@@ -150,16 +159,16 @@
       <div class="rss-preference-controls" aria-label="Préférences de langue et devise">
         <div class="rss-pref">
           <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="language" aria-expanded="false" aria-controls="rss-language-menu">
-            <span class="material-symbols-outlined" aria-hidden="true">language</span>
+            <span class="rss-flag" data-rss-language-flag aria-hidden="true">🇫🇷</span>
             <span data-rss-language-label>FR</span>
             <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
           </button>
           <div id="rss-language-menu" class="rss-pref-menu" data-rss-pref-menu="language" role="menu" aria-label="Choisir la langue">
             <button type="button" class="rss-pref-option" data-rss-language-choice="fr" role="menuitemradio" aria-pressed="true">
-              <span>Français</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇫🇷</span><span>Français</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
             <button type="button" class="rss-pref-option" data-rss-language-choice="en" role="menuitemradio" aria-pressed="false">
-              <span>English</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇬🇧</span><span>English</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
           </div>
         </div>
@@ -210,16 +219,16 @@
       <div class="rss-mobile-preferences" aria-label="Préférences de langue et devise">
         <div class="rss-pref">
           <button type="button" class="rss-pref-toggle" data-rss-pref-toggle="language" aria-expanded="false" aria-controls="rss-language-menu-mobile">
-            <span class="material-symbols-outlined" aria-hidden="true">language</span>
+            <span class="rss-flag" data-rss-language-flag aria-hidden="true">🇫🇷</span>
             <span data-rss-language-label>FR</span>
             <span class="material-symbols-outlined rss-pref-chevron" aria-hidden="true">expand_more</span>
           </button>
           <div id="rss-language-menu-mobile" class="rss-pref-menu" data-rss-pref-menu="language" role="menu" aria-label="Choisir la langue">
             <button type="button" class="rss-pref-option" data-rss-language-choice="fr" role="menuitemradio" aria-pressed="true">
-              <span>Français</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇫🇷</span><span>Français</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
             <button type="button" class="rss-pref-option" data-rss-language-choice="en" role="menuitemradio" aria-pressed="false">
-              <span>English</span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
+              <span class="rss-pref-option-main"><span class="rss-flag" aria-hidden="true">🇬🇧</span><span>English</span></span><span class="material-symbols-outlined rss-pref-option-mark" aria-hidden="true">check</span>
             </button>
           </div>
         </div>
@@ -300,6 +309,7 @@
           if(dictionary[key])node.textContent=dictionary[key]
         });
         all('[data-rss-language-label]').forEach(function(node){node.textContent=language.toUpperCase()});
+        all('[data-rss-language-flag]').forEach(function(node){node.textContent=language==='en'?'🇬🇧':'🇫🇷'});
         all('[data-rss-currency-label]').forEach(function(node){node.textContent=currency==='USD'?'$':'€'});
         all('[data-rss-language-choice]').forEach(function(button){
           button.setAttribute('aria-pressed',button.getAttribute('data-rss-language-choice')===language?'true':'false')
@@ -361,6 +371,103 @@
     }
     window.rssHeaderPreferencesBoot=window.rssHeaderPreferencesBoot||build;
     window.rssHeaderPreferencesBoot();
+  })();this.remove();" />
+
+
+  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){
+    if(window.__rssWeglotGlobalBoot)return;
+    window.__rssWeglotGlobalBoot=true;
+
+    /*
+      Remplacer cette valeur par la clé API Weglot du projet RentSoundSystem.
+      Exemple de format : wg_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      Tant que cette clé n’est pas remplacée, le site garde le sélecteur FR/EN,
+      mais la traduction automatique globale reste désactivée sans erreur.
+    */
+    var WEGLOT_API_KEY='wg_404ba8763ad2fbd7361777eb8a48a0e08';
+
+    function validKey(key){
+      key=String(key||'').trim();
+      return /^wg_[a-z0-9]+$/i.test(key);
+    }
+    function readLanguage(){
+      try{
+        var value=String(localStorage.getItem('rss_language')||'fr').toLowerCase();
+        return value==='en'?'en':'fr';
+      }catch(error){return'fr'}
+    }
+    function syncHeader(language){
+      try{
+        localStorage.setItem('rss_language',language==='en'?'en':'fr');
+        if(window.RSSPreferences&&typeof window.RSSPreferences.setLanguage==='function'){
+          if(window.RSSPreferences.getLanguage&&window.RSSPreferences.getLanguage()!==language){
+            window.RSSPreferences.setLanguage(language);
+            return;
+          }
+        }
+        if(window.rssHeaderPreferencesBoot)window.rssHeaderPreferencesBoot();
+        if(window.rssHeaderAuthSync)window.rssHeaderAuthSync();
+      }catch(error){}
+    }
+    function applyWeglotLanguage(language){
+      if(!window.Weglot||!window.Weglot.initialized||typeof window.Weglot.switchTo!=='function')return;
+      var current=typeof window.Weglot.getCurrentLang==='function'?window.Weglot.getCurrentLang():'';
+      if(current!==language)window.Weglot.switchTo(language);
+    }
+    function initWeglot(){
+      if(!window.Weglot||window.__rssWeglotInitialized)return;
+      window.__rssWeglotInitialized=true;
+      try{
+        window.Weglot.on('initialized',function(){
+          var wanted=readLanguage();
+          syncHeader(wanted);
+          applyWeglotLanguage(wanted);
+        });
+        window.Weglot.on('languageChanged',function(newLanguage){
+          var language=newLanguage==='en'?'en':'fr';
+          syncHeader(language);
+        });
+        window.Weglot.initialize({
+          api_key:WEGLOT_API_KEY,
+          hide_switcher:true,
+          cache:true,
+          wait_transition:true,
+          excluded_blocks:[
+            {value:'.rss-preference-controls'},
+            {value:'.rss-mobile-preferences'},
+            {value:'.rss-auth-button'},
+            {value:'.notranslate'}
+          ]
+        });
+      }catch(error){
+        window.__rssWeglotInitialized=false;
+        console.warn('Weglot non initialisé :',error);
+      }
+    }
+
+    window.addEventListener('rss:language-change',function(event){
+      var language=event&&event.detail&&event.detail.language==='en'?'en':'fr';
+      applyWeglotLanguage(language);
+    });
+
+    if(!validKey(WEGLOT_API_KEY)){
+      window.__rssWeglotStatus='api-key-missing';
+      return;
+    }
+
+    var existing=document.querySelector('script[data-rss-weglot-sdk]');
+    if(existing){
+      existing.addEventListener('load',initWeglot,{once:true});
+      if(window.Weglot)initWeglot();
+      return;
+    }
+    var script=document.createElement('script');
+    script.src='https://cdn.weglot.com/weglot.min.js';
+    script.async=true;
+    script.dataset.rssWeglotSdk='1';
+    script.onload=initWeglot;
+    script.onerror=function(){window.__rssWeglotStatus='sdk-load-error'};
+    document.head.appendChild(script);
   })();this.remove();" />
 
 </header>
