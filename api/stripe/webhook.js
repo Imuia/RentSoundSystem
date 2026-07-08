@@ -152,6 +152,11 @@ async function getCustomer(stripe, customerId) {
 
 
 
+const INVOICE_LOGO_JPEG_BASE64 = "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";
+const INVOICE_LOGO_WIDTH = 240;
+const INVOICE_LOGO_HEIGHT = 214;
+
+
 function stripAccents(value) {
   return text(value)
     .normalize("NFD")
@@ -190,14 +195,14 @@ function formatMajor(value, currency = "eur") {
 }
 
 function issuerInfo() {
-  const appUrl = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
   return {
     name: text(process.env.INVOICE_ISSUER_NAME || "RentSoundSystem / IMUIA LLC"),
     address: text(process.env.INVOICE_ISSUER_ADDRESS || "1309 Coffeen Avenue STE 1200, Sheridan, Wyoming 82801, USA"),
-    email: text(process.env.INVOICE_ISSUER_EMAIL || process.env.EMAIL_FROM || "contact@rentsoundsystem.com"),
-    website: text(process.env.INVOICE_ISSUER_WEBSITE || appUrl),
+    email: text(process.env.INVOICE_ISSUER_EMAIL || "info@rentsoundsystem.com"),
+    website: text(process.env.INVOICE_ISSUER_WEBSITE || "https://rentsoundsystem.com"),
     registration: text(process.env.INVOICE_ISSUER_REGISTRATION || ""),
-    vatNumber: text(process.env.INVOICE_ISSUER_VAT_NUMBER || process.env.INVOICE_ISSUER_TAX_ID || "")
+    vatNumber: text(process.env.INVOICE_ISSUER_VAT_NUMBER || process.env.INVOICE_ISSUER_TAX_ID || ""),
+    phone: text(process.env.INVOICE_ISSUER_PHONE || "")
   };
 }
 
@@ -248,6 +253,7 @@ function buildInvoiceData(rental, deposit, customer = {}) {
     invoiceNumber,
     testMode: rental.livemode ? false : true,
     issueDate,
+    paymentDate: issueDate,
     orderId: text(metadata.order_id, rental.id),
     rentalPaymentIntentId: rental.id,
     depositPaymentIntentId: deposit?.id || text(metadata.linked_deposit_payment_intent_id),
@@ -276,108 +282,233 @@ function buildInvoiceData(rental, deposit, customer = {}) {
 }
 
 function buildInvoicePdf(invoice) {
-  const commands = [];
+  const pageWidth = 595;
   const pageHeight = 842;
-  let y = 800;
+  const commands = [];
+  const black = "0 0 0";
+  const textBlack = "0.09 0.09 0.09";
+  const muted = "0.43 0.43 0.43";
+  const light = "0.96 0.96 0.965";
+  const border = "0.82 0.82 0.84";
+  const fuchsia = "0.988 0.012 0.427";
 
-  function textAt(x, size, value, bold = false) {
+  function color(rgb, stroke = false) {
+    commands.push(`${rgb} ${stroke ? "RG" : "rg"}`);
+  }
+
+  function rect(x, y, w, h, fill = null, stroke = null, lineWidth = 0.6) {
+    commands.push("q");
+    if (fill) color(fill);
+    if (stroke) color(stroke, true);
+    commands.push(`${lineWidth} w ${x} ${y} ${w} ${h} re ${fill && stroke ? "B" : fill ? "f" : "S"}`);
+    commands.push("Q");
+  }
+
+  function line(x1, y1, x2, y2, rgb = border, lineWidth = 0.6) {
+    commands.push("q");
+    color(rgb, true);
+    commands.push(`${lineWidth} w ${x1} ${y1} m ${x2} ${y2} l S`);
+    commands.push("Q");
+  }
+
+  function drawText(x, y, size, value, bold = false, rgb = textBlack) {
+    commands.push("q");
+    color(rgb);
     commands.push(`BT /F${bold ? 2 : 1} ${size} Tf ${x} ${y} Td (${pdfEscape(value)}) Tj ET`);
-    y -= size + 7;
+    commands.push("Q");
   }
 
-  function row(label, value) {
-    commands.push(`BT /F1 9 Tf 55 ${y} Td (${pdfEscape(label)}) Tj ET`);
-    commands.push(`BT /F2 9 Tf 310 ${y} Td (${pdfEscape(value)}) Tj ET`);
-    y -= 16;
+  function drawRight(xRight, y, size, value, bold = false, rgb = textBlack) {
+    const clean = stripAccents(value);
+    const approxWidth = clean.length * size * 0.52;
+    drawText(Math.max(40, xRight - approxWidth), y, size, value, bold, rgb);
   }
 
-  function hr() {
-    commands.push(`0.6 w 55 ${y} m 540 ${y} l S`);
-    y -= 18;
+  function drawWrapped(x, y, size, value, maxChars, lineHeight = size + 4, bold = false, rgb = textBlack, maxLines = 5) {
+    const lines = wrapText(value, maxChars).slice(0, maxLines);
+    lines.forEach((lineText, index) => drawText(x, y - index * lineHeight, size, lineText, bold, rgb));
+    return y - lines.length * lineHeight;
   }
 
-  textAt(55, 22, invoice.testMode ? "FACTURE ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true);
-  textAt(55, 10, `Numero de facture : ${invoice.invoiceNumber}`, true);
-  textAt(55, 10, `Date d'emission : ${new Intl.DateTimeFormat("fr-FR").format(invoice.issueDate)}`);
-  textAt(55, 10, `Reference reservation : ${invoice.orderId}`);
-  if (invoice.testMode) textAt(55, 9, "Document genere en environnement Stripe test - aucun debit reel hors test.", false);
-  hr();
-
-  textAt(55, 12, "EMETTEUR", true);
-  textAt(55, 9, invoice.issuer.name, true);
-  for (const line of wrapText(invoice.issuer.address, 68)) textAt(55, 9, line);
-  if (invoice.issuer.registration) textAt(55, 9, `Immatriculation : ${invoice.issuer.registration}`);
-  if (invoice.issuer.vatNumber) textAt(55, 9, `TVA / Tax ID : ${invoice.issuer.vatNumber}`);
-  textAt(55, 9, `Email : ${invoice.issuer.email}`);
-  textAt(55, 9, `Site : ${invoice.issuer.website}`);
-  y -= 8;
-
-  textAt(55, 12, "CLIENT", true);
-  if (invoice.customerCompany) textAt(55, 9, invoice.customerCompany, true);
-  textAt(55, 9, invoice.customerName);
-  for (const line of invoice.customerAddress) textAt(55, 9, line);
-  if (invoice.customerVat) textAt(55, 9, `TVA / Tax ID client : ${invoice.customerVat}`);
-  if (invoice.customerEmail) textAt(55, 9, `Email : ${invoice.customerEmail}`);
-  if (invoice.customerPhone) textAt(55, 9, `Telephone : ${invoice.customerPhone}`);
-  hr();
-
-  textAt(55, 12, "DETAIL DE LA PRESTATION", true);
-  row("Designation", invoice.product);
-  row("Dates de location", invoice.rentalDates);
-  row("Lieu", invoice.location);
-  row("Quantite", String(invoice.quantity));
-  row("Duree", `${invoice.days} jour(s)`);
-  row("Livraison", invoice.deliveryMethod);
-  row("Technicien", invoice.technician);
-  hr();
-
-  textAt(55, 12, "MONTANTS", true);
-  row("Total HT", formatMajor(invoice.amountExclTax, invoice.currency));
-  row(invoice.taxMention, formatMajor(invoice.taxAmount, invoice.currency));
-  row("Total TTC paye", formatMajor(invoice.totalAmount, invoice.currency));
-  row("Caution", invoice.depositText);
-  hr();
-
-  textAt(55, 12, "PAIEMENT", true);
-  row("Statut", "Paye par carte bancaire via Stripe");
-  row("PaymentIntent location", invoice.rentalPaymentIntentId);
-  row("PaymentIntent caution", invoice.depositPaymentIntentId || "Aucun");
-  y -= 8;
-  for (const line of wrapText("La caution est une autorisation bancaire distincte. Elle n'est pas incluse dans le total facture tant qu'elle n'est pas capturee.", 95)) {
-    textAt(55, 8, line);
+  function money(value) {
+    return formatMajor(value, invoice.currency);
   }
+
+  const issueDate = new Intl.DateTimeFormat("fr-FR").format(invoice.issueDate);
+  const paymentDate = new Intl.DateTimeFormat("fr-FR").format(invoice.paymentDate || invoice.issueDate);
+
+  // Page background
+  rect(0, 0, pageWidth, pageHeight, "1 1 1");
+
+  // Embedded brand logo. The image is stored as base64 to avoid any external file dependency in Vercel functions.
+  commands.push("q 118 0 0 105 46 696 cm /Im1 Do Q");
+  drawText(46, 684, 8, "Location de materiel audio professionnel", false, muted);
+
+  // Invoice title and metadata.
+  drawRight(549, 790, 30, "FACTURE", true, fuchsia);
+  drawRight(549, 770, 11, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "ACQUITTEE", true, textBlack);
+  drawRight(549, 752, 9, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
+  drawRight(549, 737, 9, `Date d'emission : ${issueDate}`, false, muted);
+  drawRight(549, 722, 9, `Reservation : ${invoice.orderId}`, false, muted);
+  drawRight(549, 707, 9, `Date de paiement : ${paymentDate}`, false, muted);
+
+  if (invoice.testMode) {
+    rect(46, 666, 503, 22, "1 0.94 0.97", fuchsia, 0.7);
+    drawText(56, 673, 8.5, "DOCUMENT TEST STRIPE - aucun debit reel hors environnement de test.", true, fuchsia);
+  }
+
+  // Issuer / client cards.
+  const cardsY = 524;
+  rect(46, cardsY, 238, 122, light, border, 0.6);
+  rect(310, cardsY, 239, 122, light, border, 0.6);
+  drawText(58, cardsY + 101, 10, "EMETTEUR", true, fuchsia);
+  drawWrapped(58, cardsY + 84, 8.2, invoice.issuer.name, 34, 11, true, textBlack, 2);
+  let yIssuer = cardsY + 61;
+  for (const lineText of wrapText(invoice.issuer.address, 40).slice(0, 3)) {
+    drawText(58, yIssuer, 7.6, lineText, false, muted);
+    yIssuer -= 10;
+  }
+  if (invoice.issuer.registration) {
+    drawText(58, yIssuer, 7.6, `ID entreprise : ${invoice.issuer.registration}`, false, muted);
+    yIssuer -= 10;
+  }
+  if (invoice.issuer.vatNumber) {
+    drawText(58, yIssuer, 7.6, `TVA / Tax ID : ${invoice.issuer.vatNumber}`, false, muted);
+    yIssuer -= 10;
+  }
+  drawText(58, yIssuer, 7.6, `Email : ${invoice.issuer.email}`, false, muted);
+  yIssuer -= 10;
+  drawText(58, yIssuer, 7.6, `Site : ${invoice.issuer.website}`, false, muted);
+
+  drawText(322, cardsY + 101, 10, "CLIENT / FACTURATION", true, fuchsia);
+  let yClient = cardsY + 84;
+  if (invoice.customerCompany) {
+    drawText(322, yClient, 8.5, invoice.customerCompany, true, textBlack);
+    yClient -= 12;
+  }
+  drawText(322, yClient, 8.2, invoice.customerName, false, textBlack);
+  yClient -= 11;
+  for (const lineText of invoice.customerAddress.slice(0, 4)) {
+    drawText(322, yClient, 7.6, lineText, false, muted);
+    yClient -= 10;
+  }
+  if (invoice.customerVat) {
+    drawText(322, yClient, 7.6, `TVA / Tax ID client : ${invoice.customerVat}`, false, muted);
+    yClient -= 10;
+  }
+  if (invoice.customerEmail) {
+    drawText(322, yClient, 7.6, `Email : ${invoice.customerEmail}`, false, muted);
+    yClient -= 10;
+  }
+  if (invoice.customerPhone) drawText(322, yClient, 7.6, `Telephone : ${invoice.customerPhone}`, false, muted);
+
+  // Service table.
+  drawText(46, 490, 12, "DETAIL DE LA PRESTATION", true, textBlack);
+  const tableX = 46;
+  const tableY = 455;
+  const widths = [214, 36, 56, 70, 48, 79];
+  const cols = [tableX];
+  for (let i = 0; i < widths.length - 1; i++) cols.push(cols[i] + widths[i]);
+  const headers = ["Designation", "Qte", "Duree", "Montant HT", "TVA", "Total TTC"];
+  rect(tableX, tableY, 503, 24, black);
+  let cursorX = tableX;
+  headers.forEach((h, i) => {
+    drawText(cursorX + 6, tableY + 8, 7.4, h, true, "1 1 1");
+    cursorX += widths[i];
+  });
+  rect(tableX, tableY - 88, 503, 88, "1 1 1", border, 0.6);
+  let vline = tableX;
+  for (const w of widths.slice(0, -1)) {
+    vline += w;
+    line(vline, tableY - 88, vline, tableY, "0.90 0.90 0.92", 0.5);
+  }
+  let detailY = tableY - 18;
+  drawWrapped(tableX + 7, detailY, 8.2, invoice.product, 37, 10.5, true, textBlack, 4);
+  drawText(tableX + 7, tableY - 68, 7.2, `Periode : ${invoice.rentalDates}`, false, muted);
+  drawText(tableX + 7, tableY - 79, 7.2, `Lieu : ${invoice.location} - Livraison : ${invoice.deliveryMethod} - Technicien : ${invoice.technician}`, false, muted);
+  drawText(cols[1] + 8, detailY, 8.2, String(invoice.quantity), false, textBlack);
+  drawText(cols[2] + 7, detailY, 8.2, `${invoice.days} j`, false, textBlack);
+  drawRight(cols[3] + widths[3] - 7, detailY, 8.2, money(invoice.amountExclTax), false, textBlack);
+  drawRight(cols[4] + widths[4] - 7, detailY, 8.2, money(invoice.taxAmount), false, textBlack);
+  drawRight(cols[5] + widths[5] - 7, detailY, 8.2, money(invoice.totalAmount), true, textBlack);
+
+  // VAT note and totals.
+  rect(46, 293, 268, 62, "0.985 0.985 0.99", border, 0.6);
+  drawText(58, 333, 10, "REGIME TVA", true, fuchsia);
+  drawWrapped(58, 317, 7.5, invoice.taxMention, 58, 10, false, muted, 3);
+
+  rect(340, 270, 209, 86, "0.985 0.985 0.99", border, 0.6);
+  drawText(352, 336, 10, "RECAPITULATIF", true, fuchsia);
+  drawText(352, 318, 8.5, "Total HT", false, muted);
+  drawRight(538, 318, 8.5, money(invoice.amountExclTax), false, textBlack);
+  drawText(352, 302, 8.5, "TVA", false, muted);
+  drawRight(538, 302, 8.5, money(invoice.taxAmount), false, textBlack);
+  line(352, 292, 538, 292, border, 0.5);
+  drawText(352, 277, 10.5, "TOTAL TTC PAYE", true, textBlack);
+  drawRight(538, 277, 11.5, money(invoice.totalAmount), true, fuchsia);
+
+  // Deposit block.
+  rect(46, 205, 503, 48, "1 0.98 0.99", fuchsia, 0.6);
+  drawText(58, 235, 10, "CAUTION - HORS TOTAL FACTURE", true, fuchsia);
+  drawWrapped(58, 220, 7.4, `${invoice.depositText}. Autorisation bancaire distincte, non incluse dans le total facture tant qu'elle n'est pas capturee.`, 108, 10, false, muted, 2);
+
+  // Payment references.
+  drawText(46, 176, 12, "PAIEMENT", true, textBlack);
+  rect(46, 84, 503, 76, "1 1 1", border, 0.6);
+  drawText(58, 140, 8.2, "Statut", false, muted);
+  drawText(180, 140, 8.2, "Paye par carte bancaire via Stripe", true, textBlack);
+  drawText(58, 124, 8.2, "Reference location", false, muted);
+  drawText(180, 124, 7.8, invoice.rentalPaymentIntentId, false, textBlack);
+  drawText(58, 108, 8.2, "Reference caution", false, muted);
+  drawText(180, 108, 7.8, invoice.depositPaymentIntentId || "Aucune", false, textBlack);
+  drawText(58, 92, 8.2, "Facture", false, muted);
+  drawText(180, 92, 7.8, `${invoice.invoiceNumber} - document genere automatiquement`, false, textBlack);
+
+  // Footer/legal.
+  line(46, 66, 549, 66, border, 0.5);
+  const footer = `${invoice.issuer.name} - ${invoice.issuer.address} - ${invoice.issuer.email} - ${invoice.issuer.website}`;
+  drawWrapped(46, 53, 6.1, footer, 140, 7, false, muted, 2);
+  drawWrapped(46, 35, 6.1, "Facture etablie selon les informations transmises lors de la reservation. Pour toute correction, contactez l'emetteur avant cloture comptable.", 140, 7, false, muted, 2);
 
   const content = [
     "q",
-    "1 1 1 rg 0 0 595 842 re f",
-    "0 0 0 rg",
     ...commands,
     "Q"
   ].join("\n");
 
-  const objects = [
+  const logoBuffer = Buffer.from(INVOICE_LOGO_JPEG_BASE64, "base64");
+  const stringObjects = [
     "<< /Type /Catalog /Pages 2 0 R >>",
     "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
-    `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 ${pageHeight}] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>`,
+    `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> /XObject << /Im1 7 0 R >> >> /Contents 6 0 R >>`,
     "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
     "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>",
     `<< /Length ${Buffer.byteLength(content, "ascii")} >>\nstream\n${content}\nendstream`
   ];
 
-  let pdf = "%PDF-1.4\n";
+  const objects = stringObjects.map((obj) => Buffer.from(obj, "ascii"));
+  objects.push(Buffer.concat([
+    Buffer.from(`<< /Type /XObject /Subtype /Image /Width ${INVOICE_LOGO_WIDTH} /Height ${INVOICE_LOGO_HEIGHT} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${logoBuffer.length} >>\nstream\n`, "ascii"),
+    logoBuffer,
+    Buffer.from("\nendstream", "ascii")
+  ]));
+
+  const chunks = [Buffer.from("%PDF-1.4\n", "ascii")];
   const offsets = [0];
-  objects.forEach((obj, index) => {
-    offsets.push(Buffer.byteLength(pdf, "ascii"));
-    pdf += `${index + 1} 0 obj\n${obj}\nendobj\n`;
-  });
-  const xrefOffset = Buffer.byteLength(pdf, "ascii");
-  pdf += `xref\n0 ${objects.length + 1}\n`;
-  pdf += "0000000000 65535 f \n";
-  for (let i = 1; i < offsets.length; i++) {
-    pdf += `${String(offsets[i]).padStart(10, "0")} 00000 n \n`;
+  for (let index = 0; index < objects.length; index++) {
+    offsets.push(chunks.reduce((sum, chunk) => sum + chunk.length, 0));
+    chunks.push(Buffer.from(`${index + 1} 0 obj\n`, "ascii"));
+    chunks.push(objects[index]);
+    chunks.push(Buffer.from("\nendobj\n", "ascii"));
   }
-  pdf += `trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`;
-  return Buffer.from(pdf, "ascii");
+  const xrefOffset = chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+  chunks.push(Buffer.from(`xref\n0 ${objects.length + 1}\n`, "ascii"));
+  chunks.push(Buffer.from("0000000000 65535 f \n", "ascii"));
+  for (let i = 1; i < offsets.length; i++) {
+    chunks.push(Buffer.from(`${String(offsets[i]).padStart(10, "0")} 00000 n \n`, "ascii"));
+  }
+  chunks.push(Buffer.from(`trailer\n<< /Size ${objects.length + 1} /Root 1 0 R >>\nstartxref\n${xrefOffset}\n%%EOF`, "ascii"));
+  return Buffer.concat(chunks);
 }
 
 function invoiceDownloadUrl(paymentIntentId, orderId) {
