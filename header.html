@@ -1,4 +1,4 @@
-<!-- TopNavBar -->
+<!-- TopNavBar - RentSoundSystem header avec correction Weglot calendrier/dynamique -->
 <style id="rss-header-self-contained-style">
 /* Header RentSoundSystem autonome : même rendu sur toutes les pages */
 :root{
@@ -143,6 +143,9 @@
   .rss-mobile-preferences{display:grid!important}
 }
 
+
+/* Correctif traduction Weglot : ne pas traduire icônes, calendriers et valeurs techniques */
+.rss-no-translate,.notranslate,[data-rss-no-translate],.material-symbols-outlined{unicode-bidi:isolate!important;}
 </style>
 
 <header class="rss-site-header bg-surface/80 backdrop-blur-md border-b border-white/10 fixed top-0 z-50 w-full transition-all">
@@ -447,7 +450,17 @@
             {value:'.rss-preference-controls'},
             {value:'.rss-mobile-preferences'},
             {value:'.rss-auth-button'},
-            {value:'.notranslate'}
+            {value:'.notranslate'},
+            {value:'.rss-no-translate'},
+            {value:'[data-rss-no-translate]'},
+            {value:'.material-symbols-outlined'},
+            {value:'.flatpickr-calendar'},
+            {value:'.rental-calendar'},
+            {value:'.calendar'},
+            {value:'[class*=&quot;calendar&quot;]'},
+            {value:'[id*=&quot;calendar&quot;]'},
+            {value:'[data-calendar]'},
+            {value:'[data-rental-calendar]'}
           ]
         });
       }catch(error){
@@ -559,6 +572,147 @@
     setTimeout(apply,1800);
   })();
 this.remove();" />
+
+
+  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){
+  if(window.__rssTranslationDisplayFixBoot)return;
+  window.__rssTranslationDisplayFixBoot=true;
+
+  var CALENDAR_SELECTOR=&#x27;.flatpickr-calendar,.rental-calendar,.calendar,[class*=&quot;calendar&quot;],[id*=&quot;calendar&quot;],[data-calendar],[data-rental-calendar]&#x27;;
+  var IGNORE_SELECTOR=&#x27;script,style,noscript,textarea,input,select,.StripeElement,#stripe-card-element&#x27;;
+
+  function language(){
+    try{
+      var value=String(localStorage.getItem(&#x27;rss_language&#x27;)||document.documentElement.lang||&#x27;fr&#x27;).toLowerCase();
+      return value===&#x27;en&#x27;?&#x27;en&#x27;:&#x27;fr&#x27;;
+    }catch(error){return &#x27;fr&#x27;}
+  }
+  function all(selector,root){
+    try{return Array.prototype.slice.call((root||document).querySelectorAll(selector));}
+    catch(error){return []}
+  }
+  function markNoTranslate(){
+    all(&#x27;.material-symbols-outlined,&#x27;+CALENDAR_SELECTOR).forEach(function(element){
+      try{
+        element.classList.add(&#x27;notranslate&#x27;,&#x27;rss-no-translate&#x27;);
+        element.setAttribute(&#x27;translate&#x27;,&#x27;no&#x27;);
+        element.setAttribute(&#x27;data-rss-no-translate&#x27;,&#x27;1&#x27;);
+      }catch(error){}
+    });
+  }
+  function decodeEntities(value){
+    value=String(value||&#x27;&#x27;);
+    if(value.indexOf(&#x27;&amp;&#x27;)===-1)return value;
+    var textarea=document.createElement(&#x27;textarea&#x27;);
+    textarea.innerHTML=value;
+    return textarea.value;
+  }
+  function replaceTechnicalText(value){
+    var lang=language();
+    var output=decodeEntities(value);
+    var delivery=lang===&#x27;en&#x27;?&#x27;Delivery and return&#x27;:&#x27;Livraison et reprise&#x27;;
+    var pickup=lang===&#x27;en&#x27;?&#x27;Pickup&#x27;:&#x27;Retrait&#x27;;
+    var technicianYes=lang===&#x27;en&#x27;?&#x27;Technician: Yes&#x27;:&#x27;Technicien : Oui&#x27;;
+    var technicianNo=lang===&#x27;en&#x27;?&#x27;Technician: No&#x27;:&#x27;Technicien : Non&#x27;;
+
+    output=output.replace(/\bDJ\s*&amp;amp;\s*Djing\b/g,&#x27;DJ &amp; Djing&#x27;);
+    output=output.replace(/\bDJ\s*&amp;amp;\s*Mixing\b/g,&#x27;DJ &amp; Mixing&#x27;);
+    output=output.replace(/\bSound\s*&amp;amp;\s*Lighting\b/g,lang===&#x27;en&#x27;?&#x27;Sound &amp; Lighting&#x27;:&#x27;Sonorisation &amp; éclairage&#x27;);
+    output=output.replace(/\bHeadphones\s*&amp;amp;\s*Earbuds\b/g,lang===&#x27;en&#x27;?&#x27;Headphones &amp; Earbuds&#x27;:&#x27;Casques &amp; écouteurs&#x27;);
+    output=output.replace(/\bEvents\s*&amp;amp;\s*Production\b/g,lang===&#x27;en&#x27;?&#x27;Events &amp; Production&#x27;:&#x27;Événementiel &amp; production&#x27;);
+
+    output=output.replace(/\bLivraison\s*:\s*delivery\b/gi,&#x27;Logistique : &#x27;+delivery);
+    output=output.replace(/\bDelivery\s*:\s*delivery\b/gi,&#x27;Logistics: &#x27;+delivery);
+    output=output.replace(/\bLogistique\s*:\s*delivery\b/gi,&#x27;Logistique : &#x27;+delivery);
+    output=output.replace(/\bLogistics\s*:\s*delivery\b/gi,&#x27;Logistics: &#x27;+delivery);
+    output=output.replace(/\bMode\s*:\s*delivery\b/gi,&#x27;Mode : &#x27;+delivery);
+
+    output=output.replace(/\bLivraison\s*:\s*pickup\b/gi,&#x27;Logistique : &#x27;+pickup);
+    output=output.replace(/\bDelivery\s*:\s*pickup\b/gi,&#x27;Logistics: &#x27;+pickup);
+    output=output.replace(/\bLogistique\s*:\s*pickup\b/gi,&#x27;Logistique : &#x27;+pickup);
+    output=output.replace(/\bLogistics\s*:\s*pickup\b/gi,&#x27;Logistics: &#x27;+pickup);
+
+    output=output.replace(/\bTechnicien\s*:\s*Oui\b/g,technicianYes);
+    output=output.replace(/\bTechnicien\s*:\s*Non\b/g,technicianNo);
+    output=output.replace(/\bTechnician\s*:\s*Oui\b/g,technicianYes);
+    output=output.replace(/\bTechnician\s*:\s*Non\b/g,technicianNo);
+
+    return output;
+  }
+  function shouldIgnore(node){
+    var element=node&amp;&amp;node.nodeType===1?node:(node&amp;&amp;node.parentElement);
+    if(!element)return true;
+    return !!element.closest(IGNORE_SELECTOR);
+  }
+  function fixTextNodes(root){
+    if(!root||shouldIgnore(root))return;
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{
+      acceptNode:function(node){return shouldIgnore(node)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}
+    });
+    var node;
+    while((node=walker.nextNode())){
+      if(node.nodeType===3){
+        var next=replaceTechnicalText(node.nodeValue);
+        if(next!==node.nodeValue)node.nodeValue=next;
+      }else if(node.nodeType===1){
+        [&#x27;title&#x27;,&#x27;aria-label&#x27;,&#x27;placeholder&#x27;,&#x27;alt&#x27;].forEach(function(attr){
+          if(node.hasAttribute&amp;&amp;node.hasAttribute(attr)){
+            var oldValue=node.getAttribute(attr);
+            var nextValue=replaceTechnicalText(oldValue);
+            if(nextValue!==oldValue)node.setAttribute(attr,nextValue);
+          }
+        });
+      }
+    }
+  }
+  function fixCalendarDays(){
+    var lang=language();
+    var labels=lang===&#x27;en&#x27;?[&#x27;Mon&#x27;,&#x27;Tue&#x27;,&#x27;Wed&#x27;,&#x27;Thu&#x27;,&#x27;Fri&#x27;,&#x27;Sat&#x27;,&#x27;Sun&#x27;]:[&#x27;Lun&#x27;,&#x27;Mar&#x27;,&#x27;Mer&#x27;,&#x27;Jeu&#x27;,&#x27;Ven&#x27;,&#x27;Sam&#x27;,&#x27;Dim&#x27;];
+    var tokens=[&#x27;Lun&#x27;,&#x27;Mar&#x27;,&#x27;Mer&#x27;,&#x27;Jeu&#x27;,&#x27;Ven&#x27;,&#x27;Sam&#x27;,&#x27;Dim&#x27;,&#x27;Mon&#x27;,&#x27;Tue&#x27;,&#x27;Wed&#x27;,&#x27;Thu&#x27;,&#x27;Fri&#x27;,&#x27;Sat&#x27;,&#x27;Sun&#x27;,&#x27;Read&#x27;,&#x27;My&#x27;,&#x27;Me&#x27;,&#x27;I&#x27;,&#x27;Her&#x27;,&#x27;Sea&#x27;,&#x27;Game&#x27;,&#x27;Thu.&#x27;,&#x27;Fri.&#x27;,&#x27;Sat.&#x27;,&#x27;Sun.&#x27;];
+    all(CALENDAR_SELECTOR).forEach(function(calendar){
+      try{
+        calendar.classList.add(&#x27;notranslate&#x27;,&#x27;rss-no-translate&#x27;);
+        calendar.setAttribute(&#x27;translate&#x27;,&#x27;no&#x27;);
+        calendar.setAttribute(&#x27;data-rss-no-translate&#x27;,&#x27;1&#x27;);
+      }catch(error){}
+      var candidates=[];
+      all(&#x27;*&#x27;,calendar).forEach(function(element){
+        if(element.children&amp;&amp;element.children.length)return;
+        var value=String(element.textContent||&#x27;&#x27;).trim();
+        if(tokens.indexOf(value)!==-1)candidates.push(element);
+      });
+      if(candidates.length&gt;=7){
+        // On corrige uniquement le premier groupe de 7 libellés de jours, pas les dates numériques.
+        candidates.slice(0,7).forEach(function(element,index){element.textContent=labels[index];});
+      }
+    });
+  }
+  function apply(root){
+    markNoTranslate();
+    fixCalendarDays();
+    fixTextNodes(root||document.body||document.documentElement);
+  }
+
+  window.rssFixTranslationDisplay=apply;
+  window.addEventListener(&#x27;rss:language-change&#x27;,function(){setTimeout(function(){apply();},80);setTimeout(function(){apply();},500);setTimeout(function(){apply();},1400);});
+  window.addEventListener(&#x27;load&#x27;,function(){setTimeout(function(){apply();},250);setTimeout(function(){apply();},1100);});
+
+  if(window.MutationObserver){
+    new MutationObserver(function(mutations){
+      clearTimeout(window.__rssTranslationDisplayFixTimer);
+      window.__rssTranslationDisplayFixTimer=setTimeout(function(){
+        mutations.forEach(function(mutation){
+          Array.prototype.slice.call(mutation.addedNodes||[]).forEach(function(node){
+            if(node&amp;&amp;node.nodeType===1)apply(node);
+          });
+        });
+        apply();
+      },180);
+    }).observe(document.documentElement,{childList:true,subtree:true});
+  }
+  setTimeout(function(){apply();},300);
+  setTimeout(function(){apply();},1300);
+})();;this.remove();" />
 
 </header>
 
