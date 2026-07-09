@@ -305,45 +305,6 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <label class="font-label text-label-caps text-on-surface-variant">Téléphone</label>
 <input autocomplete="tel" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="phone" name="phone" placeholder="+33 6 00 00 00 00" required="required" type="tel"/>
 </div>
-<div class="md:col-span-2 mt-2 pt-4 border-t border-outline-variant/50">
-  <h3 class="font-headline text-lg text-inverse-surface mb-1">Informations de facturation</h3>
-  <p class="font-body text-body-sm text-on-surface-variant">Ces informations seront utilisées pour la facture envoyée par e-mail après validation du paiement Stripe test.</p>
-</div>
-<div class="flex flex-col gap-1 md:col-span-2">
-<label class="font-label text-label-caps text-on-surface-variant">Adresse de facturation</label>
-<input autocomplete="billing address-line1" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="billing-address" name="billing-address" placeholder="61 rue de Lyon" required="required" type="text"/>
-</div>
-<div class="flex flex-col gap-1">
-<label class="font-label text-label-caps text-on-surface-variant">Code postal</label>
-<input autocomplete="billing postal-code" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="billing-postal-code" name="billing-postal-code" placeholder="75012" required="required" type="text"/>
-</div>
-<div class="flex flex-col gap-1">
-<label class="font-label text-label-caps text-on-surface-variant">Ville</label>
-<input autocomplete="billing address-level2" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="billing-city" name="billing-city" placeholder="Paris" required="required" type="text"/>
-</div>
-<div class="flex flex-col gap-1">
-<label class="font-label text-label-caps text-on-surface-variant">Pays de facturation</label>
-<select autocomplete="billing country" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="billing-country" name="billing-country" required="required">
-  <option value="FR" selected>France</option>
-  <option value="BE">Belgique</option>
-  <option value="LU">Luxembourg</option>
-  <option value="CH">Suisse</option>
-  <option value="ES">Espagne</option>
-  <option value="IT">Italie</option>
-  <option value="DE">Allemagne</option>
-  <option value="NL">Pays-Bas</option>
-  <option value="PT">Portugal</option>
-  <option value="GB">Royaume-Uni</option>
-  <option value="MA">Maroc</option>
-  <option value="US">États-Unis</option>
-  <option value="MG">Madagascar</option>
-  <option value="OTHER">Autre pays</option>
-</select>
-</div>
-<div class="flex flex-col gap-1">
-<label class="font-label text-label-caps text-on-surface-variant">N° TVA intracommunautaire / identifiant fiscal</label>
-<input autocomplete="off" class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="billing-vat-number" name="billing-vat-number" placeholder="FRXX999999999" type="text"/>
-</div>
 </form>
 </section>
 <!-- Step 2: Services -->
@@ -1133,19 +1094,24 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return true;
   }
 
-  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#billing-address','#billing-postal-code','#billing-city','#billing-country','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const terms=qs('#accept-deposit-terms'); if(terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
+  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const terms=qs('#accept-deposit-terms'); if(terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
 
   async function requireLogin(){
-    const sb=await getSupabase();
-    if(!sb){showMessage('Connexion obligatoire : Supabase JS n’est pas chargé. Rechargez la page.','error'); return false;}
-    const {data:{session}}=await sb.auth.getSession();
-    if(!session?.user){
-      // Ne pas appeler persistDraftFromCheckout ici : avant bind(), les champs
-      // sont vides et cela effaçait dates, livraison et installation du panier.
-      saveLoginSnapshot();
-      const redirect=(window.location.pathname||'/tunnel-de-commande.html')+(window.location.search||'');
-      window.location.replace('/connexion-inscription.html?redirect='+encodeURIComponent(redirect));
-      return false;
+    /*
+      Checkout invité autorisé.
+      Le client peut payer sans compte connecté. Après paiement Stripe confirmé,
+      /api/stripe/webhook.js crée ou rattache le compte client Supabase
+      avec SUPABASE_SERVICE_ROLE_KEY, puis envoie le lien d'accès par e-mail.
+
+      Important : on ne redirige plus vers /connexion-inscription.html ici,
+      sinon le client ne peut jamais arriver au paiement sans compte.
+    */
+    try{
+      const sb=await getSupabase();
+      if(!sb) return true;
+      await sb.auth.getSession();
+    }catch(e){
+      console.warn('Checkout invité autorisé sans session Supabase:', e && (e.message || e));
     }
     return true;
   }
@@ -1163,15 +1129,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
         lastName:qs('#last-name')?.value.trim(),
         company:qs('#company-name')?.value.trim(),
         email:qs('#email')?.value.trim(),
-        phone:qs('#phone')?.value.trim(),
-        billing:{
-          addressLine1:qs('#billing-address')?.value.trim(),
-          postalCode:qs('#billing-postal-code')?.value.trim(),
-          city:qs('#billing-city')?.value.trim(),
-          country:qs('#billing-country')?.value.trim(),
-          countryName:qs('#billing-country')?.selectedOptions?.[0]?.textContent?.trim() || '',
-          vatNumber:qs('#billing-vat-number')?.value.trim()
-        }
+        phone:qs('#phone')?.value.trim()
       },
       rental:{
         startDate:qs('#rental-start')?.value,
@@ -1356,8 +1314,8 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     await loadListingFromUrl();
     // La lecture de l’annonce ne doit pas écraser le devis mémorisé avant connexion.
     restoreLoginSnapshot();
-    const ok=await requireLogin();
-    if(!ok)return;
+    // Autoriser le paiement invité : le compte client est créé/rattaché après paiement par le webhook Stripe.
+    await requireLogin();
     bind();
   });
 })();
@@ -1460,9 +1418,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
       customer:{
         email:order.customer.email || '',
         name:[order.customer.firstName || '', order.customer.lastName || ''].join(' ').trim(),
-        phone:order.customer.phone || '',
-        company:order.customer.company || '',
-        billing:order.customer.billing || {}
+        phone:order.customer.phone || ''
       },
       listing:{
         id:order.item.id || '',
@@ -1479,13 +1435,6 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
         original_id:String(order.item.original_id || ''),
         partner_email:order.item.ownerEmail || '',
         customer_email:order.customer.email || '',
-        customer_company:order.customer.company || '',
-        customer_billing_address:order.customer.billing?.addressLine1 || '',
-        customer_billing_postal_code:order.customer.billing?.postalCode || '',
-        customer_billing_city:order.customer.billing?.city || '',
-        customer_billing_country:order.customer.billing?.country || '',
-        customer_billing_country_name:order.customer.billing?.countryName || '',
-        customer_vat_number:order.customer.billing?.vatNumber || '',
         tax_mode:order.amounts.taxMode || '',
         vat_rate:String(order.amounts.vatRate ?? ''),
         amount_excl_tax:String(order.amounts.amountExclTax ?? ''),
@@ -1528,19 +1477,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     }
 
     let rentalPI=null, depositPI=null;
-    const customerBilling=stripePayload.customer.billing || {};
-    const stripeCountry=/^[A-Z]{2}$/.test(String(customerBilling.country || '')) ? String(customerBilling.country) : undefined;
-    const billing={
-      name:stripePayload.customer.name,
-      email:stripePayload.customer.email,
-      phone:stripePayload.customer.phone,
-      address:{
-        line1:customerBilling.addressLine1 || undefined,
-        postal_code:customerBilling.postalCode || undefined,
-        city:customerBilling.city || undefined,
-        country:stripeCountry
-      }
-    };
+    const billing={name:stripePayload.customer.name,email:stripePayload.customer.email,phone:stripePayload.customer.phone};
 
     if(data.rental_client_secret){
       rentalPI=await confirmPayment(data.rental_client_secret,billing);
