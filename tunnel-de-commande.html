@@ -896,17 +896,64 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return{raw,amountExclTax:raw,tax:0,total:raw,vatRate:0,taxMode:'not_configured',taxPending:true,taxVisible:true};
   }
 
+  function firstPositiveNumber(){
+    for(let i=0;i<arguments.length;i++){
+      const n=safeNumber(arguments[i],0);
+      if(n>0)return n;
+    }
+    return 0;
+  }
+
+  function optionPrices(){
+    const draft=getDraft();
+    const listing=loadedListing||{};
+    const product=getProduct();
+
+    // IMPORTANT : ne pas utiliser amounts.delivery / amounts.installation en priorité.
+    // Ces montants valent 0 quand l'option n'était pas cochée sur la fiche produit.
+    // Le prix de l'option se trouve plutôt dans options.deliveryPrice / options.installationPrice
+    // ou dans les champs Supabase delivery_price / installation_price.
+    const deliveryOption=firstPositiveNumber(
+      draft?.options?.deliveryPrice,
+      draft?.options?.delivery_price,
+      draft?.product?.deliveryPrice,
+      draft?.product?.delivery_price,
+      product.deliveryPrice,
+      product.delivery_price,
+      listing.delivery_price,
+      listing.deliveryPrice,
+      draft?.amounts?.delivery
+    );
+    const installationOption=firstPositiveNumber(
+      draft?.options?.installationPrice,
+      draft?.options?.installation_price,
+      draft?.options?.technicianPrice,
+      draft?.options?.technician_price,
+      draft?.product?.installationPrice,
+      draft?.product?.installation_price,
+      product.installationPrice,
+      product.installation_price,
+      listing.installation_price,
+      listing.installationPrice,
+      draft?.amounts?.installation,
+      draft?.amounts?.technician
+    );
+
+    return {
+      delivery:deliveryOption || (draft?.source==='product-page' ? 50 : 250),
+      installation:installationOption || (draft?.source==='product-page' ? 150 : 450)
+    };
+  }
+
   function totals(){
     const draft=getDraft();
     const product=getProduct(),d=days();
     const rentalInfo=rentalAmount(product,d);
     const rental=rentalInfo.amount;
+    const opts=optionPrices();
 
-    const draftDelivery=safeNumber(draft?.amounts?.delivery ?? draft?.options?.deliveryPrice,0);
-    const draftInstall=safeNumber(draft?.amounts?.installation ?? draft?.amounts?.technician ?? draft?.options?.installationPrice,0);
-
-    const delivery=qs('#delivery-transport')?.checked ? (draft?.source==='product-page'?draftDelivery:250) : 0;
-    const technician=(d>0&&qs('#technician')?.checked) ? (draft?.source==='product-page'?draftInstall:450*d) : 0;
+    const delivery=qs('#delivery-transport')?.checked ? opts.delivery : 0;
+    const technician=(d>0&&qs('#technician')?.checked) ? (draft?.source==='product-page'?opts.installation:opts.installation*d) : 0;
 
     const rawSubtotal=rental+delivery+technician;
     const pricing=taxBreakdown(rawSubtotal,product);
@@ -1258,8 +1305,10 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     if(p.name&&qs('#delivery-pickup-title'))qs('#delivery-pickup-title').textContent='Retrait chez le loueur';
 
     // Synchroniser les libellés de prix avec la fiche produit : +50 livraison, +150 installation, etc.
-    const deliveryPrice = safeNumber(draft?.amounts?.delivery ?? draft?.options?.deliveryPrice, 0);
-    const installPrice = safeNumber(draft?.amounts?.installation ?? draft?.amounts?.technician ?? draft?.options?.installationPrice, 0);
+    // On affiche le prix de l'option, pas le montant déjà sélectionné dans amounts.
+    const optionPriceValues = optionPrices();
+    const deliveryPrice = optionPriceValues.delivery;
+    const installPrice = optionPriceValues.installation;
     const deliveryLabel = qs('label[data-option="delivery-transport"] .font-body.text-body-md.font-bold.text-inverse-surface');
     if(deliveryLabel && draft?.source === 'product-page') deliveryLabel.textContent = deliveryPrice > 0 ? '+ '+money(deliveryPrice) : '+ 0,00 €';
     const techLabel = qs('#technician')?.closest('label')?.querySelector('.font-body.text-body-md.font-bold.text-primary');
