@@ -304,10 +304,33 @@ async function ensureCustomerAccount(stripe, rental, customer, orderId) {
   const metadata = rental.metadata || {};
   const already = text(metadata.customer_account_status);
   if (["created", "existing", "profile_only"].includes(already)) {
+    // Même si le compte a déjà été traité, on génère un lien magique frais
+    // pour le bouton e-mail. Un lien direct vers l'espace client renvoie
+    // vers la page connexion si le client n'a pas encore de session navigateur.
+    const email = normalizeEmail(rental.receipt_email || metadata.customer_email || customer.email);
+    if (supabaseAdminConfig() && isEmail(email)) {
+      try {
+        const fullName = text(metadata.customer_name || customer.name, "Client");
+        const companyName = text(metadata.customer_company);
+        const phone = text(metadata.customer_phone || customer.phone);
+        const link = await generateCustomerMagicLink({ email, fullName, companyName, phone, orderId });
+        return {
+          status: already,
+          userId: text(link.user?.id || metadata.customer_user_id),
+          accountUrl: text(link.actionLink) || customerAccountUrl(orderId),
+          portalUrl: customerAccountUrl(orderId),
+          magicLink: text(link.actionLink),
+          skipped: "already_processed_magic_link_refreshed"
+        };
+      } catch (error) {
+        console.error("supabase-refresh-customer-magic-link", error);
+      }
+    }
     return {
       status: already,
       userId: text(metadata.customer_user_id),
       accountUrl: customerAccountUrl(orderId),
+      portalUrl: customerAccountUrl(orderId),
       skipped: "already_processed"
     };
   }
@@ -356,10 +379,10 @@ async function ensureCustomerAccount(stripe, rental, customer, orderId) {
       status,
       userId: text(userId || savedProfile?.id),
       profile: savedProfile,
-      // Important : le bouton e-mail doit aller vers l’espace client du site.
-      // Le lien magique Supabase est conservé en metadata, mais il peut retomber
-      // sur l’accueil si les Redirect URLs Supabase ne sont pas encore configurées.
-      accountUrl: customerAccountUrl(orderId),
+      // Le bouton e-mail doit être un lien magique Supabase : il connecte le client
+      // puis Supabase le redirige vers customerAccountUrl(orderId).
+      accountUrl: text(link.actionLink) || customerAccountUrl(orderId),
+      portalUrl: customerAccountUrl(orderId),
       magicLink: text(link.actionLink)
     };
   } catch (error) {
@@ -864,10 +887,14 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
 
   if (isEmail(customerEmail) && metadata.email_customer_sent !== "true") {
     const portalUrl = accountResult.accountUrl || reservationPortalUrl(orderId);
+    const directPortalUrl = accountResult.portalUrl || customerAccountUrl(orderId);
     const portalBlock = `
       <p style="margin:22px 0 0;">
         <a href="${escapeHtml(invoiceUrl)}" style="display:inline-block;background:#fc036d;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:6px;font-weight:700;margin-right:8px;">Télécharger ma facture</a>
         <a href="${escapeHtml(portalUrl)}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:6px;font-weight:700;">Accéder à mon compte client</a>
+      </p>
+      <p style="font-size:12px;line-height:1.5;color:#6b6470;margin:12px 0 0;">
+        Le bouton “Accéder à mon compte client” vous connecte automatiquement avec l’e-mail utilisé pour la commande. Si une page de connexion s’affiche, utilisez le même e-mail puis retournez sur : ${escapeHtml(directPortalUrl)}
       </p>
     `;
 
