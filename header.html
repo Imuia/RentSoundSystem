@@ -447,6 +447,10 @@
             {value:'.rss-preference-controls'},
             {value:'.rss-mobile-preferences'},
             {value:'.rss-auth-button'},
+            {value:'.material-symbols-outlined'},
+            {value:'.StripeElement'},
+            {value:'#stripe-card-element'},
+            {value:'.leaflet-container'},
             {value:'.notranslate'}
           ]
         });
@@ -560,9 +564,15 @@
   })();
 this.remove();" />
 
+
 <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){
-  if(window.__rssHeaderOnlyI18nFixBoot)return;
-  window.__rssHeaderOnlyI18nFixBoot=true;
+  if(window.__rssHeaderOnlyI18nFixSafeBoot)return;
+  window.__rssHeaderOnlyI18nFixSafeBoot=true;
+
+  var changedTextNodes=[];
+  var changedAttrElements=[];
+  var originalText=new WeakMap();
+  var originalAttrs=new WeakMap();
 
   var pairs=[
     [&#x27;Catalogue de Location&#x27;,&#x27;Rental Catalog&#x27;],
@@ -573,18 +583,16 @@ this.remove();" />
     [&#x27;Categorie&#x27;,&#x27;Category&#x27;],
     [&#x27;Casques &amp; écouteurs&#x27;,&#x27;Headphones &amp; Earbuds&#x27;],
     [&#x27;Casques &amp; ecouteurs&#x27;,&#x27;Headphones &amp; Earbuds&#x27;],
-    [&#x27;DJ &amp; DJing&#x27;,&#x27;DJ &amp; DJing&#x27;],
     [&#x27;Événementiel &amp; production&#x27;,&#x27;Events &amp; Production&#x27;],
     [&#x27;Evenementiel &amp; production&#x27;,&#x27;Events &amp; Production&#x27;],
-    [&#x27;Instruments music&#x27;,&#x27;Musical Instruments&#x27;],
     [&#x27;Instruments musique&#x27;,&#x27;Musical Instruments&#x27;],
+    [&#x27;Instruments music&#x27;,&#x27;Musical Instruments&#x27;],
     [&#x27;Multimédia &amp; digital&#x27;,&#x27;Multimedia &amp; Digital&#x27;],
     [&#x27;Multimedia &amp; digital&#x27;,&#x27;Multimedia &amp; Digital&#x27;],
     [&#x27;Sonorisation &amp; éclairage&#x27;,&#x27;Sound &amp; Lighting&#x27;],
     [&#x27;Sonorisation &amp; eclairage&#x27;,&#x27;Sound &amp; Lighting&#x27;],
     [&#x27;Tarif journalier&#x27;,&#x27;Daily rate&#x27;],
     [&#x27;Prix journalier&#x27;,&#x27;Daily rate&#x27;],
-    [&#x27;Lieu&#x27;,&#x27;Location&#x27;],
     [&#x27;Tous les lieux&#x27;,&#x27;All locations&#x27;],
     [&#x27;Toutes les localisations&#x27;,&#x27;All locations&#x27;],
     [&#x27;Dates de location&#x27;,&#x27;Rental dates&#x27;],
@@ -594,8 +602,6 @@ this.remove();" />
     [&#x27;Rechercher le matériel...&#x27;,&#x27;Search for equipment...&#x27;],
     [&#x27;Trier par :&#x27;,&#x27;Sort by:&#x27;],
     [&#x27;Trier par:&#x27;,&#x27;Sort by:&#x27;],
-    [&#x27;Trié par :&#x27;,&#x27;Sort by:&#x27;],
-    [&#x27;Trié par:&#x27;,&#x27;Sort by:&#x27;],
     [&#x27;Recommandé&#x27;,&#x27;Recommended&#x27;],
     [&#x27;Disponible&#x27;,&#x27;Available&#x27;],
     [&#x27;Indisponible&#x27;,&#x27;Unavailable&#x27;],
@@ -604,18 +610,12 @@ this.remove();" />
     [&#x27;Voir annonce&#x27;,&#x27;View the ad&#x27;],
     [&#x27;Voir la fiche&#x27;,&#x27;View the ad&#x27;],
     [&#x27;Voir le profil&#x27;,&#x27;View profile&#x27;],
-    [&#x27;Voir profile&#x27;,&#x27;View profile&#x27;],
     [&#x27;Ajouté par&#x27;,&#x27;Added by&#x27;],
     [&#x27;Ajoute par&#x27;,&#x27;Added by&#x27;],
     [&#x27;Aperçu&#x27;,&#x27;Overview&#x27;],
-    [&#x27;Specifications techniques&#x27;,&#x27;Technical Specifications&#x27;],
     [&#x27;Spécifications techniques&#x27;,&#x27;Technical Specifications&#x27;],
+    [&#x27;Specifications techniques&#x27;,&#x27;Technical Specifications&#x27;],
     [&#x27;Inclus&#x27;,&#x27;Included&#x27;],
-    [&#x27;Date de location&#x27;,&#x27;Rental date&#x27;],
-    [&#x27;Dates sélectionnées&#x27;,&#x27;Selected dates&#x27;],
-    [&#x27;Dates selectionnees&#x27;,&#x27;Selected dates&#x27;],
-    [&#x27;Cliquez une ou plusieurs dates pour les sélectionner.&#x27;,&#x27;Click one or more dates to select them.&#x27;],
-    [&#x27;Cliquez une ou plusieurs dates pour les selectionner.&#x27;,&#x27;Click one or more dates to select them.&#x27;],
     [&#x27;Frais de livraison&#x27;,&#x27;Shipping costs&#x27;],
     [&#x27;Coûts de livraison&#x27;,&#x27;Shipping costs&#x27;],
     [&#x27;Couts de livraison&#x27;,&#x27;Shipping costs&#x27;],
@@ -624,7 +624,6 @@ this.remove();" />
     [&#x27;Location estimee&#x27;,&#x27;Rental estimate&#x27;],
     [&#x27;Total dû&#x27;,&#x27;Total due&#x27;],
     [&#x27;Total du&#x27;,&#x27;Total due&#x27;],
-    [&#x27;Caution&#x27;,&#x27;Security deposit&#x27;],
     [&#x27;Dépôt de garantie&#x27;,&#x27;Security deposit&#x27;],
     [&#x27;Depot de garantie&#x27;,&#x27;Security deposit&#x27;],
     [&#x27;non inclus dans le montant total de location&#x27;,&#x27;not included in the total rental amount&#x27;],
@@ -634,18 +633,13 @@ this.remove();" />
     [&#x27;Reserver maintenant&#x27;,&#x27;Book Now&#x27;],
     [&#x27;Demander un devis&#x27;,&#x27;Request a quote&#x27;],
     [&#x27;Contacter par email&#x27;,&#x27;Contact us by email&#x27;],
-    [&#x27;Contactez par email&#x27;,&#x27;Contact us by email&#x27;],
-    [&#x27;Contactez nous par email&#x27;,&#x27;Contact us by email&#x27;],
     [&#x27;Contacter par téléphone&#x27;,&#x27;Contact us by phone&#x27;],
     [&#x27;Retrait&#x27;,&#x27;Pickup&#x27;],
-    [&#x27;Livraison&#x27;,&#x27;Delivery&#x27;],
     [&#x27;Livraison et reprise&#x27;,&#x27;Delivery and return&#x27;],
+    [&#x27;Livraison&#x27;,&#x27;Delivery&#x27;],
     [&#x27;Technicien&#x27;,&#x27;Technician&#x27;],
-    [&#x27;Oui&#x27;,&#x27;Yes&#x27;],
-    [&#x27;Non&#x27;,&#x27;No&#x27;],
     [&#x27;par jour&#x27;,&#x27;per day&#x27;],
     [&#x27;/jour&#x27;,&#x27; per day&#x27;],
-    [&#x27;€ par jour&#x27;,&#x27;€ per day&#x27;],
     [&#x27;€/jour&#x27;,&#x27;€ per day&#x27;],
     [&#x27;annonces disponibles&#x27;,&#x27;available listings&#x27;],
     [&#x27;annonce disponible&#x27;,&#x27;available listing&#x27;]
@@ -660,62 +654,84 @@ this.remove();" />
   function isIgnored(node){
     var el=node&amp;&amp;node.nodeType===1?node:(node&amp;&amp;node.parentElement);
     if(!el)return true;
-    return !!el.closest(&#x27;script,style,noscript,textarea,input,select,option,.notranslate,.StripeElement,#stripe-card-element,.material-symbols-outlined,.rss-preference-controls,.rss-mobile-preferences&#x27;);
+    return !!el.closest(&#x27;script,style,noscript,textarea,input,select,option,.notranslate,.StripeElement,#stripe-card-element,.material-symbols-outlined,.rss-preference-controls,.rss-mobile-preferences,.leaflet-container&#x27;);
   }
-  function clean(value){
-    return String(value||&#x27;&#x27;).replace(/\u00a0/g,&#x27; &#x27;).replace(/\s+/g,&#x27; &#x27;).trim();
+  function toPlainAmp(value){
+    return String(value||&#x27;&#x27;).replace(/&amp;amp;amp;/g,&#x27;&amp;&#x27;).replace(/&amp;amp;/g,&#x27;&amp;&#x27;).replace(/&amp;nbsp;/g,&#x27; &#x27;);
   }
-  function replaceText(value,toEnglish){
+  function englishText(value){
     if(value==null)return value;
-    var output=String(value).replace(/&amp;amp;/g,&#x27;&amp;&#x27;).replace(/&amp;nbsp;/g,&#x27; &#x27;);
+    var output=toPlainAmp(value);
 
-    if(toEnglish){
-      output=output.replace(/Affichage\s+de\s+([0-9\-]+)\s+sur\s+([0-9]+)\s+annonces\s+disponibles/gi,&#x27;Showing $1 of $2 available listings&#x27;);
-      output=output.replace(/(\d+(?:[\s.,]\d+)*)\s*€\s*\/\s*jour/gi,&#x27;$1€ per day&#x27;);
-      output=output.replace(/\bdelivery\b/gi,&#x27;Delivery&#x27;);
-      output=output.replace(/\bpickup\b/gi,&#x27;Pickup&#x27;);
-      output=output.replace(/\bshipping\b/gi,&#x27;Shipping&#x27;);
-    }else{
-      output=output.replace(/Showing\s+([0-9\-]+)\s+of\s+([0-9]+)\s+available\s+listings/gi,&#x27;Affichage de $1 sur $2 annonces disponibles&#x27;);
-      output=output.replace(/(\d+(?:[\s.,]\d+)*)\s*€\s*per\s*day/gi,&#x27;$1€/jour&#x27;);
-    }
+    output=output.replace(/Affichage\s+de\s+([0-9\-]+)\s+sur\s+([0-9]+)\s+annonces\s+disponibles/gi,&#x27;Showing $1 of $2 available listings&#x27;);
+    output=output.replace(/(\d+(?:[\s.,]\d+)*)\s*€\s*\/\s*jour/gi,&#x27;$1€ per day&#x27;);
+    output=output.replace(/\bdelivery\b/gi,&#x27;Delivery&#x27;);
+    output=output.replace(/\bpickup\b/gi,&#x27;Pickup&#x27;);
 
     pairs.forEach(function(pair){
-      var from=toEnglish?pair[0]:pair[1];
-      var to=toEnglish?pair[1]:pair[0];
+      var from=pair[0],to=pair[1];
       if(!from||from===to)return;
       output=output.split(from).join(to);
     });
     return output;
   }
-  function translateElementAttributes(el,toEnglish){
+  function rememberText(node){
+    if(!originalText.has(node)){
+      originalText.set(node,node.nodeValue);
+      changedTextNodes.push(node);
+    }
+  }
+  function rememberAttr(el,attr,value){
+    var map=originalAttrs.get(el);
+    if(!map){map={};originalAttrs.set(el,map);changedAttrElements.push(el)}
+    if(!(attr in map))map[attr]=value;
+  }
+  function translateAttributes(el){
     if(!el||el.nodeType!==1||isIgnored(el))return;
-    [&#x27;placeholder&#x27;,&#x27;title&#x27;,&#x27;aria-label&#x27;,&#x27;alt&#x27;,&#x27;value&#x27;].forEach(function(attr){
+    [&#x27;placeholder&#x27;,&#x27;title&#x27;,&#x27;aria-label&#x27;,&#x27;alt&#x27;].forEach(function(attr){
       if(!el.hasAttribute||!el.hasAttribute(attr))return;
       var oldValue=el.getAttribute(attr);
-      var newValue=replaceText(oldValue,toEnglish);
-      if(newValue!==oldValue)el.setAttribute(attr,newValue);
+      var newValue=englishText(oldValue);
+      if(newValue!==oldValue){rememberAttr(el,attr,oldValue);el.setAttribute(attr,newValue)}
     });
   }
-  function walk(root,toEnglish){
+  function applyEnglish(root){
     if(!root||isIgnored(root))return;
     if(root.nodeType===3){
-      var next=replaceText(root.nodeValue,toEnglish);
-      if(next!==root.nodeValue)root.nodeValue=next;
+      var next=englishText(root.nodeValue);
+      if(next!==root.nodeValue){rememberText(root);root.nodeValue=next}
       return;
     }
     if(root.nodeType!==1)return;
-    translateElementAttributes(root,toEnglish);
+    translateAttributes(root);
     var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{
-      acceptNode:function(node){return isIgnored(node)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;}
+      acceptNode:function(node){return isIgnored(node)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}
     });
     var node;
     while((node=walker.nextNode())){
       if(node.nodeType===3){
-        var newText=replaceText(node.nodeValue,toEnglish);
-        if(newText!==node.nodeValue)node.nodeValue=newText;
-      }else translateElementAttributes(node,toEnglish);
+        var newText=englishText(node.nodeValue);
+        if(newText!==node.nodeValue){rememberText(node);node.nodeValue=newText}
+      }else translateAttributes(node);
     }
+  }
+  function restoreFrench(){
+    changedTextNodes.forEach(function(node){try{if(originalText.has(node))node.nodeValue=originalText.get(node)}catch(e){}});
+    changedAttrElements.forEach(function(el){
+      try{
+        var map=originalAttrs.get(el)||{};
+        Object.keys(map).forEach(function(attr){el.setAttribute(attr,map[attr])});
+      }catch(e){}
+    });
+    changedTextNodes=[];changedAttrElements=[];originalText=new WeakMap();originalAttrs=new WeakMap();
+  }
+  function cleanCorruption(){
+    // Ancien correctif supprimé : il traduisait “No” en “Non” en boucle. On nettoie les restes visibles si le navigateur a gardé l&#x27;ancien DOM.
+    Array.prototype.slice.call(document.querySelectorAll(&#x27;body *&#x27;)).forEach(function(el){
+      if(isIgnored(el)||el.children.length)return;
+      var txt=String(el.textContent||&#x27;&#x27;).trim();
+      if(/^Non{4,}/.test(txt)||/^Nonn{4,}/.test(txt))el.textContent=&#x27;&#x27;;
+    });
   }
   function fixCalendarDays(toEnglish){
     var target=toEnglish?[&#x27;Mon&#x27;,&#x27;Tue&#x27;,&#x27;Wed&#x27;,&#x27;Thu&#x27;,&#x27;Fri&#x27;,&#x27;Sat&#x27;,&#x27;Sun&#x27;]:[&#x27;Lun&#x27;,&#x27;Mar&#x27;,&#x27;Mer&#x27;,&#x27;Jeu&#x27;,&#x27;Ven&#x27;,&#x27;Sam&#x27;,&#x27;Dim&#x27;];
@@ -723,36 +739,28 @@ this.remove();" />
     Array.prototype.slice.call(document.querySelectorAll(&#x27;div,tr,ul,section&#x27;)).forEach(function(parent){
       if(isIgnored(parent))return;
       var children=Array.prototype.slice.call(parent.children||[]).filter(function(child){
-        var txt=clean(child.textContent);
+        var txt=String(child.textContent||&#x27;&#x27;).replace(/\s+/g,&#x27; &#x27;).trim();
         return txt.length&gt;0&amp;&amp;txt.length&lt;=8&amp;&amp;!/[0-9€]/.test(txt);
       });
       if(children.length!==7)return;
-      var score=children.reduce(function(sum,child){return sum+(markers.indexOf(clean(child.textContent))!==-1?1:0)},0);
+      var score=children.reduce(function(sum,child){
+        var txt=String(child.textContent||&#x27;&#x27;).replace(/\s+/g,&#x27; &#x27;).trim();
+        return sum+(markers.indexOf(txt)!==-1?1:0);
+      },0);
       if(score&lt;3)return;
       children.forEach(function(child,index){child.textContent=target[index]});
     });
   }
   function apply(root){
-    var toEnglish=language()===&#x27;en&#x27;;
-    var base=root||document.body;
-    if(!base)return;
-    walk(base,toEnglish);
-    fixCalendarDays(toEnglish);
-  }
-  function softWeglotRefresh(){
-    if(language()!==&#x27;en&#x27;)return;
-    if(!window.Weglot||!window.Weglot.initialized||typeof window.Weglot.switchTo!==&#x27;function&#x27;)return;
-    clearTimeout(window.__rssHeaderOnlyWeglotRefreshTimer);
-    window.__rssHeaderOnlyWeglotRefreshTimer=setTimeout(function(){
-      try{window.Weglot.switchTo(&#x27;en&#x27;)}catch(error){}
-      setTimeout(function(){apply(document.body)},240);
-    },500);
+    var en=language()===&#x27;en&#x27;;
+    if(en){applyEnglish(root||document.body);fixCalendarDays(true)}
+    else{restoreFrench();fixCalendarDays(false);cleanCorruption()}
   }
   function schedule(root){
-    clearTimeout(window.__rssHeaderOnlyI18nTimer);
-    window.__rssHeaderOnlyI18nTimer=setTimeout(function(){apply(root||document.body);softWeglotRefresh()},120);
-    setTimeout(function(){apply(root||document.body)},900);
-    setTimeout(function(){apply(root||document.body)},1800);
+    clearTimeout(window.__rssHeaderOnlyI18nSafeTimer);
+    window.__rssHeaderOnlyI18nSafeTimer=setTimeout(function(){apply(root||document.body)},140);
+    setTimeout(function(){apply(root||document.body)},700);
+    setTimeout(function(){apply(root||document.body)},1600);
   }
 
   window.rssApplyDynamicTranslations=function(){schedule(document.body)};
@@ -764,17 +772,15 @@ this.remove();" />
     new MutationObserver(function(mutations){
       var root=document.body;
       for(var i=0;i&lt;mutations.length;i++){
-        if(mutations[i].addedNodes&amp;&amp;mutations[i].addedNodes.length){
-          root=mutations[i].target||document.body;
-          break;
-        }
+        if(mutations[i].addedNodes&amp;&amp;mutations[i].addedNodes.length){root=mutations[i].target||document.body;break}
       }
       schedule(root);
-    }).observe(document.documentElement,{childList:true,subtree:true,characterData:true});
+    }).observe(document.documentElement,{childList:true,subtree:true});
   }
 
   schedule(document.body);
-})();this.remove();" />
+})();
+this.remove();" />
 
 </header>
 
