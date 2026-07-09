@@ -400,6 +400,166 @@ async function ensureCustomerAccount(stripe, rental, customer, orderId) {
 }
 
 
+function reservationBasePayload(rental, deposit, customer, accountResult, orderId) {
+  const metadata = rental.metadata || {};
+  const customerName = text(metadata.customer_name || customer?.name, "Client");
+  const customerEmail = normalizeEmail(rental.receipt_email || metadata.customer_email || customer?.email);
+  const customerPhone = text(metadata.customer_phone || customer?.phone);
+
+  return {
+    user_id: text(accountResult?.userId),
+    equipment_name: text(metadata.listing_name, "Matériel RentSoundSystem"),
+    renter_name: text(metadata.partner_name || metadata.owner_name || "RentSoundSystem"),
+    start_date: text(metadata.rental_start),
+    end_date: text(metadata.rental_end || metadata.rental_start),
+    status: "confirmed",
+    total_price: Number(rental.amount || 0) / 100,
+    customer_email: customerEmail,
+    customer_name: customerName,
+    customer_phone: customerPhone,
+    listing_id: text(metadata.listing_id),
+    partner_email: text(metadata.partner_email),
+    partner_name: text(metadata.partner_name),
+    stripe_customer_id: text(rental.customer || customer?.id),
+    rental_payment_intent_id: text(rental.id),
+    deposit_payment_intent_id: text(deposit?.id || metadata.linked_deposit_payment_intent_id),
+    payment_status: text(rental.status || "succeeded"),
+    deposit_status: text(deposit?.status),
+    deposit_amount: Number(deposit?.amount || metadata.deposit_amount_cents || 0) / 100
+  };
+}
+
+function reservationOptionalPayload(rental, orderId, invoiceNumber) {
+  const metadata = rental.metadata || {};
+  return {
+    event_city: text(metadata.rental_city),
+    city: text(metadata.rental_city),
+    order_id: text(orderId),
+    order_reference: text(orderId),
+    reference: text(orderId),
+    reservation_number: text(orderId),
+    invoice_number: text(invoiceNumber),
+    tax_amount: Number(metadata.tax_cents || metadata.tax_amount_cents || 0) / 100,
+    total: Number(rental.amount || 0) / 100,
+    currency: text(rental.currency || "eur"),
+    company_name: text(metadata.customer_company),
+    delivery_method: text(metadata.delivery_method),
+    technician: text(metadata.technician),
+    notes: text(metadata.customer_message || metadata.message, 1000)
+  };
+}
+
+function stripEmptyValues(payload) {
+  const output = {};
+  Object.entries(payload || {}).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+    if (typeof value === "string" && !value.trim()) return;
+    if (typeof value === "number" && !Number.isFinite(value)) return;
+    output[key] = value;
+  });
+  return output;
+}
+
+async function findReservationByPaymentIntent(paymentIntentId) {
+  const id = text(paymentIntentId);
+  if (!id) return null;
+  const query = new URLSearchParams();
+  query.set("select", "id,user_id,rental_payment_intent_id,customer_email,created_at");
+  query.set("rental_payment_intent_id", `eq.${id}`);
+  query.set("limit", "1");
+  const rows = await supabaseAdminRequest(`/rest/v1/reservations?${query.toString()}`);
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function patchReservationById(reservationId, payload) {
+  const id = text(reservationId);
+  if (!id) return null;
+  const query = new URLSearchParams();
+  query.set("id", `eq.${id}`);
+  const rows = await supabaseAdminRequest(`/rest/v1/reservations?${query.toString()}`, {
+    method: "PATCH",
+    body: payload,
+    extraHeaders: { Prefer: "return=representation" }
+  });
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function insertReservation(payload) {
+  const rows = await supabaseAdminRequest("/rest/v1/reservations", {
+    method: "POST",
+    body: payload,
+    extraHeaders: { Prefer: "return=representation" }
+  });
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function syncPaidReservationToSupabase(stripe, rental, deposit, customer, accountResult, orderId, invoiceNumber) {
+  const metadata = rental.metadata || {};
+  const userId = text(accountResult?.userId || metadata.customer_user_id);
+  if (!supabaseAdminConfig()) {
+    return { status: "skipped_missing_supabase_env" };
+  }
+  if (!userId) {
+    await updatePaymentMetadata(stripe, rental, {
+      reservation_sync_status: "skipped_missing_user_id"
+    }).catch(() => {});
+    return { status: "skipped_missing_user_id" };
+  }
+
+  const basePayload = stripEmptyValues(reservationBasePayload(rental, deposit, customer, { ...accountResult, userId }, orderId));
+  const richPayload = stripEmptyValues({
+    ...basePayload,
+    ...reservationOptionalPayload(rental, orderId, invoiceNumber)
+  });
+
+  try {
+    let reservation = await findReservationByPaymentIntent(rental.id).catch(() => null);
+    if (reservation?.id) {
+      try {
+        reservation = await patchReservationById(reservation.id, richPayload);
+      } catch (error) {
+        const msg = String(error?.message || "").toLowerCase();
+        if (msg.includes("schema cache") || msg.includes("could not find") || msg.includes("column")) {
+          reservation = await patchReservationById(reservation.id, basePayload);
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      try {
+        reservation = await insertReservation(richPayload);
+      } catch (error) {
+        const msg = String(error?.message || "").toLowerCase();
+        if (msg.includes("schema cache") || msg.includes("could not find") || msg.includes("column")) {
+          reservation = await insertReservation(basePayload);
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    await updatePaymentMetadata(stripe, rental, {
+      reservation_sync_status: reservation?.id ? "linked" : "saved",
+      reservation_user_id: userId,
+      reservation_row_id: text(reservation?.id)
+    }).catch(() => {});
+
+    return {
+      status: reservation?.id ? "linked" : "saved",
+      reservationId: text(reservation?.id),
+      userId
+    };
+  } catch (error) {
+    console.error("supabase-sync-paid-reservation", error);
+    await updatePaymentMetadata(stripe, rental, {
+      reservation_sync_status: "error",
+      reservation_sync_error: text(error.message, 450)
+    }).catch(() => {});
+    return { status: "error", error: text(error.message), userId };
+  }
+}
+
+
 
 const INVOICE_LOGO_JPEG_BASE64 = "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";
 const INVOICE_LOGO_WIDTH = 240;
@@ -875,6 +1035,8 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     });
   }
 
+  const reservationSync = await syncPaidReservationToSupabase(stripe, rental, deposit, customer, accountResult, orderId, invoice.invoiceNumber);
+
   const publicDetails = detailsTable([
     ["Référence", orderId],
     ["Facture", invoice.invoiceNumber],
@@ -929,6 +1091,8 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       ["Société", text(metadata.customer_company, "Non indiquée")],
       ["Compte client", text(accountResult.status, "Non traité")],
       ["User ID client", text(accountResult.userId, "Non indiqué")],
+      ["Réservation Supabase", text(reservationSync.status, "Non synchronisée")],
+      ["ID ligne réservation", text(reservationSync.reservationId, "Non indiqué")],
       ["Matériel", product],
       ["Dates", rentalDates],
       ["Lieu", location],
