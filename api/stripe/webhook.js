@@ -150,6 +150,426 @@ async function getCustomer(stripe, customerId) {
   }
 }
 
+function normalizeEmail(value) {
+  return text(value).toLowerCase();
+}
+
+function customerAccountUrl(orderId) {
+  const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
+  const params = new URLSearchParams();
+  if (orderId) params.set("order", orderId);
+  const query = params.toString();
+  return `${base}/espace-client-reservations.html${query ? `?${query}` : ""}`;
+}
+
+function customerAuthCallbackUrl(orderId) {
+  const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
+  const nextParams = new URLSearchParams();
+  if (orderId) nextParams.set("order", orderId);
+  const nextPath = `/espace-client-reservations.html${nextParams.toString() ? `?${nextParams.toString()}` : ""}`;
+  const callback = new URL(`${base}/auth-callback.html`);
+  callback.searchParams.set("next", nextPath);
+  return callback.toString();
+}
+
+function supabaseAdminConfig() {
+  const url = text(process.env.SUPABASE_URL).replace(/\/+$/, "");
+  const serviceKey = text(process.env.SUPABASE_SERVICE_ROLE_KEY);
+  if (!url || !serviceKey) {
+    return null;
+  }
+  return { url, serviceKey };
+}
+
+async function supabaseAdminRequest(path, { method = "GET", body, extraHeaders = {} } = {}) {
+  const config = supabaseAdminConfig();
+  if (!config) {
+    throw new Error("SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY manquante.");
+  }
+
+  const response = await fetch(`${config.url}${path}`, {
+    method,
+    headers: {
+      apikey: config.serviceKey,
+      Authorization: `Bearer ${config.serviceKey}`,
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      ...extraHeaders
+    },
+    body: body === undefined ? undefined : JSON.stringify(body)
+  });
+
+  const raw = await response.text();
+  const data = raw ? (() => {
+    try { return JSON.parse(raw); } catch { return raw; }
+  })() : null;
+
+  if (!response.ok) {
+    const message = typeof data === "string"
+      ? data
+      : data?.msg || data?.message || data?.error_description || data?.error || `Erreur Supabase ${response.status}`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.data = data;
+    throw error;
+  }
+
+  return data;
+}
+
+async function getProfileById(userId) {
+  if (!userId) return null;
+  const query = new URLSearchParams();
+  query.set("select", "id,email,full_name,company_name,role,phone,created_at");
+  query.set("id", `eq.${userId}`);
+  query.set("limit", "1");
+  const rows = await supabaseAdminRequest(`/rest/v1/profiles?${query.toString()}`);
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function getProfileByEmail(email) {
+  const normalized = normalizeEmail(email);
+  if (!normalized) return null;
+  const query = new URLSearchParams();
+  query.set("select", "id,email,full_name,company_name,role,phone,created_at");
+  query.set("email", `eq.${normalized}`);
+  query.set("limit", "1");
+  const rows = await supabaseAdminRequest(`/rest/v1/profiles?${query.toString()}`);
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function saveCustomerProfile({ userId, email, fullName, companyName, phone }) {
+  const normalizedEmail = normalizeEmail(email);
+  if (!userId || !normalizedEmail) return null;
+
+  const existingById = await getProfileById(userId).catch(() => null);
+  const safeRole = text(existingById?.role) || "client";
+  const payload = {
+    id: userId,
+    email: normalizedEmail,
+    full_name: text(fullName || existingById?.full_name),
+    company_name: text(companyName || existingById?.company_name),
+    phone: text(phone || existingById?.phone),
+    role: safeRole
+  };
+
+  if (existingById) {
+    const query = new URLSearchParams();
+    query.set("id", `eq.${userId}`);
+    const rows = await supabaseAdminRequest(`/rest/v1/profiles?${query.toString()}`, {
+      method: "PATCH",
+      body: payload,
+      extraHeaders: { Prefer: "return=representation" }
+    });
+    return Array.isArray(rows) ? rows[0] || existingById : existingById;
+  }
+
+  const existingByEmail = await getProfileByEmail(normalizedEmail).catch(() => null);
+  if (existingByEmail && existingByEmail.id && existingByEmail.id !== userId) {
+    // Cas rare : un profil existe avec le même e-mail mais un autre id.
+    // On évite de modifier ce profil pour ne pas casser un compte partenaire existant.
+    return existingByEmail;
+  }
+
+  const rows = await supabaseAdminRequest("/rest/v1/profiles", {
+    method: "POST",
+    body: payload,
+    extraHeaders: { Prefer: "return=representation" }
+  });
+  return Array.isArray(rows) ? rows[0] || payload : payload;
+}
+
+async function generateCustomerMagicLink({ email, fullName, companyName, phone, orderId }) {
+  const normalizedEmail = normalizeEmail(email);
+  const redirectTo = customerAuthCallbackUrl(orderId);
+
+  const body = {
+    type: "magiclink",
+    email: normalizedEmail,
+    options: {
+      redirect_to: redirectTo,
+      redirectTo: redirectTo,
+      data: {
+        full_name: text(fullName),
+        company_name: text(companyName),
+        phone: text(phone),
+        role: "client",
+        source: "stripe_paid_reservation",
+        order_id: text(orderId)
+      }
+    }
+  };
+
+  const data = await supabaseAdminRequest("/auth/v1/admin/generate_link", {
+    method: "POST",
+    body
+  });
+
+  return {
+    actionLink: text(data?.properties?.action_link || data?.action_link || redirectTo),
+    user: data?.user || data?.data?.user || null
+  };
+}
+
+async function ensureCustomerAccount(stripe, rental, customer, orderId) {
+  const metadata = rental.metadata || {};
+  const already = text(metadata.customer_account_status);
+  if (["created", "existing", "profile_only"].includes(already)) {
+    // Même si le compte a déjà été traité, on génère un lien magique frais
+    // pour le bouton e-mail. Un lien direct vers l'espace client renvoie
+    // vers la page connexion si le client n'a pas encore de session navigateur.
+    const email = normalizeEmail(rental.receipt_email || metadata.customer_email || customer.email);
+    if (supabaseAdminConfig() && isEmail(email)) {
+      try {
+        const fullName = text(metadata.customer_name || customer.name, "Client");
+        const companyName = text(metadata.customer_company);
+        const phone = text(metadata.customer_phone || customer.phone);
+        const link = await generateCustomerMagicLink({ email, fullName, companyName, phone, orderId });
+        return {
+          status: already,
+          userId: text(link.user?.id || metadata.customer_user_id),
+          accountUrl: text(link.actionLink) || customerAccountUrl(orderId),
+          portalUrl: customerAccountUrl(orderId),
+          magicLink: text(link.actionLink),
+          skipped: "already_processed_magic_link_refreshed"
+        };
+      } catch (error) {
+        console.error("supabase-refresh-customer-magic-link", error);
+      }
+    }
+    return {
+      status: already,
+      userId: text(metadata.customer_user_id),
+      accountUrl: customerAccountUrl(orderId),
+      portalUrl: customerAccountUrl(orderId),
+      skipped: "already_processed"
+    };
+  }
+
+  const config = supabaseAdminConfig();
+  if (!config) {
+    await updatePaymentMetadata(stripe, rental, {
+      customer_account_status: "skipped_missing_supabase_env"
+    });
+    return { status: "skipped_missing_supabase_env", accountUrl: customerAccountUrl(orderId) };
+  }
+
+  const email = normalizeEmail(rental.receipt_email || metadata.customer_email || customer.email);
+  if (!isEmail(email)) {
+    await updatePaymentMetadata(stripe, rental, { customer_account_status: "skipped_missing_email" });
+    return { status: "skipped_missing_email", accountUrl: customerAccountUrl(orderId) };
+  }
+
+  const fullName = text(metadata.customer_name || customer.name, "Client");
+  const companyName = text(metadata.customer_company);
+  const phone = text(metadata.customer_phone || customer.phone);
+
+  try {
+    const beforeProfile = await getProfileByEmail(email).catch(() => null);
+    const link = await generateCustomerMagicLink({ email, fullName, companyName, phone, orderId });
+    const userId = text(link.user?.id || beforeProfile?.id);
+
+    let savedProfile = beforeProfile;
+    if (userId) {
+      savedProfile = await saveCustomerProfile({ userId, email, fullName, companyName, phone }).catch((error) => {
+        console.error("supabase-save-customer-profile", error);
+        return beforeProfile;
+      });
+    }
+
+    const status = beforeProfile ? "existing" : "created";
+    await updatePaymentMetadata(stripe, rental, {
+      customer_account_status: status,
+      customer_user_id: text(userId || savedProfile?.id),
+      customer_profile_role: text(savedProfile?.role || "client"),
+      customer_account_url: customerAccountUrl(orderId),
+      customer_magic_link_generated: text(link.actionLink) ? "true" : "false"
+    });
+
+    return {
+      status,
+      userId: text(userId || savedProfile?.id),
+      profile: savedProfile,
+      // Le bouton e-mail doit être un lien magique Supabase : il connecte le client
+      // puis Supabase le redirige vers customerAccountUrl(orderId).
+      accountUrl: text(link.actionLink) || customerAccountUrl(orderId),
+      portalUrl: customerAccountUrl(orderId),
+      magicLink: text(link.actionLink)
+    };
+  } catch (error) {
+    console.error("supabase-customer-account", error);
+    await updatePaymentMetadata(stripe, rental, {
+      customer_account_status: "error",
+      customer_account_error: text(error.message, 450)
+    }).catch(() => {});
+    return {
+      status: "error",
+      error: text(error.message),
+      accountUrl: customerAccountUrl(orderId)
+    };
+  }
+}
+
+
+function reservationBasePayload(rental, deposit, customer, accountResult, orderId) {
+  const metadata = rental.metadata || {};
+  const customerName = text(metadata.customer_name || customer?.name, "Client");
+  const customerEmail = normalizeEmail(rental.receipt_email || metadata.customer_email || customer?.email);
+  const customerPhone = text(metadata.customer_phone || customer?.phone);
+
+  return {
+    user_id: text(accountResult?.userId),
+    equipment_name: text(metadata.listing_name, "Matériel RentSoundSystem"),
+    renter_name: text(metadata.partner_name || metadata.owner_name || "RentSoundSystem"),
+    start_date: text(metadata.rental_start),
+    end_date: text(metadata.rental_end || metadata.rental_start),
+    status: "confirmed",
+    total_price: Number(rental.amount || 0) / 100,
+    customer_email: customerEmail,
+    customer_name: customerName,
+    customer_phone: customerPhone,
+    listing_id: text(metadata.listing_id),
+    partner_email: text(metadata.partner_email),
+    partner_name: text(metadata.partner_name),
+    stripe_customer_id: text(rental.customer || customer?.id),
+    rental_payment_intent_id: text(rental.id),
+    deposit_payment_intent_id: text(deposit?.id || metadata.linked_deposit_payment_intent_id),
+    payment_status: text(rental.status || "succeeded"),
+    deposit_status: text(deposit?.status),
+    deposit_amount: Number(deposit?.amount || metadata.deposit_amount_cents || 0) / 100
+  };
+}
+
+function reservationOptionalPayload(rental, orderId, invoiceNumber) {
+  const metadata = rental.metadata || {};
+  return {
+    event_city: text(metadata.rental_city),
+    city: text(metadata.rental_city),
+    order_id: text(orderId),
+    order_reference: text(orderId),
+    reference: text(orderId),
+    reservation_number: text(orderId),
+    invoice_number: text(invoiceNumber),
+    tax_amount: Number(metadata.tax_cents || metadata.tax_amount_cents || 0) / 100,
+    total: Number(rental.amount || 0) / 100,
+    currency: text(rental.currency || "eur"),
+    company_name: text(metadata.customer_company),
+    delivery_method: text(metadata.delivery_method),
+    technician: text(metadata.technician),
+    notes: text(metadata.customer_message || metadata.message, 1000)
+  };
+}
+
+function stripEmptyValues(payload) {
+  const output = {};
+  Object.entries(payload || {}).forEach(([key, value]) => {
+    if (value === undefined || value === null) return;
+    if (typeof value === "string" && !value.trim()) return;
+    if (typeof value === "number" && !Number.isFinite(value)) return;
+    output[key] = value;
+  });
+  return output;
+}
+
+async function findReservationByPaymentIntent(paymentIntentId) {
+  const id = text(paymentIntentId);
+  if (!id) return null;
+  const query = new URLSearchParams();
+  query.set("select", "id,user_id,rental_payment_intent_id,customer_email,created_at");
+  query.set("rental_payment_intent_id", `eq.${id}`);
+  query.set("limit", "1");
+  const rows = await supabaseAdminRequest(`/rest/v1/reservations?${query.toString()}`);
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function patchReservationById(reservationId, payload) {
+  const id = text(reservationId);
+  if (!id) return null;
+  const query = new URLSearchParams();
+  query.set("id", `eq.${id}`);
+  const rows = await supabaseAdminRequest(`/rest/v1/reservations?${query.toString()}`, {
+    method: "PATCH",
+    body: payload,
+    extraHeaders: { Prefer: "return=representation" }
+  });
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function insertReservation(payload) {
+  const rows = await supabaseAdminRequest("/rest/v1/reservations", {
+    method: "POST",
+    body: payload,
+    extraHeaders: { Prefer: "return=representation" }
+  });
+  return Array.isArray(rows) ? rows[0] || null : null;
+}
+
+async function syncPaidReservationToSupabase(stripe, rental, deposit, customer, accountResult, orderId, invoiceNumber) {
+  const metadata = rental.metadata || {};
+  const userId = text(accountResult?.userId || metadata.customer_user_id);
+  if (!supabaseAdminConfig()) {
+    return { status: "skipped_missing_supabase_env" };
+  }
+  if (!userId) {
+    await updatePaymentMetadata(stripe, rental, {
+      reservation_sync_status: "skipped_missing_user_id"
+    }).catch(() => {});
+    return { status: "skipped_missing_user_id" };
+  }
+
+  const basePayload = stripEmptyValues(reservationBasePayload(rental, deposit, customer, { ...accountResult, userId }, orderId));
+  const richPayload = stripEmptyValues({
+    ...basePayload,
+    ...reservationOptionalPayload(rental, orderId, invoiceNumber)
+  });
+
+  try {
+    let reservation = await findReservationByPaymentIntent(rental.id).catch(() => null);
+    if (reservation?.id) {
+      try {
+        reservation = await patchReservationById(reservation.id, richPayload);
+      } catch (error) {
+        const msg = String(error?.message || "").toLowerCase();
+        if (msg.includes("schema cache") || msg.includes("could not find") || msg.includes("column")) {
+          reservation = await patchReservationById(reservation.id, basePayload);
+        } else {
+          throw error;
+        }
+      }
+    } else {
+      try {
+        reservation = await insertReservation(richPayload);
+      } catch (error) {
+        const msg = String(error?.message || "").toLowerCase();
+        if (msg.includes("schema cache") || msg.includes("could not find") || msg.includes("column")) {
+          reservation = await insertReservation(basePayload);
+        } else {
+          throw error;
+        }
+      }
+    }
+
+    await updatePaymentMetadata(stripe, rental, {
+      reservation_sync_status: reservation?.id ? "linked" : "saved",
+      reservation_user_id: userId,
+      reservation_row_id: text(reservation?.id)
+    }).catch(() => {});
+
+    return {
+      status: reservation?.id ? "linked" : "saved",
+      reservationId: text(reservation?.id),
+      userId
+    };
+  } catch (error) {
+    console.error("supabase-sync-paid-reservation", error);
+    await updatePaymentMetadata(stripe, rental, {
+      reservation_sync_status: "error",
+      reservation_sync_error: text(error.message, 450)
+    }).catch(() => {});
+    return { status: "error", error: text(error.message), userId };
+  }
+}
+
 
 
 const INVOICE_LOGO_JPEG_BASE64 = "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";
@@ -374,18 +794,18 @@ function buildInvoicePdf(invoice) {
   drawText(46, 694, 7.6, invoice.issuer.name, true, textBlack);
   drawWrapped(46, 682, 6.8, invoice.issuer.address, 42, 8, false, muted, 2);
 
-  // Right invoice block: fixed right edge so title, status badge and metadata align cleanly.
-  const headRight = 549;
-  const statusW = invoice.testMode ? 128 : 134;
-  const statusX = headRight - statusW;
-  drawRight(headRight, 760, 32, "FACTURE", true, fuchsia);
-  rect(statusX, 736, statusW, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
-  drawCenter(statusX, statusW, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
-  drawRight(headRight, 720, 8.8, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
-  drawRight(549, 706, 8.2, `Date d'emission : ${issueDate}`, false, muted);
-  drawRight(549, 692, 8.2, `Reservation : ${invoice.orderId}`, false, muted);
-  drawRight(549, 678, 8.2, `Date de prestation : ${invoice.rentalDates}`, false, muted);
-  drawRight(549, 664, 8.2, `Date de paiement : ${paymentDate}`, false, muted);
+  // Right invoice block: fixed left edge and fixed width.
+  // This avoids the visual zigzag caused by right-aligning every line with a different text length.
+  const invoiceBlockX = 358;
+  const invoiceBlockW = 191;
+  drawText(invoiceBlockX, 760, 32, "FACTURE", true, fuchsia);
+  rect(invoiceBlockX, 736, invoiceBlockW, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
+  drawCenter(invoiceBlockX, invoiceBlockW, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
+  drawText(invoiceBlockX, 720, 8.6, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
+  drawText(invoiceBlockX, 706, 7.8, `Date d'emission : ${issueDate}`, false, muted);
+  drawText(invoiceBlockX, 692, 7.8, `Reservation : ${invoice.orderId}`, false, muted);
+  drawText(invoiceBlockX, 678, 7.3, `Date de prestation : ${invoice.rentalDates}`, false, muted);
+  drawText(invoiceBlockX, 664, 7.8, `Date de paiement : ${paymentDate}`, false, muted);
 
   if (invoice.testMode) {
     rect(46, 632, 503, 22, "1 0.94 0.97", fuchsia, 0.7);
@@ -567,337 +987,6 @@ async function updateEmailState(stripe, paymentIntent, key, value) {
   await updatePaymentMetadata(stripe, paymentIntent, { [key]: value });
 }
 
-
-function getSupabaseAdminConfig() {
-  const url = text(process.env.SUPABASE_URL).replace(/\/+$/, "");
-  const key = text(process.env.SUPABASE_SERVICE_ROLE_KEY);
-  if (!url || !key) return null;
-  return { url, key };
-}
-
-async function supabaseAdminFetch(path, options = {}) {
-  const config = getSupabaseAdminConfig();
-  if (!config) {
-    throw new Error("SUPABASE_URL ou SUPABASE_SERVICE_ROLE_KEY manquante dans Vercel.");
-  }
-  const response = await fetch(`${config.url}${path}`, {
-    method: options.method || "GET",
-    headers: {
-      apikey: config.key,
-      Authorization: `Bearer ${config.key}`,
-      "Content-Type": "application/json",
-      ...(options.headers || {})
-    },
-    body: options.body === undefined ? undefined : JSON.stringify(options.body)
-  });
-  const raw = await response.text();
-  let data = null;
-  try { data = raw ? JSON.parse(raw) : null; } catch { data = raw; }
-  if (!response.ok) {
-    const message = data?.msg || data?.message || data?.error_description || data?.error || raw || `Erreur Supabase ${response.status}`;
-    const error = new Error(message);
-    error.status = response.status;
-    error.data = data;
-    throw error;
-  }
-  return data;
-}
-
-function normalizeEmail(value) {
-  return text(value).toLowerCase();
-}
-
-function eurosFromCents(cents) {
-  return Math.round(Number(cents || 0)) / 100;
-}
-
-function reservationAccessUrl(orderId) {
-  return reservationPortalUrl(orderId);
-}
-
-async function findAuthUserByEmail(email) {
-  const wanted = normalizeEmail(email);
-  if (!wanted) return null;
-  // L'API admin Supabase ne propose pas toujours un filtre email stable selon les versions.
-  // On parcourt quelques pages pour retrouver l'utilisateur sans exposer la service role au navigateur.
-  for (let page = 1; page <= 5; page += 1) {
-    const data = await supabaseAdminFetch(`/auth/v1/admin/users?page=${page}&per_page=200`);
-    const users = Array.isArray(data?.users) ? data.users : Array.isArray(data) ? data : [];
-    const found = users.find((user) => normalizeEmail(user.email) === wanted);
-    if (found) return found;
-    if (!users.length || users.length < 200) break;
-  }
-  return null;
-}
-
-async function createOrGetCustomerUser({ email, fullName, phone, company }) {
-  const cleanEmail = normalizeEmail(email);
-  if (!isEmail(cleanEmail)) return { user: null, status: "missing_email" };
-
-  const metadata = {
-    full_name: text(fullName, "Client"),
-    phone: text(phone),
-    company_name: text(company),
-    role: "client",
-    source: "stripe_payment"
-  };
-
-  const existing = await findAuthUserByEmail(cleanEmail);
-  if (existing?.id) {
-    return { user: existing, status: "existing" };
-  }
-
-  try {
-    const password = `RSS-${Date.now()}-${Math.random().toString(36).slice(2)}aA1!`;
-    const created = await supabaseAdminFetch("/auth/v1/admin/users", {
-      method: "POST",
-      body: {
-        email: cleanEmail,
-        password,
-        email_confirm: true,
-        user_metadata: metadata,
-        app_metadata: { role: "client", source: "stripe_payment" }
-      }
-    });
-    return { user: created, status: "created" };
-  } catch (error) {
-    const message = String(error.message || "").toLowerCase();
-    if (error.status === 422 || error.status === 400 || message.includes("already") || message.includes("registered") || message.includes("exists")) {
-      const user = await findAuthUserByEmail(cleanEmail);
-      if (user?.id) return { user, status: "existing" };
-    }
-    throw error;
-  }
-}
-
-async function generateCustomerMagicLink(email, orderId) {
-  if (!isEmail(email)) return "";
-  const redirectTo = reservationAccessUrl(orderId);
-  try {
-    const data = await supabaseAdminFetch("/auth/v1/admin/generate_link", {
-      method: "POST",
-      body: {
-        type: "magiclink",
-        email: normalizeEmail(email),
-        redirect_to: redirectTo
-      }
-    });
-    return text(data?.action_link || data?.properties?.action_link || data?.properties?.hashed_token || "") || "";
-  } catch (error) {
-    console.warn("Lien magique Supabase indisponible", error.message || error);
-    return "";
-  }
-}
-
-async function upsertCustomerProfile(userId, { email, fullName, phone, company }) {
-  if (!userId) return { skipped: "missing_user_id" };
-  const payload = {
-    id: userId,
-    email: normalizeEmail(email),
-    full_name: text(fullName, "Client"),
-    company_name: text(company),
-    phone: text(phone),
-    role: "client"
-  };
-  const params = new URLSearchParams({ on_conflict: "id" });
-  try {
-    const data = await supabaseAdminFetch(`/rest/v1/profiles?${params.toString()}`, {
-      method: "POST",
-      headers: {
-        Prefer: "resolution=merge-duplicates,return=representation"
-      },
-      body: payload
-    });
-    return { profile: Array.isArray(data) ? data[0] : data, status: "upserted" };
-  } catch (error) {
-    console.warn("Profil client non synchronisé", error.message || error);
-    return { error: error.message || String(error) };
-  }
-}
-
-function reservationPayload({ userId, rental, deposit, customer, invoice }) {
-  const metadata = rental.metadata || {};
-  const orderId = text(metadata.order_id, rental.id);
-  const customerName = text(metadata.customer_name || customer?.name, "Client");
-  const customerEmail = normalizeEmail(metadata.customer_email || rental.receipt_email || customer?.email);
-  const customerPhone = text(metadata.customer_phone || customer?.phone);
-  const product = text(metadata.listing_name, "Matériel RentSoundSystem");
-  const partnerName = text(metadata.partner_name, "RentSoundSystem");
-  const startDate = text(metadata.rental_start);
-  const endDate = text(metadata.rental_end || metadata.rental_start);
-  const city = text(metadata.rental_city);
-
-  return {
-    user_id: userId,
-    order_reference: orderId,
-    order_id: orderId,
-    reference: orderId,
-    reservation_number: orderId,
-    equipment_name: product,
-    product_name: product,
-    renter_name: partnerName,
-    partner_name: partnerName,
-    partner_email: text(metadata.partner_email),
-    listing_id: text(metadata.listing_id),
-    start_date: startDate || null,
-    end_date: endDate || startDate || null,
-    event_city: city,
-    city,
-    location: city,
-    status: "confirmed",
-    payment_status: rental.status,
-    deposit_status: deposit?.status || "not_applicable",
-    total_price: eurosFromCents(rental.amount),
-    total: eurosFromCents(rental.amount),
-    deposit_amount: eurosFromCents(deposit?.amount || 0),
-    deposit: eurosFromCents(deposit?.amount || 0),
-    customer_email: customerEmail,
-    customer_name: customerName,
-    customer_phone: customerPhone,
-    stripe_customer_id: text(rental.customer),
-    rental_payment_intent_id: rental.id,
-    deposit_payment_intent_id: deposit?.id || null,
-    invoice_number: invoice?.invoiceNumber || text(metadata.invoice_number),
-    tax_amount: Number(metadata.tax_amount || 0),
-    updated_at: new Date().toISOString()
-  };
-}
-
-function stripReservationPayload(payload, mode) {
-  if (mode === "minimal") {
-    return {
-      user_id: payload.user_id,
-      equipment_name: payload.equipment_name,
-      renter_name: payload.renter_name,
-      start_date: payload.start_date,
-      end_date: payload.end_date,
-      status: payload.status,
-      total_price: payload.total_price,
-      customer_email: payload.customer_email,
-      customer_name: payload.customer_name,
-      customer_phone: payload.customer_phone,
-      rental_payment_intent_id: payload.rental_payment_intent_id,
-      deposit_payment_intent_id: payload.deposit_payment_intent_id,
-      payment_status: payload.payment_status,
-      deposit_status: payload.deposit_status,
-      deposit_amount: payload.deposit_amount
-    };
-  }
-  const copy = { ...payload };
-  delete copy.order_id;
-  delete copy.reference;
-  delete copy.reservation_number;
-  delete copy.product_name;
-  delete copy.total;
-  delete copy.deposit;
-  delete copy.city;
-  delete copy.location;
-  delete copy.invoice_number;
-  delete copy.tax_amount;
-  delete copy.updated_at;
-  return copy;
-}
-
-async function patchReservationBy(field, value, payload) {
-  if (!value) return [];
-  const params = new URLSearchParams({ [field]: `eq.${value}` });
-  const data = await supabaseAdminFetch(`/rest/v1/reservations?${params.toString()}`, {
-    method: "PATCH",
-    headers: { Prefer: "return=representation" },
-    body: payload
-  });
-  return Array.isArray(data) ? data : [];
-}
-
-async function insertReservation(payload) {
-  const data = await supabaseAdminFetch("/rest/v1/reservations", {
-    method: "POST",
-    headers: { Prefer: "return=representation" },
-    body: payload
-  });
-  return Array.isArray(data) ? data : [];
-}
-
-async function syncPaidReservationToSupabase({ userId, rental, deposit, customer, invoice }) {
-  if (!userId) return { status: "skipped", reason: "missing_user_id" };
-  const fullPayload = reservationPayload({ userId, rental, deposit, customer, invoice });
-  const attempts = [fullPayload, stripReservationPayload(fullPayload, "safe"), stripReservationPayload(fullPayload, "minimal")];
-  let lastError = null;
-
-  for (const payload of attempts) {
-    try {
-      let rows = await patchReservationBy("rental_payment_intent_id", fullPayload.rental_payment_intent_id, payload);
-      if (!rows.length && fullPayload.order_reference) {
-        rows = await patchReservationBy("order_reference", fullPayload.order_reference, payload).catch(() => []);
-      }
-      if (!rows.length) rows = await insertReservation(payload);
-      return { status: rows.length ? "synced" : "empty", reservation: rows[0] || null };
-    } catch (error) {
-      lastError = error;
-      const message = String(error.message || "").toLowerCase();
-      if (!(message.includes("schema cache") || message.includes("could not find") || message.includes("column"))) {
-        break;
-      }
-    }
-  }
-  return { status: "error", error: lastError?.message || String(lastError || "Erreur réservation") };
-}
-
-async function syncCustomerAccountAndReservation(stripe, rental, deposit, customer, invoice) {
-  const metadata = rental.metadata || {};
-  const orderId = text(metadata.order_id, rental.id);
-  const customerEmail = normalizeEmail(metadata.customer_email || rental.receipt_email || customer?.email);
-  const customerName = text(metadata.customer_name || customer?.name, "Client");
-  const customerPhone = text(metadata.customer_phone || customer?.phone);
-  const company = text(metadata.customer_company);
-
-  if (!isEmail(customerEmail)) {
-    await updatePaymentMetadata(stripe, rental, {
-      customer_account_status: "missing_email",
-      reservation_sync_status: "skipped_missing_email"
-    });
-    return { accountStatus: "missing_email", accessUrl: reservationAccessUrl(orderId) };
-  }
-
-  if (!getSupabaseAdminConfig()) {
-    await updatePaymentMetadata(stripe, rental, {
-      customer_account_status: "supabase_not_configured",
-      reservation_sync_status: "supabase_not_configured"
-    });
-    return { accountStatus: "supabase_not_configured", accessUrl: reservationAccessUrl(orderId) };
-  }
-
-  try {
-    const account = await createOrGetCustomerUser({ email: customerEmail, fullName: customerName, phone: customerPhone, company });
-    const userId = account.user?.id;
-    await upsertCustomerProfile(userId, { email: customerEmail, fullName: customerName, phone: customerPhone, company });
-    const reservation = await syncPaidReservationToSupabase({ userId, rental, deposit, customer, invoice });
-    const magicLink = await generateCustomerMagicLink(customerEmail, orderId);
-
-    await updatePaymentMetadata(stripe, rental, {
-      customer_account_status: account.status || "unknown",
-      customer_user_id: text(userId, ""),
-      reservation_sync_status: reservation.status || "unknown",
-      customer_access_link_generated: magicLink ? "true" : "false"
-    });
-
-    return {
-      accountStatus: account.status,
-      userId,
-      reservationStatus: reservation.status,
-      accessUrl: magicLink || reservationAccessUrl(orderId)
-    };
-  } catch (error) {
-    console.error("sync-customer-account-reservation", error);
-    await updatePaymentMetadata(stripe, rental, {
-      customer_account_status: "error",
-      reservation_sync_status: "error",
-      customer_account_error: text(error.message || error, 450)
-    });
-    return { accountStatus: "error", accessUrl: reservationAccessUrl(orderId), error: error.message || String(error) };
-  }
-}
-
 async function sendNotificationsWhenReady(stripe, rentalIntentId) {
   const rental = await stripe.paymentIntents.retrieve(rentalIntentId);
 
@@ -937,6 +1026,8 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     throw new Error("ADMIN_EMAIL manquante ou invalide dans Vercel.");
   }
 
+  const accountResult = await ensureCustomerAccount(stripe, rental, customer, orderId);
+
   const rentalDates = `${formatDate(metadata.rental_start)} → ${formatDate(metadata.rental_end)}`;
   const location = text(metadata.rental_city, "Non indiqué");
   const product = text(metadata.listing_name, "Matériel RentSoundSystem");
@@ -955,7 +1046,7 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
     });
   }
 
-  const accountSync = await syncCustomerAccountAndReservation(stripe, rental, deposit, customer, invoice);
+  const reservationSync = await syncPaidReservationToSupabase(stripe, rental, deposit, customer, accountResult, orderId, invoice.invoiceNumber);
 
   const publicDetails = detailsTable([
     ["Référence", orderId],
@@ -968,15 +1059,15 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
   ]);
 
   if (isEmail(customerEmail) && metadata.email_customer_sent !== "true") {
-    const portalUrl = accountSync.accessUrl || reservationPortalUrl(orderId);
-    const directPortalUrl = reservationPortalUrl(orderId);
+    const portalUrl = accountResult.accountUrl || reservationPortalUrl(orderId);
+    const directPortalUrl = accountResult.portalUrl || customerAccountUrl(orderId);
     const portalBlock = `
       <p style="margin:22px 0 0;">
         <a href="${escapeHtml(invoiceUrl)}" style="display:inline-block;background:#fc036d;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:6px;font-weight:700;margin-right:8px;">Télécharger ma facture</a>
         <a href="${escapeHtml(portalUrl)}" style="display:inline-block;background:#111111;color:#ffffff;text-decoration:none;padding:12px 16px;border-radius:6px;font-weight:700;">Accéder à mon compte client</a>
       </p>
-      <p style="font-size:12px;line-height:1.45;color:#6b6470;margin:12px 0 0;">
-        Ce bouton vous connecte automatiquement si le lien magique Supabase est autorisé. Sinon, connectez-vous avec cet e-mail puis ouvrez : <a href="${escapeHtml(directPortalUrl)}" style="color:#111111;">${escapeHtml(directPortalUrl)}</a>
+      <p style="font-size:12px;line-height:1.5;color:#6b6470;margin:12px 0 0;">
+        Le bouton “Accéder à mon compte client” vous connecte automatiquement avec l’e-mail utilisé pour la commande. Si une page de connexion s’affiche, utilisez le même e-mail puis retournez sur : ${escapeHtml(directPortalUrl)}
       </p>
     `;
 
@@ -1005,11 +1096,14 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       ["Référence", orderId],
       ["Facture", invoice.invoiceNumber],
       ["Lien facture", invoiceUrl],
-      ["Compte client", `${accountSync.accountStatus || "non traité"} / réservation: ${accountSync.reservationStatus || "non traitée"}`],
       ["Client", customerName],
       ["E-mail client", customerEmail || "Non indiqué"],
       ["Téléphone", customerPhone],
       ["Société", text(metadata.customer_company, "Non indiquée")],
+      ["Compte client", text(accountResult.status, "Non traité")],
+      ["User ID client", text(accountResult.userId, "Non indiqué")],
+      ["Réservation Supabase", text(reservationSync.status, "Non synchronisée")],
+      ["ID ligne réservation", text(reservationSync.reservationId, "Non indiqué")],
       ["Matériel", product],
       ["Dates", rentalDates],
       ["Lieu", location],
