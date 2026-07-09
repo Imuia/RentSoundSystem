@@ -347,14 +347,20 @@ async function ensureCustomerAccount(stripe, rental, customer, orderId) {
     await updatePaymentMetadata(stripe, rental, {
       customer_account_status: status,
       customer_user_id: text(userId || savedProfile?.id),
-      customer_profile_role: text(savedProfile?.role || "client")
+      customer_profile_role: text(savedProfile?.role || "client"),
+      customer_account_url: customerAccountUrl(orderId),
+      customer_magic_link_generated: text(link.actionLink) ? "true" : "false"
     });
 
     return {
       status,
       userId: text(userId || savedProfile?.id),
       profile: savedProfile,
-      accountUrl: link.actionLink || customerAccountUrl(orderId)
+      // Important : le bouton e-mail doit aller vers l’espace client du site.
+      // Le lien magique Supabase est conservé en metadata, mais il peut retomber
+      // sur l’accueil si les Redirect URLs Supabase ne sont pas encore configurées.
+      accountUrl: customerAccountUrl(orderId),
+      magicLink: text(link.actionLink)
     };
   } catch (error) {
     console.error("supabase-customer-account", error);
