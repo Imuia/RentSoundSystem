@@ -594,18 +594,18 @@ function buildInvoicePdf(invoice) {
   drawText(46, 694, 7.6, invoice.issuer.name, true, textBlack);
   drawWrapped(46, 682, 6.8, invoice.issuer.address, 42, 8, false, muted, 2);
 
-  // Right invoice block: fixed right edge so title, status badge and metadata align cleanly.
-  const headRight = 549;
-  const statusW = invoice.testMode ? 128 : 134;
-  const statusX = headRight - statusW;
-  drawRight(headRight, 760, 32, "FACTURE", true, fuchsia);
-  rect(statusX, 736, statusW, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
-  drawCenter(statusX, statusW, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
-  drawRight(headRight, 720, 8.8, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
-  drawRight(549, 706, 8.2, `Date d'emission : ${issueDate}`, false, muted);
-  drawRight(549, 692, 8.2, `Reservation : ${invoice.orderId}`, false, muted);
-  drawRight(549, 678, 8.2, `Date de prestation : ${invoice.rentalDates}`, false, muted);
-  drawRight(549, 664, 8.2, `Date de paiement : ${paymentDate}`, false, muted);
+  // Right invoice block: fixed left edge and fixed width.
+  // This avoids the visual zigzag caused by right-aligning every line with a different text length.
+  const invoiceBlockX = 358;
+  const invoiceBlockW = 191;
+  drawText(invoiceBlockX, 760, 32, "FACTURE", true, fuchsia);
+  rect(invoiceBlockX, 736, invoiceBlockW, 19, invoice.testMode ? paleFuchsia : light, invoice.testMode ? fuchsia : border, 0.7);
+  drawCenter(invoiceBlockX, invoiceBlockW, 742, 8.6, invoice.testMode ? "ACQUITTEE - TEST STRIPE" : "FACTURE ACQUITTEE", true, invoice.testMode ? fuchsia : textBlack);
+  drawText(invoiceBlockX, 720, 8.6, `No facture : ${invoice.invoiceNumber}`, true, textBlack);
+  drawText(invoiceBlockX, 706, 7.8, `Date d'emission : ${issueDate}`, false, muted);
+  drawText(invoiceBlockX, 692, 7.8, `Reservation : ${invoice.orderId}`, false, muted);
+  drawText(invoiceBlockX, 678, 7.3, `Date de prestation : ${invoice.rentalDates}`, false, muted);
+  drawText(invoiceBlockX, 664, 7.8, `Date de paiement : ${paymentDate}`, false, muted);
 
   if (invoice.testMode) {
     rect(46, 632, 503, 22, "1 0.94 0.97", fuchsia, 0.7);
