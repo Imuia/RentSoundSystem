@@ -1,0 +1,180 @@
+<!DOCTYPE html><html class="dark" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Ouvrir un ticket support | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{primary:"#FC036D",background:"#131313",surface:"#131313","surface-container":"#1f1f1f","surface-container-low":"#1b1b1b","surface-container-high":"#2a2a2a","surface-container-highest":"#353535","on-background":"#e2e2e2","on-surface":"#e2e2e2","on-surface-variant":"#e6bcc2",outline:"#ac878d","outline-variant":"#5d3f44","on-primary":"#ffffff","primary-container":"#c40254"},fontFamily:{headline:["Manrope"],body:["Inter"]}}}};</script>
+<style>
+body{background:#131313;color:#e2e2e2;font-family:Inter,system-ui,sans-serif;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:20px 20px}
+#header-container{min-height:73px}#footer-container{min-height:320px}.ticket-card{background:linear-gradient(145deg,rgba(31,31,31,.96),rgba(15,15,15,.98));border:1px solid rgba(93,63,68,.55);box-shadow:0 24px 70px rgba(0,0,0,.35)}.field{display:flex;flex-direction:column;gap:8px}.field span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#e6bcc2;font-weight:700}.input,.select,.textarea{width:100%;border:1px solid rgba(93,63,68,.8);background:rgba(19,19,19,.92);color:#fff;border-radius:10px;padding:14px 15px;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:#FC036D;box-shadow:0 0 0 3px rgba(252,3,109,.12)}.textarea{min-height:170px;resize:vertical}.notice{border:1px solid rgba(252,3,109,.35);background:rgba(252,3,109,.08);color:#ffd9e7;border-radius:12px;padding:14px 16px}.error{border-color:rgba(255,180,171,.6);background:rgba(147,0,10,.22);color:#ffdad6}.hidden{display:none}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:14px 18px;font-weight:800;transition:.2s}.btn-primary{background:#FC036D;color:#fff}.btn-primary:hover{background:#d6005a}.btn-secondary{border:1px solid rgba(93,63,68,.8);color:#e2e2e2}.btn-secondary:hover{border-color:#FC036D;color:#fff}.step{display:flex;gap:12px;align-items:flex-start}.step strong{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;background:rgba(252,3,109,.15);color:#ff78ad;font-size:12px;flex:none}.loader{width:18px;height:18px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:999px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head><body class="min-h-screen flex flex-col antialiased">
+<div id="header-container"></div>
+<main class="flex-grow pt-[96px] px-4 md:px-10 pb-16">
+  <section class="max-w-6xl mx-auto grid lg:grid-cols-[1fr_380px] gap-8 items-start">
+    <div>
+      <a href="/centre-assistance" class="inline-flex items-center gap-2 text-[#e6bcc2] hover:text-primary font-semibold mb-6"><span class="material-symbols-outlined">arrow_back</span>Retour au centre d’assistance</a>
+      <div class="mb-8">
+        <p class="text-primary font-bold uppercase tracking-[.18em] text-xs mb-3">Support RentSoundSystem</p>
+        <h1 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tight mb-4">Ouvrir un ticket support</h1>
+        <p class="text-[#e6bcc2] text-lg leading-relaxed max-w-3xl">Décrivez votre demande. Le ticket sera enregistré dans votre espace client, envoyé à l’équipe support et suivi dans la messagerie.</p>
+      </div>
+      <div id="ticket-state" class="notice mb-6">Connexion sécurisée en cours…</div>
+      <form id="support-ticket-form" class="ticket-card rounded-2xl p-6 md:p-8 space-y-5 hidden">
+        <div class="grid md:grid-cols-2 gap-5">
+          <label class="field"><span>Type de demande</span><select id="ticket-category" class="select" required>
+            <option value="support_technique">Support technique</option>
+            <option value="reservation">Réservation</option>
+            <option value="paiement_facture">Paiement / facture</option>
+            <option value="livraison">Livraison / reprise</option>
+            <option value="partenaire">Question partenaire</option>
+            <option value="autre">Autre demande</option>
+          </select></label>
+          <label class="field"><span>Priorité</span><select id="ticket-priority" class="select" required>
+            <option value="normal">Normale</option>
+            <option value="urgent">Urgente — événement proche / problème bloquant</option>
+          </select></label>
+        </div>
+        <label class="field"><span>Réservation concernée</span><select id="ticket-reservation" class="select"><option value="">Aucune réservation précise</option></select></label>
+        <label class="field"><span>Objet du ticket</span><input id="ticket-subject" class="input" type="text" maxlength="140" required placeholder="Ex. Problème de livraison pour ma réservation"></label>
+        <label class="field"><span>Description</span><textarea id="ticket-message" class="textarea" maxlength="3000" required placeholder="Expliquez le problème, la date de l’événement, le matériel concerné et ce que vous attendez de l’équipe support."></textarea></label>
+        <div class="notice"><strong>Suivi du ticket :</strong> après envoi, vous serez redirigé vers la messagerie du ticket pour suivre les réponses et ajouter des informations.</div>
+        <div class="flex flex-col sm:flex-row gap-3 pt-2">
+          <button id="ticket-submit" class="btn btn-primary" type="submit"><span class="material-symbols-outlined">confirmation_number</span>Créer le ticket support</button>
+          <a class="btn btn-secondary" href="/espace-client-messagerie.html"><span class="material-symbols-outlined">forum</span>Aller à la messagerie</a>
+        </div>
+      </form>
+    </div>
+    <aside class="ticket-card rounded-2xl p-6 md:p-7 lg:sticky lg:top-24">
+      <h2 class="font-headline text-2xl font-bold mb-5">Comment ça marche ?</h2>
+      <div class="space-y-5 text-[#e6bcc2]">
+        <div class="step"><strong>1</strong><p>Votre demande est enregistrée avec un numéro de ticket.</p></div>
+        <div class="step"><strong>2</strong><p>L’équipe RentSoundSystem reçoit une notification e-mail.</p></div>
+        <div class="step"><strong>3</strong><p>Le suivi se fait dans votre espace client, rubrique messagerie.</p></div>
+      </div>
+      <div class="mt-7 border-t border-white/10 pt-5 text-sm text-[#e6bcc2] leading-relaxed">Pour une urgence pendant un événement, indiquez clairement la date, l’heure, le lieu et le matériel concerné.</div>
+    </aside>
+  </section>
+</main>
+<div id="footer-container"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/components.js"></script>
+<script id="rss-support-ticket-script">
+(function(){
+  'use strict';
+  const SUPABASE_URL = window.SUPABASE_URL || 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = window.SUPABASE_ANON_KEY || window.SUPABASE_KEY || 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const $ = (s)=>document.querySelector(s);
+  const state = { sb:null, user:null, profile:null, reservations:[] };
+  const labels = {
+    support_technique:'Support technique', reservation:'Réservation', paiement_facture:'Paiement / facture', livraison:'Livraison / reprise', partenaire:'Question partenaire', autre:'Autre demande'
+  };
+  function setState(message, error=false){ const box=$('#ticket-state'); if(!box)return; box.textContent=message; box.classList.toggle('error',!!error); }
+  function clean(value, max=500){ return String(value||'').replace(/[\r\n\t]+/g,' ').replace(/\s+/g,' ').trim().slice(0,max); }
+  function optionLabel(row){ return clean(row.order_reference||row.order_id||row.reference||row.reservation_number||row.id,80)+' · '+clean(row.equipment_name||row.product_name||'Matériel réservé',120); }
+  async function initAuth(){
+    if(!window.supabase) throw new Error('Supabase JS non chargé.');
+    state.sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const {data:{session}} = await state.sb.auth.getSession();
+    if(!session?.user){
+      const redirect = '/support-ticket.html' + (window.location.search || '');
+      window.location.href = '/connexion-inscription.html?redirect=' + encodeURIComponent(redirect);
+      return false;
+    }
+    state.user = session.user;
+    return true;
+  }
+  async function loadProfile(){
+    try{ const {data}=await state.sb.from('profiles').select('full_name,company_name,email').eq('id',state.user.id).maybeSingle(); state.profile=data||null; }catch(e){ console.warn('Profil support indisponible',e); }
+  }
+  async function loadReservations(){
+    const select = 'id,order_reference,order_id,reference,reservation_number,equipment_name,product_name,start_date,created_at,partner_name,partner_email,renter_name';
+    try{
+      const {data,error}=await state.sb.from('reservations').select(select).eq('user_id',state.user.id).order('created_at',{ascending:false}).limit(50);
+      if(error) throw error;
+      state.reservations=data||[];
+      const selectEl=$('#ticket-reservation');
+      if(selectEl){
+        selectEl.innerHTML='<option value="">Aucune réservation précise</option>'+state.reservations.map(row=>`<option value="${String(row.id).replace(/"/g,'&quot;')}">${optionLabel(row).replace(/</g,'&lt;')}</option>`).join('');
+      }
+    }catch(e){ console.warn('Réservations support indisponibles',e); }
+  }
+  function prefill(){
+    const params=new URLSearchParams(window.location.search);
+    const category=params.get('category');
+    const subject=params.get('subject');
+    const reservation=params.get('reservation');
+    if(category && $('#ticket-category')) $('#ticket-category').value=category;
+    if(subject && $('#ticket-subject')) $('#ticket-subject').value=subject;
+    if(reservation && $('#ticket-reservation')) $('#ticket-reservation').value=reservation;
+  }
+  async function notify(threadId,messageId){
+    try{
+      const {data:{session}} = await state.sb.auth.getSession();
+      if(!session?.access_token) return;
+      await fetch('/api/support/notify',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+session.access_token},
+        body:JSON.stringify({thread_id:threadId,message_id:messageId||null,event:'client_ticket_created'})
+      });
+    }catch(e){ console.warn('Notification ticket non bloquante',e); }
+  }
+  async function submitTicket(event){
+    event.preventDefault();
+    const button=$('#ticket-submit');
+    const category=clean($('#ticket-category')?.value,60)||'support_technique';
+    const priority=clean($('#ticket-priority')?.value,40)||'normal';
+    const reservationId=clean($('#ticket-reservation')?.value,80)||null;
+    const subject=clean($('#ticket-subject')?.value,140);
+    const body=String($('#ticket-message')?.value||'').trim().slice(0,3000);
+    if(!subject || !body){ setState('Complétez l’objet et la description du ticket.',true); return; }
+    const reservation=state.reservations.find(item=>String(item.id)===String(reservationId));
+    const payload={
+      user_id:state.user.id,
+      reservation_id:reservationId,
+      subject:`${labels[category]||'Support'} — ${subject}`,
+      category,
+      priority,
+      status:'open',
+      client_name:state.profile?.full_name || state.user?.user_metadata?.full_name || 'Client RentSoundSystem',
+      client_email:state.user.email || state.profile?.email || '',
+      partner_name:reservation?.partner_name || reservation?.renter_name || '',
+      partner_email:reservation?.partner_email || ''
+    };
+    if(button){ button.disabled=true; button.innerHTML='<span class="loader"></span> Création du ticket…'; }
+    try{
+      let {data:thread,error:threadError}=await state.sb.from('support_threads').insert(payload).select('*').single();
+      if(threadError && String(threadError.message||'').toLowerCase().includes('category')){
+        const fallback={...payload}; delete fallback.category; delete fallback.priority;
+        const retry=await state.sb.from('support_threads').insert(fallback).select('*').single();
+        thread=retry.data; threadError=retry.error;
+      }
+      if(threadError) throw threadError;
+      const firstBody=`Type : ${labels[category]||category}\nPriorité : ${priority}\n\n${body}`;
+      const {data:message,error:messageError}=await state.sb.from('support_messages').insert({thread_id:thread.id,sender_id:state.user.id,sender_role:'client',body:firstBody}).select('id').single();
+      if(messageError) throw messageError;
+      await notify(thread.id,message?.id);
+      setState('Ticket créé. Redirection vers la messagerie…');
+      window.location.href='/espace-client-messagerie.html?thread='+encodeURIComponent(thread.id);
+    }catch(error){
+      console.error('Création ticket support',error);
+      setState('Impossible de créer le ticket. Vérifiez que le SQL support est bien installé dans Supabase.',true);
+      if(button){ button.disabled=false; button.innerHTML='<span class="material-symbols-outlined">confirmation_number</span>Créer le ticket support'; }
+    }
+  }
+  document.addEventListener('DOMContentLoaded',async()=>{
+    try{
+      const ok=await initAuth(); if(!ok)return;
+      await loadProfile(); await loadReservations(); prefill();
+      $('#support-ticket-form')?.classList.remove('hidden');
+      setState('Connecté : vous pouvez créer votre ticket support.');
+      $('#support-ticket-form')?.addEventListener('submit',submitTicket);
+    }catch(e){ console.error(e); setState('Le formulaire de ticket est temporairement indisponible.',true); }
+  });
+})();
+</script>
+</body></html>
