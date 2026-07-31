@@ -12,6 +12,47 @@
 body{background:#131313;color:#e2e2e2;font-family:Inter,system-ui,sans-serif;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:20px 20px}
 #header-container{min-height:73px}#footer-container{min-height:320px}.ticket-card{background:linear-gradient(145deg,rgba(31,31,31,.96),rgba(15,15,15,.98));border:1px solid rgba(93,63,68,.55);box-shadow:0 24px 70px rgba(0,0,0,.35)}.field{display:flex;flex-direction:column;gap:8px}.field span{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:#e6bcc2;font-weight:700}.input,.select,.textarea{width:100%;border:1px solid rgba(93,63,68,.8);background:rgba(19,19,19,.92);color:#fff;border-radius:10px;padding:14px 15px;outline:none}.input:focus,.select:focus,.textarea:focus{border-color:#FC036D;box-shadow:0 0 0 3px rgba(252,3,109,.12)}.textarea{min-height:170px;resize:vertical}.notice{border:1px solid rgba(252,3,109,.35);background:rgba(252,3,109,.08);color:#ffd9e7;border-radius:12px;padding:14px 16px}.error{border-color:rgba(255,180,171,.6);background:rgba(147,0,10,.22);color:#ffdad6}.hidden{display:none}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:14px 18px;font-weight:800;transition:.2s}.btn-primary{background:#FC036D;color:#fff}.btn-primary:hover{background:#d6005a}.btn-secondary{border:1px solid rgba(93,63,68,.8);color:#e2e2e2}.btn-secondary:hover{border-color:#FC036D;color:#fff}.step{display:flex;gap:12px;align-items:flex-start}.step strong{display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:999px;background:rgba(252,3,109,.15);color:#ff78ad;font-size:12px;flex:none}.loader{width:18px;height:18px;border:2px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:999px;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 </style>
+
+<style id="rss-ticket-dark-fields-fix">
+  #support-ticket-form input,
+  #support-ticket-form select,
+  #support-ticket-form textarea,
+  #support-ticket-form .input,
+  #support-ticket-form .select,
+  #support-ticket-form .textarea {
+    background-color: rgba(19, 19, 19, 0.96) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(252, 3, 109, 0.35) !important;
+    caret-color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+
+  #support-ticket-form input::placeholder,
+  #support-ticket-form textarea::placeholder {
+    color: rgba(230, 188, 194, 0.62) !important;
+    -webkit-text-fill-color: rgba(230, 188, 194, 0.62) !important;
+  }
+
+  #support-ticket-form input:focus,
+  #support-ticket-form select:focus,
+  #support-ticket-form textarea:focus {
+    border-color: #FC036D !important;
+    box-shadow: 0 0 0 3px rgba(252, 3, 109, 0.16) !important;
+    outline: none !important;
+  }
+
+  #support-ticket-form option {
+    background-color: #131313 !important;
+    color: #ffffff !important;
+  }
+
+  #support-ticket-form input:-webkit-autofill,
+  #support-ticket-form textarea:-webkit-autofill,
+  #support-ticket-form select:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #131313 inset !important;
+    -webkit-text-fill-color: #ffffff !important;
+  }
+</style>
 </head><body class="min-h-screen flex flex-col antialiased">
 <div id="header-container"></div>
 <main class="flex-grow pt-[96px] px-4 md:px-10 pb-16">
