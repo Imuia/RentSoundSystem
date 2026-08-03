@@ -8,52 +8,81 @@
   const siteUrl = document.querySelector('#setting-site-url');
   const supportEmail = document.querySelector('#setting-support-email');
   const status = document.querySelector('[data-settings-supabase]');
+  const saveButton = document.querySelector('[data-save-settings]');
+  const testButton = document.querySelector('[data-test-sources]');
 
-  function loadPreferences() {
+  function apply(settings) {
+    if (settings.pageSize) pageSize.value = String(settings.pageSize);
+    if (settings.density) density.value = settings.density;
+    if (settings.siteUrl) siteUrl.value = settings.siteUrl;
+    if (settings.supportEmail) supportEmail.value = settings.supportEmail;
+    document.documentElement.dataset.adminDensity = settings.density || 'comfortable';
+  }
+
+  async function loadSettings() {
     try {
-      const saved = JSON.parse(localStorage.getItem('rss_admin_preferences') || '{}');
-      if (saved.pageSize) pageSize.value = String(saved.pageSize);
-      if (saved.density) density.value = saved.density;
-      if (saved.siteUrl) siteUrl.value = saved.siteUrl;
-      if (saved.supportEmail) supportEmail.value = saved.supportEmail;
-      document.documentElement.dataset.adminDensity = saved.density || 'comfortable';
+      const settings = await A.getSettings();
+      apply(settings);
+      status.textContent = 'Paramètres partagés chargés depuis Supabase.';
     } catch (error) {
-      console.warn('[RSS Admin] Préférences illisibles', error);
+      console.warn('[RSS Admin] paramètres Supabase', error);
+      try {
+        const local = JSON.parse(localStorage.getItem('rss_admin_preferences') || '{}');
+        apply(local);
+      } catch {}
+      status.textContent = 'Paramètres Supabase indisponibles : affichage des préférences locales.';
     }
   }
 
-  function savePreferences() {
-    const preferences = {
-      pageSize: Number(pageSize.value || 12),
+  async function savePreferences() {
+    const settings = {
+      pageSize: Math.max(5, Math.min(100, Number(pageSize.value || 20))),
       density: density.value || 'comfortable',
       siteUrl: siteUrl.value.trim(),
       supportEmail: supportEmail.value.trim()
     };
-    localStorage.setItem('rss_admin_preferences', JSON.stringify(preferences));
-    document.documentElement.dataset.adminDensity = preferences.density;
-    A.toast('Préférences enregistrées sur cet appareil', 'success');
+    saveButton.disabled = true;
+    try {
+      await A.saveSettings(settings);
+      localStorage.setItem('rss_admin_preferences', JSON.stringify(settings));
+      document.documentElement.dataset.adminDensity = settings.density;
+      A.toast('Paramètres partagés enregistrés', 'success');
+      status.textContent = 'Paramètres enregistrés dans Supabase.';
+    } catch (error) {
+      console.error(error);
+      localStorage.setItem('rss_admin_preferences', JSON.stringify(settings));
+      A.toast('Supabase indisponible : préférences enregistrées localement', 'error');
+      status.textContent = `Échec Supabase : ${error.message || 'erreur inconnue'}`;
+    } finally {
+      saveButton.disabled = false;
+    }
   }
 
   async function testSources() {
-    const client = A.getClient();
-    if (!client) {
-      status.textContent = 'Client Supabase non détecté. Vérifiez le chargement de votre configuration existante.';
-      return A.toast('Supabase non détecté', 'error');
-    }
-    status.textContent = 'Client Supabase détecté. Test des tables en cours…';
-    const tests = [];
-    for (const [name, resource] of Object.entries(A.config.resources || {})) {
-      const result = await A.tryTable(resource.tables, { limit: 1 });
-      if (result.table) tests.push(`${name}: ${result.table}`);
-    }
-    status.textContent = tests.length ? `Connexion active · ${tests.length} source(s) compatible(s).` : 'Connexion active, mais aucune table configurée n’a répondu.';
-    A.toast(tests.length ? 'Test terminé avec succès' : 'Tables à configurer', tests.length ? 'success' : 'error');
+    testButton.disabled = true;
+    status.textContent = 'Test des ressources administrateur en cours…';
+    const names = Object.keys(A.config.resources || {});
+    const results = await Promise.all(names.map(async name => {
+      try {
+        await A.listResource(name, { limit: 1 });
+        return { name, ok: true };
+      } catch (error) {
+        return { name, ok: false, error };
+      }
+    }));
+    const ok = results.filter(item => item.ok).length;
+    const failed = results.filter(item => !item.ok);
+    status.textContent = failed.length
+      ? `${ok}/${results.length} ressources disponibles. Échecs : ${failed.map(item => item.name).join(', ')}.`
+      : `${ok}/${results.length} ressources administrateur opérationnelles.`;
+    A.toast(failed.length ? 'Certaines ressources nécessitent le SQL fourni' : 'Toutes les ressources répondent', failed.length ? 'error' : 'success');
+    testButton.disabled = false;
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    loadPreferences();
-    status.textContent = A.getClient() ? 'Client Supabase détecté.' : 'Client Supabase non détecté.';
-    document.querySelector('[data-save-settings]')?.addEventListener('click', savePreferences);
-    document.querySelector('[data-test-sources]')?.addEventListener('click', testSources);
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!await A.requireAdmin()) return;
+    await loadSettings();
+    saveButton?.addEventListener('click', savePreferences);
+    testButton?.addEventListener('click', testSources);
   });
 })();

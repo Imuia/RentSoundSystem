@@ -31,7 +31,7 @@
 <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
 </nav>
     <div class="admin-sidebar-footer">
-      <div class="admin-profile-mini"><div class="admin-avatar">AD</div><div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div></div>
+      <div class="admin-profile-mini"><div class="admin-avatar">AD</div><div><strong>Administrateur</strong><span id="admin-email" data-admin-email>Vérification…</span></div></div>
       <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
     </div>
   </aside>
@@ -48,7 +48,7 @@
         <a class="admin-icon-button" href="/" title="Voir le site"><span class="material-symbols-outlined">open_in_new</span></a>
       </div>
     </header>
-    <div class="admin-content">
+    <div class="admin-content admin-main-card">
 <section class="admin-toolbar"><div><h2>Validation des partenaires</h2><p>Consultez les dossiers et préservez le workflow Supabase existant.</p></div><div class="admin-toolbar-actions"><input id="admin-search" class="admin-input" type="search" placeholder="Société, e-mail, ville…"><button id="admin-refresh" type="button" class="admin-button secondary"><span class="material-symbols-outlined">refresh</span>Actualiser</button></div></section>
 <section class="admin-card">
   <div class="admin-filterbar"><div class="filter-row"><button class="filter active" data-status="all" type="button">Tous <span id="count-all"></span></button><button class="filter" data-status="pending" type="button">À valider <span id="count-pending"></span></button><button class="filter" data-status="approved" type="button">Validés <span id="count-approved"></span></button></div><span id="admin-subtitle" class="admin-note">Chargement des dossiers…</span></div>
@@ -61,9 +61,8 @@
   <aside class="admin-drawer"><div class="drawer-head"><div><div class="kicker">Détail</div><h2 data-generic-drawer-title>Élément</h2><p>Informations complètes de l’enregistrement.</p></div><button class="icon-btn" data-generic-drawer-close type="button"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><div class="detail-grid" data-generic-drawer-content></div></div></aside>
 </div>
 <div id="header-container" hidden></div><div id="footer-container" hidden></div>
-<script src="/components.js"></script>
-<script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
 <script src="/assets/js/admin-partners.js"></script>
 </body>

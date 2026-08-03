@@ -3,11 +3,25 @@
   const A = window.RSSAdmin;
   if (!A) return;
 
-  const resources = ['reservations', 'orders', 'listings', 'clients', 'payments', 'invoices', 'partners'];
+  let revenueValues = Array(12).fill(0);
 
   function setText(selector, value) {
     const element = document.querySelector(selector);
     if (element) element.textContent = value;
+  }
+
+  function numeric(row, keys) {
+    const raw = A.pick(row, keys, 0);
+    const number = Number(raw);
+    return Number.isFinite(number) ? number : 0;
+  }
+
+  function paidStatus(value) {
+    return /paid|succeed|completed|confirm|payé/i.test(String(value || ''));
+  }
+
+  function activeListing(value) {
+    return /publish|active|actif|approved/i.test(String(value || ''));
   }
 
   function drawRevenueChart(values) {
@@ -45,74 +59,86 @@
     points.forEach(point => ctx.lineTo(point.x, point.y));
     ctx.lineTo(points.at(-1).x, height - pad.bottom);
     ctx.closePath(); ctx.fillStyle = gradient; ctx.fill();
-
     ctx.beginPath();
     points.forEach((point, index) => index ? ctx.lineTo(point.x, point.y) : ctx.moveTo(point.x, point.y));
     ctx.strokeStyle = '#fc036d'; ctx.lineWidth = 3; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.stroke();
-    points.forEach(point => { ctx.beginPath(); ctx.arc(point.x, point.y, 3.5, 0, Math.PI * 2); ctx.fillStyle = '#fff'; ctx.fill(); ctx.strokeStyle = '#fc036d'; ctx.lineWidth = 2; ctx.stroke(); });
-
-    const labels = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'].slice(0, values.length);
-    ctx.fillStyle = '#9ca3af'; ctx.font = '10px Inter, sans-serif'; ctx.textAlign = 'center';
-    labels.forEach((label, index) => ctx.fillText(label, points[index].x, height - 8));
+    points.forEach(point => {
+      ctx.beginPath(); ctx.arc(point.x, point.y, 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#fff'; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fc036d'; ctx.stroke();
+    });
+    const labels = ['Jan','Fév','Mar','Avr','Mai','Juin','Juil','Août','Sep','Oct','Nov','Déc'];
+    ctx.fillStyle = '#9ca3af'; ctx.font = '11px Inter'; ctx.textAlign = 'center';
+    labels.forEach((label, index) => ctx.fillText(label, pad.left + graphW * (index / 11), height - 8));
   }
 
-  function renderActivities(items) {
-    const list = document.querySelector('[data-dashboard-activities]');
-    if (!list) return;
-    if (!items.length) {
-      list.innerHTML = '<div class="admin-empty"><div><span class="material-symbols-outlined">history</span><h3>Aucune activité récente</h3><p>Les dernières opérations apparaîtront ici.</p></div></div>';
+  function renderActivities(rows) {
+    const box = document.querySelector('[data-dashboard-activities]');
+    if (!box) return;
+    if (!rows.length) {
+      box.innerHTML = '<div class="admin-empty"><div><span class="material-symbols-outlined">history</span><h3>Aucune activité récente</h3><p>Les prochaines actions administratives apparaîtront ici.</p></div></div>';
       return;
     }
-    list.innerHTML = items.slice(0, 8).map(item => {
-      const title = A.pick(item, ['action', 'event_type', 'message', 'status'], 'Mise à jour');
-      const subtitle = A.pick(item, ['user_email', 'source', 'service', 'description'], 'Administration');
-      const date = A.pick(item, ['created_at', 'timestamp', 'updated_at'], null);
-      return `<div class="admin-activity"><div class="admin-activity-icon"><span class="material-symbols-outlined">bolt</span></div><div><strong>${A.escapeHtml(title)}</strong><p>${A.escapeHtml(subtitle)}</p></div><time>${A.formatDate(date, true)}</time></div>`;
+    box.innerHTML = rows.slice(0, 8).map(row => {
+      const title = row.action || row.event_type || row.message || row.status || 'Mise à jour';
+      const subtitle = [row.resource, row.resource_id, row.admin_email].filter(Boolean).join(' · ');
+      return `<div class="admin-activity"><span class="admin-activity-dot"></span><div><strong>${A.escapeHtml(title)}</strong><span>${A.escapeHtml(subtitle || 'Administration')}</span></div><time>${A.formatDate(row.created_at || row.date, true)}</time></div>`;
     }).join('');
   }
 
-  async function load() {
-    const results = {};
-    for (const resourceName of resources) {
-      const resource = A.config.resources?.[resourceName];
-      if (!resource) continue;
-      results[resourceName] = await A.tryTable(resource.tables, { limit: 500 });
-    }
+  async function loadDashboard() {
+    const integration = document.querySelector('[data-dashboard-integration]');
+    try {
+      const names = ['reservations', 'orders', 'listings', 'payments', 'partners', 'logs'];
+      const entries = await Promise.all(names.map(async name => {
+        try { return [name, await A.listResource(name, { limit: A.config.maxRows || 2000 })]; }
+        catch (error) { console.warn(`[RSS Admin] ${name}`, error); return [name, []]; }
+      }));
+      const results = Object.fromEntries(entries);
 
-    setText('[data-kpi-reservations]', results.reservations?.rows.length || 0);
-    setText('[data-kpi-orders]', results.orders?.rows.length || 0);
-    setText('[data-kpi-listings]', results.listings?.rows.length || 0);
-    setText('[data-kpi-partners]', results.partners?.rows.length || 0);
+      const reservations = results.reservations || [];
+      const orders = results.orders || [];
+      const listings = results.listings || [];
+      const payments = results.payments || [];
+      const partners = results.partners || [];
 
-    const payments = results.payments?.rows || [];
-    const paymentResource = A.config.resources.payments;
-    const totalRevenue = payments.reduce((sum, row) => sum + Number(A.pick(row, paymentResource.amount, 0) || 0), 0);
-    setText('[data-kpi-revenue]', A.formatMoney(totalRevenue));
+      const reservationCount = reservations.filter(row => !/cancel/i.test(String(row.status || ''))).length;
+      const pendingOrders = orders.filter(row => /pending|nouveau|processing/i.test(String(row.status || ''))).length;
+      const listingCount = listings.filter(row => activeListing(row.status)).length;
+      const pendingPartners = partners.filter(row => /pending|attente/i.test(String(row.status || ''))).length;
+      const successfulPayments = payments.filter(row => paidStatus(row.status || row.payment_status));
+      const revenue = successfulPayments.reduce((sum, row) => sum + numeric(row, ['amount', 'total_price', 'total', 'total_amount']), 0);
 
-    const monthValues = Array(12).fill(0);
-    payments.forEach(row => {
-      const dateValue = A.pick(row, paymentResource.date, null);
-      const date = dateValue ? new Date(dateValue) : null;
-      if (date && !Number.isNaN(date.getTime())) monthValues[date.getMonth()] += Number(A.pick(row, paymentResource.amount, 0) || 0);
-    });
-    drawRevenueChart(monthValues.some(Boolean) ? monthValues : [1200, 1800, 1500, 2600, 3100, 2850, 3900, 4200, 3600, 4700, 5100, 5600]);
+      setText('[data-kpi-reservations]', reservationCount);
+      setText('[data-kpi-orders]', pendingOrders);
+      setText('[data-kpi-listings]', listingCount);
+      setText('[data-kpi-partners]', pendingPartners);
+      setText('[data-kpi-revenue]', A.formatMoney(revenue));
 
-    const logs = await A.tryTable(A.config.resources.logs.tables, { limit: 30 });
-    renderActivities(logs.rows || []);
-
-    const note = document.querySelector('[data-dashboard-integration]');
-    if (note) {
-      const connectedTables = Object.values(results).filter(result => result.table).length;
-      note.textContent = connectedTables
-        ? `${connectedTables} source${connectedTables > 1 ? 's' : ''} Supabase détectée${connectedTables > 1 ? 's' : ''}.`
-        : 'Aucune source Supabase détectée. Configurez les tables dans admin-config.js.';
-      note.classList.toggle('error', !connectedTables);
+      revenueValues = Array(12).fill(0);
+      const currentYear = new Date().getFullYear();
+      successfulPayments.forEach(row => {
+        const date = new Date(row.date || row.paid_at || row.created_at || '');
+        if (Number.isNaN(date.getTime()) || date.getFullYear() !== currentYear) return;
+        revenueValues[date.getMonth()] += numeric(row, ['amount', 'total_price', 'total', 'total_amount']);
+      });
+      drawRevenueChart(revenueValues);
+      renderActivities(results.logs || []);
+      if (integration) integration.textContent = 'Données réelles synchronisées via les fonctions Supabase administrateur.';
+    } catch (error) {
+      console.error('[RSS Admin] dashboard', error);
+      if (integration) integration.textContent = `Erreur de synchronisation : ${error.message || 'inconnue'}`;
+      A.toast('Dashboard indisponible. Vérifiez le SQL administrateur.', 'error');
     }
   }
 
-  document.addEventListener('DOMContentLoaded', load);
+  let resizeTimer;
   window.addEventListener('resize', () => {
-    const canvas = document.querySelector('#revenue-chart');
-    if (canvas) drawRevenueChart([1200, 1800, 1500, 2600, 3100, 2850, 3900, 4200, 3600, 4700, 5100, 5600]);
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => drawRevenueChart(revenueValues), 120);
+  });
+
+  document.addEventListener('DOMContentLoaded', async () => {
+    if (!await A.requireAdmin()) return;
+    await loadDashboard();
   });
 })();

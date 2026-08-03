@@ -49,7 +49,7 @@
       </div>
     </header>
     <div class="admin-content">
-<section class="admin-toolbar"><div><h2>Bonjour, voici l’activité de RentSoundSystem</h2><p>Les indicateurs utilisent les tables Supabase détectées dans la configuration.</p></div><div class="admin-toolbar-actions"><a class="admin-button secondary" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Voir les devis</a><a class="admin-button primary" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Voir les réservations</a></div></section>
+<section class="admin-toolbar"><div><h2>Bonjour, voici l’activité de RentSoundSystem</h2><p>Les indicateurs utilisent les données réelles exposées par les fonctions Supabase administrateur.</p></div><div class="admin-toolbar-actions"><a class="admin-button secondary" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Voir les devis</a><a class="admin-button primary" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Voir les réservations</a></div></section>
 <div class="admin-kpis">
   <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">event_available</span></div><div class="admin-kpi-value" data-kpi-reservations>0</div><div class="admin-kpi-label">Réservations</div><span class="admin-kpi-trend">Temps réel</span></article>
   <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">request_quote</span></div><div class="admin-kpi-value" data-kpi-orders>0</div><div class="admin-kpi-label">Devis & commandes</div><span class="admin-kpi-trend">À traiter</span></article>
@@ -57,7 +57,7 @@
   <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">payments</span></div><div class="admin-kpi-value" data-kpi-revenue>0 €</div><div class="admin-kpi-label">Revenus enregistrés</div><span class="admin-kpi-trend">Stripe</span></article>
 </div>
 <div class="admin-grid admin-grid-3">
-  <section class="admin-card" style="grid-column:span 2"><div class="admin-card-header"><div><h2>Évolution des revenus</h2><p>Consolidation mensuelle des paiements détectés.</p></div><span class="admin-status success">Synchronisé</span></div><div class="admin-card-body admin-chart"><canvas id="revenue-chart" aria-label="Évolution des revenus"></canvas></div></section>
+  <section class="admin-card" style="grid-column:span 2"><div class="admin-card-header"><div><h2>Évolution des revenus</h2><p>Consolidation mensuelle des paiements confirmés dans les réservations.</p></div><span class="admin-status success">Synchronisé</span></div><div class="admin-card-body admin-chart"><canvas id="revenue-chart" aria-label="Évolution des revenus"></canvas></div></section>
   <section class="admin-card"><div class="admin-card-header"><div><h2>Actions prioritaires</h2><p>Contrôles recommandés.</p></div></div><div class="admin-card-body admin-grid"><div class="admin-alert warning"><span class="material-symbols-outlined">pending_actions</span><div><strong>Devis en attente</strong><div class="admin-note">Validez les demandes avant expiration.</div></div></div><div class="admin-alert info"><span class="material-symbols-outlined">verified_user</span><div><strong>Partenaires</strong><div class="admin-note"><span data-kpi-partners>0</span> dossiers détectés.</div></div></div><div class="admin-alert success"><span class="material-symbols-outlined">health_and_safety</span><div><strong>Surveillance</strong><div class="admin-note" data-dashboard-integration>Vérification des sources…</div></div></div></div></section>
 </div>
 <div class="admin-grid admin-grid-2" style="margin-top:18px">
@@ -70,9 +70,8 @@
   <aside class="admin-drawer"><div class="drawer-head"><div><div class="kicker">Détail</div><h2 data-generic-drawer-title>Élément</h2><p>Informations complètes de l’enregistrement.</p></div><button class="icon-btn" data-generic-drawer-close type="button"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><div class="detail-grid" data-generic-drawer-content></div></div></aside>
 </div>
 <div id="header-container" hidden></div><div id="footer-container" hidden></div>
-<script src="/components.js"></script>
-<script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
 <script src="/assets/js/admin-dashboard.js"></script>
 </body>

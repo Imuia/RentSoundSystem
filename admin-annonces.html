@@ -55,7 +55,7 @@
 </section>
 <section class="admin-card">
   <div class="admin-filterbar">
-    <div class="admin-filter-group"><button class="admin-filter active" data-resource-status="all" type="button">Toutes</button><button class="admin-filter " data-resource-status="active" type="button">Actives</button><button class="admin-filter " data-resource-status="pending" type="button">À valider</button><button class="admin-filter " data-resource-status="inactive" type="button">Masquées</button></div>
+    <div class="admin-filter-group"><button class="admin-filter active" data-resource-status="all" type="button">Toutes</button><button class="admin-filter" data-resource-status="publish" type="button">Publiées</button><button class="admin-filter" data-resource-status="pending" type="button">À valider</button><button class="admin-filter" data-resource-status="hidden" type="button">Masquées</button><button class="admin-filter" data-resource-status="rejected" type="button">Rejetées</button></div>
     <div style="display:flex;gap:9px;align-items:center;min-width:min(360px,100%)"><input class="admin-input" data-resource-search type="search" placeholder="Rechercher…"><span class="admin-note" data-resource-count>0 résultat</span></div>
   </div>
   <div class="admin-table-wrap">
@@ -74,9 +74,8 @@
   <aside class="admin-drawer"><div class="drawer-head"><div><div class="kicker">Détail</div><h2 data-generic-drawer-title>Élément</h2><p>Informations complètes de l’enregistrement.</p></div><button class="icon-btn" data-generic-drawer-close type="button"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><div class="detail-grid" data-generic-drawer-content></div></div></aside>
 </div>
 <div id="header-container" hidden></div><div id="footer-container" hidden></div>
-<script src="/components.js"></script>
-<script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
 <script src="/assets/js/admin-generic-page.js"></script>
 </body>

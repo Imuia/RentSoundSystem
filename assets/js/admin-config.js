@@ -1,105 +1,124 @@
 /**
- * RentSoundSystem Admin — configuration centrale.
- *
- * Ce fichier ne contient volontairement aucune clé secrète.
- * Le client Supabase est détecté parmi les variables déjà utilisées par le projet.
- * Si votre projet expose un client sous un autre nom, ajoutez-le dans clientCandidates.
+ * RentSoundSystem Admin — configuration fonctionnelle.
+ * La clé ci-dessous est la clé publique/publishable Supabase déjà utilisée par le site.
+ * Aucune service_role ni clé Stripe secrète ne doit être placée dans le navigateur.
  */
 window.RSS_ADMIN_CONFIG = {
   siteName: 'RentSoundSystem',
   siteUrl: 'https://rentsoundsystem.com',
+  loginUrl: '/connexion-inscription.html',
   supportEmail: 'support@rentsoundsystem.com',
-  pageSize: 12,
-  demoMode: false,
-  clientCandidates: ['rssSupabase', 'supabaseClient', '_supabase', 'db'],
+  pageSize: 20,
+  maxRows: 2000,
+  supabaseUrl: 'https://crxofkxinsspfgdsxpiy.supabase.co',
+  supabaseAnonKey: 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj',
+  allowedAdminRoles: ['admin', 'super_admin'],
+  clientCandidates: ['rssSupabase', 'supabaseClient', '_supabase', 'db', 'supabaseDb'],
+
   resources: {
     reservations: {
       label: 'Réservations',
-      tables: ['reservations', 'bookings'],
+      source: 'reservations',
+      readOnly: false,
+      statusOptions: ['pending', 'confirmed', 'completed', 'cancelled'],
       id: ['id', 'reservation_id'],
-      title: ['reference', 'booking_reference', 'id'],
-      subtitle: ['customer_name', 'client_name', 'customer_email', 'email'],
+      title: ['title', 'equipment_name', 'product_name', 'reference', 'order_reference', 'id'],
+      subtitle: ['subtitle', 'customer_name', 'client_name', 'customer_email', 'partner_name', 'partner_email'],
       status: ['status', 'reservation_status'],
-      amount: ['total_amount', 'amount', 'total', 'price'],
-      date: ['start_date', 'event_date', 'created_at'],
-      location: ['city', 'location', 'delivery_city']
+      amount: ['amount', 'total_price', 'total', 'total_amount'],
+      date: ['date', 'start_date', 'event_date', 'created_at'],
+      location: ['location', 'event_city', 'city', 'delivery_city']
     },
     orders: {
-      label: 'Commandes & devis',
-      tables: ['orders', 'quote_requests', 'quotes'],
-      id: ['id', 'order_id'],
-      title: ['reference', 'quote_number', 'id'],
-      subtitle: ['customer_name', 'name', 'email', 'customer_email'],
-      status: ['status', 'quote_status'],
-      amount: ['total_amount', 'amount', 'estimated_total'],
-      date: ['event_date', 'created_at'],
-      location: ['city', 'location']
+      label: 'Commandes',
+      source: 'orders',
+      readOnly: false,
+      statusOptions: ['pending', 'confirmed', 'completed', 'cancelled'],
+      id: ['id', 'order_id', 'reservation_id'],
+      title: ['title', 'reference', 'order_reference', 'reservation_number', 'id'],
+      subtitle: ['subtitle', 'equipment_name', 'product_name', 'customer_name', 'customer_email'],
+      status: ['status', 'reservation_status'],
+      amount: ['amount', 'total_price', 'total', 'total_amount'],
+      date: ['date', 'created_at', 'start_date'],
+      location: ['location', 'event_city', 'city']
     },
     listings: {
       label: 'Annonces & matériel',
-      tables: ['listings', 'equipment', 'products', 'announcements'],
+      source: 'listings',
+      readOnly: false,
+      statusOptions: ['pending', 'pending_review', 'publish', 'hidden', 'rejected'],
       id: ['id', 'listing_id'],
-      title: ['title', 'name', 'equipment_name'],
-      subtitle: ['category', 'subcategory', 'partner_name'],
+      title: ['title', 'name', 'equipment_name', 'id'],
+      subtitle: ['subtitle', 'category', 'subcategory', 'brand', 'partner_name'],
       status: ['status', 'publication_status', 'is_active'],
-      amount: ['daily_price', 'price_per_day', 'price'],
-      date: ['updated_at', 'created_at'],
-      location: ['city', 'location']
+      amount: ['amount', 'price', 'daily_price', 'price_per_day'],
+      date: ['date', 'updated_at', 'created_at'],
+      location: ['location', 'city']
     },
     clients: {
       label: 'Clients',
-      tables: ['profiles', 'customers', 'clients'],
+      source: 'clients',
+      readOnly: true,
+      statusOptions: [],
       id: ['id', 'user_id'],
-      title: ['full_name', 'name', 'company_name', 'email'],
-      subtitle: ['email', 'phone'],
+      title: ['title', 'full_name', 'company_name', 'email', 'id'],
+      subtitle: ['subtitle', 'email', 'phone', 'company_name'],
       status: ['status', 'account_status', 'user_type'],
-      amount: ['lifetime_value', 'total_spent'],
-      date: ['last_sign_in_at', 'created_at'],
-      location: ['city', 'country']
+      amount: [],
+      date: ['date', 'created_at', 'updated_at'],
+      location: ['location', 'city', 'country']
     },
     payments: {
-      label: 'Paiements',
-      tables: ['payments', 'transactions', 'payment_records'],
-      id: ['id', 'payment_id', 'stripe_payment_intent_id'],
-      title: ['reference', 'stripe_payment_intent_id', 'id'],
-      subtitle: ['customer_email', 'email', 'payment_method'],
+      label: 'Paiements Stripe',
+      source: 'payments',
+      readOnly: true,
+      statusOptions: [],
+      id: ['id', 'payment_id', 'stripe_payment_intent_id', 'rental_payment_intent_id'],
+      title: ['title', 'reference', 'order_reference', 'rental_payment_intent_id', 'id'],
+      subtitle: ['subtitle', 'customer_email', 'email', 'equipment_name'],
       status: ['status', 'payment_status'],
-      amount: ['amount', 'total_amount'],
-      date: ['paid_at', 'created_at'],
-      location: ['currency', 'country']
+      amount: ['amount', 'total_price', 'total', 'total_amount'],
+      date: ['date', 'paid_at', 'created_at'],
+      location: ['location', 'event_city', 'city']
     },
     invoices: {
       label: 'Factures',
-      tables: ['invoices', 'billing_invoices'],
-      id: ['id', 'invoice_id'],
-      title: ['invoice_number', 'number', 'id'],
-      subtitle: ['customer_name', 'customer_email', 'email'],
-      status: ['status', 'payment_status'],
-      amount: ['total_amount', 'amount', 'total'],
-      date: ['issued_at', 'created_at'],
-      location: ['currency', 'country']
+      source: 'invoices',
+      readOnly: true,
+      statusOptions: [],
+      id: ['id', 'invoice_id', 'reservation_id'],
+      title: ['title', 'invoice_number', 'reference', 'order_reference', 'id'],
+      subtitle: ['subtitle', 'customer_email', 'email', 'equipment_name'],
+      status: ['status', 'invoice_status', 'payment_status'],
+      amount: ['amount', 'total_price', 'total', 'total_amount'],
+      date: ['date', 'invoice_date', 'created_at'],
+      location: ['location', 'event_city', 'city']
     },
     partners: {
       label: 'Partenaires',
-      tables: ['partner_applications', 'partners', 'profiles'],
+      source: 'partners',
+      readOnly: false,
+      statusOptions: ['pending', 'approved', 'rejected'],
       id: ['id', 'partner_id'],
-      title: ['company_name', 'business_name', 'full_name', 'email'],
-      subtitle: ['email', 'city', 'country'],
-      status: ['status', 'validation_status', 'partner_status'],
-      amount: ['revenue', 'total_revenue'],
-      date: ['created_at', 'updated_at'],
-      location: ['city', 'country']
+      title: ['title', 'company_name', 'full_name', 'email', 'id'],
+      subtitle: ['subtitle', 'full_name', 'contact_name', 'email'],
+      status: ['status', 'validation_status'],
+      amount: ['amount', 'fleet_value'],
+      date: ['date', 'created_at', 'updated_at'],
+      location: ['location', 'city', 'country']
     },
     logs: {
-      label: 'Journaux techniques',
-      tables: ['audit_logs', 'webhook_logs', 'system_logs'],
+      label: 'Journaux',
+      source: 'logs',
+      readOnly: true,
+      statusOptions: [],
       id: ['id'],
-      title: ['action', 'event_type', 'message'],
-      subtitle: ['source', 'service', 'user_email'],
+      title: ['title', 'action', 'event_type', 'message', 'id'],
+      subtitle: ['subtitle', 'resource', 'resource_id', 'admin_email'],
       status: ['status', 'level'],
       amount: [],
-      date: ['created_at', 'timestamp'],
-      location: ['ip_address', 'environment']
+      date: ['date', 'created_at'],
+      location: ['location', 'service']
     }
   }
 };

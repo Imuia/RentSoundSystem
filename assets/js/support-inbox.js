@@ -18,10 +18,16 @@
     const {data:{session}}=await state.sb.auth.getSession();
     if(!session?.user){location.href="/connexion-inscription.html?redirect="+encodeURIComponent(location.pathname);return false;}
     state.user=session.user;
-    const {data:agent,error}=await state.sb.from("support_agents").select("role,active").eq("user_id",state.user.id).maybeSingle();
-    if(error||!agent?.active){
-      $("#support-app").innerHTML='<section class="card" style="padding:32px;grid-column:1/-1"><h2 style="font-family:Manrope,sans-serif;margin-top:0">Accès non autorisé</h2><p style="color:var(--muted);line-height:1.6">Cette page est réservée à l’équipe RentSoundSystem. Ajoutez votre compte dans la table <strong>support_agents</strong> depuis Supabase avant de l’utiliser.</p></section>';
-      note("Votre compte n’est pas encore déclaré comme agent support.",true);
+    const [{data:agent,error:agentError},{data:adminRole,error:adminError}]=await Promise.all([
+      state.sb.from("support_agents").select("role,active").eq("user_id",state.user.id).maybeSingle(),
+      state.sb.rpc("my_admin_role")
+    ]);
+    const isAdmin=["admin","super_admin"].includes(String(adminRole||""));
+    const isSupport=!agentError&&Boolean(agent?.active);
+    if(!isAdmin&&!isSupport){
+      $("#support-app").innerHTML='<section class="card" style="padding:32px;grid-column:1/-1"><h2 style="font-family:Manrope,sans-serif;margin-top:0">Accès non autorisé</h2><p style="color:var(--muted);line-height:1.6">Cette page est réservée aux administrateurs ou aux agents support actifs.</p></section>';
+      note("Votre compte ne possède pas les droits support nécessaires.",true);
+      console.warn("Support access",agentError||adminError);
       return false;
     }
     return true;
