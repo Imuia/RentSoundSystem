@@ -324,3 +324,189 @@ a { color: inherit; }
   .bubble { max-width: 91%; }
   .admin-drawer, .drawer-panel { width: 100vw; padding: 18px; }
 }
+
+/* ========================================================================== 
+   Thème clair renforcé — lisibilité globale du back-office
+   Empêche les styles sombres du site public de rendre les textes pâles.
+   La navigation latérale reste sombre pour conserver l'identité de marque.
+   ========================================================================== */
+:root {
+  --rss-bg: #ffffff;
+  --rss-card: #ffffff;
+  --rss-text: #111827;
+  --rss-muted: #4b5563;
+  --rss-border: #dfe3e8;
+}
+
+html,
+body,
+.admin-app,
+.admin-main,
+.admin-content {
+  background: #ffffff !important;
+  color: #111827 !important;
+}
+
+.admin-topbar,
+.admin-card,
+.admin-card-header,
+.admin-card-body,
+.admin-filterbar,
+.admin-table-wrap,
+.admin-pagination,
+.support-sidebar,
+.card,
+.panel,
+.panel > .meta,
+.composer,
+.admin-drawer,
+.drawer-panel,
+.request-card,
+.admin-icon-button,
+.admin-button.secondary,
+.button,
+.button.secondary,
+.icon-btn,
+.admin-input,
+.admin-select,
+.admin-textarea,
+.search,
+.review-note,
+.textarea,
+.thread,
+.bubble {
+  background-color: #ffffff !important;
+}
+
+/* Titres et données principales : contraste fort */
+.admin-main .admin-page-heading h1,
+.admin-main .admin-toolbar h2,
+.admin-main .admin-card-header h2,
+.admin-main .admin-card-header h3,
+.admin-main .admin-kpi-value,
+.admin-main .admin-table-primary strong,
+.admin-main .admin-table td,
+.admin-main .request-company h3,
+.admin-main .toolbar h2,
+.admin-main .panel > .meta h2,
+.admin-main .drawer-head h2,
+.admin-main .drawer-section h3,
+.admin-main .detail strong,
+.admin-main .history-item strong,
+.admin-main .thread strong,
+.admin-main .bubble:not(.self),
+.admin-main .admin-activity strong,
+.admin-main .admin-empty h3,
+.admin-main .empty h3 {
+  color: #111827 !important;
+}
+
+/* Textes secondaires plus foncés que la version précédente */
+.admin-main .admin-page-heading p,
+.admin-main .admin-toolbar p,
+.admin-main .admin-card-header p,
+.admin-main .admin-kpi-label,
+.admin-main .admin-note:not(.error),
+.admin-main .note:not(.error),
+.admin-main .notice:not(.error),
+.admin-main .request-company p,
+.admin-main .toolbar p,
+.admin-main .panel > .meta p,
+.admin-main .drawer-head p,
+.admin-main .history-item p,
+.admin-main .thread span,
+.admin-main .bubble .who,
+.admin-main .admin-activity p,
+.admin-main .admin-pagination-info,
+.admin-main .admin-table-primary span,
+.admin-main .empty,
+.admin-main .loading,
+.admin-main .admin-empty,
+.admin-main small {
+  color: #4b5563 !important;
+}
+
+.admin-main .admin-field label,
+.admin-main .field-label,
+.admin-main .admin-table th {
+  color: #374151 !important;
+}
+
+.admin-main .admin-table th {
+  background: #f3f4f6 !important;
+}
+
+.admin-main .admin-table td {
+  background: #ffffff !important;
+  border-bottom-color: #e5e7eb !important;
+}
+
+.admin-main .admin-table tbody tr:hover td,
+.admin-main .thread:hover,
+.admin-main .thread.active {
+  background: #fff4f8 !important;
+}
+
+.admin-main .stream,
+.admin-main .detail,
+.admin-main .history-item,
+.admin-main .meta:not(.support-meta),
+.admin-main .admin-search-global input {
+  background: #f8fafc !important;
+}
+
+.admin-main input::placeholder,
+.admin-main textarea::placeholder {
+  color: #6b7280 !important;
+  opacity: 1 !important;
+}
+
+/* Conserver les textes blancs seulement sur les éléments colorés */
+.admin-main .admin-button.primary,
+.admin-main .admin-button.success,
+.admin-main .button.primary,
+.admin-main .bubble.self,
+.admin-main .admin-toast,
+.admin-main .admin-brand-mark {
+  color: #ffffff !important;
+}
+
+/* Les badges gardent leur code couleur et leur lisibilité */
+.admin-main .admin-status.success,
+.admin-main .status.approved { color: #087659 !important; }
+.admin-main .admin-status.warning,
+.admin-main .status.pending { color: #8a5a12 !important; }
+.admin-main .admin-status.danger { color: #b42318 !important; }
+.admin-main .admin-status.info { color: #1d4ed8 !important; }
+.admin-main .admin-status.neutral,
+.admin-main .status.other { color: #4b5563 !important; }
+
+/* Cartes et blocs mieux séparés sur fond blanc */
+.admin-card,
+.support-sidebar,
+.card,
+.request-card {
+  border-color: #dfe3e8 !important;
+  box-shadow: 0 7px 22px rgba(15, 23, 42, .07) !important;
+}
+
+/* Sécurité : la sidebar garde son thème sombre et ses textes clairs */
+.admin-sidebar,
+.admin-sidebar * {
+  color: inherit;
+}
+.admin-sidebar .admin-brand-copy strong,
+.admin-sidebar .admin-profile-mini strong,
+.admin-sidebar .admin-nav-link.active,
+.admin-sidebar .admin-nav-link:hover,
+.admin-sidebar .admin-nav-badge {
+  color: #ffffff !important;
+}
+.admin-sidebar .admin-brand-copy span,
+.admin-sidebar .admin-profile-mini span,
+.admin-sidebar .admin-nav-label {
+  color: #a9a3ab !important;
+}
+.admin-sidebar .admin-nav-link {
+  color: #d4d0d6 !important;
+}
