@@ -1,194 +1,70 @@
 <!DOCTYPE html>
-<html class="dark" lang="fr">
+<html lang="fr">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Administration partenaires | RentSoundSystem</title>
-  <link rel="preload" href="/header.html" as="fetch" crossorigin>
-  <link rel="preload" href="/footer.html" as="fetch" crossorigin>
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Partenaires | Administration RentSoundSystem</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --pink:#fc036d;--pink-2:#ff4a91;--bg:#0c0c0f;--panel:#17171c;--panel-2:#212128;
-      --text:#f7eff3;--muted:#cdb5c0;--line:rgba(255,255,255,.09);--green:#8df1be;
-      --yellow:#ffd074;--red:#ffaaa8;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;background:radial-gradient(circle at 92% 2%,rgba(252,3,109,.18),transparent 27%),linear-gradient(180deg,#181017 0%,#0c0c0f 58%);color:var(--text);font-family:Inter,system-ui,sans-serif}
-    body{padding-top:74px}
-    #header-container,#footer-container{width:100%;max-width:none}
-    .admin-shell{max-width:1390px;margin:0 auto;padding:48px 28px 72px}
-    .admin-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:34px}
-    .kicker{display:inline-flex;align-items:center;gap:8px;color:#ff8abb;background:rgba(252,3,109,.11);border:1px solid rgba(252,3,109,.31);border-radius:999px;padding:9px 13px;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
-    h1{font-family:Manrope,sans-serif;font-size:clamp(38px,5vw,64px);line-height:1.02;letter-spacing:-.05em;margin:18px 0 12px}
-    .subtitle{max-width:810px;color:var(--muted);font-size:16px;line-height:1.65;margin:0}
-    .admin-user{display:flex;align-items:center;gap:11px;border:1px solid var(--line);background:rgba(255,255,255,.03);border-radius:14px;padding:12px 14px;min-width:235px}
-    .admin-user-icon{width:36px;height:36px;display:grid;place-items:center;border-radius:50%;background:rgba(252,3,109,.16);border:1px solid rgba(252,3,109,.32);color:#ff8abb}
-    .admin-user span{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}
-    .admin-user strong{display:block;font-size:13px;overflow-wrap:anywhere}
-    .admin-layout{display:grid;grid-template-columns:260px minmax(0,1fr);gap:24px;align-items:start}
-    .admin-nav,.admin-main-card,.request-card,.drawer-panel{border:1px solid var(--line);background:linear-gradient(145deg,rgba(28,28,34,.94),rgba(12,12,15,.98));box-shadow:0 20px 58px rgba(0,0,0,.30)}
-    .admin-nav{position:sticky;top:97px;border-radius:18px;padding:15px}
-    .brand{display:block;color:var(--pink);text-decoration:none;font-family:Manrope,sans-serif;font-size:18px;font-weight:800;letter-spacing:-.04em;padding:8px 9px 17px;border-bottom:1px solid var(--line);margin-bottom:14px}
-    .brand small{display:block;font-family:Inter,sans-serif;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-top:6px}
-    .nav-link{display:flex;align-items:center;gap:11px;padding:12px 12px;border-radius:11px;color:var(--muted);text-decoration:none;font-size:13px;font-weight:800;margin-top:5px}
-    .nav-link.active{background:linear-gradient(135deg,rgba(252,3,109,.24),rgba(252,3,109,.07));color:#fff;border:1px solid rgba(252,3,109,.24)}
-    .nav-link.muted{opacity:.5;pointer-events:none}
-    .nav-link .material-symbols-outlined{font-size:20px}
-    .admin-main-card{border-radius:20px;padding:24px;min-width:0}
-    .toolbar{display:flex;justify-content:space-between;align-items:center;gap:16px;padding-bottom:19px;border-bottom:1px solid var(--line);margin-bottom:19px}
-    .toolbar h2{font-family:Manrope,sans-serif;font-size:23px;letter-spacing:-.03em;margin:0 0 5px}
-    .toolbar p{color:var(--muted);font-size:13px;margin:0}
-    .toolbar-actions{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
-    .search{height:42px;width:270px;max-width:100%;border:1px solid var(--line);background:#111116;color:#fff;border-radius:10px;padding:0 12px;font:inherit;font-size:13px;outline:none}
-    .search:focus{border-color:rgba(252,3,109,.65);box-shadow:0 0 0 3px rgba(252,3,109,.11)}
-    .filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
-    .filter{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.025);color:var(--muted);padding:8px 11px;border-radius:999px;font-weight:800;font-size:12px;cursor:pointer}
-    .filter.active{color:#fff;border-color:rgba(252,3,109,.45);background:rgba(252,3,109,.15)}
-    .request-list{display:grid;gap:11px}
-    .request-card{border-radius:15px;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;cursor:pointer;transition:.2s ease}
-    .request-card:hover{transform:translateY(-2px);border-color:rgba(252,3,109,.52)}
-    .request-company{display:flex;align-items:flex-start;gap:12px;min-width:0}
-    .request-avatar{width:43px;height:43px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;background:linear-gradient(145deg,rgba(252,3,109,.28),rgba(252,3,109,.05));color:#ff9bc3;border:1px solid rgba(252,3,109,.30);font-family:Manrope,sans-serif;font-weight:800}
-    .request-company h3{font-family:Manrope,sans-serif;font-size:17px;line-height:1.15;letter-spacing:-.025em;margin:0 0 5px}
-    .request-company p{margin:0;color:var(--muted);font-size:12px;line-height:1.6;overflow-wrap:anywhere}
-    .request-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
-    .meta{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.065);border-radius:999px;padding:5px 8px;color:var(--muted);font-size:11px;font-weight:700}
-    .meta .material-symbols-outlined{font-size:14px;color:#ff88b9}
-    .request-side{display:flex;flex-direction:column;align-items:flex-end;justify-content:space-between;gap:12px}
-    .status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:7px 10px;font-size:11px;font-weight:900}
-    .status.pending{color:var(--yellow);background:rgba(255,208,116,.10);border:1px solid rgba(255,208,116,.24)}
-    .status.approved{color:var(--green);background:rgba(141,241,190,.10);border:1px solid rgba(141,241,190,.22)}
-    .status.other{color:var(--muted);background:rgba(255,255,255,.05);border:1px solid var(--line)}
-    .view{display:inline-flex;align-items:center;gap:5px;color:#ff82b3;font-size:12px;font-weight:900}
-    .empty{border:1px dashed rgba(252,3,109,.34);border-radius:15px;padding:52px 24px;text-align:center;color:var(--muted)}
-    .empty .material-symbols-outlined{font-size:38px;color:#ff85b7}.empty h3{font-family:Manrope,sans-serif;color:#fff;margin:12px 0 7px}
-    .loading{display:grid;place-items:center;min-height:230px;color:var(--muted)}.loading .material-symbols-outlined{font-size:34px;color:#ff83b5;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-    .note{font-size:12px;color:var(--muted);padding-top:13px}.note.error{color:var(--red)}
-    .drawer-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.68);backdrop-filter:blur(3px);z-index:90;padding:24px;align-items:center;justify-content:flex-end}
-    .drawer-backdrop.open{display:flex}
-    .drawer-panel{height:min(92vh,920px);width:min(760px,100%);overflow:auto;border-radius:20px;padding:25px;position:relative}
-    .drawer-head{display:flex;align-items:flex-start;justify-content:space-between;gap:15px;padding-bottom:18px;border-bottom:1px solid var(--line)}
-    .drawer-head h2{font-family:Manrope,sans-serif;font-size:29px;letter-spacing:-.04em;margin:8px 0 6px}
-    .drawer-head p{margin:0;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
-    .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:#fff;display:grid;place-items:center;cursor:pointer}
-    .drawer-section{padding:22px 0;border-bottom:1px solid var(--line)}
-    .drawer-section h3{font-family:Manrope,sans-serif;font-size:17px;margin:0 0 13px;letter-spacing:-.02em}
-    .detail-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    .detail{min-width:0;background:rgba(255,255,255,.028);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:11px}
-    .detail span{display:block;color:#ff9cc4;font-size:10px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
-    .detail strong{display:block;font-size:13px;line-height:1.45;overflow-wrap:anywhere}
-    .doc-list{display:flex;flex-wrap:wrap;gap:8px}.doc{display:inline-flex;align-items:center;gap:6px;padding:9px 11px;border:1px solid rgba(252,3,109,.33);border-radius:9px;color:#ff9bc3;text-decoration:none;font-size:12px;font-weight:800;background:rgba(252,3,109,.07)}.doc:hover{background:rgba(252,3,109,.16)}
-    .history{display:grid;gap:9px}.history-item{padding:11px;border:1px solid rgba(255,255,255,.06);border-radius:10px;background:rgba(255,255,255,.025)}.history-item strong{font-size:12px}.history-item p{margin:6px 0 0;color:var(--muted);font-size:12px;line-height:1.5}.history-item small{display:block;color:#9e8791;font-size:11px;margin-top:6px}
-    .field-label{display:block;color:#ff9cc4;font-size:10px;letter-spacing:.11em;font-weight:900;text-transform:uppercase;margin:0 0 8px}
-    .review-note{display:block;width:100%;min-height:94px;border:1px solid var(--line);border-radius:11px;background:#101014;color:#fff;padding:12px;font:inherit;font-size:13px;outline:none;resize:vertical}.review-note:focus{border-color:rgba(252,3,109,.7);box-shadow:0 0 0 3px rgba(252,3,109,.11)}
-    .review-actions{display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px}
-    .button{display:inline-flex;align-items:center;justify-content:center;gap:7px;border-radius:10px;padding:10px 13px;font:inherit;font-size:12px;font-weight:900;cursor:pointer;border:1px solid transparent}
-    .button.primary{color:#fff;background:linear-gradient(135deg,var(--pink),var(--pink-2));box-shadow:0 10px 25px rgba(252,3,109,.25)}
-    .button.secondary{color:#f2d8e2;background:rgba(255,255,255,.035);border-color:var(--line)}
-    .button:disabled{opacity:.58;cursor:wait}
-    .security-note{margin-top:16px;padding:12px 13px;border-left:3px solid var(--pink);background:rgba(252,3,109,.07);color:var(--muted);font-size:12px;line-height:1.55;border-radius:0 9px 9px 0}
-    @media(max-width:960px){.admin-layout{grid-template-columns:1fr}.admin-nav{position:relative;top:auto}.admin-nav nav{display:flex;gap:8px;overflow:auto}.nav-link{white-space:nowrap}.brand{margin-bottom:8px}.admin-hero{align-items:flex-start;flex-direction:column}.admin-user{width:100%}}
-    @media(max-width:670px){body{padding-top:71px}.admin-shell{padding:30px 16px 54px}.admin-main-card{padding:16px}.toolbar{align-items:flex-start;flex-direction:column}.toolbar-actions,.search{width:100%}.request-card{grid-template-columns:1fr}.request-side{align-items:flex-start}.drawer-backdrop{padding:10px}.drawer-panel{height:96vh;padding:19px}.detail-grid{grid-template-columns:1fr}}
-  </style>
+  <link rel="stylesheet" href="/assets/css/admin-dashboard.css">
 </head>
-<body>
-  <div id="header-container"></div>
-
-  <main class="admin-shell">
-    <header class="admin-hero">
-      <div>
-        <div class="kicker"><span class="material-symbols-outlined" style="font-size:17px">admin_panel_settings</span>Back office RentSoundSystem</div>
-        <h1>Partenaires à valider.</h1>
-        <p class="subtitle">Vérifiez les dossiers déposés par les partenaires, consultez leurs informations et validez uniquement les profils conformes. Les décisions et notes sont journalisées séparément.</p>
+<body data-admin-page="partners">
+<div class="admin-app">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="/admin-dashboard.html"><span class="admin-brand-mark">R</span><span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span></a>
+    <nav class="admin-nav">
+<div class="admin-nav-label">Pilotage</div>
+<a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+<a class="admin-nav-link active" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+<a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+<a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+<a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+<div class="admin-nav-label">Gestion</div>
+<a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+<a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+<a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+<div class="admin-nav-label">Opérations</div>
+<a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+<a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+<div class="admin-nav-label">Système</div>
+<a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+</nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-profile-mini"><div class="admin-avatar">AD</div><div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div></div>
+      <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+    </div>
+  </aside>
+  <div class="admin-mobile-overlay" data-admin-close-menu></div>
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu"><span class="material-symbols-outlined">menu</span></button>
+        <div class="admin-page-heading"><h1>Partenaires</h1><p>Validation des sociétés, documents et capacités logistiques.</p></div>
       </div>
-      <div class="admin-user">
-        <div class="admin-user-icon"><span class="material-symbols-outlined">shield_person</span></div>
-        <div><span>Accès administrateur</span><strong id="admin-email">Vérification…</strong></div>
+      <div class="admin-topbar-actions">
+        <div class="admin-search-global"><span class="material-symbols-outlined">search</span><input type="search" placeholder="Rechercher dans l’administration…"></div>
+        <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser"><span class="material-symbols-outlined">refresh</span></button>
+        <a class="admin-icon-button" href="/" title="Voir le site"><span class="material-symbols-outlined">open_in_new</span></a>
       </div>
     </header>
-
-    <div class="admin-layout">
-      <aside class="admin-nav">
-        <a class="brand" href="/"><span>RentSoundSystem</span><small>Administration</small></a>
-        <nav>
-          <a class="nav-link active" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
-          <span class="nav-link muted"><span class="material-symbols-outlined">inventory_2</span>Annonces · bientôt</span>
-          <span class="nav-link muted"><span class="material-symbols-outlined">event_note</span>Réservations · bientôt</span>
-          <a class="nav-link" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
-        </nav>
-        <div class="security-note">Cette page est accessible uniquement aux rôles <strong>super_admin</strong> et <strong>admin</strong>.</div>
-      </aside>
-
-      <section class="admin-main-card">
-        <div class="toolbar">
-          <div><h2>Dossiers partenaires</h2><p id="admin-subtitle">Chargement des dossiers…</p></div>
-          <div class="toolbar-actions">
-            <input id="admin-search" class="search" type="search" placeholder="Société, e-mail, ville…">
-            <button id="admin-refresh" type="button" class="button secondary"><span class="material-symbols-outlined" style="font-size:18px">refresh</span>Actualiser</button>
-          </div>
-        </div>
-        <div class="filter-row">
-          <button class="filter active" data-status="all" type="button">Tous <span id="count-all"></span></button>
-          <button class="filter" data-status="pending" type="button">À valider <span id="count-pending"></span></button>
-          <button class="filter" data-status="approved" type="button">Validés <span id="count-approved"></span></button>
-        </div>
-        <div id="partner-request-list" class="request-list"><div class="loading"><span class="material-symbols-outlined">sync</span></div></div>
-        <div id="admin-note" class="note"></div>
-      </section>
-    </div>
+    <div class="admin-content">
+<section class="admin-toolbar"><div><h2>Validation des partenaires</h2><p>Consultez les dossiers et préservez le workflow Supabase existant.</p></div><div class="admin-toolbar-actions"><input id="admin-search" class="admin-input" type="search" placeholder="Société, e-mail, ville…"><button id="admin-refresh" type="button" class="admin-button secondary"><span class="material-symbols-outlined">refresh</span>Actualiser</button></div></section>
+<section class="admin-card">
+  <div class="admin-filterbar"><div class="filter-row"><button class="filter active" data-status="all" type="button">Tous <span id="count-all"></span></button><button class="filter" data-status="pending" type="button">À valider <span id="count-pending"></span></button><button class="filter" data-status="approved" type="button">Validés <span id="count-approved"></span></button></div><span id="admin-subtitle" class="admin-note">Chargement des dossiers…</span></div>
+  <div class="admin-card-body"><div id="partner-request-list" class="request-list"><div class="loading"><span class="material-symbols-outlined">sync</span></div></div><div id="admin-note" class="note"></div></div>
+</section>
+<div id="partner-drawer" class="drawer-backdrop" aria-hidden="true"><section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title"><div class="drawer-head"><div><div class="kicker">Dossier partenaire</div><h2 id="drawer-title">Chargement…</h2><p id="drawer-subtitle"></p></div><button id="drawer-close" class="icon-btn" type="button" aria-label="Fermer"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><h3>Informations société</h3><div id="drawer-company" class="detail-grid"></div></div><div class="drawer-section"><h3>Matériel & catégories</h3><div id="drawer-equipment" class="detail-grid"></div></div><div class="drawer-section"><h3>Logistique</h3><div id="drawer-logistics" class="detail-grid"></div></div><div class="drawer-section"><h3>Documents communiqués</h3><div id="drawer-documents" class="doc-list"></div></div><div class="drawer-section"><h3>Historique interne</h3><div id="drawer-history" class="history"><div class="loading"><span class="material-symbols-outlined">sync</span></div></div></div><div class="drawer-section"><h3>Décision de validation</h3><label class="field-label" for="review-note">Note interne ou demande de complément</label><textarea id="review-note" class="review-note" placeholder="Ex. Assurance à fournir avant activation."></textarea><div class="review-actions"><button id="save-note" type="button" class="button secondary"><span class="material-symbols-outlined">note_add</span>Enregistrer la note</button><button id="keep-pending" type="button" class="button secondary"><span class="material-symbols-outlined">schedule</span>Conserver en attente</button><button id="approve-partner" type="button" class="button primary"><span class="material-symbols-outlined">verified</span>Valider le partenaire</button></div><p class="note">Les identifiants et actions d’origine sont conservés pour rester compatibles avec <code>/assets/js/admin-partners.js</code>.</p></div></section></div></div>
   </main>
-
-  <div id="partner-drawer" class="drawer-backdrop" aria-hidden="true">
-    <section class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
-      <div class="drawer-head">
-        <div>
-          <div class="kicker">Dossier partenaire</div>
-          <h2 id="drawer-title">Chargement…</h2>
-          <p id="drawer-subtitle"></p>
-        </div>
-        <button id="drawer-close" class="icon-btn" type="button" aria-label="Fermer"><span class="material-symbols-outlined">close</span></button>
-      </div>
-
-      <div class="drawer-section">
-        <h3>Informations société</h3>
-        <div id="drawer-company" class="detail-grid"></div>
-      </div>
-      <div class="drawer-section">
-        <h3>Matériel & catégories</h3>
-        <div id="drawer-equipment" class="detail-grid"></div>
-      </div>
-      <div class="drawer-section">
-        <h3>Logistique</h3>
-        <div id="drawer-logistics" class="detail-grid"></div>
-      </div>
-      <div class="drawer-section">
-        <h3>Documents communiqués</h3>
-        <div id="drawer-documents" class="doc-list"></div>
-      </div>
-      <div class="drawer-section">
-        <h3>Historique interne</h3>
-        <div id="drawer-history" class="history"><div class="loading"><span class="material-symbols-outlined">sync</span></div></div>
-      </div>
-      <div class="drawer-section">
-        <h3>Décision de validation</h3>
-        <label class="field-label" for="review-note">Note interne ou demande de complément</label>
-        <textarea id="review-note" class="review-note" placeholder="Ex. Assurance à fournir avant activation. Cette note est interne pour le moment."></textarea>
-        <div class="review-actions">
-          <button id="save-note" type="button" class="button secondary"><span class="material-symbols-outlined" style="font-size:18px">note_add</span>Enregistrer la note</button>
-          <button id="keep-pending" type="button" class="button secondary"><span class="material-symbols-outlined" style="font-size:18px">schedule</span>Conserver en attente</button>
-          <button id="approve-partner" type="button" class="button primary"><span class="material-symbols-outlined" style="font-size:18px">verified</span>Valider le partenaire</button>
-        </div>
-        <p class="note">Le refus définitif sera ajouté avec une notification partenaire dédiée. Pour l’instant, un dossier non conforme reste en attente avec une note interne : cela préserve le flux partenaire actuel.</p>
-      </div>
-    </section>
-  </div>
-
-  <div id="footer-container"></div>
-  <script src="/assets/js/admin-partners.js"></script>
-  <script src="/components.js"></script>
+</div>
+<div class="admin-drawer-backdrop" data-generic-drawer aria-hidden="true">
+  <aside class="admin-drawer"><div class="drawer-head"><div><div class="kicker">Détail</div><h2 data-generic-drawer-title>Élément</h2><p>Informations complètes de l’enregistrement.</p></div><button class="icon-btn" data-generic-drawer-close type="button"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><div class="detail-grid" data-generic-drawer-content></div></div></aside>
+</div>
+<div id="header-container" hidden></div><div id="footer-container" hidden></div>
+<script src="/components.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+<script src="/assets/js/admin-partners.js"></script>
 </body>
 </html>

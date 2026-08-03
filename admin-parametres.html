@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Support & messagerie | Administration RentSoundSystem</title>
+  <title>Paramètres | Administration RentSoundSystem</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/admin-dashboard.css">
 </head>
-<body data-admin-page="support">
+<body data-admin-page="settings">
 <div class="admin-app">
   <aside class="admin-sidebar">
     <a class="admin-brand" href="/admin-dashboard.html"><span class="admin-brand-mark">R</span><span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span></a>
@@ -25,10 +25,10 @@
 <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
 <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
 <div class="admin-nav-label">Opérations</div>
-<a class="admin-nav-link active" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+<a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
 <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
 <div class="admin-nav-label">Système</div>
-<a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+<a class="admin-nav-link active" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
 </nav>
     <div class="admin-sidebar-footer">
       <div class="admin-profile-mini"><div class="admin-avatar">AD</div><div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div></div>
@@ -40,7 +40,7 @@
     <header class="admin-topbar">
       <div class="admin-topbar-left">
         <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu"><span class="material-symbols-outlined">menu</span></button>
-        <div class="admin-page-heading"><h1>Support & messagerie</h1><p>Demandes clients, suivi des conversations et clôture des tickets.</p></div>
+        <div class="admin-page-heading"><h1>Paramètres</h1><p>Configuration du back-office et vérification des connexions.</p></div>
       </div>
       <div class="admin-topbar-actions">
         <div class="admin-search-global"><span class="material-symbols-outlined">search</span><input type="search" placeholder="Rechercher dans l’administration…"></div>
@@ -49,11 +49,12 @@
       </div>
     </header>
     <div class="admin-content">
-<section class="admin-toolbar"><div><h2>Boîte de réception support</h2><p>Répondez aux clients depuis le même back-office.</p></div><div class="admin-toolbar-actions"><button id="refresh-inbox" class="admin-button secondary" type="button"><span class="material-symbols-outlined">refresh</span>Actualiser</button></div></section>
-<section id="support-app" class="support-layout">
-  <aside class="support-sidebar"><div class="toolbar"><div><h2>Demandes clients</h2><p id="inbox-count">Chargement…</p></div></div><div style="padding:10px;display:flex;gap:7px;border-bottom:1px solid var(--rss-border)"><button class="filter active" data-filter="open">Ouvertes</button><button class="filter" data-filter="all">Toutes</button><button class="filter" data-filter="closed">Clôturées</button></div><div id="support-thread-list" class="thread-list"><div class="empty">Chargement de la boîte de réception…</div></div></aside>
-  <section class="card panel"><div class="meta"><div><h2 id="support-title">Sélectionnez une demande</h2><p id="support-client">Les demandes des clients apparaîtront ici.</p></div><button id="toggle-thread-status" class="button" type="button" disabled>Clôturer</button></div><div id="support-stream" class="stream"><div class="empty">Sélectionnez une demande dans la colonne de gauche.</div></div><form id="support-reply-form" class="composer"><textarea id="support-reply" class="textarea" placeholder="Écrivez votre réponse au client…" disabled></textarea><button id="support-send" class="button primary" type="submit" disabled>Répondre</button></form></section>
-</section><p id="support-note" class="notice">Connexion à la messagerie sécurisée…</p></div>
+<section class="admin-toolbar"><div><h2>Paramètres de l’administration</h2><p>Préférences visuelles et contrôle de l’intégration. Aucun secret n’est stocké ici.</p></div><div class="admin-toolbar-actions"><button class="admin-button primary" data-save-settings type="button"><span class="material-symbols-outlined">save</span>Enregistrer</button></div></section>
+<div class="admin-grid admin-grid-2">
+<section class="admin-card"><div class="admin-card-header"><div><h2>Préférences</h2><p>Réglages locaux du back-office.</p></div></div><div class="admin-card-body admin-form-grid"><div class="admin-field"><label for="setting-page-size">Lignes par page</label><select class="admin-select" id="setting-page-size"><option>10</option><option selected>12</option><option>20</option><option>50</option></select></div><div class="admin-field"><label for="setting-density">Densité</label><select class="admin-select" id="setting-density"><option value="comfortable">Confortable</option><option value="compact">Compacte</option></select></div><div class="admin-field"><label for="setting-site-url">URL publique</label><input class="admin-input" id="setting-site-url" value="https://rentsoundsystem.com"></div><div class="admin-field"><label for="setting-support-email">E-mail support</label><input class="admin-input" id="setting-support-email" value="support@rentsoundsystem.com"></div></div></section>
+<section class="admin-card"><div class="admin-card-header"><div><h2>État technique</h2><p>Détection non intrusive des services.</p></div></div><div class="admin-card-body admin-grid"><div class="admin-alert info"><span class="material-symbols-outlined">database</span><div><strong>Supabase</strong><div class="admin-note" data-settings-supabase>Vérification…</div></div></div><div class="admin-alert warning"><span class="material-symbols-outlined">key</span><div><strong>Secrets serveur</strong><div class="admin-note">Stripe, Resend et service_role doivent rester dans Vercel/Supabase, jamais dans ces fichiers.</div></div></div><button class="admin-button secondary" data-test-sources type="button"><span class="material-symbols-outlined">network_check</span>Tester les sources de données</button></div></section>
+</div>
+<section class="admin-card" style="margin-top:18px"><div class="admin-card-header"><div><h2>Correspondance des tables</h2><p>Modifiez uniquement <code>/assets/js/admin-config.js</code> si les noms réels diffèrent.</p></div></div><div class="admin-card-body"><div class="detail-grid"><div class="detail"><span>Réservations</span><strong>reservations / bookings</strong></div><div class="detail"><span>Commandes</span><strong>orders / quote_requests / quotes</strong></div><div class="detail"><span>Matériel</span><strong>listings / equipment / products</strong></div><div class="detail"><span>Clients</span><strong>profiles / customers / clients</strong></div><div class="detail"><span>Paiements</span><strong>payments / transactions</strong></div><div class="detail"><span>Factures</span><strong>invoices / billing_invoices</strong></div></div></div></section></div>
   </main>
 </div>
 <div class="admin-drawer-backdrop" data-generic-drawer aria-hidden="true">
@@ -64,6 +65,6 @@
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-config.js"></script>
 <script src="/assets/js/admin-core.js"></script>
-<script src="/assets/js/support-inbox.js"></script>
+<script src="/assets/js/admin-settings.js"></script>
 </body>
 </html>

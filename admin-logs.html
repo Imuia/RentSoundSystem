@@ -3,13 +3,13 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Support & messagerie | Administration RentSoundSystem</title>
+  <title>Journaux techniques | Administration RentSoundSystem</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/assets/css/admin-dashboard.css">
 </head>
-<body data-admin-page="support">
+<body data-admin-page="logs" data-resource="logs">
 <div class="admin-app">
   <aside class="admin-sidebar">
     <a class="admin-brand" href="/admin-dashboard.html"><span class="admin-brand-mark">R</span><span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span></a>
@@ -25,8 +25,8 @@
 <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
 <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
 <div class="admin-nav-label">Opérations</div>
-<a class="admin-nav-link active" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
-<a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+<a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+<a class="admin-nav-link active" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
 <div class="admin-nav-label">Système</div>
 <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
 </nav>
@@ -40,7 +40,7 @@
     <header class="admin-topbar">
       <div class="admin-topbar-left">
         <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu"><span class="material-symbols-outlined">menu</span></button>
-        <div class="admin-page-heading"><h1>Support & messagerie</h1><p>Demandes clients, suivi des conversations et clôture des tickets.</p></div>
+        <div class="admin-page-heading"><h1>Journaux techniques</h1><p>Webhooks, audits, erreurs et événements de sécurité.</p></div>
       </div>
       <div class="admin-topbar-actions">
         <div class="admin-search-global"><span class="material-symbols-outlined">search</span><input type="search" placeholder="Rechercher dans l’administration…"></div>
@@ -49,11 +49,25 @@
       </div>
     </header>
     <div class="admin-content">
-<section class="admin-toolbar"><div><h2>Boîte de réception support</h2><p>Répondez aux clients depuis le même back-office.</p></div><div class="admin-toolbar-actions"><button id="refresh-inbox" class="admin-button secondary" type="button"><span class="material-symbols-outlined">refresh</span>Actualiser</button></div></section>
-<section id="support-app" class="support-layout">
-  <aside class="support-sidebar"><div class="toolbar"><div><h2>Demandes clients</h2><p id="inbox-count">Chargement…</p></div></div><div style="padding:10px;display:flex;gap:7px;border-bottom:1px solid var(--rss-border)"><button class="filter active" data-filter="open">Ouvertes</button><button class="filter" data-filter="all">Toutes</button><button class="filter" data-filter="closed">Clôturées</button></div><div id="support-thread-list" class="thread-list"><div class="empty">Chargement de la boîte de réception…</div></div></aside>
-  <section class="card panel"><div class="meta"><div><h2 id="support-title">Sélectionnez une demande</h2><p id="support-client">Les demandes des clients apparaîtront ici.</p></div><button id="toggle-thread-status" class="button" type="button" disabled>Clôturer</button></div><div id="support-stream" class="stream"><div class="empty">Sélectionnez une demande dans la colonne de gauche.</div></div><form id="support-reply-form" class="composer"><textarea id="support-reply" class="textarea" placeholder="Écrivez votre réponse au client…" disabled></textarea><button id="support-send" class="button primary" type="submit" disabled>Répondre</button></form></section>
-</section><p id="support-note" class="notice">Connexion à la messagerie sécurisée…</p></div>
+<section class="admin-toolbar">
+  <div><h2>Journaux techniques</h2><p>Recherche, filtres, détail, mise à jour du statut et export CSV.</p></div>
+  <div class="admin-toolbar-actions"><button class="admin-button secondary" data-export-page type="button"><span class="material-symbols-outlined">download</span>Exporter</button><button class="admin-button primary" data-resource-refresh type="button"><span class="material-symbols-outlined">refresh</span>Actualiser</button></div>
+</section>
+<section class="admin-card">
+  <div class="admin-filterbar">
+    <div class="admin-filter-group"><button class="admin-filter active" data-resource-status="all" type="button">Tous</button><button class="admin-filter " data-resource-status="success" type="button">Succès</button><button class="admin-filter " data-resource-status="warning" type="button">Alertes</button><button class="admin-filter " data-resource-status="error" type="button">Erreurs</button></div>
+    <div style="display:flex;gap:9px;align-items:center;min-width:min(360px,100%)"><input class="admin-input" data-resource-search type="search" placeholder="Rechercher…"><span class="admin-note" data-resource-count>0 résultat</span></div>
+  </div>
+  <div class="admin-table-wrap">
+    <table class="admin-table">
+      <thead><tr><th>Élément</th><th>Localisation</th><th>Montant</th><th>Date</th><th>Statut</th><th style="text-align:right">Actions</th></tr></thead>
+      <tbody data-resource-body></tbody>
+    </table>
+    <div class="loading" data-resource-loading><div><span class="material-symbols-outlined">sync</span><p>Chargement des données…</p></div></div>
+    <div class="admin-empty hidden" data-resource-empty><div><span class="material-symbols-outlined">inbox</span><h3>Aucun résultat</h3><p>Modifiez les filtres ou vérifiez la connexion Supabase.</p></div></div>
+  </div>
+  <div class="admin-pagination"><span class="admin-pagination-info" data-integration-note>Connexion aux données…</span><div class="admin-pagination-buttons"><button class="admin-button secondary" data-page-prev type="button">Précédent</button><span class="admin-button secondary" data-page-info>Page 1</span><button class="admin-button secondary" data-page-next type="button">Suivant</button></div></div>
+</section></div>
   </main>
 </div>
 <div class="admin-drawer-backdrop" data-generic-drawer aria-hidden="true">
@@ -64,6 +78,6 @@
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-config.js"></script>
 <script src="/assets/js/admin-core.js"></script>
-<script src="/assets/js/support-inbox.js"></script>
+<script src="/assets/js/admin-generic-page.js"></script>
 </body>
 </html>

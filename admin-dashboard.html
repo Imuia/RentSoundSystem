@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Vue d’ensemble | Administration RentSoundSystem</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+</head>
+<body data-admin-page="dashboard">
+<div class="admin-app">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="/admin-dashboard.html"><span class="admin-brand-mark">R</span><span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span></a>
+    <nav class="admin-nav">
+<div class="admin-nav-label">Pilotage</div>
+<a class="admin-nav-link active" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+<a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+<a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+<a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+<a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+<div class="admin-nav-label">Gestion</div>
+<a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+<a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+<a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+<div class="admin-nav-label">Opérations</div>
+<a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+<a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+<div class="admin-nav-label">Système</div>
+<a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+</nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-profile-mini"><div class="admin-avatar">AD</div><div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div></div>
+      <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+    </div>
+  </aside>
+  <div class="admin-mobile-overlay" data-admin-close-menu></div>
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu"><span class="material-symbols-outlined">menu</span></button>
+        <div class="admin-page-heading"><h1>Vue d’ensemble</h1><p>Pilotage global de la plateforme, revenus et opérations prioritaires.</p></div>
+      </div>
+      <div class="admin-topbar-actions">
+        <div class="admin-search-global"><span class="material-symbols-outlined">search</span><input type="search" placeholder="Rechercher dans l’administration…"></div>
+        <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser"><span class="material-symbols-outlined">refresh</span></button>
+        <a class="admin-icon-button" href="/" title="Voir le site"><span class="material-symbols-outlined">open_in_new</span></a>
+      </div>
+    </header>
+    <div class="admin-content">
+<section class="admin-toolbar"><div><h2>Bonjour, voici l’activité de RentSoundSystem</h2><p>Les indicateurs utilisent les tables Supabase détectées dans la configuration.</p></div><div class="admin-toolbar-actions"><a class="admin-button secondary" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Voir les devis</a><a class="admin-button primary" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Voir les réservations</a></div></section>
+<div class="admin-kpis">
+  <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">event_available</span></div><div class="admin-kpi-value" data-kpi-reservations>0</div><div class="admin-kpi-label">Réservations</div><span class="admin-kpi-trend">Temps réel</span></article>
+  <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">request_quote</span></div><div class="admin-kpi-value" data-kpi-orders>0</div><div class="admin-kpi-label">Devis & commandes</div><span class="admin-kpi-trend">À traiter</span></article>
+  <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">inventory_2</span></div><div class="admin-kpi-value" data-kpi-listings>0</div><div class="admin-kpi-label">Annonces actives</div><span class="admin-kpi-trend">Catalogue</span></article>
+  <article class="admin-card admin-kpi"><div class="admin-kpi-icon"><span class="material-symbols-outlined">payments</span></div><div class="admin-kpi-value" data-kpi-revenue>0 €</div><div class="admin-kpi-label">Revenus enregistrés</div><span class="admin-kpi-trend">Stripe</span></article>
+</div>
+<div class="admin-grid admin-grid-3">
+  <section class="admin-card" style="grid-column:span 2"><div class="admin-card-header"><div><h2>Évolution des revenus</h2><p>Consolidation mensuelle des paiements détectés.</p></div><span class="admin-status success">Synchronisé</span></div><div class="admin-card-body admin-chart"><canvas id="revenue-chart" aria-label="Évolution des revenus"></canvas></div></section>
+  <section class="admin-card"><div class="admin-card-header"><div><h2>Actions prioritaires</h2><p>Contrôles recommandés.</p></div></div><div class="admin-card-body admin-grid"><div class="admin-alert warning"><span class="material-symbols-outlined">pending_actions</span><div><strong>Devis en attente</strong><div class="admin-note">Validez les demandes avant expiration.</div></div></div><div class="admin-alert info"><span class="material-symbols-outlined">verified_user</span><div><strong>Partenaires</strong><div class="admin-note"><span data-kpi-partners>0</span> dossiers détectés.</div></div></div><div class="admin-alert success"><span class="material-symbols-outlined">health_and_safety</span><div><strong>Surveillance</strong><div class="admin-note" data-dashboard-integration>Vérification des sources…</div></div></div></div></section>
+</div>
+<div class="admin-grid admin-grid-2" style="margin-top:18px">
+  <section class="admin-card"><div class="admin-card-header"><div><h2>Activité récente</h2><p>Événements techniques et administratifs.</p></div><a href="/admin-logs.html" class="admin-button secondary">Tous les logs</a></div><div class="admin-card-body admin-activity-list" data-dashboard-activities></div></section>
+  <section class="admin-card"><div class="admin-card-header"><div><h2>Raccourcis</h2><p>Accès rapide aux tâches fréquentes.</p></div></div><div class="admin-card-body admin-grid admin-grid-2"><a class="admin-button secondary" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Valider un partenaire</a><a class="admin-button secondary" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Gérer le matériel</a><a class="admin-button secondary" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Contrôler les factures</a><a class="admin-button secondary" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Répondre au support</a></div></section>
+</div></div>
+  </main>
+</div>
+<div class="admin-drawer-backdrop" data-generic-drawer aria-hidden="true">
+  <aside class="admin-drawer"><div class="drawer-head"><div><div class="kicker">Détail</div><h2 data-generic-drawer-title>Élément</h2><p>Informations complètes de l’enregistrement.</p></div><button class="icon-btn" data-generic-drawer-close type="button"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><div class="detail-grid" data-generic-drawer-content></div></div></aside>
+</div>
+<div id="header-container" hidden></div><div id="footer-container" hidden></div>
+<script src="/components.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+<script src="/assets/js/admin-dashboard.js"></script>
+</body>
+</html>
