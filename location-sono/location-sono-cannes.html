@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Location Sono Cannes - RentSoundSystem</title>
+  <meta name="description" content="Location de sonorisation professionnelle à Cannes et sur la Côte d'Azur : systèmes audio premium, matériel DJ, éclairage et support technique pour événements, yachts, villas et productions.">
+  <meta name="robots" content="index,follow">
+
+  <!-- Fonts/icons used only by the Stitch-derived content -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    /*
+      Page-specific styles only.
+      IMPORTANT: no Tailwind CDN and no global reset, so the site's shared
+      header/footer keep their existing appearance and behaviour.
+    */
+    .cannes-page {
+      --rss-bg: #131313;
+      --rss-bg-lowest: #0e0e0e;
+      --rss-bg-low: #1c1b1b;
+      --rss-surface: #201f1f;
+      --rss-surface-high: #2a2a2a;
+      --rss-surface-highest: #353534;
+      --rss-text: #e5e2e1;
+      --rss-muted: #e6bcc2;
+      --rss-primary: #FC036D;
+      --rss-primary-soft: rgba(252, 3, 109, .12);
+      --rss-border: rgba(255,255,255,.06);
+      --rss-glow: rgba(252,3,109,.30);
+      --rss-container: 1280px;
+
+      background: var(--rss-bg);
+      color: var(--rss-text);
+      font-family: Inter, Arial, sans-serif;
+      overflow: hidden;
+      width: 100%;
+    }
+
+    .cannes-page,
+    .cannes-page *,
+    .cannes-page *::before,
+    .cannes-page *::after {
+      box-sizing: border-box;
+    }
+
+    .cannes-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .cannes-container {
+      width: min(var(--rss-container), calc(100% - 80px));
+      margin-inline: auto;
+    }
+
+    .cannes-section {
+      padding: 96px 0;
+    }
+
+    .cannes-glass {
+      background: linear-gradient(145deg, rgba(31,31,31,.60), rgba(28,27,27,.82));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--rss-border);
+      border-radius: 12px;
+    }
+
+    .cannes-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      border: 1px solid rgba(252,3,109,.24);
+      border-radius: 999px;
+      background: rgba(252,3,109,.10);
+      color: var(--rss-primary);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .cannes-kicker-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--rss-primary);
+      box-shadow: 0 0 18px var(--rss-glow);
+      animation: cannes-pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes cannes-pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .55; transform: scale(.78); }
+    }
+
+    /* HERO */
+    .cannes-hero {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      isolation: isolate;
+      padding: 120px 0 72px;
+      overflow: hidden;
+    }
+
+    .cannes-hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .cannes-hero-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: .40;
+      display: block;
+    }
+
+    .cannes-hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(19,19,19,.40) 0%, rgba(19,19,19,.78) 55%, #131313 100%),
+        radial-gradient(circle at 25% 30%, rgba(252,3,109,.10), transparent 40%);
+    }
+
+    .cannes-hero-copy {
+      max-width: 820px;
+    }
+
+    .cannes-hero h1 {
+      margin: 28px 0 20px;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      line-height: 1.08;
+      letter-spacing: -.035em;
+      font-weight: 700;
+      color: var(--rss-text);
+    }
+
+    .cannes-gradient-text {
+      background: linear-gradient(90deg, var(--rss-primary), #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .cannes-lead {
+      max-width: 720px;
+      margin: 0 0 34px;
+      color: var(--rss-muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .cannes-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .cannes-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 14px 26px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .cannes-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .cannes-btn-primary {
+      background: var(--rss-primary);
+      color: #fff !important;
+      box-shadow: 0 0 30px var(--rss-glow);
+    }
+
+    .cannes-btn-primary:hover {
+      box-shadow: 0 0 40px rgba(252,3,109,.42);
+    }
+
+    .cannes-btn-secondary {
+      background: rgba(31,31,31,.62);
+      color: var(--rss-text) !important;
+      border-color: var(--rss-border);
+      backdrop-filter: blur(12px);
+    }
+
+    .cannes-btn-secondary:hover {
+      background: var(--rss-surface);
+    }
+
+    /* TYPOGRAPHY */
+    .cannes-title {
+      margin: 0;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 3vw, 40px);
+      line-height: 1.2;
+      letter-spacing: -.02em;
+      font-weight: 700;
+      color: var(--rss-text);
+    }
+
+    .cannes-copy {
+      margin: 12px 0 0;
+      max-width: 650px;
+      color: var(--rss-muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    /* HUB MAP */
+    .cannes-hubs {
+      background: var(--rss-bg-low);
+    }
+
+    .cannes-map {
+      position: relative;
+      height: 500px;
+      margin-top: 42px;
+      overflow: hidden;
+    }
+
+    .cannes-map > img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(1);
+      opacity: .34;
+      display: block;
+    }
+
+    .cannes-map::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(to top, rgba(14,14,14,.20), transparent 50%);
+    }
+
+    .cannes-marker {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translate(-50%, -50%);
+    }
+
+    .cannes-marker-main {
+      left: 33%;
+      top: 50%;
+    }
+
+    .cannes-marker-secondary {
+      left: 69%;
+      top: 35%;
+    }
+
+    .cannes-marker-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--rss-primary);
+      box-shadow: 0 0 28px var(--rss-glow);
+      border: 1px solid rgba(255,255,255,.25);
+    }
+
+    .cannes-marker-secondary .cannes-marker-dot {
+      width: 11px;
+      height: 11px;
+      background: var(--rss-surface-highest);
+      border-color: var(--rss-primary);
+    }
+
+    .cannes-marker-label {
+      margin-top: 9px;
+      padding: 7px 10px;
+      background: rgba(31,31,31,.78);
+      border: 1px solid rgba(252,3,109,.28);
+      border-radius: 4px;
+      color: var(--rss-primary);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      backdrop-filter: blur(10px);
+    }
+
+    .cannes-marker-secondary .cannes-marker-label {
+      color: var(--rss-muted);
+      border-color: var(--rss-border);
+      font-size: 9px;
+    }
+
+    /* ARSENAL */
+    .cannes-arsenal {
+      background: var(--rss-bg);
+    }
+
+    .cannes-arsenal .cannes-title {
+      text-align: center;
+      margin-bottom: 42px;
+    }
+
+    .cannes-bento {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      grid-auto-rows: 300px;
+      gap: 24px;
+    }
+
+    .cannes-card {
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      padding: 30px;
+    }
+
+    .cannes-card-wide { grid-column: span 8; }
+    .cannes-card-narrow { grid-column: span 4; }
+
+    .cannes-card-media {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      opacity: .58;
+      transition: transform .7s ease;
+    }
+
+    .cannes-card:hover .cannes-card-media {
+      transform: scale(1.045);
+    }
+
+    .cannes-card-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,14,14,.96), rgba(14,14,14,.06) 75%);
+    }
+
+    .cannes-card-content {
+      position: absolute;
+      z-index: 2;
+      left: 30px;
+      right: 30px;
+      bottom: 28px;
+    }
+
+    .cannes-card-tag {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      margin-bottom: 9px;
+      color: var(--rss-primary);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .cannes-card h3 {
+      margin: 0 0 7px;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 22px;
+      line-height: 1.3;
+      color: var(--rss-text);
+    }
+
+    .cannes-card p {
+      margin: 0;
+      color: var(--rss-muted);
+      font-size: 14px;
+      line-height: 1.55;
+      max-width: 580px;
+    }
+
+    .cannes-card-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-color: rgba(252,3,109,.20);
+    }
+
+    .cannes-card-center .cannes-card-content {
+      position: static;
+    }
+
+    .cannes-card-center .material-symbols-outlined {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--rss-primary);
+      font-size: 38px;
+    }
+
+    /* SEO BLOCK */
+    .cannes-seo {
+      position: relative;
+      background: var(--rss-bg-lowest);
+      border-top: 1px solid var(--rss-border);
+      border-bottom: 1px solid var(--rss-border);
+    }
+
+    .cannes-seo-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(320px, .82fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .cannes-seo-text p {
+      margin: 18px 0 0;
+      color: var(--rss-muted);
+      font-size: 15px;
+      line-height: 1.68;
+    }
+
+    .cannes-checks {
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .cannes-checks li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--rss-muted);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .cannes-checks .material-symbols-outlined {
+      flex: 0 0 auto;
+      margin-top: 2px;
+      color: var(--rss-primary);
+      font-size: 18px;
+    }
+
+    .cannes-equalizer-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 540px;
+      justify-self: end;
+    }
+
+    .cannes-equalizer {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+      padding: 8px;
+      background: linear-gradient(145deg, rgba(31,31,31,.60), rgba(28,27,27,.82));
+      border: 1px solid var(--rss-border);
+      border-radius: 12px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .cannes-equalizer-inner {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      background: var(--rss-surface-high);
+      border-radius: 8px;
+    }
+
+    .cannes-equalizer-inner .material-symbols-outlined {
+      color: var(--rss-surface-highest);
+      font-size: clamp(84px, 10vw, 120px);
+    }
+
+    .cannes-equalizer-glow {
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      background: rgba(252,3,109,.18);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .cannes-container {
+        width: min(100% - 48px, var(--rss-container));
+      }
+
+      .cannes-section {
+        padding: 72px 0;
+      }
+
+      .cannes-hero {
+        min-height: 660px;
+        padding-top: 110px;
+      }
+
+      .cannes-bento {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(280px, auto);
+      }
+
+      .cannes-card-wide,
+      .cannes-card-narrow {
+        grid-column: auto;
+        min-height: 300px;
+      }
+
+      .cannes-seo-grid {
+        grid-template-columns: 1fr;
+        gap: 42px;
+      }
+
+      .cannes-equalizer-wrap {
+        justify-self: stretch;
+        max-width: 620px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .cannes-container {
+        width: calc(100% - 32px);
+      }
+
+      .cannes-section {
+        padding: 56px 0;
+      }
+
+      .cannes-hero {
+        min-height: 620px;
+        padding: 104px 0 56px;
+      }
+
+      .cannes-hero h1 {
+        font-size: 45px;
+        line-height: 1.08;
+      }
+
+      .cannes-lead {
+        font-size: 16px;
+      }
+
+      .cannes-actions {
+        align-items: stretch;
+      }
+
+      .cannes-btn {
+        width: 100%;
+      }
+
+      .cannes-map {
+        height: 360px;
+        margin-top: 30px;
+      }
+
+      .cannes-marker-main {
+        left: 34%;
+        top: 54%;
+      }
+
+      .cannes-marker-secondary {
+        left: 70%;
+        top: 37%;
+      }
+
+      .cannes-marker-label {
+        font-size: 8px;
+        letter-spacing: .08em;
+      }
+
+      .cannes-card {
+        padding: 22px;
+      }
+
+      .cannes-card-content {
+        left: 22px;
+        right: 22px;
+        bottom: 22px;
+      }
+
+      .cannes-card h3 {
+        font-size: 20px;
+      }
+
+      .cannes-seo-grid {
+        gap: 32px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .cannes-page *,
+      .cannes-page *::before,
+      .cannes-page *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header commun RentSoundSystem -->
+  <div id="site-header"></div>
+
+  <main class="cannes-page">
+    <section class="cannes-hero" aria-labelledby="cannes-title">
+      <div class="cannes-hero-media" aria-hidden="true">
+        <img
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx2f7-3VSIe-FAGxf2zm_da7_Su3Jz0cywxY5tHUUgEUPShj7OmqjPjDd--Cgoatmeb7hWYW7x2MyRxPGlgwQgEr1JU014S05qHLxJhuwmcZ8ne4zRXKS_EDkwlUZqy46-iizMt2MIGotPp7UbSOKCROlFB35IpkIcIwdrnz5lhlyZ8L0zRP-P4oidkew9T10-YKoJqyEz5dWsvYyKT8uHoNBaP4vlvUCHlwcAnGAS_dz3ctcLpKiGU25HB4UBaIHqnvlMtDx6Tpc"
+          alt=""
+          loading="eager"
+          fetchpriority="high">
+      </div>
+
+      <div class="cannes-container">
+        <div class="cannes-hero-copy">
+          <div class="cannes-kicker">
+            <span class="cannes-kicker-dot" aria-hidden="true"></span>
+            Hub de Cannes maintenant ouvert
+          </div>
+
+          <h1 id="cannes-title">
+            Un Son d'Élite Pour<br>
+            <span class="cannes-gradient-text">La Côte d'Azur.</span>
+          </h1>
+
+          <p class="cannes-lead">
+            Architecture audio sans compromis pour événements de luxe, locations de yachts privés
+            et avant-premières du Festival du Film. Déploiement exclusif de Void Acoustics et L-Acoustics.
+          </p>
+
+          <div class="cannes-actions">
+            <a class="cannes-btn cannes-btn-primary" href="/catalog.html">Voir l'Inventaire</a>
+            <a class="cannes-btn cannes-btn-secondary" href="/contact.html">Consultation</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cannes-section cannes-hubs" aria-labelledby="cannes-hubs-title">
+      <div class="cannes-container">
+        <h2 class="cannes-title" id="cannes-hubs-title">Hubs de Déploiement Stratégiques</h2>
+        <p class="cannes-copy">
+          Logistique d'intervention rapide sur toute la Côte d'Azur. De Monaco à Saint-Tropez,
+          notre équipement arrive calibré et prêt.
+        </p>
+
+        <div class="cannes-map cannes-glass">
+          <img
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQUczebe4j2g84ZKL2-MgWdHRtOHqAAeqJHlrTxmODMCSGmbRChwGyl0sVe5PSpg3LI0f0AeSksWxMO0VzHalMI7q0ilgdsOJhlXa2pJZn0cD7BMj5JSYinMZmtI1L0fWKBl71f2Uu0bNn-Kj4_3pX_ZZSSudQGMzXJP1hemS3N0rb2-Ot8m-E5NrbGzB98BJLHPzj-RCjGl04y8S89JFG8xGMX3SqaKPEUYb9k2qBYdDaPF8KZdvx_yJQqiNEFa_Q5GNC351yyds"
+            alt="Carte stylisée de Cannes et de la Côte d'Azur"
+            loading="lazy">
+
+          <div class="cannes-marker cannes-marker-main">
+            <span class="cannes-marker-dot" aria-hidden="true"></span>
+            <span class="cannes-marker-label">Hub de La Croisette</span>
+          </div>
+
+          <div class="cannes-marker cannes-marker-secondary">
+            <span class="cannes-marker-dot" aria-hidden="true"></span>
+            <span class="cannes-marker-label">Logistique Monaco</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cannes-section cannes-arsenal" aria-labelledby="cannes-arsenal-title">
+      <div class="cannes-container">
+        <h2 class="cannes-title" id="cannes-arsenal-title">Arsenal Sans Compromis</h2>
+
+        <div class="cannes-bento">
+          <article class="cannes-card cannes-card-wide cannes-glass">
+            <img
+              class="cannes-card-media"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ_5euIdFDaveZY1ukZiUYh7ER39yV7qBMbRbOqpkQCB09elkXG4eXQADmEm1_DgIKZYTHcY7cZir1d6qYKjQFkHGP93YBLKYxu8q5ug08tK4fBjNDoIfm3pZcNxuu9sqiBTGZf1xMwIHX2N3Eooq8JMR1S2l7B-6_hMmAfT6XI9VGYaO7LjF-lZ66oouBfdOnM2ECVrfCBX-fygTGENGHA01-oQ-viRXB2nbbmNwfihF4IzuCl_IEVlofSbSGqq8g_upjh6IAhVs"
+              alt="Système de sonorisation Void Acoustics Incubus"
+              loading="lazy">
+            <div class="cannes-card-shade" aria-hidden="true"></div>
+            <div class="cannes-card-content">
+              <div class="cannes-card-tag">
+                <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+                Systèmes Phares
+              </div>
+              <h3>Void Acoustics Incubus</h3>
+              <p>
+                Visuellement époustouflant, soniquement dévastateur. La pièce maîtresse ultime
+                pour les événements VIP d'élite.
+              </p>
+            </div>
+          </article>
+
+          <article class="cannes-card cannes-card-narrow cannes-glass">
+            <img
+              class="cannes-card-media"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMB_YBqENySRE2IdeGRuPpd2VPzUlq3LF2_lHAhCK2hmkwsN8hLy-bf7xULQS2_31THeAx9nBpXj4XVy2yNK1Avj7uJm0IC0p6S21amUUrrqj4VbKhRvxDYalBLQ_CFZ_D-GMSui07_zbUOH2WWjrsjyfUHNdp1ypgW9lTnSA9V7mrPcntsL3T7sn_LniOUYOvWpvEc-LzEvHMD6jTzvOuuzLwKtx6hdtAc7S4nvnfpJeCzXJhGhfISIqxvRyMtK27d7maBaW8D_I"
+              alt="Configuration DJ Pioneer professionnelle"
+              loading="lazy">
+            <div class="cannes-card-shade" aria-hidden="true"></div>
+            <div class="cannes-card-content">
+              <h3>DJ Prêt pour les Riders</h3>
+              <p>Configurations Pioneer Nexus standard de l'industrie.</p>
+            </div>
+          </article>
+
+          <article class="cannes-card cannes-card-narrow cannes-card-center cannes-glass">
+            <div class="cannes-card-content">
+              <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+              <h3>Étalonnage Acoustique</h3>
+              <p>
+                Réglage de précision pour les environnements acoustiques difficiles sur les superyachts.
+              </p>
+            </div>
+          </article>
+
+          <article class="cannes-card cannes-card-wide cannes-glass">
+            <img
+              class="cannes-card-media"
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtE1HelprP6RhCJpWCy-ouMtqXuEdRjQ1Z0kGo7kisvRCFk5-WS5Or-IHEVFn_GDorrnOmd2FKaxqmU_t0yQH8X_PkGR__PCS2o6RJaSomXGUqkAukI2-VygRBphO0x3s4FQBA5UdN0Bh-rXVGsdDKc_4aeti37uJKqLWzsZEx3izVcDvAvrgzPjp6tpLi33l9ADT4fSrBD9ZV6FmITxewDD0Ut8Jk_N9yj9IKJ--jcoqc9TLcGvmMk4Wpygk3mJs0x7QX7v8LJPs"
+              alt="Installation d'éclairage scénique professionnel"
+              loading="lazy">
+            <div class="cannes-card-shade" aria-hidden="true"></div>
+            <div class="cannes-card-content">
+              <div class="cannes-card-tag">
+                <span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>
+                Ambiance
+              </div>
+              <h3>Éclairage Intelligent</h3>
+              <p>
+                Écosystèmes visuels synchronisés pour compléter un son haute fidélité.
+              </p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cannes-section cannes-seo" aria-labelledby="cannes-seo-title">
+      <div class="cannes-container cannes-seo-grid">
+        <div class="cannes-seo-text">
+          <h2 class="cannes-title" id="cannes-seo-title">Maîtriser le Paysage Sonore de la Côte d'Azur</h2>
+
+          <p>
+            Produire un son impeccable à Cannes exige plus que de l'équipement ; cela requiert une expertise
+            logistique approfondie et une maîtrise de l'acoustique. De l'air salin affectant la propagation
+            des hautes fréquences sur les ponts des yachts aux réglementations strictes en matière de bruit
+            sur la Croisette, nos ingénieurs anticipent et résolvent les défis avant qu'ils ne surviennent.
+          </p>
+
+          <p>
+            Pendant le Festival de Cannes et les événements Lions, les délais d'exécution sont brutaux.
+            Notre dépôt local garantit un remplacement et un déploiement immédiats. Nous stockons les
+            spécifications exactes exigées par les DJ et artistes internationaux de premier plan,
+            garantissant un environnement de performance sans compromis.
+          </p>
+
+          <ul class="cannes-checks">
+            <li>
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <span>Équipement spécialisé de qualité marine pour la location de yachts</span>
+            </li>
+            <li>
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <span>Support technique de garde 24/7 pendant les semaines de festival</span>
+            </li>
+            <li>
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <span>Installation discrète gant blanc pour les villas de luxe</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="cannes-equalizer-wrap" aria-hidden="true">
+          <div class="cannes-equalizer">
+            <div class="cannes-equalizer-inner">
+              <span class="material-symbols-outlined">equalizer</span>
+            </div>
+          </div>
+          <div class="cannes-equalizer-glow"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer commun RentSoundSystem -->
+  <div id="site-footer"></div>
+
+  <script>
+    /*
+      Loads the existing shared components from the RentSoundSystem project.
+      Scripts contained inside the shared files are re-created so they can execute.
+    */
+    async function loadSharedComponent(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      try {
+        const response = await fetch(url, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${url} : HTTP ${response.status}`);
+
+        target.innerHTML = await response.text();
+
+        target.querySelectorAll("script").forEach((oldScript) => {
+          const newScript = document.createElement("script");
+
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+
+          newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      } catch (error) {
+        console.error("RentSoundSystem shared component load error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Promise.all([
+        loadSharedComponent("site-header", "/header.html"),
+        loadSharedComponent("site-footer", "/footer.html")
+      ]);
+    });
+  </script>
+</body>
+</html>
