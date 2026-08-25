@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Location Sono Séville - RentSoundSystem</title>
+  <meta name="description" content="Location de sonorisation professionnelle à Séville : Funktion-One, Pioneer DJ, micros HF, livraison express et assistance technique pour mariages, festivals et événements premium.">
+  <meta name="robots" content="index,follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #231018;
+      overflow-x: hidden;
+    }
+
+    #site-header,
+    #site-footer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #rss-mobile-menu-toggle {
+      display: none !important;
+    }
+
+    .seville-page {
+      --bg: #231018;
+      --bg-dark: #131313;
+      --bg-low: #1c1b1b;
+      --surface: #351724;
+      --surface-soft: rgba(53,23,36,.40);
+      --text: #ffffff;
+      --muted: #cd8ea9;
+      --primary: #FC036D;
+      --border: #6a2f49;
+      --container: 1280px;
+
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .seville-page,
+    .seville-page *,
+    .seville-page *::before,
+    .seville-page *::after {
+      box-sizing: border-box;
+    }
+
+    .seville-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .seville-container {
+      width: min(var(--container), calc(100% - 80px));
+      margin-inline: auto;
+    }
+
+    .seville-section {
+      padding: 82px 0;
+    }
+
+    .seville-title {
+      margin: 0;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 3vw, 40px);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -.02em;
+    }
+
+    .seville-copy {
+      margin: 12px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    /* HERO */
+    .seville-hero {
+      position: relative;
+      min-height: 650px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      overflow: hidden;
+      padding: 96px 0 72px;
+      background: var(--bg);
+    }
+
+    .seville-hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .seville-hero-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .seville-hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(0,0,0,.40), rgba(0,0,0,.80));
+    }
+
+    .seville-hero-copy {
+      width: min(820px, 100%);
+      margin-inline: auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .seville-hero h1 {
+      margin: 0 0 20px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(46px, 5.4vw, 66px);
+      line-height: 1.08;
+      font-weight: 900;
+      letter-spacing: -.04em;
+    }
+
+    .seville-lead {
+      max-width: 720px;
+      margin: 0 auto 30px;
+      color: rgba(255,255,255,.90);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .seville-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .seville-btn {
+      min-width: 150px;
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 13px 22px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .seville-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .seville-btn-primary {
+      background: var(--primary);
+      color: #fff !important;
+      box-shadow: 0 0 28px rgba(252,3,109,.20);
+    }
+
+    .seville-btn-secondary {
+      background: rgba(255,255,255,.08);
+      border-color: rgba(255,255,255,.18);
+      color: #fff !important;
+      backdrop-filter: blur(10px);
+    }
+
+    /* EQUIPMENT */
+    .seville-equipment {
+      background: var(--bg);
+    }
+
+    .seville-equipment-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .seville-see-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--primary) !important;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .seville-products {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .seville-product {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-soft);
+      transition: transform .22s ease, background .22s ease, border-color .22s ease;
+    }
+
+    .seville-product:hover {
+      transform: translateY(-2px);
+      background: rgba(53,23,36,.58);
+      border-color: rgba(252,3,109,.40);
+    }
+
+    .seville-product-media {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+      border-radius: 8px;
+    }
+
+    .seville-product-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+
+    .seville-product:hover .seville-product-media img {
+      transform: scale(1.045);
+    }
+
+    .seville-status {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 8px;
+      border-radius: 4px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+    }
+
+    .seville-product-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .seville-product h3 {
+      margin: 0;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 21px;
+      line-height: 1.25;
+      font-weight: 700;
+    }
+
+    .seville-price {
+      color: var(--primary);
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .seville-product p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.62;
+    }
+
+    .seville-specs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .seville-specs span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .seville-specs .material-symbols-outlined {
+      font-size: 15px;
+    }
+
+    .seville-product-link {
+      margin-top: auto;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #ffb2bf !important;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    /* LOGISTICS */
+    .seville-logistics {
+      position: relative;
+      margin: 44px 0;
+      overflow: hidden;
+      background: var(--surface);
+      border-radius: 28px;
+    }
+
+    .seville-logistics::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .10;
+      background-image: radial-gradient(#FC036D 1px, transparent 1px);
+      background-size: 30px 30px;
+      pointer-events: none;
+    }
+
+    .seville-logistics-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+      gap: 48px;
+      align-items: center;
+      padding: 56px;
+    }
+
+    .seville-logistics-list {
+      list-style: none;
+      padding: 0;
+      margin: 26px 0 0;
+      display: grid;
+      gap: 16px;
+    }
+
+    .seville-logistics-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .seville-logistics-list .material-symbols-outlined {
+      color: var(--primary);
+      font-size: 20px;
+      margin-top: 2px;
+    }
+
+    .seville-logistics-list strong {
+      display: block;
+      color: #fff;
+      font-size: 14px;
+      margin-bottom: 3px;
+    }
+
+    .seville-logistics-list p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .seville-map {
+      height: 400px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.05);
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.32);
+    }
+
+    .seville-map img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      opacity: .72;
+    }
+
+    /* CTA */
+    .seville-cta {
+      padding: 16px 0 72px;
+      background: var(--bg);
+    }
+
+    .seville-cta-box {
+      padding: 52px 34px;
+      text-align: center;
+      border: 1px solid rgba(252,3,109,.30);
+      border-radius: 18px;
+      background: linear-gradient(90deg, #4a2133, #231018);
+    }
+
+    .seville-cta h2 {
+      margin: 0 0 12px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 4vw, 46px);
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .seville-cta p {
+      margin: 0 auto 24px;
+      max-width: 620px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .seville-cta-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    @media (max-width: 980px) {
+      .seville-container {
+        width: min(100% - 48px, var(--container));
+      }
+
+      .seville-products {
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+
+      .seville-product:last-child {
+        grid-column: span 2;
+      }
+
+      .seville-logistics-grid {
+        grid-template-columns: 1fr;
+        padding: 42px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .seville-container {
+        width: calc(100% - 32px);
+      }
+
+      .seville-section {
+        padding: 56px 0;
+      }
+
+      .seville-hero {
+        min-height: 590px;
+        padding: 92px 0 56px;
+      }
+
+      .seville-hero h1 {
+        font-size: 44px;
+      }
+
+      .seville-lead {
+        font-size: 16px;
+      }
+
+      .seville-actions,
+      .seville-cta-actions {
+        align-items: stretch;
+      }
+
+      .seville-btn {
+        width: 100%;
+      }
+
+      .seville-equipment-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .seville-products {
+        grid-template-columns: 1fr;
+      }
+
+      .seville-product:last-child {
+        grid-column: auto;
+      }
+
+      .seville-product-head {
+        flex-direction: column;
+      }
+
+      .seville-logistics {
+        border-radius: 18px;
+      }
+
+      .seville-logistics-grid {
+        padding: 28px 20px;
+      }
+
+      .seville-map {
+        height: 320px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main class="seville-page">
+    <section class="seville-hero" aria-labelledby="seville-title">
+      <div class="seville-hero-media" aria-hidden="true">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzgY8vcEN-UWWy-9u7FxRQf_yCoeCGxfjJwaF1C0Pg0elX0NpR4bdswlNNuWnGn6KiihLXiTWdzuhHLol-AJFB6mD1SM8ehpZTEvGq8KCdfNixrZGDG79j6A-vpHuX0T1AeHV6HgDhkhydvsqMdrX5JUD1BPED9A9ulJctuvHX16FGHON6Jct9CXFeQqvV7x5pj3dnRvDarzCD3sOpzyRSeLNU7KagNgZHf2eiU4q544qAFRpvOl52" alt="" loading="eager" fetchpriority="high">
+      </div>
+
+      <div class="seville-container">
+        <div class="seville-hero-copy">
+          <h1 id="seville-title">Propulser l'Excellence Audio à Séville</h1>
+
+          <p class="seville-lead">
+            Location de systèmes de sonorisation haut de gamme pour vos événements culturels,
+            mariages de luxe et soirées privées au cœur de l'Andalousie.
+          </p>
+
+          <div class="seville-actions">
+            <a class="seville-btn seville-btn-primary" href="/catalog.html">Voir le catalogue</a>
+            <a class="seville-btn seville-btn-secondary" href="/contact.html">Demander un devis</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seville-section seville-equipment" aria-labelledby="seville-equipment-title">
+      <div class="seville-container">
+        <div class="seville-equipment-head">
+          <h2 class="seville-title" id="seville-equipment-title">Équipement Élite</h2>
+          <a class="seville-see-all" href="#seville-products">
+            Voir tout
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="seville-products" id="seville-products">
+          <article class="seville-product">
+            <div class="seville-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAXW6hIu5J7JG52XAzPAqFIi-zEv1rWiOwAJdmmHGCbCL-zFoK3gsm6DND_c4JFZkhuDtL2OcDo5yxlxNhEYVENPF-oCp02TIENjr6MZ-B1ECS8PNIHnlUKKY85ZQ_aCqX89yNsUzZRYHzrEp6XCxWq3hlq6QGxiOe_nZY3Z0CFzoTPUZmHrhZvS9HtL-_Xyy-JjVStsQBxaq7bCeAueu9UPSdBAHUxNrm6WXfHHfJcp9tUDF7XPzO" alt="Funktion-One Evo" loading="lazy">
+              <span class="seville-status">Disponible</span>
+            </div>
+
+            <div class="seville-product-head">
+              <h3>Funktion-One Evo</h3>
+              <span class="seville-price">À partir de 450€</span>
+            </div>
+
+            <p>
+              Clarté acoustique légendaire et design iconique pour les festivals et grands espaces andalous.
+            </p>
+
+            <div class="seville-specs">
+              <span><span class="material-symbols-outlined">volume_up</span>142dB Peak</span>
+              <span><span class="material-symbols-outlined">groups</span>500+ Pers.</span>
+            </div>
+
+            <a class="seville-product-link" href="/catalog.html?q=Funktion-One%20Evo">
+              Voir la configuration
+              <span class="material-symbols-outlined">trending_flat</span>
+            </a>
+          </article>
+
+          <article class="seville-product">
+            <div class="seville-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY_LVO5_Hua3jkRDKP91GzD29yZ_Vkm69Ei_5d1NJ4douA6s0eMJVv2YhlM_p8rgaVVPa1EX_M0kdWKzvuEaZzaYae5QD7wmprxkpoAVZLboOKz-LmyZHRpa-B5Afna5DUqSa_x7ZjieiUp3cC7821fMHHL8gJXyUE6r7uXtlU-QVE9EX6kLwiQBn7Iq0H5XrxzFktgQPi2O65a9NFb3CkUt_Rfm7XvE6H0Is1aRc6UZ5ji-MpOLtz" alt="Pioneer DJ Nexus 3" loading="lazy">
+              <span class="seville-status">Populaire</span>
+            </div>
+
+            <div class="seville-product-head">
+              <h3>Pioneer DJ Nexus 3</h3>
+              <span class="seville-price">À partir de 220€</span>
+            </div>
+
+            <p>
+              Le standard mondial pour les performances DJ professionnelles. Fiabilité et ergonomie ultimes.
+            </p>
+
+            <div class="seville-specs">
+              <span><span class="material-symbols-outlined">settings_input_component</span>4 Voies</span>
+              <span><span class="material-symbols-outlined">touch_app</span>Écran HD</span>
+            </div>
+
+            <a class="seville-product-link" href="/catalog.html?q=Pioneer%20DJ%20Nexus">
+              Configurer votre régie
+              <span class="material-symbols-outlined">trending_flat</span>
+            </a>
+          </article>
+
+          <article class="seville-product">
+            <div class="seville-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCb9vS6WdrH8rglpDiyr1XMKqyNZdmcNB3ro7aMnd0Hnb1GHRjmcjLOV2VZnT93_mX1ppQGO6IxWgTvXqFQgDUZm1pu4MDLcIycMRCZsgHxStk0eTSk4BC-Lm28CFhcPsVS2KSqPfGL2Ok300GDMrB_dzvf3vhjXa-iCwy-Lyu2W7evwK9YyWcehF6Krj49DFer2bM3ZPI2wv_emuOXfPtL1eXnJKlxj50u0TcgDbBLooVtIumcNme" alt="Pack Discours Luxe Sennheiser" loading="lazy">
+            </div>
+
+            <div class="seville-product-head">
+              <h3>Pack Discours Luxe</h3>
+              <span class="seville-price">À partir de 150€</span>
+            </div>
+
+            <p>
+              Systèmes HF Sennheiser pour une clarté vocale parfaite lors de vos cérémonies privées à Santa Cruz.
+            </p>
+
+            <div class="seville-specs">
+              <span><span class="material-symbols-outlined">mic</span>Sans fil</span>
+              <span><span class="material-symbols-outlined">battery_charging_full</span>12h Autonomie</span>
+            </div>
+
+            <a class="seville-product-link" href="/catalog.html?q=Sennheiser%20HF">
+              Voir le pack
+              <span class="material-symbols-outlined">trending_flat</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="seville-container">
+      <div class="seville-logistics">
+        <div class="seville-logistics-grid">
+          <div>
+            <h2 class="seville-title">Logistique Premium à Séville</h2>
+
+            <p class="seville-copy" style="font-size:18px">
+              Que votre événement se déroule dans les ruelles étroites de <strong style="color:#fff">Santa Cruz</strong>
+              ou sur une terrasse animée de <strong style="color:#fff">Triana</strong>, nous gérons la livraison
+              et l'installation technique complète.
+            </p>
+
+            <ul class="seville-logistics-list">
+              <li>
+                <span class="material-symbols-outlined">check_circle</span>
+                <div>
+                  <strong>Livraison Express</strong>
+                  <p>Partout dans l'hypercentre et la périphérie de Séville.</p>
+                </div>
+              </li>
+
+              <li>
+                <span class="material-symbols-outlined">check_circle</span>
+                <div>
+                  <strong>Ingénierie sur site</strong>
+                  <p>Réglages acoustiques adaptés aux patios andalous.</p>
+                </div>
+              </li>
+
+              <li>
+                <span class="material-symbols-outlined">check_circle</span>
+                <div>
+                  <strong>Support 24/7</strong>
+                  <p>Une équipe technique en veille pendant toute la durée de votre location.</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="seville-map">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFtVXW1JU2XKvvwBZPQEnA5eeFsB3SGMX2n5J1PfcrU6XJzIh6sXfP8Vugp6_VHizxdOXoNTG_wWppEoex9o8tReQXvcdvUZ1Ed96b0pwkkCjaW8lwF63JJGVToRibW7ntmQ3EHv82V-9wxvQOCeFJelfKwTc3UfyRc_Nkp8Cyhn9u4uSypM06TIY6rI5EE7nyCogylr-h3g67ZOIGbnlZ_XiOrfc-WXuUvymysy_RVn0bLpEL9YKR" alt="Carte de couverture logistique à Séville" loading="lazy">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="seville-cta">
+      <div class="seville-container">
+        <div class="seville-cta-box">
+          <h2>Prêt pour votre événement ?</h2>
+          <p>
+            Nos experts vous accompagnent pour définir la meilleure configuration sonore pour vos fêtes à Séville.
+          </p>
+
+          <div class="seville-cta-actions">
+            <a class="seville-btn seville-btn-primary" href="/catalog.html">Réserver Maintenant</a>
+            <a class="seville-btn seville-btn-secondary" href="/contact.html">
+              <span class="material-symbols-outlined" aria-hidden="true" style="margin-right:8px">call</span>
+              Nous Contacter
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    async function loadSharedComponent(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      try {
+        const response = await fetch(url, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${url} : HTTP ${response.status}`);
+
+        target.innerHTML = await response.text();
+
+        target.querySelectorAll("script").forEach((oldScript) => {
+          const newScript = document.createElement("script");
+
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+
+          newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      } catch (error) {
+        console.error("RentSoundSystem shared component load error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Promise.all([
+        loadSharedComponent("site-header", "/header.html"),
+        loadSharedComponent("site-footer", "/footer.html")
+      ]);
+    });
+  </script>
+</body>
+</html>
