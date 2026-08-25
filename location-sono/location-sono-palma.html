@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Location Sono Palma - RentSoundSystem</title>
+  <meta name="description" content="Location de sonorisation professionnelle à Palma de Majorque : Pioneer DJ, Funktion-One, logistique yacht et événementiel premium, assistance 24/7 et déploiement rapide.">
+  <meta name="robots" content="index,follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #131313;
+      overflow-x: hidden;
+    }
+
+    #site-header,
+    #site-footer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #rss-mobile-menu-toggle {
+      display: none !important;
+    }
+
+    .palma-page {
+      --bg: #131313;
+      --bg-lowest: #0e0e0e;
+      --bg-low: #1c1b1b;
+      --surface: #201f1f;
+      --surface-high: #2a2a2a;
+      --surface-highest: #353534;
+      --text: #e5e2e1;
+      --muted: #e6bcc2;
+      --primary: #FC036D;
+      --primary-soft: rgba(252,3,109,.12);
+      --border: rgba(255,255,255,.05);
+      --outline: #5d3f44;
+      --glow: rgba(252,3,109,.30);
+      --container: 1280px;
+
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .palma-page,
+    .palma-page *,
+    .palma-page *::before,
+    .palma-page *::after {
+      box-sizing: border-box;
+    }
+
+    .palma-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .palma-container {
+      width: min(var(--container), calc(100% - 80px));
+      margin-inline: auto;
+    }
+
+    .palma-section {
+      padding: 96px 0;
+    }
+
+    .palma-title {
+      margin: 0;
+      color: var(--text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 3vw, 40px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .palma-copy {
+      margin: 12px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    .palma-glass {
+      background: rgba(31,31,31,.72);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    /* HERO */
+    .palma-hero {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 0 80px;
+      overflow: hidden;
+      text-align: center;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(252,3,109,.08), transparent 30%),
+        linear-gradient(to bottom, #131313 0%, #131313 100%);
+    }
+
+    .palma-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(130deg, transparent 18%, rgba(252,3,109,.025) 44%, transparent 70%),
+        repeating-linear-gradient(90deg, transparent 0 125px, rgba(255,255,255,.01) 125px 126px);
+      pointer-events: none;
+    }
+
+    .palma-hero-copy {
+      position: relative;
+      z-index: 1;
+      width: min(900px, 100%);
+      margin-inline: auto;
+    }
+
+    .palma-kicker {
+      display: inline-block;
+      margin-bottom: 22px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .palma-hero h1 {
+      margin: 0 0 22px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(48px, 5.6vw, 72px);
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -.035em;
+    }
+
+    .palma-lead {
+      max-width: 720px;
+      margin: 0 auto 34px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .palma-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .palma-btn {
+      min-height: 50px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform .2s ease, background .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .palma-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .palma-btn-primary {
+      background: #ff4d80;
+      color: #fff !important;
+      box-shadow: 0 0 28px rgba(252,3,109,.22);
+    }
+
+    .palma-btn-secondary {
+      background: var(--surface-high);
+      border-color: var(--outline);
+      color: #fff !important;
+    }
+
+    /* EQUIPMENT */
+    .palma-equipment {
+      background: var(--bg-lowest);
+    }
+
+    .palma-equipment-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 44px;
+    }
+
+    .palma-see-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: #ff4d80 !important;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .palma-equipment-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+    }
+
+    .palma-equipment-card {
+      position: relative;
+      min-height: 360px;
+      overflow: hidden;
+      border-radius: 16px;
+      background: var(--surface-high);
+      transition: transform .3s ease;
+    }
+
+    .palma-equipment-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .palma-equipment-card img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .5s ease;
+    }
+
+    .palma-equipment-card:hover img {
+      transform: scale(1.04);
+    }
+
+    .palma-equipment-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.90) 5%, rgba(0,0,0,.25) 58%, rgba(0,0,0,.05) 100%);
+    }
+
+    .palma-equipment-content {
+      position: absolute;
+      z-index: 2;
+      left: 26px;
+      right: 26px;
+      bottom: 24px;
+    }
+
+    .palma-equipment-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #ff4d80;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .palma-equipment-card h3 {
+      margin: 0 0 8px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 30px;
+      line-height: 1.15;
+    }
+
+    .palma-equipment-card p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .palma-card-btn {
+      display: inline-flex;
+      min-height: 38px;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 14px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px;
+      background: rgba(255,255,255,.10);
+      color: #fff !important;
+      font-size: 12px;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+    }
+
+    .palma-card-btn:hover {
+      background: #ff4d80;
+      border-color: #ff4d80;
+    }
+
+    /* SPECIALTIES */
+    .palma-specialties {
+      background: var(--bg);
+    }
+
+    .palma-specialties-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+      gap: 46px;
+      align-items: stretch;
+    }
+
+    .palma-specialties-list {
+      display: grid;
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .palma-specialty {
+      padding: 24px;
+      border-radius: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+    }
+
+    .palma-specialty .material-symbols-outlined {
+      color: #ff4d80;
+      font-size: 30px;
+      margin-bottom: 12px;
+    }
+
+    .palma-specialty h3 {
+      margin: 0 0 7px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 18px;
+    }
+
+    .palma-specialty p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.58;
+    }
+
+    .palma-experience {
+      position: relative;
+      min-height: 460px;
+      overflow: hidden;
+      border-radius: 22px;
+    }
+
+    .palma-experience img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .palma-experience::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.42);
+    }
+
+    .palma-experience-content {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 38px;
+      text-align: center;
+    }
+
+    .palma-experience-inner {
+      max-width: 540px;
+    }
+
+    .palma-experience h3 {
+      margin: 0 0 12px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 31px;
+    }
+
+    .palma-experience p {
+      margin: 0 0 22px;
+      color: rgba(255,255,255,.90);
+      font-size: 15px;
+      line-height: 1.62;
+    }
+
+    /* LOGISTICS */
+    .palma-logistics {
+      background: var(--bg-low);
+      border-top: 1px solid var(--outline);
+      border-bottom: 1px solid var(--outline);
+    }
+
+    .palma-logistics-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+      gap: 60px;
+      align-items: center;
+    }
+
+    .palma-logistics-list {
+      display: grid;
+      gap: 22px;
+      margin-top: 30px;
+    }
+
+    .palma-logistics-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .palma-logistics-icon {
+      flex: 0 0 auto;
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(255,77,128,.14);
+      color: #ff4d80;
+    }
+
+    .palma-logistics-item h4 {
+      margin: 0 0 4px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 17px;
+    }
+
+    .palma-logistics-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .palma-map {
+      position: relative;
+      height: 470px;
+      overflow: hidden;
+      border: 1px solid var(--outline);
+      border-radius: 18px;
+      background: #111;
+      box-shadow: 0 22px 65px rgba(0,0,0,.32);
+    }
+
+    .palma-map iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      filter:
+        invert(92%)
+        hue-rotate(178deg)
+        brightness(.58)
+        contrast(1.22)
+        saturate(.78);
+    }
+
+    .palma-map::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 50% 50%, rgba(252,3,109,.085), transparent 42%),
+        linear-gradient(135deg, rgba(252,3,109,.035), rgba(0,0,0,.08));
+      mix-blend-mode: color;
+    }
+
+    .palma-map-pin {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: 3;
+      width: 14px;
+      height: 14px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: #FC036D;
+      border: 2px solid rgba(255,255,255,.88);
+      box-shadow: 0 0 0 6px rgba(252,3,109,.16), 0 0 22px rgba(252,3,109,.78);
+    }
+
+    .palma-map-status {
+      position: absolute;
+      z-index: 4;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      padding: 13px 15px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      background: rgba(14,14,14,.86);
+      color: #fff;
+      backdrop-filter: blur(10px);
+    }
+
+    .palma-map-status strong {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .palma-map-status strong::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 0 4px rgba(34,197,94,.12);
+    }
+
+    @media (max-width: 980px) {
+      .palma-container {
+        width: min(100% - 48px, var(--container));
+      }
+
+      .palma-section {
+        padding: 72px 0;
+      }
+
+      .palma-specialties-grid,
+      .palma-logistics-grid {
+        grid-template-columns: 1fr;
+        gap: 42px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .palma-container {
+        width: calc(100% - 32px);
+      }
+
+      .palma-section {
+        padding: 56px 0;
+      }
+
+      .palma-hero {
+        min-height: 650px;
+        padding: 104px 0 56px;
+      }
+
+      .palma-hero h1 {
+        font-size: 45px;
+      }
+
+      .palma-lead {
+        font-size: 16px;
+      }
+
+      .palma-actions {
+        align-items: stretch;
+      }
+
+      .palma-btn {
+        width: 100%;
+      }
+
+      .palma-equipment-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .palma-equipment-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palma-map {
+        height: 350px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main class="palma-page">
+    <section class="palma-hero" aria-labelledby="palma-title">
+      <div class="palma-container">
+        <div class="palma-hero-copy">
+          <span class="palma-kicker">Majorque • Palma • Elite Audio</span>
+
+          <h1 id="palma-title">Propulser l'Excellence Audio à Palma</h1>
+
+          <p class="palma-lead">
+            Location de systèmes de sonorisation premium pour yachts et événements d'élite à Majorque.
+            De Portixol à Santa Catalina, nous redéfinissons le son.
+          </p>
+
+          <div class="palma-actions">
+            <a class="palma-btn palma-btn-primary" href="/catalog.html">
+              Voir le catalogue
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </a>
+            <a class="palma-btn palma-btn-secondary" href="#palma-specialites">Nos Références</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="palma-section palma-equipment" aria-labelledby="palma-equipment-title">
+      <div class="palma-container">
+        <div class="palma-equipment-head">
+          <div>
+            <h2 class="palma-title" id="palma-equipment-title">Équipement d'Élite</h2>
+            <p class="palma-copy">
+              La norme mondiale pour les clubs les plus prestigieux et les méga-yachts.
+              Performance acoustique sans compromis.
+            </p>
+          </div>
+
+          <a class="palma-see-all" href="/catalog.html">
+            Tout l'équipement
+            <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
+          </a>
+        </div>
+
+        <div class="palma-equipment-grid">
+          <article class="palma-equipment-card">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKWnHKHWjuyho4V-G2JP2JaFGzRtwopsl3zVmIl0zu4yNvJdM4NN5_0mjnnVVOF6qlFDFy7W_Gwu7yeWM2ToxB2M55icZB6ZDJXQW9pLnSwfOMVl2xbJGgB47m9W1ITPJkBKqjXL-q9hT0mCwbSyykUfQxltOAET2PR_v08lzvwbYTw_VAJZ56aLtc5ktZa1RnwAj5yIZ9yvyEyjPasM1wDUTGy2KE0T21a7J1szfqrsr4uPGpYJKI" alt="Régie Pioneer DJ CDJ-3000 et DJM-V10" loading="lazy">
+            <div class="palma-equipment-content">
+              <span class="palma-equipment-label">Standard Industrie</span>
+              <h3>Pioneer DJ</h3>
+              <p>CDJ-3000 &amp; DJM-V10. Le summum de la performance DJ pour vos événements privés.</p>
+              <a class="palma-card-btn" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-V10">Voir les régies Pioneer DJ</a>
+            </div>
+          </article>
+
+          <article class="palma-equipment-card">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5UPf-EpVq53rJDPT6km4YJsGiDIhhq7J3j8cyV5f3ysebvylzYEVv2ZxPM8MPYLchH-cYAz2eNGVj8Jpbh1h4CvKv_1fPECvbrW4-MXyOXmo5KU-kWeThYcZdLcg-Tyhmceom_xgROCfQB2YMW3rhBXrwDC2drjoiPvJsDrwDlVjzUCVkB-DSlt7arvGBqODPlIGCospegjE0sI1aC1VNQYcizet4xoOBhIWakSGBXKbKdeM4gVTC" alt="Système Funktion-One à Palma" loading="lazy">
+            <div class="palma-equipment-content">
+              <span class="palma-equipment-label">Fidélité Acoustique</span>
+              <h3>Funktion-One</h3>
+              <p>Systèmes Evo 6 &amp; F121. Une clarté sonore légendaire pour une immersion totale.</p>
+              <a class="palma-card-btn" href="/catalog.html?q=Funktion-One%20Evo%206%20F121">Voir les systèmes Funktion-One</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="palma-section palma-specialties" id="palma-specialites" aria-labelledby="palma-specialties-title">
+      <div class="palma-container palma-specialties-grid">
+        <div>
+          <h2 class="palma-title" id="palma-specialties-title">Nos Spécialités</h2>
+
+          <div class="palma-specialties-list">
+            <article class="palma-specialty">
+              <span class="material-symbols-outlined" aria-hidden="true">sailing</span>
+              <h3>Événements Yachts</h3>
+              <p>
+                Installation sur mesure pour méga-yachts, résistante aux environnements marins
+                et calibrage acoustique de pont.
+              </p>
+            </article>
+
+            <article class="palma-specialty">
+              <span class="material-symbols-outlined" aria-hidden="true">nightlife</span>
+              <h3>Premium Nightlife</h3>
+              <p>
+                Location ponctuelle pour les clubs éphémères et villas privées de luxe autour de Palma.
+              </p>
+            </article>
+          </div>
+        </div>
+
+        <article class="palma-experience">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAurIb7ra-97hMbpXfK0H3C27BHfsot3yXmVOyJU-AzZT8I4h8jKiaXR7wdaaKt-cj-2IjUKBo8s1ftusn5L7PherhCWBNIzc8eZfIS4xNZoX6_CO01zZleUuoc-t423KdfTubjotEjm1Q6IKqp58SOTemJYN-DgxgLIWtozKiDWgcH8ZmtBAK644Nep8HvRGQfN8Ql9rsvterZAeoAzIk6ipgpB5a-MWjG42JGoEmFJUiFTi5XN48b" alt="Événement premium à Palma" loading="lazy">
+
+          <div class="palma-experience-content">
+            <div class="palma-experience-inner">
+              <h3>L'Expérience Palma</h3>
+              <p>
+                Nous ne nous contentons pas de louer du matériel. Nous créons des environnements sonores
+                qui transforment l'instant en souvenir impérissable.
+              </p>
+              <a class="palma-btn palma-btn-primary" href="/contact.html">Parlons de votre projet</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="palma-section palma-logistics" id="palma-logistique" aria-labelledby="palma-logistics-title">
+      <div class="palma-container palma-logistics-grid">
+        <div>
+          <h2 class="palma-title" id="palma-logistics-title">Logistique Express</h2>
+
+          <div class="palma-logistics-list">
+            <div class="palma-logistics-item">
+              <span class="palma-logistics-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+              </span>
+              <div>
+                <h4>Hub Santa Catalina</h4>
+                <p>Situés au cœur de Santa Catalina, nous intervenons en moins de 30 minutes sur les marinas principales.</p>
+              </div>
+            </div>
+
+            <div class="palma-logistics-item">
+              <span class="palma-logistics-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">anchor</span>
+              </span>
+              <div>
+                <h4>Direct Portixol &amp; Real Club Náutico</h4>
+                <p>Livraison directe à quai pour tous vos besoins de dernière minute en bordure de Palma.</p>
+              </div>
+            </div>
+
+            <div class="palma-logistics-item">
+              <span class="palma-logistics-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+              </span>
+              <div>
+                <h4>Assistance 24/7</h4>
+                <p>Une équipe de techniciens est mobilisée tout au long de votre événement pour garantir une qualité sans faille.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="palma-map">
+          <iframe
+            src="https://www.openstreetmap.org/export/embed.html?bbox=2.61%2C39.53%2C2.72%2C39.62&layer=mapnik"
+            loading="lazy"
+            title="Carte réelle de Palma de Majorque"
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+
+          <span class="palma-map-pin" aria-hidden="true"></span>
+
+          <div class="palma-map-status">
+            <strong>3 techniciens disponibles actuellement à Palma</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    async function loadSharedComponent(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      try {
+        const response = await fetch(url, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${url} : HTTP ${response.status}`);
+
+        target.innerHTML = await response.text();
+
+        target.querySelectorAll("script").forEach((oldScript) => {
+          const newScript = document.createElement("script");
+
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+
+          newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      } catch (error) {
+        console.error("RentSoundSystem shared component load error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Promise.all([
+        loadSharedComponent("site-header", "/header.html"),
+        loadSharedComponent("site-footer", "/footer.html")
+      ]);
+    });
+  </script>
+</body>
+</html>
