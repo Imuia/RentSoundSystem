@@ -1,18 +1,17 @@
 <!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Location Sonorisation Paris - RentSoundSystem</title>
-  <meta name="description" content="Location de sonorisation professionnelle à Paris et en Île-de-France : systèmes line array, régies DJ, consoles numériques et solutions audio premium pour événements.">
-  <meta name="robots" content="index,follow">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Location Sonorisation Paris - RentSoundSystem</title>
+<meta content="Location de sonorisation professionnelle à Paris et en Île-de-France : systèmes line array, régies DJ, consoles numériques et solutions audio premium pour événements." name="description"/>
+<meta content="index,follow" name="robots"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -602,6 +601,214 @@
       }
     }
 
+
+    .paris-product {
+      cursor: pointer;
+    }
+
+    .paris-product:focus-visible {
+      outline: 2px solid var(--rss-primary);
+      outline-offset: 3px;
+    }
+
+    .paris-product-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .paris-product-modal.is-open {
+      display: flex;
+    }
+
+    .paris-product-modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,.78);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .paris-product-modal-panel {
+      position: relative;
+      z-index: 1;
+      width: min(920px, 100%);
+      max-height: min(760px, calc(100vh - 48px));
+      overflow: auto;
+      display: grid;
+      grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+      background: #171717;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      box-shadow: 0 24px 90px rgba(0,0,0,.55), 0 0 40px rgba(252,3,109,.12);
+    }
+
+    .paris-product-modal-media {
+      min-height: 430px;
+      background: #0e0e0e;
+      overflow: hidden;
+    }
+
+    .paris-product-modal-media img {
+      width: 100%;
+      height: 100%;
+      min-height: 430px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .paris-product-modal-content {
+      position: relative;
+      padding: 38px;
+    }
+
+    .paris-product-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 50%;
+      background: #222;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    .paris-product-modal-brand {
+      display: inline-flex;
+      margin: 0 0 14px;
+      padding: 6px 9px;
+      border: 1px solid rgba(252,3,109,.25);
+      border-radius: 999px;
+      background: rgba(252,3,109,.10);
+      color: #ffb2bf;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .paris-product-modal h3 {
+      margin: 0 46px 10px 0;
+      color: #e5e2e1;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(28px, 4vw, 38px);
+      line-height: 1.15;
+    }
+
+    .paris-product-modal-location {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: #e6bcc2;
+      font-size: 14px;
+    }
+
+    .paris-product-modal-location .material-symbols-outlined {
+      color: #FC036D;
+      font-size: 18px;
+    }
+
+    .paris-product-modal-price-block {
+      margin: 28px 0 0;
+      padding: 22px 0;
+      border-top: 1px solid rgba(255,255,255,.07);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+
+    .paris-product-modal-label {
+      color: #e6bcc2;
+      font-size: 13px;
+    }
+
+    .paris-product-modal-price {
+      margin-top: 4px;
+      color: #FC036D;
+      font-size: 34px;
+      font-weight: 700;
+    }
+
+    .paris-product-modal-price small {
+      color: #e6bcc2;
+      font-size: 14px;
+      font-weight: 400;
+    }
+
+    .paris-product-modal-text {
+      margin: 24px 0 0;
+      color: #e6bcc2;
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .paris-product-modal-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .paris-product-modal-actions button {
+      min-height: 46px;
+      padding: 0 18px;
+      border-radius: 5px;
+      font-family: Inter, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .paris-product-modal-primary {
+      flex: 1;
+      border: 0;
+      background: #FC036D;
+      color: #fff;
+      box-shadow: 0 0 24px rgba(252,3,109,.28);
+    }
+
+    .paris-product-modal-secondary {
+      border: 1px solid #5d3f44;
+      background: transparent;
+      color: #e5e2e1;
+    }
+
+    @media (max-width: 760px) {
+      .paris-product-modal {
+        padding: 14px;
+      }
+
+      .paris-product-modal-panel {
+        grid-template-columns: 1fr;
+        max-height: calc(100vh - 28px);
+      }
+
+      .paris-product-modal-media {
+        min-height: 230px;
+        max-height: 260px;
+      }
+
+      .paris-product-modal-media img {
+        min-height: 230px;
+        max-height: 260px;
+      }
+
+      .paris-product-modal-content {
+        padding: 26px 22px 24px;
+      }
+
+      .paris-product-modal-actions {
+        flex-direction: column;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       .paris-page *,
       .paris-page *::before,
@@ -613,189 +820,309 @@
     }
   </style>
 </head>
-
 <body>
-  <div id="site-header"></div>
-
-  <main class="paris-page">
-    <section class="paris-hero" aria-labelledby="paris-title">
-      <div class="paris-hero-media" aria-hidden="true">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo30im79Cdk4mgnuc-tzgc2rRl3JGGoPfDki4zW967PcaW8g-Hz-9ZBxhipvlPvNntCqjEuk8NNdE9DySYkezGkl1edEYc8O4bRHCbn9sg-EwZs9fPwJQVzCLnGZX89F8-LK06LHgv7UJ0VsA6eOKvn6tKFKlCVMtPCUuzcfYcQd1ykZ6g_cY5_T8k3E4r8MLAvtwKJ-T9gBmNxgDLs3iVIhnRr90pf7y7Zq9zOkdnouHV13YOFHQ3LdLzEtYR3irPjbRQb8Nqq5o" alt="" loading="eager" fetchpriority="high">
-      </div>
-
-      <div class="paris-container paris-hero-content">
-        <div class="paris-badge">
-          <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<div id="site-header"></div>
+<main class="paris-page">
+<section aria-labelledby="paris-title" class="paris-hero">
+<div aria-hidden="true" class="paris-hero-media">
+<img alt="" fetchpriority="high" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo30im79Cdk4mgnuc-tzgc2rRl3JGGoPfDki4zW967PcaW8g-Hz-9ZBxhipvlPvNntCqjEuk8NNdE9DySYkezGkl1edEYc8O4bRHCbn9sg-EwZs9fPwJQVzCLnGZX89F8-LK06LHgv7UJ0VsA6eOKvn6tKFKlCVMtPCUuzcfYcQd1ykZ6g_cY5_T8k3E4r8MLAvtwKJ-T9gBmNxgDLs3iVIhnRr90pf7y7Zq9zOkdnouHV13YOFHQ3LdLzEtYR3irPjbRQb8Nqq5o"/>
+</div>
+<div class="paris-container paris-hero-content">
+<div class="paris-badge">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
           Hub Parisien Actif
         </div>
-
-        <h1 id="paris-title">
-          Location Sonorisation<br>
-          <span class="paris-gradient-text">Paris</span>
-        </h1>
-
-        <p class="paris-lead">
+<h1 id="paris-title">
+          Location Sonorisation<br/>
+<span class="paris-gradient-text">Paris</span>
+</h1>
+<p class="paris-lead">
           Le meilleur du son professionnel pour vos événements dans la capitale.
           Des systèmes line array aux régies DJ de pointe, équipement vérifié pour l'exigence parisienne.
         </p>
-
-        <form class="paris-search paris-glass" action="/catalog.html" method="get">
-          <label class="paris-field">
-            <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
-            <input name="q" type="text" placeholder="Rechercher (ex: L-Acoustics, Pioneer...)" aria-label="Rechercher du matériel">
-          </label>
-
-          <label class="paris-field">
-            <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
-            <input name="date" type="date" aria-label="Date de location">
-          </label>
-
-          <button class="paris-search-btn" type="submit">Trouver</button>
-        </form>
-      </div>
-    </section>
-
-    <section class="paris-section paris-network" aria-labelledby="paris-network-title">
-      <div class="paris-container">
-        <div class="paris-network-head">
-          <div>
-            <h2 class="paris-title" id="paris-network-title">Réseau Île-de-France</h2>
-            <p class="paris-copy">
+<form action="/catalog.html" class="paris-search paris-glass" method="get">
+<label class="paris-field">
+<span aria-hidden="true" class="material-symbols-outlined">speaker</span>
+<input aria-label="Rechercher du matériel" name="q" placeholder="Rechercher (ex: L-Acoustics, Pioneer...)" type="text"/>
+</label>
+<label class="paris-field">
+<span aria-hidden="true" class="material-symbols-outlined">calendar_today</span>
+<input aria-label="Date de location" name="date" type="date"/>
+</label>
+<button class="paris-search-btn" type="submit">Trouver</button>
+</form>
+</div>
+</section>
+<section aria-labelledby="paris-network-title" class="paris-section paris-network">
+<div class="paris-container">
+<div class="paris-network-head">
+<div>
+<h2 class="paris-title" id="paris-network-title">Réseau Île-de-France</h2>
+<p class="paris-copy">
               Notre réseau de loueurs professionnels couvre tout Paris et sa banlieue.
               Trouvez l'équipement exact là où vous en avez besoin, des studios de Montreuil
               aux salles de l'Ouest parisien.
             </p>
-          </div>
-
-          <div class="paris-legend" aria-label="Légende de disponibilité">
-            <span class="paris-legend-item">
-              <span class="paris-legend-dot active" aria-hidden="true"></span>
+</div>
+<div aria-label="Légende de disponibilité" class="paris-legend">
+<span class="paris-legend-item">
+<span aria-hidden="true" class="paris-legend-dot active"></span>
               Haute disponibilité
             </span>
-            <span class="paris-legend-item">
-              <span class="paris-legend-dot request" aria-hidden="true"></span>
+<span class="paris-legend-item">
+<span aria-hidden="true" class="paris-legend-dot request"></span>
               Sur demande
             </span>
-          </div>
-        </div>
-
-        <div class="paris-map paris-glass">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzlOIcS122AbB9VBAVqXXhW6lBB0r7gZDgDNwgO7lt6sHSSwxBCRmjPbmgZ1C0cahh24xGtRAu3SlL19QV0igBPE1JMdsFNU1lC9z891NGvut3dZ1pDUMFQoPzv3vSZcl7tj0UL0K4zycRvBfl_83zhkFAAZVdUHGhLUl9-ttknz8sh6rlpNzadjRZBkaCcaIyXkpfln8sOf2JpAKIZ7atSKd6Ab7saV2xUmxaQj82O-H0BcreXfdkJeKNdyITlyRqC4ur7bVGCIg" alt="Carte stylisée de Paris et de l'Île-de-France" loading="lazy">
-
-          <span class="paris-map-dot d1" aria-hidden="true"></span>
-          <span class="paris-map-dot d2" aria-hidden="true"></span>
-          <span class="paris-map-dot d3" aria-hidden="true"></span>
-          <span class="paris-map-dot d4" aria-hidden="true"></span>
-
-          <div class="paris-map-status paris-glass">
-            <span class="material-symbols-outlined" aria-hidden="true">sensors</span>
+</div>
+</div>
+<div class="paris-map paris-glass">
+<img alt="Carte stylisée de Paris et de l'Île-de-France" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzlOIcS122AbB9VBAVqXXhW6lBB0r7gZDgDNwgO7lt6sHSSwxBCRmjPbmgZ1C0cahh24xGtRAu3SlL19QV0igBPE1JMdsFNU1lC9z891NGvut3dZ1pDUMFQoPzv3vSZcl7tj0UL0K4zycRvBfl_83zhkFAAZVdUHGhLUl9-ttknz8sh6rlpNzadjRZBkaCcaIyXkpfln8sOf2JpAKIZ7atSKd6Ab7saV2xUmxaQj82O-H0BcreXfdkJeKNdyITlyRqC4ur7bVGCIg"/>
+<span aria-hidden="true" class="paris-map-dot d1"></span>
+<span aria-hidden="true" class="paris-map-dot d2"></span>
+<span aria-hidden="true" class="paris-map-dot d3"></span>
+<span aria-hidden="true" class="paris-map-dot d4"></span>
+<div class="paris-map-status paris-glass">
+<span aria-hidden="true" class="material-symbols-outlined">sensors</span>
             42 Systèmes actifs à Paris
           </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="paris-section paris-equipment" aria-labelledby="paris-equipment-title">
-      <div class="paris-container">
-        <div class="paris-equipment-intro">
-          <h2 class="paris-title" id="paris-equipment-title">Équipement Premium Disponible</h2>
-          <p class="paris-copy">
+</div>
+</div>
+</section>
+<section aria-labelledby="paris-equipment-title" class="paris-section paris-equipment">
+<div class="paris-container">
+<div class="paris-equipment-intro">
+<h2 class="paris-title" id="paris-equipment-title">Équipement Premium Disponible</h2>
+<p class="paris-copy">
             Les standards de l'industrie, prêts pour votre prochain événement parisien.
           </p>
-        </div>
-
-        <div class="paris-products">
-          <article class="paris-product paris-glass">
-            <div class="paris-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjE33t-mFEZJAym9oOArQu08gtVn_ENjFNqnhCb2c46sQ49-3ZEkQ-ONLc7tX4wSkGnzmzX0aP_E0T_H1k5oQqvD2vTh-jEgSXOlaBbtOs-Piikke4_OfpYlYG_q2DIMh2wHekWZEkG4utP8LNMcm3eU3BJoFFm_jAL8bJZ8U7dZt-qpJ484eHRCeFHeZreH5Nh1tuCG9XTqCP7l3B40IdsgSZOA8GoqQKL_lQ7rRVYdxUlhXT7vpSQgThKqDWW_BhFAEvf-z5xcw" alt="Système line array L-Acoustics K2" loading="lazy">
-              <span class="paris-brand">L-Acoustics</span>
-            </div>
-            <div class="paris-product-body">
-              <h3>Kit Line Array K2</h3>
-              <div class="paris-location">
-                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+</div>
+<div class="paris-products">
+<article aria-label="Voir le produit Kit Line Array K2" class="paris-product paris-glass" data-product-index="0" role="button" tabindex="0">
+<div class="paris-product-media">
+<img alt="Système line array L-Acoustics K2" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjE33t-mFEZJAym9oOArQu08gtVn_ENjFNqnhCb2c46sQ49-3ZEkQ-ONLc7tX4wSkGnzmzX0aP_E0T_H1k5oQqvD2vTh-jEgSXOlaBbtOs-Piikke4_OfpYlYG_q2DIMh2wHekWZEkG4utP8LNMcm3eU3BJoFFm_jAL8bJZ8U7dZt-qpJ484eHRCeFHeZreH5Nh1tuCG9XTqCP7l3B40IdsgSZOA8GoqQKL_lQ7rRVYdxUlhXT7vpSQgThKqDWW_BhFAEvf-z5xcw"/>
+<span class="paris-brand">L-Acoustics</span>
+</div>
+<div class="paris-product-body">
+<h3>Kit Line Array K2</h3>
+<div class="paris-location">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
                 Paris 11e
               </div>
-              <div class="paris-product-bottom">
-                <div>
-                  <div class="paris-from">À partir de</div>
-                  <div class="paris-price">1 200€ <small>/jour</small></div>
-                </div>
-                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="paris-product paris-glass">
-            <div class="paris-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpSl8iZYoi-Of27bDy9A8R4ojn07b10KYrLPp2SBpWdjqV2k_S972FufOvomvXdfKNGfrVXIbzvZYM5MKTOLemM-s3cjFpqk1fd5YkK2G1_oixDofv-Ieg1Wa_i_iM0cdQxJmka2R63w3cftp_i5xrKb1AcDBMxDlda4x6CVt_rnRb2jR6-QtZc-d5ZapAfnZr39ish3Kkp9dHwrLaBIKquzBAG8dgDZd18VoClYqIOEAbrv-A8HLsBGXDcyy3OtbxzkGbwWgmql8" alt="Régie professionnelle Pioneer DJ" loading="lazy">
-              <span class="paris-brand">Pioneer DJ</span>
-            </div>
-            <div class="paris-product-body">
-              <h3>Régie Club Pro</h3>
-              <div class="paris-location">
-                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<div class="paris-product-bottom">
+<div>
+<div class="paris-from">À partir de</div>
+<div class="paris-price">1 200€ <small>/jour</small></div>
+</div>
+<button aria-label="Voir le produit Kit Line Array K2" class="paris-rent-btn" data-product-index="0" type="button">Louer</button>
+</div>
+</div>
+</article>
+<article aria-label="Voir le produit Régie Club Pro" class="paris-product paris-glass" data-product-index="1" role="button" tabindex="0">
+<div class="paris-product-media">
+<img alt="Régie professionnelle Pioneer DJ" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpSl8iZYoi-Of27bDy9A8R4ojn07b10KYrLPp2SBpWdjqV2k_S972FufOvomvXdfKNGfrVXIbzvZYM5MKTOLemM-s3cjFpqk1fd5YkK2G1_oixDofv-Ieg1Wa_i_iM0cdQxJmka2R63w3cftp_i5xrKb1AcDBMxDlda4x6CVt_rnRb2jR6-QtZc-d5ZapAfnZr39ish3Kkp9dHwrLaBIKquzBAG8dgDZd18VoClYqIOEAbrv-A8HLsBGXDcyy3OtbxzkGbwWgmql8"/>
+<span class="paris-brand">Pioneer DJ</span>
+</div>
+<div class="paris-product-body">
+<h3>Régie Club Pro</h3>
+<div class="paris-location">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
                 Paris 18e
               </div>
-              <div class="paris-product-bottom">
-                <div>
-                  <div class="paris-from">À partir de</div>
-                  <div class="paris-price">250€ <small>/jour</small></div>
-                </div>
-                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="paris-product paris-glass">
-            <div class="paris-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZuk1wL0YYHE7a9kmRqE4edVeJFtbEJ7IB15nBiElX-fOQ4bOdJREC4lyzjNrgKQABTnt9G1jte8bF5eKdiCUOAuzNcWAzkKe0jBCROjyGfeb3XOlnI-9dKB7iqmcQ9RvYQNRONE2KP6V_vquRLrUalNsYMuXsq_RV_ToHWnTYjsPqA1iXx03pIaFC4HmMgD6CCqFajfa4gXAxbmV-m0OxV2DK3ehuKkqu1W4XB8v36wenyLD7NTelyyuohp8zYKg-FLNGccM1NFs" alt="Console numérique Midas HD96" loading="lazy">
-              <span class="paris-brand">Midas</span>
-            </div>
-            <div class="paris-product-body">
-              <h3>Console FOH HD96</h3>
-              <div class="paris-location">
-                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<div class="paris-product-bottom">
+<div>
+<div class="paris-from">À partir de</div>
+<div class="paris-price">250€ <small>/jour</small></div>
+</div>
+<button aria-label="Voir le produit Régie Club Pro" class="paris-rent-btn" data-product-index="1" type="button">Louer</button>
+</div>
+</div>
+</article>
+<article aria-label="Voir le produit Console FOH HD96" class="paris-product paris-glass" data-product-index="2" role="button" tabindex="0">
+<div class="paris-product-media">
+<img alt="Console numérique Midas HD96" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZuk1wL0YYHE7a9kmRqE4edVeJFtbEJ7IB15nBiElX-fOQ4bOdJREC4lyzjNrgKQABTnt9G1jte8bF5eKdiCUOAuzNcWAzkKe0jBCROjyGfeb3XOlnI-9dKB7iqmcQ9RvYQNRONE2KP6V_vquRLrUalNsYMuXsq_RV_ToHWnTYjsPqA1iXx03pIaFC4HmMgD6CCqFajfa4gXAxbmV-m0OxV2DK3ehuKkqu1W4XB8v36wenyLD7NTelyyuohp8zYKg-FLNGccM1NFs"/>
+<span class="paris-brand">Midas</span>
+</div>
+<div class="paris-product-body">
+<h3>Console FOH HD96</h3>
+<div class="paris-location">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
                 Ivry-sur-Seine
               </div>
-              <div class="paris-product-bottom">
-                <div>
-                  <div class="paris-from">À partir de</div>
-                  <div class="paris-price">450€ <small>/jour</small></div>
-                </div>
-                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
-              </div>
-            </div>
-          </article>
-
-          <article class="paris-product paris-glass">
-            <div class="paris-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUKI1cR1wsuZrurC--arreZmD375eEEfDz_gI96X0RyAKvwvFLZvF87h_lmUpQHLiej06URoi6Euze_XpBPZtGH1_7q6SzCDTaUcFgiWhtgJh8BMgDOmGU2EttQueCgJ19ahd5506KAz0uiDiSWM8RoRJS_bMEx7NKTt4Hltz6EeSdaWLINmSoNb2kgM6VBnByMuj5OQKma4-y6jiU1AEKF4jW6w3zmuI8sC_Fe6lM9czrPLwvOJBAszZ5nKVPPwKht0W7EXb18wo" alt="Système Meyer Sound Leopard" loading="lazy">
-              <span class="paris-brand">Meyer Sound</span>
-            </div>
-            <div class="paris-product-body">
-              <h3>Système Leopard</h3>
-              <div class="paris-location">
-                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<div class="paris-product-bottom">
+<div>
+<div class="paris-from">À partir de</div>
+<div class="paris-price">450€ <small>/jour</small></div>
+</div>
+<button aria-label="Voir le produit Console FOH HD96" class="paris-rent-btn" data-product-index="2" type="button">Louer</button>
+</div>
+</div>
+</article>
+<article aria-label="Voir le produit Système Leopard" class="paris-product paris-glass" data-product-index="3" role="button" tabindex="0">
+<div class="paris-product-media">
+<img alt="Système Meyer Sound Leopard" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUKI1cR1wsuZrurC--arreZmD375eEEfDz_gI96X0RyAKvwvFLZvF87h_lmUpQHLiej06URoi6Euze_XpBPZtGH1_7q6SzCDTaUcFgiWhtgJh8BMgDOmGU2EttQueCgJ19ahd5506KAz0uiDiSWM8RoRJS_bMEx7NKTt4Hltz6EeSdaWLINmSoNb2kgM6VBnByMuj5OQKma4-y6jiU1AEKF4jW6w3zmuI8sC_Fe6lM9czrPLwvOJBAszZ5nKVPPwKht0W7EXb18wo"/>
+<span class="paris-brand">Meyer Sound</span>
+</div>
+<div class="paris-product-body">
+<h3>Système Leopard</h3>
+<div class="paris-location">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
                 Boulogne
               </div>
-              <div class="paris-product-bottom">
-                <div>
-                  <div class="paris-from">À partir de</div>
-                  <div class="paris-price">800€ <small>/jour</small></div>
-                </div>
-                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
-              </div>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-  </main>
+<div class="paris-product-bottom">
+<div>
+<div class="paris-from">À partir de</div>
+<div class="paris-price">800€ <small>/jour</small></div>
+</div>
+<button aria-label="Voir le produit Système Leopard" class="paris-rent-btn" data-product-index="3" type="button">Louer</button>
+</div>
+</div>
+</article>
+</div>
+</div>
+</section>
+</main><div aria-hidden="true" class="paris-product-modal" id="paris-product-modal">
+<div class="paris-product-modal-backdrop" data-paris-modal-close=""></div>
+<div aria-labelledby="paris-modal-title" aria-modal="true" class="paris-product-modal-panel" role="dialog">
+<div class="paris-product-modal-media">
+<img alt="" id="paris-modal-image" src=""/>
+</div>
+<div class="paris-product-modal-content">
+<button aria-label="Fermer" class="paris-product-modal-close" data-paris-modal-close="" type="button">
+<span aria-hidden="true" class="material-symbols-outlined">close</span>
+</button>
+<div class="paris-product-modal-brand" id="paris-modal-brand"></div>
+<h3 id="paris-modal-title"></h3>
+<div class="paris-product-modal-location">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
+<span id="paris-modal-location"></span>
+</div>
+<div class="paris-product-modal-price-block">
+<div class="paris-product-modal-label">À partir de</div>
+<div class="paris-product-modal-price">
+<span id="paris-modal-price"></span> <small>/jour</small>
+</div>
+</div>
+<p class="paris-product-modal-text" id="paris-modal-description"></p>
+<div class="paris-product-modal-actions">
+<button class="paris-product-modal-primary" id="paris-modal-rent" type="button">
+            Sélectionner ce matériel
+          </button>
+<button class="paris-product-modal-secondary" data-paris-modal-close="" type="button">
+            Fermer
+          </button>
+</div>
+</div>
+</div>
+</div>
+<div id="site-footer"></div>
+<script>
+    const parisProducts = [{"title": "Kit Line Array K2", "brand": "L-Acoustics", "location": "Paris 11e", "price": "1 200€", "image_index": 0, "description": "Système line array professionnel haute puissance pour concerts, événements premium et grandes jauges.", "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDjE33t-mFEZJAym9oOArQu08gtVn_ENjFNqnhCb2c46sQ49-3ZEkQ-ONLc7tX4wSkGnzmzX0aP_E0T_H1k5oQqvD2vTh-jEgSXOlaBbtOs-Piikke4_OfpYlYG_q2DIMh2wHekWZEkG4utP8LNMcm3eU3BJoFFm_jAL8bJZ8U7dZt-qpJ484eHRCeFHeZreH5Nh1tuCG9XTqCP7l3B40IdsgSZOA8GoqQKL_lQ7rRVYdxUlhXT7vpSQgThKqDWW_BhFAEvf-z5xcw"}, {"title": "Régie Club Pro", "brand": "Pioneer DJ", "location": "Paris 18e", "price": "250€", "image_index": 1, "description": "Régie DJ professionnelle prête pour les riders, clubs, soirées privées et événements corporate.", "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuBpSl8iZYoi-Of27bDy9A8R4ojn07b10KYrLPp2SBpWdjqV2k_S972FufOvomvXdfKNGfrVXIbzvZYM5MKTOLemM-s3cjFpqk1fd5YkK2G1_oixDofv-Ieg1Wa_i_iM0cdQxJmka2R63w3cftp_i5xrKb1AcDBMxDlda4x6CVt_rnRb2jR6-QtZc-d5ZapAfnZr39ish3Kkp9dHwrLaBIKquzBAG8dgDZd18VoClYqIOEAbrv-A8HLsBGXDcyy3OtbxzkGbwWgmql8"}, {"title": "Console FOH HD96", "brand": "Midas", "location": "Ivry-sur-Seine", "price": "450€", "image_index": 2, "description": "Console numérique FOH haut de gamme pour productions live, tournées, conférences et prestations techniques exigeantes.", "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuDZuk1wL0YYHE7a9kmRqE4edVeJFtbEJ7IB15nBiElX-fOQ4bOdJREC4lyzjNrgKQABTnt9G1jte8bF5eKdiCUOAuzNcWAzkKe0jBCROjyGfeb3XOlnI-9dKB7iqmcQ9RvYQNRONE2KP6V_vquRLrUalNsYMuXsq_RV_ToHWnTYjsPqA1iXx03pIaFC4HmMgD6CCqFajfa4gXAxbmV-m0OxV2DK3ehuKkqu1W4XB8v36wenyLD7NTelyyuohp8zYKg-FLNGccM1NFs"}, {"title": "Système Leopard", "brand": "Meyer Sound", "location": "Boulogne", "price": "800€", "image_index": 3, "description": "Système Meyer Sound compact et puissant, adapté aux événements premium et aux installations nécessitant précision et discrétion.", "image": "https://lh3.googleusercontent.com/aida-public/AB6AXuCUKI1cR1wsuZrurC--arreZmD375eEEfDz_gI96X0RyAKvwvFLZvF87h_lmUpQHLiej06URoi6Euze_XpBPZtGH1_7q6SzCDTaUcFgiWhtgJh8BMgDOmGU2EttQueCgJ19ahd5506KAz0uiDiSWM8RoRJS_bMEx7NKTt4Hltz6EeSdaWLINmSoNb2kgM6VBnByMuj5OQKma4-y6jiU1AEKF4jW6w3zmuI8sC_Fe6lM9czrPLwvOJBAszZ5nKVPPwKht0W7EXb18wo"}];
 
-  <div id="site-footer"></div>
+    (function () {
+      const modal = document.getElementById("paris-product-modal");
+      const modalImage = document.getElementById("paris-modal-image");
+      const modalBrand = document.getElementById("paris-modal-brand");
+      const modalTitle = document.getElementById("paris-modal-title");
+      const modalLocation = document.getElementById("paris-modal-location");
+      const modalPrice = document.getElementById("paris-modal-price");
+      const modalDescription = document.getElementById("paris-modal-description");
+      const modalRent = document.getElementById("paris-modal-rent");
 
-  <script>
+      let activeProduct = null;
+      let previousFocus = null;
+
+      function openParisProduct(index) {
+        const product = parisProducts[Number(index)];
+        if (!product || !modal) return;
+
+        activeProduct = product;
+        previousFocus = document.activeElement;
+
+        modalImage.src = product.image;
+        modalImage.alt = product.title;
+        modalBrand.textContent = product.brand;
+        modalTitle.textContent = product.title;
+        modalLocation.textContent = product.location;
+        modalPrice.textContent = product.price;
+        modalDescription.textContent = product.description;
+
+        modal.classList.add("is-open");
+        modal.setAttribute("aria-hidden", "false");
+        document.documentElement.style.overflow = "hidden";
+
+        const closeBtn = modal.querySelector(".paris-product-modal-close");
+        if (closeBtn) closeBtn.focus();
+      }
+
+      function closeParisProduct() {
+        if (!modal) return;
+
+        modal.classList.remove("is-open");
+        modal.setAttribute("aria-hidden", "true");
+        document.documentElement.style.overflow = "";
+        activeProduct = null;
+
+        if (previousFocus && typeof previousFocus.focus === "function") {
+          previousFocus.focus();
+        }
+      }
+
+      document.querySelectorAll(".paris-product[data-product-index]").forEach((card) => {
+        card.addEventListener("click", (event) => {
+          if (event.target.closest("button")) return;
+          openParisProduct(card.dataset.productIndex);
+        });
+
+        card.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openParisProduct(card.dataset.productIndex);
+          }
+        });
+      });
+
+      document.querySelectorAll(".paris-rent-btn[data-product-index]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          openParisProduct(button.dataset.productIndex);
+        });
+      });
+
+      modal?.querySelectorAll("[data-paris-modal-close]").forEach((button) => {
+        button.addEventListener("click", closeParisProduct);
+      });
+
+      document.addEventListener("keydown", (event) => {
+        if (event.key === "Escape" && modal?.classList.contains("is-open")) {
+          closeParisProduct();
+        }
+      });
+
+      /*
+        La page ne redirige plus vers /catalog.html.
+        Ce bouton émet un événement produit exploitable par le reste du site.
+        S'il n'existe pas encore de gestionnaire global, la fiche reste ouverte
+        et le produit sélectionné est mémorisé temporairement.
+      */
+      modalRent?.addEventListener("click", () => {
+        if (!activeProduct) return;
+
+        sessionStorage.setItem("rssSelectedProduct", JSON.stringify(activeProduct));
+
+        window.dispatchEvent(new CustomEvent("rss:product-selected", {
+          detail: activeProduct
+        }));
+
+        modalRent.textContent = "Matériel sélectionné";
+        setTimeout(() => {
+          modalRent.textContent = "Sélectionner ce matériel";
+        }, 1600);
+      });
+
+      window.openParisProduct = openParisProduct;
+      window.closeParisProduct = closeParisProduct;
+    })();
+</script><script>
     async function loadSharedComponent(targetId, url) {
       const target = document.getElementById(targetId);
       if (!target) return;
