@@ -1,18 +1,18 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Location Sono Valence - RentSoundSystem</title>
-  <meta name="description" content="Location de sonorisation professionnelle à Valence : Funktion-One, Pioneer DJ, logistique événementielle, livraison et assistance technique pour festivals, villas, clubs et événements premium.">
-  <meta name="robots" content="index,follow">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Location Sono Valence - RentSoundSystem</title>
+<meta content="Location de sonorisation professionnelle à Valence : Funktion-One, Pioneer DJ, logistique événementielle, livraison et assistance technique pour festivals, villas, clubs et événements premium." name="description"/>
+<meta content="index,follow" name="robots"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -482,173 +482,247 @@
         transition-duration: .01ms !important;
       }
     }
-  </style>
+  
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+</style>
 </head>
-
 <body>
-  <div id="site-header"></div>
-
-  <main class="valence-page">
-    <section class="valence-hero" aria-labelledby="valence-title">
-      <div class="valence-container">
-        <div class="valence-hero-copy">
-          <h1 id="valence-title">Propulser l'Excellence Audio à Valence</h1>
-
-          <p class="valence-lead">
+<div id="site-header"></div>
+<main class="valence-page">
+<section aria-labelledby="valence-title" class="valence-hero">
+<div class="valence-container">
+<div class="valence-hero-copy">
+<h1 id="valence-title">Propulser l'Excellence Audio à Valence</h1>
+<p class="valence-lead">
             Location de systèmes de sonorisation haute fidélité pour événements, festivals
             et scènes méditerranéennes. Dominez l'acoustique espagnole.
           </p>
-
-          <div class="valence-actions">
-            <a class="valence-btn valence-btn-primary" href="/catalog.html">Voir le catalogue</a>
-            <a class="valence-btn valence-btn-secondary" href="#valence-logistique">Nos Lieux</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="valence-section valence-expertise" aria-labelledby="valence-expertise-title">
-      <div class="valence-container">
-        <div class="valence-expertise-head">
-          <h2 class="valence-title" id="valence-expertise-title">Expertise Méditerranéenne</h2>
-          <p class="valence-copy">Des solutions adaptées au climat et à l'énergie de Valencia.</p>
-        </div>
-
-        <div class="valence-expertise-grid">
-          <article class="valence-expertise-card">
-            <span class="material-symbols-outlined valence-expertise-icon" aria-hidden="true">music_note</span>
-            <h3>Festivals</h3>
-            <p>
+<div class="valence-actions">
+<a class="valence-btn valence-btn-primary" href="/catalog.html">Voir le catalogue</a>
+<a class="valence-btn valence-btn-secondary" href="#valence-logistique">Nos Lieux</a>
+</div>
+</div>
+</div>
+</section>
+<section aria-labelledby="valence-expertise-title" class="valence-section valence-expertise">
+<div class="valence-container">
+<div class="valence-expertise-head">
+<h2 class="valence-title" id="valence-expertise-title">Expertise Méditerranéenne</h2>
+<p class="valence-copy">Des solutions adaptées au climat et à l'énergie de Valencia.</p>
+</div>
+<div class="valence-expertise-grid">
+<article class="valence-expertise-card">
+<span aria-hidden="true" class="material-symbols-outlined valence-expertise-icon">music_note</span>
+<h3>Festivals</h3>
+<p>
               Infrastructure massive pour les festivals en plein air du littoral. Une couverture sonore homogène
               pour des milliers de spectateurs.
             </p>
-          </article>
-
-          <article class="valence-expertise-card">
-            <span class="material-symbols-outlined valence-expertise-icon" aria-hidden="true">celebration</span>
-            <h3>Événements Privés</h3>
-            <p>
+</article>
+<article class="valence-expertise-card">
+<span aria-hidden="true" class="material-symbols-outlined valence-expertise-icon">celebration</span>
+<h3>Événements Privés</h3>
+<p>
               Qualité audio premium pour mariages et soirées exclusives dans les jardins
               et villas historiques de la région.
             </p>
-          </article>
-
-          <article class="valence-expertise-card">
-            <span class="material-symbols-outlined valence-expertise-icon" aria-hidden="true">waves</span>
-            <h3>Scène de Nuit</h3>
-            <p>
+</article>
+<article class="valence-expertise-card">
+<span aria-hidden="true" class="material-symbols-outlined valence-expertise-icon">waves</span>
+<h3>Scène de Nuit</h3>
+<p>
               Équipement robuste et précis adapté à l'ambiance unique des clubs
               et beach-parties de Valence.
             </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="valence-section valence-gear" aria-labelledby="valence-gear-title">
-      <div class="valence-container">
-        <div class="valence-gear-head">
-          <div>
-            <h2 class="valence-title" id="valence-gear-title">Équipement Elite Gear</h2>
-            <p class="valence-copy" style="font-size:18px">
+</article>
+</div>
+</div>
+</section>
+<section aria-labelledby="valence-gear-title" class="valence-section valence-gear">
+<div class="valence-container">
+<div class="valence-gear-head">
+<div>
+<h2 class="valence-title" id="valence-gear-title">Équipement Elite Gear</h2>
+<p class="valence-copy" style="font-size:18px">
               Nous ne transigeons pas sur la qualité. Notre parc inclut exclusivement
               les standards mondiaux du son haute définition.
             </p>
-          </div>
-
-          <span class="material-symbols-outlined valence-audio-icon" aria-hidden="true">audio_file</span>
-        </div>
-
-        <div class="valence-gear-grid">
-          <article class="valence-gear-card">
-            <div class="valence-gear-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBktRywutxTdE4tZbsU7HXetjVGGOY4VGVa6gZd-_l5_xdKsIxra1q7wkaRhw0GNPjQWVZgy-ePQWeUo9lE_M7_NeldVoRRY5ujCR1--uQTosMn48FVXrGreLmBOVHazV6475RYWpoJSW-Zu1cdubmgmw5OKiFtaUivpbcmhvzoJHM4MSlS1URtK8g3ufulwjflgeAIXLVPwjck41Z_5-45LvBBJ95jDcM4QnGeYHSqhlFbjI65TClX" alt="Système Funktion-One à Valence" loading="lazy">
-            </div>
-
-            <div class="valence-gear-body">
-              <div class="valence-brand-row">
-                <span class="valence-chip">Reference Class</span>
-                <span class="valence-brand">Funktion-One</span>
-              </div>
-
-              <h3>La pureté acoustique totale</h3>
-              <p>
+</div>
+<span aria-hidden="true" class="material-symbols-outlined valence-audio-icon">audio_file</span>
+</div>
+<div class="valence-gear-grid">
+<article class="valence-gear-card">
+<div class="valence-gear-media">
+<img alt="Système Funktion-One à Valence" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBktRywutxTdE4tZbsU7HXetjVGGOY4VGVa6gZd-_l5_xdKsIxra1q7wkaRhw0GNPjQWVZgy-ePQWeUo9lE_M7_NeldVoRRY5ujCR1--uQTosMn48FVXrGreLmBOVHazV6475RYWpoJSW-Zu1cdubmgmw5OKiFtaUivpbcmhvzoJHM4MSlS1URtK8g3ufulwjflgeAIXLVPwjck41Z_5-45LvBBJ95jDcM4QnGeYHSqhlFbjI65TClX"/>
+</div>
+<div class="valence-gear-body">
+<div class="valence-brand-row">
+<span class="valence-chip">Reference Class</span>
+<span class="valence-brand">Funktion-One</span>
+</div>
+<h3>La pureté acoustique totale</h3>
+<p>
                 Reconnu mondialement pour sa distorsion minimale et son impact physique.
                 Idéal pour les expériences immersives et la musique électronique de pointe.
               </p>
-
-              <a class="valence-gear-link" href="/catalog.html?q=Funktion-One">
+<a class="valence-gear-link" href="/catalog.html?q=Funktion-One">
                 Explorer le set-up
-                <span class="material-symbols-outlined" aria-hidden="true">trending_flat</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="valence-gear-card">
-            <div class="valence-gear-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnoch6nJmJLJWv1dKCROf9Ak8tMsoGsv893iZZwhlzRIVoBg2KHcn3KG5BhZr8o_2WEaHo7NQmaqedaqop9fV8rPsP4N36a_UI0WlrBGKSsD6sXXETCGnRiITbAEvfVH-1P1m6ZF9S15As_JOtHt8fkFUyA2Dx_MT01ltK0Ba5fXBiAad0Cbl-QFpmhDu_HV-dCIAsy_JdZscoEzBZyTr0mOa96tXwsl6l5pqhNlxx6B2a0YtJp68o" alt="Régie Pioneer DJ à Valence" loading="lazy">
-            </div>
-
-            <div class="valence-gear-body">
-              <div class="valence-brand-row">
-                <span class="valence-chip">Industry Standard</span>
-                <span class="valence-brand">Pioneer DJ</span>
-              </div>
-
-              <h3>Contrôle et performance</h3>
-              <p>
+                <span aria-hidden="true" class="material-symbols-outlined">trending_flat</span>
+</a>
+</div>
+</article>
+<article class="valence-gear-card">
+<div class="valence-gear-media">
+<img alt="Régie Pioneer DJ à Valence" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnoch6nJmJLJWv1dKCROf9Ak8tMsoGsv893iZZwhlzRIVoBg2KHcn3KG5BhZr8o_2WEaHo7NQmaqedaqop9fV8rPsP4N36a_UI0WlrBGKSsD6sXXETCGnRiITbAEvfVH-1P1m6ZF9S15As_JOtHt8fkFUyA2Dx_MT01ltK0Ba5fXBiAad0Cbl-QFpmhDu_HV-dCIAsy_JdZscoEzBZyTr0mOa96tXwsl6l5pqhNlxx6B2a0YtJp68o"/>
+</div>
+<div class="valence-gear-body">
+<div class="valence-brand-row">
+<span class="valence-chip">Industry Standard</span>
+<span class="valence-brand">Pioneer DJ</span>
+</div>
+<h3>Contrôle et performance</h3>
+<p>
                 La référence absolue des riders techniques. CDJ-3000, DJM-V10,
                 et monitoring de précision pour les performances live sans compromis.
               </p>
-
-              <a class="valence-gear-link" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-V10">
+<a class="valence-gear-link" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-V10">
                 Configurer votre régie
-                <span class="material-symbols-outlined" aria-hidden="true">trending_flat</span>
-              </a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="valence-section valence-logistics" id="valence-logistique" aria-labelledby="valence-logistics-title">
-      <div class="valence-container valence-logistics-grid">
-        <div>
-          <h2 class="valence-title" id="valence-logistics-title">Logistique &amp; Déploiement à Valence</h2>
-
-          <p class="valence-copy" style="font-size:18px">
+                <span aria-hidden="true" class="material-symbols-outlined">trending_flat</span>
+</a>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section aria-labelledby="valence-logistics-title" class="valence-section valence-logistics" id="valence-logistique">
+<div class="valence-container valence-logistics-grid">
+<div>
+<h2 class="valence-title" id="valence-logistics-title">Logistique &amp; Déploiement à Valence</h2>
+<p class="valence-copy" style="font-size:18px">
             Notre équipe locale connaît les contraintes de la cité du Turia. Que votre événement se déroule
             dans les ruelles étroites de <strong style="color:#fff">Ciutat Vella</strong> ou dans un espace
             industriel branché de <strong style="color:#fff">Ruzafa</strong>, nous assurons une livraison
             et une installation furtives et efficaces.
           </p>
-
-          <ul class="valence-logistics-list">
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<ul class="valence-logistics-list">
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
               Livraison express Ciutat Vella &amp; Ruzafa
             </li>
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">speed</span>
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">speed</span>
               Installation &amp; Sound Check en moins de 2h
             </li>
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">support_agent</span>
               Assistance technique sur site 24/7
             </li>
-          </ul>
-        </div>
-
-        <div class="valence-map">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBK_jbXINnReQLfqhvbvnorKFuXbH4jkXJP9P8TxfU-h_qSb2JCmHKaRF8Aivh0_CfPpFdQctCSAveSlAj2_0N6bo5V6JPoXX0r52tygelWEglSiu0dYRD25LGA6wjy3HWE5ack-lMbUC2BebU87W5d6F41r1vSRNHFfWToPftkhDiO99s3N32vhFZIitFDe3ijMjiVLofGZfgRlyJfT5M-g2oUVPjKLVsMJzbpbj_b1CCajIiRt3xY" alt="Carte des zones de livraison et déploiement à Valence" loading="lazy">
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <script>
+</ul>
+</div>
+<div class="valence-map rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=-0.45%2C39.42%2C-0.30%2C39.52&amp;layer=mapnik&amp;marker=39.4699%2C-0.3763" title="Carte réelle de Valence"></iframe><div class="rss-live-map-badge">Carte réelle • Valence</div><div class="rss-live-map-status"><strong>Zones desservies</strong><span>Ciutat Vella • Ruzafa • Marina</span></div></div>
+</div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script>
     async function loadSharedComponent(targetId, url) {
       const target = document.getElementById(targetId);
       if (!target) return;

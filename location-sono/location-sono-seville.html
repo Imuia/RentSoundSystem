@@ -1,18 +1,18 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Location Sono Séville - RentSoundSystem</title>
-  <meta name="description" content="Location de sonorisation professionnelle à Séville : Funktion-One, Pioneer DJ, micros HF, livraison express et assistance technique pour mariages, festivals et événements premium.">
-  <meta name="robots" content="index,follow">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Location Sono Séville - RentSoundSystem</title>
+<meta content="Location de sonorisation professionnelle à Séville : Funktion-One, Pioneer DJ, micros HF, livraison express et assistance technique pour mariages, festivals et événements premium." name="description"/>
+<meta content="index,follow" name="robots"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -521,195 +521,262 @@
         height: 320px;
       }
     }
-  </style>
+  
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+</style>
 </head>
-
 <body>
-  <div id="site-header"></div>
-
-  <main class="seville-page">
-    <section class="seville-hero" aria-labelledby="seville-title">
-      <div class="seville-hero-media" aria-hidden="true">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzgY8vcEN-UWWy-9u7FxRQf_yCoeCGxfjJwaF1C0Pg0elX0NpR4bdswlNNuWnGn6KiihLXiTWdzuhHLol-AJFB6mD1SM8ehpZTEvGq8KCdfNixrZGDG79j6A-vpHuX0T1AeHV6HgDhkhydvsqMdrX5JUD1BPED9A9ulJctuvHX16FGHON6Jct9CXFeQqvV7x5pj3dnRvDarzCD3sOpzyRSeLNU7KagNgZHf2eiU4q544qAFRpvOl52" alt="" loading="eager" fetchpriority="high">
-      </div>
-
-      <div class="seville-container">
-        <div class="seville-hero-copy">
-          <h1 id="seville-title">Propulser l'Excellence Audio à Séville</h1>
-
-          <p class="seville-lead">
+<div id="site-header"></div>
+<main class="seville-page">
+<section aria-labelledby="seville-title" class="seville-hero">
+<div aria-hidden="true" class="seville-hero-media">
+<img alt="" fetchpriority="high" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzgY8vcEN-UWWy-9u7FxRQf_yCoeCGxfjJwaF1C0Pg0elX0NpR4bdswlNNuWnGn6KiihLXiTWdzuhHLol-AJFB6mD1SM8ehpZTEvGq8KCdfNixrZGDG79j6A-vpHuX0T1AeHV6HgDhkhydvsqMdrX5JUD1BPED9A9ulJctuvHX16FGHON6Jct9CXFeQqvV7x5pj3dnRvDarzCD3sOpzyRSeLNU7KagNgZHf2eiU4q544qAFRpvOl52"/>
+</div>
+<div class="seville-container">
+<div class="seville-hero-copy">
+<h1 id="seville-title">Propulser l'Excellence Audio à Séville</h1>
+<p class="seville-lead">
             Location de systèmes de sonorisation haut de gamme pour vos événements culturels,
             mariages de luxe et soirées privées au cœur de l'Andalousie.
           </p>
-
-          <div class="seville-actions">
-            <a class="seville-btn seville-btn-primary" href="/catalog.html">Voir le catalogue</a>
-            <a class="seville-btn seville-btn-secondary" href="/contact.html">Demander un devis</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="seville-section seville-equipment" aria-labelledby="seville-equipment-title">
-      <div class="seville-container">
-        <div class="seville-equipment-head">
-          <h2 class="seville-title" id="seville-equipment-title">Équipement Élite</h2>
-          <a class="seville-see-all" href="/catalog.html">
+<div class="seville-actions">
+<a class="seville-btn seville-btn-primary" href="/catalog.html">Voir le catalogue</a>
+<a class="seville-btn seville-btn-secondary" href="/contact.html">Demander un devis</a>
+</div>
+</div>
+</div>
+</section>
+<section aria-labelledby="seville-equipment-title" class="seville-section seville-equipment">
+<div class="seville-container">
+<div class="seville-equipment-head">
+<h2 class="seville-title" id="seville-equipment-title">Équipement Élite</h2>
+<a class="seville-see-all" href="/catalog.html">
             Voir tout
-            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-          </a>
-        </div>
-
-        <div class="seville-products" id="seville-products">
-          <article class="seville-product">
-            <div class="seville-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAXW6hIu5J7JG52XAzPAqFIi-zEv1rWiOwAJdmmHGCbCL-zFoK3gsm6DND_c4JFZkhuDtL2OcDo5yxlxNhEYVENPF-oCp02TIENjr6MZ-B1ECS8PNIHnlUKKY85ZQ_aCqX89yNsUzZRYHzrEp6XCxWq3hlq6QGxiOe_nZY3Z0CFzoTPUZmHrhZvS9HtL-_Xyy-JjVStsQBxaq7bCeAueu9UPSdBAHUxNrm6WXfHHfJcp9tUDF7XPzO" alt="Funktion-One Evo" loading="lazy">
-              <span class="seville-status">Disponible</span>
-            </div>
-
-            <div class="seville-product-head">
-              <h3>Funktion-One Evo</h3>
-              <span class="seville-price">À partir de 450€</span>
-            </div>
-
-            <p>
+            <span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<div class="seville-products" id="seville-products">
+<article class="seville-product">
+<div class="seville-product-media">
+<img alt="Funktion-One Evo" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAXW6hIu5J7JG52XAzPAqFIi-zEv1rWiOwAJdmmHGCbCL-zFoK3gsm6DND_c4JFZkhuDtL2OcDo5yxlxNhEYVENPF-oCp02TIENjr6MZ-B1ECS8PNIHnlUKKY85ZQ_aCqX89yNsUzZRYHzrEp6XCxWq3hlq6QGxiOe_nZY3Z0CFzoTPUZmHrhZvS9HtL-_Xyy-JjVStsQBxaq7bCeAueu9UPSdBAHUxNrm6WXfHHfJcp9tUDF7XPzO"/>
+<span class="seville-status">Disponible</span>
+</div>
+<div class="seville-product-head">
+<h3>Funktion-One Evo</h3>
+<span class="seville-price">À partir de 450€</span>
+</div>
+<p>
               Clarté acoustique légendaire et design iconique pour les festivals et grands espaces andalous.
             </p>
-
-            <div class="seville-specs">
-              <span><span class="material-symbols-outlined">volume_up</span>142dB Peak</span>
-              <span><span class="material-symbols-outlined">groups</span>500+ Pers.</span>
-            </div>
-
-            <a class="seville-product-link" href="/catalog.html?q=Funktion-One%20Evo">
+<div class="seville-specs">
+<span><span class="material-symbols-outlined">volume_up</span>142dB Peak</span>
+<span><span class="material-symbols-outlined">groups</span>500+ Pers.</span>
+</div>
+<a class="seville-product-link" href="/catalog.html?q=Funktion-One%20Evo">
               Voir les Funktion-One Evo
               <span class="material-symbols-outlined">trending_flat</span>
-            </a>
-          </article>
-
-          <article class="seville-product">
-            <div class="seville-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY_LVO5_Hua3jkRDKP91GzD29yZ_Vkm69Ei_5d1NJ4douA6s0eMJVv2YhlM_p8rgaVVPa1EX_M0kdWKzvuEaZzaYae5QD7wmprxkpoAVZLboOKz-LmyZHRpa-B5Afna5DUqSa_x7ZjieiUp3cC7821fMHHL8gJXyUE6r7uXtlU-QVE9EX6kLwiQBn7Iq0H5XrxzFktgQPi2O65a9NFb3CkUt_Rfm7XvE6H0Is1aRc6UZ5ji-MpOLtz" alt="Pioneer DJ Nexus 3" loading="lazy">
-              <span class="seville-status">Populaire</span>
-            </div>
-
-            <div class="seville-product-head">
-              <h3>Pioneer DJ Nexus 3</h3>
-              <span class="seville-price">À partir de 220€</span>
-            </div>
-
-            <p>
+</a>
+</article>
+<article class="seville-product">
+<div class="seville-product-media">
+<img alt="Pioneer DJ Nexus 3" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCY_LVO5_Hua3jkRDKP91GzD29yZ_Vkm69Ei_5d1NJ4douA6s0eMJVv2YhlM_p8rgaVVPa1EX_M0kdWKzvuEaZzaYae5QD7wmprxkpoAVZLboOKz-LmyZHRpa-B5Afna5DUqSa_x7ZjieiUp3cC7821fMHHL8gJXyUE6r7uXtlU-QVE9EX6kLwiQBn7Iq0H5XrxzFktgQPi2O65a9NFb3CkUt_Rfm7XvE6H0Is1aRc6UZ5ji-MpOLtz"/>
+<span class="seville-status">Populaire</span>
+</div>
+<div class="seville-product-head">
+<h3>Pioneer DJ Nexus 3</h3>
+<span class="seville-price">À partir de 220€</span>
+</div>
+<p>
               Le standard mondial pour les performances DJ professionnelles. Fiabilité et ergonomie ultimes.
             </p>
-
-            <div class="seville-specs">
-              <span><span class="material-symbols-outlined">settings_input_component</span>4 Voies</span>
-              <span><span class="material-symbols-outlined">touch_app</span>Écran HD</span>
-            </div>
-
-            <a class="seville-product-link" href="/catalog.html?q=Pioneer%20DJ%20Nexus%203">
+<div class="seville-specs">
+<span><span class="material-symbols-outlined">settings_input_component</span>4 Voies</span>
+<span><span class="material-symbols-outlined">touch_app</span>Écran HD</span>
+</div>
+<a class="seville-product-link" href="/catalog.html?q=Pioneer%20DJ%20Nexus%203">
               Voir les régies Pioneer DJ
               <span class="material-symbols-outlined">trending_flat</span>
-            </a>
-          </article>
-
-          <article class="seville-product">
-            <div class="seville-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCb9vS6WdrH8rglpDiyr1XMKqyNZdmcNB3ro7aMnd0Hnb1GHRjmcjLOV2VZnT93_mX1ppQGO6IxWgTvXqFQgDUZm1pu4MDLcIycMRCZsgHxStk0eTSk4BC-Lm28CFhcPsVS2KSqPfGL2Ok300GDMrB_dzvf3vhjXa-iCwy-Lyu2W7evwK9YyWcehF6Krj49DFer2bM3ZPI2wv_emuOXfPtL1eXnJKlxj50u0TcgDbBLooVtIumcNme" alt="Pack Discours Luxe Sennheiser" loading="lazy">
-            </div>
-
-            <div class="seville-product-head">
-              <h3>Pack Discours Luxe</h3>
-              <span class="seville-price">À partir de 150€</span>
-            </div>
-
-            <p>
+</a>
+</article>
+<article class="seville-product">
+<div class="seville-product-media">
+<img alt="Pack Discours Luxe Sennheiser" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCb9vS6WdrH8rglpDiyr1XMKqyNZdmcNB3ro7aMnd0Hnb1GHRjmcjLOV2VZnT93_mX1ppQGO6IxWgTvXqFQgDUZm1pu4MDLcIycMRCZsgHxStk0eTSk4BC-Lm28CFhcPsVS2KSqPfGL2Ok300GDMrB_dzvf3vhjXa-iCwy-Lyu2W7evwK9YyWcehF6Krj49DFer2bM3ZPI2wv_emuOXfPtL1eXnJKlxj50u0TcgDbBLooVtIumcNme"/>
+</div>
+<div class="seville-product-head">
+<h3>Pack Discours Luxe</h3>
+<span class="seville-price">À partir de 150€</span>
+</div>
+<p>
               Systèmes HF Sennheiser pour une clarté vocale parfaite lors de vos cérémonies privées à Santa Cruz.
             </p>
-
-            <div class="seville-specs">
-              <span><span class="material-symbols-outlined">mic</span>Sans fil</span>
-              <span><span class="material-symbols-outlined">battery_charging_full</span>12h Autonomie</span>
-            </div>
-
-            <a class="seville-product-link" href="/catalog.html?q=Sennheiser%20HF%20Pack%20Discours">
+<div class="seville-specs">
+<span><span class="material-symbols-outlined">mic</span>Sans fil</span>
+<span><span class="material-symbols-outlined">battery_charging_full</span>12h Autonomie</span>
+</div>
+<a class="seville-product-link" href="/catalog.html?q=Sennheiser%20HF%20Pack%20Discours">
               Voir les packs Sennheiser HF
               <span class="material-symbols-outlined">trending_flat</span>
-            </a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="seville-container">
-      <div class="seville-logistics">
-        <div class="seville-logistics-grid">
-          <div>
-            <h2 class="seville-title">Logistique Premium à Séville</h2>
-
-            <p class="seville-copy" style="font-size:18px">
+</a>
+</article>
+</div>
+</div>
+</section>
+<section class="seville-container">
+<div class="seville-logistics">
+<div class="seville-logistics-grid">
+<div>
+<h2 class="seville-title">Logistique Premium à Séville</h2>
+<p class="seville-copy" style="font-size:18px">
               Que votre événement se déroule dans les ruelles étroites de <strong style="color:#fff">Santa Cruz</strong>
               ou sur une terrasse animée de <strong style="color:#fff">Triana</strong>, nous gérons la livraison
               et l'installation technique complète.
             </p>
-
-            <ul class="seville-logistics-list">
-              <li>
-                <span class="material-symbols-outlined">check_circle</span>
-                <div>
-                  <strong>Livraison Express</strong>
-                  <p>Partout dans l'hypercentre et la périphérie de Séville.</p>
-                </div>
-              </li>
-
-              <li>
-                <span class="material-symbols-outlined">check_circle</span>
-                <div>
-                  <strong>Ingénierie sur site</strong>
-                  <p>Réglages acoustiques adaptés aux patios andalous.</p>
-                </div>
-              </li>
-
-              <li>
-                <span class="material-symbols-outlined">check_circle</span>
-                <div>
-                  <strong>Support 24/7</strong>
-                  <p>Une équipe technique en veille pendant toute la durée de votre location.</p>
-                </div>
-              </li>
-            </ul>
-          </div>
-
-          <div class="seville-map">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFtVXW1JU2XKvvwBZPQEnA5eeFsB3SGMX2n5J1PfcrU6XJzIh6sXfP8Vugp6_VHizxdOXoNTG_wWppEoex9o8tReQXvcdvUZ1Ed96b0pwkkCjaW8lwF63JJGVToRibW7ntmQ3EHv82V-9wxvQOCeFJelfKwTc3UfyRc_Nkp8Cyhn9u4uSypM06TIY6rI5EE7nyCogylr-h3g67ZOIGbnlZ_XiOrfc-WXuUvymysy_RVn0bLpEL9YKR" alt="Carte de couverture logistique à Séville" loading="lazy">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="seville-cta">
-      <div class="seville-container">
-        <div class="seville-cta-box">
-          <h2>Prêt pour votre événement ?</h2>
-          <p>
+<ul class="seville-logistics-list">
+<li>
+<span class="material-symbols-outlined">check_circle</span>
+<div>
+<strong>Livraison Express</strong>
+<p>Partout dans l'hypercentre et la périphérie de Séville.</p>
+</div>
+</li>
+<li>
+<span class="material-symbols-outlined">check_circle</span>
+<div>
+<strong>Ingénierie sur site</strong>
+<p>Réglages acoustiques adaptés aux patios andalous.</p>
+</div>
+</li>
+<li>
+<span class="material-symbols-outlined">check_circle</span>
+<div>
+<strong>Support 24/7</strong>
+<p>Une équipe technique en veille pendant toute la durée de votre location.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="seville-map rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=-6.05%2C37.34%2C-5.90%2C37.43&amp;layer=mapnik&amp;marker=37.3891%2C-5.9845" title="Carte réelle de Séville"></iframe><div class="rss-live-map-badge">Carte réelle • Séville</div><div class="rss-live-map-status"><strong>Zones clés</strong><span>Santa Cruz • Triana • Centre-ville</span></div></div>
+</div>
+</div>
+</section>
+<section class="seville-cta">
+<div class="seville-container">
+<div class="seville-cta-box">
+<h2>Prêt pour votre événement ?</h2>
+<p>
             Nos experts vous accompagnent pour définir la meilleure configuration sonore pour vos fêtes à Séville.
           </p>
-
-          <div class="seville-cta-actions">
-            <a class="seville-btn seville-btn-primary" href="/catalog.html">Réserver Maintenant</a>
-            <a class="seville-btn seville-btn-secondary" href="/contact.html">
-              <span class="material-symbols-outlined" aria-hidden="true" style="margin-right:8px">call</span>
+<div class="seville-cta-actions">
+<a class="seville-btn seville-btn-primary" href="/catalog.html">Réserver Maintenant</a>
+<a class="seville-btn seville-btn-secondary" href="/contact.html">
+<span aria-hidden="true" class="material-symbols-outlined" style="margin-right:8px">call</span>
               Nous Contacter
             </a>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <script>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script>
     async function loadSharedComponent(targetId, url) {
       const target = document.getElementById(targetId);
       if (!target) return;

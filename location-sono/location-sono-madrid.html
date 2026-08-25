@@ -1,18 +1,18 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Location Sono Madrid - RentSoundSystem</title>
-  <meta name="description" content="Location de sonorisation professionnelle à Madrid : régies Pioneer DJ, systèmes Funktion-One, assistance technique et déploiement rapide pour clubs, événements et productions premium.">
-  <meta name="robots" content="index,follow">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Location Sono Madrid - RentSoundSystem</title>
+<meta content="Location de sonorisation professionnelle à Madrid : régies Pioneer DJ, systèmes Funktion-One, assistance technique et déploiement rapide pour clubs, événements et productions premium." name="description"/>
+<meta content="index,follow" name="robots"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -478,136 +478,214 @@
         transition-duration: .01ms !important;
       }
     }
-  </style>
+  
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+</style>
 </head>
-
 <body>
-  <div id="site-header"></div>
-
-  <main class="madrid-page">
-    <section class="madrid-hero" aria-labelledby="madrid-title">
-      <div class="madrid-hero-media" aria-hidden="true">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvya_zhvqRIQJfTMW4Bg-ZXESfI-UdS-6Et8cCHHYBkP3Cv5JHuUSedygWCp2qMyxmXtGszOqr9YU8HQm2_MCymFrT5DHhmU8TLYO8N6seYus35wzOes8IvkLK_cqFrqgiF5XI-KFW9eEU-4_sh8W3Rwbxkh9Paq1OOKBiId2Hl9eizUpvSxkSvCxcGsT3RRrUsm9cl0lt368xlXy5ONj1I20V7zjC0rDs6fWJN7A2EFKNsR-4fanC" alt="" loading="eager" fetchpriority="high">
-      </div>
-
-      <div class="madrid-container">
-        <div class="madrid-hero-copy">
-          <div class="madrid-badge">
-            <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<div id="site-header"></div>
+<main class="madrid-page">
+<section aria-labelledby="madrid-title" class="madrid-hero">
+<div aria-hidden="true" class="madrid-hero-media">
+<img alt="" fetchpriority="high" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvya_zhvqRIQJfTMW4Bg-ZXESfI-UdS-6Et8cCHHYBkP3Cv5JHuUSedygWCp2qMyxmXtGszOqr9YU8HQm2_MCymFrT5DHhmU8TLYO8N6seYus35wzOes8IvkLK_cqFrqgiF5XI-KFW9eEU-4_sh8W3Rwbxkh9Paq1OOKBiId2Hl9eizUpvSxkSvCxcGsT3RRrUsm9cl0lt368xlXy5ONj1I20V7zjC0rDs6fWJN7A2EFKNsR-4fanC"/>
+</div>
+<div class="madrid-container">
+<div class="madrid-hero-copy">
+<div class="madrid-badge">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
             Opérations Madrid
           </div>
-
-          <h1 id="madrid-title">Propulser l'Excellence Audio à Madrid</h1>
-
-          <p class="madrid-lead">
+<h1 id="madrid-title">Propulser l'Excellence Audio à Madrid</h1>
+<p class="madrid-lead">
             Déploiement de systèmes sonores haut de gamme pour les professionnels de l'industrie.
             Précision nocturne et maîtrise technique absolue pour la scène madrilène.
           </p>
-
-          <div class="madrid-actions">
-            <a class="madrid-btn madrid-btn-primary" href="/catalog.html">
+<div class="madrid-actions">
+<a class="madrid-btn madrid-btn-primary" href="/catalog.html">
               Explorer l'Inventaire
-              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="madrid-section madrid-arsenal" aria-labelledby="madrid-arsenal-title">
-      <div class="madrid-container">
-        <div class="madrid-arsenal-head">
-          <h2 class="madrid-title" id="madrid-arsenal-title">Arsenal d'Élite</h2>
-          <p class="madrid-copy">
+              <span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<section aria-labelledby="madrid-arsenal-title" class="madrid-section madrid-arsenal">
+<div class="madrid-container">
+<div class="madrid-arsenal-head">
+<h2 class="madrid-title" id="madrid-arsenal-title">Arsenal d'Élite</h2>
+<p class="madrid-copy">
             Riders techniques respectés à la lettre. Équipement maintenu aux standards studio les plus stricts.
           </p>
-        </div>
-
-        <div class="madrid-products">
-          <article class="madrid-product madrid-glass">
-            <div class="madrid-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRYfqdFt2rBBD6Nc5bZI8OnaDFqeVcjdqI6t4V6ykyh9NYJTJTBfhZgIVkmuxx6X_vg_00VbUCRE8yS4Akn41-OuA37aCkPlnwBMfk62gEF1h6Cq57_cJcrLjS3vSkmznSaCH3GjWP_8z1Al0W7MXUoLBqnCCnQGr4X0Mp1pEffVsr1c0tWK634I97zUzr2hk2o4HU9SFglC-1sZNABbUZSOyQzgFeRDudwL1TUmFwv_6sbdPUQ6iF" alt="Régies Pioneer DJ Pro" loading="lazy">
-            </div>
-            <h3>Régies Pioneer DJ Pro</h3>
-            <p>
+</div>
+<div class="madrid-products">
+<article class="madrid-product madrid-glass">
+<div class="madrid-product-media">
+<img alt="Régies Pioneer DJ Pro" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRYfqdFt2rBBD6Nc5bZI8OnaDFqeVcjdqI6t4V6ykyh9NYJTJTBfhZgIVkmuxx6X_vg_00VbUCRE8yS4Akn41-OuA37aCkPlnwBMfk62gEF1h6Cq57_cJcrLjS3vSkmznSaCH3GjWP_8z1Al0W7MXUoLBqnCCnQGr4X0Mp1pEffVsr1c0tWK634I97zUzr2hk2o4HU9SFglC-1sZNABbUZSOyQzgFeRDudwL1TUmFwv_6sbdPUQ6iF"/>
+</div>
+<h3>Régies Pioneer DJ Pro</h3>
+<p>
               Configurations complètes CDJ-3000 / DJM-A9. Firmware à jour, calibrage millimétrique,
               prêt pour les têtes d'affiche.
             </p>
-            <a class="madrid-product-link" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-A9">
+<a class="madrid-product-link" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-A9">
               Spécifications Techniques
-              <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
-            </a>
-          </article>
-
-          <article class="madrid-product madrid-glass">
-            <div class="madrid-product-media">
-              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXHB5mJJyC-eLW2C5mZfCvjhSUlNFuqavy_bKKh-i2tdbcsH8slbYTBlk-jx5DGtUAZJ79DIM5PXyXWU4dsUU1nwukzlIInGm6nmeNEN0jG5SNE0uaGHbgZLgI0ONH8lQFIZRIjedZM0IOAiJ-nfvcDOLWkeMV3h0zpluVmKEn-S9bnoPrY5TAr3PP1RwMSa6zMp2ouqYtKo0R5YPCThFjzFtdMoQU-Egz6jE5dGmtXCEl16t2endD" alt="Systèmes Funktion-One" loading="lazy">
-            </div>
-            <h3>Systèmes Funktion-One</h3>
-            <p>
+              <span aria-hidden="true" class="material-symbols-outlined">chevron_right</span>
+</a>
+</article>
+<article class="madrid-product madrid-glass">
+<div class="madrid-product-media">
+<img alt="Systèmes Funktion-One" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXHB5mJJyC-eLW2C5mZfCvjhSUlNFuqavy_bKKh-i2tdbcsH8slbYTBlk-jx5DGtUAZJ79DIM5PXyXWU4dsUU1nwukzlIInGm6nmeNEN0jG5SNE0uaGHbgZLgI0ONH8lQFIZRIjedZM0IOAiJ-nfvcDOLWkeMV3h0zpluVmKEn-S9bnoPrY5TAr3PP1RwMSa6zMp2ouqYtKo0R5YPCThFjzFtdMoQU-Egz6jE5dGmtXCEl16t2endD"/>
+</div>
+<h3>Systèmes Funktion-One</h3>
+<p>
               Clarté sonore intransigeante. Stacks Resolution et Evo pour des expériences immersives
               dans des espaces complexes.
             </p>
-            <a class="madrid-product-link" href="/catalog.html?q=Funktion-One">
+<a class="madrid-product-link" href="/catalog.html?q=Funktion-One">
               Voir Configurations
-              <span class="material-symbols-outlined" aria-hidden="true">chevron_right</span>
-            </a>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="madrid-section madrid-deployment" aria-labelledby="madrid-deployment-title">
-      <div class="madrid-container madrid-deployment-grid">
-        <div>
-          <h2 class="madrid-title" id="madrid-deployment-title">Déploiement Stratégique</h2>
-          <p class="madrid-copy">
+              <span aria-hidden="true" class="material-symbols-outlined">chevron_right</span>
+</a>
+</article>
+</div>
+</div>
+</section>
+<section aria-labelledby="madrid-deployment-title" class="madrid-section madrid-deployment">
+<div class="madrid-container madrid-deployment-grid">
+<div>
+<h2 class="madrid-title" id="madrid-deployment-title">Déploiement Stratégique</h2>
+<p class="madrid-copy">
             Notre réseau logistique couvre l'ensemble de la métropole madrilène. Depuis nos hubs centraux,
             nous garantissons des temps de réaction adaptés aux urgences de la vie nocturne.
           </p>
-
-          <ul class="madrid-deployment-list">
-            <li>
-              <span class="madrid-feature-icon">
-                <span class="material-symbols-outlined" aria-hidden="true">timer</span>
-              </span>
-              <div>
-                <h4>Déploiement en 30 Minutes</h4>
-                <p>
+<ul class="madrid-deployment-list">
+<li>
+<span class="madrid-feature-icon">
+<span aria-hidden="true" class="material-symbols-outlined">timer</span>
+</span>
+<div>
+<h4>Déploiement en 30 Minutes</h4>
+<p>
                   Intervention d'urgence pour remplacement d'équipement via notre Hub Madrid Centro.
                 </p>
-              </div>
-            </li>
-
-            <li>
-              <span class="madrid-feature-icon secondary">
-                <span class="material-symbols-outlined" aria-hidden="true">engineering</span>
-              </span>
-              <div>
-                <h4>Assistance Technique Sur Site</h4>
-                <p>
+</div>
+</li>
+<li>
+<span class="madrid-feature-icon secondary">
+<span aria-hidden="true" class="material-symbols-outlined">engineering</span>
+</span>
+<div>
+<h4>Assistance Technique Sur Site</h4>
+<p>
                   Techniciens experts pour l'installation, le calibrage et la permanence durant l'événement.
                 </p>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="madrid-map madrid-glass">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeM7VeRvUGUfELCd4HJaBY8xkfnqVDPzLdLGGXYUfc0K8hMWA_EynET3gS0wwd3q4atTqB8krnOHjNP65OtUPFLTWNjugiP9tHkjzSdWgKIshJcBlsGYdnul5qQtGHCeUP_de9KWqW5Cx1NRkUFG4lGXI51fRZlvmTa2wmZSpx-StaVjAAxlfrv1NiwPhKiiApJ88daExKZF4HF0g8TP6gnj7J5iylsC9zP6XB1ASEwrVvy00pq7rV" alt="Carte des hubs de location sono à Madrid" loading="lazy">
-
-          <div class="madrid-map-status">
-            <strong>Statut Réseau</strong>
-            Opérationnel
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <script>
+</div>
+</li>
+</ul>
+</div>
+<div class="madrid-map madrid-glass rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=-3.79%2C40.37%2C-3.63%2C40.46&amp;layer=mapnik&amp;marker=40.4168%2C-3.7038" title="Carte réelle de Madrid"></iframe><div class="rss-live-map-badge">Carte réelle • Madrid</div><div class="rss-live-map-status rss-live-map-status-right"><strong>Statut réseau</strong><span>Opérationnel</span></div></div>
+</div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script>
     async function loadSharedComponent(targetId, url) {
       const target = document.getElementById(targetId);
       if (!target) return;

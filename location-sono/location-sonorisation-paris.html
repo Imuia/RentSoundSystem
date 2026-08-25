@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <!DOCTYPE html>
 
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
 <meta charset="utf-8"/>
@@ -1242,7 +1244,109 @@
       }
     }
 
-  </style>
+  
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+
+.paris-map::after { display:none !important; content:none !important; }
+</style>
 </head>
 <body>
 <div id="site-header"></div>
@@ -1299,17 +1403,7 @@
             </span>
 </div>
 </div>
-<div class="paris-map paris-glass">
-<img alt="Carte stylisée de Paris et de l'Île-de-France" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzlOIcS122AbB9VBAVqXXhW6lBB0r7gZDgDNwgO7lt6sHSSwxBCRmjPbmgZ1C0cahh24xGtRAu3SlL19QV0igBPE1JMdsFNU1lC9z891NGvut3dZ1pDUMFQoPzv3vSZcl7tj0UL0K4zycRvBfl_83zhkFAAZVdUHGhLUl9-ttknz8sh6rlpNzadjRZBkaCcaIyXkpfln8sOf2JpAKIZ7atSKd6Ab7saV2xUmxaQj82O-H0BcreXfdkJeKNdyITlyRqC4ur7bVGCIg"/>
-<span aria-hidden="true" class="paris-map-dot d1"></span>
-<span aria-hidden="true" class="paris-map-dot d2"></span>
-<span aria-hidden="true" class="paris-map-dot d3"></span>
-<span aria-hidden="true" class="paris-map-dot d4"></span>
-<div class="paris-map-status paris-glass">
-<span aria-hidden="true" class="material-symbols-outlined">sensors</span>
-            42 Systèmes actifs à Paris
-          </div>
-</div>
+<div class="paris-map paris-glass rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=2.2241%2C48.8156%2C2.4699%2C48.9021&amp;layer=mapnik&amp;marker=48.8566%2C2.3522" title="Carte réelle de Paris"></iframe><div class="rss-live-map-badge">Carte réelle • Paris</div><div class="rss-live-map-status rss-live-map-status-right"><strong>42 systèmes actifs</strong><span>Paris &amp; Île-de-France</span></div></div>
 </div>
 </section>
 <section aria-labelledby="paris-equipment-title" class="paris-section paris-equipment">

@@ -1,19 +1,19 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Location Sono Cannes - RentSoundSystem</title>
-  <meta name="description" content="Location de sonorisation professionnelle à Cannes et sur la Côte d'Azur : systèmes audio premium, matériel DJ, éclairage et support technique pour événements, yachts, villas et productions.">
-  <meta name="robots" content="index,follow">
-
-  <!-- Fonts/icons used only by the Stitch-derived content -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Location Sono Cannes - RentSoundSystem</title>
+<meta content="Location de sonorisation professionnelle à Cannes et sur la Côte d'Azur : systèmes audio premium, matériel DJ, éclairage et support technique pour événements, yachts, villas et productions." name="description"/>
+<meta content="index,follow" name="robots"/>
+<!-- Fonts/icons used only by the Stitch-derived content -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -647,196 +647,247 @@
         transition-duration: .01ms !important;
       }
     }
-  </style>
+  
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+
+.cannes-map::after { display:none !important; content:none !important; }
+</style>
 </head>
-
 <body>
-  <!-- Header commun RentSoundSystem -->
-  <div id="site-header"></div>
-
-  <main class="cannes-page">
-    <section class="cannes-hero" aria-labelledby="cannes-title">
-      <div class="cannes-hero-media" aria-hidden="true">
-        <img
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx2f7-3VSIe-FAGxf2zm_da7_Su3Jz0cywxY5tHUUgEUPShj7OmqjPjDd--Cgoatmeb7hWYW7x2MyRxPGlgwQgEr1JU014S05qHLxJhuwmcZ8ne4zRXKS_EDkwlUZqy46-iizMt2MIGotPp7UbSOKCROlFB35IpkIcIwdrnz5lhlyZ8L0zRP-P4oidkew9T10-YKoJqyEz5dWsvYyKT8uHoNBaP4vlvUCHlwcAnGAS_dz3ctcLpKiGU25HB4UBaIHqnvlMtDx6Tpc"
-          alt=""
-          loading="eager"
-          fetchpriority="high">
-      </div>
-
-      <div class="cannes-container">
-        <div class="cannes-hero-copy">
-          <div class="cannes-kicker">
-            <span class="cannes-kicker-dot" aria-hidden="true"></span>
+<!-- Header commun RentSoundSystem -->
+<div id="site-header"></div>
+<main class="cannes-page">
+<section aria-labelledby="cannes-title" class="cannes-hero">
+<div aria-hidden="true" class="cannes-hero-media">
+<img alt="" fetchpriority="high" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx2f7-3VSIe-FAGxf2zm_da7_Su3Jz0cywxY5tHUUgEUPShj7OmqjPjDd--Cgoatmeb7hWYW7x2MyRxPGlgwQgEr1JU014S05qHLxJhuwmcZ8ne4zRXKS_EDkwlUZqy46-iizMt2MIGotPp7UbSOKCROlFB35IpkIcIwdrnz5lhlyZ8L0zRP-P4oidkew9T10-YKoJqyEz5dWsvYyKT8uHoNBaP4vlvUCHlwcAnGAS_dz3ctcLpKiGU25HB4UBaIHqnvlMtDx6Tpc"/>
+</div>
+<div class="cannes-container">
+<div class="cannes-hero-copy">
+<div class="cannes-kicker">
+<span aria-hidden="true" class="cannes-kicker-dot"></span>
             Hub de Cannes maintenant ouvert
           </div>
-
-          <h1 id="cannes-title">
-            Un Son d'Élite Pour<br>
-            <span class="cannes-gradient-text">La Côte d'Azur.</span>
-          </h1>
-
-          <p class="cannes-lead">
+<h1 id="cannes-title">
+            Un Son d'Élite Pour<br/>
+<span class="cannes-gradient-text">La Côte d'Azur.</span>
+</h1>
+<p class="cannes-lead">
             Architecture audio sans compromis pour événements de luxe, locations de yachts privés
             et avant-premières du Festival du Film. Déploiement exclusif de Void Acoustics et L-Acoustics.
           </p>
-
-          <div class="cannes-actions">
-            <a class="cannes-btn cannes-btn-primary" href="/catalog.html">Voir l'Inventaire</a>
-            <a class="cannes-btn cannes-btn-secondary" href="/contact.html">Consultation</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cannes-section cannes-hubs" aria-labelledby="cannes-hubs-title">
-      <div class="cannes-container">
-        <h2 class="cannes-title" id="cannes-hubs-title">Hubs de Déploiement Stratégiques</h2>
-        <p class="cannes-copy">
+<div class="cannes-actions">
+<a class="cannes-btn cannes-btn-primary" href="/catalog.html">Voir l'Inventaire</a>
+<a class="cannes-btn cannes-btn-secondary" href="/contact.html">Consultation</a>
+</div>
+</div>
+</div>
+</section>
+<section aria-labelledby="cannes-hubs-title" class="cannes-section cannes-hubs">
+<div class="cannes-container">
+<h2 class="cannes-title" id="cannes-hubs-title">Hubs de Déploiement Stratégiques</h2>
+<p class="cannes-copy">
           Logistique d'intervention rapide sur toute la Côte d'Azur. De Monaco à Saint-Tropez,
           notre équipement arrive calibré et prêt.
         </p>
-
-        <div class="cannes-map cannes-glass">
-          <img
-            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQUczebe4j2g84ZKL2-MgWdHRtOHqAAeqJHlrTxmODMCSGmbRChwGyl0sVe5PSpg3LI0f0AeSksWxMO0VzHalMI7q0ilgdsOJhlXa2pJZn0cD7BMj5JSYinMZmtI1L0fWKBl71f2Uu0bNn-Kj4_3pX_ZZSSudQGMzXJP1hemS3N0rb2-Ot8m-E5NrbGzB98BJLHPzj-RCjGl04y8S89JFG8xGMX3SqaKPEUYb9k2qBYdDaPF8KZdvx_yJQqiNEFa_Q5GNC351yyds"
-            alt="Carte stylisée de Cannes et de la Côte d'Azur"
-            loading="lazy">
-
-          <div class="cannes-marker cannes-marker-main">
-            <span class="cannes-marker-dot" aria-hidden="true"></span>
-            <span class="cannes-marker-label">Hub de La Croisette</span>
-          </div>
-
-          <div class="cannes-marker cannes-marker-secondary">
-            <span class="cannes-marker-dot" aria-hidden="true"></span>
-            <span class="cannes-marker-label">Logistique Monaco</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="cannes-section cannes-arsenal" aria-labelledby="cannes-arsenal-title">
-      <div class="cannes-container">
-        <h2 class="cannes-title" id="cannes-arsenal-title">Arsenal Sans Compromis</h2>
-
-        <div class="cannes-bento">
-          <article class="cannes-card cannes-card-wide cannes-glass">
-            <img
-              class="cannes-card-media"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ_5euIdFDaveZY1ukZiUYh7ER39yV7qBMbRbOqpkQCB09elkXG4eXQADmEm1_DgIKZYTHcY7cZir1d6qYKjQFkHGP93YBLKYxu8q5ug08tK4fBjNDoIfm3pZcNxuu9sqiBTGZf1xMwIHX2N3Eooq8JMR1S2l7B-6_hMmAfT6XI9VGYaO7LjF-lZ66oouBfdOnM2ECVrfCBX-fygTGENGHA01-oQ-viRXB2nbbmNwfihF4IzuCl_IEVlofSbSGqq8g_upjh6IAhVs"
-              alt="Système de sonorisation Void Acoustics Incubus"
-              loading="lazy">
-            <div class="cannes-card-shade" aria-hidden="true"></div>
-            <div class="cannes-card-content">
-              <div class="cannes-card-tag">
-                <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+<div class="cannes-map cannes-glass rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=6.95%2C43.52%2C7.12%2C43.60&amp;layer=mapnik&amp;marker=43.5513%2C7.0128" title="Carte réelle de Cannes"></iframe><div class="rss-live-map-badge">Carte réelle • Cannes &amp; Côte d’Azur</div><div class="rss-live-map-status"><strong>Hubs desservis</strong><span>La Croisette • Monaco • Antibes • Saint-Tropez</span></div></div>
+</div>
+</section>
+<section aria-labelledby="cannes-arsenal-title" class="cannes-section cannes-arsenal">
+<div class="cannes-container">
+<h2 class="cannes-title" id="cannes-arsenal-title">Arsenal Sans Compromis</h2>
+<div class="cannes-bento">
+<article class="cannes-card cannes-card-wide cannes-glass">
+<img alt="Système de sonorisation Void Acoustics Incubus" class="cannes-card-media" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZ_5euIdFDaveZY1ukZiUYh7ER39yV7qBMbRbOqpkQCB09elkXG4eXQADmEm1_DgIKZYTHcY7cZir1d6qYKjQFkHGP93YBLKYxu8q5ug08tK4fBjNDoIfm3pZcNxuu9sqiBTGZf1xMwIHX2N3Eooq8JMR1S2l7B-6_hMmAfT6XI9VGYaO7LjF-lZ66oouBfdOnM2ECVrfCBX-fygTGENGHA01-oQ-viRXB2nbbmNwfihF4IzuCl_IEVlofSbSGqq8g_upjh6IAhVs"/>
+<div aria-hidden="true" class="cannes-card-shade"></div>
+<div class="cannes-card-content">
+<div class="cannes-card-tag">
+<span aria-hidden="true" class="material-symbols-outlined">speaker</span>
                 Systèmes Phares
               </div>
-              <h3>Void Acoustics Incubus</h3>
-              <p>
+<h3>Void Acoustics Incubus</h3>
+<p>
                 Visuellement époustouflant, soniquement dévastateur. La pièce maîtresse ultime
                 pour les événements VIP d'élite.
               </p>
-            </div>
-          </article>
-
-          <article class="cannes-card cannes-card-narrow cannes-glass">
-            <img
-              class="cannes-card-media"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMB_YBqENySRE2IdeGRuPpd2VPzUlq3LF2_lHAhCK2hmkwsN8hLy-bf7xULQS2_31THeAx9nBpXj4XVy2yNK1Avj7uJm0IC0p6S21amUUrrqj4VbKhRvxDYalBLQ_CFZ_D-GMSui07_zbUOH2WWjrsjyfUHNdp1ypgW9lTnSA9V7mrPcntsL3T7sn_LniOUYOvWpvEc-LzEvHMD6jTzvOuuzLwKtx6hdtAc7S4nvnfpJeCzXJhGhfISIqxvRyMtK27d7maBaW8D_I"
-              alt="Configuration DJ Pioneer professionnelle"
-              loading="lazy">
-            <div class="cannes-card-shade" aria-hidden="true"></div>
-            <div class="cannes-card-content">
-              <h3>DJ Prêt pour les Riders</h3>
-              <p>Configurations Pioneer Nexus standard de l'industrie.</p>
-            </div>
-          </article>
-
-          <article class="cannes-card cannes-card-narrow cannes-card-center cannes-glass">
-            <div class="cannes-card-content">
-              <span class="material-symbols-outlined" aria-hidden="true">tune</span>
-              <h3>Étalonnage Acoustique</h3>
-              <p>
+</div>
+</article>
+<article class="cannes-card cannes-card-narrow cannes-glass">
+<img alt="Configuration DJ Pioneer professionnelle" class="cannes-card-media" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMB_YBqENySRE2IdeGRuPpd2VPzUlq3LF2_lHAhCK2hmkwsN8hLy-bf7xULQS2_31THeAx9nBpXj4XVy2yNK1Avj7uJm0IC0p6S21amUUrrqj4VbKhRvxDYalBLQ_CFZ_D-GMSui07_zbUOH2WWjrsjyfUHNdp1ypgW9lTnSA9V7mrPcntsL3T7sn_LniOUYOvWpvEc-LzEvHMD6jTzvOuuzLwKtx6hdtAc7S4nvnfpJeCzXJhGhfISIqxvRyMtK27d7maBaW8D_I"/>
+<div aria-hidden="true" class="cannes-card-shade"></div>
+<div class="cannes-card-content">
+<h3>DJ Prêt pour les Riders</h3>
+<p>Configurations Pioneer Nexus standard de l'industrie.</p>
+</div>
+</article>
+<article class="cannes-card cannes-card-narrow cannes-card-center cannes-glass">
+<div class="cannes-card-content">
+<span aria-hidden="true" class="material-symbols-outlined">tune</span>
+<h3>Étalonnage Acoustique</h3>
+<p>
                 Réglage de précision pour les environnements acoustiques difficiles sur les superyachts.
               </p>
-            </div>
-          </article>
-
-          <article class="cannes-card cannes-card-wide cannes-glass">
-            <img
-              class="cannes-card-media"
-              src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtE1HelprP6RhCJpWCy-ouMtqXuEdRjQ1Z0kGo7kisvRCFk5-WS5Or-IHEVFn_GDorrnOmd2FKaxqmU_t0yQH8X_PkGR__PCS2o6RJaSomXGUqkAukI2-VygRBphO0x3s4FQBA5UdN0Bh-rXVGsdDKc_4aeti37uJKqLWzsZEx3izVcDvAvrgzPjp6tpLi33l9ADT4fSrBD9ZV6FmITxewDD0Ut8Jk_N9yj9IKJ--jcoqc9TLcGvmMk4Wpygk3mJs0x7QX7v8LJPs"
-              alt="Installation d'éclairage scénique professionnel"
-              loading="lazy">
-            <div class="cannes-card-shade" aria-hidden="true"></div>
-            <div class="cannes-card-content">
-              <div class="cannes-card-tag">
-                <span class="material-symbols-outlined" aria-hidden="true">lightbulb</span>
+</div>
+</article>
+<article class="cannes-card cannes-card-wide cannes-glass">
+<img alt="Installation d'éclairage scénique professionnel" class="cannes-card-media" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtE1HelprP6RhCJpWCy-ouMtqXuEdRjQ1Z0kGo7kisvRCFk5-WS5Or-IHEVFn_GDorrnOmd2FKaxqmU_t0yQH8X_PkGR__PCS2o6RJaSomXGUqkAukI2-VygRBphO0x3s4FQBA5UdN0Bh-rXVGsdDKc_4aeti37uJKqLWzsZEx3izVcDvAvrgzPjp6tpLi33l9ADT4fSrBD9ZV6FmITxewDD0Ut8Jk_N9yj9IKJ--jcoqc9TLcGvmMk4Wpygk3mJs0x7QX7v8LJPs"/>
+<div aria-hidden="true" class="cannes-card-shade"></div>
+<div class="cannes-card-content">
+<div class="cannes-card-tag">
+<span aria-hidden="true" class="material-symbols-outlined">lightbulb</span>
                 Ambiance
               </div>
-              <h3>Éclairage Intelligent</h3>
-              <p>
+<h3>Éclairage Intelligent</h3>
+<p>
                 Écosystèmes visuels synchronisés pour compléter un son haute fidélité.
               </p>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="cannes-section cannes-seo" aria-labelledby="cannes-seo-title">
-      <div class="cannes-container cannes-seo-grid">
-        <div class="cannes-seo-text">
-          <h2 class="cannes-title" id="cannes-seo-title">Maîtriser le Paysage Sonore de la Côte d'Azur</h2>
-
-          <p>
+</div>
+</article>
+</div>
+</div>
+</section>
+<section aria-labelledby="cannes-seo-title" class="cannes-section cannes-seo">
+<div class="cannes-container cannes-seo-grid">
+<div class="cannes-seo-text">
+<h2 class="cannes-title" id="cannes-seo-title">Maîtriser le Paysage Sonore de la Côte d'Azur</h2>
+<p>
             Produire un son impeccable à Cannes exige plus que de l'équipement ; cela requiert une expertise
             logistique approfondie et une maîtrise de l'acoustique. De l'air salin affectant la propagation
             des hautes fréquences sur les ponts des yachts aux réglementations strictes en matière de bruit
             sur la Croisette, nos ingénieurs anticipent et résolvent les défis avant qu'ils ne surviennent.
           </p>
-
-          <p>
+<p>
             Pendant le Festival de Cannes et les événements Lions, les délais d'exécution sont brutaux.
             Notre dépôt local garantit un remplacement et un déploiement immédiats. Nous stockons les
             spécifications exactes exigées par les DJ et artistes internationaux de premier plan,
             garantissant un environnement de performance sans compromis.
           </p>
-
-          <ul class="cannes-checks">
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-              <span>Équipement spécialisé de qualité marine pour la location de yachts</span>
-            </li>
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-              <span>Support technique de garde 24/7 pendant les semaines de festival</span>
-            </li>
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-              <span>Installation discrète gant blanc pour les villas de luxe</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="cannes-equalizer-wrap" aria-hidden="true">
-          <div class="cannes-equalizer">
-            <div class="cannes-equalizer-inner">
-              <span class="material-symbols-outlined">equalizer</span>
-            </div>
-          </div>
-          <div class="cannes-equalizer-glow"></div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Footer commun RentSoundSystem -->
-  <div id="site-footer"></div>
-
-  <script>
+<ul class="cannes-checks">
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">check_circle</span>
+<span>Équipement spécialisé de qualité marine pour la location de yachts</span>
+</li>
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">check_circle</span>
+<span>Support technique de garde 24/7 pendant les semaines de festival</span>
+</li>
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">check_circle</span>
+<span>Installation discrète gant blanc pour les villas de luxe</span>
+</li>
+</ul>
+</div>
+<div aria-hidden="true" class="cannes-equalizer-wrap">
+<div class="cannes-equalizer">
+<div class="cannes-equalizer-inner">
+<span class="material-symbols-outlined">equalizer</span>
+</div>
+</div>
+<div class="cannes-equalizer-glow"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer commun RentSoundSystem -->
+<div id="site-footer"></div>
+<script>
     /*
       Loads the existing shared components from the RentSoundSystem project.
       Scripts contained inside the shared files are re-created so they can execute.

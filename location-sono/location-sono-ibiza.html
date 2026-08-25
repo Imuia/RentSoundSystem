@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <!DOCTYPE html>
 
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
 <meta charset="utf-8"/>
@@ -590,6 +592,106 @@
 .ibiza-error{display:none;margin-top:14px;padding:11px 13px;border:1px solid rgba(252,3,109,.40);border-radius:6px;background:rgba(252,3,109,.10);color:#ffd9de;font-size:13px}.ibiza-error.show{display:block}
 .ibiza-action{position:sticky;bottom:0;z-index:5;width:100%;min-height:56px;margin-top:16px;display:flex;align-items:center;justify-content:center;gap:10px;border:0;border-radius:6px;background:#FC036D;color:#fff;cursor:pointer;font:700 17px Manrope,Inter;box-shadow:0 -14px 22px rgba(15,15,15,.92),0 0 26px rgba(252,3,109,.25)}.ibiza-action.quote{background:#fff;color:#111}
 @media(max-width:820px){.ibiza-modal-panel{height:auto;max-height:calc(100vh - 20px);grid-template-columns:1fr;overflow-y:auto}.ibiza-modal-media{height:250px}.ibiza-modal-content{height:auto;overflow:visible;padding:26px 20px 24px}}
+
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -711,13 +813,7 @@
 </div>
 </div>
 </div>
-<div class="ibiza-map">
-<img alt="Carte logistique et zones desservies à Ibiza" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOWTtnLHpKucRQrpsk_itnDoLBIrEKj04GqRCHANQ5nKUpHWnB9OvxiV8UmdwuEDbBCaVsw-ry5I0ri6Rzl_7ZpJEbi1hON6K35xmWlUJhbvnXc0ufRqkO9_XY_ae0oDAhz0m4cXMigA-y5VNtP1Gt3E0-VM9pHWtCcQ6zCa0CcgoIH9UCGhfWYHzk-b77m2mysnqqiQW0Lj3TJsG8TW0AgJ0IRI73245mXxO6YFkgbTz-nlipsdKC"/>
-<div class="ibiza-map-status">
-<strong>Zone de couverture</strong>
-<span>100% de l'île desservie en moins de 60min.</span>
-</div>
-</div>
+<div class="ibiza-map rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=1.30%2C38.84%2C1.49%2C39.02&amp;layer=mapnik&amp;marker=38.9067%2C1.4206" title="Carte réelle de Ibiza"></iframe><div class="rss-live-map-badge">Carte réelle • Ibiza</div><div class="rss-live-map-status"><strong>Zone de couverture</strong><span>100% de l’île desservie en moins de 60 min</span></div></div>
 </div>
 </section>
 <section aria-labelledby="ibiza-cta-title" class="ibiza-cta">

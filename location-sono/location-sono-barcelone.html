@@ -1,18 +1,18 @@
 <!DOCTYPE html>
+<!DOCTYPE html>
+
 <html lang="fr">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Location Sono Barcelone - RentSoundSystem</title>
-  <meta name="description" content="Location de sonorisation professionnelle à Barcelone : matériel audio premium, Pioneer DJ, Funktion-One, ingénierie acoustique et déploiement rapide pour clubs, festivals et événements.">
-  <meta name="robots" content="index,follow">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
-
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Location Sono Barcelone - RentSoundSystem</title>
+<meta content="Location de sonorisation professionnelle à Barcelone : matériel audio premium, Pioneer DJ, Funktion-One, ingénierie acoustique et déploiement rapide pour clubs, festivals et événements." name="description"/>
+<meta content="index,follow" name="robots"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
     html, body {
       margin: 0;
       padding: 0;
@@ -612,180 +612,248 @@
         height: 360px;
       }
     }
-  </style>
+  
+
+/* --- Real color map card overrides --- */
+.rss-live-map {
+  position: relative !important;
+  overflow: hidden !important;
+  background: #f3f3f3 !important;
+}
+
+.rss-live-map-frame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  background: #f3f3f3;
+}
+
+.rss-live-map-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 6px 18px rgba(0,0,0,.28);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-badge::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #FC036D;
+  box-shadow: 0 0 0 4px rgba(252,3,109,.18);
+  flex: 0 0 auto;
+}
+
+.rss-live-map-status {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 4;
+  max-width: calc(100% - 28px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(17,17,17,.82);
+  color: #fff;
+  box-shadow: 0 8px 22px rgba(0,0,0,.30);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.rss-live-map-status-right {
+  left: auto;
+  right: 14px;
+}
+
+.rss-live-map-status strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #fff;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.rss-live-map-status span {
+  display: block;
+  color: rgba(255,255,255,.86);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+@media (max-width: 640px) {
+  .rss-live-map-badge,
+  .rss-live-map-status {
+    left: 10px;
+  }
+  .rss-live-map-status-right {
+    left: auto;
+    right: 10px;
+  }
+  .rss-live-map-badge {
+    top: 10px;
+  }
+  .rss-live-map-status {
+    bottom: 10px;
+    max-width: calc(100% - 20px);
+  }
+}
+
+</style>
 </head>
-
 <body>
-  <div id="site-header"></div>
-
-  <main class="barcelona-page">
-    <section class="barcelona-hero" aria-labelledby="barcelona-title">
-      <div class="barcelona-hero-media" aria-hidden="true">
-        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyGbIK-gv5sRomDEOrmy5DUTAZkWqvIJdfHpeNBH-hcv8U3O1X5y_tw3hn4Zf5-mRI4NiKxk2nPlwPObM5U5WVQVu_k4lk5XJ9-vG9TU7NaIho8S_KjVD28HqAcPNwdBQNtvfyt1jZ52RAfdEpqHIzQth4W_kzbKxmrhRMJQZHoMXE19Nj_U7ZeazV2EKN0u6JmhA6jqDPrIz0VIRlhl76mFJbfGpgda1Brxcsq4WIp9QE1_-JrR6WCY5747rJwn-jip8VH9MrntA" alt="" loading="eager" fetchpriority="high">
-      </div>
-
-      <div class="barcelona-container">
-        <div class="barcelona-hero-copy">
-          <div class="barcelona-badge">
-            <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+<div id="site-header"></div>
+<main class="barcelona-page">
+<section aria-labelledby="barcelona-title" class="barcelona-hero">
+<div aria-hidden="true" class="barcelona-hero-media">
+<img alt="" fetchpriority="high" loading="eager" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyGbIK-gv5sRomDEOrmy5DUTAZkWqvIJdfHpeNBH-hcv8U3O1X5y_tw3hn4Zf5-mRI4NiKxk2nPlwPObM5U5WVQVu_k4lk5XJ9-vG9TU7NaIho8S_KjVD28HqAcPNwdBQNtvfyt1jZ52RAfdEpqHIzQth4W_kzbKxmrhRMJQZHoMXE19Nj_U7ZeazV2EKN0u6JmhA6jqDPrIz0VIRlhl76mFJbfGpgda1Brxcsq4WIp9QE1_-JrR6WCY5747rJwn-jip8VH9MrntA"/>
+</div>
+<div class="barcelona-container">
+<div class="barcelona-hero-copy">
+<div class="barcelona-badge">
+<span aria-hidden="true" class="material-symbols-outlined">location_on</span>
             Hub Barcelone Actif
           </div>
-
-          <h1 id="barcelona-title">
+<h1 id="barcelona-title">
             Propulser l'Électronique à <span class="barcelona-accent">Barcelone.</span>
-          </h1>
-
-          <p class="barcelona-lead">
+</h1>
+<p class="barcelona-lead">
             De l'immersion technologique du Sónar aux terrasses exclusives des clubs de plage.
             Location de matériel audio d'élite pour les professionnels de la scène électronique méditerranéenne.
           </p>
-
-          <div class="barcelona-actions">
-            <a class="barcelona-btn barcelona-btn-primary" href="/catalog.html">Explorer l'Inventaire</a>
-            <a class="barcelona-btn barcelona-btn-secondary" href="/contact.html">Contacter le Support</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="barcelona-section barcelona-arsenal" aria-labelledby="barcelona-arsenal-title">
-      <div class="barcelona-container">
-        <div class="barcelona-arsenal-head">
-          <h2 class="barcelona-title" id="barcelona-arsenal-title">Arsenal d'Élite.</h2>
-          <p class="barcelona-copy">
+<div class="barcelona-actions">
+<a class="barcelona-btn barcelona-btn-primary" href="/catalog.html">Explorer l'Inventaire</a>
+<a class="barcelona-btn barcelona-btn-secondary" href="/contact.html">Contacter le Support</a>
+</div>
+</div>
+</div>
+</section>
+<section aria-labelledby="barcelona-arsenal-title" class="barcelona-section barcelona-arsenal">
+<div class="barcelona-container">
+<div class="barcelona-arsenal-head">
+<h2 class="barcelona-title" id="barcelona-arsenal-title">Arsenal d'Élite.</h2>
+<p class="barcelona-copy">
             Soigneusement sélectionné pour l'acoustique exigeante des clubs haut de gamme et des lieux en plein air.
           </p>
-        </div>
-
-        <div class="barcelona-bento">
-          <article class="barcelona-card barcelona-card-main barcelona-glass">
-            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI0pEDQ0Ynr_2eYA8UV-p2en3y2-R8gcj6HmKMjxMvJosc5n7XwVM_uhjnv5Jrmakyft8ML0jTUbvED_LBgf69sq76wFqWMk4qiUUBjMytr1L0gJxCCoiSFyJ4ZR85xvUlkPB4HNzY-6ZiwDQXVMZR67wF5oMXPLISiJj8sRrWRpf3oQ66pNLphF_2JbFcFDEVJyPe6cCaQpTnxkzS_UfYv2qdBaa-0hIYOS-r6PPBGnP8CVpdn44lkeM-LC1-x22X2HNl-1ju71A" alt="Écosystème Pioneer DJ" loading="lazy">
-            <div class="barcelona-card-main-content">
-              <div>
-                <h3>Écosystème Pioneer DJ</h3>
-                <p>Standard de l'industrie : CDJ-3000 et mixeurs DJM-V10.</p>
-              </div>
-              <a class="barcelona-round-action" href="/catalog.html" aria-label="Voir l'écosystème Pioneer DJ">
-                <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-              </a>
-            </div>
-          </article>
-
-          <article class="barcelona-card barcelona-card-side barcelona-glass">
-            <div>
-              <span class="material-symbols-outlined barcelona-card-icon" aria-hidden="true">speaker</span>
-              <h3>Systèmes Funktion-One</h3>
-              <p>Pureté acoustique inégalée pour une expérience club immersive.</p>
-            </div>
-            <a class="barcelona-card-link" href="/catalog.html">
-              <span>Voir les Specs</span>
-              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-            </a>
-          </article>
-
-          <article class="barcelona-card barcelona-card-small barcelona-glass">
-            <div>
-              <span class="material-symbols-outlined barcelona-card-icon" aria-hidden="true">cable</span>
-              <h3>Câblage Premium</h3>
-              <p>Liaisons sans perte et configurations sur mesure.</p>
-            </div>
-            <a class="barcelona-card-link" href="/catalog.html">
-              <span>Voir l'Inventaire</span>
-              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
-            </a>
-          </article>
-
-          <article class="barcelona-card barcelona-card-wide barcelona-glass">
-            <div class="barcelona-card-wide-copy">
-              <h3>Ingénierie Acoustique</h3>
-              <p>
+</div>
+<div class="barcelona-bento">
+<article class="barcelona-card barcelona-card-main barcelona-glass">
+<img alt="Écosystème Pioneer DJ" loading="lazy" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI0pEDQ0Ynr_2eYA8UV-p2en3y2-R8gcj6HmKMjxMvJosc5n7XwVM_uhjnv5Jrmakyft8ML0jTUbvED_LBgf69sq76wFqWMk4qiUUBjMytr1L0gJxCCoiSFyJ4ZR85xvUlkPB4HNzY-6ZiwDQXVMZR67wF5oMXPLISiJj8sRrWRpf3oQ66pNLphF_2JbFcFDEVJyPe6cCaQpTnxkzS_UfYv2qdBaa-0hIYOS-r6PPBGnP8CVpdn44lkeM-LC1-x22X2HNl-1ju71A"/>
+<div class="barcelona-card-main-content">
+<div>
+<h3>Écosystème Pioneer DJ</h3>
+<p>Standard de l'industrie : CDJ-3000 et mixeurs DJM-V10.</p>
+</div>
+<a aria-label="Voir l'écosystème Pioneer DJ" class="barcelona-round-action" href="/catalog.html">
+<span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+</article>
+<article class="barcelona-card barcelona-card-side barcelona-glass">
+<div>
+<span aria-hidden="true" class="material-symbols-outlined barcelona-card-icon">speaker</span>
+<h3>Systèmes Funktion-One</h3>
+<p>Pureté acoustique inégalée pour une expérience club immersive.</p>
+</div>
+<a class="barcelona-card-link" href="/catalog.html">
+<span>Voir les Specs</span>
+<span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+</a>
+</article>
+<article class="barcelona-card barcelona-card-small barcelona-glass">
+<div>
+<span aria-hidden="true" class="material-symbols-outlined barcelona-card-icon">cable</span>
+<h3>Câblage Premium</h3>
+<p>Liaisons sans perte et configurations sur mesure.</p>
+</div>
+<a class="barcelona-card-link" href="/catalog.html">
+<span>Voir l'Inventaire</span>
+<span aria-hidden="true" class="material-symbols-outlined">arrow_forward</span>
+</a>
+</article>
+<article class="barcelona-card barcelona-card-wide barcelona-glass">
+<div class="barcelona-card-wide-copy">
+<h3>Ingénierie Acoustique</h3>
+<p>
                 Nos techniciens calibrent les systèmes selon l'acoustique unique
                 des lieux emblématiques de Barcelone.
               </p>
-              <div style="margin-top:22px">
-                <a class="barcelona-btn barcelona-btn-secondary" href="/contact.html">Réserver une Consultation</a>
-              </div>
-            </div>
-            <span class="material-symbols-outlined barcelona-equalizer" aria-hidden="true">graphic_eq</span>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="barcelona-section barcelona-deployment" aria-labelledby="barcelona-deployment-title">
-      <div class="barcelona-container barcelona-deployment-grid">
-        <div>
-          <h2 class="barcelona-title" id="barcelona-deployment-title">Déploiement Stratégique.</h2>
-          <p class="barcelona-copy" style="font-size:18px">
+<div style="margin-top:22px">
+<a class="barcelona-btn barcelona-btn-secondary" href="/contact.html">Réserver une Consultation</a>
+</div>
+</div>
+<span aria-hidden="true" class="material-symbols-outlined barcelona-equalizer">graphic_eq</span>
+</article>
+</div>
+</div>
+</section>
+<section aria-labelledby="barcelona-deployment-title" class="barcelona-section barcelona-deployment">
+<div class="barcelona-container barcelona-deployment-grid">
+<div>
+<h2 class="barcelona-title" id="barcelona-deployment-title">Déploiement Stratégique.</h2>
+<p class="barcelona-copy" style="font-size:18px">
             Notre réseau logistique est optimisé pour la capitale catalane. Avec des hubs principaux
             situés à quelques minutes du quartier des entrepôts de Poblenou et de la côte des clubs
             de plage, nous garantissons un déploiement rapide et des temps de réponse techniques.
           </p>
-
-          <ul class="barcelona-deployment-list">
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-              <div>
-                <h4>Hub Tech Poblenou</h4>
-                <p>Au service du Razzmatazz et des lieux underground environnants.</p>
-              </div>
-            </li>
-
-            <li>
-              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
-              <div>
-                <h4>Dépôt Port Olímpic</h4>
-                <p>Accès direct aux méga-clubs en bord de mer et aux événements en terrasse.</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-
-        <div class="barcelona-map barcelona-glass">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEatMWx_1fQyks0tROBJcWUwXxyBnGzK5PmlWAEUWjX3IYVHQaWyMtnAJyXaByFevs05tRexcyWn3MgUKnaBeT4RW0C7dKZp1-dF3d1I7KZq12Vcw_1_8Z05InEV4WjJhlEsZFCVJyounDgTvzUCe-r98m9dTXrZbbwpaM1Ae4894bPkYGk2bjtuA6hTPxdzy1Cq0tTBHZer9DRorlwSozJEEoPP7swMgoNt4z-dl1Jg-DMwo_y192i3s9NdvFt3vpGDPNwaG7gQk" alt="Carte des hubs logistiques de Barcelone" loading="lazy">
-
-          <div class="barcelona-map-point poblenou">
-            <span class="barcelona-map-dot" aria-hidden="true"></span>
-            <span class="barcelona-map-label">Hub Poblenou</span>
-          </div>
-
-          <div class="barcelona-map-point port">
-            <span class="barcelona-map-dot" aria-hidden="true"></span>
-            <span class="barcelona-map-label">Port Olímpic</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="barcelona-section barcelona-seo" aria-labelledby="barcelona-seo-title">
-      <div class="barcelona-container">
-        <div class="barcelona-seo-inner">
-          <h2 class="barcelona-title" id="barcelona-seo-title">
+<ul class="barcelona-deployment-list">
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">check_circle</span>
+<div>
+<h4>Hub Tech Poblenou</h4>
+<p>Au service du Razzmatazz et des lieux underground environnants.</p>
+</div>
+</li>
+<li>
+<span aria-hidden="true" class="material-symbols-outlined">check_circle</span>
+<div>
+<h4>Dépôt Port Olímpic</h4>
+<p>Accès direct aux méga-clubs en bord de mer et aux événements en terrasse.</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="barcelona-map barcelona-glass rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=2.09%2C41.33%2C2.24%2C41.44&amp;layer=mapnik&amp;marker=41.3851%2C2.1734" title="Carte réelle de Barcelone"></iframe><div class="rss-live-map-badge">Carte réelle • Barcelone</div><div class="rss-live-map-status"><strong>Points de déploiement</strong><span>Hub Poblenou • Port Olímpic</span></div></div>
+</div>
+</section>
+<section aria-labelledby="barcelona-seo-title" class="barcelona-section barcelona-seo">
+<div class="barcelona-container">
+<div class="barcelona-seo-inner">
+<h2 class="barcelona-title" id="barcelona-seo-title">
             Son Professionnel pour la Capitale de la Musique Électronique Méditerranéenne
           </h2>
-
-          <p>
+<p>
             Barcelone exige la perfection auditive. En tant que ville hôte d'événements mondialement reconnus
             comme le Sónar et Primavera Sound, la norme pour la reproduction audio en direct y est sans compromis.
             Nous proposons des locations de systèmes de sonorisation haut de gamme à Barcelone, équipant les clubs
             les plus exclusifs de la ville, les raves en entrepôt et les after-parties privées en villa avec une
             architecture acoustique immaculée.
           </p>
-
-          <p>
+<p>
             Que vous ayez besoin d'une formidable installation Funktion-One pour une résidence techno à Poblenou
             ou d'une configuration résiliente et haute fidélité résistante à l'air salin d'une fête de jour en bord
             de plage, notre inventaire et notre expertise en ingénierie garantissent que votre vision sonore est
             exécutée avec une précision brutale et une esthétique Premium Nocturne.
           </p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div id="site-footer"></div>
-
-  <script>
+</div>
+</div>
+</section>
+</main>
+<div id="site-footer"></div>
+<script>
     async function loadSharedComponent(targetId, url) {
       const target = document.getElementById(targetId);
       if (!target) return;
