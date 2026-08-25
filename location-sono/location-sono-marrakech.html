@@ -1,126 +1,811 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Location Sono Marrakech - RentSoundSystem</title>
-<meta name="description" content="Location de sonorisation professionnelle à Marrakech : Pioneer DJ, L-Acoustics, Meyer Sound, DiGiCo, villas, riads et festivals du désert.">
+<meta name="description" content="Location de sonorisation professionnelle à Marrakech : Pioneer DJ, L-Acoustics, Meyer Sound, DiGiCo, villas, riads et festivals dans le désert d'Agafay.">
 <meta name="robots" content="index,follow">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
 <style>
-html,body{margin:0;padding:0;width:100%;min-height:100%;background:#131313;overflow-x:hidden}
-#site-header,#site-footer{width:100%;margin:0;padding:0}
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#131313;
+  overflow-x:hidden;
+}
+#site-header,#site-footer{
+  width:100%;
+  margin:0;
+  padding:0;
+}
 #rss-mobile-menu-toggle{display:none!important}
-.rss-page{--bg:#131313;--bg0:#0e0e0e;--bg1:#1c1b1b;--surface:#201f1f;--surface2:#2a2a2a;--surface3:#353534;--text:#e5e2e1;--muted:#e6bcc2;--pink:#FC036D;--pink2:#ffb2bf;--line:rgba(255,255,255,.05);--outline:#5d3f44;--max:1280px;width:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow:hidden}
-.rss-page,.rss-page *,.rss-page *::before,.rss-page *::after{box-sizing:border-box}
-.rss-page a{color:inherit;text-decoration:none}.rss-wrap{width:min(var(--max),calc(100% - 80px));margin:auto}.rss-section{padding:96px 0}
-.rss-title{margin:0;color:var(--text);font:700 clamp(30px,3vw,40px)/1.2 Manrope,Inter,sans-serif;letter-spacing:-.02em}
-.rss-copy{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.65}
-.rss-glass{background:linear-gradient(145deg,rgba(31,31,31,.62),rgba(20,20,20,.82));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:12px}
-.rss-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:13px 24px;border-radius:6px;border:1px solid transparent;font-weight:700;transition:.2s ease}
-.rss-btn:hover{transform:translateY(-2px)}.rss-btn-primary{background:var(--pink);color:#fff!important;box-shadow:0 0 28px rgba(252,3,109,.28)}.rss-btn-secondary{border-color:var(--outline);background:rgba(32,31,31,.60);color:var(--text)!important}
-.rss-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(252,3,109,.28);border-radius:999px;background:rgba(252,3,109,.10);color:var(--pink2);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.rss-hero-title{margin:0;color:var(--text);font:700 clamp(46px,5.6vw,72px)/1.1 Manrope,Inter,sans-serif;letter-spacing:-.035em}
-.rss-pink{color:var(--pink)}.rss-pink2{color:var(--pink2)}
-.rss-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.rss-grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
-.rss-card{padding:28px}.rss-card h3{margin:0 0 10px;color:#fff;font:600 22px/1.3 Manrope,Inter,sans-serif}.rss-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
-.rss-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}.rss-list li{display:flex;gap:10px;align-items:flex-start;color:var(--muted);line-height:1.55}.rss-list .material-symbols-outlined{color:var(--pink);font-size:19px}
-@media(max-width:900px){.rss-wrap{width:min(100% - 48px,var(--max))}.rss-section{padding:72px 0}.rss-grid2{grid-template-columns:1fr}}
-@media(max-width:640px){.rss-wrap{width:calc(100% - 32px)}.rss-section{padding:56px 0}.rss-hero-title{font-size:44px}.rss-btn{width:100%}}
 
-.mk-hero{position:relative;min-height:760px;display:flex;align-items:center;justify-content:center;text-align:center;isolation:isolate;overflow:hidden;padding:120px 0 70px}
-.mk-hero-bg{position:absolute;inset:0;z-index:-2}.mk-hero-bg img{width:100%;height:100%;object-fit:cover;opacity:.40}.mk-hero-bg::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#131313 0%,rgba(19,19,19,.78) 58%,rgba(19,19,19,.28) 100%)}
-.mk-hero-inner{max-width:900px}.mk-hero p{max-width:760px;margin:22px auto 30px;color:var(--muted);font-size:18px;line-height:1.65}.mk-actions{display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
-.mk-search{margin:0 auto;max-width:850px;display:grid;grid-template-columns:1fr 1fr auto;gap:12px;padding:14px}
-.mk-search input{min-width:0;background:var(--surface3);border:1px solid var(--line);border-radius:8px;padding:14px;color:#fff;font:inherit}.mk-search input:focus{outline:1px solid var(--pink)}
-.mk-arsenal{background:#131313}.mk-bento{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}.mk-item{position:relative;overflow:hidden;min-height:270px}.mk-item.large{grid-column:span 8}.mk-item.small{grid-column:span 4}.mk-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.30}.mk-item::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(28,27,27,.94),rgba(28,27,27,.30))}
-.mk-item-content{position:relative;z-index:2;height:100%;padding:28px;display:flex;flex-direction:column;justify-content:space-between}.mk-item h3{margin:0 0 8px;color:#fff;font:600 23px Manrope}.mk-item p{margin:0;color:var(--muted);line-height:1.6}
-.mk-link{display:inline-flex;align-items:center;gap:7px;color:var(--pink2)!important;font-size:12px;font-weight:700}.mk-map-section{background:var(--bg0);border-top:1px solid var(--line)}
-.mk-map{position:relative;height:560px;border-radius:16px;overflow:hidden;border:1px solid var(--outline);background:#111}.mk-map iframe{width:100%;height:100%;border:0;filter:invert(92%) hue-rotate(178deg) brightness(.58) contrast(1.22) saturate(.78)}
-.mk-map::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(circle at 50% 50%,rgba(252,3,109,.08),transparent 42%),linear-gradient(135deg,rgba(252,3,109,.035),rgba(0,0,0,.08));mix-blend-mode:color}
-.mk-pin{position:absolute;z-index:3;width:14px;height:14px;border-radius:50%;background:var(--pink);border:2px solid #fff;box-shadow:0 0 0 6px rgba(252,3,109,.16),0 0 22px rgba(252,3,109,.8)}.mk-pin.gueliz{left:48%;top:43%}.mk-pin.hivernage{left:54%;top:56%}
-.mk-map-status{position:absolute;z-index:4;right:18px;bottom:18px;padding:14px;background:rgba(14,14,14,.86);border:1px solid var(--line);border-radius:12px;color:#fff}.mk-map-status strong{display:block;color:var(--pink);font-size:13px}.mk-map-status span{font-size:12px;color:var(--muted)}
-.mk-context{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}.mk-context-img{height:450px;border-radius:14px;overflow:hidden}.mk-context-img img{width:100%;height:100%;object-fit:cover}
-@media(max-width:900px){.mk-search{grid-template-columns:1fr}.mk-bento{grid-template-columns:1fr}.mk-item.large,.mk-item.small{grid-column:auto}.mk-context{grid-template-columns:1fr}}
+.mk-page{
+  --bg:#131313;
+  --lowest:#0e0e0e;
+  --low:#1c1b1b;
+  --surface:#201f1f;
+  --high:#2a2a2a;
+  --highest:#353534;
+  --text:#e5e2e1;
+  --muted:#e6bcc2;
+  --pink:#FC036D;
+  --pink-soft:#ffb2bf;
+  --outline:#5d3f44;
+  --line:rgba(255,255,255,.05);
+  --max:1280px;
+  width:100%;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+  overflow:hidden;
+}
+.mk-page,
+.mk-page *,
+.mk-page *::before,
+.mk-page *::after{box-sizing:border-box}
+.mk-page a{color:inherit;text-decoration:none}
+.mk-wrap{
+  width:min(var(--max),calc(100% - 80px));
+  margin:0 auto;
+}
+.mk-glass{
+  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.80));
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+}
+.mk-title{
+  margin:0;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+  letter-spacing:-.025em;
+}
+.mk-copy{
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.6;
+}
+
+/* HERO — faithful to Stitch proportions */
+.mk-hero{
+  position:relative;
+  min-height:880px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  isolation:isolate;
+}
+.mk-hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+}
+.mk-hero-bg img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  opacity:.40;
+  filter:grayscale(.18);
+}
+.mk-hero-shade{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(to top,#131313 0%,rgba(19,19,19,.82) 42%,rgba(19,19,19,.60) 67%,rgba(19,19,19,.25) 100%),
+    radial-gradient(circle at 50% 46%,rgba(252,3,109,.11),transparent 30%);
+}
+.mk-hero-inner{
+  width:min(100%,980px);
+  margin:0 auto;
+  padding:90px 0 70px;
+  text-align:center;
+}
+.mk-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:30px;
+  padding:7px 16px;
+  border:1px solid rgba(252,3,109,.32);
+  border-radius:999px;
+  background:rgba(252,3,109,.10);
+  color:var(--pink);
+  font-size:11px;
+  line-height:1;
+  font-weight:600;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  backdrop-filter:blur(8px);
+}
+.mk-badge .material-symbols-outlined{
+  font-size:15px;
+  font-variation-settings:'FILL' 1;
+}
+.mk-hero h1{
+  margin:0 0 24px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:72px;
+  line-height:1.08;
+  font-weight:700;
+  letter-spacing:-.035em;
+  text-shadow:0 0 20px rgba(252,3,109,.38);
+}
+.mk-hero h1 span{color:#ff4d80}
+.mk-hero-lead{
+  max-width:690px;
+  margin:0 auto 44px;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.6;
+}
+.mk-search{
+  width:min(100%,790px);
+  margin:0 auto;
+  padding:14px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto;
+  gap:12px;
+  align-items:stretch;
+  border-radius:12px;
+  box-shadow:0 18px 60px rgba(0,0,0,.30),0 0 24px rgba(252,3,109,.08);
+}
+.mk-field{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-height:50px;
+  padding:0 14px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--highest);
+  transition:border-color .2s ease;
+}
+.mk-field:focus-within{border-color:var(--pink)}
+.mk-field .material-symbols-outlined{
+  flex:0 0 auto;
+  color:var(--muted);
+  font-size:20px;
+}
+.mk-field input{
+  min-width:0;
+  width:100%;
+  border:0;
+  outline:0;
+  background:transparent;
+  color:#fff;
+  font:inherit;
+}
+.mk-field input::placeholder{color:#d9afb6}
+.mk-primary{
+  min-height:50px;
+  padding:0 24px;
+  border:0;
+  border-radius:8px;
+  background:var(--pink);
+  color:#fff;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  box-shadow:0 0 20px rgba(252,3,109,.30);
+  transition:.22s ease;
+}
+.mk-primary:hover{
+  transform:translateY(-2px);
+  background:#e60262;
+  box-shadow:0 0 30px rgba(252,3,109,.48);
+}
+
+/* ARSENAL */
+.mk-arsenal{
+  padding:96px 0;
+  background:var(--bg);
+}
+.mk-section-head{
+  margin-bottom:56px;
+}
+.mk-section-head p{
+  max-width:700px;
+  margin:14px 0 0;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+.mk-bento{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:24px;
+}
+.mk-card{
+  position:relative;
+  min-height:300px;
+  overflow:hidden;
+  padding:32px;
+  border-radius:12px;
+}
+.mk-card.large{grid-column:span 8}
+.mk-card.small{grid-column:span 4}
+.mk-card.row2{min-height:250px}
+.mk-card-bg{
+  position:absolute;
+  inset:0;
+  z-index:0;
+}
+.mk-card-bg img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.30;
+  transition:opacity .4s ease,transform .45s ease;
+}
+.mk-card:hover .mk-card-bg img{
+  opacity:.40;
+  transform:scale(1.025);
+}
+.mk-card-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg,rgba(28,27,27,.94),rgba(28,27,27,.24));
+}
+.mk-card.icon-card::after{
+  content:"";
+  position:absolute;
+  right:-45px;
+  top:-35px;
+  width:190px;
+  height:190px;
+  border:24px solid rgba(255,255,255,.055);
+  border-radius:50%;
+}
+.mk-card.equalizer::after{
+  border-radius:0;
+  border:0;
+  right:25px;
+  top:auto;
+  bottom:25px;
+  width:90px;
+  height:130px;
+  opacity:.30;
+  background:
+    linear-gradient(to top,rgba(255,255,255,.22) 0 45%,transparent 45%) 0 100%/14px 100% no-repeat,
+    linear-gradient(to top,rgba(255,255,255,.22) 0 78%,transparent 78%) 25px 100%/14px 100% no-repeat,
+    linear-gradient(to top,rgba(255,255,255,.22) 0 58%,transparent 58%) 50px 100%/14px 100% no-repeat,
+    linear-gradient(to top,rgba(255,255,255,.22) 0 92%,transparent 92%) 75px 100%/14px 100% no-repeat;
+}
+.mk-card-content{
+  position:relative;
+  z-index:2;
+  min-height:236px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.mk-card.row2 .mk-card-content{min-height:186px}
+.mk-chip{
+  display:inline-flex;
+  align-items:center;
+  width:max-content;
+  padding:6px 10px;
+  margin-bottom:15px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:var(--highest);
+  color:var(--pink);
+  font-size:10px;
+  line-height:1;
+  font-weight:600;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.mk-chip.secondary{color:#d7d5d5}
+.mk-card h3{
+  margin:0 0 9px;
+  color:#fff;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  line-height:1.3;
+  font-weight:600;
+}
+.mk-card p{
+  max-width:520px;
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.mk-card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  width:max-content;
+  color:var(--pink)!important;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.mk-card-link.secondary-btn{
+  align-self:flex-end;
+  padding:10px 18px;
+  border:1px solid var(--outline);
+  border-radius:8px;
+  color:var(--text)!important;
+  letter-spacing:0;
+  text-transform:none;
+}
+.mk-card-link.secondary-btn:hover{
+  background:var(--surface);
+}
+
+/* MAP — real map but same dimensions / overlays as Stitch */
+.mk-map-section{
+  padding:96px 0;
+  background:var(--lowest);
+  border-top:1px solid var(--line);
+}
+.mk-map-head{
+  max-width:720px;
+  margin:0 auto 56px;
+  text-align:center;
+}
+.mk-map-head p{
+  margin:14px auto 0;
+  color:var(--muted);
+  font-size:18px;
+  line-height:1.6;
+}
+.mk-map{
+  position:relative;
+  height:600px;
+  overflow:hidden;
+  border:1px solid rgba(93,63,68,.35);
+  border-radius:16px;
+  background:#111;
+}
+.mk-map iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  filter:invert(92%) hue-rotate(178deg) brightness(.58) contrast(1.22) saturate(.78);
+}
+.mk-map::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px),
+    radial-gradient(circle at 50% 50%,rgba(252,3,109,.085),transparent 43%);
+  background-size:40px 40px,40px 40px,auto;
+  mix-blend-mode:screen;
+}
+.mk-pin-wrap{
+  position:absolute;
+  z-index:4;
+  transform:translate(-50%,-50%);
+}
+.mk-pin-wrap.gueliz{left:45%;top:40%}
+.mk-pin-wrap.hivernage{left:52%;top:55%}
+.mk-pin{
+  position:relative;
+  width:16px;
+  height:16px;
+  border-radius:50%;
+  background:var(--pink);
+  border:2px solid rgba(255,255,255,.88);
+  box-shadow:0 0 0 7px rgba(252,3,109,.14),0 0 20px rgba(252,3,109,.85);
+}
+.mk-pin::after{
+  content:"";
+  position:absolute;
+  inset:-13px;
+  border:1px solid rgba(252,3,109,.32);
+  border-radius:50%;
+  animation:mkPulse 2s ease-out infinite;
+}
+.mk-pin-wrap.hivernage .mk-pin::after{animation-delay:.5s}
+@keyframes mkPulse{
+  0%{transform:scale(.55);opacity:.85}
+  100%{transform:scale(1.5);opacity:0}
+}
+.mk-map-label{
+  position:absolute;
+  z-index:4;
+  right:26px;
+  bottom:26px;
+  width:220px;
+  padding:20px;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:rgba(31,31,31,.78);
+  backdrop-filter:blur(12px);
+}
+.mk-map-label small{
+  display:block;
+  margin-bottom:5px;
+  color:#c6c6c7;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.mk-map-label strong{
+  display:block;
+  color:var(--pink);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:20px;
+  margin-bottom:16px;
+}
+.mk-map-label strong:last-child{
+  color:var(--text);
+  margin-bottom:0;
+}
+.mk-divider{
+  height:1px;
+  margin:16px 0;
+  background:var(--line);
+}
+
+/* LOCAL SEO / CONTEXT */
+.mk-context-section{
+  padding:96px 0;
+  background:var(--bg);
+}
+.mk-context{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:64px;
+  align-items:center;
+}
+.mk-context h2{
+  margin:0 0 24px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+  letter-spacing:-.025em;
+}
+.mk-context p{
+  margin:0 0 16px;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.6;
+}
+.mk-actions{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:28px;
+}
+.mk-secondary{
+  min-height:48px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 20px;
+  border:1px solid var(--outline);
+  border-radius:8px;
+  background:transparent;
+  color:var(--text)!important;
+  font-size:12px;
+  font-weight:600;
+  transition:.2s ease;
+}
+.mk-secondary:hover{background:var(--surface)}
+.mk-context-image{
+  position:relative;
+  height:500px;
+  overflow:hidden;
+  border-radius:12px;
+}
+.mk-context-image img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  opacity:.80;
+}
+.mk-context-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(19,19,19,.72),transparent 55%);
+}
+
+@media(max-width:920px){
+  .mk-wrap{width:min(100% - 48px,var(--max))}
+  .mk-bento{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .mk-card.large,.mk-card.small{grid-column:span 3}
+  .mk-context{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .mk-wrap{width:calc(100% - 32px)}
+  .mk-hero{min-height:720px}
+  .mk-hero h1{font-size:48px}
+  .mk-hero-lead{font-size:16px}
+  .mk-search{grid-template-columns:1fr}
+  .mk-title,.mk-context h2{font-size:32px}
+  .mk-arsenal,.mk-map-section,.mk-context-section{padding:64px 0}
+  .mk-bento{grid-template-columns:1fr}
+  .mk-card.large,.mk-card.small{grid-column:auto}
+  .mk-map{height:410px}
+  .mk-map-label{left:16px;right:16px;bottom:16px;width:auto}
+}
+@media(prefers-reduced-motion:reduce){
+  .mk-pin::after{animation:none}
+}
 </style>
 </head>
+
 <body>
 <div id="site-header"></div>
-<main class="rss-page">
+
+<main class="mk-page">
+
 <section class="mk-hero">
- <div class="mk-hero-bg"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV4xQz9mKf9pupd-kzNCjOSVRi7fhl8YJlKjBRKJv7TsXRC726GL7o6a4a-b15NV7bd-GMF2N4eBs0kTYvhAPcNFFdLu2riMNS2B1aB1ESE9ttGmIWNdlKGeHZUvp3nxM-DjcrRg4HWIze9w9Zrmhht94xzRJJS85X8IoVtzXkXtL-51Dwocj9EVt72kXQiMOlyOeGQquJsDxEI14Fn1hdpR3FMDO_bkamSnx1EIwPO1cTuNabDCLAAjdySBv_UL1r4qAbNbFFXb4" alt=""></div>
- <div class="rss-wrap mk-hero-inner">
-  <div class="rss-tag"><span class="material-symbols-outlined">location_on</span>Maintenant opérationnel à Marrakech</div>
-  <h1 class="rss-hero-title" style="margin-top:26px">SON INGÉNIÉRÉ.<br><span class="rss-pink">NUITS MAROCAINES.</span></h1>
-  <p>Déploiement des écosystèmes standards de l'industrie L-Acoustics et Pioneer DJ pour les villas de luxe, les événements en riad et les festivals dans le désert à travers Marrakech. Audio de précision, zéro compromis.</p>
-  <form class="rss-glass mk-search" action="/catalog.html" method="get">
-   <input name="dates" placeholder="Sélectionner les dates" aria-label="Sélectionner les dates">
-   <input name="q" placeholder="Type d'équipement (ex: CDJ-3000)" aria-label="Type d'équipement">
-   <button class="rss-btn rss-btn-primary" type="submit">Vérifier la disponibilité</button>
-  </form>
- </div>
+  <div class="mk-hero-bg">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAV4xQz9mKf9pupd-kzNCjOSVRi7fhl8YJlKjBRKJv7TsXRC726GL7o6a4a-b15NV7bd-GMF2N4eBs0kTYvhAPcNFFdLu2riMNS2B1aB1ESE9ttGmIWNdlKGeHZUvp3nxM-DjcrRg4HWIze9w9Zrmhht94xzRJJS85X8IoVtzXkXtL-51Dwocj9EVt72kXQiMOlyOeGQquJsDxEI14Fn1hdpR3FMDO_bkamSnx1EIwPO1cTuNabDCLAAjdySBv_UL1r4qAbNbFFXb4" alt="" loading="eager" fetchpriority="high">
+  </div>
+  <div class="mk-hero-shade"></div>
+
+  <div class="mk-wrap">
+    <div class="mk-hero-inner">
+      <div class="mk-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        Maintenant Opérationnel à Marrakech
+      </div>
+
+      <h1>SON INGÉNIÉRÉ.<br><span>NUITS MAROCAINES.</span></h1>
+
+      <p class="mk-hero-lead">
+        Déploiement des écosystèmes standards de l'industrie L-Acoustics et Pioneer DJ pour les villas de luxe,
+        les événements en riad et les festivals dans le désert à travers Marrakech.
+        Audio de précision, zéro compromis.
+      </p>
+
+      <form class="mk-search mk-glass" action="/catalog.html" method="get">
+        <label class="mk-field">
+          <span class="material-symbols-outlined" aria-hidden="true">calendar_month</span>
+          <input name="dates" type="text" placeholder="Sélectionner les dates" aria-label="Sélectionner les dates">
+        </label>
+
+        <label class="mk-field">
+          <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+          <input name="q" type="text" placeholder="Type d'équipement (ex: CDJ-3000)" aria-label="Type d'équipement">
+        </label>
+
+        <button class="mk-primary" type="submit">Vérifier la Disponibilité</button>
+      </form>
+    </div>
+  </div>
 </section>
 
-<section class="rss-section mk-arsenal">
- <div class="rss-wrap">
-  <h2 class="rss-title">ARSENAL PREMIUM</h2>
-  <p class="rss-copy" style="max-width:720px;margin-bottom:42px">Des standards exigeants requièrent un équipement exceptionnel. Notre inventaire à Marrakech présente le standard mondial des tournées.</p>
-  <div class="mk-bento">
-   <article class="rss-glass mk-item large"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuALTSk2zZLSEfFtD6XHW81xaTHo6cZiILvB_zIrjaW9z8MXbd8CYW-6zMYlcMNJLJWt8VTH3KoyLSofWQCE6EFVdxk-ww2Ex7LSc9QaC4U6_xjiepurPURe0NNldaiIUzynIvFKO3GKONrI0FsQh1eGg_8H6NWEs1d0WyrKJp4GuY2ri9DOTG1_h9bVtW3fNCiIlHQqzpYhJV-lVh3WdK7e05lK6ZLPMCtW1-OVCV1gu0OqD5nptO_6p3LCxZ3FOl9ynbXiQO805Nw" alt="Écosystème Pioneer DJ"><div class="mk-item-content"><div><span class="rss-tag">Écosystème DJ</span><h3 style="margin-top:16px">Standard Pioneer DJ</h3><p>CDJ-3000s, DJM-A9s et V10s. Le standard incontesté des clubs, parfaitement entretenu et livré prêt pour la scène principale.</p></div><a class="mk-link" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-A9%20V10">Voir les régies Pioneer DJ <span class="material-symbols-outlined">arrow_forward</span></a></div></article>
-   <article class="rss-glass mk-item small"><div class="mk-item-content"><div><span class="rss-tag">Système façade FOH</span><h3 style="margin-top:16px">L-Acoustics K2</h3><p>Systèmes Line Array grand format pour les festivals dans le désert et les déploiements de grande capacité.</p></div><a class="mk-link" href="/catalog.html?q=L-Acoustics%20K2">Voir les L-Acoustics K2 <span class="material-symbols-outlined">arrow_forward</span></a></div></article>
-   <article class="rss-glass mk-item small"><div class="mk-item-content"><div><span class="rss-tag">Retours de scène</span><h3 style="margin-top:16px">Meyer Sound</h3><p>Solutions de retour de scène ultra-précises garantissant une performance sans faille.</p></div><a class="mk-link" href="/catalog.html?q=Meyer%20Sound">Voir les Meyer Sound <span class="material-symbols-outlined">arrow_forward</span></a></div></article>
-   <article class="rss-glass mk-item large"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5N8sr54w00uTULha_xwx5sXnV05cEAnYQMP0g1hvZKR9K5zLKAfDGRh-bYBzVQnC-r1Mlr6OpxD4qeimEe1Nyj8R1ElS4jy7ZCS48ZQmiHr4l7PUjxYjQmzOWHRNISIFfay0l-ChC0bw3ahhYHEQAdP1LXBTYIGUv_KYYw0j5Q2k3ytVOx-tDzFW46FpZkNuguSf8-TYp2IEhMSvsgJV_bxtniFpyF-7klGJWU9Di1eCBKJe3WQ0o60K5XDmlCwe9GuTwvhNJArA" alt="Console DiGiCo Quantum"><div class="mk-item-content"><div><span class="rss-tag">Contrôle</span><h3 style="margin-top:16px">DiGiCo Quantum</h3><p>Puissance de traitement et flexibilité inégalées pour les environnements de mixage live complexes.</p></div><a class="mk-link" href="/catalog.html?q=DiGiCo%20Quantum">Voir les consoles DiGiCo Quantum <span class="material-symbols-outlined">arrow_forward</span></a></div></article>
+<section class="mk-arsenal">
+  <div class="mk-wrap">
+    <div class="mk-section-head">
+      <h2 class="mk-title">ARSENAL PREMIUM</h2>
+      <p>
+        Des standards exigeants requièrent un équipement exceptionnel.
+        Notre inventaire à Marrakech présente le standard mondial des tournées.
+      </p>
+    </div>
+
+    <div class="mk-bento">
+      <article class="mk-card large mk-glass">
+        <div class="mk-card-bg">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuALTSk2zZLSEfFtD6XHW81xaTHo6cZiILvB_zIrjaW9z8MXbd8CYW-6zMYlcMNJLJWt8VTH3KoyLSofWQCE6EFVdxk-ww2Ex7LSc9QaC4U6_xjiepurPURe0NNldaiIUzynIvFKO3GKONrI0FsQh1eGg_8H6NWEs1d0WyrKJp4GuY2ri9DOTG1_h9bVtW3fNCiIlHQqzpYhJV-lVh3WdK7e05lK6ZLPMCtW1-OVCV1gu0OqD5nptO_6p3LCxZ3FOl9ynbXiQO805Nw" alt="Pioneer DJ à Marrakech" loading="lazy">
+        </div>
+
+        <div class="mk-card-content">
+          <div>
+            <span class="mk-chip">Écosystème DJ</span>
+            <h3>Standard Pioneer DJ</h3>
+            <p>
+              CDJ-3000s, DJM-A9s et V10s. Le standard incontesté des clubs,
+              parfaitement entretenu et livré prêt pour la scène principale.
+            </p>
+          </div>
+
+          <a class="mk-card-link" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-A9%20V10">
+            Voir l'Inventaire
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="mk-card small mk-glass icon-card">
+        <div class="mk-card-content">
+          <div>
+            <span class="mk-chip secondary">Système Façade (FOH)</span>
+            <h3>L-Acoustics K2</h3>
+            <p>
+              Systèmes Line Array grand format pour les festivals dans le désert
+              et les déploiements de grande capacité.
+            </p>
+          </div>
+
+          <a class="mk-card-link" href="/catalog.html?q=L-Acoustics%20K2">
+            Voir les L-Acoustics K2
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="mk-card small row2 mk-glass equalizer">
+        <div class="mk-card-content">
+          <div>
+            <span class="mk-chip secondary">Retours de scène</span>
+            <h3>Meyer Sound</h3>
+            <p>
+              Solutions de retour de scène ultra-précises garantissant une performance sans faille.
+            </p>
+          </div>
+
+          <a class="mk-card-link" href="/catalog.html?q=Meyer%20Sound">
+            Voir les Meyer Sound
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="mk-card large row2 mk-glass">
+        <div class="mk-card-bg">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5N8sr54w00uTULha_xwx5sXnV05cEAnYQMP0g1hvZKR9K5zLKAfDGRh-bYBzVQnC-r1Mlr6OpxD4qeimEe1Nyj8R1ElS4jy7ZCS48ZQmiHr4l7PUjxYjQmzOWHRNISIFfay0l-ChC0bw3ahhYHEQAdP1LXBTYIGUv_KYYw0j5Q2k3ytVOx-tDzFW46FpZkNuguSf8-TYp2IEhMSvsgJV_bxtniFpyF-7klGJWU9Di1eCBKJe3WQ0o60K5XDmlCwe9GuTwvhNJArA" alt="Console DiGiCo Quantum" loading="lazy">
+        </div>
+
+        <div class="mk-card-content">
+          <div>
+            <span class="mk-chip">Contrôle</span>
+            <h3>DiGiCo Quantum</h3>
+            <p>
+              Puissance de traitement et flexibilité inégalées pour les environnements
+              de mixage live complexes.
+            </p>
+          </div>
+
+          <a class="mk-card-link secondary-btn" href="/catalog.html?q=DiGiCo%20Quantum">
+            Voir les Spécifications
+          </a>
+        </div>
+      </article>
+    </div>
   </div>
- </div>
 </section>
 
-<section class="rss-section mk-map-section">
- <div class="rss-wrap">
-  <div style="text-align:center;margin-bottom:42px"><h2 class="rss-title">HUBS DE DÉPLOIEMENT STRATÉGIQUES</h2><p class="rss-copy" style="margin-inline:auto">Réponse rapide et logistique gérées depuis nos deux installations au cœur de Marrakech.</p></div>
-  <div class="mk-map">
-   <iframe src="https://www.openstreetmap.org/export/embed.html?bbox=-8.08%2C31.57%2C-7.92%2C31.69&layer=mapnik" loading="lazy" title="Carte réelle de Marrakech"></iframe>
-   <span class="mk-pin gueliz"></span><span class="mk-pin hivernage"></span>
-   <div class="mk-map-status"><strong>&lt; 2 heures</strong><span>2 400+ unités actives • Guéliz & Hivernage</span></div>
+<section class="mk-map-section">
+  <div class="mk-wrap">
+    <div class="mk-map-head">
+      <h2 class="mk-title">HUBS DE DÉPLOIEMENT STRATÉGIQUES</h2>
+      <p>
+        Réponse rapide et logistique gérées depuis nos deux installations au cœur de Marrakech.
+      </p>
+    </div>
+
+    <div class="mk-map">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=-8.08%2C31.57%2C-7.92%2C31.69&layer=mapnik"
+        loading="lazy"
+        title="Carte réelle de Marrakech"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+
+      <div class="mk-pin-wrap gueliz" title="Hub Central Guéliz">
+        <div class="mk-pin"></div>
+      </div>
+
+      <div class="mk-pin-wrap hivernage" title="Logistique Hivernage">
+        <div class="mk-pin"></div>
+      </div>
+
+      <aside class="mk-map-label">
+        <small>Temps de réponse</small>
+        <strong>&lt; 2 Heures</strong>
+        <div class="mk-divider"></div>
+        <small>Inventaire actif</small>
+        <strong>2 400+ Unités</strong>
+      </aside>
+    </div>
   </div>
- </div>
 </section>
 
-<section class="rss-section">
- <div class="rss-wrap mk-context">
-  <div><h2 class="rss-title">UN AUDIO SANS COMPROMIS POUR LES ÉVÉNEMENTS D'ÉLITE DU MAROC</h2>
-   <p class="rss-copy">Des soirées privées en villa de luxe dans la Palmeraie aux vastes festivals de musique électronique dans le désert d'Agafay, RentSoundSystem fournit l'épine dorsale technique pour les environnements audio les plus exigeants de Marrakech.</p>
-   <p class="rss-copy">Notre inventaire comprend des équipements irréprochables et conformes aux fiches techniques, signés L-Acoustics, Pioneer DJ et DiGiCo. Chaque pièce est rigoureusement testée dans nos locaux de Guéliz avant déploiement.</p>
-   <p class="rss-copy">Au-delà de la location, notre équipe locale propose conception acoustique, coordination des fréquences et gestion technique sur site.</p>
-   <div class="mk-actions" style="justify-content:flex-start;margin-top:26px"><a class="rss-btn rss-btn-primary" href="/contact.html?subject=Devis%20Marrakech">Demander un devis</a><a class="rss-btn rss-btn-secondary" href="/contact.html?subject=Equipe%20locale%20Marrakech">Contacter l'équipe locale</a></div>
+<section class="mk-context-section">
+  <div class="mk-wrap mk-context">
+    <div>
+      <h2>UN AUDIO SANS COMPROMIS POUR LES ÉVÉNEMENTS D'ÉLITE DU MAROC</h2>
+
+      <p>
+        Des soirées privées en villa de luxe dans la Palmeraie aux vastes festivals de musique électronique
+        dans le désert d'Agafay, RentSoundSystem fournit l'épine dorsale technique pour les environnements
+        audio les plus exigeants de Marrakech.
+      </p>
+
+      <p>
+        Notre inventaire comprend des équipements irréprochables et conformes aux fiches techniques,
+        signés L-Acoustics, Pioneer DJ et DiGiCo. Nous comprenons que dans le secteur de l'événementiel
+        haut de gamme, une panne d'équipement n'est pas une option. Chaque pièce de matériel est
+        rigoureusement testée dans nos locaux de Guéliz avant d'être déployée.
+      </p>
+
+      <p>
+        Au-delà de la simple location, notre équipe locale d'ingénieurs du son certifiés propose
+        un service complet de conception acoustique, de coordination des fréquences et de gestion technique
+        sur site pour s'assurer que votre son soit aussi époustouflant que le paysage des montagnes
+        de l'Atlas en toile de fond.
+      </p>
+
+      <div class="mk-actions">
+        <a class="mk-primary" style="display:inline-flex;align-items:center;justify-content:center" href="/contact.html?subject=Devis%20Marrakech">
+          Demander un Devis
+        </a>
+        <a class="mk-secondary" href="/contact.html?subject=Equipe%20Locale%20Marrakech">
+          Contacter l'Équipe Locale
+        </a>
+      </div>
+    </div>
+
+    <div class="mk-context-image mk-glass">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBul2zjCma7Cw2If_xcQM0Jjik3i_JLwoyHCneJmOd28BBignzpsArKnRHpsl3pjq5XBcA7Pe7dKkzcm7LtY4k5rdnefuREml98uX3tRXOPjBEF0xV0-IJQtGo8B1DkIupyyFp5Ruoy3H-q3xbgR8SF1-QpJxqD_xoAr5gwdjMAd0VKNmSA6VTwSYluZsdAGP7P2-q6bZxYB2ubXufeaU4vIquBm4BHiEXmXYg3TgjMHfZnMPnMzxB11P_W_s_7ohmuq-OyUWYiFEk"
+           alt="Installation festival dans le désert près de Marrakech"
+           loading="lazy">
+    </div>
   </div>
-  <div class="mk-context-img rss-glass"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuARnS1H61aHXdKYv_xwF1be1RY_izQwl2WZGkpKLJEWcaIbkyP9jbrBr8BxCt0HYRlelJ1BEnWFkX8haNd4DKjAaY3P76tS9iB_FPty_wU05cGgCyQlccoa57uTvqR_DDAt4imsLBRVzmOWxwgEPs16FPB1RXAdJqrCRtORHm9QHDrPkQQBQHJc8fKwqvgLLgUzsh-PWd6z0QXjvRSFa2_xR5QsxgKIPt1q7zRbLYv6e-fyq7TyUENkZcbrobHdMIq9qfLf3oTz1hQ" alt="Installation audio dans le désert près de Marrakech"></div>
- </div>
 </section>
+
 </main>
+
 <div id="site-footer"></div>
 
 <script>
 async function loadSharedComponent(targetId,url){
- const target=document.getElementById(targetId);if(!target)return;
- try{
-  const r=await fetch(url,{cache:"no-cache"});if(!r.ok)throw new Error(url+" : HTTP "+r.status);
-  target.innerHTML=await r.text();
-  target.querySelectorAll("script").forEach(oldScript=>{
-   const s=document.createElement("script");
-   Array.from(oldScript.attributes).forEach(a=>s.setAttribute(a.name,a.value));
-   s.textContent=oldScript.textContent;oldScript.replaceWith(s);
-  });
- }catch(e){console.error("RentSoundSystem shared component load error:",e)}
+  const target=document.getElementById(targetId);
+  if(!target)return;
+
+  try{
+    const response=await fetch(url,{cache:"no-cache"});
+    if(!response.ok)throw new Error(`${url} : HTTP ${response.status}`);
+
+    target.innerHTML=await response.text();
+
+    target.querySelectorAll("script").forEach(oldScript=>{
+      const newScript=document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr=>newScript.setAttribute(attr.name,attr.value));
+      newScript.textContent=oldScript.textContent;
+      oldScript.replaceWith(newScript);
+    });
+  }catch(error){
+    console.error("RentSoundSystem shared component load error:",error);
+  }
 }
-document.addEventListener("DOMContentLoaded",()=>Promise.all([
- loadSharedComponent("site-header","/header.html"),
- loadSharedComponent("site-footer","/footer.html")
-]));
+
+document.addEventListener("DOMContentLoaded",()=>{
+  Promise.all([
+    loadSharedComponent("site-header","/header.html"),
+    loadSharedComponent("site-footer","/footer.html")
+  ]);
+});
 </script>
 
-</body></html>
+</body>
+</html>
