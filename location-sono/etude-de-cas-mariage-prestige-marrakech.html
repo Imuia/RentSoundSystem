@@ -1,90 +1,523 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Étude de Cas : Mariage de Prestige Marrakech - RentSoundSystem</title>
-<meta name="description" content="Étude de cas RentSoundSystem : mariage de prestige dans la Palmeraie de Marrakech avec L-Acoustics K2, KS28, DiGiCo Quantum et Shure Axient Digital.">
+<meta name="description" content="Étude de cas RentSoundSystem : mariage de prestige dans la Palmeraie de Marrakech avec L-Acoustics K2, KS28, DiGiCo Quantum 338 et Shure Axient Digital.">
 <meta name="robots" content="index,follow">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
 <style>
-html,body{margin:0;padding:0;width:100%;min-height:100%;background:#131313;overflow-x:hidden}
-#site-header,#site-footer{width:100%;margin:0;padding:0}
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#131313;
+  overflow-x:hidden;
+}
+#site-header,#site-footer{
+  width:100%;
+  margin:0;
+  padding:0;
+}
 #rss-mobile-menu-toggle{display:none!important}
-.rss-page{--bg:#131313;--bg0:#0e0e0e;--bg1:#1c1b1b;--surface:#201f1f;--surface2:#2a2a2a;--surface3:#353534;--text:#e5e2e1;--muted:#e6bcc2;--pink:#FC036D;--pink2:#ffb2bf;--line:rgba(255,255,255,.05);--outline:#5d3f44;--max:1280px;width:100%;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif;overflow:hidden}
-.rss-page,.rss-page *,.rss-page *::before,.rss-page *::after{box-sizing:border-box}
-.rss-page a{color:inherit;text-decoration:none}.rss-wrap{width:min(var(--max),calc(100% - 80px));margin:auto}.rss-section{padding:96px 0}
-.rss-title{margin:0;color:var(--text);font:700 clamp(30px,3vw,40px)/1.2 Manrope,Inter,sans-serif;letter-spacing:-.02em}
-.rss-copy{margin:12px 0 0;color:var(--muted);font-size:16px;line-height:1.65}
-.rss-glass{background:linear-gradient(145deg,rgba(31,31,31,.62),rgba(20,20,20,.82));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:12px}
-.rss-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:13px 24px;border-radius:6px;border:1px solid transparent;font-weight:700;transition:.2s ease}
-.rss-btn:hover{transform:translateY(-2px)}.rss-btn-primary{background:var(--pink);color:#fff!important;box-shadow:0 0 28px rgba(252,3,109,.28)}.rss-btn-secondary{border-color:var(--outline);background:rgba(32,31,31,.60);color:var(--text)!important}
-.rss-tag{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(252,3,109,.28);border-radius:999px;background:rgba(252,3,109,.10);color:var(--pink2);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.rss-hero-title{margin:0;color:var(--text);font:700 clamp(46px,5.6vw,72px)/1.1 Manrope,Inter,sans-serif;letter-spacing:-.035em}
-.rss-pink{color:var(--pink)}.rss-pink2{color:var(--pink2)}
-.rss-grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.rss-grid12{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px}
-.rss-card{padding:28px}.rss-card h3{margin:0 0 10px;color:#fff;font:600 22px/1.3 Manrope,Inter,sans-serif}.rss-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
-.rss-list{list-style:none;margin:0;padding:0;display:grid;gap:12px}.rss-list li{display:flex;gap:10px;align-items:flex-start;color:var(--muted);line-height:1.55}.rss-list .material-symbols-outlined{color:var(--pink);font-size:19px}
-@media(max-width:900px){.rss-wrap{width:min(100% - 48px,var(--max))}.rss-section{padding:72px 0}.rss-grid2{grid-template-columns:1fr}}
-@media(max-width:640px){.rss-wrap{width:calc(100% - 32px)}.rss-section{padding:56px 0}.rss-hero-title{font-size:44px}.rss-btn{width:100%}}
 
-.cs-hero{padding:96px 0 30px;text-align:center}.cs-hero-inner{max-width:980px;margin:auto}.cs-hero p{max-width:760px;margin:18px auto 0;color:var(--muted);font-size:18px;line-height:1.65}
-.cs-hero-image{margin-top:38px;height:560px;border-radius:14px;overflow:hidden;border:1px solid var(--line);box-shadow:0 0 30px rgba(252,3,109,.20)}.cs-hero-image img{width:100%;height:100%;object-fit:cover}
-.cs-layout{display:grid;grid-template-columns:minmax(0,8fr) minmax(300px,4fr);gap:36px}.cs-main{display:grid;gap:30px}.cs-box{padding:30px}.cs-box h2{margin:0 0 18px;color:#fff;font:700 32px Manrope}.cs-box h3{margin:0 0 15px;color:#fff;font:600 22px Manrope}.cs-box p{margin:0 0 15px;color:var(--muted);font-size:16px;line-height:1.7}.cs-box p:last-child{margin-bottom:0}
-.cs-accent-title{padding-left:14px;border-left:4px solid var(--pink)}.cs-side{display:grid;align-content:start;gap:22px}.cs-gear li{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-bottom:1px solid var(--line);color:var(--muted)}.cs-gear li:last-child{border-bottom:0}.cs-gear strong{color:#fff}.cs-pill{padding:4px 7px;border-radius:4px;background:var(--surface2);font-size:12px}
-.cs-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}.cs-stat{padding:18px;background:var(--surface);border:1px solid var(--line);text-align:center}.cs-stat strong{display:block;color:var(--pink2);font:700 38px Manrope}.cs-stat span{font-size:12px;color:var(--muted)}
-.cs-cta{padding:26px;text-align:center;border-top:4px solid var(--pink)}.cs-cta h3{margin:0 0 10px;color:#fff;font:600 22px Manrope}.cs-cta p{color:var(--muted);line-height:1.6}.cs-fullimg{height:320px;border-radius:12px;overflow:hidden;border:1px solid var(--line)}.cs-fullimg img{width:100%;height:100%;object-fit:cover}
-.cs-metadata{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:26px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.cs-metadata span{display:flex;align-items:center;gap:7px}
-@media(max-width:900px){.cs-layout{grid-template-columns:1fr}.cs-hero-image{height:420px}}@media(max-width:640px){.cs-hero-image{height:290px}.cs-stats{grid-template-columns:1fr}}
+.wedding-case{
+  --bg:#131313;
+  --lowest:#0e0e0e;
+  --low:#1c1b1b;
+  --surface:#201f1f;
+  --high:#2a2a2a;
+  --highest:#353534;
+  --text:#e5e2e1;
+  --muted:#e6bcc2;
+  --pink:#ffb2bf;
+  --magenta:#FC036D;
+  --outline:#5d3f44;
+  --line:rgba(255,255,255,.05);
+  --max:1280px;
+
+  width:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+.wedding-case,
+.wedding-case *,
+.wedding-case *::before,
+.wedding-case *::after{box-sizing:border-box}
+.wedding-case a{color:inherit;text-decoration:none}
+.wc-wrap{
+  width:min(var(--max),calc(100% - 48px));
+  margin:0 auto;
+}
+.wc-glass{
+  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.80));
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+}
+
+/* HERO */
+.wc-hero{
+  padding:96px 0 52px;
+  text-align:center;
+}
+.wc-hero-inner{
+  max-width:1000px;
+  margin:0 auto;
+}
+.wc-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 16px;
+  border:1px solid rgba(255,178,191,.30);
+  border-radius:999px;
+  background:rgba(255,77,128,.12);
+  color:var(--pink);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.wc-badge .material-symbols-outlined{
+  font-size:15px;
+}
+.wc-hero h1{
+  max-width:930px;
+  margin:28px auto 20px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:72px;
+  line-height:1.08;
+  font-weight:700;
+  letter-spacing:-.035em;
+}
+.wc-hero h1 span{color:var(--pink)}
+.wc-hero-lead{
+  max-width:690px;
+  margin:0 auto;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.6;
+}
+.wc-hero-image{
+  position:relative;
+  width:100%;
+  height:600px;
+  margin-top:48px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+  box-shadow:0 0 30px rgba(252,3,109,.26);
+}
+.wc-hero-image img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+}
+.wc-hero-image::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(14,14,14,.52),transparent 48%);
+}
+
+/* BODY GRID */
+.wc-content{
+  padding:52px 0 110px;
+}
+.wc-layout{
+  display:grid;
+  grid-template-columns:minmax(0,8fr) minmax(320px,4fr);
+  gap:48px;
+  align-items:start;
+}
+.wc-main{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:48px;
+}
+.wc-panel{
+  padding:32px;
+  border-radius:12px;
+}
+.wc-panel h2{
+  margin:0 0 22px;
+  color:#fff;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+  letter-spacing:-.025em;
+}
+.wc-panel p,
+.wc-sound-design p{
+  margin:0 0 18px;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.65;
+}
+.wc-panel p:last-child,
+.wc-sound-design p:last-child{margin-bottom:0}
+
+.wc-sound-design{
+  padding:0;
+}
+.wc-sound-design h3{
+  margin:0 0 24px;
+  padding-left:14px;
+  border-left:4px solid var(--pink);
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  line-height:1.4;
+  font-weight:600;
+}
+.wc-k2-image{
+  height:260px;
+  margin-top:28px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+}
+.wc-k2-image img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+}
+
+/* RESULTS */
+.wc-results{
+  padding:32px;
+  border-radius:12px;
+}
+.wc-stats{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:28px;
+  margin:26px 0 28px;
+}
+.wc-stat strong{
+  display:block;
+  color:var(--pink);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:64px;
+  line-height:.95;
+  font-weight:700;
+}
+.wc-stat strong small{
+  color:var(--muted);
+  font-size:24px;
+  font-weight:600;
+}
+.wc-stat span{
+  display:block;
+  margin-top:10px;
+  color:var(--muted);
+  font-size:10px;
+  line-height:1.3;
+  font-weight:600;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+}
+
+/* SIDEBAR */
+.wc-side{
+  display:flex;
+  flex-direction:column;
+  gap:28px;
+}
+.wc-equipment{
+  padding:26px;
+  border-radius:12px;
+}
+.wc-equipment-head{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:22px;
+}
+.wc-equipment-head .material-symbols-outlined{
+  color:var(--pink);
+  font-size:20px;
+}
+.wc-equipment-head h3{
+  margin:0;
+  color:#fff;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  font-weight:600;
+}
+.wc-equipment ul{
+  list-style:none;
+  margin:0;
+  padding:0;
+}
+.wc-equipment li{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  padding:12px 0;
+  border-bottom:1px solid var(--line);
+  color:var(--muted);
+  font-size:14px;
+}
+.wc-equipment li:last-child{border-bottom:0}
+.wc-equipment li strong{
+  color:var(--text);
+  font-weight:600;
+}
+.wc-pill{
+  flex:0 0 auto;
+  padding:5px 8px;
+  border-radius:4px;
+  background:var(--high);
+  color:var(--muted);
+  font-size:11px;
+}
+
+.wc-cta{
+  padding:30px;
+  border-top:4px solid var(--pink);
+  border-radius:12px;
+  background:var(--high);
+  text-align:center;
+}
+.wc-cta h4{
+  margin:0 0 16px;
+  color:#fff;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  line-height:1.35;
+  font-weight:600;
+}
+.wc-cta p{
+  margin:0 0 24px;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+}
+.wc-cta a{
+  width:100%;
+  min-height:50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 20px;
+  border-radius:999px;
+  background:var(--pink);
+  color:#5a0022!important;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  box-shadow:0 0 30px rgba(252,3,109,.24);
+  transition:.2s ease;
+}
+.wc-cta a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 0 36px rgba(252,3,109,.36);
+}
+
+@media(max-width:980px){
+  .wc-layout{grid-template-columns:1fr}
+  .wc-side{display:grid;grid-template-columns:1fr 1fr}
+}
+@media(max-width:720px){
+  .wc-wrap{width:calc(100% - 32px)}
+  .wc-hero{padding:64px 0 36px}
+  .wc-hero h1{font-size:46px}
+  .wc-hero-lead{font-size:16px}
+  .wc-hero-image{height:340px;margin-top:34px}
+  .wc-content{padding:40px 0 72px}
+  .wc-panel h2{font-size:32px}
+  .wc-stats{grid-template-columns:1fr}
+  .wc-stat strong{font-size:52px}
+  .wc-side{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
 <div id="site-header"></div>
-<main class="rss-page">
-<section class="cs-hero rss-section">
- <div class="rss-wrap cs-hero-inner">
-  <div class="rss-tag"><span class="material-symbols-outlined">auto_awesome</span>Case Study Premium</div>
-  <h1 class="rss-hero-title" style="margin-top:24px">Mariage d'Exception dans la Palmeraie de Marrakech : <span class="rss-pink2">Challenge Acoustique</span></h1>
-  <p>Déploiement d'un système L-Acoustics K2 en environnement désertique extrême pour un événement ultra-luxe.</p>
-  <div class="cs-hero-image"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKnvIIMKY_j2r7hA1qZAO3uYLUZU3v_yp88oQi9hQePQ4dLk9o0qnfFJ6C68vautN0wsP0_89E5ZG6vSKRTp6IaWnfKsp1HrYnfOvDIiAz9gdWJ4BeULsJKPH8oeu0Tv1QTTdK3M3iTPOk5IBCTwAxnu0AMkg42JdYe26xp70Urch8ScDYWBSgHjnBs08pEsKSY9NMvHVy-GsTjMiDeWZNudR_21td_mjY8SoUih9DE6oNIQjGa1Rl" alt="Mariage de prestige dans la Palmeraie de Marrakech"></div>
- </div>
+
+<main class="wedding-case">
+
+<section class="wc-hero">
+  <div class="wc-wrap">
+    <div class="wc-hero-inner">
+      <div class="wc-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">auto_awesome</span>
+        Case Study Premium
+      </div>
+
+      <h1>
+        Mariage d'Exception dans la Palmeraie de Marrakech :
+        <span>Challenge Acoustique</span>
+      </h1>
+
+      <p class="wc-hero-lead">
+        Déploiement d'un système L-Acoustics K2 en environnement désertique extrême
+        pour un événement ultra-luxe.
+      </p>
+
+      <div class="wc-hero-image">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKnvIIMKY_j2r7hA1qZAO3uYLUZU3v_yp88oQi9hQePQ4dLk9o0qnfFJ6C68vautN0wsP0_89E5ZG6vSKRTp6IaWnfKsp1HrYnfOvDIiAz9gdWJ4BeULsJKPH8oeu0Tv1QTTdK3M3iTPOk5IBCTwAxnu0AMkg42JdYe26xp70Urch8ScDYWBSgHjnBs08pEsKSY9NMvHVy-GsTjMiDeWZNudR_21td_mjY8SoUih9DE6oNIQjGa1Rl"
+             alt="Mariage de prestige dans la Palmeraie de Marrakech"
+             loading="eager"
+             fetchpriority="high">
+      </div>
+    </div>
+  </div>
 </section>
-<section class="rss-section" style="padding-top:30px"><div class="rss-wrap cs-layout">
- <article class="cs-main">
-  <section class="rss-glass cs-box"><h2>Le Défi Technique</h2><p>Sonoriser la Palmeraie de Marrakech pour un mariage accueillant 800 invités VIP exige une approche d'ingénierie sans compromis. L'espace ouvert de plus de 4 hectares présentait une absence totale de réverbération naturelle, nécessitant un système capable d'une projection long-throw exceptionnelle sans perte de définition dans les hautes fréquences.</p><p>Avec des températures dépassant les 42°C en journée lors du montage, l'amplification et le traitement du signal devaient être protégés au sein de racks climatisés sur-mesure pour garantir une stabilité absolue pendant les 14 heures d'exploitation ininterrompue.</p></section>
-  <section class="cs-box"><h3 class="cs-accent-title">Conception du Système (Sound Design)</h3><p>L'approche a été de diviser le domaine en trois zones acoustiques distinctes : cérémonie sous les oliviers, cocktail autour du bassin miroir et espace clubbing principal. Pour la zone clubbing, le K2 de L-Acoustics a été retenu pour sa directivité horizontale variable Panflex, afin de concentrer l'énergie sur la piste de danse et limiter la pollution sonore.</p><div class="cs-fullimg"><img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCylqypZ9VZt0evBTF9ZM6D-K6keX31DLI5f1EwqsCh-F9jvuyxGPItok9EN8kxCbCaRU87mzVsvfQv36gwdEgXXBsmjblq5488m-4nPCGnvLt9jEYqdTBd3yw6WQ9PzOU1l62NcHcJA-Wtjgdqk-o5f6NTCLdiEcHGwQTBBItCGrzVqVO_9lRGKOuIwzqYPlkmGJfWllXrVVemKlnLQQgCHAqxryxt2aXIGd8x3cDi_lm7lz9OBz1x" alt="L-Acoustics K2 déployé à Marrakech"></div></section>
-  <section class="rss-glass cs-box"><h2>Résultats Techniques</h2><div class="cs-stats"><div class="cs-stat"><strong>118 dB(A)</strong><span>SPL Max Constant (Dancefloor)</span></div><div class="cs-stat"><strong>&lt;1 dB</strong><span>Variation SPL sur 60 m</span></div></div><p style="margin-top:22px">La couverture homogène a été validée via Soundvision. Le grave, géré par une configuration cardioïde de subwoofers KS28, a permis de rejeter l'énergie basse fréquence hors de la scène de l'orchestre live et d'optimiser le gain avant larsen.</p></section>
- </article>
- <aside class="cs-side">
-  <div class="rss-glass cs-box"><h3>Matériel Utilisé</h3><ul class="rss-list cs-gear"><li><strong>L-Acoustics K2</strong><span class="cs-pill">24x Boîtes</span></li><li><strong>L-Acoustics KS28</strong><span class="cs-pill">16x Subs</span></li><li><strong>L-Acoustics LA12X</strong><span class="cs-pill">12x Amplis</span></li><li><strong>DiGiCo Quantum 338</strong><span class="cs-pill">FOH Console</span></li><li><strong>Shure Axient Digital</strong><span class="cs-pill">12x Canaux RF</span></li></ul></div>
-  <div class="rss-glass cs-cta"><h3>Besoin d'une conception acoustique sur-mesure ?</h3><p>Nos ingénieurs déploient les solutions de référence mondiale pour vos événements les plus exigeants.</p><a class="rss-btn rss-btn-primary" href="/contact.html?subject=Ingenierie%20Mariage%20Marrakech">Contacter l'ingénierie</a></div>
- </aside>
-</div></section>
+
+<section class="wc-content">
+  <div class="wc-wrap wc-layout">
+
+    <article class="wc-main">
+
+      <section class="wc-panel wc-glass">
+        <h2>Le Défi Technique</h2>
+
+        <p>
+          Sonoriser la Palmeraie de Marrakech pour un mariage accueillant 800 invités VIP
+          exige une approche d'ingénierie sans compromis. L'espace ouvert de plus de 4 hectares
+          présentait une absence totale de réverbération naturelle, nécessitant un système capable
+          d'une projection (long-throw) exceptionnelle sans perte de définition dans les hautes fréquences,
+          rapidement absorbées par l'air sec et chaud du désert.
+        </p>
+
+        <p>
+          Le second défi majeur concernait la gestion thermique. Avec des températures dépassant
+          les 42°C en journée lors du montage, l'amplification et le traitement du signal devaient
+          être protégés au sein de racks climatisés sur-mesure pour garantir une stabilité absolue
+          pendant les 14 heures d'exploitation ininterrompue.
+        </p>
+      </section>
+
+      <section class="wc-sound-design">
+        <h3>Conception du Système (Sound Design)</h3>
+
+        <p>
+          L'approche a été de diviser le domaine en trois zones acoustiques distinctes :
+          la cérémonie sous les oliviers, le cocktail autour du bassin miroir, et l'espace clubbing principal.
+          Pour la zone clubbing, le choix s'est porté sur le K2 de L-Acoustics pour sa directivité
+          horizontale variable (Panflex) permettant de concentrer l'énergie acoustique exclusivement
+          sur la piste de danse, évitant ainsi la pollution sonore vers les zones de repos adjacentes.
+        </p>
+
+        <div class="wc-k2-image">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCylqypZ9VZt0evBTF9ZM6D-K6keX31DLI5f1EwqsCh-F9jvuyxGPItok9EN8kxCbCaRU87mzVsvfQv36gwdEgXXBsmjblq5488m-4nPCGnvLt9jEYqdTBd3yw6WQ9PzOU1l62NcHcJA-Wtjgdqk-o5f6NTCLdiEcHGwQTBBItCGrzVqVO_9lRGKOuIwzqYPlkmGJfWllXrVVemKlnLQQgCHAqxryxt2aXIGd8x3cDi_lm7lz9OBz1x"
+               alt="L-Acoustics K2 déployé à Marrakech"
+               loading="lazy">
+        </div>
+      </section>
+
+      <section class="wc-results wc-glass">
+        <h2>Résultats Techniques</h2>
+
+        <div class="wc-stats">
+          <div class="wc-stat">
+            <strong>118<small>dB(A)</small></strong>
+            <span>SPL Max Constant (Dancefloor)</span>
+          </div>
+
+          <div class="wc-stat">
+            <strong>&lt;1<small>dB</small></strong>
+            <span>Variation SPL sur 60m</span>
+          </div>
+        </div>
+
+        <p>
+          La couverture homogène a été validée via le logiciel Soundvision, confirmant une atténuation
+          minimale sur la profondeur de l'audience. Le grave, géré par une configuration cardioïde
+          de subwoofers KS28, a permis de rejeter l'énergie basse fréquence hors de la scène de l'orchestre live,
+          garantissant un gain avant larsen optimal pour les micros statiques.
+        </p>
+      </section>
+
+    </article>
+
+    <aside class="wc-side">
+
+      <section class="wc-equipment wc-glass">
+        <div class="wc-equipment-head">
+          <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+          <h3>Matériel Utilisé</h3>
+        </div>
+
+        <ul>
+          <li><strong>L-Acoustics K2</strong><span class="wc-pill">24x Boîtes</span></li>
+          <li><strong>L-Acoustics KS28</strong><span class="wc-pill">16x Subs</span></li>
+          <li><strong>L-Acoustics LA12X</strong><span class="wc-pill">12x Amplis</span></li>
+          <li><strong>DiGiCo Quantum 338</strong><span class="wc-pill">FOH Console</span></li>
+          <li><strong>Shure Axient Digital</strong><span class="wc-pill">12x Canaux RF</span></li>
+        </ul>
+      </section>
+
+      <section class="wc-cta">
+        <h4>Besoin d'une conception acoustique sur-mesure ?</h4>
+        <p>
+          Nos ingénieurs déploient les solutions de référence mondiale pour vos événements les plus exigeants.
+        </p>
+        <a href="/contact.html?subject=Ingenierie%20Mariage%20Marrakech">
+          Contacter l'Ingénierie
+        </a>
+      </section>
+
+    </aside>
+
+  </div>
+</section>
+
 </main>
+
 <div id="site-footer"></div>
 
 <script>
 async function loadSharedComponent(targetId,url){
- const target=document.getElementById(targetId);if(!target)return;
- try{
-  const r=await fetch(url,{cache:"no-cache"});if(!r.ok)throw new Error(url+" : HTTP "+r.status);
-  target.innerHTML=await r.text();
-  target.querySelectorAll("script").forEach(oldScript=>{
-   const s=document.createElement("script");
-   Array.from(oldScript.attributes).forEach(a=>s.setAttribute(a.name,a.value));
-   s.textContent=oldScript.textContent;oldScript.replaceWith(s);
-  });
- }catch(e){console.error("RentSoundSystem shared component load error:",e)}
+  const target=document.getElementById(targetId);
+  if(!target)return;
+
+  try{
+    const response=await fetch(url,{cache:"no-cache"});
+    if(!response.ok)throw new Error(`${url} : HTTP ${response.status}`);
+
+    target.innerHTML=await response.text();
+
+    target.querySelectorAll("script").forEach(oldScript=>{
+      const newScript=document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr=>newScript.setAttribute(attr.name,attr.value));
+      newScript.textContent=oldScript.textContent;
+      oldScript.replaceWith(newScript);
+    });
+  }catch(error){
+    console.error("RentSoundSystem shared component load error:",error);
+  }
 }
-document.addEventListener("DOMContentLoaded",()=>Promise.all([
- loadSharedComponent("site-header","/header.html"),
- loadSharedComponent("site-footer","/footer.html")
-]));
+
+document.addEventListener("DOMContentLoaded",()=>{
+  Promise.all([
+    loadSharedComponent("site-header","/header.html"),
+    loadSharedComponent("site-footer","/footer.html")
+  ]);
+});
 </script>
 
-</body></html>
+</body>
+</html>
