@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Location Sono Ibiza - RentSoundSystem</title>
+  <meta name="description" content="Location de sonorisation professionnelle à Ibiza : Pioneer DJ, Funktion-One, L-Acoustics, livraison 24/7 et installation technique pour villas, clubs et événements premium.">
+  <meta name="robots" content="index,follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #131313;
+      overflow-x: hidden;
+    }
+
+    #site-header,
+    #site-footer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #rss-mobile-menu-toggle {
+      display: none !important;
+    }
+
+    .ibiza-page {
+      --bg: #131313;
+      --bg-lowest: #0e0e0e;
+      --bg-low: #1c1b1b;
+      --surface: #201f1f;
+      --surface-high: #2a2a2a;
+      --surface-highest: #353534;
+      --text: #e5e2e1;
+      --muted: #e6bcc2;
+      --primary: #FC036D;
+      --primary-soft: rgba(252,3,109,.12);
+      --border: rgba(255,255,255,.05);
+      --outline: #5d3f44;
+      --glow: rgba(252,3,109,.30);
+      --container: 1280px;
+
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .ibiza-page,
+    .ibiza-page *,
+    .ibiza-page *::before,
+    .ibiza-page *::after {
+      box-sizing: border-box;
+    }
+
+    .ibiza-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .ibiza-container {
+      width: min(var(--container), calc(100% - 80px));
+      margin-inline: auto;
+    }
+
+    .ibiza-section {
+      padding: 96px 0;
+    }
+
+    .ibiza-glass {
+      background: rgba(32,31,31,.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .ibiza-title {
+      margin: 0;
+      color: var(--text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 3vw, 40px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .ibiza-copy {
+      margin: 12px 0 0;
+      max-width: 680px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    /* HERO */
+    .ibiza-hero {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      padding: 120px 0 78px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .ibiza-hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .ibiza-hero-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .ibiza-hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(19,19,19,.12), rgba(19,19,19,.30) 42%, #131313 100%),
+        radial-gradient(circle at 60% 42%, rgba(252,3,109,.10), transparent 42%);
+    }
+
+    .ibiza-hero-copy {
+      max-width: 900px;
+      margin-inline: auto;
+    }
+
+    .ibiza-badge {
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 24px;
+      padding: 7px 14px;
+      border: 1px solid rgba(252,3,109,.28);
+      border-radius: 999px;
+      background: rgba(252,3,109,.10);
+      color: #ffb2bf;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .ibiza-hero h1 {
+      margin: 0 0 22px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(48px, 5.6vw, 72px);
+      line-height: 1.08;
+      font-weight: 800;
+      letter-spacing: -.035em;
+    }
+
+    .ibiza-accent {
+      color: var(--primary);
+    }
+
+    .ibiza-lead {
+      max-width: 760px;
+      margin: 0 auto 34px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .ibiza-actions {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .ibiza-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 14px 26px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform .2s ease, background .2s ease, box-shadow .2s ease;
+    }
+
+    .ibiza-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .ibiza-btn-primary {
+      background: #ff4d80;
+      color: #fff !important;
+      box-shadow: 0 0 28px rgba(252,3,109,.24);
+    }
+
+    .ibiza-btn-secondary {
+      background: var(--surface-high);
+      border-color: var(--outline);
+      color: #fff !important;
+    }
+
+    .ibiza-btn-secondary:hover {
+      background: var(--surface-highest);
+    }
+
+    /* ELITE GEAR */
+    .ibiza-gear {
+      background: var(--bg-lowest);
+    }
+
+    .ibiza-gear-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 44px;
+    }
+
+    .ibiza-see-all {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #ffb2bf !important;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .ibiza-products {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .ibiza-product {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      transition: transform .25s ease, border-color .25s ease;
+    }
+
+    .ibiza-product:hover {
+      transform: translateY(-3px);
+      border-color: rgba(252,3,109,.28);
+    }
+
+    .ibiza-product-media {
+      height: 260px;
+      overflow: hidden;
+      background: #111;
+    }
+
+    .ibiza-product-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transition: transform .55s ease;
+    }
+
+    .ibiza-product:hover .ibiza-product-media img {
+      transform: scale(1.055);
+    }
+
+    .ibiza-product-body {
+      padding: 22px;
+    }
+
+    .ibiza-product h3 {
+      margin: 0 0 8px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 21px;
+      line-height: 1.3;
+      font-weight: 700;
+    }
+
+    .ibiza-product p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .ibiza-product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .ibiza-price {
+      color: #ffb2bf;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .ibiza-add {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--outline);
+      border-radius: 8px;
+      background: var(--surface-high);
+      color: #fff !important;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .ibiza-add:hover {
+      background: #ff4d80;
+      border-color: #ff4d80;
+    }
+
+    /* LOGISTICS */
+    .ibiza-logistics {
+      background: var(--bg);
+    }
+
+    .ibiza-logistics-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .ibiza-logistics-list {
+      display: grid;
+      gap: 22px;
+      margin-top: 30px;
+    }
+
+    .ibiza-logistics-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .ibiza-logistics-icon {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: rgba(255,77,128,.16);
+      color: #ff4d80;
+    }
+
+    .ibiza-logistics-icon .material-symbols-outlined {
+      font-size: 22px;
+    }
+
+    .ibiza-logistics-item h4 {
+      margin: 0 0 4px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 17px;
+    }
+
+    .ibiza-logistics-item p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .ibiza-map {
+      position: relative;
+      height: 500px;
+      overflow: hidden;
+      border: 2px solid rgba(255,178,191,.20);
+      border-radius: 16px;
+      box-shadow: 0 22px 65px rgba(0,0,0,.34);
+    }
+
+    .ibiza-map img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .ibiza-map-status {
+      position: absolute;
+      left: 24px;
+      bottom: 24px;
+      padding: 14px;
+      border-radius: 10px;
+      background: rgba(32,31,31,.86);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .ibiza-map-status strong {
+      display: block;
+      margin-bottom: 4px;
+      color: #ffb2bf;
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .ibiza-map-status span {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* CTA */
+    .ibiza-cta {
+      position: relative;
+      min-height: 350px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 55%, rgba(252,3,109,.11), transparent 40%),
+        var(--bg-lowest);
+    }
+
+    .ibiza-cta::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .22;
+      background:
+        linear-gradient(120deg, transparent 20%, rgba(252,3,109,.08) 45%, transparent 70%),
+        repeating-linear-gradient(90deg, transparent 0 90px, rgba(255,255,255,.015) 90px 91px);
+    }
+
+    .ibiza-cta-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .ibiza-cta h2 {
+      margin: 0 0 20px;
+      color: #fff;
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.2;
+      font-weight: 800;
+    }
+
+    .ibiza-cta-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: #fff;
+      color: #111 !important;
+      font-weight: 700;
+      transition: background .2s ease, color .2s ease, transform .2s ease;
+    }
+
+    .ibiza-cta-btn:hover {
+      background: #ff4d80;
+      color: #fff !important;
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 980px) {
+      .ibiza-container {
+        width: min(100% - 48px, var(--container));
+      }
+
+      .ibiza-section {
+        padding: 72px 0;
+      }
+
+      .ibiza-products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .ibiza-product:last-child {
+        grid-column: span 2;
+      }
+
+      .ibiza-logistics-grid {
+        grid-template-columns: 1fr;
+        gap: 42px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .ibiza-container {
+        width: calc(100% - 32px);
+      }
+
+      .ibiza-section {
+        padding: 56px 0;
+      }
+
+      .ibiza-hero {
+        min-height: 650px;
+        padding: 104px 0 56px;
+      }
+
+      .ibiza-hero h1 {
+        font-size: 45px;
+      }
+
+      .ibiza-lead {
+        font-size: 16px;
+      }
+
+      .ibiza-actions {
+        align-items: stretch;
+      }
+
+      .ibiza-btn {
+        width: 100%;
+      }
+
+      .ibiza-gear-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .ibiza-products {
+        grid-template-columns: 1fr;
+      }
+
+      .ibiza-product:last-child {
+        grid-column: auto;
+      }
+
+      .ibiza-product-media {
+        height: 230px;
+      }
+
+      .ibiza-map {
+        height: 360px;
+      }
+
+      .ibiza-cta {
+        min-height: 300px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ibiza-page *,
+      .ibiza-page *::before,
+      .ibiza-page *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main class="ibiza-page">
+    <section class="ibiza-hero" aria-labelledby="ibiza-title">
+      <div class="ibiza-hero-media" aria-hidden="true">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-NF0FLQmX9coOPyPFp38coBVkbxJrADMb6VOLfeZ4NjuBk_RU7S7VdeGS53LLl9uPYXOfPKVfytPzgo7ocTrXBec170USjkN6cQIY7BGlTW7LrLCawJDJiSefudFmgPMxaYEz80GQF6y7fNOvPf0KwF9Lwrp0pnGww4ABP6Qj1E0FgAqV-QmiJ79df-hz2XPaU4ugc_Va0u7gXOKONp_SmLfeNXn2OuA-a60aYloBUc3IQDIr0Gab" alt="" loading="eager" fetchpriority="high">
+      </div>
+
+      <div class="ibiza-container">
+        <div class="ibiza-hero-copy">
+          <div class="ibiza-badge">Elite Audio Rental Ibiza</div>
+
+          <h1 id="ibiza-title">
+            Propulser l'Excellence <span class="ibiza-accent">Audio à Ibiza</span>
+          </h1>
+
+          <p class="ibiza-lead">
+            Systèmes de sonorisation haut de gamme pour clubs iconiques et villas de prestige.
+            La référence technique pour vos événements exclusifs sur l'île.
+          </p>
+
+          <div class="ibiza-actions">
+            <a class="ibiza-btn ibiza-btn-primary" href="/catalog.html">Voir le catalogue Gear</a>
+            <a class="ibiza-btn ibiza-btn-secondary" href="/contact.html">Solutions Villa</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ibiza-section ibiza-gear" aria-labelledby="ibiza-gear-title">
+      <div class="ibiza-container">
+        <div class="ibiza-gear-head">
+          <div>
+            <h2 class="ibiza-title" id="ibiza-gear-title">Équipement Elite Gear</h2>
+            <p class="ibiza-copy">
+              Le standard de l'industrie pour les riders les plus exigeants de Playa d'en Bossa à San José.
+            </p>
+          </div>
+
+          <a class="ibiza-see-all" href="/catalog.html">
+            Tout voir
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+
+        <div class="ibiza-products">
+          <article class="ibiza-product">
+            <div class="ibiza-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtrzt17apb2qxmacnSg3zOri3FmeCib4-yIgeOXLla5yw1FiQQgo5IIZ8IB8gdqFzdrixRlH9OnvAe0an69eyFkBB3lknMAZzQQnV26cEicD0gaH9ibb02Nnw-PLebfWrMOdDgVfOS4ukuEdM1oMUuEhAu7-XwUZE1YMczQeU7fulL79E_xTSiUd-S6F9ZtN46eoTT_4FXo6JSYhK8DduP-2Aop7TWN6Lxj4AD9z6AtQOtk9AC7DLs" alt="Pioneer DJ Pro Setup" loading="lazy">
+            </div>
+            <div class="ibiza-product-body">
+              <h3>Pioneer DJ Pro Setup</h3>
+              <p>CDJ-3000 &amp; DJM-V10. Le rider standard pour tous les DJs internationaux.</p>
+              <div class="ibiza-product-bottom">
+                <span class="ibiza-price">À partir de 450€ / jour</span>
+                <a class="ibiza-add" href="/catalog.html?q=Pioneer%20DJ%20CDJ-3000%20DJM-V10" aria-label="Voir Pioneer DJ Pro Setup">
+                  <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="ibiza-product">
+            <div class="ibiza-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBT_KSr-TRuBNZyY4aFqmaFQwVUoia4fgbXVgQOnQxUPv0RJzGWjF1DK8IJbRWLtwk5IOUzivXwSWvu_IYle0epD_kuyePZwy-RJnoFABZ9T6jUt7ClkDpmc42kMf8EfoNzf3TnpIm8LJhHzQnFkFI0PH3cK_W9A0Asr7bwwpkvOL4c9GFkNAH_WqsI9m17Ebw6NLrryENvNOUXoIdiE5E_2e9y160VpZXdOcuXJM5d3rlVU8-eQhDj" alt="Funktion-One System" loading="lazy">
+            </div>
+            <div class="ibiza-product-body">
+              <h3>Funktion-One System</h3>
+              <p>Clarté acoustique légendaire pour une immersion sonore totale en extérieur ou intérieur.</p>
+              <div class="ibiza-product-bottom">
+                <span class="ibiza-price">Sur devis</span>
+                <a class="ibiza-add" href="/catalog.html?q=Funktion-One" aria-label="Voir Funktion-One System">
+                  <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <article class="ibiza-product">
+            <div class="ibiza-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8wnSAPp8I3j7Hmj455kJ7wvCPqwHpNNgGgABVBegHq_fk6zxFgjpihAUyEI3etXOwo4Ys_FF95v7WCKhCxRPsVrOpmOw-02zCRc7uvMHAQGYFIVJ3HqSIok8QwojacRa7jp_BVTcm9Qk7W-Xb9jo6H2d3GccuaPGXw3iZc5J_y7sBjteYxalAXqBMjadiBEnCfgbSH0enWnW5nDl6wURIbEpb0oAk0OOViQUML7vpC5hnmyQYJa9C" alt="L-Acoustics Syva" loading="lazy">
+            </div>
+            <div class="ibiza-product-body">
+              <h3>L-Acoustics Syva</h3>
+              <p>L'élégance ultime pour les villas de luxe. Un son cristallin dans un design ultra-fin.</p>
+              <div class="ibiza-product-bottom">
+                <span class="ibiza-price">À partir de 300€ / jour</span>
+                <a class="ibiza-add" href="/catalog.html?q=L-Acoustics%20Syva" aria-label="Voir L-Acoustics Syva">
+                  <span class="material-symbols-outlined" aria-hidden="true">add</span>
+                </a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="ibiza-section ibiza-logistics" aria-labelledby="ibiza-logistics-title">
+      <div class="ibiza-container ibiza-logistics-grid">
+        <div>
+          <h2 class="ibiza-title" id="ibiza-logistics-title">Logistique &amp; Livraison 24/7</h2>
+
+          <p class="ibiza-copy" style="font-size:18px">
+            Nous maîtrisons l'île comme personne. Que vous soyez sur les falaises d'Es Vedrà ou au cœur
+            de <strong style="color:#fff">Playa d'en Bossa</strong>, notre équipe assure l'installation technique complète.
+          </p>
+
+          <div class="ibiza-logistics-list">
+            <div class="ibiza-logistics-item">
+              <span class="ibiza-logistics-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+              </span>
+              <div>
+                <h4>Livraison Express San Antonio</h4>
+                <p>Intervention rapide pour les bateaux et villas de la côte Ouest.</p>
+              </div>
+            </div>
+
+            <div class="ibiza-logistics-item">
+              <span class="ibiza-logistics-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">engineering</span>
+              </span>
+              <div>
+                <h4>Installation &amp; Soundcheck</h4>
+                <p>Calibration acoustique par des ingénieurs certifiés Funktion-One.</p>
+              </div>
+            </div>
+
+            <div class="ibiza-logistics-item">
+              <span class="ibiza-logistics-icon">
+                <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+              </span>
+              <div>
+                <h4>Support Technique Nuit</h4>
+                <p>Une hotline dédiée active toute la nuit pour vos imprévus.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ibiza-map">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOWTtnLHpKucRQrpsk_itnDoLBIrEKj04GqRCHANQ5nKUpHWnB9OvxiV8UmdwuEDbBCaVsw-ry5I0ri6Rzl_7ZpJEbi1hON6K35xmWlUJhbvnXc0ufRqkO9_XY_ae0oDAhz0m4cXMigA-y5VNtP1Gt3E0-VM9pHWtCcQ6zCa0CcgoIH9UCGhfWYHzk-b77m2mysnqqiQW0Lj3TJsG8TW0AgJ0IRI73245mXxO6YFkgbTz-nlipsdKC" alt="Carte logistique et zones desservies à Ibiza" loading="lazy">
+          <div class="ibiza-map-status">
+            <strong>Zone de couverture</strong>
+            <span>100% de l'île desservie en moins de 60min.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="ibiza-cta" aria-labelledby="ibiza-cta-title">
+      <div class="ibiza-container ibiza-cta-inner">
+        <h2 id="ibiza-cta-title">L'Expérience Ibiza Débute Ici</h2>
+        <a class="ibiza-cta-btn" href="/contact.html">Demander un devis personnalisé</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    async function loadSharedComponent(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      try {
+        const response = await fetch(url, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${url} : HTTP ${response.status}`);
+
+        target.innerHTML = await response.text();
+
+        target.querySelectorAll("script").forEach((oldScript) => {
+          const newScript = document.createElement("script");
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+          newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      } catch (error) {
+        console.error("RentSoundSystem shared component load error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Promise.all([
+        loadSharedComponent("site-header", "/header.html"),
+        loadSharedComponent("site-footer", "/footer.html")
+      ]);
+    });
+  </script>
+</body>
+</html>
