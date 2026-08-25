@@ -30,6 +30,13 @@
       padding: 0;
     }
 
+    /* Le header commun utilise ce checkbox comme état du menu mobile.
+       La classe Tailwind "hidden" n'est pas disponible sur cette page,
+       donc on masque explicitement le contrôle sans modifier sa logique. */
+    #rss-mobile-menu-toggle {
+      display: none !important;
+    }
+
     /*
       Page-specific styles only.
       IMPORTANT: no Tailwind CDN and no global reset, so the site's shared
