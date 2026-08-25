@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Location Sono Barcelone - RentSoundSystem</title>
+  <meta name="description" content="Location de sonorisation professionnelle à Barcelone : matériel audio premium, Pioneer DJ, Funktion-One, ingénierie acoustique et déploiement rapide pour clubs, festivals et événements.">
+  <meta name="robots" content="index,follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #131313;
+      overflow-x: hidden;
+    }
+
+    #site-header,
+    #site-footer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    #rss-mobile-menu-toggle {
+      display: none !important;
+    }
+
+    .barcelona-page {
+      --bg: #131313;
+      --bg-lowest: #0e0e0e;
+      --bg-low: #1c1b1b;
+      --surface: #201f1f;
+      --surface-high: #2a2a2a;
+      --text: #e5e2e1;
+      --muted: #e6bcc2;
+      --primary: #FC036D;
+      --primary-soft: rgba(252,3,109,.12);
+      --border: rgba(255,255,255,.05);
+      --outline: #5d3f44;
+      --glow: rgba(252,3,109,.30);
+      --container: 1280px;
+
+      width: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .barcelona-page,
+    .barcelona-page *,
+    .barcelona-page *::before,
+    .barcelona-page *::after {
+      box-sizing: border-box;
+    }
+
+    .barcelona-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .barcelona-container {
+      width: min(var(--container), calc(100% - 80px));
+      margin-inline: auto;
+    }
+
+    .barcelona-section {
+      padding: 96px 0;
+    }
+
+    .barcelona-glass {
+      background: linear-gradient(145deg, rgba(31,31,31,.80), rgba(28,27,27,.62));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+    }
+
+    .barcelona-title {
+      margin: 0;
+      color: var(--text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 3vw, 40px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .barcelona-copy {
+      margin: 12px 0 0;
+      max-width: 660px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    /* HERO */
+    .barcelona-hero {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      isolation: isolate;
+      padding: 120px 0 78px;
+      overflow: hidden;
+    }
+
+    .barcelona-hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .barcelona-hero-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+      opacity: .40;
+    }
+
+    .barcelona-hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, #131313 0%, rgba(19,19,19,.80) 54%, rgba(19,19,19,.35) 100%),
+        radial-gradient(circle at 28% 35%, rgba(252,3,109,.12), transparent 42%);
+    }
+
+    .barcelona-hero-copy {
+      max-width: 800px;
+    }
+
+    .barcelona-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 28px;
+      padding: 7px 14px;
+      border: 1px solid rgba(252,3,109,.25);
+      border-radius: 999px;
+      background: rgba(252,3,109,.10);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .barcelona-badge .material-symbols-outlined {
+      font-size: 15px;
+    }
+
+    .barcelona-hero h1 {
+      margin: 0 0 22px;
+      color: var(--text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      line-height: 1.08;
+      font-weight: 700;
+      letter-spacing: -.035em;
+    }
+
+    .barcelona-accent {
+      color: var(--primary);
+    }
+
+    .barcelona-lead {
+      max-width: 720px;
+      margin: 0 0 34px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .barcelona-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .barcelona-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 14px 26px;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease;
+    }
+
+    .barcelona-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .barcelona-btn-primary {
+      background: var(--primary);
+      color: #fff !important;
+      box-shadow: 0 0 25px var(--glow);
+    }
+
+    .barcelona-btn-primary:hover {
+      box-shadow: 0 0 35px rgba(252,3,109,.48);
+    }
+
+    .barcelona-btn-secondary {
+      border-color: var(--outline);
+      color: var(--text) !important;
+      background: rgba(19,19,19,.24);
+    }
+
+    .barcelona-btn-secondary:hover {
+      background: var(--surface);
+      border-color: rgba(252,3,109,.45);
+    }
+
+    /* ARSENAL */
+    .barcelona-arsenal {
+      background: var(--bg-low);
+    }
+
+    .barcelona-arsenal-head {
+      margin-bottom: 48px;
+    }
+
+    .barcelona-bento {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .barcelona-card {
+      position: relative;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .barcelona-card-main {
+      grid-column: span 8;
+      min-height: 400px;
+    }
+
+    .barcelona-card-side {
+      grid-column: span 4;
+      min-height: 400px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .barcelona-card-small {
+      grid-column: span 4;
+      min-height: 250px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .barcelona-card-wide {
+      grid-column: span 8;
+      min-height: 250px;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .barcelona-card-main img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: .60;
+      transition: opacity .45s ease, transform .55s ease;
+    }
+
+    .barcelona-card-main:hover img {
+      opacity: .80;
+      transform: scale(1.025);
+    }
+
+    .barcelona-card-main::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(53,53,52,.96), transparent 72%);
+    }
+
+    .barcelona-card-main-content {
+      position: absolute;
+      z-index: 2;
+      left: 30px;
+      right: 30px;
+      bottom: 28px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .barcelona-card h3 {
+      margin: 0 0 8px;
+      color: var(--text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 22px;
+      line-height: 1.3;
+      font-weight: 600;
+    }
+
+    .barcelona-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .barcelona-round-action {
+      flex: 0 0 auto;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(252,3,109,.18);
+      color: var(--primary) !important;
+      transition: transform .2s ease, background .2s ease;
+    }
+
+    .barcelona-round-action:hover {
+      background: rgba(252,3,109,.34);
+      transform: translateX(2px);
+    }
+
+    .barcelona-card-icon {
+      display: block;
+      margin-bottom: 14px;
+      color: var(--primary);
+      font-size: 38px;
+    }
+
+    .barcelona-card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--primary) !important;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .barcelona-card-wide-copy {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+    }
+
+    .barcelona-card-wide::after {
+      content: "";
+      position: absolute;
+      inset: 0 0 0 auto;
+      width: 50%;
+      background: linear-gradient(to left, rgba(252,3,109,.12), transparent);
+      pointer-events: none;
+    }
+
+    .barcelona-equalizer {
+      position: absolute;
+      right: -34px;
+      bottom: -48px;
+      color: rgba(255,255,255,.05);
+      font-size: 190px;
+    }
+
+    /* DEPLOYMENT */
+    .barcelona-deployment {
+      background: var(--bg);
+    }
+
+    .barcelona-deployment-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+      gap: 64px;
+      align-items: center;
+    }
+
+    .barcelona-deployment-list {
+      list-style: none;
+      padding: 0;
+      margin: 28px 0 0;
+      display: grid;
+      gap: 20px;
+    }
+
+    .barcelona-deployment-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .barcelona-deployment-list .material-symbols-outlined {
+      color: var(--primary);
+      font-size: 20px;
+      margin-top: 2px;
+    }
+
+    .barcelona-deployment-list h4 {
+      margin: 0 0 4px;
+      color: var(--text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 17px;
+    }
+
+    .barcelona-deployment-list p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .barcelona-map {
+      position: relative;
+      height: 500px;
+      padding: 8px;
+      overflow: hidden;
+    }
+
+    .barcelona-map img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 8px;
+      opacity: .82;
+    }
+
+    .barcelona-map-point {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translate(-50%, -50%);
+    }
+
+    .barcelona-map-point.poblenou {
+      top: 27%;
+      left: 73%;
+    }
+
+    .barcelona-map-point.port {
+      top: 67%;
+      left: 65%;
+    }
+
+    .barcelona-map-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 22px var(--glow);
+      animation: barcelona-pulse 1.8s infinite;
+    }
+
+    .barcelona-map-point.port .barcelona-map-dot {
+      animation-delay: .5s;
+    }
+
+    @keyframes barcelona-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(252,3,109,.38); }
+      50% { box-shadow: 0 0 0 12px rgba(252,3,109,0); }
+    }
+
+    .barcelona-map-label {
+      margin-top: 9px;
+      padding: 6px 9px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: rgba(32,31,31,.90);
+      color: var(--text);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      white-space: nowrap;
+    }
+
+    /* SEO */
+    .barcelona-seo {
+      background: var(--bg-low);
+      border-top: 1px solid var(--border);
+    }
+
+    .barcelona-seo-inner {
+      max-width: 940px;
+      margin-inline: auto;
+      text-align: center;
+    }
+
+    .barcelona-seo p {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.72;
+    }
+
+    @media (max-width: 980px) {
+      .barcelona-container {
+        width: min(100% - 48px, var(--container));
+      }
+
+      .barcelona-section {
+        padding: 72px 0;
+      }
+
+      .barcelona-bento {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .barcelona-card-main,
+      .barcelona-card-side,
+      .barcelona-card-small,
+      .barcelona-card-wide {
+        grid-column: auto;
+      }
+
+      .barcelona-card-wide {
+        grid-column: span 2;
+      }
+
+      .barcelona-deployment-grid {
+        grid-template-columns: 1fr;
+        gap: 42px;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .barcelona-container {
+        width: calc(100% - 32px);
+      }
+
+      .barcelona-section {
+        padding: 56px 0;
+      }
+
+      .barcelona-hero {
+        min-height: 650px;
+        padding: 104px 0 56px;
+      }
+
+      .barcelona-hero h1 {
+        font-size: 45px;
+      }
+
+      .barcelona-lead {
+        font-size: 16px;
+      }
+
+      .barcelona-actions {
+        align-items: stretch;
+      }
+
+      .barcelona-btn {
+        width: 100%;
+      }
+
+      .barcelona-bento {
+        grid-template-columns: 1fr;
+      }
+
+      .barcelona-card-main,
+      .barcelona-card-side,
+      .barcelona-card-small,
+      .barcelona-card-wide {
+        grid-column: auto;
+      }
+
+      .barcelona-card-main {
+        min-height: 330px;
+      }
+
+      .barcelona-card-side,
+      .barcelona-card-small,
+      .barcelona-card-wide {
+        min-height: 230px;
+      }
+
+      .barcelona-card-main-content {
+        left: 22px;
+        right: 22px;
+        bottom: 22px;
+      }
+
+      .barcelona-map {
+        height: 360px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main class="barcelona-page">
+    <section class="barcelona-hero" aria-labelledby="barcelona-title">
+      <div class="barcelona-hero-media" aria-hidden="true">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyGbIK-gv5sRomDEOrmy5DUTAZkWqvIJdfHpeNBH-hcv8U3O1X5y_tw3hn4Zf5-mRI4NiKxk2nPlwPObM5U5WVQVu_k4lk5XJ9-vG9TU7NaIho8S_KjVD28HqAcPNwdBQNtvfyt1jZ52RAfdEpqHIzQth4W_kzbKxmrhRMJQZHoMXE19Nj_U7ZeazV2EKN0u6JmhA6jqDPrIz0VIRlhl76mFJbfGpgda1Brxcsq4WIp9QE1_-JrR6WCY5747rJwn-jip8VH9MrntA" alt="" loading="eager" fetchpriority="high">
+      </div>
+
+      <div class="barcelona-container">
+        <div class="barcelona-hero-copy">
+          <div class="barcelona-badge">
+            <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+            Hub Barcelone Actif
+          </div>
+
+          <h1 id="barcelona-title">
+            Propulser l'Électronique à <span class="barcelona-accent">Barcelone.</span>
+          </h1>
+
+          <p class="barcelona-lead">
+            De l'immersion technologique du Sónar aux terrasses exclusives des clubs de plage.
+            Location de matériel audio d'élite pour les professionnels de la scène électronique méditerranéenne.
+          </p>
+
+          <div class="barcelona-actions">
+            <a class="barcelona-btn barcelona-btn-primary" href="/catalog.html">Explorer l'Inventaire</a>
+            <a class="barcelona-btn barcelona-btn-secondary" href="/contact.html">Contacter le Support</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="barcelona-section barcelona-arsenal" aria-labelledby="barcelona-arsenal-title">
+      <div class="barcelona-container">
+        <div class="barcelona-arsenal-head">
+          <h2 class="barcelona-title" id="barcelona-arsenal-title">Arsenal d'Élite.</h2>
+          <p class="barcelona-copy">
+            Soigneusement sélectionné pour l'acoustique exigeante des clubs haut de gamme et des lieux en plein air.
+          </p>
+        </div>
+
+        <div class="barcelona-bento">
+          <article class="barcelona-card barcelona-card-main barcelona-glass">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAI0pEDQ0Ynr_2eYA8UV-p2en3y2-R8gcj6HmKMjxMvJosc5n7XwVM_uhjnv5Jrmakyft8ML0jTUbvED_LBgf69sq76wFqWMk4qiUUBjMytr1L0gJxCCoiSFyJ4ZR85xvUlkPB4HNzY-6ZiwDQXVMZR67wF5oMXPLISiJj8sRrWRpf3oQ66pNLphF_2JbFcFDEVJyPe6cCaQpTnxkzS_UfYv2qdBaa-0hIYOS-r6PPBGnP8CVpdn44lkeM-LC1-x22X2HNl-1ju71A" alt="Écosystème Pioneer DJ" loading="lazy">
+            <div class="barcelona-card-main-content">
+              <div>
+                <h3>Écosystème Pioneer DJ</h3>
+                <p>Standard de l'industrie : CDJ-3000 et mixeurs DJM-V10.</p>
+              </div>
+              <a class="barcelona-round-action" href="/catalog.html" aria-label="Voir l'écosystème Pioneer DJ">
+                <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="barcelona-card barcelona-card-side barcelona-glass">
+            <div>
+              <span class="material-symbols-outlined barcelona-card-icon" aria-hidden="true">speaker</span>
+              <h3>Systèmes Funktion-One</h3>
+              <p>Pureté acoustique inégalée pour une expérience club immersive.</p>
+            </div>
+            <a class="barcelona-card-link" href="/catalog.html">
+              <span>Voir les Specs</span>
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </a>
+          </article>
+
+          <article class="barcelona-card barcelona-card-small barcelona-glass">
+            <div>
+              <span class="material-symbols-outlined barcelona-card-icon" aria-hidden="true">cable</span>
+              <h3>Câblage Premium</h3>
+              <p>Liaisons sans perte et configurations sur mesure.</p>
+            </div>
+            <a class="barcelona-card-link" href="/catalog.html">
+              <span>Voir l'Inventaire</span>
+              <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+            </a>
+          </article>
+
+          <article class="barcelona-card barcelona-card-wide barcelona-glass">
+            <div class="barcelona-card-wide-copy">
+              <h3>Ingénierie Acoustique</h3>
+              <p>
+                Nos techniciens calibrent les systèmes selon l'acoustique unique
+                des lieux emblématiques de Barcelone.
+              </p>
+              <div style="margin-top:22px">
+                <a class="barcelona-btn barcelona-btn-secondary" href="/contact.html">Réserver une Consultation</a>
+              </div>
+            </div>
+            <span class="material-symbols-outlined barcelona-equalizer" aria-hidden="true">graphic_eq</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="barcelona-section barcelona-deployment" aria-labelledby="barcelona-deployment-title">
+      <div class="barcelona-container barcelona-deployment-grid">
+        <div>
+          <h2 class="barcelona-title" id="barcelona-deployment-title">Déploiement Stratégique.</h2>
+          <p class="barcelona-copy" style="font-size:18px">
+            Notre réseau logistique est optimisé pour la capitale catalane. Avec des hubs principaux
+            situés à quelques minutes du quartier des entrepôts de Poblenou et de la côte des clubs
+            de plage, nous garantissons un déploiement rapide et des temps de réponse techniques.
+          </p>
+
+          <ul class="barcelona-deployment-list">
+            <li>
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <div>
+                <h4>Hub Tech Poblenou</h4>
+                <p>Au service du Razzmatazz et des lieux underground environnants.</p>
+              </div>
+            </li>
+
+            <li>
+              <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+              <div>
+                <h4>Dépôt Port Olímpic</h4>
+                <p>Accès direct aux méga-clubs en bord de mer et aux événements en terrasse.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <div class="barcelona-map barcelona-glass">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEatMWx_1fQyks0tROBJcWUwXxyBnGzK5PmlWAEUWjX3IYVHQaWyMtnAJyXaByFevs05tRexcyWn3MgUKnaBeT4RW0C7dKZp1-dF3d1I7KZq12Vcw_1_8Z05InEV4WjJhlEsZFCVJyounDgTvzUCe-r98m9dTXrZbbwpaM1Ae4894bPkYGk2bjtuA6hTPxdzy1Cq0tTBHZer9DRorlwSozJEEoPP7swMgoNt4z-dl1Jg-DMwo_y192i3s9NdvFt3vpGDPNwaG7gQk" alt="Carte des hubs logistiques de Barcelone" loading="lazy">
+
+          <div class="barcelona-map-point poblenou">
+            <span class="barcelona-map-dot" aria-hidden="true"></span>
+            <span class="barcelona-map-label">Hub Poblenou</span>
+          </div>
+
+          <div class="barcelona-map-point port">
+            <span class="barcelona-map-dot" aria-hidden="true"></span>
+            <span class="barcelona-map-label">Port Olímpic</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="barcelona-section barcelona-seo" aria-labelledby="barcelona-seo-title">
+      <div class="barcelona-container">
+        <div class="barcelona-seo-inner">
+          <h2 class="barcelona-title" id="barcelona-seo-title">
+            Son Professionnel pour la Capitale de la Musique Électronique Méditerranéenne
+          </h2>
+
+          <p>
+            Barcelone exige la perfection auditive. En tant que ville hôte d'événements mondialement reconnus
+            comme le Sónar et Primavera Sound, la norme pour la reproduction audio en direct y est sans compromis.
+            Nous proposons des locations de systèmes de sonorisation haut de gamme à Barcelone, équipant les clubs
+            les plus exclusifs de la ville, les raves en entrepôt et les after-parties privées en villa avec une
+            architecture acoustique immaculée.
+          </p>
+
+          <p>
+            Que vous ayez besoin d'une formidable installation Funktion-One pour une résidence techno à Poblenou
+            ou d'une configuration résiliente et haute fidélité résistante à l'air salin d'une fête de jour en bord
+            de plage, notre inventaire et notre expertise en ingénierie garantissent que votre vision sonore est
+            exécutée avec une précision brutale et une esthétique Premium Nocturne.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    async function loadSharedComponent(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      try {
+        const response = await fetch(url, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${url} : HTTP ${response.status}`);
+
+        target.innerHTML = await response.text();
+
+        target.querySelectorAll("script").forEach((oldScript) => {
+          const newScript = document.createElement("script");
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+          newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      } catch (error) {
+        console.error("RentSoundSystem shared component load error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Promise.all([
+        loadSharedComponent("site-header", "/header.html"),
+        loadSharedComponent("site-footer", "/footer.html")
+      ]);
+    });
+  </script>
+</body>
+</html>
