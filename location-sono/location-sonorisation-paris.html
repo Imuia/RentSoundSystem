@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Location Sonorisation Paris - RentSoundSystem</title>
+  <meta name="description" content="Location de sonorisation professionnelle à Paris et en Île-de-France : systèmes line array, régies DJ, consoles numériques et solutions audio premium pour événements.">
+  <meta name="robots" content="index,follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      min-height: 100%;
+      background: #131313;
+      overflow-x: hidden;
+    }
+
+    #site-header,
+    #site-footer {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Header commun : checkbox d'état du menu mobile */
+    #rss-mobile-menu-toggle {
+      display: none !important;
+    }
+
+    .paris-page {
+      --rss-bg: #131313;
+      --rss-bg-lowest: #0e0e0e;
+      --rss-bg-low: #1c1b1b;
+      --rss-surface: #201f1f;
+      --rss-surface-high: #2a2a2a;
+      --rss-surface-highest: #353534;
+      --rss-text: #e5e2e1;
+      --rss-muted: #e6bcc2;
+      --rss-primary: #FC036D;
+      --rss-primary-soft: rgba(252,3,109,.12);
+      --rss-border: rgba(255,255,255,.06);
+      --rss-outline: #5d3f44;
+      --rss-glow: rgba(252,3,109,.30);
+      --rss-container: 1280px;
+
+      width: 100%;
+      overflow: hidden;
+      background: var(--rss-bg);
+      color: var(--rss-text);
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    .paris-page,
+    .paris-page *,
+    .paris-page *::before,
+    .paris-page *::after {
+      box-sizing: border-box;
+    }
+
+    .paris-page a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .paris-container {
+      width: min(var(--rss-container), calc(100% - 80px));
+      margin-inline: auto;
+    }
+
+    .paris-section {
+      padding: 96px 0;
+    }
+
+    .paris-glass {
+      background: linear-gradient(145deg, rgba(31,31,31,.80), rgba(28,27,27,.90));
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--rss-border);
+      border-radius: 12px;
+    }
+
+    .paris-neon {
+      box-shadow: 0 0 20px var(--rss-glow);
+    }
+
+    .paris-title {
+      margin: 0;
+      color: var(--rss-text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(30px, 3vw, 40px);
+      line-height: 1.2;
+      font-weight: 700;
+      letter-spacing: -.02em;
+    }
+
+    .paris-copy {
+      margin: 12px 0 0;
+      max-width: 650px;
+      color: var(--rss-muted);
+      font-size: 16px;
+      line-height: 1.65;
+    }
+
+    /* HERO */
+    .paris-hero {
+      position: relative;
+      min-height: 760px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+      padding: 120px 0 78px;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .paris-hero-media {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+    }
+
+    .paris-hero-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .paris-hero-media::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(19,19,19,.70), #131313 100%),
+        radial-gradient(circle at 50% 38%, rgba(252,3,109,.10), transparent 43%);
+    }
+
+    .paris-hero-content {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    .paris-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid var(--rss-border);
+      background: rgba(31,31,31,.60);
+      color: #ffb2bf;
+      backdrop-filter: blur(12px);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .paris-badge .material-symbols-outlined {
+      font-size: 15px;
+    }
+
+    .paris-hero h1 {
+      margin: 0 0 22px;
+      color: var(--rss-text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: clamp(48px, 5.5vw, 72px);
+      line-height: 1.1;
+      font-weight: 700;
+      letter-spacing: -.035em;
+    }
+
+    .paris-gradient-text {
+      background: linear-gradient(90deg, var(--rss-primary), #ffb2bf);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .paris-lead {
+      max-width: 760px;
+      margin: 0 auto 34px;
+      color: var(--rss-muted);
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    /* SEARCH */
+    .paris-search {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr auto;
+      gap: 8px;
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 8px;
+    }
+
+    .paris-field {
+      position: relative;
+      min-width: 0;
+    }
+
+    .paris-field + .paris-field {
+      border-left: 1px solid var(--rss-border);
+      padding-left: 8px;
+    }
+
+    .paris-field .material-symbols-outlined {
+      position: absolute;
+      top: 50%;
+      left: 16px;
+      transform: translateY(-50%);
+      color: var(--rss-muted);
+      font-size: 20px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .paris-field + .paris-field .material-symbols-outlined {
+      left: 24px;
+    }
+
+    .paris-field input {
+      width: 100%;
+      height: 54px;
+      padding: 0 14px 0 46px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      outline: none;
+      background: var(--rss-surface-highest);
+      color: var(--rss-text);
+      font: inherit;
+    }
+
+    .paris-field + .paris-field input {
+      padding-left: 46px;
+    }
+
+    .paris-field input::placeholder {
+      color: var(--rss-muted);
+      opacity: .75;
+    }
+
+    .paris-field input:focus {
+      border-color: var(--rss-primary);
+      box-shadow: 0 0 0 1px var(--rss-primary);
+    }
+
+    .paris-search-btn {
+      min-width: 122px;
+      height: 54px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--rss-primary);
+      color: #fff;
+      cursor: pointer;
+      padding: 0 24px;
+      font-family: Inter, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      box-shadow: 0 0 20px var(--rss-glow);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .paris-search-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 28px rgba(252,3,109,.42);
+    }
+
+    /* MAP */
+    .paris-network {
+      background: var(--rss-bg-low);
+    }
+
+    .paris-network-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 42px;
+    }
+
+    .paris-legend {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 18px;
+      color: var(--rss-muted);
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .paris-legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .paris-legend-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      flex: 0 0 auto;
+    }
+
+    .paris-legend-dot.active {
+      background: var(--rss-primary);
+      box-shadow: 0 0 18px var(--rss-glow);
+    }
+
+    .paris-legend-dot.request {
+      border: 1px solid #c6c6c7;
+      background: transparent;
+    }
+
+    .paris-map {
+      position: relative;
+      height: 500px;
+      overflow: hidden;
+    }
+
+    .paris-map > img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: grayscale(1);
+      opacity: .32;
+    }
+
+    .paris-map::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, transparent, rgba(14,14,14,.18));
+    }
+
+    .paris-map-dot {
+      position: absolute;
+      z-index: 2;
+      border-radius: 50%;
+      background: var(--rss-primary);
+      box-shadow: 0 0 22px var(--rss-glow);
+    }
+
+    .paris-map-dot.d1 { top: 33%; left: 50%; width: 14px; height: 14px; animation: paris-pulse 1.8s infinite; }
+    .paris-map-dot.d2 { top: 50%; left: 33%; width: 11px; height: 11px; }
+    .paris-map-dot.d3 { top: 66%; left: 66%; width: 11px; height: 11px; }
+    .paris-map-dot.d4 { top: 25%; left: 75%; width: 11px; height: 11px; background: #c6c6c7; box-shadow: none; }
+
+    @keyframes paris-pulse {
+      0%,100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(.75); opacity: .55; }
+    }
+
+    .paris-map-status {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 14px;
+      color: var(--rss-text);
+      font-size: 13px;
+      border-radius: 6px;
+    }
+
+    .paris-map-status .material-symbols-outlined {
+      color: var(--rss-primary);
+      font-size: 19px;
+    }
+
+    /* EQUIPMENT */
+    .paris-equipment {
+      background: var(--rss-bg);
+    }
+
+    .paris-equipment-intro {
+      text-align: center;
+      margin-bottom: 52px;
+    }
+
+    .paris-equipment-intro .paris-copy {
+      margin-inline: auto;
+    }
+
+    .paris-products {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .paris-product {
+      overflow: hidden;
+      min-width: 0;
+    }
+
+    .paris-product-media {
+      position: relative;
+      height: 192px;
+      overflow: hidden;
+      background: var(--rss-surface-highest);
+    }
+
+    .paris-product-media img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      filter: grayscale(.75);
+      transition: filter .45s ease, transform .5s ease;
+    }
+
+    .paris-product:hover .paris-product-media img {
+      filter: grayscale(0);
+      transform: scale(1.035);
+    }
+
+    .paris-brand {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      padding: 5px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--rss-border);
+      background: rgba(31,31,31,.68);
+      color: #ffb2bf;
+      backdrop-filter: blur(10px);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .paris-product-body {
+      padding: 22px;
+    }
+
+    .paris-product h3 {
+      margin: 0 0 8px;
+      color: var(--rss-text);
+      font-family: Manrope, Inter, sans-serif;
+      font-size: 21px;
+      line-height: 1.3;
+      font-weight: 600;
+    }
+
+    .paris-location {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--rss-muted);
+      font-size: 13px;
+    }
+
+    .paris-location .material-symbols-outlined {
+      font-size: 16px;
+    }
+
+    .paris-product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-top: 22px;
+      padding-top: 17px;
+      border-top: 1px solid var(--rss-border);
+    }
+
+    .paris-from {
+      color: var(--rss-muted);
+      font-size: 12px;
+    }
+
+    .paris-price {
+      margin-top: 2px;
+      color: var(--rss-primary);
+      font-size: 20px;
+      line-height: 1.2;
+      font-weight: 700;
+    }
+
+    .paris-price small {
+      color: var(--rss-muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .paris-rent-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 9px 13px;
+      border: 1px solid var(--rss-outline);
+      border-radius: 4px;
+      background: transparent;
+      color: var(--rss-text);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: background .2s ease, border-color .2s ease;
+    }
+
+    .paris-rent-btn:hover {
+      background: var(--rss-surface);
+      border-color: var(--rss-primary);
+    }
+
+    @media (max-width: 1050px) {
+      .paris-products {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .paris-container {
+        width: min(100% - 48px, var(--rss-container));
+      }
+
+      .paris-section {
+        padding: 72px 0;
+      }
+
+      .paris-hero {
+        min-height: 700px;
+        padding-top: 110px;
+      }
+
+      .paris-search {
+        grid-template-columns: 1fr;
+      }
+
+      .paris-field + .paris-field {
+        border-left: 0;
+        border-top: 1px solid var(--rss-border);
+        padding: 8px 0 0;
+      }
+
+      .paris-field + .paris-field .material-symbols-outlined {
+        left: 16px;
+        top: calc(50% + 4px);
+      }
+
+      .paris-network-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .paris-container {
+        width: calc(100% - 32px);
+      }
+
+      .paris-section {
+        padding: 56px 0;
+      }
+
+      .paris-hero {
+        min-height: 650px;
+        padding: 104px 0 56px;
+      }
+
+      .paris-hero h1 {
+        font-size: 45px;
+      }
+
+      .paris-lead {
+        font-size: 16px;
+      }
+
+      .paris-map {
+        height: 360px;
+      }
+
+      .paris-map-status {
+        right: 14px;
+        bottom: 14px;
+        font-size: 11px;
+      }
+
+      .paris-products {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .paris-page *,
+      .paris-page *::before,
+      .paris-page *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="site-header"></div>
+
+  <main class="paris-page">
+    <section class="paris-hero" aria-labelledby="paris-title">
+      <div class="paris-hero-media" aria-hidden="true">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCo30im79Cdk4mgnuc-tzgc2rRl3JGGoPfDki4zW967PcaW8g-Hz-9ZBxhipvlPvNntCqjEuk8NNdE9DySYkezGkl1edEYc8O4bRHCbn9sg-EwZs9fPwJQVzCLnGZX89F8-LK06LHgv7UJ0VsA6eOKvn6tKFKlCVMtPCUuzcfYcQd1ykZ6g_cY5_T8k3E4r8MLAvtwKJ-T9gBmNxgDLs3iVIhnRr90pf7y7Zq9zOkdnouHV13YOFHQ3LdLzEtYR3irPjbRQb8Nqq5o" alt="" loading="eager" fetchpriority="high">
+      </div>
+
+      <div class="paris-container paris-hero-content">
+        <div class="paris-badge">
+          <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+          Hub Parisien Actif
+        </div>
+
+        <h1 id="paris-title">
+          Location Sonorisation<br>
+          <span class="paris-gradient-text">Paris</span>
+        </h1>
+
+        <p class="paris-lead">
+          Le meilleur du son professionnel pour vos événements dans la capitale.
+          Des systèmes line array aux régies DJ de pointe, équipement vérifié pour l'exigence parisienne.
+        </p>
+
+        <form class="paris-search paris-glass" action="/catalog.html" method="get">
+          <label class="paris-field">
+            <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+            <input name="q" type="text" placeholder="Rechercher (ex: L-Acoustics, Pioneer...)" aria-label="Rechercher du matériel">
+          </label>
+
+          <label class="paris-field">
+            <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+            <input name="date" type="date" aria-label="Date de location">
+          </label>
+
+          <button class="paris-search-btn" type="submit">Trouver</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="paris-section paris-network" aria-labelledby="paris-network-title">
+      <div class="paris-container">
+        <div class="paris-network-head">
+          <div>
+            <h2 class="paris-title" id="paris-network-title">Réseau Île-de-France</h2>
+            <p class="paris-copy">
+              Notre réseau de loueurs professionnels couvre tout Paris et sa banlieue.
+              Trouvez l'équipement exact là où vous en avez besoin, des studios de Montreuil
+              aux salles de l'Ouest parisien.
+            </p>
+          </div>
+
+          <div class="paris-legend" aria-label="Légende de disponibilité">
+            <span class="paris-legend-item">
+              <span class="paris-legend-dot active" aria-hidden="true"></span>
+              Haute disponibilité
+            </span>
+            <span class="paris-legend-item">
+              <span class="paris-legend-dot request" aria-hidden="true"></span>
+              Sur demande
+            </span>
+          </div>
+        </div>
+
+        <div class="paris-map paris-glass">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzlOIcS122AbB9VBAVqXXhW6lBB0r7gZDgDNwgO7lt6sHSSwxBCRmjPbmgZ1C0cahh24xGtRAu3SlL19QV0igBPE1JMdsFNU1lC9z891NGvut3dZ1pDUMFQoPzv3vSZcl7tj0UL0K4zycRvBfl_83zhkFAAZVdUHGhLUl9-ttknz8sh6rlpNzadjRZBkaCcaIyXkpfln8sOf2JpAKIZ7atSKd6Ab7saV2xUmxaQj82O-H0BcreXfdkJeKNdyITlyRqC4ur7bVGCIg" alt="Carte stylisée de Paris et de l'Île-de-France" loading="lazy">
+
+          <span class="paris-map-dot d1" aria-hidden="true"></span>
+          <span class="paris-map-dot d2" aria-hidden="true"></span>
+          <span class="paris-map-dot d3" aria-hidden="true"></span>
+          <span class="paris-map-dot d4" aria-hidden="true"></span>
+
+          <div class="paris-map-status paris-glass">
+            <span class="material-symbols-outlined" aria-hidden="true">sensors</span>
+            42 Systèmes actifs à Paris
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="paris-section paris-equipment" aria-labelledby="paris-equipment-title">
+      <div class="paris-container">
+        <div class="paris-equipment-intro">
+          <h2 class="paris-title" id="paris-equipment-title">Équipement Premium Disponible</h2>
+          <p class="paris-copy">
+            Les standards de l'industrie, prêts pour votre prochain événement parisien.
+          </p>
+        </div>
+
+        <div class="paris-products">
+          <article class="paris-product paris-glass">
+            <div class="paris-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjE33t-mFEZJAym9oOArQu08gtVn_ENjFNqnhCb2c46sQ49-3ZEkQ-ONLc7tX4wSkGnzmzX0aP_E0T_H1k5oQqvD2vTh-jEgSXOlaBbtOs-Piikke4_OfpYlYG_q2DIMh2wHekWZEkG4utP8LNMcm3eU3BJoFFm_jAL8bJZ8U7dZt-qpJ484eHRCeFHeZreH5Nh1tuCG9XTqCP7l3B40IdsgSZOA8GoqQKL_lQ7rRVYdxUlhXT7vpSQgThKqDWW_BhFAEvf-z5xcw" alt="Système line array L-Acoustics K2" loading="lazy">
+              <span class="paris-brand">L-Acoustics</span>
+            </div>
+            <div class="paris-product-body">
+              <h3>Kit Line Array K2</h3>
+              <div class="paris-location">
+                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                Paris 11e
+              </div>
+              <div class="paris-product-bottom">
+                <div>
+                  <div class="paris-from">À partir de</div>
+                  <div class="paris-price">1 200€ <small>/jour</small></div>
+                </div>
+                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="paris-product paris-glass">
+            <div class="paris-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpSl8iZYoi-Of27bDy9A8R4ojn07b10KYrLPp2SBpWdjqV2k_S972FufOvomvXdfKNGfrVXIbzvZYM5MKTOLemM-s3cjFpqk1fd5YkK2G1_oixDofv-Ieg1Wa_i_iM0cdQxJmka2R63w3cftp_i5xrKb1AcDBMxDlda4x6CVt_rnRb2jR6-QtZc-d5ZapAfnZr39ish3Kkp9dHwrLaBIKquzBAG8dgDZd18VoClYqIOEAbrv-A8HLsBGXDcyy3OtbxzkGbwWgmql8" alt="Régie professionnelle Pioneer DJ" loading="lazy">
+              <span class="paris-brand">Pioneer DJ</span>
+            </div>
+            <div class="paris-product-body">
+              <h3>Régie Club Pro</h3>
+              <div class="paris-location">
+                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                Paris 18e
+              </div>
+              <div class="paris-product-bottom">
+                <div>
+                  <div class="paris-from">À partir de</div>
+                  <div class="paris-price">250€ <small>/jour</small></div>
+                </div>
+                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="paris-product paris-glass">
+            <div class="paris-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZuk1wL0YYHE7a9kmRqE4edVeJFtbEJ7IB15nBiElX-fOQ4bOdJREC4lyzjNrgKQABTnt9G1jte8bF5eKdiCUOAuzNcWAzkKe0jBCROjyGfeb3XOlnI-9dKB7iqmcQ9RvYQNRONE2KP6V_vquRLrUalNsYMuXsq_RV_ToHWnTYjsPqA1iXx03pIaFC4HmMgD6CCqFajfa4gXAxbmV-m0OxV2DK3ehuKkqu1W4XB8v36wenyLD7NTelyyuohp8zYKg-FLNGccM1NFs" alt="Console numérique Midas HD96" loading="lazy">
+              <span class="paris-brand">Midas</span>
+            </div>
+            <div class="paris-product-body">
+              <h3>Console FOH HD96</h3>
+              <div class="paris-location">
+                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                Ivry-sur-Seine
+              </div>
+              <div class="paris-product-bottom">
+                <div>
+                  <div class="paris-from">À partir de</div>
+                  <div class="paris-price">450€ <small>/jour</small></div>
+                </div>
+                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="paris-product paris-glass">
+            <div class="paris-product-media">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUKI1cR1wsuZrurC--arreZmD375eEEfDz_gI96X0RyAKvwvFLZvF87h_lmUpQHLiej06URoi6Euze_XpBPZtGH1_7q6SzCDTaUcFgiWhtgJh8BMgDOmGU2EttQueCgJ19ahd5506KAz0uiDiSWM8RoRJS_bMEx7NKTt4Hltz6EeSdaWLINmSoNb2kgM6VBnByMuj5OQKma4-y6jiU1AEKF4jW6w3zmuI8sC_Fe6lM9czrPLwvOJBAszZ5nKVPPwKht0W7EXb18wo" alt="Système Meyer Sound Leopard" loading="lazy">
+              <span class="paris-brand">Meyer Sound</span>
+            </div>
+            <div class="paris-product-body">
+              <h3>Système Leopard</h3>
+              <div class="paris-location">
+                <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+                Boulogne
+              </div>
+              <div class="paris-product-bottom">
+                <div>
+                  <div class="paris-from">À partir de</div>
+                  <div class="paris-price">800€ <small>/jour</small></div>
+                </div>
+                <a class="paris-rent-btn" href="/catalog.html">Louer</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+
+  <script>
+    async function loadSharedComponent(targetId, url) {
+      const target = document.getElementById(targetId);
+      if (!target) return;
+
+      try {
+        const response = await fetch(url, { cache: "no-cache" });
+        if (!response.ok) throw new Error(`${url} : HTTP ${response.status}`);
+
+        target.innerHTML = await response.text();
+
+        target.querySelectorAll("script").forEach((oldScript) => {
+          const newScript = document.createElement("script");
+
+          Array.from(oldScript.attributes).forEach((attr) => {
+            newScript.setAttribute(attr.name, attr.value);
+          });
+
+          newScript.textContent = oldScript.textContent;
+          oldScript.replaceWith(newScript);
+        });
+      } catch (error) {
+        console.error("RentSoundSystem shared component load error:", error);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      Promise.all([
+        loadSharedComponent("site-header", "/header.html"),
+        loadSharedComponent("site-footer", "/footer.html")
+      ]);
+    });
+  </script>
+</body>
+</html>
