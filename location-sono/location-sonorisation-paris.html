@@ -1144,7 +1144,105 @@
         min-height: 38px;
       }
     }
-</style>
+
+    /* Correctif viewport modal : ne jamais couper le calendrier / bouton */
+    .paris-product-modal {
+      align-items: flex-start !important;
+      overflow-y: auto !important;
+      padding: 12px !important;
+    }
+
+    .paris-booking-panel {
+      height: calc(100vh - 24px) !important;
+      max-height: calc(100vh - 24px) !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      margin: 0 auto !important;
+    }
+
+    .paris-booking-content {
+      min-height: 0 !important;
+      height: 100% !important;
+      max-height: calc(100vh - 24px) !important;
+      overflow-y: auto !important;
+      overscroll-behavior: contain;
+      padding-bottom: 26px !important;
+    }
+
+    .paris-booking-media {
+      height: 100% !important;
+      min-height: 0 !important;
+    }
+
+    .paris-booking-media img {
+      height: 100% !important;
+      min-height: 0 !important;
+      object-fit: cover !important;
+    }
+
+    .paris-calendar-head {
+      min-height: 50px !important;
+    }
+
+    .paris-calendar-grid {
+      gap: 4px !important;
+      padding: 10px !important;
+    }
+
+    .paris-calendar-weekday {
+      padding: 5px 0 7px !important;
+    }
+
+    .paris-calendar-day,
+    .paris-calendar-empty {
+      min-height: 36px !important;
+    }
+
+    .paris-booking-options {
+      margin-top: 18px !important;
+      gap: 10px !important;
+    }
+
+    .paris-booking-summary {
+      margin-top: 18px !important;
+      padding: 14px !important;
+    }
+
+    .paris-booking-reserve {
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      margin-top: 16px !important;
+      box-shadow:
+        0 -14px 22px rgba(15,15,15,.92),
+        0 0 26px rgba(252,3,109,.25) !important;
+    }
+
+    @media (max-width: 820px) {
+      .paris-booking-panel {
+        height: auto !important;
+        max-height: calc(100vh - 20px) !important;
+        overflow-y: auto !important;
+      }
+
+      .paris-booking-content {
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+      }
+
+      .paris-booking-media {
+        height: 250px !important;
+        min-height: 250px !important;
+      }
+
+      .paris-booking-media img {
+        height: 250px !important;
+        min-height: 250px !important;
+      }
+    }
+
+  </style>
 </head>
 <body>
 <div id="site-header"></div>
