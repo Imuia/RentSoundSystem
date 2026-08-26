@@ -125,6 +125,18 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
   .rss-save-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)}
   @media(max-width:1100px){.rss-profile-layout{grid-template-columns:1fr}.rss-profile-right{grid-template-columns:1fr 1fr}.rss-save-bar{flex-direction:column;align-items:stretch}.rss-save-bar .rss-btn{width:100%}}
   @media(max-width:760px){.rss-profile-right{grid-template-columns:1fr}.rss-mini-stats{grid-template-columns:1fr}.rss-form-section{padding:16px}}
+
+  /* Stripe Connect — ajout isolé, sans impact sur le paiement client existant */
+  .rss-connect-card{border-color:rgba(99,91,255,.38);background:linear-gradient(145deg,rgba(99,91,255,.10),rgba(14,14,14,.98))}
+  .rss-connect-status{display:flex;align-items:flex-start;gap:10px;padding:13px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.035);margin-bottom:14px}
+  .rss-connect-status .material-symbols-outlined{margin-top:1px}
+  .rss-connect-status.is-ready{border-color:rgba(80,255,160,.32);background:rgba(80,255,160,.08);color:#baffcf}
+  .rss-connect-status.is-pending{border-color:rgba(255,198,80,.32);background:rgba(255,198,80,.07);color:#ffe0a0}
+  .rss-connect-status.is-idle{border-color:rgba(99,91,255,.34);background:rgba(99,91,255,.08);color:#d9d6ff}
+  .rss-connect-meta{display:grid;gap:8px;margin:12px 0 16px}
+  .rss-connect-meta-row{display:flex;justify-content:space-between;gap:14px;font-size:12px;color:#e6bcc2}
+  .rss-connect-meta-row strong{color:#fff;text-align:right;overflow-wrap:anywhere}
+  #stripe-connect-btn[disabled]{opacity:.6;cursor:not-allowed}
 </style>
 
 
@@ -272,6 +284,34 @@ h1,h2,h3,.font-headline{font-family:Manrope,sans-serif}
       </div>
 
       <div class="rss-profile-right">
+        <div class="rss-form-section rss-connect-card">
+          <h2 class="rss-section-title"><span class="material-symbols-outlined">payments</span> Paiements Stripe Connect</h2>
+
+          <div id="stripe-connect-status" class="rss-connect-status is-idle">
+            <span class="material-symbols-outlined">info</span>
+            <div>
+              <strong id="stripe-connect-status-title" style="display:block;color:inherit">Vérification du compte Stripe…</strong>
+              <span id="stripe-connect-status-text" style="font-size:12px;color:inherit;opacity:.9">Chargement du statut de paiement partenaire.</span>
+            </div>
+          </div>
+
+          <div class="rss-connect-meta">
+            <div class="rss-connect-meta-row"><span>Compte Stripe</span><strong id="stripe-connect-account">Non configuré</strong></div>
+            <div class="rss-connect-meta-row"><span>Versements</span><strong id="stripe-connect-payouts">Non activés</strong></div>
+            <div class="rss-connect-meta-row"><span>Commission RentSoundSystem</span><strong id="stripe-connect-commission">15 %</strong></div>
+          </div>
+
+          <button type="button" id="stripe-connect-btn" class="rss-btn rss-btn-primary" style="width:100%">
+            <span class="material-symbols-outlined">open_in_new</span>
+            Configurer mes paiements
+          </button>
+
+          <p class="rss-muted" style="font-size:11px;line-height:1.5;margin:12px 0 0">
+            Vos coordonnées bancaires Stripe sont saisies directement sur l’espace sécurisé Stripe.
+            Cette configuration n’altère pas le paiement client actuellement en production.
+          </p>
+        </div>
+
         <div class="rss-form-section rss-bank-card">
           <h2 class="rss-section-title"><span class="material-symbols-outlined">account_balance</span> Compte banque</h2>
           <div id="bank-status" class="rss-bank-success"><span class="material-symbols-outlined">check_circle</span> Compte bancaire à compléter</div>
@@ -1027,6 +1067,137 @@ async function uploadPartnerLogo(file, ctx){
   return pub.publicUrl;
 }
 
+
+/* --------------------------------------------------------------------------
+   Stripe Connect partenaire
+   - isolé du checkout client existant ;
+   - authentification via la session Supabase actuelle ;
+   - aucune clé Stripe secrète n'est exposée au navigateur.
+---------------------------------------------------------------------------- */
+async function stripeConnectAccessToken(){
+  if(!sb) throw new Error('Supabase indisponible.');
+  const {data, error} = await sb.auth.getSession();
+  if(error) throw error;
+  const token = data?.session?.access_token || '';
+  if(!token) throw new Error('Session partenaire expirée. Reconnectez-vous.');
+  return token;
+}
+
+function stripeConnectMaskAccount(value){
+  const id=String(value||'').trim();
+  if(!id) return 'Non configuré';
+  if(id.length<=12) return id;
+  return id.slice(0,8)+'…'+id.slice(-4);
+}
+
+function renderStripeConnectStatus(data){
+  const box=$('stripe-connect-status');
+  const title=$('stripe-connect-status-title');
+  const message=$('stripe-connect-status-text');
+  const account=$('stripe-connect-account');
+  const payouts=$('stripe-connect-payouts');
+  const commission=$('stripe-connect-commission');
+  const btn=$('stripe-connect-btn');
+  if(!box) return;
+
+  const status=String(data?.stripe_connect_status || data?.status || 'not_started').toLowerCase();
+  const details=!!data?.stripe_details_submitted;
+  const payoutsEnabled=!!data?.stripe_payouts_enabled;
+  const accountId=String(data?.stripe_account_id || '');
+  const rate=Number(data?.commission_rate);
+
+  box.classList.remove('is-ready','is-pending','is-idle');
+
+  if(details && payoutsEnabled){
+    box.classList.add('is-ready');
+    if(title) title.textContent='Compte Stripe prêt';
+    if(message) message.textContent='Votre compte partenaire peut recevoir les versements lorsque le partage de revenus sera activé.';
+    if(btn) btn.innerHTML='<span class="material-symbols-outlined">manage_accounts</span> Gérer mon compte Stripe';
+  }else if(accountId || status==='pending' || status==='onboarding'){
+    box.classList.add('is-pending');
+    if(title) title.textContent='Configuration Stripe à terminer';
+    if(message) message.textContent='Stripe doit encore vérifier ou compléter certaines informations avant d’activer les versements.';
+    if(btn) btn.innerHTML='<span class="material-symbols-outlined">open_in_new</span> Continuer la configuration';
+  }else{
+    box.classList.add('is-idle');
+    if(title) title.textContent='Paiements partenaire non configurés';
+    if(message) message.textContent='Activez Stripe Connect pour préparer les futurs versements automatiques de vos locations.';
+    if(btn) btn.innerHTML='<span class="material-symbols-outlined">open_in_new</span> Configurer mes paiements';
+  }
+
+  if(account) account.textContent=stripeConnectMaskAccount(accountId);
+  if(payouts) payouts.textContent=payoutsEnabled ? 'Activés' : 'Non activés';
+  if(commission) commission.textContent=Number.isFinite(rate) ? (rate*100).toLocaleString('fr-FR',{maximumFractionDigits:2})+' %' : '15 %';
+}
+
+async function refreshStripeConnectStatus(){
+  try{
+    const token=await stripeConnectAccessToken();
+    const res=await fetch('/api/stripe/connect/status',{
+      method:'GET',
+      headers:{Authorization:'Bearer '+token},
+      cache:'no-store'
+    });
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(data.error || 'Statut Stripe Connect indisponible.');
+    renderStripeConnectStatus(data);
+    if(CTX?.partner) CTX.partner=Object.assign({},CTX.partner,data);
+    return data;
+  }catch(error){
+    console.warn('Stripe Connect status:',error);
+    const box=$('stripe-connect-status');
+    const title=$('stripe-connect-status-title');
+    const message=$('stripe-connect-status-text');
+    if(box){ box.classList.remove('is-ready','is-pending'); box.classList.add('is-idle'); }
+    if(title) title.textContent='Stripe Connect indisponible';
+    if(message) message.textContent=error.message || String(error);
+    return null;
+  }
+}
+
+async function startStripeConnectOnboarding(){
+  const btn=$('stripe-connect-btn');
+  if(!btn) return;
+
+  const original=btn.innerHTML;
+  btn.disabled=true;
+  btn.innerHTML='<span class="material-symbols-outlined">sync</span> Ouverture de Stripe…';
+
+  try{
+    const token=await stripeConnectAccessToken();
+    const res=await fetch('/api/stripe/connect/onboarding-link',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        Authorization:'Bearer '+token
+      },
+      body:JSON.stringify({})
+    });
+    const data=await res.json().catch(()=>({}));
+    if(!res.ok || !data.url) throw new Error(data.error || 'Impossible de créer le lien Stripe Connect.');
+    window.location.assign(data.url);
+  }catch(error){
+    alertBox('Stripe Connect : '+(error.message||error),'error');
+    btn.disabled=false;
+    btn.innerHTML=original;
+  }
+}
+
+function bindStripeConnect(){
+  $('stripe-connect-btn')?.addEventListener('click',startStripeConnectOnboarding);
+
+  const params=new URLSearchParams(location.search);
+  if(params.get('stripe_connect')==='return' || params.get('stripe_connect')==='refresh'){
+    // Stripe peut renvoyer ici même si le dossier n'est pas encore totalement validé.
+    // Le serveur relit l'état réel du compte avant tout affichage.
+    refreshStripeConnectStatus().then(()=>{
+      params.delete('stripe_connect');
+      const next=params.toString();
+      history.replaceState({},'',location.pathname+(next?'?'+next:'')+location.hash);
+    });
+  }
+}
+
 async function initPartnerProfilePage(){
   CTX=await getPartnerContext(); if(!CTX)return;
 
@@ -1034,6 +1205,9 @@ async function initPartnerProfilePage(){
   let p = Object.assign({}, CTX.partner || {}, savedDetails || {});
   p.email = cleanEmail(p.email || CTX.email);
   CTX.partner = p;
+
+  bindStripeConnect();
+  refreshStripeConnectStatus().catch(()=>{});
 
   fillPartnerFormFast(p);
   updatePublicProfileLinks(p, CTX);
