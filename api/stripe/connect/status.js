@@ -12,7 +12,7 @@ function clean(value, max = 500) {
 function supabaseConfig() {
   const url = clean(process.env.SUPABASE_URL).replace(/\/+$/, "");
   const serviceKey = clean(process.env.SUPABASE_SERVICE_ROLE_KEY);
-  const anonKey = clean(process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  const anonKey = clean(process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
   if (!url || !serviceKey) throw new Error("Configuration Supabase serveur incomplète.");
   return { url, serviceKey, anonKey };
 }
@@ -36,6 +36,7 @@ async function getAuthenticatedUser(req) {
 
   const user = await response.json().catch(() => null);
   if (!response.ok || !user?.id || !user?.email) {
+    console.error("supabase-auth-user-rejected", { status: response.status, body: user });
     const error = new Error("Session partenaire invalide ou expirée.");
     error.status = 401;
     throw error;

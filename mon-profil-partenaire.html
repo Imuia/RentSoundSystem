@@ -1076,9 +1076,30 @@ async function uploadPartnerLogo(file, ctx){
 ---------------------------------------------------------------------------- */
 async function stripeConnectAccessToken(){
   if(!sb) throw new Error('Supabase indisponible.');
-  const {data, error} = await sb.auth.getSession();
-  if(error) throw error;
-  const token = data?.session?.access_token || '';
+
+  // Demande d'abord à Supabase de valider l'utilisateur courant.
+  // Cela permet au client Supabase de rafraîchir une session expirée si nécessaire.
+  let {data:userData, error:userError} = await sb.auth.getUser();
+
+  if(userError || !userData?.user){
+    const refreshed = await sb.auth.refreshSession();
+    if(refreshed.error) throw refreshed.error;
+  }
+
+  let {data:sessionData, error:sessionError} = await sb.auth.getSession();
+  if(sessionError) throw sessionError;
+
+  let session = sessionData?.session || null;
+  const now = Math.floor(Date.now()/1000);
+
+  // Marge de 60 secondes : on évite d'envoyer à l'API un JWT sur le point d'expirer.
+  if(!session?.access_token || (session.expires_at && session.expires_at <= now + 60)){
+    const refreshed = await sb.auth.refreshSession();
+    if(refreshed.error) throw refreshed.error;
+    session = refreshed.data?.session || null;
+  }
+
+  const token = session?.access_token || '';
   if(!token) throw new Error('Session partenaire expirée. Reconnectez-vous.');
   return token;
 }
