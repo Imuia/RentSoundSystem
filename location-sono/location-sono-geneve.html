@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Location Sono Genève - RentSoundSystem</title>
+<meta name="description" content="Location de sonorisation professionnelle à Genève : Sennheiser, Meyer Sound, L-Acoustics, traduction simultanée, conférences internationales et logistique rapide dans le district ONU.">
+<meta name="robots" content="index,follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#131313;
+  overflow-x:hidden;
+}
+#site-header,#site-footer{
+  width:100%;
+  margin:0;
+  padding:0;
+}
+#rss-mobile-menu-toggle{display:none!important}
+
+.geneve-page{
+  --bg:#131313;
+  --lowest:#0e0e0e;
+  --low:#1c1b1b;
+  --surface:#201f1f;
+  --high:#2a2a2a;
+  --highest:#353534;
+  --text:#e5e2e1;
+  --muted:#e6bcc2;
+  --pink:#ffb2bf;
+  --magenta:#FC036D;
+  --outline:#5d3f44;
+  --line:rgba(255,255,255,.05);
+  --max:1280px;
+  width:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+.geneve-page,
+.geneve-page *,
+.geneve-page *::before,
+.geneve-page *::after{box-sizing:border-box}
+.geneve-page a{color:inherit;text-decoration:none}
+.gv-wrap{
+  width:min(var(--max),calc(100% - 80px));
+  margin:0 auto;
+}
+.gv-glass{
+  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(28,27,27,.40));
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+}
+
+/* HERO */
+.gv-hero{
+  position:relative;
+  min-height:770px;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--lowest);
+}
+.gv-hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background:url('https://lh3.googleusercontent.com/aida-public/AB6AXuCzk1axlSmjBPPGcpUE_47W2TLmYd5f_axyRECKwHS7qq51ukBEKF42Q41P4WGxTCskcsqFG6279DTIziUuiAoBhbClpSeBw7SLiI228aUxlbZ9gx6O2ZwtVi_6wbkqHarzS6iJHAgRsEEWN3a_PVyBJIu2UcaYDm6IhkDkRoveru6m2kId-nRy5x8-VmcJKapr1bTIgEmnrHWQU_jUakBsmDSSAZr_zs0LbzWDpjbZPj-frxpAl7wOrrUWJmlznao5yVUjOE8ffa0') center/cover no-repeat;
+  opacity:.40;
+  filter:saturate(.82);
+}
+.gv-hero-overlay{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(to bottom,var(--lowest) 0%,rgba(14,14,14,.42) 28%,rgba(14,14,14,.48) 58%,var(--lowest) 100%),
+    radial-gradient(circle at 32% 46%,rgba(252,3,109,.09),transparent 34%);
+}
+.gv-hero-grid{
+  display:grid;
+  grid-template-columns:minmax(0,3fr) minmax(330px,2fr);
+  gap:64px;
+  align-items:center;
+  padding:110px 0 90px;
+}
+.gv-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px;
+  margin-bottom:28px;
+  border:1px solid rgba(255,178,191,.25);
+  border-radius:999px;
+  background:rgba(255,178,191,.10);
+  color:var(--pink);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.gv-badge .material-symbols-outlined{font-size:15px}
+.gv-hero h1{
+  max-width:760px;
+  margin:0 0 24px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:72px;
+  line-height:1.1;
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+.gv-hero-lead{
+  max-width:700px;
+  margin:0;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.6;
+}
+.gv-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  margin-top:34px;
+}
+.gv-btn{
+  min-height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:14px 28px;
+  border:1px solid transparent;
+  border-radius:4px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:.2s ease;
+}
+.gv-btn:hover{transform:translateY(-2px)}
+.gv-btn-primary{
+  background:#ff4d80;
+  color:#5a0022!important;
+  box-shadow:0 0 20px rgba(252,3,109,.30);
+}
+.gv-btn-secondary{
+  border-color:var(--outline);
+  background:rgba(32,31,31,.42);
+  color:var(--text)!important;
+}
+.gv-coverage{
+  position:relative;
+  padding:30px;
+  border-radius:12px;
+}
+.gv-coverage-badge{
+  position:absolute;
+  top:-18px;
+  right:-18px;
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:var(--high);
+  color:var(--pink);
+  box-shadow:0 8px 24px rgba(0,0,0,.26);
+}
+.gv-coverage h2{
+  margin:0 0 8px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  font-weight:600;
+}
+.gv-coverage > p{
+  margin:0 0 26px;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.6;
+}
+.gv-feature{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-top:16px;
+}
+.gv-feature-icon{
+  flex:0 0 auto;
+  width:42px;
+  height:42px;
+  display:grid;
+  place-items:center;
+  border:1px solid var(--outline);
+  border-radius:50%;
+  background:var(--surface);
+  color:var(--magenta);
+}
+.gv-feature-icon .material-symbols-outlined{font-size:21px}
+.gv-feature strong{
+  display:block;
+  margin-bottom:3px;
+  color:var(--text);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.gv-feature span{
+  display:block;
+  color:#c6c6c7;
+  font-size:13px;
+}
+
+/* LOGISTICS / MAP */
+.gv-logistics{
+  position:relative;
+  padding:96px 0;
+  overflow:hidden;
+  background:var(--low);
+  border-top:1px solid var(--line);
+}
+.gv-logistics::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:
+    linear-gradient(to right,rgba(255,255,255,.02) 1px,transparent 1px),
+    linear-gradient(to bottom,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:40px 40px;
+  opacity:.5;
+}
+.gv-logistics-inner{
+  position:relative;
+  z-index:1;
+}
+.gv-logistics-head{
+  max-width:780px;
+  margin:0 auto 58px;
+  text-align:center;
+}
+.gv-logistics-head h2{
+  margin:0 0 16px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+}
+.gv-logistics-head p{
+  margin:0;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.6;
+}
+.gv-map{
+  position:relative;
+  height:500px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#111;
+}
+.gv-map iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  filter:invert(92%) hue-rotate(178deg) brightness(.62) contrast(1.18) saturate(.80);
+}
+.gv-map::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(252,3,109,.07),transparent 42%),
+    linear-gradient(135deg,rgba(252,3,109,.03),rgba(0,0,0,.08));
+  mix-blend-mode:color;
+}
+.gv-map-legend{
+  position:absolute;
+  z-index:5;
+  top:22px;
+  left:22px;
+  display:grid;
+  gap:7px;
+  padding:14px 16px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:rgba(31,31,31,.80);
+  backdrop-filter:blur(10px);
+  box-shadow:0 12px 28px rgba(0,0,0,.24);
+}
+.gv-map-legend div{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:var(--text);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+}
+.gv-dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  background:#e3e2e3;
+}
+.gv-dot.active{
+  background:var(--pink);
+  box-shadow:0 0 10px rgba(252,3,109,.82);
+}
+.gv-pin{
+  position:absolute;
+  z-index:5;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+.gv-pin .pin-dot{
+  width:14px;
+  height:14px;
+  margin:0 auto;
+  border:2px solid #fff;
+  border-radius:50%;
+  background:var(--magenta);
+  box-shadow:0 0 0 6px rgba(252,3,109,.14),0 0 20px rgba(252,3,109,.88);
+}
+.gv-pin .pin-label{
+  display:inline-block;
+  margin-top:7px;
+  padding:4px 7px;
+  border:1px solid rgba(252,3,109,.18);
+  border-radius:4px;
+  background:rgba(32,31,31,.82);
+  color:var(--pink);
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+}
+.gv-pin.hq{left:46%;top:42%}
+.gv-pin.un{left:61%;top:31%}
+.gv-pin.cern{left:31%;top:61%}
+.gv-pin.quai{left:74%;top:51%}
+
+@media(max-width:980px){
+  .gv-wrap{width:min(100% - 48px,var(--max))}
+  .gv-hero-grid{grid-template-columns:1fr;gap:44px}
+  .gv-coverage{max-width:700px}
+}
+@media(max-width:700px){
+  .gv-wrap{width:calc(100% - 32px)}
+  .gv-hero{min-height:auto}
+  .gv-hero-grid{padding:82px 0 64px}
+  .gv-hero h1{font-size:46px}
+  .gv-hero-lead,.gv-logistics-head p{font-size:16px}
+  .gv-actions{align-items:stretch}
+  .gv-btn{width:100%}
+  .gv-logistics{padding:64px 0}
+  .gv-logistics-head h2{font-size:32px}
+  .gv-map{height:390px}
+  .gv-map-legend{top:12px;left:12px}
+  .gv-pin .pin-label{font-size:9px}
+}
+</style>
+</head>
+
+<body>
+<div id="site-header"></div>
+
+<main class="geneve-page">
+
+<section class="gv-hero">
+  <div class="gv-hero-bg"></div>
+  <div class="gv-hero-overlay"></div>
+
+  <div class="gv-wrap gv-hero-grid">
+    <div>
+      <div class="gv-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">my_location</span>
+        Genève Hub Now Open
+      </div>
+
+      <h1>Flawless Audio for Global Summits.</h1>
+
+      <p class="gv-hero-lead">
+        Deploying world-class Sennheiser and Meyer Sound systems for international conferences
+        and high-fidelity corporate events in the heart of Geneva's financial and diplomatic districts.
+      </p>
+
+      <div class="gv-actions">
+        <a class="gv-btn gv-btn-primary" href="/catalog.html">
+          Book Equipment
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </a>
+
+        <a class="gv-btn gv-btn-secondary" href="/catalog.html">
+          View Inventory
+        </a>
+      </div>
+    </div>
+
+    <aside class="gv-coverage gv-glass">
+      <div class="gv-coverage-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+      </div>
+
+      <h2>UN District Coverage</h2>
+
+      <p>
+        Déploiement immédiat en 30 minutes disponible pour le Palais des Nations
+        et les centres de conférence environnants.
+      </p>
+
+      <div class="gv-feature">
+        <div class="gv-feature-icon">
+          <span class="material-symbols-outlined" aria-hidden="true">headset_mic</span>
+        </div>
+        <div>
+          <strong>Traduction Simultanée</strong>
+          <span>Systèmes Shure Axient Digital</span>
+        </div>
+      </div>
+
+      <div class="gv-feature">
+        <div class="gv-feature-icon">
+          <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+        </div>
+        <div>
+          <strong>Solutions Line Array</strong>
+          <span>L-Acoustics K2</span>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="gv-logistics">
+  <div class="gv-wrap gv-logistics-inner">
+
+    <div class="gv-logistics-head">
+      <h2>Strategic Logistics in Genève</h2>
+      <p>
+        Our local hub guarantees sub-2-hour replacement times across the international sector.
+      </p>
+    </div>
+
+    <div class="gv-map">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=6.02%2C46.15%2C6.26%2C46.29&layer=mapnik"
+        loading="lazy"
+        title="Carte réelle de Genève"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+
+      <div class="gv-map-legend">
+        <div><span class="gv-dot active"></span>Sonic Precision Hub</div>
+        <div><span class="gv-dot"></span>Partner Venues</div>
+      </div>
+
+      <div class="gv-pin hq">
+        <div class="pin-dot"></div>
+        <span class="pin-label">HQ Genève</span>
+      </div>
+
+      <div class="gv-pin un">
+        <div class="pin-dot"></div>
+        <span class="pin-label">Palais des Nations</span>
+      </div>
+
+      <div class="gv-pin cern">
+        <div class="pin-dot"></div>
+        <span class="pin-label">CERN Research Hub</span>
+      </div>
+
+      <div class="gv-pin quai">
+        <div class="pin-dot"></div>
+        <span class="pin-label">Quai du Mont-Blanc</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script>
+async function loadSharedComponent(targetId,url){
+  const target=document.getElementById(targetId);
+  if(!target)return;
+
+  try{
+    const response=await fetch(url,{cache:"no-cache"});
+    if(!response.ok)throw new Error(`${url} : HTTP ${response.status}`);
+
+    target.innerHTML=await response.text();
+
+    target.querySelectorAll("script").forEach(oldScript=>{
+      const newScript=document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr=>newScript.setAttribute(attr.name,attr.value));
+      newScript.textContent=oldScript.textContent;
+      oldScript.replaceWith(newScript);
+    });
+  }catch(error){
+    console.error("RentSoundSystem shared component load error:",error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  Promise.all([
+    loadSharedComponent("site-header","/header.html"),
+    loadSharedComponent("site-footer","/footer.html")
+  ]);
+});
+</script>
+
+</body>
+</html>
