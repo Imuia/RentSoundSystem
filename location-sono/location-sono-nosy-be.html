@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Location Sono Nosy Be - RentSoundSystem</title>
+<meta name="description" content="Location de sonorisation professionnelle à Nosy Be : systèmes RCF, Pioneer DJ, techniciens sur site et logistique insulaire pour mariages, retraites corporate et beach parties.">
+<meta name="robots" content="index,follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#131313;
+  overflow-x:hidden;
+}
+#site-header,#site-footer{
+  width:100%;
+  margin:0;
+  padding:0;
+}
+#rss-mobile-menu-toggle{display:none!important}
+
+.nosy-page{
+  --bg:#131313;
+  --lowest:#0e0e0e;
+  --low:#1c1b1b;
+  --surface:#201f1f;
+  --high:#2a2a2a;
+  --highest:#353534;
+  --text:#e5e2e1;
+  --muted:#e6bcc2;
+  --pink:#ffb2bf;
+  --magenta:#FC036D;
+  --outline:#5d3f44;
+  --line:rgba(255,255,255,.05);
+  --max:1280px;
+  width:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+.nosy-page,
+.nosy-page *,
+.nosy-page *::before,
+.nosy-page *::after{box-sizing:border-box}
+.nosy-page a{color:inherit;text-decoration:none}
+.nb-wrap{
+  width:min(var(--max),calc(100% - 80px));
+  margin:0 auto;
+}
+.nb-glass{
+  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.82));
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+}
+
+/* HERO */
+.nb-hero{
+  position:relative;
+  min-height:921px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  isolation:isolate;
+}
+.nb-hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+}
+.nb-hero-bg img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  opacity:.40;
+}
+.nb-hero-overlay{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(to top,#131313 0%,rgba(19,19,19,.82) 44%,rgba(19,19,19,.58) 70%,rgba(19,19,19,.18) 100%),
+    radial-gradient(circle at 50% 48%,rgba(252,3,109,.08),transparent 34%);
+}
+.nb-hero-inner{
+  max-width:900px;
+  margin:0 auto;
+  padding:100px 0 76px;
+  text-align:center;
+}
+.nb-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:9px;
+  margin-bottom:32px;
+  padding:8px 16px;
+  border:1px solid rgba(255,178,191,.22);
+  border-radius:999px;
+  background:rgba(255,178,191,.10);
+  color:var(--pink);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  backdrop-filter:blur(8px);
+}
+.nb-badge .material-symbols-outlined{font-size:15px}
+.nb-hero h1{
+  margin:0 0 24px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:72px;
+  line-height:1.1;
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+.nb-hero h1 span{color:var(--pink)}
+.nb-hero p{
+  max-width:700px;
+  margin:0 auto 40px;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.6;
+}
+.nb-actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.nb-btn{
+  min-height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 28px;
+  border-radius:4px;
+  border:1px solid transparent;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:.2s ease;
+}
+.nb-btn:hover{transform:translateY(-2px)}
+.nb-btn-primary{
+  background:#ff4d80;
+  color:#fff!important;
+  box-shadow:0 0 30px rgba(252,3,109,.30);
+}
+.nb-btn-secondary{
+  background:rgba(31,31,31,.62);
+  border-color:var(--outline);
+  color:var(--text)!important;
+  backdrop-filter:blur(10px);
+}
+
+/* BENTO */
+.nb-elements{
+  padding:96px 0;
+  background:var(--low);
+}
+.nb-head{
+  max-width:760px;
+  margin:0 auto 64px;
+  text-align:center;
+}
+.nb-head h2,
+.nb-network h2{
+  margin:0 0 16px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+}
+.nb-head p,
+.nb-network > div > p{
+  margin:0 auto;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.65;
+}
+.nb-bento{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:24px;
+}
+.nb-card{
+  position:relative;
+  overflow:hidden;
+  padding:32px;
+  border-radius:12px;
+  min-height:280px;
+}
+.nb-card.span8{grid-column:span 8}
+.nb-card.span4{grid-column:span 4}
+.nb-card.span5{grid-column:span 5}
+.nb-card.span7{grid-column:span 7}
+.nb-card-icon{
+  width:48px;
+  height:48px;
+  display:grid;
+  place-items:center;
+  margin-bottom:24px;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:var(--highest);
+  color:var(--pink);
+}
+.nb-card-icon .material-symbols-outlined{font-size:24px}
+.nb-card h3{
+  margin:0 0 14px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  font-weight:600;
+}
+.nb-card p{
+  max-width:650px;
+  margin:0;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.62;
+}
+.nb-dj-card{
+  min-height:300px;
+  display:flex;
+  align-items:flex-end;
+}
+.nb-dj-bg{
+  position:absolute;
+  inset:0;
+}
+.nb-dj-bg img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:.30;
+  filter:saturate(.85);
+}
+.nb-dj-bg::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,var(--low) 8%,rgba(28,27,27,.52) 58%,transparent 100%);
+}
+.nb-dj-content{
+  position:relative;
+  z-index:2;
+}
+.nb-card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:20px;
+  color:var(--pink)!important;
+  font-size:12px;
+  font-weight:700;
+}
+
+/* NETWORK */
+.nb-network{
+  padding:96px 0;
+  background:var(--bg);
+  border-block:1px solid var(--line);
+}
+.nb-network-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:64px;
+  align-items:center;
+}
+.nb-network-copy p{
+  margin:0 0 30px;
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.65;
+}
+.nb-hubs{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:24px;
+}
+.nb-hub{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+.nb-hub-icon{
+  flex:0 0 auto;
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  margin-top:2px;
+  border:2px solid var(--outline);
+  border-radius:50%;
+  background:var(--highest);
+  color:var(--muted);
+}
+.nb-hub.active .nb-hub-icon{
+  border-color:var(--pink);
+  color:var(--pink);
+  box-shadow:0 0 20px rgba(252,3,109,.28);
+}
+.nb-hub-icon .material-symbols-outlined{font-size:17px}
+.nb-hub h4{
+  margin:0 0 4px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:19px;
+  font-weight:600;
+}
+.nb-hub p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+
+/* REAL MAP */
+.nb-map{
+  position:relative;
+  height:500px;
+  overflow:hidden;
+  padding:8px;
+  border-radius:12px;
+  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.82));
+  border:1px solid var(--line);
+}
+.nb-map-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  border-radius:8px;
+  background:#111;
+}
+.nb-map iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  filter:invert(92%) hue-rotate(178deg) brightness(.58) contrast(1.22) saturate(.78);
+}
+.nb-map-inner::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(252,3,109,.07),transparent 43%),
+    linear-gradient(135deg,rgba(252,3,109,.03),rgba(0,0,0,.08));
+  mix-blend-mode:color;
+}
+.nb-map-pin{
+  position:absolute;
+  z-index:4;
+  transform:translate(-50%,-50%);
+}
+.nb-map-pin span{
+  display:block;
+  width:15px;
+  height:15px;
+  border:2px solid #fff;
+  border-radius:50%;
+  background:var(--magenta);
+  box-shadow:0 0 0 6px rgba(252,3,109,.16),0 0 22px rgba(252,3,109,.80);
+}
+.nb-map-pin.hellville{left:58%;top:69%}
+.nb-map-pin.ambatoloaka{left:42%;top:66%}
+.nb-map-pin.andilana{left:33%;top:28%}
+.nb-map-label{
+  position:absolute;
+  z-index:5;
+  left:14px;
+  bottom:14px;
+  max-width:calc(100% - 28px);
+  padding:11px 13px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:rgba(14,14,14,.84);
+  color:#fff;
+  backdrop-filter:blur(10px);
+}
+.nb-map-label strong{
+  display:block;
+  margin-bottom:3px;
+  color:var(--pink);
+  font-size:12px;
+}
+.nb-map-label small{
+  color:var(--muted);
+  font-size:11px;
+}
+
+@media(max-width:980px){
+  .nb-wrap{width:min(100% - 48px,var(--max))}
+  .nb-bento{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .nb-card.span8,.nb-card.span7{grid-column:span 4}
+  .nb-card.span4,.nb-card.span5{grid-column:span 2}
+  .nb-network-grid{grid-template-columns:1fr}
+}
+@media(max-width:700px){
+  .nb-wrap{width:calc(100% - 32px)}
+  .nb-hero{min-height:720px}
+  .nb-hero-inner{padding:84px 0 60px}
+  .nb-hero h1{font-size:46px}
+  .nb-hero p{font-size:16px}
+  .nb-actions{align-items:stretch}
+  .nb-btn{width:100%}
+  .nb-elements,.nb-network{padding:64px 0}
+  .nb-head h2,.nb-network h2{font-size:32px}
+  .nb-bento{grid-template-columns:1fr}
+  .nb-card.span8,.nb-card.span7,.nb-card.span4,.nb-card.span5{grid-column:auto}
+  .nb-map{height:390px}
+}
+</style>
+</head>
+
+<body>
+<div id="site-header"></div>
+
+<main class="nosy-page">
+
+<section class="nb-hero">
+  <div class="nb-hero-bg">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNXgWHsZt5TfL5P0bsldQcn7enR-7YIuHEX4NDyRAERmKDhIND_RyWnITuRvj0P-yvb4IvEza_Y1Y8Q3_KUHoIoXR671u7ZdFL4IKK6jchK1RVOQTxptHnZo1-m_XeTHj5WCgO0fzwIVEbFAVPGtB-wmmZeKYp50XeOIiyqL58I-RJCwORiAGZqYInWnt8Gd6YVz4UY5DnfJ10Mo8nzmBXis2uluC279frAqAlLUGO2pY7ZnwVTtykq6ChFjcCBKfWBuhNuWTCSuI"
+         alt="Coucher de soleil sur une plage de Nosy Be avec installation audio professionnelle"
+         loading="eager"
+         fetchpriority="high">
+  </div>
+  <div class="nb-hero-overlay"></div>
+
+  <div class="nb-wrap">
+    <div class="nb-hero-inner">
+      <div class="nb-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">campaign</span>
+        Now Serving Nosy Be
+      </div>
+
+      <h1>Acoustic Perfection for <span>Destination Events</span></h1>
+
+      <p>
+        Premium professional audio rentals engineered for the unique environmental demands of Madagascar's coastal venues.
+        Uncompromising sound for weddings, corporate retreats, and exclusive beach parties.
+      </p>
+
+      <div class="nb-actions">
+        <a class="nb-btn nb-btn-primary" href="/catalog.html">Explore Inventory</a>
+        <a class="nb-btn nb-btn-secondary" href="/contact.html?subject=Ingenieur%20Audio%20Nosy%20Be">Consult an Engineer</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="nb-elements">
+  <div class="nb-wrap">
+    <div class="nb-head">
+      <h2>Engineered for the Elements</h2>
+      <p>
+        Deploying high-fidelity sound in tropical environments requires specialized gear and logistical expertise.
+        We provide both.
+      </p>
+    </div>
+
+    <div class="nb-bento">
+
+      <article class="nb-card nb-glass span8">
+        <div class="nb-card-icon">
+          <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+        </div>
+        <h3>Outdoor-Ready RCF Systems</h3>
+        <p>
+          Our inventory features weather-resistant RCF active line arrays and subwoofers, delivering pristine clarity
+          and chest-thumping bass despite humidity, salt air, or unpredictable island weather.
+        </p>
+        <a class="nb-card-link" href="/catalog.html?q=RCF%20Line%20Array%20Subwoofer">
+          View RCF Systems
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </article>
+
+      <article class="nb-card nb-glass span4">
+        <div class="nb-card-icon">
+          <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+        </div>
+        <h3>On-Site Technicians</h3>
+        <p>
+          Every rental includes setup, tuning, and monitoring by certified audio engineers familiar with Nosy Be's acoustic challenges.
+        </p>
+        <a class="nb-card-link" href="/contact.html?subject=Technicien%20Sur%20Site%20Nosy%20Be">
+          Book Technical Support
+          <span class="material-symbols-outlined">arrow_forward</span>
+        </a>
+      </article>
+
+      <article class="nb-card nb-glass span5">
+        <div class="nb-card-icon">
+          <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
+        </div>
+        <h3>Island Logistics</h3>
+        <p>
+          From Hell-Ville hubs to remote beach locations, our specialized transport fleet ensures your gear arrives safely and on time,
+          navigating challenging island terrain.
+        </p>
+        <a class="nb-card-link" href="#nosy-network">
+          View Nosy Be Network
+          <span class="material-symbols-outlined">arrow_downward</span>
+        </a>
+      </article>
+
+      <article class="nb-card nb-glass nb-dj-card span7">
+        <div class="nb-dj-bg">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLGrgwwlb7GcUwtrxE9ZNWeSi5_m4UmiUplOERxtueNEgqFvxBSh9eDUiegQwFE59pl31pSg8vM4fZPd5DHoiETgb62QHZPHW7NGr-atVV2flaCUaPFBfSft0kjU2iY-WhZ2pLg2nZXvTS-Vdc5EZad1dcA1I9DMYzONLg1Xr-bP1HqTH1uf8vEZSB3m4ZMsAtrulh8ODZVfa6_DR0KGIe_fDiUOCDeg8q6ALVsS0StLgWgQpltKzAqMoAs8x0_hoWT3tqPAXnWz0"
+               alt="Régie DJ premium à Nosy Be"
+               loading="lazy">
+        </div>
+        <div class="nb-dj-content">
+          <h3>Premium DJ Backline</h3>
+          <p>
+            Industry-standard Pioneer CDJs, Allen &amp; Heath mixers, and flawless wireless microphone systems
+            for seamless performances.
+          </p>
+          <a class="nb-card-link" href="/catalog.html?q=Pioneer%20DJ%20Allen%20Heath">
+            View DJ Backline
+            <span class="material-symbols-outlined">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<section class="nb-network" id="nosy-network">
+  <div class="nb-wrap nb-network-grid">
+
+    <div class="nb-network-copy">
+      <h2>Nosy Be Network</h2>
+
+      <p>
+        Strategically positioned hubs in Hell-Ville allow for rapid deployment to any resort or private beach on the island.
+        We understand the local logistics required to execute flawless events in Madagascar's premier destination.
+      </p>
+
+      <ul class="nb-hubs">
+        <li class="nb-hub active">
+          <div class="nb-hub-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+          </div>
+          <div>
+            <h4>Hell-Ville Central Hub</h4>
+            <p>Main equipment depot and technical repair center.</p>
+          </div>
+        </li>
+
+        <li class="nb-hub">
+          <div class="nb-hub-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">beach_access</span>
+          </div>
+          <div>
+            <h4>West Coast Resorts</h4>
+            <p>Rapid deployment to Ambatoloaka and Andilana areas.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="nb-map">
+      <div class="nb-map-inner">
+        <iframe
+          src="https://www.openstreetmap.org/export/embed.html?bbox=48.10%2C-13.55%2C48.40%2C-13.15&layer=mapnik"
+          loading="lazy"
+          title="Carte réelle de Nosy Be"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+
+        <div class="nb-map-pin hellville" title="Hell-Ville">
+          <span></span>
+        </div>
+
+        <div class="nb-map-pin ambatoloaka" title="Ambatoloaka">
+          <span></span>
+        </div>
+
+        <div class="nb-map-pin andilana" title="Andilana">
+          <span></span>
+        </div>
+
+        <div class="nb-map-label">
+          <strong>Nosy Be • Live Deployment Network</strong>
+          <small>Hell‑Ville • Ambatoloaka • Andilana</small>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script>
+async function loadSharedComponent(targetId,url){
+  const target=document.getElementById(targetId);
+  if(!target)return;
+
+  try{
+    const response=await fetch(url,{cache:"no-cache"});
+    if(!response.ok)throw new Error(`${url} : HTTP ${response.status}`);
+
+    target.innerHTML=await response.text();
+
+    target.querySelectorAll("script").forEach(oldScript=>{
+      const newScript=document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr=>newScript.setAttribute(attr.name,attr.value));
+      newScript.textContent=oldScript.textContent;
+      oldScript.replaceWith(newScript);
+    });
+  }catch(error){
+    console.error("RentSoundSystem shared component load error:",error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  Promise.all([
+    loadSharedComponent("site-header","/header.html"),
+    loadSharedComponent("site-footer","/footer.html")
+  ]);
+});
+</script>
+
+</body>
+</html>
