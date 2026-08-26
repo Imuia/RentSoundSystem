@@ -1,5 +1,6 @@
 
 import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
 
 function clean(value, max = 500) {
   return String(value ?? "")
@@ -10,16 +11,29 @@ function clean(value, max = 500) {
 }
 
 function supabaseConfig() {
-  const url = clean(process.env.SUPABASE_URL).replace(/\/+$/, "");
+  const url = clean(process.env.SUPABASE_URL || "https://crxofkxinsspfgdsxpiy.supabase.co").replace(/\/+$/, "");
   const serviceKey = clean(process.env.SUPABASE_SERVICE_ROLE_KEY);
-  const anonKey = clean(process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY);
-  if (!url || !serviceKey) throw new Error("Configuration Supabase serveur incomplète.");
-  return { url, serviceKey, anonKey };
+  const publishableKey = clean(
+    process.env.SUPABASE_PUBLISHABLE_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ||
+    process.env.SUPABASE_ANON_KEY ||
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ||
+    "sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj"
+  );
+
+  if (!url || !serviceKey || !publishableKey) {
+    throw new Error("Configuration Supabase serveur incomplète.");
+  }
+
+  return { url, serviceKey, publishableKey };
 }
 
 async function getAuthenticatedUser(req) {
-  const auth = clean(req.headers.authorization, 400);
-  const token = auth.toLowerCase().startsWith("bearer ") ? auth.slice(7).trim() : "";
+  const auth = clean(req.headers.authorization, 5000);
+  const token = auth.toLowerCase().startsWith("bearer ")
+    ? auth.slice(7).trim()
+    : "";
+
   if (!token) {
     const error = new Error("Authentification partenaire requise.");
     error.status = 401;
@@ -27,20 +41,30 @@ async function getAuthenticatedUser(req) {
   }
 
   const cfg = supabaseConfig();
-  const response = await fetch(`${cfg.url}/auth/v1/user`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      apikey: cfg.anonKey || cfg.serviceKey
+
+  // Validation officielle du JWT par Supabase Auth.
+  // On utilise exactement la publishable key du même projet que le navigateur.
+  const authClient = createClient(cfg.url, cfg.publishableKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false,
+      detectSessionInUrl: false
     }
   });
 
-  const user = await response.json().catch(() => null);
-  if (!response.ok || !user?.id || !user?.email) {
-    console.error("supabase-auth-user-rejected", { status: response.status, body: user });
+  const { data, error: authError } = await authClient.auth.getUser(token);
+  const user = data?.user || null;
+
+  if (authError || !user?.id || !user?.email) {
+    console.error("supabase-auth-getUser-rejected", {
+      message: authError?.message || "Utilisateur absent",
+      status: authError?.status || 401
+    });
     const error = new Error("Session partenaire invalide ou expirée.");
     error.status = 401;
     throw error;
   }
+
   return user;
 }
 
