@@ -309,15 +309,15 @@ html,body{
 /* ARSENAL — light section like Stitch screenshot */
 .mc-arsenal{
   padding:96px 0;
-  background:var(--light);
-  color:var(--light-text);
+  background:var(--bg);
+  color:var(--text);
 }
 .mc-arsenal-head{
   margin-bottom:48px;
 }
 .mc-arsenal h2{
   margin:0 0 10px;
-  color:#ded9da;
+  color:var(--text);
   font-family:Manrope,Inter,sans-serif;
   font-size:40px;
   line-height:1.2;
@@ -325,7 +325,7 @@ html,body{
 }
 .mc-arsenal-head p{
   margin:0;
-  color:#c6bbbb;
+  color:var(--muted);
   font-size:16px;
 }
 .mc-bento{
@@ -346,10 +346,10 @@ html,body{
   display:flex;
   flex-direction:column;
   justify-content:flex-end;
-  border:1px solid rgba(0,0,0,.06);
+  border:1px solid rgba(255,255,255,.05);
   background:
-    radial-gradient(circle at 40% 20%,rgba(252,3,109,.08),transparent 48%),
-    linear-gradient(145deg,#757171,#aaa5a5);
+    radial-gradient(circle at 40% 20%,rgba(252,3,109,.10),transparent 48%),
+    linear-gradient(145deg,rgba(42,42,42,.98),rgba(28,27,27,.98));
 }
 .mc-feature::after{
   content:"";
@@ -374,7 +374,7 @@ html,body{
 .mc-feature h3,
 .mc-dark-card h3{
   margin:0 0 10px;
-  color:#fff;
+  color:var(--text);
   font-family:Manrope,Inter,sans-serif;
   font-size:24px;
   font-weight:600;
@@ -382,7 +382,7 @@ html,body{
 .mc-feature p,
 .mc-dark-card p{
   margin:0;
-  color:#f0d8dd;
+  color:var(--muted);
   font-size:14px;
   line-height:1.6;
 }
@@ -403,8 +403,8 @@ html,body{
   flex-direction:column;
   justify-content:flex-end;
   border:1px solid rgba(255,255,255,.05);
-  background:#353534;
-  color:#fff;
+  background:linear-gradient(145deg,rgba(42,42,42,.98),rgba(28,27,27,.98));
+  color:var(--text);
 }
 .mc-dark-card::after{
   content:"tune";
@@ -433,7 +433,7 @@ html,body{
   text-align:center;
   border:1px solid rgba(255,255,255,.05);
   background:#1c1b1b;
-  color:#fff;
+  color:var(--text);
 }
 .mc-mini .material-symbols-outlined{
   margin-bottom:16px;
@@ -441,7 +441,7 @@ html,body{
 }
 .mc-mini h4{
   margin:0 0 9px;
-  color:#fff;
+  color:var(--text);
   font-family:Manrope,Inter,sans-serif;
   font-size:19px;
   font-weight:600;
