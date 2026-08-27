@@ -449,7 +449,7 @@ export default async function handler(req, res) {
           metadata: {
             ...baseMetadata,
             type: "rental_payment",
-            deposit_mode: scheduledDeposit ? "scheduled" : "immediate",
+            deposit_mode: pricing.deposit_cents < 50 ? "none" : (scheduledDeposit ? "scheduled" : "immediate"),
             deposit_amount_cents: String(pricing.deposit_cents),
             deposit_authorize_on: authorizeOn,
             deposit_authorize_before_days: String(authorizeBeforeDays)
@@ -502,6 +502,7 @@ export default async function handler(req, res) {
       rental_client_secret: rentalIntent?.client_secret || null,
       deposit_payment_intent_id: depositIntent?.id || null,
       deposit_client_secret: depositIntent?.client_secret || null,
+      deposit_required: pricing.deposit_cents >= 50,
       deposit_mode: scheduledDeposit ? "scheduled" : "immediate",
       deposit_scheduled: scheduledDeposit,
       deposit_authorize_on: authorizeOn || null,
