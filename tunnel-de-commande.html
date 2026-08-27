@@ -579,14 +579,14 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <div class="flex justify-between items-center">
 <span class="font-body text-body-md text-on-surface-variant" id="label-deposit">Caution obligatoire (dépôt de garantie)</span>
 <span class="font-body text-body-md text-inverse-surface" id="amount-deposit">5 000,00 €</span>
-</div><div class="flex justify-between items-center mt-2">
-<span class="font-body text-body-sm text-on-surface-variant">TVA (20%)</span>
-<span class="font-body text-body-sm text-on-surface-variant" id="amount-tax">720,00 €</span>
+</div><div class="hidden flex justify-between items-center mt-2" id="tax-summary-row">
+<span class="font-body text-body-sm text-on-surface-variant">Taxes applicables</span>
+<span class="font-body text-body-sm text-on-surface-variant" id="amount-tax">—</span>
 </div>
 </div>
 <!-- Total -->
 <div class="flex justify-between items-center mb-8">
-<span class="font-headline text-headline-md text-inverse-surface">Total TTC</span>
+<span class="font-headline text-headline-md text-inverse-surface">Total à payer</span>
 <span class="font-headline text-headline-lg text-primary font-bold" id="amount-total">4 320,00 €</span>
 </div>
 <div class="hidden mb-4 rounded border border-error/40 bg-error-container/20 text-error px-4 py-3 text-sm" id="checkout-message"></div><button class="w-full bg-primary hover:bg-primary-container text-on-primary font-headline font-bold text-lg py-4 px-6 rounded transition-colors active:scale-95 duration-100 flex items-center justify-center gap-2" id="confirm-order-btn" type="button">
@@ -1044,7 +1044,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     updateDepositTermsVisibility(t.deposit);
 
     const taxAmount=qs('#amount-tax');
-    const taxRow=taxAmount?.closest('.flex.justify-between.items-center');
+    const taxRow=qs('#tax-summary-row') || taxAmount?.closest('.flex.justify-between.items-center');
     const taxLabel=taxRow?.querySelector('span:first-child');
     let netRow=qs('#rss-net-row');
     if(taxRow&&!netRow){
@@ -1077,7 +1077,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const totalEl=qs('#amount-total');
     setText('#amount-total',money(t.total));
     const totalLabel=totalEl?.previousElementSibling;
-    if(totalLabel)totalLabel.textContent=t.taxMode==='legacy_public_price'?'Total à payer':(t.taxPending?'Total estimatif':'Total TTC');
+    if(totalLabel){
+      totalLabel.textContent =
+        (!showTaxDetails || t.taxMode==='legacy_public_price')
+          ? 'Total à payer'
+          : (t.taxPending ? 'Total estimatif' : 'Total TTC');
+    }
 
     const depositEl=qs('#amount-deposit');
     if(depositEl){
