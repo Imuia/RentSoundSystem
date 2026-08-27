@@ -1,3 +1,6 @@
+// Import and initialize Vercel Speed Insights
+import './speed-insights.js';
+
 async function loadComponent(id, file) {
   const el = document.getElementById(id);
   if (!el) return;
