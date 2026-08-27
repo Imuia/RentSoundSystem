@@ -1,0 +1,22 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /admin-
+Disallow: /espace-client
+Disallow: /espace-support
+Disallow: /tableau-de-bord-partenaire
+Disallow: /reservations-partenaire
+Disallow: /revenus-partenaire
+Disallow: /profil-partenaire
+Disallow: /mon-profil-partenaire
+Disallow: /mes-annonces-partenaire
+Disallow: /ajouter-annonce
+Disallow: /ajouter-materiel-partenaire
+Disallow: /connexion-inscription
+Disallow: /mot-de-passe-oublie
+Disallow: /reinitialiser-mot-de-passe
+Disallow: /mot-de-passe-reinitialise
+Disallow: /api/
+
+Sitemap: https://rentsoundsystem.com/sitemap.xml
