@@ -262,7 +262,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   #rss-stripe-card-panel[data-stripe-mode="test"]{border-color:rgba(252,3,109,.38);}
   #rss-stripe-card-panel[data-stripe-mode="live"]{border-color:rgba(252,3,109,.24);}
   .rss-stripe-mode-badge{display:inline-flex;align-items:center;border:1px solid rgba(252,3,109,.42);border-radius:999px;padding:3px 8px;color:#ff8dbd;background:rgba(252,3,109,.11);font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
-  #stripe-card-element{min-height:54px!important;padding:15px 14px!important;border:1px solid rgba(252,3,109,.42)!important;border-radius:6px!important;background:linear-gradient(145deg,#181114,#0e0e0f)!important;box-shadow:inset 0 0 0 1px rgba(255,255,255,.025),0 0 20px rgba(252,3,109,.08)!important;transition:border-color .2s ease,box-shadow .2s ease;}
+  #stripe-card-element{min-height:54px!important;padding:15px 14px!important;border:1px solid rgba(252,3,109,.42)!important;border-radius:6px!important;background:#ffffff!important;box-shadow:inset 0 0 0 1px rgba(0,0,0,.04),0 0 20px rgba(252,3,109,.08)!important;transition:border-color .2s ease,box-shadow .2s ease;}
   #stripe-card-element.StripeElement--focus{border-color:#fc036d!important;box-shadow:0 0 0 1px rgba(252,3,109,.48),0 0 26px rgba(252,3,109,.18)!important;}
   #stripe-card-element.StripeElement--invalid{border-color:#ff6b6b!important;}
 </style>
@@ -1041,6 +1041,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     setText('#amount-insurance',t.technician?money(t.technician):'—');
     setText('#label-deposit',t.deposit>0?'Caution (non comprise dans le total)':'Caution');
     setText('#amount-deposit',money(t.deposit));
+    updateDepositTermsVisibility(t.deposit);
 
     const taxAmount=qs('#amount-tax');
     const taxRow=taxAmount?.closest('.flex.justify-between.items-center');
@@ -1141,7 +1142,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return true;
   }
 
-  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const terms=qs('#accept-deposit-terms'); if(terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
+  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const product=getProduct(); const totals=calculateTotals(product); const terms=qs('#accept-deposit-terms'); if(Number(totals.deposit||0)>0 && terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
 
   async function requireLogin(){
     /*
@@ -1420,15 +1421,15 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
         hidePostalCode:true,
         style:{
           base:{
-            color:'#f7edf1',
+            color:'#171217',
             iconColor:'#FC036D',
             fontFamily:'Inter, system-ui, sans-serif',
             fontSize:'16px',
             fontSmoothing:'antialiased',
             fontWeight:'500',
-            '::placeholder':{color:'#b993a2'}
+            '::placeholder':{color:'#7b6670'}
           },
-          invalid:{color:'#ffb4ab',iconColor:'#ff6b6b'}
+          invalid:{color:'#b42318',iconColor:'#d92d20'}
         }
       });
       const mount=qs('#stripe-card-element');
@@ -1444,7 +1445,20 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     }
   }
 
-  function termsAccepted(){
+  function updateDepositTermsVisibility(depositAmount){
+    const amount=Number(depositAmount||0);
+    const checkbox=qs('#accept-deposit-terms');
+    const label=checkbox?.closest('label');
+    const info=checkbox?.closest('.flex')?.previousElementSibling;
+    if(label) label.style.display=amount>0?'':'none';
+    if(info && info.textContent && info.textContent.includes('Information caution obligatoire')) {
+      info.style.display=amount>0?'':'none';
+    }
+  }
+
+  function termsAccepted(depositAmount){
+    const amount=Number(depositAmount||0);
+    if(amount<=0) return true;
     const el=qs('#accept-deposit-terms');
     return !!(el && el.checked);
   }
@@ -1505,7 +1519,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   async function payMarketplaceStripe(){
     const checkoutApi=getCheckoutApi();
     if(typeof checkoutApi.validate === 'function' && !checkoutApi.validate()) return null;
-    if(!termsAccepted()) throw new Error('Vous devez accepter les conditions de caution.');
+    if(!termsAccepted(stripePayload.deposit_amount)) throw new Error('Vous devez accepter les conditions de caution.');
     if(!stripeReady || !stripe || !card) throw new Error('Stripe n’est pas prêt. Vérifiez /api/stripe/config puis rechargez la page.');
 
     const {order,stripePayload}=buildMarketplaceOrderPayload();
