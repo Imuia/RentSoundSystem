@@ -54,7 +54,7 @@ function formatDate(value) {
 }
 
 function reservationPortalUrl(orderId) {
-  const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app")
+  const base = text(process.env.APP_URL || "https://rentsoundsystem.com")
     .replace(/\/+$/, "");
   return `${base}/espace-client-reservations.html?order=${encodeURIComponent(orderId)}`;
 }
@@ -155,7 +155,7 @@ function normalizeEmail(value) {
 }
 
 function customerAccountUrl(orderId) {
-  const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
+  const base = text(process.env.APP_URL || "https://rentsoundsystem.com").replace(/\/+$/, "");
   const params = new URLSearchParams();
   if (orderId) params.set("order", orderId);
   const query = params.toString();
@@ -163,7 +163,7 @@ function customerAccountUrl(orderId) {
 }
 
 function customerAuthCallbackUrl(orderId) {
-  const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
+  const base = text(process.env.APP_URL || "https://rentsoundsystem.com").replace(/\/+$/, "");
   const nextParams = new URLSearchParams();
   if (orderId) nextParams.set("order", orderId);
   const nextPath = `/espace-client-reservations.html${nextParams.toString() ? `?${nextParams.toString()}` : ""}`;
@@ -964,7 +964,7 @@ function buildInvoicePdf(invoice) {
 }
 
 function invoiceDownloadUrl(paymentIntentId, orderId) {
-  const base = text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
+  const base = text(process.env.APP_URL || "https://rentsoundsystem.com").replace(/\/+$/, "");
   const params = new URLSearchParams({ payment_intent: paymentIntentId, order: orderId });
   return `${base}/api/stripe/webhook?invoice=1&${params.toString()}`;
 }

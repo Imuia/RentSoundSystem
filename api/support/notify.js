@@ -19,7 +19,7 @@ function escapeHtml(value) {
 }
 
 function baseUrl() {
-  return text(process.env.APP_URL || "https://rentsoundsystem.vercel.app").replace(/\/+$/, "");
+  return text(process.env.APP_URL || "https://rentsoundsystem.com").replace(/\/+$/, "");
 }
 
 async function supabaseRequest(path, { method = "GET", body = null, service = true, bearer = null } = {}) {
