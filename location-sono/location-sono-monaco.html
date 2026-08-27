@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Location Sono Monaco - RentSoundSystem</title>
+<meta name="description" content="Location de sonorisation professionnelle à Monaco : Meyer Sound PANTHER, DiGiCo Quantum, Shure Axient Digital, ingénierie audio VIP et logistique rapide à Port Hercule et Monte-Carlo.">
+<meta name="robots" content="index,follow">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  width:100%;
+  min-height:100%;
+  background:#131313;
+  overflow-x:hidden;
+}
+#site-header,#site-footer{
+  width:100%;
+  margin:0;
+  padding:0;
+}
+#rss-mobile-menu-toggle{display:none!important}
+
+.monaco-page{
+  --bg:#131313;
+  --lowest:#0e0e0e;
+  --low:#1c1b1b;
+  --surface:#201f1f;
+  --high:#2a2a2a;
+  --highest:#353534;
+  --text:#e5e2e1;
+  --muted:#e6bcc2;
+  --pink:#ffb2bf;
+  --magenta:#FC036D;
+  --outline:#5d3f44;
+  --line:rgba(255,255,255,.05);
+  --light:#f5f4f4;
+  --light-text:#2b2929;
+  --light-muted:#8e7a7f;
+  --max:1280px;
+
+  width:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Inter,Arial,sans-serif;
+}
+.monaco-page,
+.monaco-page *,
+.monaco-page *::before,
+.monaco-page *::after{box-sizing:border-box}
+.monaco-page a{color:inherit;text-decoration:none}
+.mc-wrap{
+  width:min(var(--max),calc(100% - 80px));
+  margin:0 auto;
+}
+.mc-glass{
+  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.82));
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--line);
+}
+
+/* HERO */
+.mc-hero{
+  position:relative;
+  min-height:900px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--lowest);
+}
+.mc-hero-bg{
+  position:absolute;
+  inset:0;
+  z-index:-3;
+}
+.mc-hero-bg img{
+  width:100%;
+  height:100%;
+  display:block;
+  object-fit:cover;
+  object-position:center;
+  opacity:.40;
+}
+.mc-hero-overlay{
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    linear-gradient(to top,#131313 0%,rgba(19,19,19,.84) 42%,rgba(19,19,19,.54) 70%,rgba(19,19,19,.16) 100%),
+    radial-gradient(circle at 50% 44%,rgba(252,3,109,.10),transparent 33%);
+}
+.mc-hero-inner{
+  max-width:950px;
+  margin:0 auto;
+  padding:100px 0 75px;
+  text-align:center;
+}
+.mc-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:30px;
+  padding:8px 16px;
+  border:1px solid rgba(252,3,109,.30);
+  border-radius:999px;
+  background:rgba(31,31,31,.66);
+  color:var(--magenta);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  backdrop-filter:blur(10px);
+}
+.mc-badge .material-symbols-outlined{
+  font-size:15px;
+  font-variation-settings:'FILL' 1;
+}
+.mc-hero h1{
+  margin:0 0 24px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:72px;
+  line-height:1.1;
+  font-weight:700;
+  letter-spacing:-.02em;
+}
+.mc-hero h1 span{
+  background:linear-gradient(90deg,var(--magenta),#ff4d80);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 18px rgba(252,3,109,.22);
+}
+.mc-hero p{
+  max-width:720px;
+  margin:0 auto 42px;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.6;
+}
+.mc-actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.mc-btn{
+  min-height:52px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:14px 28px;
+  border:1px solid transparent;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  transition:.2s ease;
+}
+.mc-btn:hover{transform:translateY(-2px)}
+.mc-btn-primary{
+  background:var(--magenta);
+  color:#fff!important;
+  box-shadow:0 0 30px rgba(252,3,109,.36);
+}
+.mc-btn-secondary{
+  border-color:var(--outline);
+  background:rgba(31,31,31,.62);
+  color:var(--text)!important;
+  backdrop-filter:blur(10px);
+}
+
+/* DEPLOYMENT */
+.mc-deployment{
+  padding:96px 0;
+  background:var(--low);
+  border-block:1px solid var(--line);
+}
+.mc-deploy-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:64px;
+  align-items:center;
+}
+.mc-deployment h2{
+  margin:0 0 22px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+}
+.mc-deployment-copy>p{
+  margin:0 0 28px;
+  color:#c6c6c7;
+  font-size:16px;
+  line-height:1.65;
+}
+.mc-sector-list{
+  list-style:none;
+  margin:0;
+  padding:0;
+  display:grid;
+  gap:24px;
+}
+.mc-sector{
+  display:flex;
+  align-items:flex-start;
+  gap:16px;
+}
+.mc-sector-icon{
+  flex:0 0 auto;
+  width:46px;
+  height:46px;
+  display:grid;
+  place-items:center;
+  border:1px solid rgba(252,3,109,.48);
+  border-radius:50%;
+  background:var(--bg);
+  color:var(--magenta);
+  box-shadow:0 0 15px rgba(252,3,109,.18);
+}
+.mc-sector-icon .material-symbols-outlined{font-size:21px}
+.mc-sector h3{
+  margin:0 0 5px;
+  color:var(--text);
+  font-family:Manrope,Inter,sans-serif;
+  font-size:19px;
+  font-weight:600;
+}
+.mc-sector p{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.55;
+}
+
+/* REAL MAP */
+.mc-map{
+  position:relative;
+  height:500px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:12px;
+  background:#111;
+  box-shadow:0 22px 60px rgba(0,0,0,.28);
+}
+.mc-map iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  filter:invert(92%) hue-rotate(178deg) brightness(.59) contrast(1.20) saturate(.78);
+}
+.mc-map::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:2;
+  pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(252,3,109,.085),transparent 42%),
+    linear-gradient(135deg,rgba(252,3,109,.03),rgba(0,0,0,.08));
+  mix-blend-mode:color;
+}
+.mc-pin{
+  position:absolute;
+  z-index:4;
+  transform:translate(-50%,-50%);
+  text-align:center;
+}
+.mc-pin-dot{
+  width:15px;
+  height:15px;
+  margin:0 auto;
+  border:2px solid rgba(255,255,255,.9);
+  border-radius:50%;
+  background:var(--magenta);
+  box-shadow:0 0 0 6px rgba(252,3,109,.16),0 0 24px rgba(252,3,109,.86);
+}
+.mc-pin-label{
+  display:inline-block;
+  margin-top:8px;
+  padding:5px 8px;
+  border:1px solid rgba(252,3,109,.24);
+  border-radius:4px;
+  background:rgba(31,31,31,.84);
+  color:var(--pink);
+  font-size:10px;
+  font-weight:600;
+  white-space:nowrap;
+  backdrop-filter:blur(10px);
+}
+.mc-pin.hercule{left:34%;top:58%}
+.mc-pin.montecarlo{left:70%;top:34%}
+
+/* ARSENAL — light section like Stitch screenshot */
+.mc-arsenal{
+  padding:96px 0;
+  background:var(--light);
+  color:var(--light-text);
+}
+.mc-arsenal-head{
+  margin-bottom:48px;
+}
+.mc-arsenal h2{
+  margin:0 0 10px;
+  color:#ded9da;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:40px;
+  line-height:1.2;
+  font-weight:700;
+}
+.mc-arsenal-head p{
+  margin:0;
+  color:#c6bbbb;
+  font-size:16px;
+}
+.mc-bento{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:24px;
+  grid-auto-rows:300px;
+}
+.mc-card{
+  position:relative;
+  overflow:hidden;
+  border-radius:10px;
+}
+.mc-card.large{grid-column:span 8}
+.mc-card.small{grid-column:span 4}
+.mc-feature{
+  padding:32px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  border:1px solid rgba(0,0,0,.06);
+  background:
+    radial-gradient(circle at 40% 20%,rgba(252,3,109,.08),transparent 48%),
+    linear-gradient(145deg,#757171,#aaa5a5);
+}
+.mc-feature::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to top,rgba(32,31,31,.30),transparent 55%);
+}
+.mc-feature-content{
+  position:relative;
+  z-index:2;
+  max-width:650px;
+}
+.mc-feature .material-symbols-outlined,
+.mc-dark-card .material-symbols-outlined,
+.mc-mini .material-symbols-outlined{
+  color:var(--magenta);
+}
+.mc-feature .material-symbols-outlined{
+  margin-bottom:18px;
+  font-size:34px;
+}
+.mc-feature h3,
+.mc-dark-card h3{
+  margin:0 0 10px;
+  color:#fff;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:24px;
+  font-weight:600;
+}
+.mc-feature p,
+.mc-dark-card p{
+  margin:0;
+  color:#f0d8dd;
+  font-size:14px;
+  line-height:1.6;
+}
+.mc-card-link{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  color:#fff!important;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.mc-dark-card{
+  padding:32px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  border:1px solid rgba(255,255,255,.05);
+  background:#353534;
+  color:#fff;
+}
+.mc-dark-card::after{
+  content:"tune";
+  position:absolute;
+  right:18px;
+  top:14px;
+  color:rgba(252,3,109,.11);
+  font-family:"Material Symbols Outlined";
+  font-size:110px;
+  line-height:1;
+}
+.mc-dark-card>*{
+  position:relative;
+  z-index:2;
+}
+.mc-dark-card .material-symbols-outlined{
+  margin-bottom:18px;
+  font-size:34px;
+}
+.mc-mini{
+  padding:28px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.05);
+  background:#1c1b1b;
+  color:#fff;
+}
+.mc-mini .material-symbols-outlined{
+  margin-bottom:16px;
+  font-size:30px;
+}
+.mc-mini h4{
+  margin:0 0 9px;
+  color:#fff;
+  font-family:Manrope,Inter,sans-serif;
+  font-size:19px;
+  font-weight:600;
+}
+.mc-mini p{
+  margin:0;
+  color:#e6bcc2;
+  font-size:13px;
+  line-height:1.55;
+}
+
+@media(max-width:980px){
+  .mc-wrap{width:min(100% - 48px,var(--max))}
+  .mc-deploy-grid{grid-template-columns:1fr}
+  .mc-bento{grid-template-columns:repeat(6,minmax(0,1fr))}
+  .mc-card.large{grid-column:span 4}
+  .mc-card.small{grid-column:span 2}
+}
+@media(max-width:700px){
+  .mc-wrap{width:calc(100% - 32px)}
+  .mc-hero{min-height:720px}
+  .mc-hero-inner{padding:82px 0 58px}
+  .mc-hero h1{font-size:46px}
+  .mc-hero p{font-size:16px}
+  .mc-actions{align-items:stretch}
+  .mc-btn{width:100%}
+  .mc-deployment,.mc-arsenal{padding:64px 0}
+  .mc-deployment h2,.mc-arsenal h2{font-size:32px}
+  .mc-map{height:390px}
+  .mc-bento{grid-template-columns:1fr;grid-auto-rows:auto}
+  .mc-card.large,.mc-card.small{grid-column:auto;min-height:280px}
+}
+</style>
+</head>
+
+<body>
+<div id="site-header"></div>
+
+<main class="monaco-page">
+
+<section class="mc-hero">
+  <div class="mc-hero-bg">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR8N12gti1XgyR1mxi8Snowk7pvx9oZqDp4Im54q5qmhlhepVCNjOuaPtbidNGPlYeTXelc6lUFW1xHbV_YiMb7l6cSUK1OlPVbpLUylXWPwdUBrX6GmlD9ZWVOgKqZRVTg9mfF4SdxQT9WJlbqonjxrvkF-4q7z5IuuaCgkdLo47t4nPSpuqqW4NYp2y5KD-GrdSnWycWtSLDvfhkadtACmqQvmZRxAtWiyL_XDkVtPFr8o5l76XzZgcOs4PeKELuiMTVRMfg33Y"
+         alt="Gala de luxe à Monaco avec installation audio haut de gamme"
+         loading="eager"
+         fetchpriority="high">
+  </div>
+  <div class="mc-hero-overlay"></div>
+
+  <div class="mc-wrap">
+    <div class="mc-hero-inner">
+      <div class="mc-badge">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        Hub Monaco Actif
+      </div>
+
+      <h1>
+        AUDIO D'ÉLITE POUR<br>
+        <span>LA PRINCIPAUTÉ</span>
+      </h1>
+
+      <p>
+        Production technique sans compromis pour les événements les plus prestigieux de Monaco.
+        Des terrasses du Grand Prix aux galas de luxe de Monte-Carlo, nous livrons la perfection acoustique.
+      </p>
+
+      <div class="mc-actions">
+        <a class="mc-btn mc-btn-primary" href="/catalog.html">Explorer l'Inventaire</a>
+        <a class="mc-btn mc-btn-secondary" href="/contact.html?subject=Ingenieur%20Audio%20Monaco">
+          Consulter un Ingénieur
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mc-deployment">
+  <div class="mc-wrap mc-deploy-grid">
+
+    <div class="mc-deployment-copy">
+      <h2>Déploiement Stratégique à Monaco</h2>
+
+      <p>
+        Notre hub de Monaco opère avec une précision militaire durant la haute saison.
+        Nous maintenons des zones de stockage à déploiement rapide pour servir instantanément
+        les secteurs critiques, contournant les défis logistiques de la Principauté.
+      </p>
+
+      <ul class="mc-sector-list">
+        <li class="mc-sector">
+          <div class="mc-sector-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">anchor</span>
+          </div>
+          <div>
+            <h3>Secteur Port Hercule</h3>
+            <p>
+              Systèmes line array étanches spécialisés pour les ponts de superyachts
+              et l'hospitalité en bord de piste lors du Grand Prix.
+            </p>
+          </div>
+        </li>
+
+        <li class="mc-sector">
+          <div class="mc-sector-icon">
+            <span class="material-symbols-outlined" aria-hidden="true">diamond</span>
+          </div>
+          <div>
+            <h3>Galas de Monte-Carlo</h3>
+            <p>
+              Installations Meyer Sound haute fidélité et discrètes pour la Salle des Étoiles
+              et les événements privés du casino.
+            </p>
+          </div>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mc-map">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=7.395%2C43.720%2C7.445%2C43.755&layer=mapnik"
+        loading="lazy"
+        title="Carte réelle de Monaco"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+
+      <div class="mc-pin hercule">
+        <div class="mc-pin-dot"></div>
+        <span class="mc-pin-label">Port Hercule</span>
+      </div>
+
+      <div class="mc-pin montecarlo">
+        <div class="mc-pin-dot"></div>
+        <span class="mc-pin-label">Monte-Carlo</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<section class="mc-arsenal" id="gear">
+  <div class="mc-wrap">
+
+    <div class="mc-arsenal-head">
+      <h2>L'Arsenal de Monaco</h2>
+      <p>Équipement standard de l'industrie exigé par les fiches techniques les plus pointues.</p>
+    </div>
+
+    <div class="mc-bento">
+
+      <article class="mc-card large mc-feature">
+        <div class="mc-feature-content">
+          <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
+          <h3>Meyer Sound PANTHER</h3>
+          <p>
+            Le système line array linéaire phare. Offrant une puissance acoustique et une clarté inégalées
+            pour les grands événements en plein air tout en conservant un profil compact et discret.
+          </p>
+          <a class="mc-card-link" href="/catalog.html?q=Meyer%20Sound%20PANTHER">
+            Voir Meyer Sound PANTHER
+            <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="mc-card small mc-dark-card">
+        <span class="material-symbols-outlined" aria-hidden="true">tune</span>
+        <h3>DiGiCo Quantum</h3>
+        <p>
+          Puissance de traitement et flexibilité inégalées.
+          La console de choix pour le routage complexe des galas et les flux de diffusion en direct.
+        </p>
+        <a class="mc-card-link" href="/catalog.html?q=DiGiCo%20Quantum">
+          Voir DiGiCo Quantum
+          <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+        </a>
+      </article>
+
+      <article class="mc-card small mc-mini">
+        <span class="material-symbols-outlined" aria-hidden="true">mic_external_on</span>
+        <h4>Suprématie Sans Fil</h4>
+        <p>
+          Systèmes Shure Axient Digital garantissant une stabilité RF à toute épreuve
+          dans le spectre encombré de Monaco.
+        </p>
+        <a class="mc-card-link" href="/catalog.html?q=Shure%20Axient%20Digital">
+          Voir Shure Axient
+        </a>
+      </article>
+
+      <article class="mc-card small mc-mini">
+        <span class="material-symbols-outlined" aria-hidden="true">electric_bolt</span>
+        <h4>Énergie Redondante</h4>
+        <p>
+          Onduleurs et systèmes de distribution de grade militaire garantissant zéro interruption
+          lors des moments critiques.
+        </p>
+        <a class="mc-card-link" href="/contact.html?subject=Distribution%20Electrique%20Monaco">
+          Demander une solution
+        </a>
+      </article>
+
+      <article class="mc-card small mc-mini">
+        <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
+        <h4>Techniciens Gants Blancs</h4>
+        <p>
+          Ingénieurs système discrets et multilingues habitués à naviguer
+          dans des environnements VIP hautement sécurisés.
+        </p>
+        <a class="mc-card-link" href="/contact.html?subject=Technicien%20VIP%20Monaco">
+          Contacter l'équipe
+        </a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div id="site-footer"></div>
+
+<script>
+async function loadSharedComponent(targetId,url){
+  const target=document.getElementById(targetId);
+  if(!target)return;
+
+  try{
+    const response=await fetch(url,{cache:"no-cache"});
+    if(!response.ok)throw new Error(`${url} : HTTP ${response.status}`);
+
+    target.innerHTML=await response.text();
+
+    target.querySelectorAll("script").forEach(oldScript=>{
+      const newScript=document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr=>newScript.setAttribute(attr.name,attr.value));
+      newScript.textContent=oldScript.textContent;
+      oldScript.replaceWith(newScript);
+    });
+  }catch(error){
+    console.error("RentSoundSystem shared component load error:",error);
+  }
+}
+
+document.addEventListener("DOMContentLoaded",()=>{
+  Promise.all([
+    loadSharedComponent("site-header","/header.html"),
+    loadSharedComponent("site-footer","/footer.html")
+  ]);
+});
+</script>
+
+</body>
+</html>
