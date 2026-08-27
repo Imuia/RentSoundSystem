@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Location Sono Nosy Be - RentSoundSystem</title>
-<meta name="description" content="Location de sonorisation professionnelle à Nosy Be : systèmes RCF, Pioneer DJ, techniciens sur site et logistique insulaire pour mariages, retraites corporate et beach parties.">
+<meta name="description" content="Location sono Nosy Be : systèmes audio premium, backline DJ, ingénierie technique et logistique événementielle pour mariages, beach parties et événements corporate à Madagascar.">
 <meta name="robots" content="index,follow">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
 
 <style>
@@ -31,17 +31,20 @@ html,body{
 .nosy-page{
   --bg:#131313;
   --lowest:#0e0e0e;
-  --low:#1c1b1b;
+  --low:#181818;
   --surface:#201f1f;
   --high:#2a2a2a;
   --highest:#353534;
   --text:#e5e2e1;
   --muted:#e6bcc2;
+  --muted-2:#c7c0c1;
   --pink:#ffb2bf;
   --magenta:#FC036D;
   --outline:#5d3f44;
-  --line:rgba(255,255,255,.05);
+  --line:rgba(255,255,255,.06);
+  --glass:linear-gradient(145deg,rgba(31,31,31,.62),rgba(20,20,20,.84));
   --max:1280px;
+
   width:100%;
   overflow:hidden;
   background:var(--bg);
@@ -53,565 +56,433 @@ html,body{
 .nosy-page *::before,
 .nosy-page *::after{box-sizing:border-box}
 .nosy-page a{color:inherit;text-decoration:none}
-.nb-wrap{
-  width:min(var(--max),calc(100% - 80px));
-  margin:0 auto;
-}
-.nb-glass{
-  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.82));
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border:1px solid var(--line);
-}
-
-/* HERO */
-.nb-hero{
-  position:relative;
-  min-height:921px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  isolation:isolate;
-}
-.nb-hero-bg{
-  position:absolute;
-  inset:0;
-  z-index:-3;
-}
-.nb-hero-bg img{
-  width:100%;
-  height:100%;
-  display:block;
-  object-fit:cover;
-  object-position:center;
-  opacity:.40;
-}
-.nb-hero-overlay{
-  position:absolute;
-  inset:0;
-  z-index:-2;
-  background:
-    linear-gradient(to top,#131313 0%,rgba(19,19,19,.82) 44%,rgba(19,19,19,.58) 70%,rgba(19,19,19,.18) 100%),
-    radial-gradient(circle at 50% 48%,rgba(252,3,109,.08),transparent 34%);
-}
-.nb-hero-inner{
-  max-width:900px;
-  margin:0 auto;
-  padding:100px 0 76px;
-  text-align:center;
-}
-.nb-badge{
-  display:inline-flex;
-  align-items:center;
-  gap:9px;
-  margin-bottom:32px;
-  padding:8px 16px;
-  border:1px solid rgba(255,178,191,.22);
-  border-radius:999px;
-  background:rgba(255,178,191,.10);
-  color:var(--pink);
-  font-size:11px;
-  font-weight:600;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-  backdrop-filter:blur(8px);
-}
-.nb-badge .material-symbols-outlined{font-size:15px}
-.nb-hero h1{
-  margin:0 0 24px;
-  color:var(--text);
+.nosy-wrap{width:min(var(--max),calc(100% - 80px));margin:0 auto}
+.nosy-section{padding:96px 0}
+.nosy-title{
+  margin:0 0 18px;
   font-family:Manrope,Inter,sans-serif;
-  font-size:72px;
-  line-height:1.1;
-  font-weight:700;
+  font-size:40px;
+  line-height:1.15;
+  font-weight:800;
   letter-spacing:-.02em;
 }
-.nb-hero h1 span{color:var(--pink)}
-.nb-hero p{
-  max-width:700px;
-  margin:0 auto 40px;
-  color:var(--muted);
-  font-size:20px;
-  line-height:1.6;
+.nosy-text{margin:0;color:var(--muted-2);font-size:16px;line-height:1.7}
+.nosy-glass{
+  background:var(--glass);
+  border:1px solid var(--line);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
-.nb-actions{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:16px;
-}
-.nb-btn{
+.nosy-btn{
   min-height:52px;
   display:inline-flex;
   align-items:center;
   justify-content:center;
+  gap:10px;
   padding:14px 28px;
-  border-radius:4px;
-  border:1px solid transparent;
+  border-radius:999px;
   font-size:12px;
+  line-height:1;
   font-weight:700;
   letter-spacing:.12em;
   text-transform:uppercase;
   transition:.2s ease;
 }
-.nb-btn:hover{transform:translateY(-2px)}
-.nb-btn-primary{
-  background:#ff4d80;
+.nosy-btn:hover{transform:translateY(-2px)}
+.nosy-btn-primary{
+  background:var(--magenta);
   color:#fff!important;
-  box-shadow:0 0 30px rgba(252,3,109,.30);
+  box-shadow:0 0 28px rgba(252,3,109,.34);
 }
-.nb-btn-secondary{
-  background:rgba(31,31,31,.62);
-  border-color:var(--outline);
+.nosy-btn-secondary{
   color:var(--text)!important;
+  border:1px solid var(--outline);
+  background:rgba(31,31,31,.55);
+}
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 16px;
+  border-radius:999px;
+  border:1px solid rgba(252,3,109,.28);
+  background:rgba(31,31,31,.62);
+  color:var(--magenta);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
   backdrop-filter:blur(10px);
 }
+.badge .material-symbols-outlined{
+  font-size:15px;
+  font-variation-settings:'FILL' 1;
+}
+.material-symbols-outlined{
+  font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+}
 
-/* BENTO */
-.nb-elements{
-  padding:96px 0;
-  background:var(--low);
+/* HERO */
+.nosy-hero{
+  position:relative;
+  min-height:920px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  isolation:isolate;
+  background:var(--lowest);
 }
-.nb-head{
-  max-width:760px;
-  margin:0 auto 64px;
+.nosy-hero-bg,.nosy-hero-overlay{position:absolute;inset:0}
+.nosy-hero-bg{z-index:-3}
+.nosy-hero-bg img{
+  width:100%;height:100%;display:block;object-fit:cover;object-position:center;opacity:.42;
+}
+.nosy-hero-overlay{
+  z-index:-2;
+  background:
+    linear-gradient(to top,#131313 0%,rgba(19,19,19,.90) 35%,rgba(19,19,19,.58) 68%,rgba(19,19,19,.18) 100%),
+    radial-gradient(circle at 50% 18%,rgba(252,3,109,.14),transparent 28%),
+    radial-gradient(circle at 50% 65%,rgba(255,120,160,.08),transparent 34%);
+}
+.nosy-hero-inner{
+  max-width:920px;
   text-align:center;
+  padding:110px 0 78px;
 }
-.nb-head h2,
-.nb-network h2{
-  margin:0 0 16px;
-  color:var(--text);
+.nosy-hero .badge{margin-bottom:28px}
+.nosy-hero h1{
+  margin:0 0 26px;
   font-family:Manrope,Inter,sans-serif;
-  font-size:40px;
-  line-height:1.2;
-  font-weight:700;
+  font-size:76px;
+  line-height:1.04;
+  font-weight:800;
+  letter-spacing:-.03em;
 }
-.nb-head p,
-.nb-network > div > p{
-  margin:0 auto;
+.nosy-hero h1 span{
+  background:linear-gradient(90deg,var(--magenta),#ff4d80 72%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  text-shadow:0 0 18px rgba(252,3,109,.22);
+}
+.nosy-hero p{
+  max-width:760px;
+  margin:0 auto 40px;
   color:var(--muted);
-  font-size:16px;
+  font-size:20px;
   line-height:1.65;
 }
-.nb-bento{
+.nosy-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:16px}
+
+/* FEATURES */
+.nosy-features{background:var(--low)}
+.nosy-heading-center{max-width:760px;margin:0 auto 54px;text-align:center}
+.nosy-grid{
   display:grid;
   grid-template-columns:repeat(12,minmax(0,1fr));
   gap:24px;
 }
-.nb-card{
+.nosy-card{
   position:relative;
   overflow:hidden;
+  border-radius:20px;
   padding:32px;
-  border-radius:12px;
-  min-height:280px;
+  min-height:270px;
 }
-.nb-card.span8{grid-column:span 8}
-.nb-card.span4{grid-column:span 4}
-.nb-card.span5{grid-column:span 5}
-.nb-card.span7{grid-column:span 7}
-.nb-card-icon{
-  width:48px;
-  height:48px;
-  display:grid;
-  place-items:center;
-  margin-bottom:24px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  background:var(--highest);
-  color:var(--pink);
-}
-.nb-card-icon .material-symbols-outlined{font-size:24px}
-.nb-card h3{
+.nosy-card h3{
   margin:0 0 14px;
-  color:var(--text);
   font-family:Manrope,Inter,sans-serif;
-  font-size:24px;
-  font-weight:600;
-}
-.nb-card p{
-  max-width:650px;
-  margin:0;
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.62;
-}
-.nb-dj-card{
-  min-height:300px;
-  display:flex;
-  align-items:flex-end;
-}
-.nb-dj-bg{
-  position:absolute;
-  inset:0;
-}
-.nb-dj-bg img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  opacity:.30;
-  filter:saturate(.85);
-}
-.nb-dj-bg::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(to top,var(--low) 8%,rgba(28,27,27,.52) 58%,transparent 100%);
-}
-.nb-dj-content{
-  position:relative;
-  z-index:2;
-}
-.nb-card-link{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  margin-top:20px;
-  color:var(--pink)!important;
-  font-size:12px;
+  font-size:28px;
+  line-height:1.2;
   font-weight:700;
 }
+.nosy-card p{margin:0;color:var(--muted);font-size:16px;line-height:1.72}
+.nosy-icon{
+  width:52px;height:52px;border-radius:16px;display:grid;place-items:center;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);margin-bottom:22px;
+}
+.nosy-icon .material-symbols-outlined{font-size:26px;color:var(--magenta)}
+.nosy-card.large{grid-column:span 8}
+.nosy-card.small{grid-column:span 4}
+.nosy-card.medium{grid-column:span 5}
+.nosy-card.image{grid-column:span 7;padding:0;display:flex;align-items:flex-end;min-height:330px}
+.nosy-card.image img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.32}
+.nosy-card.image::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(19,19,19,.95),rgba(19,19,19,.35) 55%,rgba(19,19,19,.08));
+}
+.nosy-card .content{position:relative;z-index:2}
 
 /* NETWORK */
-.nb-network{
-  padding:96px 0;
-  background:var(--bg);
-  border-block:1px solid var(--line);
-}
-.nb-network-grid{
+.nosy-network{background:var(--bg);border-block:1px solid var(--line)}
+.nosy-network-grid{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:minmax(0,1fr) minmax(0,1fr);
   gap:64px;
   align-items:center;
 }
-.nb-network-copy p{
-  margin:0 0 30px;
-  color:var(--muted);
-  font-size:16px;
-  line-height:1.65;
+.nosy-points{list-style:none;margin:32px 0 0;padding:0;display:grid;gap:24px}
+.nosy-point{display:flex;align-items:flex-start;gap:16px}
+.nosy-point-icon{
+  width:40px;height:40px;border-radius:999px;flex:0 0 40px;
+  display:grid;place-items:center;background:rgba(252,3,109,.08);border:1px solid rgba(252,3,109,.24);
+  box-shadow:0 0 18px rgba(252,3,109,.15);
 }
-.nb-hubs{
-  list-style:none;
-  margin:0;
-  padding:0;
-  display:grid;
-  gap:24px;
-}
-.nb-hub{
-  display:flex;
-  align-items:flex-start;
-  gap:16px;
-}
-.nb-hub-icon{
-  flex:0 0 auto;
-  width:34px;
-  height:34px;
-  display:grid;
-  place-items:center;
-  margin-top:2px;
-  border:2px solid var(--outline);
-  border-radius:50%;
-  background:var(--highest);
-  color:var(--muted);
-}
-.nb-hub.active .nb-hub-icon{
-  border-color:var(--pink);
-  color:var(--pink);
-  box-shadow:0 0 20px rgba(252,3,109,.28);
-}
-.nb-hub-icon .material-symbols-outlined{font-size:17px}
-.nb-hub h4{
-  margin:0 0 4px;
-  color:var(--text);
-  font-family:Manrope,Inter,sans-serif;
-  font-size:19px;
-  font-weight:600;
-}
-.nb-hub p{
-  margin:0;
-  color:var(--muted);
-  font-size:14px;
-  line-height:1.5;
-}
+.nosy-point-icon .material-symbols-outlined{font-size:20px;color:var(--magenta);font-variation-settings:'FILL' 1}
+.nosy-point h4{margin:0 0 6px;font-family:Manrope,Inter,sans-serif;font-size:22px;line-height:1.2}
+.nosy-point p{margin:0;color:var(--muted);font-size:15px;line-height:1.65}
 
-/* REAL MAP */
-.nb-map{
+.nosy-map{
   position:relative;
-  height:500px;
+  min-height:500px;
+  border-radius:24px;
   overflow:hidden;
-  padding:8px;
-  border-radius:12px;
-  background:linear-gradient(145deg,rgba(31,31,31,.60),rgba(20,20,20,.82));
+  background:var(--lowest);
   border:1px solid var(--line);
+  box-shadow:0 18px 48px rgba(0,0,0,.28),0 0 0 1px rgba(255,255,255,.02) inset;
 }
-.nb-map-inner{
-  position:relative;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  border-radius:8px;
-  background:#111;
-}
-.nb-map iframe{
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  filter:invert(92%) hue-rotate(178deg) brightness(.58) contrast(1.22) saturate(.78);
-}
-.nb-map-inner::before{
-  content:"";
+.nosy-map iframe{
   position:absolute;
   inset:0;
-  z-index:2;
-  pointer-events:none;
+  width:100%;height:100%;border:0;
+  filter:grayscale(1) contrast(1.05) brightness(.55) sepia(.14) hue-rotate(270deg) saturate(1.5);
+}
+.nosy-map::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
   background:
-    radial-gradient(circle at 50% 50%,rgba(252,3,109,.07),transparent 43%),
-    linear-gradient(135deg,rgba(252,3,109,.03),rgba(0,0,0,.08));
-  mix-blend-mode:color;
+    linear-gradient(to top,rgba(19,19,19,.24),rgba(19,19,19,.05)),
+    radial-gradient(circle at 50% 50%,rgba(252,3,109,.10),transparent 55%);
 }
-.nb-map-pin{
-  position:absolute;
-  z-index:4;
-  transform:translate(-50%,-50%);
+.nosy-map-tag{
+  position:absolute;left:22px;bottom:22px;z-index:5;
+  padding:12px 16px;border-radius:14px;
+  background:rgba(19,19,19,.78);border:1px solid rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
 }
-.nb-map-pin span{
-  display:block;
-  width:15px;
-  height:15px;
-  border:2px solid #fff;
-  border-radius:50%;
-  background:var(--magenta);
-  box-shadow:0 0 0 6px rgba(252,3,109,.16),0 0 22px rgba(252,3,109,.80);
+.nosy-map-tag strong{display:block;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);margin-bottom:4px}
+.nosy-map-tag span{display:block;font-size:12px;color:#d9d1d3}
+.nosy-pin{position:absolute;z-index:4;display:flex;flex-direction:column;align-items:center;gap:8px;transform:translate(-50%,-50%)}
+.nosy-pin-dot{
+  width:18px;height:18px;border-radius:999px;background:var(--magenta);
+  box-shadow:0 0 0 5px rgba(252,3,109,.16),0 0 22px rgba(252,3,109,.55);
+  border:2px solid #ffdbe3;
 }
-.nb-map-pin.hellville{left:58%;top:69%}
-.nb-map-pin.ambatoloaka{left:42%;top:66%}
-.nb-map-pin.andilana{left:33%;top:28%}
-.nb-map-label{
-  position:absolute;
-  z-index:5;
-  left:14px;
-  bottom:14px;
-  max-width:calc(100% - 28px);
-  padding:11px 13px;
-  border:1px solid var(--line);
-  border-radius:10px;
-  background:rgba(14,14,14,.84);
-  color:#fff;
-  backdrop-filter:blur(10px);
+.nosy-pin-label{
+  padding:7px 10px;border-radius:999px;background:rgba(18,18,18,.74);border:1px solid rgba(255,255,255,.09);
+  color:#fff;font-size:11px;line-height:1;font-weight:700;letter-spacing:.08em;white-space:nowrap;text-transform:uppercase;
 }
-.nb-map-label strong{
-  display:block;
-  margin-bottom:3px;
-  color:var(--pink);
-  font-size:12px;
-}
-.nb-map-label small{
-  color:var(--muted);
-  font-size:11px;
-}
+.nosy-pin.pin-hellville{left:58%;top:38%}
+.nosy-pin.pin-ambatoloaka{left:49%;top:57%}
+.nosy-pin.pin-andilana{left:32%;top:27%}
 
-@media(max-width:980px){
-  .nb-wrap{width:min(100% - 48px,var(--max))}
-  .nb-bento{grid-template-columns:repeat(6,minmax(0,1fr))}
-  .nb-card.span8,.nb-card.span7{grid-column:span 4}
-  .nb-card.span4,.nb-card.span5{grid-column:span 2}
-  .nb-network-grid{grid-template-columns:1fr}
+/* CTA */
+.nosy-cta{background:var(--low);border-top:1px solid var(--line)}
+.nosy-cta-box{
+  border-radius:28px;padding:48px 52px;text-align:center;
+  background:linear-gradient(145deg,rgba(252,3,109,.12),rgba(31,31,31,.86));
+  border:1px solid rgba(252,3,109,.18);
 }
-@media(max-width:700px){
-  .nb-wrap{width:calc(100% - 32px)}
-  .nb-hero{min-height:720px}
-  .nb-hero-inner{padding:84px 0 60px}
-  .nb-hero h1{font-size:46px}
-  .nb-hero p{font-size:16px}
-  .nb-actions{align-items:stretch}
-  .nb-btn{width:100%}
-  .nb-elements,.nb-network{padding:64px 0}
-  .nb-head h2,.nb-network h2{font-size:32px}
-  .nb-bento{grid-template-columns:1fr}
-  .nb-card.span8,.nb-card.span7,.nb-card.span4,.nb-card.span5{grid-column:auto}
-  .nb-map{height:390px}
+.nosy-cta-box h2{margin:0 0 16px;font-family:Manrope,Inter,sans-serif;font-size:46px;line-height:1.12;font-weight:800}
+.nosy-cta-box p{max-width:820px;margin:0 auto 28px;color:var(--muted);font-size:18px;line-height:1.7}
+
+@media (max-width:1100px){
+  .nosy-card.large,.nosy-card.small,.nosy-card.medium,.nosy-card.image{grid-column:span 12}
+  .nosy-network-grid{grid-template-columns:1fr;gap:40px}
+}
+@media (max-width:860px){
+  .nosy-wrap{width:min(var(--max),calc(100% - 40px))}
+  .nosy-section{padding:72px 0}
+  .nosy-hero{min-height:820px}
+  .nosy-hero-inner{padding:90px 0 50px}
+  .nosy-hero h1{font-size:54px}
+  .nosy-hero p{font-size:18px}
+  .nosy-title{font-size:34px}
+  .nosy-card{padding:26px;min-height:240px}
+  .nosy-cta-box{padding:38px 24px}
+  .nosy-cta-box h2{font-size:34px}
+}
+@media (max-width:560px){
+  .nosy-hero{min-height:740px}
+  .nosy-hero h1{font-size:42px;line-height:1.08}
+  .nosy-hero p{font-size:16px;line-height:1.7}
+  .nosy-actions{flex-direction:column}
+  .nosy-btn{width:100%}
+  .nosy-title{font-size:30px}
+  .nosy-map{min-height:380px}
+  .nosy-pin-label{font-size:10px;padding:6px 9px}
 }
 </style>
 </head>
-
 <body>
 <div id="site-header"></div>
 
 <main class="nosy-page">
 
-<section class="nb-hero">
-  <div class="nb-hero-bg">
-    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNXgWHsZt5TfL5P0bsldQcn7enR-7YIuHEX4NDyRAERmKDhIND_RyWnITuRvj0P-yvb4IvEza_Y1Y8Q3_KUHoIoXR671u7ZdFL4IKK6jchK1RVOQTxptHnZo1-m_XeTHj5WCgO0fzwIVEbFAVPGtB-wmmZeKYp50XeOIiyqL58I-RJCwORiAGZqYInWnt8Gd6YVz4UY5DnfJ10Mo8nzmBXis2uluC279frAqAlLUGO2pY7ZnwVTtykq6ChFjcCBKfWBuhNuWTCSuI"
-         alt="Coucher de soleil sur une plage de Nosy Be avec installation audio professionnelle"
-         loading="eager"
-         fetchpriority="high">
+<section class="nosy-hero">
+  <div class="nosy-hero-bg">
+    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNXgWHsZt5TfL5P0bsldQcn7enR-7YIuHEX4NDyRAERmKDhIND_RyWnITuRvj0P-yvb4IvEza_Y1Y8Q3_KUHoIoXR671u7ZdFL4IKK6jchK1RVOQTxptHnZo1-m_XeTHj5WCgO0fzwIVEbFAVPGtB-wmmZeKYp50XeOIiyqL58I-RJCwORiAGZqYInWnt8Gd6YVz4UY5DnfJ10Mo8nzmBXis2uluC279frAqAlLUGO2pY7ZnwVTtykq6ChFjcCBKfWBuhNuWTCSuI" alt="Coucher de soleil à Nosy Be avec installation audio haut de gamme" loading="eager" fetchpriority="high">
   </div>
-  <div class="nb-hero-overlay"></div>
+  <div class="nosy-hero-overlay"></div>
 
-  <div class="nb-wrap">
-    <div class="nb-hero-inner">
-      <div class="nb-badge">
-        <span class="material-symbols-outlined" aria-hidden="true">campaign</span>
-        Now Serving Nosy Be
+  <div class="nosy-wrap">
+    <div class="nosy-hero-inner">
+      <div class="badge">
+        <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
+        Hub Nosy Be opérationnel
       </div>
 
-      <h1>Acoustic Perfection for <span>Destination Events</span></h1>
+      <h1>LOCATION SONO<br><span>NOSY BE</span></h1>
 
       <p>
-        Premium professional audio rentals engineered for the unique environmental demands of Madagascar's coastal venues.
-        Uncompromising sound for weddings, corporate retreats, and exclusive beach parties.
+        Sonorisation professionnelle premium pour mariages, événements corporate, villas privées,
+        beach parties et prestations haut de gamme à Madagascar. Une logistique locale maîtrisée,
+        un son irréprochable et une équipe technique prête à intervenir sur toute l'île.
       </p>
 
-      <div class="nb-actions">
-        <a class="nb-btn nb-btn-primary" href="/catalog.html">Explore Inventory</a>
-        <a class="nb-btn nb-btn-secondary" href="/contact.html?subject=Ingenieur%20Audio%20Nosy%20Be">Consult an Engineer</a>
+      <div class="nosy-actions">
+        <a class="nosy-btn nosy-btn-primary" href="/catalog.html">Explorer l'inventaire</a>
+        <a class="nosy-btn nosy-btn-secondary" href="/contact.html?subject=Location%20Sono%20Nosy%20Be">Consulter un ingénieur</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="nb-elements">
-  <div class="nb-wrap">
-    <div class="nb-head">
-      <h2>Engineered for the Elements</h2>
-      <p>
-        Deploying high-fidelity sound in tropical environments requires specialized gear and logistical expertise.
-        We provide both.
+<section class="nosy-section nosy-features">
+  <div class="nosy-wrap">
+    <div class="nosy-heading-center">
+      <h2 class="nosy-title">Pensé pour les conditions réelles</h2>
+      <p class="nosy-text">
+        Humidité, air salin, accès parfois complexes et exigences premium : notre parc et notre organisation
+        sont pensés pour livrer une prestation fiable, élégante et techniquement irréprochable à Nosy Be.
       </p>
     </div>
 
-    <div class="nb-bento">
-
-      <article class="nb-card nb-glass span8">
-        <div class="nb-card-icon">
-          <span class="material-symbols-outlined" aria-hidden="true">speaker</span>
-        </div>
-        <h3>Outdoor-Ready RCF Systems</h3>
-        <p>
-          Our inventory features weather-resistant RCF active line arrays and subwoofers, delivering pristine clarity
-          and chest-thumping bass despite humidity, salt air, or unpredictable island weather.
-        </p>
-        <a class="nb-card-link" href="/catalog.html?q=RCF%20Line%20Array%20Subwoofer">
-          View RCF Systems
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </a>
-      </article>
-
-      <article class="nb-card nb-glass span4">
-        <div class="nb-card-icon">
-          <span class="material-symbols-outlined" aria-hidden="true">support_agent</span>
-        </div>
-        <h3>On-Site Technicians</h3>
-        <p>
-          Every rental includes setup, tuning, and monitoring by certified audio engineers familiar with Nosy Be's acoustic challenges.
-        </p>
-        <a class="nb-card-link" href="/contact.html?subject=Technicien%20Sur%20Site%20Nosy%20Be">
-          Book Technical Support
-          <span class="material-symbols-outlined">arrow_forward</span>
-        </a>
-      </article>
-
-      <article class="nb-card nb-glass span5">
-        <div class="nb-card-icon">
-          <span class="material-symbols-outlined" aria-hidden="true">local_shipping</span>
-        </div>
-        <h3>Island Logistics</h3>
-        <p>
-          From Hell-Ville hubs to remote beach locations, our specialized transport fleet ensures your gear arrives safely and on time,
-          navigating challenging island terrain.
-        </p>
-        <a class="nb-card-link" href="#nosy-network">
-          View Nosy Be Network
-          <span class="material-symbols-outlined">arrow_downward</span>
-        </a>
-      </article>
-
-      <article class="nb-card nb-glass nb-dj-card span7">
-        <div class="nb-dj-bg">
-          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLGrgwwlb7GcUwtrxE9ZNWeSi5_m4UmiUplOERxtueNEgqFvxBSh9eDUiegQwFE59pl31pSg8vM4fZPd5DHoiETgb62QHZPHW7NGr-atVV2flaCUaPFBfSft0kjU2iY-WhZ2pLg2nZXvTS-Vdc5EZad1dcA1I9DMYzONLg1Xr-bP1HqTH1uf8vEZSB3m4ZMsAtrulh8ODZVfa6_DR0KGIe_fDiUOCDeg8q6ALVsS0StLgWgQpltKzAqMoAs8x0_hoWT3tqPAXnWz0"
-               alt="Régie DJ premium à Nosy Be"
-               loading="lazy">
-        </div>
-        <div class="nb-dj-content">
-          <h3>Premium DJ Backline</h3>
+    <div class="nosy-grid">
+      <article class="nosy-card nosy-glass large">
+        <div class="content">
+          <div class="nosy-icon"><span class="material-symbols-outlined">speaker</span></div>
+          <h3>Systèmes audio adaptés au climat tropical</h3>
           <p>
-            Industry-standard Pioneer CDJs, Allen &amp; Heath mixers, and flawless wireless microphone systems
-            for seamless performances.
+            Nous déployons des solutions line array, enceintes, subs et retours sélectionnés pour leur fiabilité
+            en environnement côtier. Clarté, réserve de puissance et tenue dans la durée pour les événements en extérieur.
           </p>
-          <a class="nb-card-link" href="/catalog.html?q=Pioneer%20DJ%20Allen%20Heath">
-            View DJ Backline
-            <span class="material-symbols-outlined">arrow_forward</span>
-          </a>
         </div>
       </article>
 
+      <article class="nosy-card nosy-glass small">
+        <div class="content">
+          <div class="nosy-icon"><span class="material-symbols-outlined">support_agent</span></div>
+          <h3>Techniciens sur site</h3>
+          <p>
+            Installation, réglages, monitoring et accompagnement technique par une équipe habituée aux contraintes acoustiques et logistiques de Nosy Be.
+          </p>
+        </div>
+      </article>
+
+      <article class="nosy-card nosy-glass medium">
+        <div class="content">
+          <div class="nosy-icon"><span class="material-symbols-outlined">local_shipping</span></div>
+          <h3>Logistique insulaire fluide</h3>
+          <p>
+            Depuis Hell-Ville jusqu'aux plages et resorts les plus exclusifs, nous coordonnons le transport,
+            le timing et le déploiement pour garantir une arrivée ponctuelle et un montage sans friction.
+          </p>
+        </div>
+      </article>
+
+      <article class="nosy-card nosy-glass image">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLGrgwwlb7GcUwtrxE9ZNWeSi5_m4UmiUplOERxtueNEgqFvxBSh9eDUiegQwFE59pl31pSg8vM4fZPd5DHoiETgb62QHZPHW7NGr-atVV2flaCUaPFBfSft0kjU2iY-WhZ2pLg2nZXvTS-Vdc5EZad1dcA1I9DMYzONLg1Xr-bP1HqTH1uf8vEZSB3m4ZMsAtrulh8ODZVfa6_DR0KGIe_fDiUOCDeg8q6ALVsS0StLgWgQpltKzAqMoAs8x0_hoWT3tqPAXnWz0" alt="Backline DJ premium pour événements à Nosy Be" loading="lazy">
+        <div class="content" style="padding:32px;">
+          <h3>Backline DJ premium</h3>
+          <p>
+            Pioneer DJ, tables de mixage haut de gamme, micros HF et périphériques prêts à l'emploi pour
+            soirées privées, mariages de destination, DJ sets et événements signature.
+          </p>
+        </div>
+      </article>
     </div>
   </div>
 </section>
 
-<section class="nb-network" id="nosy-network">
-  <div class="nb-wrap nb-network-grid">
-
-    <div class="nb-network-copy">
-      <h2>Nosy Be Network</h2>
-
-      <p>
-        Strategically positioned hubs in Hell-Ville allow for rapid deployment to any resort or private beach on the island.
-        We understand the local logistics required to execute flawless events in Madagascar's premier destination.
+<section class="nosy-section nosy-network">
+  <div class="nosy-wrap nosy-network-grid">
+    <div>
+      <h2 class="nosy-title">Réseau logistique à Nosy Be</h2>
+      <p class="nosy-text">
+        Notre présence locale nous permet d'intervenir rapidement sur les principaux pôles de l'île : hôtels,
+        villas, plages privées, lieux de réception et sites événementiels. Nous adaptons notre déploiement au
+        standing du lieu comme aux contraintes d'accès.
       </p>
 
-      <ul class="nb-hubs">
-        <li class="nb-hub active">
-          <div class="nb-hub-icon">
-            <span class="material-symbols-outlined" aria-hidden="true">location_on</span>
-          </div>
+      <ul class="nosy-points">
+        <li class="nosy-point">
+          <div class="nosy-point-icon"><span class="material-symbols-outlined">storefront</span></div>
           <div>
-            <h4>Hell-Ville Central Hub</h4>
-            <p>Main equipment depot and technical repair center.</p>
+            <h4>Hell-Ville Hub Central</h4>
+            <p>Base opérationnelle principale, stockage matériel, coordination logistique et support technique.</p>
           </div>
         </li>
 
-        <li class="nb-hub">
-          <div class="nb-hub-icon">
-            <span class="material-symbols-outlined" aria-hidden="true">beach_access</span>
-          </div>
+        <li class="nosy-point">
+          <div class="nosy-point-icon"><span class="material-symbols-outlined">beach_access</span></div>
           <div>
-            <h4>West Coast Resorts</h4>
-            <p>Rapid deployment to Ambatoloaka and Andilana areas.</p>
+            <h4>Ambatoloaka & plages événementielles</h4>
+            <p>Déploiement rapide pour beach clubs, soirées privées, cocktails, mariages et prestations sunset.</p>
+          </div>
+        </li>
+
+        <li class="nosy-point">
+          <div class="nosy-point-icon"><span class="material-symbols-outlined">hotel</span></div>
+          <div>
+            <h4>Andilana & resorts premium</h4>
+            <p>Interventions sur sites haut de gamme pour événements corporate, réceptions privées et hospitality de prestige.</p>
           </div>
         </li>
       </ul>
     </div>
 
-    <div class="nb-map">
-      <div class="nb-map-inner">
-        <iframe
-          src="https://www.openstreetmap.org/export/embed.html?bbox=48.10%2C-13.55%2C48.40%2C-13.15&layer=mapnik"
-          loading="lazy"
-          title="Carte réelle de Nosy Be"
-          referrerpolicy="no-referrer-when-downgrade">
-        </iframe>
+    <div class="nosy-map">
+      <iframe
+        src="https://www.openstreetmap.org/export/embed.html?bbox=47.80%2C-13.48%2C48.53%2C-13.05&layer=mapnik"
+        loading="lazy"
+        title="Carte de Nosy Be"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
 
-        <div class="nb-map-pin hellville" title="Hell-Ville">
-          <span></span>
-        </div>
+      <div class="nosy-pin pin-andilana">
+        <div class="nosy-pin-dot"></div>
+        <span class="nosy-pin-label">Andilana</span>
+      </div>
+      <div class="nosy-pin pin-hellville">
+        <div class="nosy-pin-dot"></div>
+        <span class="nosy-pin-label">Hell-Ville</span>
+      </div>
+      <div class="nosy-pin pin-ambatoloaka">
+        <div class="nosy-pin-dot"></div>
+        <span class="nosy-pin-label">Ambatoloaka</span>
+      </div>
 
-        <div class="nb-map-pin ambatoloaka" title="Ambatoloaka">
-          <span></span>
-        </div>
-
-        <div class="nb-map-pin andilana" title="Andilana">
-          <span></span>
-        </div>
-
-        <div class="nb-map-label">
-          <strong>Nosy Be • Live Deployment Network</strong>
-          <small>Hell‑Ville • Ambatoloaka • Andilana</small>
-        </div>
+      <div class="nosy-map-tag">
+        <strong>Zone desservie</strong>
+        <span>Intervention rapide sur Nosy Be et zones touristiques clés</span>
       </div>
     </div>
+  </div>
+</section>
 
+<section class="nosy-section nosy-cta">
+  <div class="nosy-wrap">
+    <div class="nosy-cta-box">
+      <h2>Prêt à sonoriser votre événement à Nosy Be ?</h2>
+      <p>
+        Que vous organisiez un mariage de destination, une réception privée, une soirée DJ, un lancement de marque
+        ou un événement corporate à Madagascar, nous vous accompagnons de la conception technique à la mise en œuvre.
+      </p>
+      <div class="nosy-actions">
+        <a class="nosy-btn nosy-btn-primary" href="/catalog.html">Voir le catalogue</a>
+        <a class="nosy-btn nosy-btn-secondary" href="/contact.html?subject=Devis%20Location%20Sono%20Nosy%20Be">Demander un devis</a>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -648,6 +519,5 @@ document.addEventListener("DOMContentLoaded",()=>{
   ]);
 });
 </script>
-
 </body>
 </html>
