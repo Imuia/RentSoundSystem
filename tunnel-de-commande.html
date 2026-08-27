@@ -401,11 +401,11 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   </div>
   <div class="rounded border border-primary/30 bg-primary/10 p-4 text-sm text-on-surface-variant">
     <strong class="text-primary">Information caution obligatoire :</strong><br>
-    Une empreinte bancaire correspondant au montant de la caution sera autorisée. Elle n’est pas débitée automatiquement.
+    La caution est gérée par Stripe via une empreinte bancaire. Pour les réservations anticipées, la carte est enregistrée de façon sécurisée et l’empreinte est réalisée avant le début de la location. Elle n’est pas débitée automatiquement.
   </div>
   <label class="flex items-start gap-3 text-sm text-on-surface-variant">
     <input id="accept-deposit-terms" type="checkbox" class="mt-1">
-    <span>J’accepte les conditions de caution et l’empreinte bancaire.</span>
+    <span>J’accepte les conditions de caution et l’utilisation sécurisée de mon moyen de paiement pour réaliser l’empreinte bancaire avant la location.</span>
   </label>
   <div id="stripe-card-element" aria-label="Champ de carte bancaire sécurisé Stripe"></div>
   <div id="stripe-card-errors" class="text-error text-sm"></div>
@@ -1540,7 +1540,10 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
       rental_payment_intent_id:rentalPI?.id || data.rental_payment_intent_id || '',
       rental_status:rentalPI?.status || '',
       deposit_payment_intent_id:depositPI?.id || data.deposit_payment_intent_id || '',
-      deposit_status:depositPI?.status || '',
+      deposit_status:depositPI?.status || (data.deposit_scheduled ? 'scheduled' : ''),
+      deposit_mode:data.deposit_mode || 'immediate',
+      deposit_scheduled:!!data.deposit_scheduled,
+      deposit_authorize_on:data.deposit_authorize_on || '',
       reservation_id:data.reservation_id || order.id,
       status:'stripe_confirmed',
       created_at:new Date().toISOString()
@@ -1601,7 +1604,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
         btn.innerHTML=original;
         return;
       }
-      showStripeMessage('Paiement validé et caution autorisée. Redirection vers la confirmation...','success');
+      showStripeMessage(
+        stripeResult.deposit_scheduled
+          ? 'Paiement validé. La carte est enregistrée chez Stripe et l’empreinte de caution sera réalisée avant la location. Redirection...'
+          : 'Paiement validé et caution autorisée. Redirection vers la confirmation...',
+        'success'
+      );
       btn.innerHTML='<span class="material-symbols-outlined">check_circle</span> Paiement validé';
       setTimeout(function(){
         window.location.href='/confirmation-de-commande.html?order='+encodeURIComponent(finalOrder.id)+'&stripe=confirmed';

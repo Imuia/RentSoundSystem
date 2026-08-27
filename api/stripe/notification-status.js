@@ -45,17 +45,28 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: "Commande introuvable." });
     }
 
-    let depositAuthorized = true;
     const depositIntentId = text(metadata.linked_deposit_payment_intent_id);
+    const depositAmountCents = Number(metadata.deposit_amount_cents || 0);
+    const depositMode = text(metadata.deposit_mode, depositIntentId ? "immediate" : "");
+    const depositRequired = depositAmountCents > 0 || Boolean(depositIntentId);
+
+    // Une caution programmée sans PaymentIntent n'est PAS encore autorisée.
+    let depositAuthorized = !depositRequired;
+    let depositStatus = depositRequired ? (depositMode === "scheduled" ? "scheduled" : "pending") : "not_required";
+
     if (depositIntentId) {
       const deposit = await stripe.paymentIntents.retrieve(depositIntentId);
       depositAuthorized = deposit.status === "requires_capture";
+      depositStatus = deposit.status;
     }
 
     res.setHeader("Cache-Control", "no-store");
     return res.status(200).json({
       payment_status: rental.status,
       deposit_authorized: depositAuthorized,
+      deposit_status: depositStatus,
+      deposit_mode: depositMode || null,
+      deposit_authorize_on: text(metadata.deposit_authorize_on) || null,
       notifications: {
         overall: text(metadata.notification_status, "pending"),
         customer: recipientStatus(metadata, "customer")

@@ -341,6 +341,14 @@ function publicPricing(pricing) {
   };
 }
 
+function depositAuthorizeOn(startDate, daysBefore = 2) {
+  const value = isoDate(startDate);
+  if (!value) return "";
+  const date = new Date(`${value}T00:00:00Z`);
+  date.setUTCDate(date.getUTCDate() - Math.max(1, Math.floor(Number(daysBefore) || 2)));
+  return date.toISOString().slice(0, 10);
+}
+
 export default async function handler(req, res) {
   try {
     if (req.method !== "POST") {
@@ -363,6 +371,16 @@ export default async function handler(req, res) {
     const pricing = computePricing(listing, body.reservation || {});
     const currency = pricing.currency;
     if (!/^[a-z]{3}$/i.test(currency)) return res.status(400).json({ error: "Devise Stripe invalide." });
+
+    // Feature flag rétrocompatible :
+    // - immediate (défaut) = fonctionnement historique inchangé
+    // - scheduled = carte sauvegardée, empreinte créée ultérieurement
+    const depositMode = String(process.env.RSS_DEPOSIT_MODE || "immediate").trim().toLowerCase();
+    const scheduledDeposit = depositMode === "scheduled" && pricing.deposit_cents >= 50;
+    const authorizeBeforeDays = Math.max(1, Math.floor(number(process.env.RSS_DEPOSIT_AUTHORIZE_BEFORE_DAYS, 2)));
+    const authorizeOn = scheduledDeposit
+      ? depositAuthorizeOn(pricing.dates.startDate, authorizeBeforeDays)
+      : "";
 
     const clientRentalAmount = amount(body.rental_amount);
     const clientDepositAmount = amount(body.deposit_amount);
@@ -424,10 +442,17 @@ export default async function handler(req, res) {
           customer: customer.id,
           receipt_email: customerEmail,
           automatic_payment_methods: { enabled: true },
+          // Stripe sauvegarde le moyen de paiement pour la caution future.
+          // Aucun numéro de carte n'est stocké par RentSoundSystem.
+          setup_future_usage: "off_session",
           description: `Location RentSoundSystem – commande ${orderId}`,
           metadata: {
             ...baseMetadata,
-            type: "rental_payment"
+            type: "rental_payment",
+            deposit_mode: scheduledDeposit ? "scheduled" : "immediate",
+            deposit_amount_cents: String(pricing.deposit_cents),
+            deposit_authorize_on: authorizeOn,
+            deposit_authorize_before_days: String(authorizeBeforeDays)
           }
         },
         { idempotencyKey: `rss:${orderId}:rental` }
@@ -435,7 +460,7 @@ export default async function handler(req, res) {
     }
 
     let depositIntent = null;
-    if (pricing.deposit_cents >= 50) {
+    if (!scheduledDeposit && pricing.deposit_cents >= 50) {
       depositIntent = await stripe.paymentIntents.create(
         {
           amount: pricing.deposit_cents,
@@ -477,6 +502,9 @@ export default async function handler(req, res) {
       rental_client_secret: rentalIntent?.client_secret || null,
       deposit_payment_intent_id: depositIntent?.id || null,
       deposit_client_secret: depositIntent?.client_secret || null,
+      deposit_mode: scheduledDeposit ? "scheduled" : "immediate",
+      deposit_scheduled: scheduledDeposit,
+      deposit_authorize_on: authorizeOn || null,
       pricing: publicPricing(pricing)
     });
   } catch (err) {

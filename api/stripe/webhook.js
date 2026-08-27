@@ -698,7 +698,11 @@ function buildInvoiceData(rental, deposit, customer = {}) {
     totalAmount,
     vatRate,
     taxMention,
-    depositText: deposit ? `${formatMoney(deposit.amount, deposit.currency)} - autorisee, non debitee` : "Aucune caution demandee",
+    depositText: deposit
+      ? `${formatMoney(deposit.amount, deposit.currency)} - autorisee, non debitee`
+      : Number(metadata.deposit_amount_cents || 0) > 0 && metadata.deposit_mode === "scheduled"
+        ? `${formatMoney(Number(metadata.deposit_amount_cents || 0), currency)} - empreinte programmee avant la location`
+        : "Aucune caution demandee",
     issuer,
     customerName,
     customerCompany,
@@ -1031,9 +1035,15 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
   const rentalDates = `${formatDate(metadata.rental_start)} → ${formatDate(metadata.rental_end)}`;
   const location = text(metadata.rental_city, "Non indiqué");
   const product = text(metadata.listing_name, "Matériel RentSoundSystem");
+  const scheduledDeposit = !deposit &&
+    metadata.deposit_mode === "scheduled" &&
+    Number(metadata.deposit_amount_cents || 0) > 0;
+
   const depositText = deposit
     ? `${formatMoney(deposit.amount, deposit.currency)} — autorisée, non débitée`
-    : "Aucune caution demandée";
+    : scheduledDeposit
+      ? `${formatMoney(Number(metadata.deposit_amount_cents || 0), currency)} — empreinte prévue avant la location`
+      : "Aucune caution demandée";
 
   const invoice = buildInvoiceData(rental, deposit, customer);
   const invoicePdf = buildInvoicePdf(invoice);
@@ -1077,8 +1087,10 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       idempotencyKey: `rss:${rental.id}:customer-confirmation`,
       html: emailLayout(
         "Votre réservation est confirmée",
-        `Bonjour ${escapeHtml(customerName)}, votre paiement est validé et votre caution est autorisée sans être débitée.`,
-        `${publicDetails}${portalBlock}<p style="font-size:14px;line-height:1.5;margin-top:22px;">Votre facture professionnelle est jointe à cet e-mail. La caution reste une autorisation bancaire séparée et n’est pas incluse dans le total facturé.</p>`
+        scheduledDeposit
+          ? `Bonjour ${escapeHtml(customerName)}, votre paiement est validé. Le moyen de paiement est enregistré de façon sécurisée par Stripe afin de réaliser l’empreinte de caution avant le début de la location.`
+          : `Bonjour ${escapeHtml(customerName)}, votre paiement est validé${deposit ? " et votre caution est autorisée sans être débitée" : ""}.`,
+        `${publicDetails}${portalBlock}<p style="font-size:14px;line-height:1.5;margin-top:22px;">Votre facture professionnelle est jointe à cet e-mail. ${scheduledDeposit ? "La caution n’est pas bloquée aujourd’hui : l’empreinte sera demandée avant la location." : "La caution reste une autorisation bancaire séparée et n’est pas incluse dans le total facturé."}</p>`
       ),
       attachments: [
         {
@@ -1123,7 +1135,9 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       idempotencyKey: `rss:${rental.id}:admin-notification`,
       html: emailLayout(
         "Nouvelle réservation payée",
-        "Le paiement de location est validé et la caution est autorisée.",
+        scheduledDeposit
+          ? "Le paiement de location est validé. L’empreinte de caution est programmée avant la location."
+          : `Le paiement de location est validé${deposit ? " et la caution est autorisée" : ""}.`,
         `${adminDetails}<p style="font-size:14px;line-height:1.5;margin-top:22px;">Aucun numéro de carte ou donnée bancaire sensible n’est transmis dans cet e-mail.</p>`
       )
     });
@@ -1143,7 +1157,7 @@ async function sendNotificationsWhenReady(stripe, rentalIntentId) {
       ["E-mail client", customerEmail || "Non indiqué"],
       ["Téléphone", customerPhone],
       ["Paiement location", "Validé"],
-      ["Caution", deposit ? "Autorisée, non débitée" : "Non applicable"]
+      ["Caution", deposit ? "Autorisée, non débitée" : scheduledDeposit ? "Prévue avant la location" : "Non applicable"]
     ]);
 
     await resendEmail({
