@@ -175,28 +175,13 @@ function computePricing(listing, reservation) {
   const rentalAmount = dailyPrice * dates.days * quantity;
   const rawSubtotal = rentalAmount + delivery + installation;
 
-  // Les anciennes annonces RentSoundSystem n'ont actuellement aucune colonne fiscale
-  // dans public.listings. L'absence totale de configuration fiscale ne doit donc PAS
-  // bloquer un paiement live : le prix public existant est conservé tel quel.
-  //
-  // Si des champs fiscaux sont ajoutés plus tard, les contrôles existants restent actifs.
-  const rawTaxMode = listing.price_tax_mode ?? listing.tax_mode;
-  const rawVatRate = listing.vat_rate ?? listing.tva_rate ?? listing.tax_rate;
-
-  const hasExplicitTaxConfiguration =
-    (rawTaxMode !== undefined && rawTaxMode !== null && String(rawTaxMode).trim() !== "") ||
-    (rawVatRate !== undefined && rawVatRate !== null && String(rawVatRate).trim() !== "");
-
-  const vatRate = normalizeVatRate(rawVatRate);
-  const taxMode = normalizeTaxMode(rawTaxMode);
+  const vatRate = normalizeVatRate(listing.vat_rate ?? listing.tva_rate ?? listing.tax_rate);
+  const taxMode = normalizeTaxMode(listing.price_tax_mode ?? listing.tax_mode);
   let amountExclTax = rawSubtotal;
   let tax = 0;
   let total = rawSubtotal;
   let taxPending = false;
-
-  // "legacy_public_price" explicite = à vérifier.
-  // "legacy_public_price" uniquement parce que les colonnes n'existent pas = compatible historique.
-  const taxReviewRequired = hasExplicitTaxConfiguration && taxMode === "legacy_public_price";
+  const taxReviewRequired = taxMode === "legacy_public_price";
 
   // Reprise du fonctionnement public du site historique :
   // aucun montant de TVA n'est ajouté au tarif affiché dans le tunnel.
@@ -220,11 +205,7 @@ function computePricing(listing, reservation) {
     amountExclTax = rawSubtotal;
     tax = 0;
     total = rawSubtotal;
-
-    // On ne met en attente que lorsqu'une configuration fiscale existe réellement
-    // mais qu'elle est invalide/incomplète. Une ancienne annonce sans colonnes fiscales
-    // reste payable au prix public existant.
-    taxPending = hasExplicitTaxConfiguration;
+    taxPending = true;
   }
 
   const deposit = optionPrice(
@@ -287,6 +268,146 @@ async function getPublishedListing(body) {
   const item = Array.isArray(rows) ? rows[0] : null;
   if (!item) throw new Error("Annonce introuvable ou non publiée.");
   return item;
+}
+
+function supabaseAdminConfig() {
+  const url = text(process.env.SUPABASE_URL, 500).replace(/\/+$/, "");
+  const serviceKey = text(
+    process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_KEY,
+    5000
+  );
+  if (!url || !serviceKey) return null;
+  return { url, serviceKey };
+}
+
+async function supabaseAdminRequest(path) {
+  const cfg = supabaseAdminConfig();
+  if (!cfg) return null;
+
+  const response = await fetch(`${cfg.url}${path}`, {
+    headers: {
+      apikey: cfg.serviceKey,
+      Authorization: `Bearer ${cfg.serviceKey}`,
+      Accept: "application/json"
+    }
+  });
+
+  if (!response.ok) {
+    const raw = await response.text().catch(() => "");
+    throw new Error(`Impossible de vérifier Stripe Connect du partenaire (${response.status})${raw ? `: ${raw.slice(0,200)}` : ""}`);
+  }
+  return response.json();
+}
+
+function normalizeCommissionRate(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 0.15;
+  const rate = n > 1 ? n / 100 : n;
+  return Math.min(1, Math.max(0, rate));
+}
+
+async function getConnectPartnerForListing(listing) {
+  const cfg = supabaseAdminConfig();
+  if (!cfg) {
+    return {
+      eligible: false,
+      reason: "missing_supabase_service_role",
+      commission_rate: 0.15
+    };
+  }
+
+  const select = [
+    "id","user_id","legacy_user_id","email","status",
+    "stripe_account_id","stripe_connect_status",
+    "stripe_charges_enabled","stripe_payouts_enabled",
+    "stripe_details_submitted","commission_rate"
+  ].join(",");
+
+  const legacyUserId = text(
+    listing.legacy_user_id ?? listing.partner_id ?? listing.owner_id ?? "",
+    100
+  );
+
+  const partnerEmail = text(
+    listing.owner_email ?? listing.partner_email ?? listing.email ?? "",
+    254
+  ).toLowerCase();
+
+  let rows = [];
+
+  if (legacyUserId && /^-?\d+$/.test(legacyUserId)) {
+    const q = new URLSearchParams({
+      select,
+      legacy_user_id: `eq.${legacyUserId}`,
+      limit: "1"
+    });
+    rows = await supabaseAdminRequest(`/rest/v1/partners?${q.toString()}`) || [];
+  }
+
+  if ((!Array.isArray(rows) || !rows[0]) && partnerEmail) {
+    const q = new URLSearchParams({
+      select,
+      email: `ilike.${partnerEmail}`,
+      limit: "1"
+    });
+    rows = await supabaseAdminRequest(`/rest/v1/partners?${q.toString()}`) || [];
+  }
+
+  const partner = Array.isArray(rows) ? rows[0] || null : null;
+  if (!partner) {
+    return {
+      eligible: false,
+      reason: "partner_not_found",
+      commission_rate: 0.15
+    };
+  }
+
+  const status = text(partner.status, 40).toLowerCase();
+  const connectStatus = text(partner.stripe_connect_status, 60).toLowerCase();
+  const accountId = text(partner.stripe_account_id, 120);
+  const commissionRate = normalizeCommissionRate(partner.commission_rate);
+
+  const partnerValidated =
+    ["approved","active","validated","valide","validé"].includes(status);
+
+  const connectReady =
+    accountId.startsWith("acct_") &&
+    partnerValidated &&
+    Boolean(partner.stripe_details_submitted) &&
+    Boolean(partner.stripe_payouts_enabled) &&
+    ["active","enabled","ready"].includes(connectStatus);
+
+  return {
+    partner,
+    eligible: connectReady,
+    reason: connectReady ? "active" : "connect_not_ready",
+    stripe_account_id: accountId,
+    commission_rate: commissionRate
+  };
+}
+
+function buildRevenueSplit(pricing, connectPartner) {
+  if (!connectPartner?.eligible) {
+    return {
+      enabled: false,
+      platform_fee_cents: 0,
+      partner_net_cents: 0,
+      commission_rate: connectPartner?.commission_rate ?? 0.15
+    };
+  }
+
+  const commissionRate = normalizeCommissionRate(connectPartner.commission_rate);
+  const platformFeeCents = Math.max(
+    0,
+    Math.min(pricing.rental_cents, Math.round(pricing.rental_cents * commissionRate))
+  );
+
+  return {
+    enabled: true,
+    platform_fee_cents: platformFeeCents,
+    partner_net_cents: Math.max(0, pricing.rental_cents - platformFeeCents),
+    commission_rate: commissionRate
+  };
 }
 
 function getStripe() {
@@ -360,14 +481,6 @@ function publicPricing(pricing) {
   };
 }
 
-function depositAuthorizeOn(startDate, daysBefore = 2) {
-  const value = isoDate(startDate);
-  if (!value) return "";
-  const date = new Date(`${value}T00:00:00Z`);
-  date.setUTCDate(date.getUTCDate() - Math.max(1, Math.floor(Number(daysBefore) || 2)));
-  return date.toISOString().slice(0, 10);
-}
-
 export default async function handler(req, res) {
   try {
     if (req.method !== "POST") {
@@ -391,16 +504,6 @@ export default async function handler(req, res) {
     const currency = pricing.currency;
     if (!/^[a-z]{3}$/i.test(currency)) return res.status(400).json({ error: "Devise Stripe invalide." });
 
-    // Feature flag rétrocompatible :
-    // - immediate (défaut) = fonctionnement historique inchangé
-    // - scheduled = carte sauvegardée, empreinte créée ultérieurement
-    const depositMode = String(process.env.RSS_DEPOSIT_MODE || "immediate").trim().toLowerCase();
-    const scheduledDeposit = depositMode === "scheduled" && pricing.deposit_cents >= 50;
-    const authorizeBeforeDays = Math.max(1, Math.floor(number(process.env.RSS_DEPOSIT_AUTHORIZE_BEFORE_DAYS, 2)));
-    const authorizeOn = scheduledDeposit
-      ? depositAuthorizeOn(pricing.dates.startDate, authorizeBeforeDays)
-      : "";
-
     const clientRentalAmount = amount(body.rental_amount);
     const clientDepositAmount = amount(body.deposit_amount);
     if (Math.abs(clientRentalAmount - pricing.rental_cents) > 1 || Math.abs(clientDepositAmount - pricing.deposit_cents) > 1) {
@@ -423,6 +526,25 @@ export default async function handler(req, res) {
 
     const stripe = getStripe();
     const baseMetadata = buildMetadata(body, "reservation", pricing);
+
+    let connectPartner = {
+      eligible: false,
+      reason: "not_checked",
+      commission_rate: 0.15
+    };
+
+    try {
+      connectPartner = await getConnectPartnerForListing(listing);
+    } catch (error) {
+      console.error("stripe-connect-partner-lookup", error);
+      connectPartner = {
+        eligible: false,
+        reason: "lookup_error",
+        commission_rate: 0.15
+      };
+    }
+
+    const revenueSplit = buildRevenueSplit(pricing, connectPartner);
 
     const customer = await stripe.customers.create(
       {
@@ -461,17 +583,18 @@ export default async function handler(req, res) {
           customer: customer.id,
           receipt_email: customerEmail,
           automatic_payment_methods: { enabled: true },
-          // Stripe sauvegarde le moyen de paiement pour la caution future.
-          // Aucun numéro de carte n'est stocké par RentSoundSystem.
-          setup_future_usage: "off_session",
+          ...(revenueSplit.enabled
+            ? {
+                application_fee_amount: revenueSplit.platform_fee_cents,
+                transfer_data: {
+                  destination: connectPartner.stripe_account_id
+                }
+              }
+            : {}),
           description: `Location RentSoundSystem – commande ${orderId}`,
           metadata: {
             ...baseMetadata,
-            type: "rental_payment",
-            deposit_mode: pricing.deposit_cents < 50 ? "none" : (scheduledDeposit ? "scheduled" : "immediate"),
-            deposit_amount_cents: String(pricing.deposit_cents),
-            deposit_authorize_on: authorizeOn,
-            deposit_authorize_before_days: String(authorizeBeforeDays)
+            type: "rental_payment"
           }
         },
         { idempotencyKey: `rss:${orderId}:rental` }
@@ -479,7 +602,7 @@ export default async function handler(req, res) {
     }
 
     let depositIntent = null;
-    if (!scheduledDeposit && pricing.deposit_cents >= 50) {
+    if (pricing.deposit_cents >= 50) {
       depositIntent = await stripe.paymentIntents.create(
         {
           amount: pricing.deposit_cents,
@@ -521,10 +644,15 @@ export default async function handler(req, res) {
       rental_client_secret: rentalIntent?.client_secret || null,
       deposit_payment_intent_id: depositIntent?.id || null,
       deposit_client_secret: depositIntent?.client_secret || null,
-      deposit_required: pricing.deposit_cents >= 50,
-      deposit_mode: scheduledDeposit ? "scheduled" : "immediate",
-      deposit_scheduled: scheduledDeposit,
-      deposit_authorize_on: authorizeOn || null,
+      revenue_split: {
+        enabled: revenueSplit.enabled,
+        mode: revenueSplit.enabled ? "stripe_connect_destination_charge" : "platform_only",
+        connected_account_id: revenueSplit.enabled ? connectPartner.stripe_account_id : null,
+        commission_rate: revenueSplit.commission_rate,
+        platform_fee_cents: revenueSplit.platform_fee_cents,
+        partner_net_cents: revenueSplit.partner_net_cents,
+        fallback_reason: revenueSplit.enabled ? null : connectPartner.reason
+      },
       pricing: publicPricing(pricing)
     });
   } catch (err) {
