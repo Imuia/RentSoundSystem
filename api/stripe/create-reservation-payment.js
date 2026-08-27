@@ -175,13 +175,28 @@ function computePricing(listing, reservation) {
   const rentalAmount = dailyPrice * dates.days * quantity;
   const rawSubtotal = rentalAmount + delivery + installation;
 
-  const vatRate = normalizeVatRate(listing.vat_rate ?? listing.tva_rate ?? listing.tax_rate);
-  const taxMode = normalizeTaxMode(listing.price_tax_mode ?? listing.tax_mode);
+  // Les anciennes annonces RentSoundSystem n'ont actuellement aucune colonne fiscale
+  // dans public.listings. L'absence totale de configuration fiscale ne doit donc PAS
+  // bloquer un paiement live : le prix public existant est conservé tel quel.
+  //
+  // Si des champs fiscaux sont ajoutés plus tard, les contrôles existants restent actifs.
+  const rawTaxMode = listing.price_tax_mode ?? listing.tax_mode;
+  const rawVatRate = listing.vat_rate ?? listing.tva_rate ?? listing.tax_rate;
+
+  const hasExplicitTaxConfiguration =
+    (rawTaxMode !== undefined && rawTaxMode !== null && String(rawTaxMode).trim() !== "") ||
+    (rawVatRate !== undefined && rawVatRate !== null && String(rawVatRate).trim() !== "");
+
+  const vatRate = normalizeVatRate(rawVatRate);
+  const taxMode = normalizeTaxMode(rawTaxMode);
   let amountExclTax = rawSubtotal;
   let tax = 0;
   let total = rawSubtotal;
   let taxPending = false;
-  const taxReviewRequired = taxMode === "legacy_public_price";
+
+  // "legacy_public_price" explicite = à vérifier.
+  // "legacy_public_price" uniquement parce que les colonnes n'existent pas = compatible historique.
+  const taxReviewRequired = hasExplicitTaxConfiguration && taxMode === "legacy_public_price";
 
   // Reprise du fonctionnement public du site historique :
   // aucun montant de TVA n'est ajouté au tarif affiché dans le tunnel.
@@ -205,7 +220,11 @@ function computePricing(listing, reservation) {
     amountExclTax = rawSubtotal;
     tax = 0;
     total = rawSubtotal;
-    taxPending = true;
+
+    // On ne met en attente que lorsqu'une configuration fiscale existe réellement
+    // mais qu'elle est invalide/incomplète. Une ancienne annonce sans colonnes fiscales
+    // reste payable au prix public existant.
+    taxPending = hasExplicitTaxConfiguration;
   }
 
   const deposit = optionPrice(
