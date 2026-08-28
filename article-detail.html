@@ -260,7 +260,7 @@ body{padding-top:78px!important}
 <header class="relative w-full h-[60vh] min-h-[500px] flex items-end pb-section-padding-y">
 <!-- Background Image -->
 <div class="absolute inset-0 z-0 overflow-hidden">
-<img alt="Concert stage lighting" class="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida/ADBb0uhWO6QEnZdEirw4s5MgOQPufGS0fBWbe46J3LX-SXYH0eAPz_f9APg1ZQtzl6u7SJkGwgfAVsTUA_eE4Y1cxMIHwBzvj6QxqQTn3SswkhDAKiw6eOU0PMcB7qGReS8-mIsoGdoAuJkN0OhuS_gKMDSerXOQKQFBB5iPl5LOj43sC9Ut87pY1nt5CKIHpxQLl_vWGE_YR9vK4kRsYDLvwWbTtOKKrC8G_IrpAT2MJLhA0PkY6bqbKSqHBYE"/>
+<img id="rss-hero-image" alt="Concert stage lighting" class="w-full h-full object-cover opacity-40" src="https://lh3.googleusercontent.com/aida/ADBb0uhWO6QEnZdEirw4s5MgOQPufGS0fBWbe46J3LX-SXYH0eAPz_f9APg1ZQtzl6u7SJkGwgfAVsTUA_eE4Y1cxMIHwBzvj6QxqQTn3SswkhDAKiw6eOU0PMcB7qGReS8-mIsoGdoAuJkN0OhuS_gKMDSerXOQKQFBB5iPl5LOj43sC9Ut87pY1nt5CKIHpxQLl_vWGE_YR9vK4kRsYDLvwWbTtOKKrC8G_IrpAT2MJLhA0PkY6bqbKSqHBYE"/>
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
 </div>
 <div class="relative z-10 w-full max-w-container-max mx-auto px-component-padding-x">
@@ -331,9 +331,9 @@ body{padding-top:78px!important}
 </section>
 <!-- Technical Image Block -->
 <figure class="w-full rounded-xl overflow-hidden glass-panel border border-surface-glass-border">
-<img alt="Audio engineer adjusting digital mixing console during live event" class="w-full h-[400px] object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uiSy9QkghPk-GgAOGf8GuAe-2g5JDEmdgX8yefhrkANj5nPK-4p8W6nQyL3zTHYo7I-ACgsGRS3G9BNa1HRDWhvTYcCS50mg8IvERfvdtzNvyN6UBd3BAgkS1MqPrq8SEFAJUyroXp-ZXVZ5mq20zUH6hfX7pDIGvAWu5OHcDMX6fB1kAfinpde_yXO5jBYzvOpJkmNBpcuClzstckIKJqAGn6XLrFpajanI8F5b3lmAcRRgmMZmi-xG8s"/>
+<img id="rss-article-image" alt="Audio engineer adjusting digital mixing console during live event" class="w-full h-[400px] object-cover" src="https://lh3.googleusercontent.com/aida/ADBb0uiSy9QkghPk-GgAOGf8GuAe-2g5JDEmdgX8yefhrkANj5nPK-4p8W6nQyL3zTHYo7I-ACgsGRS3G9BNa1HRDWhvTYcCS50mg8IvERfvdtzNvyN6UBd3BAgkS1MqPrq8SEFAJUyroXp-ZXVZ5mq20zUH6hfX7pDIGvAWu5OHcDMX6fB1kAfinpde_yXO5jBYzvOpJkmNBpcuClzstckIKJqAGn6XLrFpajanI8F5b3lmAcRRgmMZmi-xG8s"/>
 <figcaption class="p-4 bg-surface-container-low border-t border-surface-glass-border text-sm text-on-surface-variant flex justify-between items-center">
-<span>Analyse en temps réel de la réponse impulsionnelle via Smaart v9.</span>
+<span id="rss-article-caption">Analyse en temps réel de la réponse impulsionnelle via Smaart v9.</span>
 <span class="material-symbols-outlined text-primary text-[18px]">insights</span>
 </figcaption>
 </figure>
@@ -364,6 +364,7 @@ body{padding-top:78px!important}
 </div>
 </div>
 </section>
+<div id="rss-extra-sections" class="space-y-12"></div>
 <!-- Tags & Sharing -->
 <div class="border-t border-surface-glass-border pt-8 mt-12 flex flex-col md:flex-row justify-between items-center gap-6">
 <div class="flex flex-wrap gap-2">
@@ -489,6 +490,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ['Ratio','1.5:1 à 3:1'],
         ['Gain Reduction','1 à 4 dB max']
       ],
+      h3: '3. Cibler les bandes sans dénaturer la voix',
+      p3: "En pratique, il est préférable de limiter le nombre de bandes actives et de réserver la compression multibande aux zones réellement instables. Sur une voix live, une bande bas-médium peut contenir l’effet de proximité tandis qu’une bande haute contrôle les sifflantes sans réduire toute la présence du chanteur.",
+      h4: '4. Méthode de réglage pendant les balances',
+      p4: "Commencez avec la multibande désactivée, construisez d’abord un bon gain, un EQ correctif léger et une compression large bande. Activez ensuite chaque bande séparément, comparez régulièrement en bypass et gardez une marge suffisante pour les variations de niveau pendant le concert.",
+      heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCVn0SEyLpnEDpj7tYiEgV8glLu25ZrEh1qFkdDrWjwB3jewqg4hoo5o9dO8thgh4l2DjbELIJkAwK-KqfvEsfFvPLlQIis4LDxXbZupANMpCeqbSJp6KWPNb57eqUvlm8yqdC8rzh3UkPEpENHO6eMttAI1NWTwQKCEHuQb7Lx87fOMYvfjfp66TEI74fLJpXmhR92dYGid20-zRjjsoIp7afgVW4rjxcZ3vjcvEDgG52l5xquhZ8SXer_PBhtbT1cNif1dn9A2rI',
+      contentImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCVn0SEyLpnEDpj7tYiEgV8glLu25ZrEh1qFkdDrWjwB3jewqg4hoo5o9dO8thgh4l2DjbELIJkAwK-KqfvEsfFvPLlQIis4LDxXbZupANMpCeqbSJp6KWPNb57eqUvlm8yqdC8rzh3UkPEpENHO6eMttAI1NWTwQKCEHuQb7Lx87fOMYvfjfp66TEI74fLJpXmhR92dYGid20-zRjjsoIp7afgVW4rjxcZ3vjcvEDgG52l5xquhZ8SXer_PBhtbT1cNif1dn9A2rI',
+      imageAlt: 'Console numérique professionnelle utilisée pour le mixage d’une voix live',
+      caption: 'Réglage précis de la dynamique et des bandes fréquentielles sur une console numérique pendant les balances.',
       tags: ['Mixage Live','Voix','Compression','Console']
     },
     'l-industrie-se-tourne-vers-des-solutions-d-amplification-de-classe-d-plus-vertes': {
@@ -513,6 +522,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ['Chauffe','Faible à modérée'],
         ['Usage','Touring / installation']
       ],
+      h3: '3. Rendement énergétique et contraintes de tournée',
+      p3: "Le gain ne se limite pas à la consommation électrique. Des amplificateurs plus compacts et plus légers réduisent le volume des racks, les besoins de ventilation et la charge transportée. Sur une tournée importante, ces économies se cumulent sur la logistique, l’alimentation électrique et le temps de manutention.",
+      h4: '4. Quels critères comparer avant de renouveler un parc',
+      p4: "Le rendement doit être comparé avec la puissance réellement disponible, la qualité du DSP, la connectivité réseau, les protections, la facilité de maintenance et le comportement thermique. Une solution plus sobre n’est pertinente que si elle reste fiable et adaptée aux enceintes utilisées.",
+      heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD7bK3MyPsFw9B0O2swRO9ruFtJ_t2cTVMOfaM_T6t79GnLVS1Zik-SQpd0iyDjOA6AFoYa0dkM-HIrsJK-k2HeCAxxUB_35ZzbKR_qtfZpMOhZ7qPJqUWRSppR13050kZj6Z1IzbyUnpgmALBfBSYYJwB_gMlCcs5-Rt-WSbKt-w9xDuGNF_-NCCMq04BC7XKYxbx9hDz1TZVdVZQkxCNDQcb7DpkK6bNBcMZ1UlmcSYTmKgruRpJ6CPwUoPcLhmu6PAGLfC0ksYw',
+      contentImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD7bK3MyPsFw9B0O2swRO9ruFtJ_t2cTVMOfaM_T6t79GnLVS1Zik-SQpd0iyDjOA6AFoYa0dkM-HIrsJK-k2HeCAxxUB_35ZzbKR_qtfZpMOhZ7qPJqUWRSppR13050kZj6Z1IzbyUnpgmALBfBSYYJwB_gMlCcs5-Rt-WSbKt-w9xDuGNF_-NCCMq04BC7XKYxbx9hDz1TZVdVZQkxCNDQcb7DpkK6bNBcMZ1UlmcSYTmKgruRpJ6CPwUoPcLhmu6PAGLfC0ksYw',
+      imageAlt: 'Rack d’amplificateurs professionnels de tournée',
+      caption: 'Les nouvelles générations d’amplificateurs de classe D combinent forte densité de puissance, rendement élevé et réduction du poids des racks.',
       tags: ['Amplification','Classe D','Énergie','Touring']
     },
     'redondance-reseau-au-stade-de-france-architecture-et-deploiement': {
@@ -537,6 +554,14 @@ document.addEventListener('DOMContentLoaded', () => {
         ['Monitoring','Supervision continue'],
         ['Tests','Charge + latence']
       ],
+      h3: '3. Séparation physique et logique des chemins critiques',
+      p3: "Une véritable redondance suppose que les chemins primaire et secondaire ne partagent pas un même point de défaillance. Les alimentations, fibres, switches et routes principales doivent être séparés autant que possible, avec une documentation claire permettant aux équipes d’identifier immédiatement l’origine d’une alerte.",
+      h4: '4. Procédure de validation avant exploitation',
+      p4: "Avant l’ouverture au public, l’équipe doit provoquer des scénarios de panne contrôlés : coupure d’un lien, perte d’un switch, bascule d’un équipement et charge réseau élevée. L’objectif est de vérifier que le flux audio continue, que la supervision remonte correctement l’incident et que la procédure d’intervention est comprise par tous.",
+      heroImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA24MUc3icbNL94II-_x1z7LvMT-9pZgbsCCiPZEvLbxgQNRgJvecPILbjL9VgqpOaPImEHKvHPfRmod9MEOsBp9cnP2tcvqsI5v9Uk73lQyB08B52Wzn9CZWi6ltziCzQU-GarMFDmVuEo8HBk6_Db8IzxnxdA0XOPRpTxgnXhMhGI41ZNhOzwjZFnpUXKv_jm8qj4qF9zUP9PXzclnO-oVsrHHoXoMr0K6Rx4AU7IdRG6NxQoIbd56ywOz44C3LOlUpLyYFoellg',
+      contentImage: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA24MUc3icbNL94II-_x1z7LvMT-9pZgbsCCiPZEvLbxgQNRgJvecPILbjL9VgqpOaPImEHKvHPfRmod9MEOsBp9cnP2tcvqsI5v9Uk73lQyB08B52Wzn9CZWi6ltziCzQU-GarMFDmVuEo8HBk6_Db8IzxnxdA0XOPRpTxgnXhMhGI41ZNhOzwjZFnpUXKv_jm8qj4qF9zUP9PXzclnO-oVsrHHoXoMr0K6Rx4AU7IdRG6NxQoIbd56ywOz44C3LOlUpLyYFoellg',
+      imageAlt: 'Connectique et câblage audio réseau professionnel',
+      caption: 'La fiabilité d’un réseau audio critique repose sur des chemins séparés, une connectique maîtrisée et une supervision permanente.',
       tags: ['Dante','Réseau Audio','Stade','Redondance']
     },
     'impact-vent-frequences': {
@@ -590,6 +615,34 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const data = articles[slug] || articles['optimisation-couverture-line-array-festivals-plein-air'];
+
+  // Images propres à chaque article
+  const heroImage = document.getElementById('rss-hero-image');
+  if(heroImage && data.heroImage){
+    heroImage.src = data.heroImage;
+    heroImage.alt = data.imageAlt || data.title;
+  }
+
+  const articleImage = document.getElementById('rss-article-image');
+  if(articleImage && data.contentImage){
+    articleImage.src = data.contentImage;
+    articleImage.alt = data.imageAlt || data.title;
+  }
+
+  const articleCaption = document.getElementById('rss-article-caption');
+  if(articleCaption && data.caption) articleCaption.textContent = data.caption;
+
+  // Parties 3 et 4 : ajoutées uniquement lorsque l'article les définit
+  const extraSections = document.getElementById('rss-extra-sections');
+  if(extraSections && data.h3 && data.p3 && data.h4 && data.p4){
+    extraSections.innerHTML = `
+      <section class="prose prose-invert max-w-none">
+        <h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6 border-l-4 border-primary pl-4" id="section-3">${data.h3}</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-6">${data.p3}</p>
+        <h2 class="font-headline-lg text-headline-lg text-on-surface mt-12 mb-6 border-l-4 border-primary pl-4" id="section-4">${data.h4}</h2>
+        <p class="font-body-md text-body-md text-on-surface-variant mb-6">${data.p4}</p>
+      </section>`;
+  }
 
   function toast(message){
     let t = document.querySelector('.rss-toast');
@@ -667,22 +720,27 @@ document.addEventListener('DOMContentLoaded', () => {
     ).join('');
   }
 
-  // Sommaire logique
-  const tocLinks = Array.from(document.querySelectorAll('aside .glass-panel:first-child a'));
-  if(tocLinks[0]) { tocLinks[0].href = '#section-1'; tocLinks[0].innerHTML = '<span class="material-symbols-outlined text-[16px]">arrow_right</span> ' + data.h1; }
-  if(tocLinks[1]) { tocLinks[1].href = '#section-2'; tocLinks[1].innerHTML = '<span class="material-symbols-outlined text-[16px] opacity-0">arrow_right</span> ' + data.h2; }
-  tocLinks.slice(2).forEach((a, i) => {
-    a.href = '#';
-    a.addEventListener('click', e => {
-      e.preventDefault();
-      toast('Cette partie sera ajoutée dans la version complète de l’article.');
-    });
-  });
+  // Sommaire logique : construit à partir des vraies sections disponibles
+  const tocList = document.querySelector('aside .glass-panel:first-child ul');
+  const sectionDefs = [
+    ['section-1', data.h1],
+    ['section-2', data.h2],
+    ['section-3', data.h3],
+    ['section-4', data.h4]
+  ].filter(([, title]) => title);
 
+  if(tocList){
+    tocList.innerHTML = sectionDefs.map((item, index) => `
+      <li><a class="${index === 0 ? 'text-primary rss-toc-active' : 'text-on-surface-variant'} text-sm hover:text-primary transition-colors flex items-center gap-2" href="#${item[0]}">
+        <span class="material-symbols-outlined text-[16px] ${index === 0 ? '' : 'opacity-0'}">arrow_right</span> ${item[1]}
+      </a></li>`).join('');
+  }
+
+  const tocLinks = Array.from(document.querySelectorAll('aside .glass-panel:first-child a'));
   tocLinks.forEach(link => {
     link.addEventListener('click', e => {
       const href = link.getAttribute('href');
-      if(href && href.startsWith('#') && href !== '#'){
+      if(href && href.startsWith('#')){
         e.preventDefault();
         document.querySelector(href)?.scrollIntoView({behavior:'smooth', block:'start'});
       }
@@ -699,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }, {rootMargin:'-35% 0px -55% 0px'});
-  ['section-1','section-2'].forEach(id => {
+  ['section-1','section-2','section-3','section-4'].forEach(id => {
     const el = document.getElementById(id);
     if(el) observer.observe(el);
   });
