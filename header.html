@@ -385,105 +385,9 @@
   })();this.remove();" />
 
 
-  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){
-    if(window.__rssWeglotGlobalBoot)return;
-    window.__rssWeglotGlobalBoot=true;
+  
+<!-- Weglot supprimé : Google Translate gère la traduction globale -->
 
-    /*
-      Remplacer cette valeur par la clé API Weglot du projet RentSoundSystem.
-      Exemple de format : wg_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-      Tant que cette clé n’est pas remplacée, le site garde le sélecteur FR/EN,
-      mais la traduction automatique globale reste désactivée sans erreur.
-    */
-    var WEGLOT_API_KEY='wg_404ba8763ad2fbd7361777eb8a48a0e08';
-
-    function validKey(key){
-      key=String(key||'').trim();
-      return /^wg_[a-z0-9]+$/i.test(key);
-    }
-    function readLanguage(){
-      try{
-        var value=String(localStorage.getItem('rss_language')||'fr').toLowerCase();
-        return value==='en'?'en':'fr';
-      }catch(error){return'fr'}
-    }
-    function syncHeader(language){
-      try{
-        localStorage.setItem('rss_language',language==='en'?'en':'fr');
-        if(window.RSSPreferences&&typeof window.RSSPreferences.setLanguage==='function'){
-          if(window.RSSPreferences.getLanguage&&window.RSSPreferences.getLanguage()!==language){
-            window.RSSPreferences.setLanguage(language);
-            return;
-          }
-        }
-        if(window.rssHeaderPreferencesBoot)window.rssHeaderPreferencesBoot();
-        if(window.rssHeaderAuthSync)window.rssHeaderAuthSync();
-      }catch(error){}
-    }
-    function applyWeglotLanguage(language){
-      if(!window.Weglot||!window.Weglot.initialized||typeof window.Weglot.switchTo!=='function')return;
-      var current=typeof window.Weglot.getCurrentLang==='function'?window.Weglot.getCurrentLang():'';
-      if(current!==language)window.Weglot.switchTo(language);
-    }
-    function initWeglot(){
-      if(!window.Weglot||window.__rssWeglotInitialized)return;
-      window.__rssWeglotInitialized=true;
-      try{
-        window.Weglot.on('initialized',function(){
-          var wanted=readLanguage();
-          syncHeader(wanted);
-          applyWeglotLanguage(wanted);
-        });
-        window.Weglot.on('languageChanged',function(newLanguage){
-          var language=newLanguage==='en'?'en':'fr';
-          syncHeader(language);
-        });
-        window.Weglot.initialize({
-          api_key:WEGLOT_API_KEY,
-          hide_switcher:true,
-          cache:true,
-          wait_transition:false,
-          excluded_blocks:[
-            {value:'.rss-preference-controls'},
-            {value:'.rss-mobile-preferences'},
-            {value:'.rss-auth-button'},
-            {value:'.material-symbols-outlined'},
-            {value:'.StripeElement'},
-            {value:'#stripe-card-element'},
-            {value:'.leaflet-container'},
-            {value:'.notranslate'}
-          ]
-        });
-      }catch(error){
-        window.__rssWeglotInitialized=false;
-        console.warn('Weglot non initialisé :',error);
-      }
-    }
-
-    window.addEventListener('rss:language-change',function(event){
-      var language=event&&event.detail&&event.detail.language==='en'?'en':'fr';
-      applyWeglotLanguage(language);
-    });
-
-    if(!validKey(WEGLOT_API_KEY)){
-      window.__rssWeglotStatus='api-key-missing';
-      return;
-    }
-
-    var existing=document.querySelector('script[data-rss-weglot-sdk]');
-    if(existing){
-      existing.addEventListener('load',initWeglot,{once:true});
-      if(window.Weglot)initWeglot();
-      return;
-    }
-    var script=document.createElement('script');
-    script.src='https://cdn.weglot.com/weglot.min.js';
-    script.async=true;
-    script.dataset.rssWeglotSdk='1';
-    script.onload=initWeglot;
-    script.onerror=function(){window.__rssWeglotStatus='sdk-load-error'};
-    document.head.appendChild(script);
-  })();this.remove();" />
 
   
 <!-- rss-dynamic-i18n supprimé : Weglot gère désormais la traduction globale -->
@@ -493,87 +397,173 @@
 
 <!-- rss-manual-body-i18n supprimé : évite les doubles traductions avec Weglot -->
 
+<div id="google_translate_element" style="position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;opacity:0!important;pointer-events:none!important;left:-9999px!important;top:-9999px!important" aria-hidden="true"></div>
 
-
-<script id="rss-global-language-safety">
+<script id="rss-google-translate-global">
 (function(){
-  if (window.__rssGlobalLanguageSafetyBoot) return;
-  window.__rssGlobalLanguageSafetyBoot = true;
+  if(window.__rssGoogleTranslateBoot) return;
+  window.__rssGoogleTranslateBoot = true;
+
+  var SOURCE_LANG = 'fr';
 
   function normalizeLanguage(value){
     return String(value || '').toLowerCase() === 'en' ? 'en' : 'fr';
   }
 
-  function savedLanguage(){
-    try {
+  function getSavedLanguage(){
+    try{
       return normalizeLanguage(localStorage.getItem('rss_language') || document.documentElement.lang || 'fr');
-    } catch(e) {
+    }catch(e){
       return normalizeLanguage(document.documentElement.lang || 'fr');
     }
   }
 
-  function storeLanguage(language){
+  function setSavedLanguage(language){
     language = normalizeLanguage(language);
-    try { localStorage.setItem('rss_language', language); } catch(e) {}
+    try{ localStorage.setItem('rss_language', language); }catch(e){}
     document.documentElement.setAttribute('lang', language);
     window.rssHeaderLanguage = language;
     return language;
   }
 
-  function syncWeglot(language){
-    language = storeLanguage(language);
-    if (!window.Weglot || !window.Weglot.initialized || typeof window.Weglot.switchTo !== 'function') return false;
-    try {
-      var current = typeof window.Weglot.getCurrentLang === 'function' ? window.Weglot.getCurrentLang() : '';
-      if (current !== language) window.Weglot.switchTo(language);
-      return true;
-    } catch(e) {
-      return false;
+  function setCookie(name, value, days){
+    var expires = '';
+    if(days){
+      var date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = '; expires=' + date.toUTCString();
+    }
+    document.cookie = name + '=' + value + expires + '; path=/; SameSite=Lax';
+    // Also set for parent domain so navigation between www/non-www stays consistent.
+    try{
+      var host = location.hostname.replace(/^www\./,'');
+      if(host && host.indexOf('.') !== -1){
+        document.cookie = name + '=' + value + expires + '; path=/; domain=.' + host + '; SameSite=Lax';
+      }
+    }catch(e){}
+  }
+
+  function clearTranslationCookie(){
+    setCookie('googtrans', '', -1);
+    setCookie('googtrans', '/fr/fr', -1);
+  }
+
+  function translationCookieFor(language){
+    return '/' + SOURCE_LANG + '/' + normalizeLanguage(language);
+  }
+
+  function syncHeaderOnly(language){
+    language = setSavedLanguage(language);
+    if(window.rssHeaderPreferencesBoot) window.rssHeaderPreferencesBoot();
+    if(window.rssHeaderAuthSync) window.rssHeaderAuthSync();
+  }
+
+  function currentGoogleLanguage(){
+    var combo = document.querySelector('.goog-te-combo');
+    return combo ? normalizeLanguage(combo.value) : '';
+  }
+
+  function switchGoogleLanguage(language, reloadIfNeeded){
+    language = normalizeLanguage(language);
+    syncHeaderOnly(language);
+
+    if(language === 'fr'){
+      clearTranslationCookie();
+      var comboFr = document.querySelector('.goog-te-combo');
+      if(comboFr && comboFr.value){
+        comboFr.value = '';
+        comboFr.dispatchEvent(new Event('change'));
+      }
+      if(reloadIfNeeded) location.reload();
+      return;
+    }
+
+    setCookie('googtrans', translationCookieFor(language), 365);
+
+    var combo = document.querySelector('.goog-te-combo');
+    if(combo){
+      combo.value = language;
+      combo.dispatchEvent(new Event('change'));
+    }else if(reloadIfNeeded){
+      location.reload();
     }
   }
 
-  // Toute sélection faite depuis le header est appliquée au site complet.
+  // Called by Google's script.
+  window.googleTranslateElementInit = function(){
+    try{
+      new google.translate.TranslateElement({
+        pageLanguage: SOURCE_LANG,
+        includedLanguages: 'en',
+        autoDisplay: false
+      }, 'google_translate_element');
+
+      var wanted = getSavedLanguage();
+      setTimeout(function(){
+        if(wanted === 'en'){
+          setCookie('googtrans', translationCookieFor('en'), 365);
+          var combo = document.querySelector('.goog-te-combo');
+          if(combo && combo.value !== 'en'){
+            combo.value = 'en';
+            combo.dispatchEvent(new Event('change'));
+          }
+        }else{
+          clearTranslationCookie();
+        }
+      }, 250);
+    }catch(e){
+      console.warn('Google Translate non initialisé :', e);
+    }
+  };
+
+  // Custom FR/EN selector drives Google translation for the whole page.
   window.addEventListener('rss:language-change', function(event){
     var language = normalizeLanguage(event && event.detail && event.detail.language);
-    storeLanguage(language);
-    syncWeglot(language);
-    if (window.rssHeaderAuthSync) window.rssHeaderAuthSync();
+    var previous = getSavedLanguage();
+    setSavedLanguage(language);
+
+    if(language === 'fr'){
+      clearTranslationCookie();
+      // Reload is the cleanest way to fully restore the original French DOM.
+      if(previous !== 'fr' || currentGoogleLanguage() === 'en') location.reload();
+      else syncHeaderOnly('fr');
+      return;
+    }
+
+    setCookie('googtrans', translationCookieFor('en'), 365);
+    var combo = document.querySelector('.goog-te-combo');
+    if(combo){
+      combo.value = 'en';
+      combo.dispatchEvent(new Event('change'));
+    }else{
+      // Script may still be loading; reload ensures the cookie is applied globally.
+      location.reload();
+    }
   });
 
-  // Si une page ou Weglot change la langue autrement, le header reste synchronisé.
-  function bindWeglot(){
-    if (!window.Weglot || !window.Weglot.initialized || window.__rssGlobalLanguageSafetyWeglotBound) return;
-    window.__rssGlobalLanguageSafetyWeglotBound = true;
-    try {
-      window.Weglot.on('languageChanged', function(language){
-        language = storeLanguage(language);
-        if (window.rssHeaderPreferencesBoot) window.rssHeaderPreferencesBoot();
-        if (window.rssHeaderAuthSync) window.rssHeaderAuthSync();
-      });
-    } catch(e) {}
-    syncWeglot(savedLanguage());
+  // Apply saved language before loading Google's SDK.
+  var wanted = getSavedLanguage();
+  if(wanted === 'en'){
+    setCookie('googtrans', translationCookieFor('en'), 365);
+  }else{
+    clearTranslationCookie();
   }
 
-  // Le header est injecté sur différentes pages : on attend Weglot sans bloquer le rendu.
-  var attempts = 0;
-  var timer = setInterval(function(){
-    attempts++;
-    bindWeglot();
-    if (window.__rssGlobalLanguageSafetyWeglotBound || attempts >= 40) clearInterval(timer);
-  }, 250);
-
-  document.addEventListener('DOMContentLoaded', function(){
-    storeLanguage(savedLanguage());
-    setTimeout(bindWeglot, 0);
-    setTimeout(bindWeglot, 500);
-    setTimeout(bindWeglot, 1500);
-  });
-
-  if (document.readyState !== 'loading') {
-    storeLanguage(savedLanguage());
-    setTimeout(bindWeglot, 0);
-    setTimeout(bindWeglot, 500);
+  if(!document.querySelector('script[data-rss-google-translate-sdk]')){
+    var script = document.createElement('script');
+    script.src = 'https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit';
+    script.async = true;
+    script.defer = true;
+    script.dataset.rssGoogleTranslateSdk = '1';
+    script.onerror = function(){
+      window.__rssGoogleTranslateStatus = 'sdk-load-error';
+      console.warn('Google Translate SDK non chargé.');
+    };
+    document.head.appendChild(script);
   }
+
+  // Keep header state aligned on every page.
+  syncHeaderOnly(wanted);
 })();
 </script>
 
