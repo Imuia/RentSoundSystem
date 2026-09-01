@@ -497,6 +497,11 @@
       "source": "/fr/:category/louer-:slug-:original_id",
       "destination": "/produit/:original_id/:slug",
       "permanent": true
+    },
+    {
+      "source": "/fr/:category/:original_id-louer-:slug",
+      "destination": "/produit/:original_id/:slug",
+      "permanent": true
     }
   ]
 }
