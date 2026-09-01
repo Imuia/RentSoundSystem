@@ -450,11 +450,11 @@
   "rewrites": [
     {
       "source": "/produit/:original_id/:slug",
-      "destination": "/product.html?original_id=:original_id"
+      "destination": "/product?original_id=:original_id"
     },
     {
       "source": "/produit/id/:id/:slug",
-      "destination": "/product.html?id=:id"
+      "destination": "/product?id=:id"
     }
   ]
 }
