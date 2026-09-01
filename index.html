@@ -1221,6 +1221,39 @@ html, body {
       .slice(0, safeLimit);
   }
 
+  async function localizeNewestProducts() {
+    // Localise uniquement les 4 annonces les plus récentes qui ont une ville/pays
+    // mais pas encore de latitude/longitude.
+    const newest = newestItems(4);
+    const cache = new Map();
+
+    for (const item of newest) {
+      if (!item || hasCoordinates(item)) continue;
+
+      const city = String(item.city || item.location || '').trim();
+      const country = String(item.country || '').trim();
+      if (!city) continue;
+
+      const query = [city, country].filter(Boolean).join(', ');
+      const key = normalizeText(query);
+
+      try {
+        let place = cache.get(key);
+        if (place === undefined) {
+          place = await geocodeCity(query);
+          cache.set(key, place || null);
+        }
+
+        if (place && Number.isFinite(Number(place.lat)) && Number.isFinite(Number(place.lng))) {
+          item.lat = Number(place.lat);
+          item.lng = Number(place.lng);
+        }
+      } catch (e) {
+        console.warn('[RSS] Localisation automatique nouveau produit impossible:', query, e);
+      }
+    }
+  }
+
   function newestNearbyItems(center, limit) {
     return newestItems(limit);
   }
@@ -1394,6 +1427,11 @@ html, body {
 
     allListings = uniqueListings(data);
     activeListings = allListings;
+
+    // Garantit que les nouveaux produits avec ville/pays sont localisables,
+    // même si lat/lng n'ont pas encore été enregistrés dans Supabase.
+    await localizeNewestProducts();
+
     listingsReady = true;
     renderProductGrids(currentCenter);
     renderMapMarkers(currentCenter);
