@@ -1,4 +1,8 @@
 /* RentSoundSystem - composants globaux + traduction globale */
+if (window.__rssComponentsGlobalBoot) {
+  console.warn("RentSoundSystem components.js déjà initialisé.");
+} else {
+window.__rssComponentsGlobalBoot = true;
 const RSS_WEGLOT_API_KEY = "wg_404ba8763ad2fbd7361777eb8a48a0e08";
 
 async function loadComponent(id, file) {
@@ -86,6 +90,7 @@ function bindGlobalLanguageSelector() {
     button.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
+      event.stopImmediatePropagation();
 
       const menuId = button.getAttribute("aria-controls");
       const menu = menuId ? document.getElementById(menuId) : null;
@@ -108,6 +113,7 @@ function bindGlobalLanguageSelector() {
     button.addEventListener("click", function (event) {
       event.preventDefault();
       event.stopPropagation();
+      event.stopImmediatePropagation();
 
       const language = rssNormalizeLanguage(
         button.getAttribute("data-rss-language-choice")
@@ -269,4 +275,6 @@ if (document.readyState === "loading") {
   });
 } else {
   bootGlobalComponents();
+}
+
 }
