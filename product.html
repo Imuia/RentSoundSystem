@@ -362,6 +362,12 @@
   .rss-price-option.closest{pointer-events:auto!important;}
 </style>
 
+
+<style id="rss-public-contact-privacy-fix">
+  #rss-owner-phone,
+  #rss-owner-email { display:none !important; }
+</style>
+
 </head>
 <body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col pt-20">
 <div id="header-container"></div>
@@ -383,7 +389,7 @@
 <span class="material-symbols-outlined text-primary">storefront</span>
 </div>
 <div>
-<div id="rss-owner-mini-name" class="font-headline text-body-md font-bold text-on-surface uppercase tracking-wide">LOUEUR</div>
+<div id="rss-owner-mini-name" class="font-headline text-body-md font-bold text-on-surface uppercase tracking-wide">CLIENT</div>
 <div id="rss-owner-mini-location" class="font-body text-body-sm text-on-surface-variant uppercase tracking-wider">LOCALISATION</div>
 </div>
 </div>
@@ -484,7 +490,7 @@
   <div class="flex items-start justify-between gap-5">
     <div class="min-w-0">
       <div class="rss-added-label mb-1">Ajouté par</div>
-      <h3 id="rss-owner-name" class="rss-added-name truncate">Loueur RentSoundSystem</h3>
+      <h3 id="rss-owner-name" class="rss-added-name truncate">Client</h3>
       <a id="rss-owner-profile-link" href="/profil-partenaire.html" class="rss-added-profile-btn mt-3">
         Voir le profil
         <span class="material-symbols-outlined text-[17px]">chevron_right</span>
@@ -497,12 +503,12 @@
   </div>
   <hr class="rss-added-separator my-7">
   <p id="rss-owner-description" class="rss-added-desc">Partenaire RentSoundSystem spécialisé dans la location de matériel événementiel professionnel.</p>
-  <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-2">
-    <a id="rss-owner-email" href="#" class="rss-added-contact hidden px-3 py-2 rounded-full text-sm transition">
-      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>Contacter par email
+  <div class="mt-5 grid grid-cols-1 gap-2">
+    <a id="rss-owner-email-commercial" href="mailto:commercial@rentsoundsystem.com" class="rss-added-contact px-3 py-2 rounded-full text-sm transition">
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>commercial@rentsoundsystem.com
     </a>
-    <a id="rss-owner-phone" href="#" class="rss-added-contact hidden px-3 py-2 rounded-full text-sm transition">
-      <span class="material-symbols-outlined text-[16px] align-middle mr-1">call</span>Téléphone
+    <a id="rss-owner-email-info" href="mailto:info@rentsoundsystem.com" class="rss-added-contact px-3 py-2 rounded-full text-sm transition">
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>info@rentsoundsystem.com
     </a>
   </div>
   <span id="rss-owner-username" class="hidden"></span>
@@ -872,11 +878,9 @@ function ownerName(item) {
 
 
 function applyOwnerDisplay(item){
-  const name = ownerName(item);
+  const name = 'Client';
   const location = ownerLocation(item);
   const desc = ownerDescription(item);
-  const email = firstFilled(item.owner_email, item.email, item.partner_email);
-  const phone = firstFilled(item.owner_phone, item.phone, item.partner_phone);
   const logo = ownerLogo(item);
 
   text(document.getElementById('rss-owner-name'), name);
@@ -886,9 +890,6 @@ function applyOwnerDisplay(item){
 
   const miniLocation = document.getElementById('rss-owner-location');
   if(miniLocation) miniLocation.textContent = location;
-
-  setOwnerLink('rss-owner-email', email ? 'mailto:' + email : '', 'Contacter par email');
-  setOwnerLink('rss-owner-phone', phone ? 'tel:' + String(phone).replace(/\s+/g,'') : '', phone || 'Téléphone');
 
   const logoImg = document.getElementById('rss-owner-logo');
   const logoFallback = document.getElementById('rss-owner-logo-fallback');
@@ -900,8 +901,16 @@ function applyOwnerDisplay(item){
 
   const profileLink = document.getElementById('rss-owner-profile-link');
   if(profileLink){
-    const slugSource = firstFilled(item.partner_record_id, item.legacy_user_id, item.owner_username, item.owner_email, name);
-    profileLink.href = '/profil-partenaire.html?partner=' + encodeURIComponent(slugSource);
+    const partnerId = firstFilled(item.partner_record_id, item.partner_id);
+    const legacyId = firstFilled(item.legacy_user_id, item.owner_legacy_user_id);
+    const username = firstFilled(item.owner_username, item.username, item.partner_username);
+    const params = new URLSearchParams();
+
+    if(partnerId) params.set('partner_id', partnerId);
+    else if(legacyId) params.set('legacy_user_id', legacyId);
+    else if(username) params.set('username', username);
+
+    profileLink.href = '/profil-partenaire.html' + (params.toString() ? '?' + params.toString() : '');
   }
 }
 
@@ -1078,13 +1087,11 @@ function applyOwnerDisplay(item){
 
   function updateOwnerUI(item) {
     const username = ownerUsername(item);
-    const name = ownerName(item);
+    const name = 'Client';
     const location = ownerLocation(item);
-    const email = firstFilled(item.owner_email, item.email, item.user_email, item.partner_email);
-    const phone = firstFilled(item.owner_phone, item.phone, item.telephone, item.mobile, item.partner_phone);
     const legacyId = firstFilled(item.legacy_user_id, item.wordpress_user_id);
     const listingId = firstFilled(item.original_id, item.id);
-    const slug = partnerSlug(username || name || legacyId);
+    const slug = partnerSlug(username || legacyId || 'client');
     const desc = ownerDescription(item);
     const logo = ownerLogo(item);
 
@@ -1098,12 +1105,13 @@ function applyOwnerDisplay(item){
     const profileLink = document.getElementById('rss-owner-profile-link');
     if (profileLink) {
       const params = new URLSearchParams();
-      const partnerId = firstFilled(item.partner_id);
-      if (email) params.set('email', email.toLowerCase());
+      const partnerId = firstFilled(item.partner_id, item.partner_record_id);
+
       if (partnerId) params.set('partner_id', partnerId);
-      if (!email && legacyId) params.set('legacy_user_id', legacyId);
-      if (!email && !legacyId && username) params.set('username', username);
-      if (!email && !legacyId && !username && slug) params.set('slug', slug);
+      else if (legacyId) params.set('legacy_user_id', legacyId);
+      else if (username) params.set('username', username);
+      else if (slug) params.set('slug', slug);
+
       profileLink.href = '/profil-partenaire.html' + (params.toString() ? '?' + params.toString() : '');
     }
 
@@ -1127,9 +1135,6 @@ function applyOwnerDisplay(item){
       logoEl.onerror = function(){ logoEl.classList.add('hidden'); if (fallbackEl) fallbackEl.classList.remove('hidden'); };
     }
 
-    setOwnerLink('rss-owner-email', email ? 'mailto:' + email : '', email ? 'Contacter par email' : '');
-    setOwnerLink('rss-owner-phone', phone ? 'tel:' + String(phone).replace(/\s+/g, '') : '', phone || '');
-
     const vendorBox = document.getElementById('rss-owner-mini-card');
     if (vendorBox) vendorBox.setAttribute('title', name + ' - ' + location);
 
@@ -1140,8 +1145,6 @@ function applyOwnerDisplay(item){
         name: name,
         owner_name: name,
         location: location,
-        email: email,
-        phone: phone,
         description: desc,
         logo: logo,
         slug: slug
