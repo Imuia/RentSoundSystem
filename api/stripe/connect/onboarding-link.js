@@ -149,8 +149,10 @@ function publicPartnerStatus(partner) {
 }
 
 function getStripe() {
-  if (!process.env.STRIPE_SECRET_KEY) throw new Error("STRIPE_SECRET_KEY manquante.");
-  return new Stripe(process.env.STRIPE_SECRET_KEY);
+  if (!process.env.STRIPE_CONNECT_SECRET_KEY) {
+    throw new Error("STRIPE_CONNECT_SECRET_KEY manquante.");
+  }
+  return new Stripe(process.env.STRIPE_CONNECT_SECRET_KEY);
 }
 
 
