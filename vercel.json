@@ -456,5 +456,47 @@
       "source": "/produit/id/:id/:slug",
       "destination": "/product?id=:id"
     }
+  ],
+  "redirects": [
+    {
+      "source": "/fr",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/web/fr",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/en/how-it-work",
+      "destination": "/comment-ca-marche",
+      "permanent": true
+    },
+    {
+      "source": "/fr/comment-ca-marche",
+      "destination": "/comment-ca-marche",
+      "permanent": true
+    },
+    {
+      "source": "/fr/contact",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/fr/faq",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/fr/mentionlegal",
+      "destination": "/mentions-legales",
+      "permanent": true
+    },
+    {
+      "source": "/fr/:category/louer-:slug-:original_id",
+      "destination": "/produit/:original_id/:slug",
+      "permanent": true
+    }
   ]
 }
