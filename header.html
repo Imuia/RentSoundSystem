@@ -485,302 +485,97 @@
     document.head.appendChild(script);
   })();this.remove();" />
 
-  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="
+  
+<!-- rss-dynamic-i18n supprimé : Weglot gère désormais la traduction globale -->
+
+
+
+
+<!-- rss-manual-body-i18n supprimé : évite les doubles traductions avec Weglot -->
+
+
+
+<script id="rss-global-language-safety">
 (function(){
-    if(window.__rssDynamicI18nBoot)return;
-    window.__rssDynamicI18nBoot=true;
+  if (window.__rssGlobalLanguageSafetyBoot) return;
+  window.__rssGlobalLanguageSafetyBoot = true;
 
-    var pairs=[[&quot;Aucune annonce disponible pour cette zone.&quot;, &quot;No listings available in this area.&quot;], [&quot;Aucune annonce n’est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.&quot;, &quot;No listing is currently available for this city or country. Try another destination or browse the latest listings published worldwide.&quot;], [&quot;Aucune annonce n&#x27;est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.&quot;, &quot;No listing is currently available for this city or country. Try another destination or browse the latest listings published worldwide.&quot;], [&quot;Autour de vous&quot;, &quot;Around you&quot;], [&quot;Voir tout&quot;, &quot;See all&quot;], [&quot;Tout voir&quot;, &quot;See all&quot;], [&quot;Utiliser ma position&quot;, &quot;Use my location&quot;], [&quot;Dernières annonces publiées dans le monde&quot;, &quot;Latest listings published worldwide&quot;], [&quot;Aucune annonce disponible&quot;, &quot;No listings available&quot;], [&quot;Aucune annonce n’est actuellement disponible&quot;, &quot;No listing is currently available&quot;], [&quot;Aucune annonce n&#x27;est actuellement disponible&quot;, &quot;No listing is currently available&quot;]];
+  function normalizeLanguage(value){
+    return String(value || '').toLowerCase() === 'en' ? 'en' : 'fr';
+  }
 
-    function lang(){
-      try{
-        var v=String(localStorage.getItem(&#x27;rss_language&#x27;)||document.documentElement.lang||&#x27;fr&#x27;).toLowerCase();
-        return v===&#x27;en&#x27;?&#x27;en&#x27;:&#x27;fr&#x27;;
-      }catch(e){return&#x27;fr&#x27;}
+  function savedLanguage(){
+    try {
+      return normalizeLanguage(localStorage.getItem('rss_language') || document.documentElement.lang || 'fr');
+    } catch(e) {
+      return normalizeLanguage(document.documentElement.lang || 'fr');
     }
-    function isIgnored(node){
-      var el=node.nodeType===1?node:node.parentElement;
-      if(!el)return true;
-      return !!(el.closest(&#x27;script,style,noscript,textarea,input,select,.notranslate,.StripeElement,#stripe-card-element,.rss-preference-controls,.rss-mobile-preferences&#x27;));
+  }
+
+  function storeLanguage(language){
+    language = normalizeLanguage(language);
+    try { localStorage.setItem('rss_language', language); } catch(e) {}
+    document.documentElement.setAttribute('lang', language);
+    window.rssHeaderLanguage = language;
+    return language;
+  }
+
+  function syncWeglot(language){
+    language = storeLanguage(language);
+    if (!window.Weglot || !window.Weglot.initialized || typeof window.Weglot.switchTo !== 'function') return false;
+    try {
+      var current = typeof window.Weglot.getCurrentLang === 'function' ? window.Weglot.getCurrentLang() : '';
+      if (current !== language) window.Weglot.switchTo(language);
+      return true;
+    } catch(e) {
+      return false;
     }
-    function replaceText(value,toEnglish){
-      var output=value;
-      pairs.forEach(function(pair){
-        var from=toEnglish?pair[0]:pair[1];
-        var to=toEnglish?pair[1]:pair[0];
-        if(output.indexOf(from)!==-1)output=output.split(from).join(to);
+  }
+
+  // Toute sélection faite depuis le header est appliquée au site complet.
+  window.addEventListener('rss:language-change', function(event){
+    var language = normalizeLanguage(event && event.detail && event.detail.language);
+    storeLanguage(language);
+    syncWeglot(language);
+    if (window.rssHeaderAuthSync) window.rssHeaderAuthSync();
+  });
+
+  // Si une page ou Weglot change la langue autrement, le header reste synchronisé.
+  function bindWeglot(){
+    if (!window.Weglot || !window.Weglot.initialized || window.__rssGlobalLanguageSafetyWeglotBound) return;
+    window.__rssGlobalLanguageSafetyWeglotBound = true;
+    try {
+      window.Weglot.on('languageChanged', function(language){
+        language = storeLanguage(language);
+        if (window.rssHeaderPreferencesBoot) window.rssHeaderPreferencesBoot();
+        if (window.rssHeaderAuthSync) window.rssHeaderAuthSync();
       });
-      return output;
-    }
-    function translateNodeText(node,toEnglish){
-      if(!node||isIgnored(node))return;
-      if(node.nodeType===3){
-        var next=replaceText(node.nodeValue,toEnglish);
-        if(next!==node.nodeValue)node.nodeValue=next;
-        return;
-      }
-      if(node.nodeType!==1)return;
-      [&#x27;placeholder&#x27;,&#x27;title&#x27;,&#x27;aria-label&#x27;].forEach(function(attr){
-        if(node.hasAttribute&amp;&amp;node.hasAttribute(attr)){
-          var oldValue=node.getAttribute(attr);
-          var newValue=replaceText(oldValue,toEnglish);
-          if(newValue!==oldValue)node.setAttribute(attr,newValue);
-        }
-      });
-    }
-    function walk(root,toEnglish){
-      if(!root||isIgnored(root))return;
-      translateNodeText(root,toEnglish);
-      var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{
-        acceptNode:function(node){
-          return isIgnored(node)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT;
-        }
-      });
-      var node;
-      while((node=walker.nextNode()))translateNodeText(node,toEnglish);
-    }
-    function apply(){
-      if(!document.body)return;
-      walk(document.body,lang()===&#x27;en&#x27;);
-    }
-
-    window.rssApplyDynamicTranslations=apply;
-    window.addEventListener(&#x27;rss:language-change&#x27;,function(){setTimeout(apply,120);setTimeout(apply,650);setTimeout(apply,1600)});
-    window.addEventListener(&#x27;load&#x27;,function(){setTimeout(apply,300);setTimeout(apply,1500)});
-    if(window.MutationObserver){
-      new MutationObserver(function(mutations){
-        if(lang()!==&#x27;en&#x27;)return;
-        clearTimeout(window.__rssDynamicI18nTimer);
-        window.__rssDynamicI18nTimer=setTimeout(function(){
-          mutations.forEach(function(mutation){
-            Array.prototype.slice.call(mutation.addedNodes||[]).forEach(function(node){walk(node,true)});
-          });
-          apply();
-        },220);
-      }).observe(document.documentElement,{childList:true,subtree:true});
-    }
-    setTimeout(apply,500);
-    setTimeout(apply,1800);
-  })();
-this.remove();" />
-
-
-<img alt="" aria-hidden="true" style="display:none;width:0;height:0" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" onload="(function(){
-  if(window.__rssHeaderOnlyI18nFixSafeBoot)return;
-  window.__rssHeaderOnlyI18nFixSafeBoot=true;
-
-  var changedTextNodes=[];
-  var changedAttrElements=[];
-  var originalText=new WeakMap();
-  var originalAttrs=new WeakMap();
-
-  var pairs=[
-    [&#x27;Catalogue de Location&#x27;,&#x27;Rental Catalog&#x27;],
-    [&#x27;Catalogue de location&#x27;,&#x27;Rental Catalog&#x27;],
-    [&#x27;Filtres&#x27;,&#x27;Filters&#x27;],
-    [&#x27;Filtre&#x27;,&#x27;Filter&#x27;],
-    [&#x27;Catégorie&#x27;,&#x27;Category&#x27;],
-    [&#x27;Categorie&#x27;,&#x27;Category&#x27;],
-    [&#x27;Casques &amp; écouteurs&#x27;,&#x27;Headphones &amp; Earbuds&#x27;],
-    [&#x27;Casques &amp; ecouteurs&#x27;,&#x27;Headphones &amp; Earbuds&#x27;],
-    [&#x27;Événementiel &amp; production&#x27;,&#x27;Events &amp; Production&#x27;],
-    [&#x27;Evenementiel &amp; production&#x27;,&#x27;Events &amp; Production&#x27;],
-    [&#x27;Instruments musique&#x27;,&#x27;Musical Instruments&#x27;],
-    [&#x27;Instruments music&#x27;,&#x27;Musical Instruments&#x27;],
-    [&#x27;Multimédia &amp; digital&#x27;,&#x27;Multimedia &amp; Digital&#x27;],
-    [&#x27;Multimedia &amp; digital&#x27;,&#x27;Multimedia &amp; Digital&#x27;],
-    [&#x27;Sonorisation &amp; éclairage&#x27;,&#x27;Sound &amp; Lighting&#x27;],
-    [&#x27;Sonorisation &amp; eclairage&#x27;,&#x27;Sound &amp; Lighting&#x27;],
-    [&#x27;Tarif journalier&#x27;,&#x27;Daily rate&#x27;],
-    [&#x27;Prix journalier&#x27;,&#x27;Daily rate&#x27;],
-    [&#x27;Tous les lieux&#x27;,&#x27;All locations&#x27;],
-    [&#x27;Toutes les localisations&#x27;,&#x27;All locations&#x27;],
-    [&#x27;Dates de location&#x27;,&#x27;Rental dates&#x27;],
-    [&#x27;Effacer les Filtres&#x27;,&#x27;Clear filters&#x27;],
-    [&#x27;Effacer les filtres&#x27;,&#x27;Clear filters&#x27;],
-    [&#x27;Rechercher du matériel...&#x27;,&#x27;Search for equipment...&#x27;],
-    [&#x27;Rechercher le matériel...&#x27;,&#x27;Search for equipment...&#x27;],
-    [&#x27;Trier par :&#x27;,&#x27;Sort by:&#x27;],
-    [&#x27;Trier par:&#x27;,&#x27;Sort by:&#x27;],
-    [&#x27;Recommandé&#x27;,&#x27;Recommended&#x27;],
-    [&#x27;Disponible&#x27;,&#x27;Available&#x27;],
-    [&#x27;Indisponible&#x27;,&#x27;Unavailable&#x27;],
-    [&#x27;Voir l’annonce&#x27;,&#x27;View the ad&#x27;],
-    [&quot;Voir l&#x27;annonce&quot;,&#x27;View the ad&#x27;],
-    [&#x27;Voir annonce&#x27;,&#x27;View the ad&#x27;],
-    [&#x27;Voir la fiche&#x27;,&#x27;View the ad&#x27;],
-    [&#x27;Voir le profil&#x27;,&#x27;View profile&#x27;],
-    [&#x27;Ajouté par&#x27;,&#x27;Added by&#x27;],
-    [&#x27;Ajoute par&#x27;,&#x27;Added by&#x27;],
-    [&#x27;Aperçu&#x27;,&#x27;Overview&#x27;],
-    [&#x27;Spécifications techniques&#x27;,&#x27;Technical Specifications&#x27;],
-    [&#x27;Specifications techniques&#x27;,&#x27;Technical Specifications&#x27;],
-    [&#x27;Inclus&#x27;,&#x27;Included&#x27;],
-    [&#x27;Frais de livraison&#x27;,&#x27;Shipping costs&#x27;],
-    [&#x27;Coûts de livraison&#x27;,&#x27;Shipping costs&#x27;],
-    [&#x27;Couts de livraison&#x27;,&#x27;Shipping costs&#x27;],
-    [&#x27;Installation technique&#x27;,&#x27;Technical installation&#x27;],
-    [&#x27;Location estimée&#x27;,&#x27;Rental estimate&#x27;],
-    [&#x27;Location estimee&#x27;,&#x27;Rental estimate&#x27;],
-    [&#x27;Total dû&#x27;,&#x27;Total due&#x27;],
-    [&#x27;Total du&#x27;,&#x27;Total due&#x27;],
-    [&#x27;Dépôt de garantie&#x27;,&#x27;Security deposit&#x27;],
-    [&#x27;Depot de garantie&#x27;,&#x27;Security deposit&#x27;],
-    [&#x27;non inclus dans le montant total de location&#x27;,&#x27;not included in the total rental amount&#x27;],
-    [&#x27;Sélectionnez vos dates pour voir le prix total.&#x27;,&#x27;Select your dates to see the rental price.&#x27;],
-    [&#x27;Selectionnez vos dates pour voir le prix total.&#x27;,&#x27;Select your dates to see the rental price.&#x27;],
-    [&#x27;Réserver maintenant&#x27;,&#x27;Book Now&#x27;],
-    [&#x27;Reserver maintenant&#x27;,&#x27;Book Now&#x27;],
-    [&#x27;Demander un devis&#x27;,&#x27;Request a quote&#x27;],
-    [&#x27;Contacter par email&#x27;,&#x27;Contact us by email&#x27;],
-    [&#x27;Contacter par téléphone&#x27;,&#x27;Contact us by phone&#x27;],
-    [&#x27;Retrait&#x27;,&#x27;Pickup&#x27;],
-    [&#x27;Livraison et reprise&#x27;,&#x27;Delivery and return&#x27;],
-    [&#x27;Livraison&#x27;,&#x27;Delivery&#x27;],
-    [&#x27;Technicien&#x27;,&#x27;Technician&#x27;],
-    [&#x27;par jour&#x27;,&#x27;per day&#x27;],
-    [&#x27;/jour&#x27;,&#x27; per day&#x27;],
-    [&#x27;€/jour&#x27;,&#x27;€ per day&#x27;],
-    [&#x27;annonces disponibles&#x27;,&#x27;available listings&#x27;],
-    [&#x27;annonce disponible&#x27;,&#x27;available listing&#x27;]
-  ];
-
-  function language(){
-    try{
-      var value=String(localStorage.getItem(&#x27;rss_language&#x27;)||document.documentElement.lang||&#x27;fr&#x27;).toLowerCase();
-      return value===&#x27;en&#x27;?&#x27;en&#x27;:&#x27;fr&#x27;;
-    }catch(error){return &#x27;fr&#x27;}
-  }
-  function isIgnored(node){
-    var el=node&amp;&amp;node.nodeType===1?node:(node&amp;&amp;node.parentElement);
-    if(!el)return true;
-    return !!el.closest(&#x27;script,style,noscript,textarea,input,select,option,.notranslate,.StripeElement,#stripe-card-element,.material-symbols-outlined,.rss-preference-controls,.rss-mobile-preferences,.leaflet-container&#x27;);
-  }
-  function toPlainAmp(value){
-    return String(value||&#x27;&#x27;).replace(/&amp;amp;amp;/g,&#x27;&amp;&#x27;).replace(/&amp;amp;/g,&#x27;&amp;&#x27;).replace(/&amp;nbsp;/g,&#x27; &#x27;);
-  }
-  function englishText(value){
-    if(value==null)return value;
-    var output=toPlainAmp(value);
-
-    output=output.replace(/Affichage\s+de\s+([0-9\-]+)\s+sur\s+([0-9]+)\s+annonces\s+disponibles/gi,&#x27;Showing $1 of $2 available listings&#x27;);
-    output=output.replace(/(\d+(?:[\s.,]\d+)*)\s*€\s*\/\s*jour/gi,&#x27;$1€ per day&#x27;);
-    output=output.replace(/\bdelivery\b/gi,&#x27;Delivery&#x27;);
-    output=output.replace(/\bpickup\b/gi,&#x27;Pickup&#x27;);
-
-    pairs.forEach(function(pair){
-      var from=pair[0],to=pair[1];
-      if(!from||from===to)return;
-      output=output.split(from).join(to);
-    });
-    return output;
-  }
-  function rememberText(node){
-    if(!originalText.has(node)){
-      originalText.set(node,node.nodeValue);
-      changedTextNodes.push(node);
-    }
-  }
-  function rememberAttr(el,attr,value){
-    var map=originalAttrs.get(el);
-    if(!map){map={};originalAttrs.set(el,map);changedAttrElements.push(el)}
-    if(!(attr in map))map[attr]=value;
-  }
-  function translateAttributes(el){
-    if(!el||el.nodeType!==1||isIgnored(el))return;
-    [&#x27;placeholder&#x27;,&#x27;title&#x27;,&#x27;aria-label&#x27;,&#x27;alt&#x27;].forEach(function(attr){
-      if(!el.hasAttribute||!el.hasAttribute(attr))return;
-      var oldValue=el.getAttribute(attr);
-      var newValue=englishText(oldValue);
-      if(newValue!==oldValue){rememberAttr(el,attr,oldValue);el.setAttribute(attr,newValue)}
-    });
-  }
-  function applyEnglish(root){
-    if(!root||isIgnored(root))return;
-    if(root.nodeType===3){
-      var next=englishText(root.nodeValue);
-      if(next!==root.nodeValue){rememberText(root);root.nodeValue=next}
-      return;
-    }
-    if(root.nodeType!==1)return;
-    translateAttributes(root);
-    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT|NodeFilter.SHOW_ELEMENT,{
-      acceptNode:function(node){return isIgnored(node)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT}
-    });
-    var node;
-    while((node=walker.nextNode())){
-      if(node.nodeType===3){
-        var newText=englishText(node.nodeValue);
-        if(newText!==node.nodeValue){rememberText(node);node.nodeValue=newText}
-      }else translateAttributes(node);
-    }
-  }
-  function restoreFrench(){
-    changedTextNodes.forEach(function(node){try{if(originalText.has(node))node.nodeValue=originalText.get(node)}catch(e){}});
-    changedAttrElements.forEach(function(el){
-      try{
-        var map=originalAttrs.get(el)||{};
-        Object.keys(map).forEach(function(attr){el.setAttribute(attr,map[attr])});
-      }catch(e){}
-    });
-    changedTextNodes=[];changedAttrElements=[];originalText=new WeakMap();originalAttrs=new WeakMap();
-  }
-  function cleanCorruption(){
-    // Ancien correctif supprimé : il traduisait “No” en “Non” en boucle. On nettoie les restes visibles si le navigateur a gardé l&#x27;ancien DOM.
-    Array.prototype.slice.call(document.querySelectorAll(&#x27;body *&#x27;)).forEach(function(el){
-      if(isIgnored(el)||el.children.length)return;
-      var txt=String(el.textContent||&#x27;&#x27;).trim();
-      if(/^Non{4,}/.test(txt)||/^Nonn{4,}/.test(txt))el.textContent=&#x27;&#x27;;
-    });
-  }
-  function fixCalendarDays(toEnglish){
-    var target=toEnglish?[&#x27;Mon&#x27;,&#x27;Tue&#x27;,&#x27;Wed&#x27;,&#x27;Thu&#x27;,&#x27;Fri&#x27;,&#x27;Sat&#x27;,&#x27;Sun&#x27;]:[&#x27;Lun&#x27;,&#x27;Mar&#x27;,&#x27;Mer&#x27;,&#x27;Jeu&#x27;,&#x27;Ven&#x27;,&#x27;Sam&#x27;,&#x27;Dim&#x27;];
-    var markers=[&#x27;Lun&#x27;,&#x27;Mar&#x27;,&#x27;Mer&#x27;,&#x27;Jeu&#x27;,&#x27;Ven&#x27;,&#x27;Sam&#x27;,&#x27;Dim&#x27;,&#x27;Read&#x27;,&#x27;My&#x27;,&#x27;Me&#x27;,&#x27;Her&#x27;,&#x27;Tue&#x27;,&#x27;Fri&#x27;,&#x27;Sat&#x27;,&#x27;Sun&#x27;,&#x27;Mon&#x27;,&#x27;Wed&#x27;,&#x27;Thu&#x27;];
-    Array.prototype.slice.call(document.querySelectorAll(&#x27;div,tr,ul,section&#x27;)).forEach(function(parent){
-      if(isIgnored(parent))return;
-      var children=Array.prototype.slice.call(parent.children||[]).filter(function(child){
-        var txt=String(child.textContent||&#x27;&#x27;).replace(/\s+/g,&#x27; &#x27;).trim();
-        return txt.length&gt;0&amp;&amp;txt.length&lt;=8&amp;&amp;!/[0-9€]/.test(txt);
-      });
-      if(children.length!==7)return;
-      var score=children.reduce(function(sum,child){
-        var txt=String(child.textContent||&#x27;&#x27;).replace(/\s+/g,&#x27; &#x27;).trim();
-        return sum+(markers.indexOf(txt)!==-1?1:0);
-      },0);
-      if(score&lt;3)return;
-      children.forEach(function(child,index){child.textContent=target[index]});
-    });
-  }
-  function apply(root){
-    var en=language()===&#x27;en&#x27;;
-    if(en){applyEnglish(root||document.body);fixCalendarDays(true)}
-    else{restoreFrench();fixCalendarDays(false);cleanCorruption()}
-  }
-  function schedule(root){
-    clearTimeout(window.__rssHeaderOnlyI18nSafeTimer);
-    window.__rssHeaderOnlyI18nSafeTimer=setTimeout(function(){apply(root||document.body)},140);
-    setTimeout(function(){apply(root||document.body)},700);
-    setTimeout(function(){apply(root||document.body)},1600);
+    } catch(e) {}
+    syncWeglot(savedLanguage());
   }
 
-  window.rssApplyDynamicTranslations=function(){schedule(document.body)};
-  window.addEventListener(&#x27;rss:language-change&#x27;,function(){schedule(document.body)});
-  window.addEventListener(&#x27;load&#x27;,function(){schedule(document.body)});
-  document.addEventListener(&#x27;DOMContentLoaded&#x27;,function(){schedule(document.body)});
+  // Le header est injecté sur différentes pages : on attend Weglot sans bloquer le rendu.
+  var attempts = 0;
+  var timer = setInterval(function(){
+    attempts++;
+    bindWeglot();
+    if (window.__rssGlobalLanguageSafetyWeglotBound || attempts >= 40) clearInterval(timer);
+  }, 250);
 
-  if(window.MutationObserver){
-    new MutationObserver(function(mutations){
-      var root=document.body;
-      for(var i=0;i&lt;mutations.length;i++){
-        if(mutations[i].addedNodes&amp;&amp;mutations[i].addedNodes.length){root=mutations[i].target||document.body;break}
-      }
-      schedule(root);
-    }).observe(document.documentElement,{childList:true,subtree:true});
+  document.addEventListener('DOMContentLoaded', function(){
+    storeLanguage(savedLanguage());
+    setTimeout(bindWeglot, 0);
+    setTimeout(bindWeglot, 500);
+    setTimeout(bindWeglot, 1500);
+  });
+
+  if (document.readyState !== 'loading') {
+    storeLanguage(savedLanguage());
+    setTimeout(bindWeglot, 0);
+    setTimeout(bindWeglot, 500);
   }
-
-  schedule(document.body);
 })();
-this.remove();" />
+</script>
 
 </header>
 
