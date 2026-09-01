@@ -459,6 +459,21 @@
   ],
   "redirects": [
     {
+      "source": "/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/web",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/web/en",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/fr",
       "destination": "/",
       "permanent": true
