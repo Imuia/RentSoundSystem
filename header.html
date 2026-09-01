@@ -385,6 +385,108 @@
     window.rssHeaderPreferencesBoot=window.rssHeaderPreferencesBoot||build;
     window.rssHeaderPreferencesBoot();
   })();this.remove();" />
-<!-- Traduction globale désactivée temporairement : sélecteur FR/EN du header conservé -->
+
+  <img alt="" aria-hidden="true" style="display:none;width:0;height:0" 
+       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw=="
+       onload="(function(){
+  if(window.__rssWeglotInjectedBoot){ this.remove(); return; }
+  window.__rssWeglotInjectedBoot=true;
+
+  var API_KEY=&#x27;wg_404ba8763ad2fbd7361777eb8a48a0e08&#x27;;
+
+  function norm(v){return String(v||&#x27;&#x27;).toLowerCase()===&#x27;en&#x27;?&#x27;en&#x27;:&#x27;fr&#x27;}
+  function wanted(){
+    try{return norm(localStorage.getItem(&#x27;rss_language&#x27;)||&#x27;fr&#x27;)}
+    catch(e){return&#x27;fr&#x27;}
+  }
+  function save(lang){
+    lang=norm(lang);
+    try{localStorage.setItem(&#x27;rss_language&#x27;,lang)}catch(e){}
+    document.documentElement.setAttribute(&#x27;lang&#x27;,lang);
+    window.rssHeaderLanguage=lang;
+    if(window.rssHeaderPreferencesBoot)window.rssHeaderPreferencesBoot();
+    if(window.rssHeaderAuthSync)window.rssHeaderAuthSync();
+  }
+  function switchTo(lang){
+    lang=norm(lang);
+    if(!window.Weglot||!window.Weglot.initialized||typeof window.Weglot.switchTo!==&#x27;function&#x27;){
+      window.__rssPendingLanguage=lang;
+      return false;
+    }
+    try{
+      var current=typeof window.Weglot.getCurrentLang===&#x27;function&#x27;?norm(window.Weglot.getCurrentLang()):&#x27;fr&#x27;;
+      if(current!==lang)window.Weglot.switchTo(lang);
+      else save(lang);
+      return true;
+    }catch(e){
+      console.warn(&#x27;[RSS i18n] switch error&#x27;,e);
+      return false;
+    }
+  }
+  function init(){
+    if(!window.Weglot||window.__rssWeglotRealInitialized)return;
+    window.__rssWeglotRealInitialized=true;
+    try{
+      window.Weglot.on(&#x27;initialized&#x27;,function(){
+        window.__rssTranslationStatus=&#x27;ready&#x27;;
+        var lang=window.__rssPendingLanguage||wanted();
+        setTimeout(function(){switchTo(lang)},120);
+      });
+      window.Weglot.on(&#x27;languageChanged&#x27;,function(lang){
+        save(lang);
+        window.__rssTranslationStatus=&#x27;translated-&#x27;+norm(lang);
+      });
+      window.Weglot.initialize({
+        api_key:API_KEY,
+        hide_switcher:true,
+        cache:true,
+        wait_transition:true,
+        translate_search:true,
+        excluded_blocks:[
+          {value:&#x27;.rss-preference-controls&#x27;},
+          {value:&#x27;.rss-mobile-preferences&#x27;},
+          {value:&#x27;.material-symbols-outlined&#x27;},
+          {value:&#x27;.StripeElement&#x27;},
+          {value:&#x27;#stripe-card-element&#x27;},
+          {value:&#x27;.leaflet-container&#x27;},
+          {value:&#x27;.notranslate&#x27;}
+        ]
+      });
+    }catch(e){
+      window.__rssWeglotRealInitialized=false;
+      window.__rssTranslationStatus=&#x27;init-error&#x27;;
+      console.error(&#x27;[RSS i18n] Weglot init error&#x27;,e);
+    }
+  }
+  function load(){
+    if(window.Weglot){init();return}
+    var s=document.querySelector(&#x27;script[data-rss-weglot-real]&#x27;);
+    if(s){s.addEventListener(&#x27;load&#x27;,init,{once:true});return}
+    s=document.createElement(&#x27;script&#x27;);
+    s.src=&#x27;https://cdn.weglot.com/weglot.min.js&#x27;;
+    s.async=true;
+    s.dataset.rssWeglotReal=&#x27;1&#x27;;
+    s.onload=init;
+    s.onerror=function(){
+      window.__rssTranslationStatus=&#x27;sdk-error&#x27;;
+      console.error(&#x27;[RSS i18n] Weglot SDK non chargé&#x27;);
+    };
+    document.head.appendChild(s);
+  }
+
+  window.addEventListener(&#x27;rss:language-change&#x27;,function(ev){
+    var lang=norm(ev&amp;&amp;ev.detail&amp;&amp;ev.detail.language);
+    window.__rssPendingLanguage=lang;
+    save(lang);
+    switchTo(lang);
+  });
+
+  // Header injecté après le DOM : petite attente pour laisser les blocs dynamiques s&#x27;afficher.
+  setTimeout(load,250);
+  setTimeout(function(){switchTo(wanted())},1200);
+
+  this.remove();
+}).call(this);" />
+
 </header>
 
