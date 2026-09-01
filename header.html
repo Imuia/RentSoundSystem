@@ -338,10 +338,9 @@
       }
       function setLanguage(language){
         var normalized=String(language||'').toLowerCase()==='en'?'en':'fr';
+        write('rss_language',normalized);
+        apply({emit:'rss:language-change'});
         closeMenus();
-        window.dispatchEvent(new CustomEvent('rss:language-request',{
-          detail:{language:normalized,source:'header'}
-        }));
       }
       function setCurrency(currency){
         var normalized=String(currency||'').toUpperCase()==='USD'?'USD':'EUR';
@@ -381,185 +380,11 @@
         });
         document.addEventListener('keydown',function(event){if(event.key==='Escape')closeMenus()});
       }
-      // Au démarrage, le header reste synchronisé avec la langue réellement active.
-      // Weglot appellera RSSPreferences.applyConfirmedLanguage() après initialisation.
       apply();
-      window.RSSPreferences.applyConfirmedLanguage=function(language){
-        var normalized=String(language||'').toLowerCase()==='en'?'en':'fr';
-        write('rss_language',normalized);
-        apply();
-      };
     }
     window.rssHeaderPreferencesBoot=window.rssHeaderPreferencesBoot||build;
     window.rssHeaderPreferencesBoot();
   })();this.remove();" />
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-<!-- Google Translate supprimé : Weglot devient le seul moteur de traduction globale -->
-
-<script id="rss-weglot-global-v2">
-(function(){
-  if(window.__rssWeglotGlobalV2Boot) return;
-  window.__rssWeglotGlobalV2Boot = true;
-
-  var API_KEY = 'wg_404ba8763ad2fbd7361777eb8a48a0e08';
-  var wantedLanguage = null;
-  var initialized = false;
-
-  function normalizeLanguage(value){
-    return String(value || '').toLowerCase() === 'en' ? 'en' : 'fr';
-  }
-
-  function savedLanguage(){
-    try{
-      return normalizeLanguage(localStorage.getItem('rss_language') || 'fr');
-    }catch(e){
-      return 'fr';
-    }
-  }
-
-  function confirmLanguage(language){
-    language = normalizeLanguage(language);
-    try{ localStorage.setItem('rss_language', language); }catch(e){}
-    document.documentElement.setAttribute('lang', language);
-    window.rssHeaderLanguage = language;
-
-    if(window.RSSPreferences && typeof window.RSSPreferences.applyConfirmedLanguage === 'function'){
-      window.RSSPreferences.applyConfirmedLanguage(language);
-    }
-    if(window.rssHeaderAuthSync) window.rssHeaderAuthSync();
-  }
-
-  function switchWholeSite(language){
-    language = normalizeLanguage(language);
-    wantedLanguage = language;
-
-    if(!window.Weglot || !window.Weglot.initialized || typeof window.Weglot.switchTo !== 'function'){
-      return false;
-    }
-
-    try{
-      var current = typeof window.Weglot.getCurrentLang === 'function'
-        ? normalizeLanguage(window.Weglot.getCurrentLang())
-        : '';
-
-      if(current === language){
-        confirmLanguage(language);
-        return true;
-      }
-
-      window.Weglot.switchTo(language);
-      return true;
-    }catch(e){
-      console.warn('[RSS i18n] changement de langue impossible', e);
-      return false;
-    }
-  }
-
-  window.addEventListener('rss:language-request', function(event){
-    var language = normalizeLanguage(event && event.detail && event.detail.language);
-    wantedLanguage = language;
-
-    if(!switchWholeSite(language)){
-      window.__rssTranslationStatus = 'weglot-not-ready';
-      console.warn('[RSS i18n] Weglot pas encore prêt, demande conservée :', language);
-    }
-  });
-
-  function initWeglot(){
-    if(initialized || !window.Weglot) return;
-    initialized = true;
-
-    try{
-      window.Weglot.on('initialized', function(){
-        window.__rssTranslationStatus = 'ready';
-
-        var current = typeof window.Weglot.getCurrentLang === 'function'
-          ? normalizeLanguage(window.Weglot.getCurrentLang())
-          : 'fr';
-
-        confirmLanguage(current);
-
-        var target = wantedLanguage || savedLanguage();
-        if(target !== current){
-          setTimeout(function(){ switchWholeSite(target); }, 150);
-        }
-      });
-
-      window.Weglot.on('languageChanged', function(language){
-        confirmLanguage(language);
-        window.__rssTranslationStatus = 'translated-' + normalizeLanguage(language);
-      });
-
-      window.Weglot.initialize({
-        api_key: API_KEY,
-        hide_switcher: true,
-        cache: true,
-        wait_transition: true,
-        excluded_blocks: [
-          {value:'.rss-preference-controls'},
-          {value:'.rss-mobile-preferences'},
-          {value:'.material-symbols-outlined'},
-          {value:'.StripeElement'},
-          {value:'#stripe-card-element'},
-          {value:'.leaflet-container'},
-          {value:'.notranslate'}
-        ]
-      });
-    }catch(e){
-      initialized = false;
-      window.__rssTranslationStatus = 'weglot-init-error';
-      console.error('[RSS i18n] Weglot non initialisé', e);
-    }
-  }
-
-  function loadSdk(){
-    if(window.Weglot){
-      initWeglot();
-      return;
-    }
-
-    var existing = document.querySelector('script[data-rss-weglot-sdk-v2]');
-    if(existing){
-      existing.addEventListener('load', initWeglot, {once:true});
-      return;
-    }
-
-    var script = document.createElement('script');
-    script.src = 'https://cdn.weglot.com/weglot.min.js';
-    script.async = true;
-    script.dataset.rssWeglotSdkV2 = '1';
-    script.onload = initWeglot;
-    script.onerror = function(){
-      window.__rssTranslationStatus = 'weglot-sdk-error';
-      console.error('[RSS i18n] SDK Weglot non chargé');
-    };
-    document.head.appendChild(script);
-  }
-
-  // Le header est injecté dynamiquement : attendre que le document principal existe.
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', loadSdk, {once:true});
-  }else{
-    setTimeout(loadSdk, 0);
-  }
-
-  window.addEventListener('load', function(){
-    setTimeout(loadSdk, 50);
-  }, {once:true});
-})();
-</script>
-
+<!-- Traduction globale désactivée temporairement : sélecteur FR/EN du header conservé -->
 </header>
 
