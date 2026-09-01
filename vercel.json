@@ -517,6 +517,21 @@
       "source": "/fr/:category/:original_id-louer-:slug",
       "destination": "/produit/:original_id/:slug",
       "permanent": true
+    },
+    {
+      "source": "/en/faq",
+      "destination": "/faq",
+      "permanent": true
+    },
+    {
+      "source": "/en/contact",
+      "destination": "/contact",
+      "permanent": true
+    },
+    {
+      "source": "/web/en/location-materiel-sono-particuliers/5-louer-sonorisation-and-eclairage",
+      "destination": "/categorie-sonorisation-eclairage",
+      "permanent": true
     }
   ]
 }
