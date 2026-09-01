@@ -4,6 +4,7 @@
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
 <title>Annonce RentSoundSystem.com</title>
+<link id="rss-product-canonical" rel="canonical" href="https://rentsoundsystem.com/product">
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -1148,14 +1149,61 @@ function applyOwnerDisplay(item){
     } catch(e) {}
   }
 
-  function productUrl(item) {
+  function productSlug(value) {
+    return String(value || 'materiel-professionnel')
+      .trim()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .slice(0, 120) || 'materiel-professionnel';
+  }
+
+  function cleanProductPath(item) {
     const uuid = item && item.id ? String(item.id).trim() : '';
     const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
     const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
+    const slug = productSlug(item && (item.slug || item.title || item.name));
 
-    if (hasRealOriginalId) return 'product.html?original_id=' + encodeURIComponent(originalRaw);
-    if (uuid) return 'product.html?id=' + encodeURIComponent(uuid);
-    return 'product.html';
+    if (hasRealOriginalId) return '/produit/' + encodeURIComponent(originalRaw) + '/' + slug;
+    if (uuid) return '/produit/id/' + encodeURIComponent(uuid) + '/' + slug;
+    return '/product';
+  }
+
+  function productUrl(item) {
+    return cleanProductPath(item);
+  }
+
+  function productIdsFromLocation() {
+    const params = new URLSearchParams(window.location.search);
+    let originalId = params.get('original_id') || '';
+    let id = params.get('id') || '';
+
+    const parts = window.location.pathname.split('/').filter(Boolean);
+    if (parts[0] === 'produit') {
+      if (parts[1] === 'id' && parts[2]) {
+        id = decodeURIComponent(parts[2]);
+      } else if (parts[1] && /^\d+$/.test(parts[1])) {
+        originalId = parts[1];
+      }
+    }
+
+    return { originalId, id };
+  }
+
+  function applyCleanProductUrl(item) {
+    if (!item) return;
+    const cleanPath = cleanProductPath(item);
+    const canonicalUrl = 'https://rentsoundsystem.com' + cleanPath;
+    const canonical = document.getElementById('rss-product-canonical');
+    if (canonical) canonical.setAttribute('href', canonicalUrl);
+
+    // Les anciennes URL ?original_id= / ?id= restent compatibles,
+    // puis l'adresse affichée dans le navigateur devient l'URL propre.
+    if (window.location.pathname !== cleanPath || window.location.search) {
+      window.history.replaceState({}, '', cleanPath);
+    }
   }
 
   function placeholder(el) {
@@ -1508,9 +1556,9 @@ function applyOwnerDisplay(item){
     }
 
     client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-    const params = new URLSearchParams(window.location.search);
-    const originalId = params.get('original_id');
-    const id = params.get('id');
+    const locationIds = productIdsFromLocation();
+    const originalId = locationIds.originalId;
+    const id = locationIds.id;
 
     let query = client
       .from('listings')
@@ -1537,6 +1585,7 @@ function applyOwnerDisplay(item){
 
     const partnerData = await fetchPartnerForListing(item);
     const enrichedItem = mergePartnerIntoListing(item, partnerData);
+    applyCleanProductUrl(enrichedItem);
 
     // Options affichées depuis les valeurs réelles de l'annonce Supabase.
     setProductOptions(enrichedItem);
@@ -2020,7 +2069,15 @@ function applyOwnerDisplay(item){
   }
   function productIdFromUrl(){
     const p = new URLSearchParams(window.location.search);
-    return { id:p.get('id') || '', original_id:p.get('original_id') || '' };
+    let id = p.get('id') || '';
+    let original_id = p.get('original_id') || '';
+    const parts = window.location.pathname.split('/').filter(Boolean);
+
+    if(parts[0] === 'produit'){
+      if(parts[1] === 'id' && parts[2]) id = decodeURIComponent(parts[2]);
+      else if(parts[1] && /^\d+$/.test(parts[1])) original_id = parts[1];
+    }
+    return { id, original_id };
   }
   function productFromLoadedItem() {
     const item = window.RSS_CURRENT_PRODUCT || {};
