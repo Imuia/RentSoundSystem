@@ -457,12 +457,12 @@ main{padding-top:0!important}
     }
   function productUrl(item){
       if(item.original_id!==undefined && item.original_id!==null && String(item.original_id)!==''){
-        return '/product.html?original_id='+encodeURIComponent(item.original_id);
+        return '/product?original_id='+encodeURIComponent(item.original_id);
       }
       if(item.id!==undefined && item.id!==null && String(item.id)!==''){
-        return '/product.html?id='+encodeURIComponent(item.id);
+        return '/product?id='+encodeURIComponent(item.id);
       }
-      return '/catalog.html?search=Allen%20%26%20Heath';
+      return '/catalog.html?search=Allen%20%26%20Heath%20dLive%20S5000';
     }
   function allenMatch(item){const n=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));return n.includes('allen and heath')||n.includes('allen heath');}
 
@@ -500,8 +500,8 @@ main{padding-top:0!important}
     grid.innerHTML=products.map((item,index)=>{
       const title=esc(item.title||item.model||'Produit Allen & Heath');
       const desc=esc(clean(item.description).slice(0,170)||'Produit Allen & Heath professionnel disponible à la location sur RentSoundSystem.');
-      const img=firstImage(item), price=money(item.price ?? item.price_day ?? item.price_per_day), url=item._publicFallback?'/catalog.html?search=Allen%20%26%20Heath%20dLive%20S5000':productUrl(item), category=esc(item.category||'Allen & Heath');
-      const image=img?'<img alt="'+title+' - Allen & Heath en location" class="object-contain h-full w-full opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="'+esc(img)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\'ah-product-image-fallback\');this.remove();">':'';
+      const img=firstImage(item), price=money(item.price ?? item.price_day ?? item.price_per_day), url=productUrl(item), category=esc(item.category||'Allen & Heath');
+      const image=img?'<img alt="'+title+' - Allen & Heath en location" class="object-contain h-full w-full opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="'+esc(img)+'" loading="lazy" decoding="async" onerror="this.parentElement.classList.add(\'ah-product-image-fallback\');this.remove();">':'';
       return '<article class="ah-real-product-card bg-surface-glass border border-surface-glass-border backdrop-blur-xl rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 flex flex-col" data-url="'+esc(url)+'">'
         +'<div class="h-64 relative bg-surface-container-highest p-6 flex items-center justify-center overflow-hidden '+(!img?'ah-product-image-fallback':'')+'">'
         +(index===0?'<span class="absolute left-4 top-4 z-10 bg-brand-fuchsia/10 text-brand-fuchsia border border-brand-fuchsia/30 px-2 py-1 rounded font-label-caps text-label-caps">Disponible</span>':'')+image+'</div>'
@@ -532,7 +532,7 @@ main{padding-top:0!important}
       category:'Console numérique',
       description:'Console numérique Allen & Heath dLive S5000, solution flagship pour les tournées, festivals et régies FOH professionnelles.',
       price:350,
-      image_url:'https://lh3.googleusercontent.com/aida/ADBb0uhu0myPBrSCOLLDv9gGfufp9Ktn0uTSdQDsETv2aJEN63G-t8KYiblFuN767IulVHAXQKfeboRaBs1jlz_bTS0Pr-hfSqxBHBknHlhw9jxnFd3wbzSpQyIXZrb-_kx6SHYo54kNRZaOEIUQhmnP8vblVVQdSH-oerQjwHuybVoiWSJa8Eo0wRaeMyk7wU7ydxnmIhm0TTU-5W4G5K8xrM6VBkxdqMisiyL_qTqKCumHXpk4poz2Eob20g',
+      image_url:'https://lh3.googleusercontent.com/aida-public/AB6AXuDyjI8_TIUJ0DKw4koCRFNGfhiBTEH2J6zdaAYQDzeP8qOTojIh04Q4tloS0xCVJar5JvCmFFT25RxsQ83K7nmOb3RXH7VkbtGRlMCp1OeHY-YIxDRRLnmR_gRPr1LsRGfSpY2KC_nsNWabJzd3lgfND9fabKziRWufVMxTzhTe6e-0I2zec0N8e9IjJMcBZX1B4iSsBwrTHSpT2sFF2avJhz-gInagm0F7kc87-21USHX6CTHb7gNtQKxYUj3LsDt0zjEZ2PQdBmY',
       _publicFallback:true
     }];
 
@@ -548,10 +548,9 @@ main{padding-top:0!important}
       const safeFields='id,original_id,title,description,status,category,price,brand,model,created_at,updated_at';
 
       async function targeted(field, value){
-        let q=client.from('listings').select(fields).eq('status','publish').ilike(field,value).limit(50);
-        let res=await q;
+        let res=await client.from('listings').select(fields).ilike(field,value).limit(100);
         if(res.error){
-          res=await client.from('listings').select(safeFields).eq('status','publish').ilike(field,value).limit(50);
+          res=await client.from('listings').select(safeFields).ilike(field,value).limit(100);
         }
         return (!res.error && Array.isArray(res.data)) ? res.data : [];
       }
@@ -568,8 +567,10 @@ main{padding-top:0!important}
 
       const merged=[];
       const seen=new Set();
+      const blockedStatuses=new Set(['draft','pending','rejected','archived','deleted','inactive','hidden']);
       batches.flat().forEach(item=>{
         if(!allenMatch(item))return;
+        if(blockedStatuses.has(norm(item.status)))return;
         const key=String(item.original_id || item.id || item.title || '');
         if(!key || seen.has(key))return;
         seen.add(key);
