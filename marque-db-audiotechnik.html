@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>d&amp;b audiotechnik | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@400,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#393939",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "error": "#ffb4ab",
+                        "secondary": "#c6c6c7",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-variant": "#353534",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-primary-container": "#5a0022",
+                        "on-tertiary": "#303030",
+                        "on-surface-variant": "#e6bcc2",
+                        "secondary-fixed": "#e3e2e3",
+                        "outline-variant": "#5d3f44",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface": "#131313",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "secondary-container": "#454748",
+                        "background": "#131313",
+                        "tertiary-container": "#929090",
+                        "on-primary": "#660028",
+                        "on-background": "#e5e2e1",
+                        "inverse-surface": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "primary-container": "#ff4d80",
+                        "on-surface-muted": "#E6BCC2",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "surface-container-low": "#1c1b1b",
+                        "outline": "#ac878d",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#2a2a2a",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#90003b",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed": "#ffd9de",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed": "#3f0016",
+                        "on-surface": "#e5e2e1",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "on-secondary-container": "#b5b5b6",
+                        "inverse-primary": "#bc004f",
+                        "primary": "#ffb2bf",
+                        "tertiary": "#c8c6c5",
+                        "surface-container": "#201f1f",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#454748",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-highest": "#353534",
+                        "on-secondary": "#2f3132",
+                        "surface-tint": "#ffb2bf",
+                        "magenta": "#FC036D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "card-gap": "1.5rem",
+                        "component-padding-x": "1.5rem",
+                        "gutter-x": "2.5rem",
+                        "component-padding-y": "0.625rem",
+                        "section-padding-y": "6rem",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .text-magenta {
+            color: #FC036D;
+        }
+        .bg-magenta {
+            background-color: #FC036D;
+        }
+        .border-magenta {
+            border-color: #FC036D;
+        }
+        .shadow-magenta-glow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .gradient-magenta {
+            background: linear-gradient(135deg, #FC036D 0%, #5a0022 100%);
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31,31,31,0.8) 0%, rgba(20,20,20,0.9) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+
+<meta name="description" content="Location d&b audiotechnik sur RentSoundSystem : systèmes line array, enceintes et amplificateurs d&b disponibles pour concerts, festivals, tournées et événements professionnels.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-db-audiotechnik">
+<meta property="og:title" content="d&b audiotechnik - Location Sonorisation Professionnelle | RentSoundSystem">
+<meta property="og:description" content="Découvrez les systèmes d&b audiotechnik disponibles à la location sur RentSoundSystem : line arrays, enceintes et amplification professionnelle.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-db-audiotechnik">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"d&b audiotechnik","url":"https://rentsoundsystem.com/marque-db-audiotechnik"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"d&b audiotechnik","item":"https://rentsoundsystem.com/marque-db-audiotechnik"}]}]}
+</script>
+
+<style id="rss-db-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+#db-product-map-layer .db-product-point{position:absolute;transform:translate(-50%,-100%);z-index:25;pointer-events:auto}
+#db-product-map-layer .db-point-dot{width:16px;height:16px;border-radius:999px;background:#FC036D;border:3px solid #fff;margin:auto;box-shadow:0 0 0 7px rgba(252,3,109,.14),0 0 20px rgba(252,3,109,.9);position:relative}
+#db-product-map-layer .db-point-dot:after{content:"";position:absolute;inset:-8px;border-radius:999px;border:1px solid rgba(252,3,109,.7);animation:dbPointPulse 1.9s ease-out infinite}
+#db-product-map-layer .db-point-card{margin-top:7px;background:rgba(19,19,19,.92);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 9px;min-width:145px;max-width:215px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+#db-product-map-layer .db-point-brand{font:700 9px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#FC036D}
+#db-product-map-layer .db-point-title{margin-top:4px;font:700 11px/1.25 Manrope,sans-serif;color:#fff}
+#db-product-map-layer .db-point-location{margin-top:4px;font:500 9px/1.3 Inter,sans-serif;color:#e6bcc2}
+#db-product-map-layer a{text-decoration:none}
+@keyframes dbPointPulse{0%{transform:scale(.65);opacity:.95}100%{transform:scale(1.65);opacity:0}}
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2}
+@media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
+@media(max-width:767px){
+  #db-product-map-layer .db-point-card{min-width:115px;max-width:145px;padding:6px}
+  #db-product-map-layer .db-point-title{font-size:9px}
+}
+@media(max-width:600px){.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
+</style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center px-4 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="d&amp;b line array" class="w-full h-full object-cover opacity-40 mix-blend-luminosity" data-alt="A massive, high-end professional audio line array speaker system suspended above a dark, vast concert arena. The sleek, black geometric speaker cabinets are sharply detailed, exuding premium German engineering. Intense, vibrant electric magenta spotlights slice through atmospheric haze, casting glowing reflections on the metallic rigging. The mood is powerful, nocturnal, and technologically advanced, fitting a premium professional sound brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdkhaInPqZJ5R44s7hgEmRH4J_56EB3Bk-W2PdBq5jQwlZSYGRUpLuOmSbVBkchnQJ1af-1qGYeTtHDIosCV7zRO4PUaPkpTWNwQycClH8-Ugvx4p-Dd_VyjPFktP0_4o6bivJ56atpaOl4zCv31nc-3NXO9K92IbT1OrOWPfdBd-wLGGyrGF3_mTH1XWwe7wHwGqCe73aQTzgXfDzUeaYcJlKdCZlGnjD2PaoenFL4sdyqzAKpi9NZ0qoSrK9gWYgaiVS9l1XJrk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-container-max mx-auto text-center px-gutter-x">
+<span class="inline-flex items-center space-x-2 bg-surface-glass border border-surface-glass-border px-4 py-2 rounded-full mb-8 backdrop-blur-md">
+<span class="w-2 h-2 rounded-full bg-magenta animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-surface tracking-widest">PARTENAIRE OFFICIEL</span>
+</span>
+<h1 class="font-display-hero text-display-hero text-on-surface mb-6 md:block hidden">
+                    d&amp;b audiotechnik<br/>
+<span class="text-magenta">La Précision Allemande</span>
+</h1>
+<h1 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mb-6 block md:hidden">
+                    d&amp;b audiotechnik<br/>
+<span class="text-magenta">La Précision Allemande</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted max-w-2xl mx-auto mb-10">
+                    Découvrez l'excellence sonore absolue. Louez les systèmes line array et amplificateurs d&amp;b les plus performants pour vos événements majeurs.
+                </p>
+<div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+<button type="button" onclick="document.querySelector('#db-equipment-section')?.scrollIntoView({behavior:'smooth'})" class="w-full sm:w-auto bg-magenta text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded-full shadow-magenta-glow hover:scale-105 transition-transform duration-300">
+                        Explorer le catalogue
+                    </button>
+<button type="button" onclick="window.location.href='/contact.html'" class="w-full sm:w-auto bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase px-8 py-4 rounded-full hover:bg-surface-container transition-colors duration-300">
+                        Contacter un expert
+                    </button>
+</div>
+</div>
+</section>
+<!-- Global Presence Bento -->
+<section class="py-section-padding-y max-w-container-max mx-auto px-gutter-x">
+<div class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Présence Globale</h2>
+<p class="font-body-md text-body-md text-on-surface-muted">Disponibilité immédiate dans les hubs majeurs européens.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Map Card -->
+<div id="db-stock-map" class="md:col-span-2 glass-panel rounded-xl p-8 relative overflow-hidden min-h-[400px]">
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1000&amp;q=80')] opacity-20 bg-cover bg-center" data-alt="A stylized, dark-mode abstract map of Western Europe, featuring sleek neon magenta glowing dots highlighting Paris, Berlin, and London. The map background is deep obsidian black with subtle grid lines suggesting a high-tech radar or tracking interface. The lighting is nocturnal and precise, emphasizing the interconnected hubs of professional audio equipment distribution."></div>
+<div class="relative z-10 h-full flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Réseau Logistique</h3>
+<p class="font-body-md text-body-md text-on-surface-muted max-w-md">Stocks synchronisés et livraison prioritaire sur les scènes européennes.</p>
+</div>
+
+<div id="db-map-status" class="w-fit bg-surface-container/80 backdrop-blur-sm border border-surface-glass-border rounded-lg p-4 flex items-center gap-3 text-on-surface-muted text-sm">
+<span class="w-3 h-3 rounded-full bg-magenta shadow-magenta-glow"></span>
+Chargement des produits d&amp;b…
+</div>
+<div id="db-product-map-layer" class="absolute inset-0 z-20 pointer-events-none"></div>
+
+</div>
+</div>
+<!-- Stats Card -->
+<div class="glass-panel rounded-xl p-8 flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-magenta text-6xl mb-4" data-icon="rocket_launch">rocket_launch</span>
+<h4 class="font-display-hero-mobile text-display-hero-mobile text-on-surface mb-2">24h</h4>
+<p class="font-body-md text-body-md text-on-surface-muted">Déploiement garanti sur site</p>
+</div>
+</div>
+</section>
+<!-- Catalog Section -->
+<section id="db-equipment-section" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
+<div class="max-w-container-max mx-auto px-gutter-x">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Équipement Phare</h2>
+<p class="font-body-md text-body-md text-on-surface-muted">L'arsenal des professionnels de l'audio.</p>
+</div>
+<button type="button" onclick="window.location.href='/catalog.html?search=d%26b%20audiotechnik'" class="hidden md:flex text-magenta hover:text-white transition-colors items-center font-label-caps text-label-caps uppercase">
+                        Tout voir <span class="material-symbols-outlined ml-2" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Product 1 -->
+<div id="db-product-slot-1" class="glass-panel rounded-xl overflow-hidden group cursor-pointer">
+<div class="h-64 bg-surface-container-highest relative overflow-hidden flex items-center justify-center p-8">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-highest z-10"></div>
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuCi1OiHuvYiTUsJUOd53tdF32H5DlkQSWsdmJCkWOU1jZR2oyGnM-1-_o0OJXvUqpCP-nnH9vUgZEAdM8HFq_WiZ3Tr7RsXV2jLRPdyXbkYXkL2NZnH0uHg-Im5hFExJBrYf2Sy4BDXW-U4FMKzmXY6ResicDtIuC6GJX0dgM8dV1iOJBpcYSHePAeCYHcN4JwW2JHzP7d6Th4OSm2lhqGuXLCoMIZbjEu2-zZp2UfLQY68AMOBa8oech7fNvlb3xmQk9_K2gX-IDc" alt="J-Series" class="w-full h-full object-contain relative z-0 mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="A sleek, professional concert speaker cabinet suspended against a pure dark grey background. The rugged black texture of the speaker grille is sharply focused, highlighting the premium build quality of high-end audio gear. Subtle studio lighting casts a faint, sophisticated rim light around the edges of the cabinet, emphasizing its structural integrity and acoustic design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCi1OiHuvYiTUsJUOd53tdF32H5DlkQSWsdmJCkWOU1jZR2oyGnM-1-_o0OJXvUqpCP-nnH9vUgZEAdM8HFq_WiZ3Tr7RsXV2jLRPdyXbkYXkL2NZnH0uHg-Im5hFExJBrYf2Sy4BDXW-U4FMKzmXY6ResicDtIuC6GJX0dgM8dV1iOJBpcYSHePAeCYHcN4JwW2JHzP7d6Th4OSm2lhqGuXLCoMIZbjEu2-zZp2UfLQY68AMOBa8oech7fNvlb3xmQk9_K2gX-IDc"/>
+<div class="absolute top-4 right-4 z-20 bg-magenta/20 border border-magenta/50 text-magenta font-label-caps text-label-caps px-3 py-1 rounded-full">Line Array</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">J-Series</h3>
+<p class="font-body-md text-body-md text-on-surface-muted mb-6">Le standard des grandes tournées mondiales. Puissance et clarté exceptionnelles.</p>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface">Dès 250€ / jour</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-magenta transition-colors" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product 2 -->
+<div id="db-product-slot-2" class="glass-panel rounded-xl overflow-hidden group cursor-pointer">
+<div class="h-64 bg-surface-container-highest relative overflow-hidden flex items-center justify-center p-8">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-highest z-10"></div>
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuDWHOjce2nZLl_3cPVElJN2h2NSZa1-KGAH7GSDjJxXB9W2NA1QzW99FgEWsmPcCVuB-uRkLgacQLtGwD7FVx5DpemZ_2WM0wQqu-DS83JfNTuKhPDZctRWDJt0W624fgT2Fgdqd6hB4Mnw9KezRegcf_dhS9GQaPxJMGiqexXeAMgWqoz7aaD5SpLCBOYpedEAqpPZMjd4T-_-ftRtt_1OubngDEHpNt9L2lNk3X56RljH666dU80CO8TMpvhyJi8ZZpPX9zE1FJw" alt="V-Series" class="w-full h-full object-contain relative z-0 mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="A compact but powerful professional line array speaker setup, displayed in a sterile, high-tech dark room. The black mesh grille and angled acoustic waveguides are visible under crisp, dramatic side lighting. The aesthetic is clean, industrial, and intensely focused on sonic precision, with deep shadows creating a premium nocturnal vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWHOjce2nZLl_3cPVElJN2h2NSZa1-KGAH7GSDjJxXB9W2NA1QzW99FgEWsmPcCVuB-uRkLgacQLtGwD7FVx5DpemZ_2WM0wQqu-DS83JfNTuKhPDZctRWDJt0W624fgT2Fgdqd6hB4Mnw9KezRegcf_dhS9GQaPxJMGiqexXeAMgWqoz7aaD5SpLCBOYpedEAqpPZMjd4T-_-ftRtt_1OubngDEHpNt9L2lNk3X56RljH666dU80CO8TMpvhyJi8ZZpPX9zE1FJw"/>
+<div class="absolute top-4 right-4 z-20 bg-magenta/20 border border-magenta/50 text-magenta font-label-caps text-label-caps px-3 py-1 rounded-full">Line Array</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">V-Series</h3>
+<p class="font-body-md text-body-md text-on-surface-muted mb-6">Polyvalence absolue pour les salles de taille moyenne et les festivals.</p>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface">Dès 180€ / jour</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-magenta transition-colors" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+<!-- Product 3 -->
+<div id="db-product-slot-3" class="glass-panel rounded-xl overflow-hidden group cursor-pointer">
+<div class="h-64 bg-surface-container-highest relative overflow-hidden flex items-center justify-center p-8">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-surface-container-highest z-10"></div>
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuAhGS4B8y7WRDJ2AHbde6LFiJShMGqexNCB9svq2f6BgzD4XNDywUwYlNW2QARpTCbC_CleYKorINofUE6hZGE5VhcP1073DuIext6QXzom5PJMsOmXjR1cx42jcz8YCx9OLuZKaJ3p74LIvhB8T4_MmljhC1liYh5v_cgvmcMy7BIf7V0hPz4-QHai2tmSai4UJ8ipf0Jxw7tHHwbIP9vAtfjdbNSCx6RbYnPxTFxsPXqptmgqvEhM6hnT_DSaKcivfATdwr_mUmI" alt="D80 Amplifiers" class="w-full h-full object-contain relative z-0 mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="A rack of high-end professional audio amplifiers glowing in a dark server-style rack. The brushed metal faceplates feature tiny, precision LED indicators glowing in soft neon colors. The lighting is extremely low-key, highlighting only the metallic edges and technical interfaces of the amplifiers. The image communicates high wattage, stability, and digital control in a premium studio environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhGS4B8y7WRDJ2AHbde6LFiJShMGqexNCB9svq2f6BgzD4XNDywUwYlNW2QARpTCbC_CleYKorINofUE6hZGE5VhcP1073DuIext6QXzom5PJMsOmXjR1cx42jcz8YCx9OLuZKaJ3p74LIvhB8T4_MmljhC1liYh5v_cgvmcMy7BIf7V0hPz4-QHai2tmSai4UJ8ipf0Jxw7tHHwbIP9vAtfjdbNSCx6RbYnPxTFxsPXqptmgqvEhM6hnT_DSaKcivfATdwr_mUmI"/>
+<div class="absolute top-4 right-4 z-20 bg-magenta/20 border border-magenta/50 text-magenta font-label-caps text-label-caps px-3 py-1 rounded-full">Amplification</div>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Ampli D80</h3>
+<p class="font-body-md text-body-md text-on-surface-muted mb-6">Le cœur du système. DSP intégré et puissance massive pour alimenter votre configuration.</p>
+<div class="flex justify-between items-center">
+<span class="font-body-lg text-body-lg text-on-surface">Dès 120€ / jour</span>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-magenta transition-colors" data-icon="add_circle">add_circle</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
+<li><a href="/location-sono/location-sono-cannes">Location Sono Cannes</a></li>
+<li><a href="/location-sono/location-sono-monaco">Location Sono Monaco</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/catalog.html?search=d%26b%20audiotechnik">d&amp;b audiotechnik</a></li>
+<li><a href="/catalog.html?search=line%20array">Line Array</a></li>
+<li><a href="/catalog.html?search=amplificateur">Amplification</a></li>
+<li><a href="/catalog.html?search=subwoofer">Subwoofers</a></li>
+<li><a href="/catalog.html">Sonorisation &amp; production</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-aide.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+</div>
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-db-runtime">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){console.error('Header load',e);}
+}
+
+function clean(v){return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();}
+function norm(v){return String(v??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/&/g,' and ').replace(/[^a-z0-9]+/g,' ').trim();}
+function money(v){
+  const n=Number(v||0);
+  return n ? n.toLocaleString('fr-FR',{maximumFractionDigits:0})+'€ / jour' : 'Prix sur demande';
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item.original_id!==undefined && item.original_id!==null) return '/product?original_id='+encodeURIComponent(item.original_id);
+  if(item.id!==undefined && item.id!==null) return '/product?id='+encodeURIComponent(item.id);
+  return '/catalog.html?search=d%26b%20audiotechnik';
+}
+
+/* Same filtering principle as marque-detail(4).html */
+function brandSearchTerms(title){
+  const terms=new Set();
+  const base=norm(title).trim();
+  if(base)terms.add(base);
+  terms.add('d and b audiotechnik');
+  terms.add('d b audiotechnik');
+  terms.add('db audiotechnik');
+  terms.add('audiotechnik');
+  title.split(/\s+/).forEach(w=>{const nw=norm(w);if(nw.length>=4)terms.add(nw);});
+  return Array.from(terms).filter(Boolean);
+}
+function productMatchesBrand(item,terms){
+  const brandText=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const fullText=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.category,item.description].join(' '));
+  const strictDb =
+    brandText.includes('d and b audiotechnik') ||
+    brandText.includes('d b audiotechnik') ||
+    brandText.includes('db audiotechnik') ||
+    fullText.includes('d and b audiotechnik') ||
+    fullText.includes('d b audiotechnik') ||
+    fullText.includes('db audiotechnik');
+  if(strictDb) return true;
+  return terms.filter(term=>term!=='audiotechnik').some(term=>term.length>=6 && fullText.includes(term));
+}
+function chooseProduct(items,preferred,used){
+  const keys=preferred.map(norm);
+  const p=items.find(x=>{
+    const key=String(x.original_id??x.id??x.title??'');
+    if(used.has(key))return false;
+    const text=norm([x.title,x.model,x.category,x.description].join(' '));
+    return keys.some(k=>text.includes(k));
+  }) || null;
+  if(p)used.add(String(p.original_id??p.id??p.title??''));
+  return p;
+}
+
+function applyProductToSlot(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+  const img=slot.querySelector('img');
+  const priceEls=[...slot.querySelectorAll('span')].filter(el=>/€|jour|dès/i.test(el.textContent||''));
+  const url=productUrl(item);
+
+  if(title && item.title) title.textContent=item.title;
+  if(desc && item.description) desc.textContent=clean(item.description).slice(0,230);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'d&b audiotechnik';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{img.onerror=null;if(fallback)img.src=fallback;};
+    if(real)img.src=real;
+    else if(fallback)img.src=fallback;
+  }
+
+  if(priceEls.length)priceEls[priceEls.length-1].textContent=money(item.price??item.price_day??item.price_per_day);
+
+  slot.dataset.url=url;
+  slot.onclick=(e)=>{if(!e.target.closest('a,button'))location.href=url;};
+  const icon=slot.querySelector('[data-icon="add_circle"]');
+  if(icon){
+    icon.style.cursor='pointer';
+    icon.onclick=(e)=>{e.stopPropagation();location.href=url;};
+  }
+}
+
+const DB_CITY_COORDS={
+  'paris':[48.8566,2.3522],'london':[51.5072,-0.1276],'londres':[51.5072,-0.1276],
+  'berlin':[52.5200,13.4050],'hamburg':[53.5511,9.9937],'hambourg':[53.5511,9.9937],
+  'munich':[48.1351,11.5820],'munchen':[48.1351,11.5820],'muenchen':[48.1351,11.5820],
+  'lyon':[45.764,4.8357],'marseille':[43.2965,5.3698],'nice':[43.7102,7.262],
+  'cannes':[43.5528,7.0174],'monaco':[43.7384,7.4246],'geneve':[46.2044,6.1432],
+  'zurich':[47.3769,8.5417],'bordeaux':[44.8378,-0.5792],'nantes':[47.2184,-1.5536],
+  'lille':[50.6292,3.0573],'toulouse':[43.6047,1.4442],'strasbourg':[48.5734,7.7521],
+  'barcelone':[41.3874,2.1686],'barcelona':[41.3874,2.1686],'madrid':[40.4168,-3.7038],
+  'bruxelles':[50.8503,4.3517],'brussels':[50.8503,4.3517],'amsterdam':[52.3676,4.9041]
+};
+function itemCity(item){return clean(item.city||item.location||item.ville||item.address_city||item.locality||'');}
+function itemCoords(item){
+  const lat=Number(item.latitude??item.lat??item.geo_lat??item.location_lat);
+  const lng=Number(item.longitude??item.lng??item.lon??item.geo_lng??item.location_lng);
+  if(Number.isFinite(lat)&&Number.isFinite(lng))return [lat,lng];
+  const city=norm(itemCity(item));
+  for(const key of Object.keys(DB_CITY_COORDS)){if(city.includes(key))return DB_CITY_COORDS[key];}
+  return null;
+}
+function europePos(lat,lng){
+  /* Approximation for the existing Stitch Western-Europe map card */
+  const latMax=57.5,latMin=39.0,lngMin=-10.0,lngMax=18.0;
+  let left=((lng-lngMin)/(lngMax-lngMin))*100;
+  let top=((latMax-lat)/(latMax-latMin))*100;
+  return [Math.max(8,Math.min(92,left)),Math.max(15,Math.min(86,top))];
+}
+function renderDbMap(items){
+  const layer=document.getElementById('db-product-map-layer');
+  const status=document.getElementById('db-map-status');
+  if(!layer)return;
+
+  const valid=(items||[]).map(item=>({item,coords:itemCoords(item)})).filter(x=>x.coords);
+  if(!valid.length){
+    layer.innerHTML='';
+    if(status)status.innerHTML='<span class="w-3 h-3 rounded-full bg-magenta shadow-magenta-glow"></span>Aucun produit d&amp;b avec ville ou coordonnées renseignées.';
+    return;
+  }
+
+  const grouped={};
+  valid.forEach(x=>{
+    const key=x.coords.map(n=>Number(n).toFixed(3)).join(',');
+    x.offset=grouped[key]||0;
+    grouped[key]=x.offset+1;
+  });
+  const offsets=[[0,0],[2,-1.7],[-2,1.5],[1.8,1.8],[-1.8,-1.8]];
+
+  layer.innerHTML=valid.slice(0,40).map(({item,coords,offset})=>{
+    let [left,top]=europePos(coords[0],coords[1]);
+    const o=offsets[offset%offsets.length]; left+=o[0]; top+=o[1];
+    const title=clean(item.title||item.model||'d&b audiotechnik');
+    const city=itemCity(item)||'Disponible';
+    return `<div class="db-product-point" style="left:${left}%;top:${top}%">
+      <a href="${productUrl(item)}" aria-label="Voir ${title}">
+        <div class="db-point-dot"></div>
+        <div class="db-point-card">
+          <div class="db-point-brand">d&amp;b audiotechnik</div>
+          <div class="db-point-title">${title}</div>
+          <div class="db-point-location">${city}</div>
+        </div>
+      </a>
+    </div>`;
+  }).join('');
+
+  if(status)status.innerHTML='<span class="w-3 h-3 rounded-full bg-magenta shadow-magenta-glow"></span>'+valid.length+' produit'+(valid.length>1?'s':'')+' d&amp;b localisé'+(valid.length>1?'s':'')+'.';
+}
+
+async function loadDbProducts(){
+  try{
+    if(!window.supabase)return;
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+    let brandTitle='d&b audiotechnik';
+    try{
+      const slugs=['d-b-audiotechnik','db-audiotechnik','d-and-b-audiotechnik','d&b-audiotechnik'];
+      for(const slug of slugs){
+        const r=await client.from('brands').select('*').eq('slug',slug).maybeSingle();
+        if(!r.error&&r.data){brandTitle=r.data.title||r.data.name||brandTitle;break;}
+      }
+      if(brandTitle==='d&b audiotechnik'){
+        const r=await client.from('brands').select('*').ilike('title','%audiotechnik%').limit(1).maybeSingle();
+        if(!r.error&&r.data)brandTitle=r.data.title||r.data.name||brandTitle;
+      }
+    }catch(e){}
+
+    /* Same method as marque-detail: published listings + listing_images */
+    const listingsRes=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(listingsRes.error)throw listingsRes.error;
+
+    const terms=brandSearchTerms(brandTitle);
+    let products=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,terms));
+
+    if(!products.length){
+      const fallbackTerms=['d and b audiotechnik','d b audiotechnik','db audiotechnik'];
+      products=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,fallbackTerms));
+    }
+
+    renderDbMap(products);
+
+    const used=new Set();
+    const jProduct=chooseProduct(products,['j series','j-series','j8','j12'],used);
+    const vProduct=chooseProduct(products,['v series','v-series','v8','v12','v10p'],used);
+    const ampProduct=chooseProduct(products,['d80','d90','d40'],used);
+    applyProductToSlot('db-product-slot-1',jProduct);
+    applyProductToSlot('db-product-slot-2',vProduct);
+    applyProductToSlot('db-product-slot-3',ampProduct);
+    if(!jProduct) console.info('d&b: aucun J-Series/J8/J12 publié — carte Stitch conservée.');
+    if(!vProduct) console.info('d&b: aucun V-Series/V8/V12/V10P publié — carte Stitch conservée.');
+    if(!ampProduct) console.info('d&b: aucun D80/D90/D40 publié — carte Stitch conservée.');
+
+    const schema=document.createElement('script');
+    schema.type='application/ld+json';
+    schema.textContent=JSON.stringify({
+      '@context':'https://schema.org',
+      '@type':'ItemList',
+      itemListElement:products.slice(0,12).map((x,i)=>({
+        '@type':'ListItem',position:i+1,
+        url:'https://rentsoundsystem.com'+productUrl(x),
+        name:x.title||x.model||'d&b audiotechnik'
+      }))
+    });
+    document.head.appendChild(schema);
+  }catch(e){
+    console.warn('d&b products loading:',e);
+    renderDbMap([]);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+  loadDbProducts();
+});
+</script>
+
+</body></html>
