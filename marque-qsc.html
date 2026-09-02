@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 
 <html class="dark" lang="fr"><head>
-<link as="fetch" crossorigin="" href="/footer.html" rel="preload"/><link as="fetch" crossorigin="" href="/header.html" rel="preload"/><meta charset="utf-8"/>
+<link as="fetch" crossorigin="" href="/header.html" rel="preload"/><meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>QSC - Location enceintes &amp; consoles QSC | RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
@@ -124,19 +124,14 @@
 <meta content="Location de matériel QSC professionnel : enceintes actives, systèmes de sonorisation et consoles QSC réellement disponibles sur RentSoundSystem, avec prix et fiches produits à jour." name="description"/><style id="rss-qsc-shared-layout">
 html,body{overflow-x:hidden!important;background:#131313!important}
 body{padding-top:80px!important}
-#header-container{position:relative;z-index:9999;min-height:auto}
+#header-container{position:relative;z-index:9999;min-height:0;width:100%}
 #header-container header{z-index:9999!important}
-#footer-container{min-height:320px}
 #header-container .max-w-container-max,
-#footer-container .max-w-container-max{max-width:1280px}
 #header-container .px-margin-mobile,
-#footer-container .px-margin-mobile{padding-left:16px;padding-right:16px}
 #header-container .gap-stack-sm{gap:12px}
 #header-container .gap-stack-md{gap:24px}
 #header-container .font-headline-md,
-#footer-container .font-headline{font-family:Manrope,sans-serif}
 #header-container .font-body-md,
-#footer-container .font-body{font-family:Inter,sans-serif}
 #header-container .text-headline-md{font-size:24px;line-height:32px;font-weight:600}
 #header-container .text-body-md{font-size:16px;line-height:24px}
 #header-container .text-label-md{font-size:12px;line-height:16px}
@@ -145,14 +140,9 @@ body{padding-top:80px!important}
   backdrop-filter:blur(12px);
   border-bottom:1px solid rgba(255,255,255,.10)
 }
-#footer-container footer{
-  background:#0e0e0e;
-  border-top:1px solid rgba(255,255,255,.05)
-}
 #rss-mobile-menu-toggle{display:none!important}
 @media(min-width:768px){
   #header-container .md\:px-margin-desktop,
-  #footer-container .md\:px-margin-desktop{padding-left:40px;padding-right:40px}
 }
 @media(max-width:767px){
   body{padding-top:72px!important}
@@ -160,7 +150,7 @@ body{padding-top:80px!important}
 </style><link href="https://rentsoundsystem.com/marque-qsc" rel="canonical"/><meta content="QSC - Location enceintes &amp; consoles QSC | RentSoundSystem" property="og:title"/><meta content="Louez les vrais produits QSC disponibles sur RentSoundSystem : enceintes actives, systèmes de sonorisation et consoles QSC avec prix et disponibilité réels." property="og:description"/><meta content="https://rentsoundsystem.com/marque-qsc" property="og:url"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/><meta content="QSC - Location enceintes &amp; consoles QSC | RentSoundSystem" name="twitter:title"/><meta content="Produits QSC réellement disponibles à la location sur RentSoundSystem." name="twitter:description"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style id="rss-qsc-v3-style">
 /* QSC v3: common homepage header + contextual brand megafooter */
 body{padding-top:80px!important;background:#131313!important}
-#header-container{position:relative;z-index:9999;min-height:auto}
+#header-container{position:relative;z-index:9999;min-height:0;width:100%}
 #header-container header{z-index:9999!important}
 #rss-mobile-menu-toggle{display:none!important}
 
@@ -587,7 +577,11 @@ body{padding-top:80px!important;background:#131313!important}
 </div>
 <div class="rss-footer-col">
 <h4 class="rss-footer-title">Location Sono</h4>
-<nav class="rss-footer-nav"><a class="rss-footer-link" href="/location-sono-paris">Location Sono Paris</a><a class="rss-footer-link" href="/location-sono-marseille">Location Sono Marseille</a><a class="rss-footer-link" href="/location-sono-nice">Location Sono Nice</a><a class="rss-footer-link" href="/location-sono-toulouse">Location Sono Toulouse</a><a class="rss-footer-link" href="/location-sono-cannes">Location Sono Cannes</a><a class="rss-footer-link" href="/location-sono-monaco">Location Sono Monaco</a><a class="rss-footer-link" href="/location-sono-geneve">Location Sono Genève</a></nav>
+<nav class="rss-footer-nav">
+<a class="rss-footer-link" href="https://rentsoundsystem.com/location-sono/location-sono-marseille">Location Sono Marseille</a>
+<a class="rss-footer-link" href="https://rentsoundsystem.com/location-sono/location-sono-nice">Location Sono Nice</a>
+<a class="rss-footer-link" href="https://rentsoundsystem.com/location-sono/location-sono-toulouse">Location Sono Toulouse</a>
+</nav>
 </div>
 <div class="rss-footer-col">
 <h4 class="rss-footer-title">Catégories</h4>
@@ -633,6 +627,7 @@ body{padding-top:80px!important;background:#131313!important}
   function firstImage(item){const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));return imgs[0]?.image_url||'';}
   function productUrl(item){if(item.original_id!==undefined&&item.original_id!==null)return '/product?original_id='+encodeURIComponent(item.original_id);if(item.id)return '/product?id='+encodeURIComponent(item.id);return '/catalog.html?search=QSC';}
   function qscMatch(item){return norm([item.brand,item.title,item.model,item.category,item.description].join(' ')).includes('qsc');}
+  function productMatchesBrand(item,terms){const haystack=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));return terms.some(term=>haystack.includes(norm(term)));}
 
   async function loadSharedHeader(){
     const target=document.getElementById('header-container');
@@ -651,7 +646,6 @@ body{padding-top:80px!important;background:#131313!important}
       if(mobileToggle)mobileToggle.style.display='none';
 
     }catch(err){console.error('RentSoundSystem header load error:',err);}
-  }
   }
 
   function renderProducts(products){
@@ -715,9 +709,12 @@ body{padding-top:80px!important;background:#131313!important}
     try{
       if(!window.supabase)throw new Error('Supabase client indisponible');
       const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-      const result=await client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(500);
+      const result=await client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(1000);
       if(result.error)throw result.error;
-      const products=(result.data||[]).filter(qscMatch);
+      let products=(result.data||[]).filter(qscMatch);
+      if(!products.length){
+        products=(result.data||[]).filter(item=>productMatchesBrand(item,['qsc audio','qsc systems','qsc']));
+      }
       renderProducts(products);
     }catch(err){
       console.warn('QSC products:',err);
