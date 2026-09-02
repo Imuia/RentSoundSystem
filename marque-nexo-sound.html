@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nexo Sound - Location Line Array &amp; Sonorisation | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-primary-container": "#5a0022",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#bc004f",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-container": "#ff4d80",
+                        "on-primary-fixed": "#3f0016",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-secondary": "#2f3132",
+                        "on-tertiary-container": "#2a2a2a",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface-tint": "#ffb2bf",
+                        "on-surface-muted": "#E6BCC2",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "surface-variant": "#353534",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-bright": "#393939",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "primary": "#FC036D",
+                        "outline-variant": "#5d3f44",
+                        "surface": "#131313",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-secondary-fixed-variant": "#454748",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#ac878d",
+                        "tertiary": "#c8c6c5",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "secondary-fixed": "#e3e2e3",
+                        "error-container": "#93000a",
+                        "on-background": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "on-primary-fixed-variant": "#90003b",
+                        "inverse-on-surface": "#313030",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#303030",
+                        "tertiary-container": "#929090",
+                        "on-error": "#690005",
+                        "secondary-container": "#454748",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-error-container": "#ffdad6"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    spacing: {
+                        "gutter-x": "2.5rem",
+                        "container-max": "1280px",
+                        "card-gap": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "component-padding-y": "0.625rem",
+                        "component-padding-x": "1.5rem"
+                    },
+                    fontFamily: {
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "body-lg": ["Inter"]
+                    },
+                    fontSize: {
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31,31,31,0.6) 0%, rgba(20,20,20,0.8) 100%);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-text-glow {
+            text-shadow: 0 0 20px rgba(252, 3, 109, 0.5);
+        }
+        .neon-box-glow {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.3);
+        }
+    </style>
+<meta content="Location Nexo Sound sur RentSoundSystem : line arrays et systèmes de sonorisation professionnels Nexo, avec accès direct au catalogue et aux hubs de location." name="description"/><link href="https://rentsoundsystem.com/marque-nexo-sound" rel="canonical"/><meta content="Nexo Sound - Location Audio Professionnel | RentSoundSystem" property="og:title"/><meta content="Découvrez Nexo Sound, ses systèmes line array professionnels et les hubs de location RentSoundSystem." property="og:description"/><meta content="https://rentsoundsystem.com/marque-nexo-sound" property="og:url"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/><script id="nexo-seo-schema" type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Brand", "@id": "https://rentsoundsystem.com/marque-nexo-sound#brand", "name": "Nexo Sound", "url": "https://rentsoundsystem.com/marque-nexo-sound", "description": "Nexo est une marque française de systèmes de sonorisation professionnels proposée à la location sur RentSoundSystem."}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://rentsoundsystem.com/"}, {"@type": "ListItem", "position": 2, "name": "Marques", "item": "https://rentsoundsystem.com/marques"}, {"@type": "ListItem", "position": 3, "name": "Nexo Sound", "item": "https://rentsoundsystem.com/marque-nexo-sound"}]}]}</script><style id="rss-nexo-final-style">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%;min-height:0}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+main{padding-top:0!important;padding-bottom:0!important}
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif}.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}.rss-footer-bottom a{color:#b99da2}
+@media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
+@media(max-width:600px){body{padding-top:72px!important}.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
+</style></head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-primary-container selection:text-on-primary-container"><div id="header-container"></div>
+<!-- TopNavBar Shared Component -->
+
+<!-- Main Content -->
+<main class="">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Hero Background" class="w-full h-full object-cover opacity-30 mix-blend-luminosity" data-alt="A massive concert stage viewed from behind the line array speakers, looking out into a dark arena illuminated by laser lights. The atmosphere is intense and high-tech, fitting a nocturnal premium aesthetic. Deep obsidian blacks dominate the shadows, while striking electric magenta beams cut through the smoke, highlighting the raw industrial power of the professional audio equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnVr8LAwCa4VQPpJf3aHy0Rvc-HD3KNkxkIAdw-ZCkA5rtLX5fkKMe3LIBmoRAW9nvBZyvoTJkhP7wJRQvQlkPMU2RHwgw1C2bTCqKG3Exr4EwLUdMhFobPA-24O7bbo3ebxD70PMIM-mPiFQHzLol0jBleos6x7DbsT3_u485YUa4CJUrcfLkVEEGIUpD4VJFoYzy02l9aQdOFrYxNDxFd5ZyhblnUeTMAgBNQaxgPBDH6xb0dXfL-R5aoLzLsv14yUwzdk3ySxI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div>
+</div>
+<div class="relative z-10 text-center max-w-container-max mx-auto px-gutter-x">
+<div class="inline-flex items-center space-x-2 px-4 py-1.5 rounded-full glass-panel mb-8 border-primary/30">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-caps text-label-caps text-primary tracking-widest uppercase">Nexo Sound</span>
+</div>
+<h1 class="font-display-hero text-display-hero text-on-surface mb-6 leading-tight">
+                    Engineering <br/>
+<span class="text-primary neon-text-glow">Innovation Française.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Experience the uncompromising power and precision of Nexo line arrays. Rent industry-leading sound reinforcement for your next major deployment.
+                </p>
+<div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+<button class="bg-primary text-on-primary px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-wider neon-box-glow hover:brightness-110 transition-all duration-300 w-full sm:w-auto" onclick="window.location.href='/catalog.html?search=Nexo'" type="button">
+                        Explore Catalog
+                    </button>
+<button class="border border-outline-variant text-on-surface bg-surface-glass px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-wider hover:bg-surface-container transition-all duration-300 w-full sm:w-auto backdrop-blur-md" onclick="window.location.href='/catalog.html?search=Nexo'" type="button">
+                        Technical Specs
+                    </button>
+</div>
+</div>
+</section>
+<!-- Cities Section -->
+<section class="max-w-container-max mx-auto px-gutter-x py-section-padding-y border-t border-surface-glass-border">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Le son Nexo à louer</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Available across major hubs in France.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- City Card 1 -->
+<div class="glass-panel p-8 rounded-xl hover:border-primary/50 transition-colors group relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="A moody, high-contrast aerial shot of Paris at night. The Eiffel tower is faintly visible in the background, but the focus is on the glowing city grid. The scene uses a deep dark surface aesthetic with subtle neon magenta accents simulating city lights reflecting off wet pavement." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm73xLa6O5kJM0aqRiamF5xtrOCaSkOTnMRdttA8VckPpq1PAByrElCte4s5GbrjmMzPYtb3t9uZN3xJd1fT2vTVw5fD5NEwfvch4_NwggdlOEUIZUHsFmZoCXtsDvApVgg1LnCIOP82Qhp0TIs5-EZWxMDsuKfHBmxrJln4xWNJdltBwWeOApNUs8TDZADxjY87QYnTbY3PRlIs4VvJLTPZ6o0Z-EmEBJtzjSBJCUYHASnIYERUkZtoCenbA4mmM1qmxixBIF2Jw"/>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center mb-6 group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Paris</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Central hub for premium line array systems.</p>
+<a class="inline-flex items-center text-primary font-label-caps text-label-caps uppercase hover:text-surface-tint transition-colors" href="/catalog.html?search=Nexo">
+                            View Inventory <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- City Card 2 -->
+<div class="glass-panel p-8 rounded-xl hover:border-primary/50 transition-colors group relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="Nightscape of Lyon, France, focusing on industrial riverside architecture. Dark, moody lighting dominates, with sharp neon magenta reflections stretching across the Rhone river. The image feels technical and premium, aligning with a high-end nocturnal brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHPpjAsVtUtgMT6wfqWgjLoc5XR-tr5_5nyFlaFp3reARiB5q5bWqAv8_qCOprOFJM7kAhU8rc-s25r8oe7XaHc0Qk5SQ7S-rGuKaSo3ZiyezYrMo9EQYH6IRdqkTa54hayLMmtrTPUe9wAEJGTz_h3bQB1sf7Wb0Q5HFnVEMRY1WFZ8l3tg_5_TI_IcZdd4xommxcDbvlSYigr3Wp664UxJ-xLRp7LLpiwg8TTTbIDiqhJ2iSZk0zIpDQn2bB7ijoHuuqXuUIzj4"/>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center mb-6 group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Lyon</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Serving the Rhone-Alpes region with STM series.</p>
+<a class="inline-flex items-center text-primary font-label-caps text-label-caps uppercase hover:text-surface-tint transition-colors" href="/catalog.html?search=Nexo">
+                            View Inventory <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- City Card 3 -->
+<div class="glass-panel p-8 rounded-xl hover:border-primary/50 transition-colors group relative overflow-hidden">
+<div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="A dark, industrial view of Nantes, focusing on the mechanical structures like Les Machines de l'île illuminated at night. The lighting is cinematic, utilizing deep shadows and stark electric magenta highlights to convey a sense of modern engineering and premium technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANuxWWJI3ZfwU4qVAoFxZPxzt0-rN2zr8rM_KXyY20SxCWSHI6iFAD1EURAWLNc6CbIavd5PotDr-eAsaJXMy8NXqdIK9-viSE1vwx9YbVr7o5gS4zqgzHQ0rnngXPGpL1SJDaVv-ctVkkSDpTUnknvkJXnAChhr_vxK-1D2T0-1WSg_dpSElTl38QWW5dFzOV3Lnzl9_Qp02j2ggZdYYmOri0ZIc30pQ4OGbPDxpXauMpwscpe7CHPliiS46UDh35skUYQrPT2gA"/>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center mb-6 group-hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Nantes</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Western logistics center for Geo M deployments.</p>
+<a class="inline-flex items-center text-primary font-label-caps text-label-caps uppercase hover:text-surface-tint transition-colors" href="/catalog.html?search=Nexo">
+                            View Inventory <span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shared Component -->
+
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-geneve">Location Sono Genève</a></li>
+<li><a href="/location-sono/location-sono-cannes">Location Sono Cannes</a></li>
+<li><a href="/location-sono/location-sono-monaco">Location Sono Monaco</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/catalog.html?search=line%20array">Line Array</a></li>
+<li><a href="/catalog.html?search=enceintes">Enceintes professionnelles</a></li>
+<li><a href="/catalog.html?search=caissons">Caissons de basses</a></li>
+<li><a href="/catalog.html">Sonorisation &amp; production</a></li>
+<li><a href="/tarifs.html">Nos tarifs</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-aide.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+</div>
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links"><a href="/conditions-utilisation.html">Conditions d'utilisation</a><a href="/politique-confidentialite.html">Politique de confidentialité</a><a href="/mentions-legales.html">Mentions légales</a></div>
+</div>
+</div>
+</footer><script id="rss-nexo-runtime">
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){console.error('Header load',e);}
+}
+document.addEventListener('DOMContentLoaded',loadHeader);
+</script></body></html>
