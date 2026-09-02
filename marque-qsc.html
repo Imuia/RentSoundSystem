@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<link as="fetch" crossorigin="" href="/footer.html" rel="preload"/><link as="fetch" crossorigin="" href="/header.html" rel="preload"/><meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>QSC - Puissance &amp; Fiabilité | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#5a0022",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#bc004f",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-container": "#ff4d80",
+                        "on-primary-fixed": "#3f0016",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-secondary": "#2f3132",
+                        "on-tertiary-container": "#2a2a2a",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface-tint": "#ffb2bf",
+                        "on-surface-muted": "#E6BCC2",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "surface-variant": "#353534",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-bright": "#393939",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "primary": "#ffb2bf",
+                        "outline-variant": "#5d3f44",
+                        "surface": "#131313",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-secondary-fixed-variant": "#454748",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#ac878d",
+                        "tertiary": "#c8c6c5",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "secondary-fixed": "#e3e2e3",
+                        "error-container": "#93000a",
+                        "on-background": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "on-primary-fixed-variant": "#90003b",
+                        "inverse-on-surface": "#313030",
+                        "on-primary": "#660028",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#303030",
+                        "tertiary-container": "#929090",
+                        "on-error": "#690005",
+                        "secondary-container": "#454748",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter-x": "2.5rem",
+                        "container-max": "1280px",
+                        "card-gap": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "component-padding-y": "0.625rem",
+                        "component-padding-x": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined[data-weight="fill"] {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6) 0%, rgba(20, 20, 20, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-shadow {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.3);
+        }
+        .text-glow {
+            text-shadow: 0 0 20px rgba(252, 3, 109, 0.5);
+        }
+    </style>
+<meta content="Découvrez QSC sur RentSoundSystem : enceintes actives Série K.2 et KW, consoles TouchMix et solutions audio professionnelles disponibles à la location." name="description"/><style id="rss-qsc-shared-layout">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;min-height:auto}
+#header-container header{z-index:9999!important}
+#footer-container{min-height:320px}
+#header-container .max-w-container-max,
+#footer-container .max-w-container-max{max-width:1280px}
+#header-container .px-margin-mobile,
+#footer-container .px-margin-mobile{padding-left:16px;padding-right:16px}
+#header-container .gap-stack-sm{gap:12px}
+#header-container .gap-stack-md{gap:24px}
+#header-container .font-headline-md,
+#footer-container .font-headline{font-family:Manrope,sans-serif}
+#header-container .font-body-md,
+#footer-container .font-body{font-family:Inter,sans-serif}
+#header-container .text-headline-md{font-size:24px;line-height:32px;font-weight:600}
+#header-container .text-body-md{font-size:16px;line-height:24px}
+#header-container .text-label-md{font-size:12px;line-height:16px}
+#header-container header{
+  background:rgba(19,19,19,.80);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(255,255,255,.10)
+}
+#footer-container footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05)
+}
+#rss-mobile-menu-toggle{display:none!important}
+@media(min-width:768px){
+  #header-container .md\:px-margin-desktop,
+  #footer-container .md\:px-margin-desktop{padding-left:40px;padding-right:40px}
+}
+@media(max-width:767px){
+  body{padding-top:72px!important}
+}
+</style></head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container"><div id="header-container"></div>
+<!-- TopNavBar -->
+
+<!-- Hero Section -->
+<section class="relative min-h-[921px] flex items-center pb-section-padding-y overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<img alt="Concert stage lighting and massive speaker arrays in a dark arena setting." class="w-full h-full object-cover opacity-30 mix-blend-luminosity" data-alt="A colossal stack of professional PA line array speakers hanging above a massive dark concert stage. The scene is illuminated by piercing magenta and stark white laser lights cutting through atmospheric fog. The visual style is highly technical, premium, and industrial, emphasizing the raw power and high-end engineering of professional audio equipment in a nocturnal, high-contrast setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArEyV2jt3zaNrB_65MmwXTmxM_KiES7B6s__1D4JRu_C0BwMOcWXJ3xf8SnXUt68DUazyh3L56mJsIXWC8rCZhlOHRDPp5YRqMUE727QCExYRuhyVkm7rVj5NA1ZbnQFlHqIAGrTrSnTomkzjWO29oAYWsRW7eZXY0qKeKoneSJlFsMQYNzNe_CZSaDG8k1RI225qpd54Aeru4NiOXCdy0GuybKT1MQkvsrvg4ZXJW5r86xhwyMp-v4Oi1OKAfbZm23PR_zKPZNOg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-[1280px] mx-auto px-gutter-x w-full">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-panel border-primary/30 mb-8">
+<span class="material-symbols-outlined text-[#FC036D] text-sm">campaign</span>
+<span class="font-label-caps text-label-caps text-[#FC036D]">Marque Partenaire Officielle</span>
+</div>
+<h1 class="font-display-hero-mobile text-display-hero-mobile md:font-display-hero md:text-display-hero text-on-surface mb-6">
+<span class="text-[#FC036D] text-glow block mb-2">QSC</span>
+                    Puissance &amp; Fiabilité.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted mb-10 max-w-2xl">
+                    L'excellence de l'amplification professionnelle et des enceintes actives. Louez les standards de l'industrie pour vos événements les plus exigeants, avec une clarté et une robustesse inégalées.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-[#FC036D] text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded-DEFAULT glow-shadow hover:opacity-90 transition-all active:scale-95 duration-300 flex items-center gap-2" onclick="document.getElementById('qsc-catalogue')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button">
+                        Explorer le catalogue QSC
+                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button class="glass-panel text-on-surface font-label-caps text-label-caps uppercase px-8 py-4 rounded-DEFAULT hover:bg-surface-container transition-all active:scale-95 duration-300 border-outline-variant" onclick="document.getElementById('qsc-catalogue')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button">
+                        Voir les spécifications
+                    </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Le son QSC à louer Section (Bento Grid) -->
+<section class="py-section-padding-y bg-surface-container-lowest relative" id="qsc-disponibilite">
+<div class="max-w-[1280px] mx-auto px-gutter-x">
+<div class="mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Le son QSC à louer</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Disponibilité immédiate dans nos hubs logistiques principaux. Équipement vérifié, testé et prêt à déployer.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Marseille Hub -->
+<div class="md:col-span-8 glass-panel rounded-xl p-8 relative overflow-hidden group"><div class="absolute inset-0 z-0">
+<img alt="Concert stage with QSC sound system" class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADrUevQaYNgDj6H38VmnIKsMVW02m-xUkvgHaYbWRgMvEIJZ2TaTzfaQfeLZ6apotglzmhzZNweNcjD44tM-1iQlWeOnzfh_d1uZMAdNbf-DTL8C4RdJ6SqG0jB_j0v-52pa5smdQAucHSGoL9TsVyVuac9D6X_Z4dIbv8e6ce0MxsH3bU5tQZ_aZFhRd7lkTF1pQjR0f91RY0ryu-BBnG5DSY_N6ltYCAQfX8N3TsAglWhuSvxL3YMVNRkQG76neli_oV_H2bnH0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+</div>
+<div class="relative z-10 flex flex-col h-full justify-between min-h-[300px]">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-[#FC036D] text-sm" data-weight="fill">location_on</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Marseille</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+            Stock massif de la série K.2 et caissons de basses KS. Idéal pour les festivals en plein air et les clubs du sud.
+        </p>
+</div>
+<div class="mt-8 flex items-center justify-between border-t border-surface-glass-border pt-6">
+<div class="flex gap-4">
+<span class="inline-flex items-center gap-1 text-on-surface-muted font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">inventory_2</span> 120+ Unités
+            </span>
+</div>
+<button class="material-symbols-outlined text-[#FC036D] text-sm">
+<span class="material-symbols-outlined">arrow_outward</span>
+</button>
+</div>
+</div></div>
+<!-- Nice Hub -->
+<div class="md:col-span-4 glass-panel rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative z-10 flex flex-col h-full justify-between min-h-[300px]">
+<div>
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">location_on</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Nice</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Kits premium TouchMix et série KW pour événements corporate et yachts.</p>
+</div>
+<div class="mt-8 flex items-center justify-between border-t border-surface-glass-border pt-6">
+<span class="inline-flex items-center gap-1 text-on-surface-muted font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">inventory_2</span> 45+ Unités
+                            </span>
+<button class="material-symbols-outlined text-[#FC036D] text-sm">
+<span class="material-symbols-outlined">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Toulouse Hub -->
+<div class="md:col-span-12 glass-panel rounded-xl p-8 relative overflow-hidden group flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="relative z-10 max-w-2xl">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">location_on</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Toulouse</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Hub logistique spécialisé dans les systèmes de diffusion longue portée QSC pour les grandes salles de concert et tournées régionales.</p>
+</div>
+<div class="relative z-10 flex flex-col md:items-end gap-4">
+<span class="inline-flex items-center gap-1 text-on-surface-muted font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">inventory_2</span> 80+ Unités Disponibles
+                        </span>
+<button class="glass-panel text-on-surface font-label-caps text-label-caps uppercase px-6 py-3 rounded-DEFAULT hover:bg-surface-container transition-all active:scale-95 duration-300 border-outline-variant whitespace-nowrap" onclick="window.location.href='/catalog.html'" type="button">
+                            Vérifier la dispo
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Catalog Section -->
+<section class="py-section-padding-y bg-background relative" id="qsc-catalogue">
+<div class="max-w-[1280px] mx-auto px-gutter-x">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">La Gamme Légendaire</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">L'équipement de sonorisation le plus demandé de l'industrie, reconnu pour sa fiabilité à toute épreuve et ses performances audio supérieures.</p>
+</div>
+<button class="material-symbols-outlined text-[#FC036D] text-sm" onclick="window.location.href='/catalog.html'" type="button">
+                    Voir tout le catalogue <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Product Card 1 -->
+<div class="glass-panel rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 border-outline-variant/30" onclick="window.location.href='/catalog.html?search=QSC%20K12.2'" style="cursor:pointer">
+<div class="h-64 bg-surface-container relative flex items-center justify-center p-8">
+<div class="material-symbols-outlined text-[#FC036D] text-sm">
+                            Plus Populaire
+                         </div>
+<img alt="QSC K12.2 Active Loudspeaker" class="object-contain h-full w-full opacity-80 mix-blend-screen filter grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A sleek, black professional active loudspeaker, specifically resembling the QSC K12.2 model, shown in high-contrast studio lighting. The speaker features a rugged grille and sophisticated control panels on the back. The background is pure deep black, allowing the subtle reflections on the speaker's matte finish to stand out. The aesthetic is clean, technical, and premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv7bZu0NcliTHu6lR26MSyZFCIWPpCUsIUxLxRedUuwoi_r80I0XxeAx9Ed2uBaIX_A1PY-m2ja0e6NAe19QM6yEVl1Qe_oFlKGibfG19Rv432DfKbMn66bmhnycOWfpUPzhiu3rWOnt1nqf8WYpUMCqVwimvSsVJjnTo7LfiIco2-8_8wspbPWNfkj6YkFlnq4uXO2EEyLRFothq_DVe9Xd3tDH6bSTM2iexQhF_Uo_-1C_C2GOCpD6PZ_-UxCBAGXXuJQa0ceCg"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Série K.2 (K12.2)</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 h-20 line-clamp-3">L'enceinte active 12 pouces référence. 2000W crête, DSP avancé et une clarté vocale exceptionnelle pour tout type d'événement.</p>
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-[#FC036D] text-sm">À partir de 45€<span class="text-sm text-on-surface-variant font-body-md">/jour</span></span>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface p-3 rounded-DEFAULT transition-colors duration-300" onclick="event.stopPropagation();window.location.href='/catalog.html?search=QSC%20K12.2'" type="button">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-panel rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 border-outline-variant/30" onclick="window.location.href='/catalog.html?search=QSC%20KW'" style="cursor:pointer">
+<div class="h-64 bg-surface-container relative flex items-center justify-center p-8">
+<img alt="QSC KW153 Loudspeaker" class="object-contain h-full w-full opacity-80 mix-blend-screen filter grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A tall, rugged professional 3-way loudspeaker cabinet, reminiscent of the QSC KW series, constructed from premium birch plywood with a tough textured black finish. It stands imposing in a moody, low-light environment with subtle magenta edge lighting highlighting its sturdy contours. The industrial design feels heavy-duty and ready for intense touring use." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoA94_6eDEgUjVp9LG58E44yuRItY-tmqmk72kThX8sLLtc_9nnmTKLfOzJeA5m_uRg-rnMhO-UaUqfLcWZA3Zhq0JX5FBXatQZuJHrD9EMteHVW5e8mpa_7tE9wWa1PPpUymYBFBLUMKAahjzQc0RrwkETPbch2YJAnytVBWpRtmRYABBFn7ig4FHUq6OO6D0xdabhESS43rlmRAsKcJoCSxA5uBmhQqYj_xekSZ0sneGKyD3pI4Pi6b9IShcdU7xxE8zze2uX8Q"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Série KW</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 h-20 line-clamp-3">Construction bois robuste, amplification Class-D de 1000W. Le choix sans compromis pour les basses profondes et les applications live.</p>
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-[#FC036D] text-sm">À partir de 65€<span class="text-sm text-on-surface-variant font-body-md">/jour</span></span>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface p-3 rounded-DEFAULT transition-colors duration-300" onclick="event.stopPropagation();window.location.href='/catalog.html?search=QSC%20KW'" type="button">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="glass-panel rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 border-outline-variant/30" onclick="window.location.href='/catalog.html?search=QSC%20TouchMix'" style="cursor:pointer">
+<div class="h-64 bg-surface-container relative flex items-center justify-center p-8">
+<img alt="QSC TouchMix Console" class="object-contain h-full w-full opacity-80 mix-blend-screen filter grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A compact, high-tech digital mixing console featuring a large, bright touchscreen interface surrounded by precise physical knobs and faders. The console is photographed from a high angle in a dark studio setting. The screen displays colorful EQ curves and mixing parameters, contrasting sharply with the matte black chassis and deep shadows of the environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKcTXzB8XivMwhmJxqQWJ7wjzKbgfDcwjxs80EfWLskzlaq7amLPcLJmdr745evXA5P2TitXDm2V0QrInBH17QAT3x5_AE2xi2Ag3Aj8WJJzNhvagq2VGBrq1Jw7nrzO1FCgYMTPqkRwGzbDj0sfn48ahRADalQP-TF60TcjegUzXukhxjXQzkgJe0yIO1CLWSZ9GO2B4x6U7yiTXU261WJRHxJbPDdFmIkCxmz8XDLw9Qae0GapFP1kvcn6nf45coG9OJjVYGUs0"/>
+</div>
+<div class="p-6">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Consoles TouchMix</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 h-20 line-clamp-3">Mixage numérique compact surpuissant. Interface tactile intuitive, assistants de configuration et enregistrement multipiste direct.</p>
+<div class="flex items-center justify-between">
+<span class="material-symbols-outlined text-[#FC036D] text-sm">À partir de 80€<span class="text-sm text-on-surface-variant font-body-md">/jour</span></span>
+<button class="bg-surface-container-highest hover:bg-primary hover:text-on-primary text-on-surface p-3 rounded-DEFAULT transition-colors duration-300" onclick="event.stopPropagation();window.location.href='/catalog.html?search=QSC%20TouchMix'" type="button">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Expert Reviews Section -->
+<section class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border" id="qsc-avis">
+<div class="max-w-[1280px] mx-auto px-gutter-x">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-12 text-center">L'Avis des Professionnels</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Review 1 -->
+<div class="glass-panel p-8 rounded-xl relative">
+<div class="absolute -top-4 -right-4 bg-primary text-on-primary p-2 rounded-full shadow-neon-glow">
+<span class="material-symbols-outlined" data-weight="fill">verified</span>
+</div>
+<div class="material-symbols-outlined text-[#FC036D] text-sm">
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface mb-6 italic">"Pour nos tournées DJ mobiles, la fiabilité est non négociable. Les K12.2 ont survécu à la chaleur, aux transports chaotiques et aux poussées de volume extrêmes sans jamais faillir. Le son reste pur, peu importe la pression."</p>
+<div class="flex items-center gap-4">
+<div class="material-symbols-outlined text-[#FC036D] text-sm">
+                            JM
+                        </div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-lg">Julien M.</h4>
+<p class="font-label-caps text-label-caps text-on-surface-muted">Partenaire Audio Pro - Toulouse</p>
+</div>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="glass-panel p-8 rounded-xl relative">
+<div class="absolute -top-4 -right-4 bg-primary text-on-primary p-2 rounded-full shadow-neon-glow">
+<span class="material-symbols-outlined" data-weight="fill">verified</span>
+</div>
+<div class="material-symbols-outlined text-[#FC036D] text-sm">
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+<span class="material-symbols-outlined" data-weight="fill">star</span>
+</div>
+<p class="font-body-lg text-body-lg text-on-surface mb-6 italic">"L'interface de la TouchMix est un sauveur de vie pour les petits concerts où le temps de balance est limité. Couplée avec des têtes de la série KW, on obtient un son de stade dans des jauges de 300 personnes."</p>
+<div class="flex items-center gap-4">
+<div class="material-symbols-outlined text-[#FC036D] text-sm">
+                            SA
+                        </div>
+<div>
+<h4 class="font-headline-md text-headline-md text-on-surface text-lg">Sarah A.</h4>
+<p class="font-label-caps text-label-caps text-on-surface-muted">Directrice Technique - Marseille</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+
+<div id="footer-container"></div><script src="/components.js"></script><script id="rss-qsc-runtime">
+document.addEventListener('DOMContentLoaded',function(){
+  var mobileToggle=document.getElementById('rss-mobile-menu-toggle');
+  if(mobileToggle) mobileToggle.style.display='none';
+});
+</script></body></html>
