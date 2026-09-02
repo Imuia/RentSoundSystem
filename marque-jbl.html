@@ -129,13 +129,21 @@ html,body{overflow-x:hidden!important;background:#131313!important}
 #header-container{position:relative;z-index:9999;width:100%}
 #header-container header{z-index:9999!important}
 #rss-mobile-menu-toggle{display:none!important}
-#jbl-product-map-layer .jbl-point{position:absolute;transform:translate(-50%,-100%);z-index:25;pointer-events:auto}
+#jbl-product-map-layer .jbl-point{position:absolute;transform:translate(-50%,-50%);z-index:25;pointer-events:auto}
+#jbl-product-map-layer .jbl-marker-btn{display:block;position:relative;background:transparent;border:0;padding:0;cursor:pointer;outline:none}
 #jbl-product-map-layer .jbl-dot{width:16px;height:16px;border-radius:999px;background:#FC036D;border:3px solid #fff;margin:auto;box-shadow:0 0 0 7px rgba(252,3,109,.14),0 0 20px rgba(252,3,109,.9);position:relative}
 #jbl-product-map-layer .jbl-dot:after{content:"";position:absolute;inset:-8px;border-radius:999px;border:1px solid rgba(252,3,109,.7);animation:jblPointPulse 1.9s ease-out infinite}
-#jbl-product-map-layer .jbl-card{margin-top:7px;background:rgba(19,19,19,.92);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:7px 9px;min-width:145px;max-width:215px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+#jbl-product-map-layer .jbl-count{position:absolute;left:12px;top:-10px;min-width:20px;height:20px;padding:0 5px;border-radius:999px;background:#131313;border:1px solid rgba(255,255,255,.25);color:#fff;font:700 10px/18px Inter,sans-serif;text-align:center}
+#jbl-product-map-layer .jbl-card{position:absolute;left:50%;bottom:28px;transform:translateX(-50%) translateY(6px);background:rgba(19,19,19,.96);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;width:230px;box-shadow:0 14px 34px rgba(0,0,0,.55);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .18s ease,transform .18s ease,visibility .18s;z-index:40}
+#jbl-product-map-layer .jbl-point:hover .jbl-card,
+#jbl-product-map-layer .jbl-point:focus-within .jbl-card,
+#jbl-product-map-layer .jbl-point.is-open .jbl-card{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);pointer-events:auto}
+#jbl-product-map-layer .jbl-card:after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;background:rgba(19,19,19,.96);border-right:1px solid rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.1);transform:translateX(-50%) rotate(45deg)}
 #jbl-product-map-layer .jbl-brand{font:700 9px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#FC036D}
-#jbl-product-map-layer .jbl-title{margin-top:4px;font:700 11px/1.25 Manrope,sans-serif;color:#fff}
-#jbl-product-map-layer .jbl-location{margin-top:4px;font:500 9px/1.3 Inter,sans-serif;color:#e6bcc2}
+#jbl-product-map-layer .jbl-city{margin-top:4px;font:700 12px/1.25 Manrope,sans-serif;color:#fff}
+#jbl-product-map-layer .jbl-location{margin-top:3px;font:500 9px/1.3 Inter,sans-serif;color:#e6bcc2}
+#jbl-product-map-layer .jbl-product-mini{display:block;margin-top:7px;padding-top:7px;border-top:1px solid rgba(255,255,255,.08);color:#fff;font:600 10px/1.3 Inter,sans-serif;text-decoration:none}
+#jbl-product-map-layer .jbl-product-mini:hover{color:#ffb2bf}
 #jbl-product-map-layer a{text-decoration:none}
 @keyframes jblPointPulse{0%{transform:scale(.65);opacity:.95}100%{transform:scale(1.65);opacity:0}}
 .rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
@@ -154,8 +162,8 @@ html,body{overflow-x:hidden!important;background:#131313!important}
 .rss-footer-bottom a{color:#b99da2}
 @media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
 @media(max-width:767px){
-  #jbl-product-map-layer .jbl-card{min-width:115px;max-width:145px;padding:6px}
-  #jbl-product-map-layer .jbl-title{font-size:9px}
+  #jbl-product-map-layer .jbl-card{width:190px;padding:8px 10px}
+  #jbl-product-map-layer .jbl-city{font-size:11px}
 }
 @media(max-width:600px){.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
 </style>
@@ -357,6 +365,30 @@ function chooseProduct(items,preferred,used){
   if(p)used.add(String(p.original_id??p.id??p.title??''));
   return p;
 }
+
+function setupProductFallback(slotId,searchTerm){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(searchTerm);
+  const action=slot.querySelector('button,a');
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  function go(){ location.href=url; }
+
+  slot.onclick=(e)=>{ if(!e.target.closest('a,button')) go(); };
+  slot.onkeydown=(e)=>{ if(e.key==='Enter' || e.key===' '){e.preventDefault();go();} };
+
+  if(action){
+    if(action.tagName==='A') action.href=url;
+    else{
+      action.type='button';
+      action.onclick=(e)=>{e.stopPropagation();go();};
+    }
+  }
+}
+
 function applyProductToSlot(slotId,item){
   if(!item)return;
   const slot=document.getElementById(slotId);
@@ -385,7 +417,10 @@ function applyProductToSlot(slotId,item){
     action.onclick=(e)=>{e.stopPropagation();location.href=url;};
   }
   slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
   slot.onclick=(e)=>{if(!e.target.closest('a,button'))location.href=url;};
+  slot.onkeydown=(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();location.href=url;}};
 }
 
 const JBL_CITY_COORDS={
@@ -410,43 +445,83 @@ function worldPos(lat,lng){
   let top=((90-lat)/180)*100;
   return [Math.max(5,Math.min(95,left)),Math.max(10,Math.min(90,top))];
 }
+function escapeHtml(v){
+  return String(v??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
 function renderJblMap(items){
   const layer=document.getElementById('jbl-product-map-layer');
   const status=document.getElementById('jbl-map-status');
   if(!layer)return;
-  const valid=(items||[]).map(item=>({item,coords:itemCoords(item)})).filter(x=>x.coords);
+
+  const valid=(items||[]).map(item=>({item,coords:itemCoords(item),city:itemCity(item)})).filter(x=>x.coords);
   if(!valid.length){
     layer.innerHTML='';
     if(status)status.textContent='Aucun produit JBL avec ville ou coordonnées renseignées.';
     return;
   }
 
-  const grouped={};
-  valid.forEach(x=>{
-    const key=x.coords.map(n=>Number(n).toFixed(3)).join(',');
-    x.offset=grouped[key]||0;
-    grouped[key]=x.offset+1;
+  // Regroupement par ville/coordonnées : un seul point visuel par emplacement.
+  const groups=new Map();
+  valid.forEach(row=>{
+    const cityKey=norm(row.city)||row.coords.map(n=>Number(n).toFixed(3)).join(',');
+    if(!groups.has(cityKey)){
+      groups.set(cityKey,{city:row.city||'Disponible',coords:row.coords,items:[]});
+    }
+    groups.get(cityKey).items.push(row.item);
   });
-  const offsets=[[0,0],[1.8,-1.5],[-1.8,1.4],[1.5,1.7],[-1.6,-1.8]];
 
-  layer.innerHTML=valid.slice(0,40).map(({item,coords,offset})=>{
-    let [left,top]=worldPos(coords[0],coords[1]);
-    const o=offsets[offset%offsets.length];left+=o[0];top+=o[1];
-    const title=clean(item.title||item.model||'JBL Professional');
-    const city=itemCity(item)||'Disponible';
+  const locations=[...groups.values()];
+
+  layer.innerHTML=locations.map((group,index)=>{
+    const [left,top]=worldPos(group.coords[0],group.coords[1]);
+    const products=group.items.slice(0,3);
+    const productLinks=products.map(p=>{
+      const title=escapeHtml(clean(p.title||p.model||'Produit JBL'));
+      return `<a class="jbl-product-mini" href="${productUrl(p)}">${title}</a>`;
+    }).join('');
+
     return `<div class="jbl-point" style="left:${left}%;top:${top}%">
-      <a href="${productUrl(item)}" aria-label="Voir ${title}">
-        <div class="jbl-dot"></div>
-        <div class="jbl-card">
-          <div class="jbl-brand">JBL Professional</div>
-          <div class="jbl-title">${title}</div>
-          <div class="jbl-location">${city}</div>
-        </div>
-      </a>
+      <button class="jbl-marker-btn" type="button" aria-expanded="false" aria-label="${escapeHtml(group.city)} : ${group.items.length} produit${group.items.length>1?'s':''} JBL">
+        <span class="jbl-dot"></span>
+        ${group.items.length>1?`<span class="jbl-count">${group.items.length}</span>`:''}
+      </button>
+      <div class="jbl-card">
+        <div class="jbl-brand">JBL Professional</div>
+        <div class="jbl-city">${escapeHtml(group.city)}</div>
+        <div class="jbl-location">${group.items.length} produit${group.items.length>1?'s':''} disponible${group.items.length>1?'s':''}</div>
+        ${productLinks}
+        ${group.items.length>3?`<a class="jbl-product-mini" href="/catalog.html?search=${encodeURIComponent('JBL '+group.city)}">Voir les ${group.items.length} produits →</a>`:''}
+      </div>
     </div>`;
   }).join('');
 
-  if(status)status.textContent=valid.length+' produit'+(valid.length>1?'s':'')+' JBL localisé'+(valid.length>1?'s':'')+'.';
+  layer.querySelectorAll('.jbl-marker-btn').forEach(btn=>{
+    btn.addEventListener('click',e=>{
+      e.preventDefault();
+      e.stopPropagation();
+      const point=btn.closest('.jbl-point');
+      const wasOpen=point.classList.contains('is-open');
+      layer.querySelectorAll('.jbl-point.is-open').forEach(p=>{
+        p.classList.remove('is-open');
+        p.querySelector('.jbl-marker-btn')?.setAttribute('aria-expanded','false');
+      });
+      if(!wasOpen){
+        point.classList.add('is-open');
+        btn.setAttribute('aria-expanded','true');
+      }
+    });
+  });
+
+  document.addEventListener('click',()=>{
+    layer.querySelectorAll('.jbl-point.is-open').forEach(p=>{
+      p.classList.remove('is-open');
+      p.querySelector('.jbl-marker-btn')?.setAttribute('aria-expanded','false');
+    });
+  },{once:true});
+
+  if(status){
+    status.textContent=valid.length+' produit'+(valid.length>1?'s':'')+' JBL · '+locations.length+' emplacement'+(locations.length>1?'s':'');
+  }
 }
 
 async function loadJblProducts(){
@@ -506,6 +581,8 @@ async function loadJblProducts(){
 
 document.addEventListener('DOMContentLoaded',()=>{
   loadHeader();
+  setupProductFallback('jbl-product-slot-1','JBL VTX A12');
+  setupProductFallback('jbl-product-slot-2','JBL VTX B28');
   loadJblProducts();
 });
 </script>
