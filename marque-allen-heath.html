@@ -254,7 +254,7 @@ main{padding-top:0!important}
 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-fuchsia/5 rounded-full blur-[120px] pointer-events-none"></div>
 <div class="mb-16 text-center">
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Écosystème Numérique Allen &amp; Heath</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Produits Allen &amp; Heath réellement publiés sur RentSoundSystem, avec images, tarifs et fiches produits issus de Supabase.</p>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Produits Allen &amp; Heath disponibles sur RentSoundSystem. Les annonces Supabase sont chargées automatiquement ; à défaut, la sélection publique actuellement mise en avant sur le site reste visible.</p>
 <a class="inline-flex items-center gap-2 mt-6 text-brand-fuchsia font-label-caps text-label-caps uppercase tracking-widest" href="/catalog.html?search=Allen%20%26%20Heath">Voir tout l'inventaire Allen &amp; Heath →</a></div>
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="allen-heath-products-grid"><div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Chargement des produits Allen &amp; Heath disponibles...</div></div>
 </section>
@@ -450,8 +450,20 @@ main{padding-top:0!important}
   function clean(value){return String(value??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();}
   function norm(value){return String(value??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/&/g,' and ').replace(/[^a-z0-9]+/g,' ').trim();}
   function money(value){const n=Number(value||0);return Number.isFinite(n)&&n>0?n.toLocaleString('fr-FR',{maximumFractionDigits:0})+'€':'Sur devis';}
-  function firstImage(item){const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));return imgs[0]?.image_url||'';}
-  function productUrl(item){if(item.original_id!==undefined&&item.original_id!==null)return '/product?original_id='+encodeURIComponent(item.original_id);if(item.id)return '/product?id='+encodeURIComponent(item.id);return '/catalog.html?search=Allen%20%26%20Heath';}
+  function firstImage(item){
+      const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+      imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+      return imgs[0]?.image_url || item.image_url || item.featured_image || item.thumbnail || item.cover_image || '';
+    }
+  function productUrl(item){
+      if(item.original_id!==undefined && item.original_id!==null && String(item.original_id)!==''){
+        return '/product.html?original_id='+encodeURIComponent(item.original_id);
+      }
+      if(item.id!==undefined && item.id!==null && String(item.id)!==''){
+        return '/product.html?id='+encodeURIComponent(item.id);
+      }
+      return '/catalog.html?search=Allen%20%26%20Heath';
+    }
   function allenMatch(item){const n=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));return n.includes('allen and heath')||n.includes('allen heath');}
 
   async function loadSharedHeader(){
@@ -488,7 +500,7 @@ main{padding-top:0!important}
     grid.innerHTML=products.map((item,index)=>{
       const title=esc(item.title||item.model||'Produit Allen & Heath');
       const desc=esc(clean(item.description).slice(0,170)||'Produit Allen & Heath professionnel disponible à la location sur RentSoundSystem.');
-      const img=firstImage(item), price=money(item.price), url=productUrl(item), category=esc(item.category||'Allen & Heath');
+      const img=firstImage(item), price=money(item.price ?? item.price_day ?? item.price_per_day), url=item._publicFallback?'/catalog.html?search=Allen%20%26%20Heath%20dLive%20S5000':productUrl(item), category=esc(item.category||'Allen & Heath');
       const image=img?'<img alt="'+title+' - Allen & Heath en location" class="object-contain h-full w-full opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="'+esc(img)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\'ah-product-image-fallback\');this.remove();">':'';
       return '<article class="ah-real-product-card bg-surface-glass border border-surface-glass-border backdrop-blur-xl rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 flex flex-col" data-url="'+esc(url)+'">'
         +'<div class="h-64 relative bg-surface-container-highest p-6 flex items-center justify-center overflow-hidden '+(!img?'ah-product-image-fallback':'')+'">'
@@ -508,32 +520,120 @@ main{padding-top:0!important}
   }
 
   async function loadAllenHeathProducts(){
-    const grid=document.getElementById('allen-heath-products-grid');if(!grid)return;
+    const grid=document.getElementById('allen-heath-products-grid');
+    if(!grid)return;
+
+    const publicFallback=[{
+      id:'',
+      original_id:'',
+      title:'Allen & Heath dLive S5000',
+      model:'dLive S5000',
+      brand:'Allen & Heath',
+      category:'Console numérique',
+      description:'Console numérique Allen & Heath dLive S5000, solution flagship pour les tournées, festivals et régies FOH professionnelles.',
+      price:350,
+      image_url:'https://lh3.googleusercontent.com/aida/ADBb0uhu0myPBrSCOLLDv9gGfufp9Ktn0uTSdQDsETv2aJEN63G-t8KYiblFuN767IulVHAXQKfeboRaBs1jlz_bTS0Pr-hfSqxBHBknHlhw9jxnFd3wbzSpQyIXZrb-_kx6SHYo54kNRZaOEIUQhmnP8vblVVQdSH-oerQjwHuybVoiWSJa8Eo0wRaeMyk7wU7ydxnmIhm0TTU-5W4G5K8xrM6VBkxdqMisiyL_qTqKCumHXpk4poz2Eob20g',
+      _publicFallback:true
+    }];
+
     try{
-      if(!window.supabase)throw new Error('Supabase client indisponible');
+      if(!window.supabase){
+        renderProducts(publicFallback);
+        return;
+      }
+
       const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-      // Ne pas imposer status='publish' : les annonces publiques du site peuvent utiliser
-      // plusieurs valeurs de statut selon leur origine/import. Les règles RLS Supabase
-      // restent la première barrière d'accès, puis on écarte uniquement les statuts
-      // explicitement non publics côté client.
-      const result=await client.from('listings').select('*, listing_images(image_url, position)').limit(1000);
-      if(result.error)throw result.error;
 
-      const blockedStatuses=new Set(['draft','pending','rejected','archived','deleted','inactive','hidden']);
-      const products=(result.data||[])
-        .filter(allenMatch)
-        .filter(item=>!blockedStatuses.has(norm(item.status)));
+      const fields='id,original_id,title,description,status,category,price,price_day,price_per_day,brand,model,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
+      const safeFields='id,original_id,title,description,status,category,price,brand,model,created_at,updated_at';
 
-      // Les plus récents / complets en premier quand l'information existe.
-      products.sort((a,b)=>{
-        const da=Date.parse(a.created_at||a.updated_at||0)||0;
-        const db=Date.parse(b.created_at||b.updated_at||0)||0;
-        return db-da;
+      async function targeted(field, value){
+        let q=client.from('listings').select(fields).eq('status','publish').ilike(field,value).limit(50);
+        let res=await q;
+        if(res.error){
+          res=await client.from('listings').select(safeFields).eq('status','publish').ilike(field,value).limit(50);
+        }
+        return (!res.error && Array.isArray(res.data)) ? res.data : [];
+      }
+
+      // Queries ciblées : évite le problème d'un .limit(1000) global qui peut rater la marque.
+      const batches=await Promise.all([
+        targeted('brand','%Allen%Heath%'),
+        targeted('title','%Allen%Heath%'),
+        targeted('title','%dLive%'),
+        targeted('model','%dLive%'),
+        targeted('model','%Avantis%'),
+        targeted('model','%SQ%')
+      ]);
+
+      const merged=[];
+      const seen=new Set();
+      batches.flat().forEach(item=>{
+        if(!allenMatch(item))return;
+        const key=String(item.original_id || item.id || item.title || '');
+        if(!key || seen.has(key))return;
+        seen.add(key);
+        merged.push(item);
       });
-      renderProducts(products.slice(0,12));
+
+      // Récupération séparée des images, compatible avec listing_images et listing_images_staging.
+      if(merged.length){
+        const ids=merged.map(x=>x.id).filter(Boolean);
+        if(ids.length){
+          const imgs=await client.from('listing_images')
+            .select('listing_id,image_url,position')
+            .in('listing_id',ids)
+            .order('position',{ascending:true});
+          if(!imgs.error && Array.isArray(imgs.data)){
+            const byId={};
+            imgs.data.forEach(img=>{
+              const k=String(img.listing_id);
+              if(!byId[k])byId[k]=[];
+              byId[k].push(img);
+            });
+            merged.forEach(item=>{
+              if(byId[String(item.id)]) item.listing_images=byId[String(item.id)];
+            });
+          }
+        }
+
+        const missing=merged.filter(x=>!firstImage(x) && x.original_id).map(x=>x.original_id);
+        if(missing.length){
+          const stage=await client.from('listing_images_staging')
+            .select('listing_original_id,image_url,position')
+            .in('listing_original_id',missing);
+          if(!stage.error && Array.isArray(stage.data)){
+            const byOriginal={};
+            stage.data.forEach(img=>{
+              const k=String(img.listing_original_id);
+              if(!byOriginal[k])byOriginal[k]=[];
+              byOriginal[k].push({image_url:img.image_url,position:img.position});
+            });
+            merged.forEach(item=>{
+              if(!firstImage(item) && byOriginal[String(item.original_id)]){
+                item.listing_images=byOriginal[String(item.original_id)];
+              }
+            });
+          }
+        }
+      }
+
+      if(merged.length){
+        merged.sort((a,b)=>{
+          const da=Date.parse(a.created_at||a.updated_at||0)||0;
+          const db=Date.parse(b.created_at||b.updated_at||0)||0;
+          return db-da;
+        });
+        renderProducts(merged.slice(0,12));
+      }else{
+        // Le produit visible sur l'accueil est actuellement statique dans l'accueil.
+        // On l'affiche ici plutôt que de laisser la page de marque vide.
+        renderProducts(publicFallback);
+      }
+
     }catch(err){
       console.warn('Allen & Heath products:',err);
-      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Les produits Allen & Heath sont temporairement indisponibles. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue Allen & Heath</a>.</div>';
+      renderProducts(publicFallback);
     }
   }
 
