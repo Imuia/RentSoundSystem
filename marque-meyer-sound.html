@@ -160,6 +160,22 @@ body{padding-top:80px!important}
 @media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
 @media(max-width:600px){body{padding-top:72px!important}.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
 </style>
+
+<style id="rss-meyer-detail-map-css">
+#meyer-map-products .rss-meyer-point{position:absolute;transform:translate(-50%,-100%);z-index:25;pointer-events:auto}
+#meyer-map-products .rss-meyer-dot{width:16px;height:16px;border-radius:999px;background:#FC036D;border:3px solid #fff;margin:auto;box-shadow:0 0 0 7px rgba(252,3,109,.14),0 0 18px rgba(252,3,109,.9);position:relative}
+#meyer-map-products .rss-meyer-dot:after{content:"";position:absolute;inset:-8px;border-radius:999px;border:1px solid rgba(252,3,109,.75);animation:rssMeyerPulse 1.8s ease-out infinite}
+#meyer-map-products .rss-meyer-label{margin-top:7px;background:rgba(19,19,19,.92);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);border-radius:7px;padding:7px 9px;min-width:145px;max-width:210px;box-shadow:0 12px 30px rgba(0,0,0,.4)}
+#meyer-map-products .rss-meyer-brand{font:700 9px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#FC036D}
+#meyer-map-products .rss-meyer-title{margin-top:4px;font:700 11px/1.25 Manrope,sans-serif;color:#fff}
+#meyer-map-products .rss-meyer-location{margin-top:4px;font:500 9px/1.3 Inter,sans-serif;color:#e6bcc2}
+#meyer-map-products a{text-decoration:none}
+@keyframes rssMeyerPulse{0%{transform:scale(.65);opacity:.95}100%{transform:scale(1.65);opacity:0}}
+@media(max-width:767px){
+  #meyer-map-products .rss-meyer-label{min-width:115px;max-width:145px;padding:6px}
+  #meyer-map-products .rss-meyer-title{font-size:9px}
+}
+</style>
 </head>
 <body class="bg-surface text-on-surface font-body-md antialiased selection:bg-brand-fuchsia selection:text-white">
 <div id="header-container"></div>
@@ -201,23 +217,13 @@ body{padding-top:80px!important}
 <h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Le son Meyer Sound à louer</h2>
 <p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">Disponibilité en temps réel via le réseau de partenaires certifiés RentSoundSystem en France et en Europe.</p>
 </div>
-<div class="relative w-full h-[600px] rounded-2xl overflow-hidden glass-panel border-surface-glass-border">
+<div id="meyer-stock-map" class="relative w-full h-[600px] rounded-2xl overflow-hidden glass-panel border-surface-glass-border">
 <div class="absolute inset-0 bg-surface-container-lowest/50 z-10 mix-blend-multiply"></div>
 <img alt="Map of Europe" class="w-full h-full object-cover grayscale opacity-50" data-location="France" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANEHi_hcRm1-783FLTs5GC4i2l-H2gPo3eNty1kKjBBZsuqO1B7IHCkve8ua1d822MPxfnSmR7fNlMb6mEQplSHvl4LP3fE_9o3pkP0pe0wEVvB1LwGlG-OeHY_rs0mYs0iVpay6i4ldDvFHoF9E5J5aXkc4bu7wrEftYYk5SbbzrJCow4J8NXpN6g1AzjG72fU1CEpatTtbPQpimQe2FrmhRW0sCsvUPxs0pM2PjjYru4Ib4jPX9OX8iW3XF7RlDz3Imhmp2Gd0A"/>
-<!-- Neon Fuchsia Pins -->
-<div class="absolute z-20 top-[30%] left-[45%] flex flex-col items-center">
-<span class="relative flex h-6 w-6">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-fuchsia opacity-75"></span>
-<span class="relative inline-flex rounded-full h-6 w-6 bg-brand-fuchsia shadow-[0_0_15px_#FC036D]"></span>
-</span>
-<div class="mt-2 glass-panel px-3 py-1 rounded text-xs font-bold">Paris - 24 Unités</div>
-</div>
-<div class="absolute z-20 top-[60%] left-[55%] flex flex-col items-center">
-<span class="relative flex h-4 w-4">
-<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-fuchsia opacity-75"></span>
-<span class="relative inline-flex rounded-full h-4 w-4 bg-brand-fuchsia shadow-[0_0_15px_#FC036D]"></span>
-</span>
-<div class="mt-2 glass-panel px-3 py-1 rounded text-xs font-bold">Lyon - 12 Unités</div>
+<!-- Points des vrais produits Meyer Sound -->
+<div id="meyer-map-products" class="absolute inset-0 z-20 pointer-events-none"></div>
+<div id="meyer-map-info" class="absolute bottom-4 left-4 z-30 glass-panel rounded-lg px-4 py-2 text-xs text-on-surface-variant pointer-events-none">
+Chargement des produits Meyer Sound…
 </div>
 </div>
 </div>
@@ -369,6 +375,7 @@ body{padding-top:80px!important}
 </div>
 </footer>
 
+
 <script id="rss-meyer-runtime">
 const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
 const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
@@ -389,172 +396,198 @@ async function loadHeader(){
   }catch(e){console.error('Header load',e);}
 }
 
-function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
-function publicStatus(item){
-  const s=norm(item&&item.status).trim();
-  return !['draft','pending','pending_review','archived','archive','deleted','disabled','rejected','refused','inactive'].includes(s);
-}
+function clean(v){return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();}
+function norm(v){return String(v??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();}
 function money(v){
-  const n=Number(v);
-  return Number.isFinite(n)&&n>0 ? Math.round(n)+'€ / jour' : 'Prix sur demande';
+  const n=Number(v||0);
+  return n ? n.toLocaleString('fr-FR',{maximumFractionDigits:0})+'€ / jour' : 'Prix sur demande';
 }
-function getImage(item){
-  const imgs=Array.isArray(item.listing_images)?[...item.listing_images]:[];
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
   imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
-  return imgs[0]?.image_url||item.image_url||item.featured_image||item.thumbnail||item.cover_image||'';
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
 }
-function productUrl(item, fallbackModel){
-  const id=item&&(item.original_id??item.id);
-  if(id!==undefined&&id!==null&&String(id)!=='') return '/product?original_id='+encodeURIComponent(id);
-  const model=encodeURIComponent(fallbackModel || (item&&(item.model||item.title)) || 'Meyer Sound');
-  return '/catalog.html?search='+model;
+function productUrl(item){
+  if(item.original_id!==undefined && item.original_id!==null) return '/product?original_id='+encodeURIComponent(item.original_id);
+  if(item.id!==undefined && item.id!==null) return '/product?id='+encodeURIComponent(item.id);
+  return '/catalog.html?search=Meyer%20Sound';
 }
-function meyerMatch(item){
-  const t=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));
-  return t.includes('meyer sound')||t.includes('meyer')||t.includes('panther')||t.includes('leopard')||t.includes('1100-lfc')||t.includes('1100 lfc');
+
+/* Même logique que marque-detail(4).html */
+function brandSearchTerms(title){
+  const base=norm(title).replace(/\bprofessional\b/g,'').replace(/\bprofessionnal\b/g,'').trim();
+  const terms=new Set();
+  if(base)terms.add(base);
+  title.split(/\s+/).forEach(w=>{const nw=norm(w);if(nw.length>=3)terms.add(nw);});
+  terms.add('meyer');
+  terms.add('meyer sound');
+  return Array.from(terms).filter(Boolean);
 }
+function productMatchesBrand(item,terms){
+  const text=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));
+  return terms.some(term=>text.includes(term));
+}
+
 function chooseProduct(items,preferred,used){
   const keys=preferred.map(norm);
   let p=items.find(x=>{
     const key=String(x.original_id??x.id??x.title??'');
     if(used.has(key))return false;
-    const t=norm([x.brand,x.title,x.model,x.description].join(' '));
-    return keys.some(k=>t.includes(k));
+    const text=norm([x.title,x.model,x.category,x.description].join(' '));
+    return keys.some(k=>text.includes(k));
   });
   if(!p)p=items.find(x=>!used.has(String(x.original_id??x.id??x.title??'')));
   if(p)used.add(String(p.original_id??p.id??p.title??''));
   return p;
 }
-function setSlot(slotId,item,fallbackModel){
+
+function applyProductToSlot(slotId,item){
   if(!item)return;
   const slot=document.getElementById(slotId);
   if(!slot)return;
-  const h=slot.querySelector('h3');
-  const p=slot.querySelector('p');
+
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
   const img=slot.querySelector('img');
-  const priceCandidates=[...slot.querySelectorAll('span')].filter(el=>/€|partir de|jour|120/.test(el.textContent||''));
   const action=slot.querySelector('a,button');
-  if(h&&item.title)h.textContent=item.title;
-  if(p&&item.description)p.textContent=String(item.description).replace(/<[^>]*>/g,'').trim().slice(0,260);
-  const image=getImage(item);
+  const priceEls=[...slot.querySelectorAll('span')].filter(el=>/€|jour|partir de|120/.test(el.textContent||''));
+
+  if(title)item.title&&(title.textContent=item.title);
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,250);
+
+  const realImage=firstImage(item);
   if(img){
-    const stitchFallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
     img.alt=item.title||img.alt||'Meyer Sound';
     img.referrerPolicy='no-referrer';
-    if(image){
-      img.onerror=()=>{
-        img.onerror=null;
-        if(stitchFallback && img.src!==stitchFallback) img.src=stitchFallback;
-      };
-      img.src=image;
-    }else if(stitchFallback){
-      img.src=stitchFallback;
-    }
+    img.onerror=()=>{img.onerror=null;if(fallback)img.src=fallback;};
+    if(realImage)img.src=realImage;
+    else if(fallback)img.src=fallback;
   }
-  if(priceCandidates.length)priceCandidates[priceCandidates.length-1].textContent=money(item.price??item.price_day??item.price_per_day);
+
+  if(priceEls.length)priceEls[priceEls.length-1].textContent=money(item.price??item.price_day??item.price_per_day);
+
+  const url=productUrl(item);
   if(action){
-    const url=productUrl(item,fallbackModel);
     if(action.tagName==='A')action.href=url;
-    else{action.type='button';action.onclick=()=>window.location.href=url;}
+    else{action.type='button';action.onclick=()=>location.href=url;}
   }
   slot.style.cursor='pointer';
-  slot.addEventListener('click',e=>{
-    if(e.target.closest('a,button'))return;
-    window.location.href=productUrl(item,fallbackModel);
-  });
-}
-async function enrichImages(client,items){
-  const ids=items.map(x=>x.id).filter(Boolean);
-  if(ids.length){
-    const r=await client.from('listing_images').select('listing_id,image_url,position').in('listing_id',ids);
-    if(!r.error&&Array.isArray(r.data)){
-      const by={};
-      r.data.forEach(im=>(by[String(im.listing_id)]||=[]).push(im));
-      items.forEach(x=>{if(by[String(x.id)])x.listing_images=by[String(x.id)];});
-    }
-  }
-  const missing=items.filter(x=>!getImage(x)&&x.original_id).map(x=>x.original_id);
-  if(missing.length){
-    const r=await client.from('listing_images_staging').select('listing_original_id,image_url,position').in('listing_original_id',missing);
-    if(!r.error&&Array.isArray(r.data)){
-      const by={};
-      r.data.forEach(im=>(by[String(im.listing_original_id)]||=[]).push({image_url:im.image_url,position:im.position}));
-      items.forEach(x=>{if(!getImage(x)&&by[String(x.original_id)])x.listing_images=by[String(x.original_id)];});
-    }
-  }
+  slot.onclick=(e)=>{if(!e.target.closest('a,button'))location.href=url;};
 }
 
-function ensureStitchProductFallbacks(){
-  const cfg=[
-    ['meyer-product-slot-1','Meyer Sound PANTHER','/catalog.html?search=Meyer%20Sound%20PANTHER'],
-    ['meyer-product-slot-2','Meyer Sound LEOPARD','/catalog.html?search=Meyer%20Sound%20LEOPARD'],
-    ['meyer-product-slot-3','Meyer Sound 1100-LFC','/catalog.html?search=Meyer%20Sound%201100-LFC']
-  ];
-  cfg.forEach(([id,alt,url])=>{
-    const slot=document.getElementById(id);
-    if(!slot)return;
-    const img=slot.querySelector('img');
-    if(img){
-      const fallback=img.getAttribute('data-stitch-fallback');
-      img.alt=alt;
-      img.referrerPolicy='no-referrer';
-      img.onerror=()=>{
-        img.onerror=null;
-        if(fallback) img.src=fallback;
-      };
-      if(!img.src && fallback) img.src=fallback;
-    }
-    const action=slot.querySelector('a,button');
-    if(action){
-      if(action.tagName==='A') action.href=url;
-      else{
-        action.type='button';
-        action.onclick=()=>window.location.href=url;
-      }
-    }
+const CITY_COORDS={
+  'paris':[48.8566,2.3522],'saint denis':[48.9362,2.3574],'boulogne':[48.8397,2.2399],
+  'lyon':[45.764,4.8357],'marseille':[43.2965,5.3698],'nice':[43.7102,7.262],
+  'cannes':[43.5528,7.0174],'monaco':[43.7384,7.4246],'geneve':[46.2044,6.1432],
+  'bordeaux':[44.8378,-0.5792],'nantes':[47.2184,-1.5536],'lille':[50.6292,3.0573],
+  'toulouse':[43.6047,1.4442],'strasbourg':[48.5734,7.7521],'barcelone':[41.3874,2.1686],
+  'barcelona':[41.3874,2.1686],'madrid':[40.4168,-3.7038],'zurich':[47.3769,8.5417]
+};
+function itemCity(item){return clean(item.city||item.location||item.ville||item.address_city||item.locality||'');}
+function itemCoords(item){
+  const lat=Number(item.latitude??item.lat??item.geo_lat??item.location_lat);
+  const lng=Number(item.longitude??item.lng??item.lon??item.geo_lng??item.location_lng);
+  if(Number.isFinite(lat)&&Number.isFinite(lng))return [lat,lng];
+  const city=norm(itemCity(item));
+  for(const key of Object.keys(CITY_COORDS)){if(city.includes(key))return CITY_COORDS[key];}
+  return null;
+}
+function europePos(lat,lng){
+  const latMax=59.8,latMin=35,lngMin=-12.5,lngMax=28.5;
+  let left=((lng-lngMin)/(lngMax-lngMin))*100;
+  let top=((latMax-lat)/(latMax-latMin))*100;
+  return [Math.max(5,Math.min(95,left)),Math.max(8,Math.min(92,top))];
+}
+function renderMapProducts(items){
+  const layer=document.getElementById('meyer-map-products');
+  const info=document.getElementById('meyer-map-info');
+  if(!layer)return;
+
+  const valid=items.map(item=>({item,coords:itemCoords(item)})).filter(x=>x.coords);
+  if(!valid.length){
+    layer.innerHTML='';
+    if(info)info.textContent='Aucun produit Meyer Sound avec ville ou coordonnées renseignées.';
+    return;
+  }
+
+  const grouped={};
+  valid.forEach(x=>{
+    const key=x.coords.map(n=>Number(n).toFixed(3)).join(',');
+    x.offset=grouped[key]||0;
+    grouped[key]=x.offset+1;
   });
+
+  const offsets=[[0,0],[2,-1.5],[-2,1.3],[1.7,1.8],[-1.7,-1.8]];
+
+  layer.innerHTML=valid.slice(0,40).map(({item,coords,offset})=>{
+    let [left,top]=europePos(coords[0],coords[1]);
+    const o=offsets[offset%offsets.length];left+=o[0];top+=o[1];
+    const title=clean(item.title||item.model||'Meyer Sound');
+    const city=itemCity(item)||'Disponible';
+    return `<div class="rss-meyer-point" style="left:${left}%;top:${top}%">
+      <a href="${productUrl(item)}">
+        <div class="rss-meyer-dot"></div>
+        <div class="rss-meyer-label">
+          <div class="rss-meyer-brand">Meyer Sound</div>
+          <div class="rss-meyer-title">${title}</div>
+          <div class="rss-meyer-location">${city}</div>
+        </div>
+      </a>
+    </div>`;
+  }).join('');
+
+  if(info)info.textContent=valid.length+' produit'+(valid.length>1?'s':'')+' Meyer Sound localisé'+(valid.length>1?'s':'')+'.';
 }
 
-async function loadMeyerProducts(){
+async function loadMeyer(){
   try{
     if(!window.supabase)return;
     const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-    const fields='id,original_id,title,description,status,category,price,price_day,price_per_day,brand,model,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
-    const safeFields='id,original_id,title,description,status,category,price,brand,model,created_at,updated_at';
-    async function q(field,value){
-      let r=await client.from('listings').select(fields).ilike(field,value).limit(60);
-      if(r.error)r=await client.from('listings').select(safeFields).ilike(field,value).limit(60);
-      return(!r.error&&Array.isArray(r.data))?r.data:[];
+
+    let brandTitle='Meyer Sound';
+    try{
+      let brandRes=await client.from('brands').select('*').eq('slug','meyer-sound').maybeSingle();
+      if((brandRes.error||!brandRes.data)){
+        brandRes=await client.from('brands').select('*').ilike('title','%Meyer%').limit(1).maybeSingle();
+      }
+      if(!brandRes.error&&brandRes.data)brandTitle=brandRes.data.title||brandRes.data.name||brandTitle;
+    }catch(e){}
+
+    /* Exactement la méthode de marque-detail : tous les listings publiés + listing_images */
+    const listingsRes=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(listingsRes.error)throw listingsRes.error;
+
+    const terms=brandSearchTerms(brandTitle);
+    let products=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,terms));
+
+    if(!products.length){
+      const loose=norm(brandTitle).split(' ').filter(w=>w.length>=3);
+      products=(listingsRes.data||[]).filter(item=>productMatchesBrand(item,loose));
     }
-    const groups=await Promise.all([
-      q('brand','%Meyer%'),
-      q('title','%Meyer%'),
-      q('title','%PANTHER%'),
-      q('title','%LEOPARD%'),
-      q('title','%1100%LFC%'),
-      q('model','%Meyer%')
-    ]);
-    const seen=new Set(),items=[];
-    groups.flat().forEach(x=>{
-      if(!meyerMatch(x)||!publicStatus(x))return;
-      const k=String(x.original_id??x.id??x.title??'');
-      if(!k||seen.has(k))return;
-      seen.add(k);items.push(x);
-    });
-    if(!items.length){ensureStitchProductFallbacks();return;}
-    await enrichImages(client,items);
+
+    renderMapProducts(products);
+
     const used=new Set();
-    setSlot('meyer-product-slot-1',chooseProduct(items,['panther'],used),'Meyer Sound PANTHER');
-    setSlot('meyer-product-slot-2',chooseProduct(items,['leopard'],used),'Meyer Sound LEOPARD');
-    setSlot('meyer-product-slot-3',chooseProduct(items,['1100-lfc','1100 lfc','lfc','subwoofer'],used),'Meyer Sound 1100-LFC');
-  }catch(e){console.warn('Meyer products',e);}
+    applyProductToSlot('meyer-product-slot-1',chooseProduct(products,['panther'],used));
+    applyProductToSlot('meyer-product-slot-2',chooseProduct(products,['leopard','lina','ultra x'],used));
+    applyProductToSlot('meyer-product-slot-3',chooseProduct(products,['1100 lfc','900 lfc','lfc','subwoofer'],used));
+  }catch(e){
+    console.warn('Meyer Sound loading:',e);
+    renderMapProducts([]);
+  }
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
   loadHeader();
-  ensureStitchProductFallbacks();
-  loadMeyerProducts();
+  loadMeyer();
 });
 </script>
+
 
 </body></html>
