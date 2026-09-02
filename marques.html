@@ -415,7 +415,10 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     "allen-heath": "/marque-allen-heath",
     "allen-&-heath": "/marque-allen-heath",
     "nexo": "/marque-nexo-sound",
-    "nexo-sound": "/marque-nexo-sound"
+    "nexo-sound": "/marque-nexo-sound",
+    "d-and-b-audiotechnik": "/marque-db-audiotechnik",
+    "db-audiotechnik": "/marque-db-audiotechnik",
+    "d-b-audiotechnik": "/marque-db-audiotechnik"
   };
   function normalizeBrandKey(value){
     return String(value || "")
@@ -443,6 +446,7 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     if (combined.includes("sennheiser")) return "/marque-sennheiser";
     if (combined.includes("allen-and-heath") || combined.includes("allen-heath")) return "/marque-allen-heath";
     if (combined.includes("nexo")) return "/marque-nexo-sound";
+    if (combined.includes("d-and-b-audiotechnik") || combined.includes("db-audiotechnik") || combined.includes("audiotechnik")) return "/marque-db-audiotechnik";
 
     return "/marque-detail?slug=" + encodeURIComponent((brand && brand.slug) || slugKey || titleKey);
   }
