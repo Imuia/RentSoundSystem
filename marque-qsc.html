@@ -168,26 +168,225 @@ body{padding-top:80px!important;background:#131313!important}
 .qsc-product-image-fallback{background:radial-gradient(circle at 50% 40%,rgba(252,3,109,.12),transparent 35%),#201f1f;position:relative}
 .qsc-product-image-fallback:after{content:'Image bientôt disponible';position:absolute;inset:0;display:grid;place-items:center;color:#e6bcc2;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 
-.qsc-megafooter{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.06);color:#e5e2e1}
-.qsc-megafooter .qf-wrap{max-width:1280px;margin:0 auto;padding:72px 40px 32px}
-.qsc-megafooter .qf-grid{display:grid;grid-template-columns:1.35fr repeat(5,minmax(0,1fr));gap:38px}
-.qsc-megafooter .qf-brand{min-width:0}
-.qsc-megafooter .qf-logo{display:inline-flex;align-items:center;min-height:42px;margin-bottom:18px;color:#FC036D;font-family:Manrope,Inter,sans-serif;font-size:24px;font-weight:800;letter-spacing:-.03em}
-.qsc-megafooter .qf-logo img{max-width:190px;max-height:54px;object-fit:contain;display:block}
-.qsc-megafooter .qf-brand p{margin:0 0 18px;color:#cdb7bb;font-size:13px;line-height:1.65;max-width:255px}
-.qsc-megafooter .qf-qsc{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid rgba(252,3,109,.25);border-radius:999px;background:rgba(252,3,109,.06);color:#ffb2bf;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
-.qsc-megafooter h3{margin:0 0 18px;color:#fff;font-family:Manrope,Inter,sans-serif;font-size:12px;font-weight:700;letter-spacing:.11em;text-transform:uppercase}
-.qsc-megafooter ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.qsc-megafooter a{color:#d7c5c8;text-decoration:none;font-size:12px;line-height:1.4;transition:color .2s ease}
-.qsc-megafooter a:hover{color:#FC036D}
-.qsc-megafooter a.qf-active{color:#FC036D;font-weight:700}
-.qsc-megafooter .qf-bottom{margin-top:54px;padding-top:24px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;gap:24px;color:#8f8486;font-size:11px}
-.qsc-megafooter .qf-bottom-links{display:flex;gap:22px;flex-wrap:wrap}
-.qsc-megafooter .qf-bottom-links a{font-size:11px;color:#9c9294}
-@media(max-width:1180px){.qsc-megafooter .qf-grid{grid-template-columns:1.2fr repeat(3,minmax(0,1fr))}.qsc-megafooter .qf-brand{grid-row:span 2}}
-@media(max-width:780px){body{padding-top:72px!important}.qsc-megafooter .qf-wrap{padding:52px 20px 28px}.qsc-megafooter .qf-grid{grid-template-columns:1fr 1fr;gap:34px 24px}.qsc-megafooter .qf-brand{grid-column:1/-1;grid-row:auto}.qsc-megafooter .qf-bottom{align-items:flex-start;flex-direction:column}}
-@media(max-width:480px){.qsc-megafooter .qf-grid{grid-template-columns:1fr}.qsc-megafooter .qf-brand{grid-column:auto}}
-</style><script id="qsc-seo-schema" type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Brand", "@id": "https://rentsoundsystem.com/marque-qsc#brand", "name": "QSC", "url": "https://rentsoundsystem.com/marque-qsc", "description": "QSC est une marque d'équipements audio professionnels proposée à la location sur RentSoundSystem."}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://rentsoundsystem.com/"}, {"@type": "ListItem", "position": 2, "name": "Marques", "item": "https://rentsoundsystem.com/marques"}, {"@type": "ListItem", "position": 3, "name": "QSC", "item": "https://rentsoundsystem.com/marque-qsc"}]}]}</script></head>
+</style><script id="qsc-seo-schema" type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Brand", "@id": "https://rentsoundsystem.com/marque-qsc#brand", "name": "QSC", "url": "https://rentsoundsystem.com/marque-qsc", "description": "QSC est une marque d'équipements audio professionnels proposée à la location sur RentSoundSystem."}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://rentsoundsystem.com/"}, {"@type": "ListItem", "position": 2, "name": "Marques", "item": "https://rentsoundsystem.com/marques"}, {"@type": "ListItem", "position": 3, "name": "QSC", "item": "https://rentsoundsystem.com/marque-qsc"}]}]}</script><style id="rss-footer-centralized-style">
+  #rss-footer,
+  #rss-footer * {
+    box-sizing: border-box;
+  }
+  /* ===== Bouton partenaire intégré au bloc Marketplace ===== */
+  #rss-footer .partner-footer-btn-mini {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: fit-content;
+    margin: 2px 0 4px;
+    padding: 10px 14px;
+    border: 1px solid rgba(252,3,109,.65);
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FC036D 0%, #ff2d86 100%);
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 13px;
+    line-height: 18px;
+    font-weight: 800;
+    box-shadow: 0 8px 20px rgba(252,3,109,.24);
+    transition: .25s ease;
+  }
+
+  #rss-footer .partner-footer-btn-mini:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(252,3,109,.38);
+  }
+
+  #rss-footer .partner-footer-btn-mini .material-symbols-outlined {
+    font-size: 18px;
+  }
+
+  #rss-footer .partner-footer-login-mini {
+    color: #bdbdbd;
+    font-size: 13px;
+    line-height: 18px;
+    text-decoration: none;
+    transition: .25s ease;
+    margin-top: -4px;
+  }
+
+  #rss-footer .partner-footer-login-mini:hover {
+    color: #FC036D;
+  }
+
+  @media (max-width:768px) {
+    #rss-footer .partner-footer-btn-mini {
+      width: 100%;
+      max-width: 260px;
+    }
+  }
+
+#rss-footer {
+    width: 100%;
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+    padding: 64px 0 32px;
+    color: #e2e2e2;
+    font-family: Inter, Arial, sans-serif;
+  }
+
+  #rss-footer .rss-footer-container {
+    width: 100%;
+    max-width: 1280px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+
+  #rss-footer .rss-footer-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 48px;
+    margin-bottom: 64px;
+  }
+
+  #rss-footer .rss-footer-col {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  #rss-footer .rss-footer-logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  #rss-footer .rss-footer-logo img {
+    width: 100px;
+    height: auto;
+    display: block;
+  }
+
+  #rss-footer .rss-footer-text {
+    margin: 0;
+    max-width: 320px;
+    color: #e6bcc2;
+    font-size: 14px;
+    line-height: 1.55;
+  }
+
+  #rss-footer .rss-footer-socials {
+    display: flex;
+    gap: 16px;
+  }
+
+  #rss-footer .rss-footer-social {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    background: #1f1f1f;
+    color: #e2e2e2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: .2s ease;
+  }
+
+  #rss-footer .rss-footer-social:hover {
+    background: #FC036D;
+    color: #ffffff;
+  }
+
+  #rss-footer .rss-footer-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .12em;
+  }
+
+  #rss-footer .rss-footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  #rss-footer .rss-footer-link {
+    color: #e6bcc2;
+    font-size: 14px;
+    line-height: 20px;
+    text-decoration: none;
+    transition: .2s ease;
+  }
+
+  #rss-footer .rss-footer-link:hover {
+    color: #FC036D;
+  }
+
+  #rss-footer .rss-footer-bottom {
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  #rss-footer .rss-footer-copy,
+  #rss-footer .rss-footer-legal a {
+    color: #b4b5b5;
+    font-size: 14px;
+    line-height: 20px;
+    text-decoration: none;
+  }
+
+  #rss-footer .rss-footer-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  #rss-footer .rss-footer-legal a:hover {
+    color: #FC036D;
+  }
+
+  @media (max-width: 1024px) {
+    #rss-footer .rss-footer-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    #rss-footer {
+      padding-top: 48px;
+      padding-bottom: 28px;
+    }
+
+    #rss-footer .rss-footer-container {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    #rss-footer .rss-footer-grid {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      margin-bottom: 48px;
+    }
+
+    #rss-footer .rss-footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    #rss-footer .rss-footer-legal {
+      justify-content: flex-start;
+      gap: 16px;
+    }
+  }
+</style></head>
 <body class="bg-background text-on-surface antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container"><div id="header-container"></div>
 <!-- TopNavBar -->
 <!-- Hero Section -->
@@ -370,78 +569,55 @@ body{padding-top:80px!important;background:#131313!important}
 </div>
 </section>
 <!-- Footer -->
-
-<footer aria-label="Pied de page RentSoundSystem - QSC" class="qsc-megafooter">
-<div class="qf-wrap">
-<div class="qf-grid">
-<div class="qf-brand">
-<a aria-label="RentSoundSystem - Accueil" class="qf-logo" href="/" id="qsc-footer-logo">RentSoundSystem</a>
-<p>Marketplace de location de matériel audio, DJ, éclairage et production événementielle. Produits professionnels, partenaires vérifiés et expertise technique.</p>
-<span class="qf-qsc"><span class="material-symbols-outlined" style="font-size:14px">campaign</span> Page marque QSC</span>
-</div>
-<div>
-<h3>Villes &amp; Hubs</h3>
-<ul>
-<li><a href="/location-sono-paris">Paris</a></li>
-<li><a href="/location-sono-lyon">Lyon</a></li>
-<li><a href="/location-sono-marseille">Marseille</a></li>
-<li><a href="/location-sono-nice">Nice</a></li>
-<li><a href="/location-sono-cannes">Cannes</a></li>
-<li><a href="/location-sono-monaco">Monaco</a></li>
-<li><a href="/location-sono-geneve">Genève</a></li>
-</ul>
-</div>
-<div>
-<h3>Catégories</h3>
-<ul>
-<li><a href="/catalog.html?search=sonorisation">Systèmes de sonorisation</a></li>
-<li><a href="/catalog.html?search=console">Consoles de mixage</a></li>
-<li><a href="/catalog.html?search=DJ">DJ &amp; DJing</a></li>
-<li><a href="/catalog.html?search=microphone">Microphones &amp; HF</a></li>
-<li><a href="/catalog.html?search=eclairage">Éclairage scénique</a></li>
-<li><a href="/catalog.html?search=backline">Backline</a></li>
-</ul>
-</div>
-<div>
-<h3>Marques Premium</h3>
-<ul>
-<li><a class="qf-active" href="/marque-qsc">QSC</a></li>
-<li><a href="/marque-l-acoustics">L-Acoustics</a></li>
-<li><a href="/marque-meyer-sound">Meyer Sound</a></li>
-<li><a href="/marque-yamaha">Yamaha</a></li>
-<li><a href="/marque-shure">Shure</a></li>
-<li><a href="/marque-detail?slug=d-b-audiotechnik">d&amp;b audiotechnik</a></li>
-</ul>
-</div>
-<div>
-<h3>RentSoundSystem</h3>
-<ul>
-<li><a href="/a-propos">À propos</a></li>
-<li><a href="/devenir-partenaire">Devenir partenaire</a></li>
-<li><a href="/solutions-corporate">Solutions Corporate</a></li>
-<li><a href="/blog">Blog Sonic Insights</a></li>
-<li><a href="/carrieres">Carrières</a></li>
-</ul>
-</div>
-<div>
-<h3>Support &amp; Légal</h3>
-<ul>
-<li><a href="/assistance">Assistance technique</a></li>
-<li><a href="/conditions-location">Conditions de location</a></li>
-<li><a href="/assurance">Assurance</a></li>
-<li><a href="/politique-confidentialite">Confidentialité</a></li>
-<li><a href="/mentions-legales">Mentions légales</a></li>
-<li><a href="/contact.html">Contact</a></li>
-</ul>
+<footer aria-label="Pied de page RentSoundSystem - page marque QSC" id="rss-footer">
+<div class="rss-footer-container">
+<div class="rss-footer-grid">
+<div class="rss-footer-col">
+<a class="rss-footer-logo" href="/">
+<img alt="RentSoundSystem" src="/images/categories/logo.png"/>
+</a>
+<p class="rss-footer-text">
+          La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.
+        </p>
+<div class="rss-footer-socials">
+<a aria-label="Partager" class="rss-footer-social" href="#"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" class="rss-footer-social" href="#"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Email" class="rss-footer-social" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
 </div>
 </div>
-<div class="qf-bottom">
-<span>© 2026 RentSoundSystem.com · Logistique sonore professionnelle.</span>
-<div class="qf-bottom-links">
-<a href="/conditions-utilisation">Conditions d'utilisation</a>
-<a href="/politique-confidentialite">Politique de confidentialité</a>
-<a href="/mentions-legales">Mentions légales</a>
+<div class="rss-footer-col">
+<h4 class="rss-footer-title">Location Sono</h4>
+<nav class="rss-footer-nav"><a class="rss-footer-link" href="/location-sono-paris">Location Sono Paris</a><a class="rss-footer-link" href="/location-sono-marseille">Location Sono Marseille</a><a class="rss-footer-link" href="/location-sono-nice">Location Sono Nice</a><a class="rss-footer-link" href="/location-sono-toulouse">Location Sono Toulouse</a><a class="rss-footer-link" href="/location-sono-cannes">Location Sono Cannes</a><a class="rss-footer-link" href="/location-sono-monaco">Location Sono Monaco</a><a class="rss-footer-link" href="/location-sono-geneve">Location Sono Genève</a></nav>
 </div>
+<div class="rss-footer-col">
+<h4 class="rss-footer-title">Catégories</h4>
+<nav class="rss-footer-nav">
+<a class="rss-footer-link" href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a>
+<a class="rss-footer-link" href="/categorie-dj-djing.html">DJ &amp; DJing</a>
+<a class="rss-footer-link" href="/categorie-evenementiel-production.html">Événementiel &amp; production</a>
+<a class="rss-footer-link" href="/categorie-instruments-music.html">Instruments music</a>
+<a class="rss-footer-link" href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a>
+<a class="rss-footer-link" href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a>
+<a class="rss-footer-link" href="/tarifs.html">Nos tarifs</a>
+</nav>
+</div>
+<div class="rss-footer-col">
+<h4 class="rss-footer-title">Support</h4>
+<nav class="rss-footer-nav">
+<a class="rss-footer-link" href="/centre-assistance.html">Centre d'aide</a>
+<a class="rss-footer-link" href="/contact.html">Contactez-nous</a>
+<a class="rss-footer-link" href="/blog.html">Blog</a>
+<a class="rss-footer-link" href="/faq.html">FAQ</a>
+</nav>
+</div>
+</div>
+<div class="rss-footer-bottom">
+<span class="rss-footer-copy">© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<nav class="rss-footer-legal">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</nav>
 </div>
 </div>
 </footer>
@@ -473,30 +649,9 @@ body{padding-top:80px!important;background:#131313!important}
       });
       const mobileToggle=document.getElementById('rss-mobile-menu-toggle');
       if(mobileToggle)mobileToggle.style.display='none';
-      syncFooterLogo();
+
     }catch(err){console.error('RentSoundSystem header load error:',err);}
   }
-
-  function syncFooterLogo(){
-    const footerLogo=document.getElementById('qsc-footer-logo');
-    const header=document.getElementById('header-container');
-    if(!footerLogo||!header)return;
-    const candidates=[
-      header.querySelector('a[href="/"] img'),
-      header.querySelector('a[href="/"] svg'),
-      header.querySelector('header img'),
-      header.querySelector('header svg')
-    ].filter(Boolean);
-    if(candidates[0]){
-      footerLogo.textContent='';
-      const clone=candidates[0].cloneNode(true);
-      clone.removeAttribute('class');
-      clone.style.maxWidth='190px';
-      clone.style.maxHeight='54px';
-      clone.style.width='auto';
-      clone.style.height='auto';
-      footerLogo.appendChild(clone);
-    }
   }
 
   function renderProducts(products){
