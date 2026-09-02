@@ -482,7 +482,7 @@ main{padding-top:0!important}
     const grid=document.getElementById('allen-heath-products-grid');
     if(!grid)return;
     if(!products.length){
-      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Aucun produit Allen & Heath publié pour le moment. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue</a>.</div>';
+      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Aucun produit Allen & Heath disponible n’a été trouvé. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue</a>.</div>';
       updateItemListSchema([]);return;
     }
     grid.innerHTML=products.map((item,index)=>{
@@ -512,10 +512,25 @@ main{padding-top:0!important}
     try{
       if(!window.supabase)throw new Error('Supabase client indisponible');
       const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-      const result=await client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(1000);
+      // Ne pas imposer status='publish' : les annonces publiques du site peuvent utiliser
+      // plusieurs valeurs de statut selon leur origine/import. Les règles RLS Supabase
+      // restent la première barrière d'accès, puis on écarte uniquement les statuts
+      // explicitement non publics côté client.
+      const result=await client.from('listings').select('*, listing_images(image_url, position)').limit(1000);
       if(result.error)throw result.error;
-      const products=(result.data||[]).filter(allenMatch);
-      renderProducts(products);
+
+      const blockedStatuses=new Set(['draft','pending','rejected','archived','deleted','inactive','hidden']);
+      const products=(result.data||[])
+        .filter(allenMatch)
+        .filter(item=>!blockedStatuses.has(norm(item.status)));
+
+      // Les plus récents / complets en premier quand l'information existe.
+      products.sort((a,b)=>{
+        const da=Date.parse(a.created_at||a.updated_at||0)||0;
+        const db=Date.parse(b.created_at||b.updated_at||0)||0;
+        return db-da;
+      });
+      renderProducts(products.slice(0,12));
     }catch(err){
       console.warn('Allen & Heath products:',err);
       grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Les produits Allen & Heath sont temporairement indisponibles. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue Allen & Heath</a>.</div>';
