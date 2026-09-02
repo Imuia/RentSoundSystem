@@ -3,571 +3,510 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Meyer Sound — Enceintes, line arrays et subwoofers professionnels haut de gamme | RentSoundSystem</title>
-<meta name="description" content="Découvrez Meyer Sound, marque premium de sonorisation professionnelle : enceintes auto-amplifiées, line arrays, subwoofers et systèmes audio haut de gamme pour concerts, festivals, clubs, théâtres et installations fixes."/>
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Meyer Sound - High Fidelity Intelligence | RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
         tailwind.config = {
-          darkMode: "class",
-          theme: {
-            extend: {
-              "colors": {
-                      "tertiary-fixed": "#e5e2e1",
-                      "surface-tint": "#ffb2bf",
-                      "surface-container-low": "#1c1b1b",
-                      "secondary-container": "#454748",
-                      "on-tertiary-container": "#2a2a2a",
-                      "on-surface-variant": "#e6bcc2",
-                      "tertiary-container": "#929090",
-                      "surface-bright": "#393939",
-                      "on-secondary-fixed": "#1a1c1d",
-                      "on-surface-muted": "#E6BCC2",
-                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
-                      "on-secondary": "#2f3132",
-                      "surface-container-lowest": "#0e0e0e",
-                      "outline": "#ac878d",
-                      "surface": "#131313",
-                      "tertiary-fixed-dim": "#c8c6c5",
-                      "on-surface": "#e5e2e1",
-                      "surface-container": "#201f1f",
-                      "inverse-primary": "#bc004f",
-                      "on-error": "#690005",
-                      "on-background": "#e5e2e1",
-                      "on-tertiary-fixed-variant": "#474746",
-                      "error-container": "#93000a",
-                      "secondary-fixed": "#e3e2e3",
-                      "on-primary-container": "#5a0022",
-                      "on-primary-fixed": "#3f0016",
-                      "surface-dim": "#131313",
-                      "surface-container-high": "#2a2a2a",
-                      "primary-fixed-dim": "#ffb2bf",
-                      "tertiary": "#c8c6c5",
-                      "secondary": "#c6c6c7",
-                      "neon-glow": "rgba(252, 3, 109, 0.3)",
-                      "surface-glass": "rgba(31, 31, 31, 0.6)",
-                      "primary-container": "#ff4d80",
-                      "primary": "#ffb2bf",
-                      "on-secondary-container": "#b5b5b6",
-                      "inverse-on-surface": "#313030",
-                      "background": "#131313",
-                      "on-error-container": "#ffdad6",
-                      "on-tertiary-fixed": "#1b1b1c",
-                      "on-primary": "#660028",
-                      "on-primary-fixed-variant": "#90003b",
-                      "inverse-surface": "#e5e2e1",
-                      "outline-variant": "#5d3f44",
-                      "on-secondary-fixed-variant": "#454748",
-                      "primary-fixed": "#ffd9de",
-                      "error": "#ffb4ab",
-                      "surface-container-highest": "#353534",
-                      "surface-variant": "#353534",
-                      "secondary-fixed-dim": "#c6c6c7",
-                      "on-tertiary": "#303030",
-                      "fuchsia": "#FC036D"
-              },
-              "borderRadius": {
-                      "DEFAULT": "0.125rem",
-                      "lg": "0.25rem",
-                      "xl": "0.5rem",
-                      "full": "0.75rem"
-              },
-              "spacing": {
-                      "gutter-x": "2.5rem",
-                      "container-max": "1280px",
-                      "component-padding-x": "1.5rem",
-                      "component-padding-y": "0.625rem",
-                      "section-padding-y": "6rem",
-                      "card-gap": "1.5rem"
-              },
-              "fontFamily": {
-                      "headline-lg": ["Manrope"],
-                      "body-lg": ["Inter"],
-                      "label-caps": ["Inter"],
-                      "headline-md": ["Manrope"],
-                      "display-hero-mobile": ["Manrope"],
-                      "body-md": ["Inter"],
-                      "display-hero": ["Manrope"]
-              },
-              "fontSize": {
-                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                      "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
-                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                      "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                      "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
-              }
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-tint": "#ffb2bf",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-container": "#454748",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-surface-variant": "#e6bcc2",
+                        "tertiary-container": "#929090",
+                        "surface-bright": "#393939",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-surface-muted": "#E6BCC2",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "on-secondary": "#2f3132",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#ac878d",
+                        "surface": "#131313",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-surface": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "inverse-primary": "#bc004f",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#e3e2e3",
+                        "on-primary-container": "#5a0022",
+                        "on-primary-fixed": "#3f0016",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "tertiary": "#c8c6c5",
+                        "secondary": "#c6c6c7",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "primary-container": "#ff4d80",
+                        "primary": "#ffb2bf",
+                        "on-secondary-container": "#b5b5b6",
+                        "inverse-on-surface": "#313030",
+                        "background": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-primary": "#660028",
+                        "on-primary-fixed-variant": "#90003b",
+                        "inverse-surface": "#e5e2e1",
+                        "outline-variant": "#5d3f44",
+                        "on-secondary-fixed-variant": "#454748",
+                        "primary-fixed": "#ffd9de",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353534",
+                        "surface-variant": "#353534",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary": "#303030",
+                        "brand-fuchsia": "#FC036D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter-x": "2.5rem",
+                        "container-max": "1280px",
+                        "component-padding-x": "1.5rem",
+                        "component-padding-y": "0.625rem",
+                        "section-padding-y": "6rem",
+                        "card-gap": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "display-hero-mobile": ["Manrope", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "display-hero": ["Manrope", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
             }
-          }
         }
     </script>
 <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
         .glass-panel {
-            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6) 0%, rgba(20, 20, 20, 0.8) 100%);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .neon-shadow {
-            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
-        }
         .neon-text-glow {
-            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
+            text-shadow: 0 0 20px rgba(252, 3, 109, 0.5);
+        }
+        .fuchsia-glow-hover:hover {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.3);
         }
     </style>
 
-<style id="rss-meyer-page-fix">
-  #header-container{position:relative;z-index:9999;min-height:73px}
-  #footer-container{min-height:320px}
-  #header-container header,#footer-container footer{display:block}
-  @media(max-width:767px){body{padding-top:0!important}.text-display-hero-mobile{font-size:42px!important;line-height:1.15!important}}
-</style>
-
-<style id="rss-meyer-products-css">
-.meyer-product-card{min-height:390px}
-.meyer-product-card img{transition:transform .55s ease,opacity .35s ease}
-.meyer-product-card:hover img{transform:scale(1.04);opacity:.82}
-.meyer-filter-active{background:#FC036D!important;color:#fff!important;border-color:#FC036D!important}
-.meyer-product-empty{border:1px solid rgba(255,255,255,.08);background:linear-gradient(145deg,rgba(31,31,31,.6),rgba(19,19,19,.8));}
-@media(max-width:767px){.meyer-product-card{min-height:430px}.meyer-product-card .meyer-product-content{min-height:430px;padding:24px!important}}
-</style>
-
-<style id="rss-meyer-map-css">
-#meyer-map-wrap{height:520px!important;min-height:520px!important}
-#meyer-map{width:100%!important;height:520px!important;min-height:520px!important;display:block!important;position:relative!important;z-index:1!important;background:#111!important}
-#meyer-map.leaflet-container{font-family:Inter,sans-serif!important;background:#111!important}
-#meyer-map .leaflet-tile{filter:grayscale(100%) brightness(.45) contrast(1.2);max-width:none!important;max-height:none!important}
-#meyer-map .leaflet-control-attribution{background:rgba(19,19,19,.75)!important;color:#aaa!important}
-#meyer-map .leaflet-control-attribution a{color:#FC036D!important}
-.meyer-map-marker{background:transparent!important;border:0!important}
-.meyer-map-pin{color:#FC036D;font-size:38px;line-height:38px;filter:drop-shadow(0 0 10px rgba(252,3,109,.9))}
-.meyer-map-popup .leaflet-popup-content-wrapper{background:#1f1f1f;color:#e2e2e2;border:1px solid rgba(255,255,255,.12);border-radius:12px}
-.meyer-map-popup .leaflet-popup-tip{background:#1f1f1f}
-@media(max-width:767px){#meyer-map-wrap,#meyer-map,#meyer-map.leaflet-container{height:420px!important;min-height:420px!important}}
-</style>
-
-<!-- rss-meyer-sound-dynamic-page-v1 -->
-</head>
-<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
-<div id="header-container"></div>
-<main class="flex-grow">
-<!-- Hero Section -->
-<section class="relative min-h-[819px] flex items-center justify-center overflow-hidden py-section-padding-y">
-<div class="absolute inset-0 z-0">
-<img alt="Meyer Sound Club Installation" class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A massive, high-end Meyer Sound sound system installed in a premium, dimly lit nightclub. The iconic red fiberglass horns of the ULTRA-X40 speakers are prominently featured against a dark, moody background. Atmospheric lighting casts deep shadows and highlights the sleek, alien-like curves of the equipment. The scene exudes exclusivity, raw acoustic power, and cutting-edge electronic music culture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDv3KYTPSkIiYDMRc8KGfV9_gz9VU3jra-Ank5JdLm_JZwNKW9B_vjGrYn2Ct4WaAPFBp6BI5ubdOCAdnooSrLa9GBv90nUdHfuRp1GqKjtXiOW9fwQ1oIOBech2Oeav3LSQkLeY3NP5DcLP3DHLPFDnDgD6KkitSpXRE7KSeQc7bmffHQTPfTrrry1xZvJmBJ5QacHkvLPKv72d1jdp7OgT3nLj8MFvnckomdUEMZWa8eNZ3Jma1QPOkZdB83W-wFSPGX2jqHl4Ms"/>
-<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
-</div>
-<div class="relative z-10 text-center max-w-container-max mx-auto px-gutter-x">
-<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 mb-8">
-<span class="material-symbols-outlined text-primary text-sm">campaign</span>
-<span class="text-primary text-label-caps font-label-caps uppercase tracking-widest">Partenaire Officiel RentSoundSystem</span>
-</div>
-<h1 class="text-display-hero-mobile md:text-display-hero font-display-hero mb-6 neon-text-glow">Meyer <span class="text-[#FC036D]">Sound</span></h1>
-<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">Sonorisation professionnelle haut de gamme : enceintes auto-amplifiées, line arrays et subwoofers pour concerts, festivals, clubs, théâtres et événements premium.</p>
-<div class="flex gap-4 justify-center">
-<button class="bg-[#FC036D] text-white px-8 py-4 rounded text-label-caps font-label-caps uppercase neon-shadow hover:bg-opacity-90 transition-all">
-                        Explorer le Catalogue
-                    </button>
-<button class="bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded text-label-caps font-label-caps uppercase hover:bg-surface-container transition-all">
-                        Voir les Installations
-                    </button>
-</div>
-</div>
-</section>
-<!-- Geolocalisation Section -->
-<section id="meyer-map-section" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
-<div class="max-w-container-max mx-auto px-gutter-x">
-  <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-    <div class="text-center md:text-left">
-      <h2 class="text-headline-lg font-headline-lg mb-4">Disponibilité RentSoundSystem</h2>
-      <p id="meyer-map-label" class="text-body-md font-body-md text-on-surface-variant">Les annonces Meyer Sound s’affichent sur la carte dès leur chargement.</p>
-    </div>
-    <button id="meyer-use-location" type="button" class="self-center md:self-auto bg-surface-container-high border border-white/10 text-on-surface px-4 py-3 rounded-lg hover:text-[#FC036D] hover:border-[#FC036D] transition-colors flex items-center gap-2">
-      <span class="material-symbols-outlined">my_location</span> Utiliser ma position
-    </button>
-  </div>
-  <div id="meyer-map-wrap" class="glass-panel rounded-xl overflow-hidden relative">
-    <div id="meyer-map" aria-label="Carte des annonces Meyer Sound disponibles"></div>
-  </div>
-</div>
-</section>
-
-<!-- Meyer Sound Brand Intro -->
-<section id="catalogue-meyer" class="py-section-padding-y max-w-container-max mx-auto px-gutter-x">
-  <div class="mb-12">
-    <h2 class="text-headline-lg font-headline-lg mb-4">Meyer Sound — Sonorisation professionnelle haut de gamme</h2>
-    <p class="text-body-lg font-body-lg text-on-surface-variant max-w-4xl">
-      Meyer Sound est une marque américaine de référence dans la sonorisation professionnelle haut de gamme. Fondée en 1979, elle est reconnue pour ses enceintes auto-amplifiées, line arrays, subwoofers et technologies de contrôle acoustique.
-    </p>
-  </div>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
-    <div class="glass-panel rounded-xl p-8 lg:col-span-2">
-      <p class="text-body-md font-body-md text-on-surface-variant mb-4">Choisir Meyer Sound, c’est opter pour une solution audio professionnelle haut de gamme, conçue pour offrir une restitution sonore claire, puissante et parfaitement maîtrisée.</p>
-      <p class="text-body-md font-body-md text-on-surface-variant">Les systèmes Meyer Sound sont adaptés aux prestations exigeantes : concerts, festivals, événements corporate, clubs, théâtres, opéras, installations fixes, cinémas et lieux premium.</p>
-    </div>
-    <div class="glass-panel rounded-xl p-8 border border-[#FC036D]/30">
-      <p class="text-body-lg font-body-lg text-on-surface italic">Meyer Sound : une sonorisation professionnelle haut de gamme, précise et puissante, idéale pour concerts, festivals, clubs, théâtres, événements premium et installations fixes.</p>
-    </div>
-  </div>
-</section>
-
-<!-- Dynamic Meyer Sound Listings -->
-<section id="annonces-meyer" class="py-section-padding-y bg-surface-container-low border-y border-surface-glass-border">
-  <div class="max-w-container-max mx-auto px-gutter-x">
-    <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-      <div>
-        <h2 class="text-headline-lg font-headline-lg mb-4">Annonces Marque Meyer Sound disponibles</h2>
-        <p id="meyer-products-count" class="text-body-md font-body-md text-on-surface-variant">Chargement des annonces Meyer Sound...</p>
-      </div>
-      <div id="meyer-products-filters" class="flex flex-wrap gap-3">
-        <button type="button" data-meyer-filter="all" class="void-filter-active border border-[#FC036D] bg-[#FC036D] text-white px-4 py-2 rounded text-label-caps font-label-caps uppercase">Tout</button>
-        <button type="button" data-meyer-filter="ultra" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">ULTRA-X</button>
-        <button type="button" data-meyer-filter="linearray" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Line Array</button>
-        <button type="button" data-meyer-filter="sub" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">LFC / Subs</button>
-        <button type="button" data-meyer-filter="premium" class="border border-outline-variant text-on-surface px-4 py-2 rounded text-label-caps font-label-caps uppercase hover:border-[#FC036D] hover:text-[#FC036D] transition-all">Premium</button>
-      </div>
-    </div>
-    <div id="meyer-products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-card-gap">
-      <div class="col-span-full text-center text-on-surface-variant py-16">Chargement des annonces...</div>
-    </div>
-  </div>
-</section>
-
-
-<!-- Meyer Sound Meyer Sound Content -->
-<section id="installations-meyer" class="py-section-padding-y bg-surface-container-lowest">
-  <div class="max-w-container-max mx-auto px-gutter-x">
-    <div class="mb-12">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#FC036D]/10 border border-[#FC036D]/20 mb-6">
-        <span class="material-symbols-outlined text-[#FC036D] text-sm">graphic_eq</span>
-        <span class="text-[#FC036D] text-label-caps font-label-caps uppercase tracking-widest">Meyer Sound — Meyer Sound</span>
-      </div>
-      <h2 class="text-headline-lg font-headline-lg mb-4">Design spectaculaire & performance audio professionnelle</h2>
-      <p class="text-body-lg font-body-lg text-on-surface-variant max-w-4xl">
-        La Meyer Sound de Meyer Sound est une gamme d’enceintes haut de gamme très reconnaissable par son design sculptural,
-        souvent utilisée dans les clubs, bars, restaurants, hôtels, lounges, événements premium et installations DJ.
-      </p>
-    </div>
-    <div class="glass-panel rounded-xl p-8 mb-8">
-      <p class="text-body-lg font-body-lg text-on-surface-variant mb-5">
-        La gamme Meyer Sound de Meyer Sound incarne le mariage entre design spectaculaire et performance audio professionnelle.
-        Avec ses formes sculptées, ses finitions personnalisables et sa signature sonore puissante, la série Air est conçue pour les lieux
-        qui veulent se démarquer : clubs, bars haut de gamme, restaurants, rooftops, hôtels, espaces événementiels et installations DJ.
-      </p>
-      <p class="text-body-md font-body-md text-on-surface-variant">
-        Au-delà de son esthétique iconique, la Meyer Sound propose des enceintes à haut rendement, des systèmes coaxiaux, des modèles full-range
-        et des subwoofers puissants capables d’assurer une diffusion sonore précise, dynamique et immersive. C’est une gamme idéale pour créer
-        une ambiance premium, renforcer l’identité visuelle d’un lieu et offrir une expérience sonore haut de gamme.
-      </p>
-    </div>
-    <div class="glass-panel rounded-xl overflow-hidden mb-8">
-      <div class="p-6 border-b border-surface-glass-border">
-        <h3 class="text-headline-md font-headline-md text-[#FC036D]">Caractéristiques techniques principales</h3>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-surface-container-high text-on-surface">
-            <tr><th class="p-4">Modèle</th><th class="p-4">Type</th><th class="p-4">Réponse en fréquence</th><th class="p-4">Puissance</th><th class="p-4">SPL max</th><th class="p-4">Configuration</th></tr>
-          </thead>
-          <tbody class="text-on-surface-variant">
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air 8</td><td class="p-4">Enceinte passive 2 voies</td><td class="p-4">70 Hz – 20 kHz</td><td class="p-4">300 W AES</td><td class="p-4">125 dB peak</td><td class="p-4">1 x 8” + 1 x 1” coaxial</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air 12</td><td class="p-4">Enceinte coaxiale IP-54</td><td class="p-4">75 Hz – 20 kHz</td><td class="p-4">400 W AES</td><td class="p-4">130 dB peak</td><td class="p-4">1 x 12” + 1 x 1” coaxial</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Airten V3</td><td class="p-4">Enceinte compacte haut rendement</td><td class="p-4">60 Hz – 20 kHz</td><td class="p-4">500 W AES</td><td class="p-4">131 dB peak</td><td class="p-4">2 x 10” LF + 1 x 1.3” HF</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">ULTRA-X40</td><td class="p-4">Enceinte 3 voies sculpturale</td><td class="p-4">140 Hz – 20 kHz</td><td class="p-4">LF 500 W + HMF 250 W AES</td><td class="p-4">138 dB peak</td><td class="p-4">1 x 12” LF + 1 x 8” MF + 1 x 1.5” HF</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Tri Motion</td><td class="p-4">Enceinte 3 voies haute puissance</td><td class="p-4">120 Hz – 20 kHz</td><td class="p-4">LF 700 W + MHF 250 W AES</td><td class="p-4">141 dB peak</td><td class="p-4">1 x 15” LF + 1 x 8” MF + 1 x 1.5” HF</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air Stream</td><td class="p-4">Enceinte full range haute performance</td><td class="p-4">54 Hz – 20 kHz</td><td class="p-4">LF 700 W + MHF 500 W AES</td><td class="p-4">140 dB peak</td><td class="p-4">1 x 15” LF + 1 x 12” MF + 1 x 1.5” HF</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air Vantage</td><td class="p-4">Enceinte coaxiale premium</td><td class="p-4">140 Hz – 20 kHz</td><td class="p-4">500 W AES</td><td class="p-4">132 dB peak</td><td class="p-4">1 x 12” + 1 x 1.5” coaxial</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Air 15</td><td class="p-4">Subwoofer 15”</td><td class="p-4">45 Hz – 160 Hz</td><td class="p-4">800 W</td><td class="p-4">129 dB peak</td><td class="p-4">1 x 15” LF, IPX3</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">Sub Vantage</td><td class="p-4">Subwoofer très haute puissance</td><td class="p-4">40 Hz – 160 Hz</td><td class="p-4">2 x 1600 W AES</td><td class="p-4">148 dB peak</td><td class="p-4">4 x 15”</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">LFC Xair</td><td class="p-4">Subwoofer double 18”</td><td class="p-4">30 Hz – 180 Hz</td><td class="p-4">3200 W AES</td><td class="p-4">145 dB peak</td><td class="p-4">2 x 18” LF</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
-      <div class="glass-panel rounded-xl p-6 lg:col-span-2">
-        <h3 class="text-headline-md font-headline-md mb-4">Points forts à mettre en avant</h3>
-        <p class="text-body-md font-body-md text-on-surface-variant mb-4">La Meyer Sound est surtout intéressante pour les clients qui recherchent une sonorisation qui ne ressemble pas à une enceinte classique. Les modèles comme ULTRA-X40, Airten V3 ou Air Vantage deviennent de vrais éléments de décoration sonore, ce qui les rend très adaptés aux lieux premium.</p>
-        <p class="text-body-md font-body-md text-on-surface-variant">Pour une installation type bar, restaurant ou lounge, les modèles Air 8 et Air 12 sont les plus faciles à intégrer. Pour un club, rooftop ou événement DJ, les Airten V3, ULTRA-X40, Tri Motion ou Air Stream donnent plus d’impact visuel et sonore. Pour renforcer les basses, il faut les associer à des subwoofers comme Air 15, Sub Vantage ou LFC Xair selon la taille du lieu.</p>
-      </div>
-      <div class="glass-panel rounded-xl p-6 border border-[#FC036D]/30">
-        <p class="text-body-lg font-body-lg text-on-surface italic">Meyer Sound Meyer Sound : une sonorisation haut de gamme qui transforme le son en expérience visuelle. Idéale pour clubs, bars, restaurants, rooftops et événements premium recherchant puissance, design et identité sonore unique.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<section id="meyer-technical-summary-final" class="py-section-padding-y bg-surface-container-lowest">
-  <div class="max-w-container-max mx-auto px-gutter-x">
-    <div class="glass-panel rounded-xl overflow-hidden">
-      <div class="p-6 border-b border-surface-glass-border">
-        <h3 class="text-headline-md font-headline-md text-[#FC036D]">Modèles Meyer Sound représentatifs</h3>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left text-sm">
-          <thead class="bg-surface-container-high text-on-surface">
-            <tr><th class="p-4">Modèle</th><th class="p-4">Type</th><th class="p-4">Usage recommandé</th></tr>
-          </thead>
-          <tbody class="text-on-surface-variant">
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">ULTRA-X40</td><td class="p-4">Enceinte point source auto-amplifiée</td><td class="p-4">Concert, club, théâtre, salle premium, installation fixe</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">LEOPARD</td><td class="p-4">Line array compact auto-amplifié</td><td class="p-4">Concert, festival, tournée, salle de spectacle</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">LINA</td><td class="p-4">Line array très compact</td><td class="p-4">Théâtre, salle moyenne, conférence premium, événement corporate</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">PANTHER</td><td class="p-4">Line array grand format</td><td class="p-4">Grande tournée, festival, stade, grande salle</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">900-LFC</td><td class="p-4">Subwoofer basse fréquence compact</td><td class="p-4">Renfort grave pour LEOPARD / LINA, concerts et clubs</td></tr>
-            <tr class="border-t border-surface-glass-border"><td class="p-4 font-bold text-on-surface">1100-LFC</td><td class="p-4">Subwoofer très haute puissance</td><td class="p-4">Grandes scènes, festivals, concerts live et basses puissantes</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-</main>
-<div id="footer-container"></div>
-
-
-<script id="rss-meyer-products-dynamic">
-(function(){
-  'use strict';
-  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  let allMeyerProducts = [];
-  let currentFilter = 'all';
-  let map = null;
-  let productMarkers = [];
-  let userMarker = null;
-
-  const $ = (s) => document.querySelector(s);
-  const $$ = (s) => Array.from(document.querySelectorAll(s));
-  const safe = (v) => String(v ?? '').replace(/[&<>\"]/g, (m) => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m] || m));
-  const clean = (v) => String(v ?? '').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
-  const norm = (v) => String(v ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
-
-  const CITY_COORDS = {
-    'paris':[48.8566,2.3522], 'saint denis':[48.9362,2.3574], 'boulogne':[48.8397,2.2399], 'lyon':[45.764,4.8357],
-    'marseille':[43.2965,5.3698], 'nice':[43.7102,7.262], 'cannes':[43.5528,7.0174], 'bordeaux':[44.8378,-0.5792],
-    'lille':[50.6292,3.0573], 'nantes':[47.2184,-1.5536], 'toulouse':[43.6047,1.4442], 'strasbourg':[48.5734,7.7521],
-    'montpellier':[43.6119,3.8772], 'rennes':[48.1173,-1.6778], 'bruxelles':[50.8503,4.3517], 'geneve':[46.2044,6.1432],
-    'lausanne':[46.5197,6.6323], 'zurich':[47.3769,8.5417], 'monaco':[43.7384,7.4246], 'ibiza':[38.9067,1.4206]
-  };
-
-  function firstImage(item){
-    const imgs = Array.isArray(item.listing_images) ? item.listing_images.slice() : [];
-    imgs.sort((a,b) => Number(a.position || 0) - Number(b.position || 0));
-    return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
-  }
-  function price(item){
-    const value = item.price_per_day ?? item.price_day ?? item.daily_price ?? item.price ?? item.prix ?? 0;
-    const n = Number(value || 0);
-    return n ? n.toLocaleString('fr-FR', {maximumFractionDigits:0}) + '€' : 'Sur devis';
-  }
-  function productUrl(item){
-    if(item.original_id !== undefined && item.original_id !== null) return '/product.html?original_id=' + encodeURIComponent(item.original_id);
-    if(item.id) return '/product.html?id=' + encodeURIComponent(item.id);
-    return '/catalog.html?brand=meyer';
-  }
-  function matchesMeyer(item){
-    const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
-    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.name, item.model, item.category, item.description].join(' '));
-    return brandText.includes('meyer') || fullText.includes('meyer sound') || fullText.includes('ultra x') || fullText.includes('ultrax') || fullText.includes('leopard') || fullText.includes('lina') || fullText.includes('panther') || fullText.includes('900 lfc') || fullText.includes('1100 lfc') || fullText.includes('750 lfc');
-  }
-  function brandSearchTerms(title){
-    return ['meyer acoustics','meyer','meyeracoustics'];
-  }
-  function productMatchesBrand(item, terms){
-    const brandText = norm([item.brand, item.brand_name, item.marque].join(' '));
-    const fullText = norm([item.brand, item.brand_name, item.marque, item.title, item.model, item.category, item.description].join(' '));
-    return (
-      brandText.includes('meyer') ||
-      brandText.includes('meyer acoustics') ||
-      fullText.includes('meyer acoustics') ||
-      fullText.includes('meyeracoustics')
-    );
-  }
-  function typeOf(item){
-    const text = norm([item.title, item.name, item.model, item.category, item.description].join(' '));
-    if(text.includes('nexus')) return 'nexus';
-    if(text.includes('sub') || text.includes('stasys') || text.includes('bass') || text.includes('caisson')) return 'sub';
-    if(text.includes('air') || text.includes('motion') || text.includes('vantage') || text.includes('airten')) return 'air';
-    if(text.includes('tour') || text.includes('festival') || text.includes('incubus')) return 'touring';
-    return 'all';
-  }
-  function itemCity(item){ return clean(item.city || item.location || item.ville || item.address_city || item.locality || 'Disponible'); }
-  function itemCoords(item, index){
-    const lat = Number(item.latitude ?? item.lat ?? item.geo_lat ?? item.location_lat);
-    const lng = Number(item.longitude ?? item.lng ?? item.lon ?? item.geo_lng ?? item.location_lng);
-    if(Number.isFinite(lat) && Number.isFinite(lng)) return [lat, lng];
-    const city = norm(itemCity(item));
-    for(const key of Object.keys(CITY_COORDS)){ if(city.includes(key)) return CITY_COORDS[key]; }
-    const base = CITY_COORDS.paris;
-    const offsets = [[.012,.010],[-.010,.014],[.008,-.016],[-.014,-.012],[.018,.002],[-.018,-.006],[.004,.022],[-.006,-.024]];
-    const o = offsets[index % offsets.length];
-    return [base[0]+o[0], base[1]+o[1]];
-  }
-
-  function setCount(n){
-    const el = $('#meyer-products-count');
-    if(el) el.textContent = n + ' annonce' + (n > 1 ? 's' : '') + ' Meyer Sound trouvée' + (n > 1 ? 's' : '');
-    const label = $('#meyer-map-label');
-    if(label) label.textContent = n ? (n + ' annonce' + (n>1?'s':'') + ' Meyer Sound affichée' + (n>1?'s':'') + ' sur la carte') : 'Aucune annonce Meyer Sound à afficher sur la carte.';
-  }
-
-  function render(filter='all'){
-    currentFilter = filter;
-    const grid = $('#meyer-products-grid');
-    if(!grid) return;
-    const list = filter === 'all' ? allMeyerProducts : allMeyerProducts.filter(p => typeOf(p) === filter);
-    setCount(list.length);
-    renderMapMarkers(list);
-    if(!list.length){
-      grid.innerHTML = '<div class="meyer-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">inventory_2</span><h3 class="text-headline-md font-headline-md mb-2">Aucune annonce Meyer disponible</h3><p class="text-body-md font-body-md text-on-surface-variant">Seules les annonces contenant réellement Meyer ou Meyer Sound dans la marque, le titre, le modèle ou la description sont affichées ici.</p></div>';
-      return;
-    }
-    grid.innerHTML = list.map((item, index) => {
-      const title = safe(item.title || item.name || item.model || 'Matériel Meyer Sound');
-      const desc = safe(clean(item.description || item.short_description || '').slice(0, 160) || 'Annonce Meyer Sound disponible à la location sur RentSoundSystem.');
-      const img = firstImage(item);
-      const tag = safe(item.category || item.model || 'Meyer Sound');
-      const location = safe(itemCity(item));
-      const url = productUrl(item);
-      const eager = index < 3;
-      const imgHtml = img ? '<img src="'+safe(img)+'" alt="'+title+'" class="absolute inset-0 w-full h-full object-cover opacity-60" loading="'+(eager?'eager':'lazy')+'" '+(eager?'fetchpriority="high"':'')+' decoding="async" referrerpolicy="no-referrer" onerror="this.remove();">' : '';
-      return '<article data-url="'+safe(url)+'" class="meyer-product-card '+(index===0?'lg:col-span-2 ':'')+'group relative overflow-hidden rounded-xl glass-panel cursor-pointer border border-surface-glass-border hover:border-[#FC036D] transition-all">' +
-        '<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div>' + imgHtml +
-        '<div class="meyer-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8">' +
-        '<div class="flex flex-wrap items-center gap-3 mb-4"><span class="bg-background/80 border border-outline-variant text-on-surface text-xs uppercase tracking-widest font-bold px-3 py-1 rounded">'+tag+'</span><span class="text-[#FC036D] text-sm font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span>'+location+'</span></div>' +
-        '<h3 class="text-headline-md font-headline-md mb-3 group-hover:text-[#FC036D] transition-colors">'+title+'</h3>' +
-        '<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-2xl">'+desc+'</p>' +
-        '<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-auto"><span class="text-headline-md font-headline-md text-on-surface">'+price(item)+' <span class="text-sm font-normal text-on-surface-variant">/ jour</span></span><button type="button" class="w-fit bg-transparent border border-[#FC036D] text-[#FC036D] px-5 py-2 rounded text-label-caps font-label-caps uppercase hover:bg-[#FC036D] hover:text-white transition-all">Voir l’annonce</button></div>' +
-        '</div></article>';
-    }).join('');
-    $$('#meyer-products-grid .meyer-product-card').forEach(card => card.addEventListener('click', () => { window.location.href = card.dataset.url || '/catalog.html?brand=meyer'; }));
-  }
-
-  function renderFastPlaceholders(){
-    const grid = $('#meyer-products-grid');
-    if(!grid) return;
-    grid.innerHTML = Array.from({length:3}).map(()=>'<article class="meyer-product-card group relative overflow-hidden rounded-xl glass-panel border border-surface-glass-border min-h-[390px]"><div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent z-10"></div><div class="meyer-product-content relative z-20 min-h-[390px] flex flex-col justify-end p-8"><span class="w-32 h-5 bg-white/10 rounded mb-4 animate-pulse"></span><span class="w-3/4 h-8 bg-white/10 rounded mb-3 animate-pulse"></span><span class="w-full h-4 bg-white/10 rounded mb-2 animate-pulse"></span><span class="w-2/3 h-4 bg-white/10 rounded animate-pulse"></span></div></article>').join('');
-  }
-
-  async function loadMeyerProducts(){
-    renderFastPlaceholders();
-    try{
-      if(!window.supabase) throw new Error('Supabase JS non chargé');
-      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-      let brandTitle = 'Meyer Sound';
-      try{
-        const brandRes = await client.from('brands').select('*').eq('slug','meyer-acoustics').maybeSingle();
-        if(!brandRes.error && brandRes.data && brandRes.data.title) brandTitle = brandRes.data.title;
-      }catch(e){}
-
-      const fields = '*, listing_images(image_url, position)';
-      let listingsRes = await client
-        .from('listings')
-        .select(fields)
-        .eq('status','publish')
-        .limit(500);
-
-      if(listingsRes.error){
-        listingsRes = await client
-          .from('listings')
-          .select(fields)
-          .limit(500);
-      }
-
-      if(listingsRes.error) throw listingsRes.error;
-
-      const rows = listingsRes.data || [];
-      const terms = brandSearchTerms(brandTitle);
-
-      allMeyerProducts = rows.filter(item => matchesMeyer(item) || productMatchesBrand(item, terms));
-
-      if(!allMeyerProducts.length){
-        allMeyerProducts = rows.filter(item => {
-          const text = norm([item.brand,item.title,item.model,item.description].join(' '));
-          return text.includes('meyer acoustics') || text.includes('meyeracoustics') || norm(item.brand).includes('meyer');
-        });
-      }
-
-      render(currentFilter);
-    }catch(error){
-      console.warn('Meyer listings loading error:', error.message || error);
-      const grid = $('#meyer-products-grid');
-      if(grid){
-        grid.innerHTML = '<div class="meyer-product-empty col-span-full rounded-xl p-10 text-center"><span class="material-symbols-outlined text-[#FC036D] text-5xl mb-4">warning</span><h3 class="text-headline-md font-headline-md mb-2">Impossible de charger les annonces Meyer</h3><p class="text-body-md font-body-md text-on-surface-variant">Vérifiez les colonnes Supabase, la table brands et les politiques RLS de la table listings.</p></div>';
-      }
-      setCount(0);
-      renderMapMarkers([]);
-    }
-  }
-
-  function initMap(){
-    if(typeof L === 'undefined') return;
-    const mapEl = $('#meyer-map');
-    if(!mapEl || map) return;
-    if(mapEl._leaflet_id){ mapEl._leaflet_id = null; mapEl.innerHTML = ''; }
-    map = L.map(mapEl, { zoomControl:false, scrollWheelZoom:true, maxZoom:18 }).setView([48.8566,2.3522], 6);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { minZoom:2, maxZoom:18, tileSize:256, attribution:'&copy; OpenStreetMap' }).addTo(map);
-    L.control.zoom({ position:'bottomright' }).addTo(map);
-    setTimeout(fixMapSize, 80); setTimeout(fixMapSize, 450); window.addEventListener('resize', fixMapSize);
-  }
-  function fixMapSize(){ if(map){ const el = $('#meyer-map'); if(el) el.style.height = '520px'; map.invalidateSize(true); } }
-  function markerIcon(){ return L.divIcon({ className:'meyer-map-marker', html:'<span class="material-symbols-outlined meyer-map-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>', iconSize:[38,38], iconAnchor:[19,38], popupAnchor:[0,-38] }); }
-  function userIcon(){ return L.divIcon({ className:'meyer-map-marker', html:'<div style="width:20px;height:20px;background:#FC036D;border:3px solid #fff;border-radius:999px;box-shadow:0 0 0 8px rgba(252,3,109,.22),0 0 16px rgba(252,3,109,.8)"></div>', iconSize:[20,20], iconAnchor:[10,10] }); }
-  function renderMapMarkers(items){
-    if(!map) return;
-    productMarkers.forEach(m => map.removeLayer(m)); productMarkers = [];
-    const list = items.slice(0,80);
-    const icon = markerIcon();
-    productMarkers = list.map((item,index)=>{
-      const [lat,lng] = itemCoords(item,index);
-      return L.marker([lat,lng], {icon}).addTo(map).bindPopup('<strong style="color:#fff">'+safe(item.title||item.model||'Meyer Sound')+'</strong><br><span style="color:#b4b5b5">'+safe(itemCity(item))+'</span><br><strong style="color:#FC036D">'+price(item)+' / jour</strong><br><a style="color:#FC036D" href="'+productUrl(item)+'">Voir l’annonce</a>', {className:'meyer-map-popup'});
-    });
-    if(productMarkers.length){ const group = L.featureGroup(productMarkers); map.fitBounds(group.getBounds().pad(0.25), {maxZoom:10}); } else { map.setView([48.8566,2.3522], 6); }
-    setTimeout(fixMapSize, 80);
-  }
-
-  function bindFilters(){
-    $$('#meyer-products-filters [data-meyer-filter]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        $$('#meyer-products-filters [data-meyer-filter]').forEach(b => b.classList.remove('meyer-filter-active'));
-        btn.classList.add('meyer-filter-active');
-        render(btn.dataset.meyerFilter || 'all');
-      });
-    });
-  }
-  function bindButtons(){
-    document.querySelectorAll('button').forEach(function(btn){
-      const t = btn.textContent.trim().toLowerCase();
-      if(t.includes('explorer le catalogue') || t.includes('voir les offres') || t === 'explorer'){
-        btn.addEventListener('click', function(){ document.getElementById('annonces-meyer')?.scrollIntoView({behavior:'smooth', block:'start'}); });
-      }
-      if(t.includes('voir les installations')){
-        btn.addEventListener('click', function(){ document.getElementById('installations-meyer')?.scrollIntoView({behavior:'smooth', block:'start'}); });
-      }
-    });
-    $('#meyer-use-location')?.addEventListener('click', function(){
-      if(!navigator.geolocation){ alert('Géolocalisation non disponible.'); return; }
-      navigator.geolocation.getCurrentPosition(function(pos){
-        if(!map) return;
-        if(userMarker) map.removeLayer(userMarker);
-        userMarker = L.marker([pos.coords.latitude,pos.coords.longitude], {icon:userIcon(), zIndexOffset:1000}).addTo(map).bindPopup('Votre position', {className:'meyer-map-popup'});
-        map.setView([pos.coords.latitude,pos.coords.longitude], 12, {animate:true});
-      }, function(){ alert('Position refusée.'); }, {enableHighAccuracy:true, timeout:10000, maximumAge:60000});
-    });
-  }
-
-  document.addEventListener('DOMContentLoaded', () => { bindButtons(); bindFilters(); initMap(); loadMeyerProducts(); });
-})();
+<meta name="description" content="Location Meyer Sound sur RentSoundSystem : systèmes line array, enceintes et subwoofers professionnels Meyer Sound disponibles pour concerts, festivals, tournées et événements premium.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-meyer-sound">
+<meta property="og:title" content="Meyer Sound - Location Sonorisation Professionnelle | RentSoundSystem">
+<meta property="og:description" content="Découvrez les systèmes Meyer Sound disponibles à la location sur RentSoundSystem : line arrays, enceintes et contrôle des basses fréquences.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-meyer-sound">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json" id="meyer-seo-schema">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Meyer Sound","url":"https://rentsoundsystem.com/marque-meyer-sound"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Meyer Sound","item":"https://rentsoundsystem.com/marque-meyer-sound"}]}]}
 </script>
-<script src="/components.js"></script>
+
+<style id="rss-meyer-global-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2}
+@media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
+@media(max-width:600px){body{padding-top:72px!important}.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
+</style>
+</head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-brand-fuchsia selection:text-white">
+<div id="header-container"></div>
+<main class="w-full">
+<!-- Hero Section -->
+<section class="relative w-full min-h-[921px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-lowest/80 via-transparent to-surface z-10"></div>
+<img alt="Concert stage lighting and rigging" class="w-full h-full object-cover opacity-30" data-alt="A massive, professional concert sound stage setup in a vast, dark arena. The scene is illuminated by striking, high-contrast neon fuchsia laser lights cutting through atmospheric fog. The aesthetic is extremely high-end, industrial, and nocturnal, focusing on technical precision and premium audio equipment rigging. Deep obsidian shadows contrast with vibrant magenta glows, evoking a sense of raw power and exclusivity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh_5_mePkvAeXVV640YmyyPoW4h9vBF9CBTvmt1kBRk6Q27-pfcTeD6Xxoqsx3fzJzDXGZVkhg0ITvdQKUSQ6ZlWz8GApnWJGzhzXN-ZwzVAnti61MIQZM2eIgBNyb7CogLHs3y70mr5cg_GIjhSNG2ZTBuYNXeXA6YCkjC4TWh5b2WbNJZXr28_1Y5DfL-4vRrgo5kq5jEVUl6_oP2Adzjr-iYBufIydCf6husBmMh2m2O5Pemcc4DvSOSOuQpK-DQ57hfJFRLZM"/>
+</div>
+<div class="relative z-20 max-w-[1280px] mx-auto px-6 lg:px-10 flex flex-col items-center text-center">
+<div class="glass-panel px-8 py-4 rounded-full mb-8 inline-flex items-center gap-3">
+<span class="w-3 h-3 rounded-full bg-brand-fuchsia animate-pulse shadow-[0_0_10px_#FC036D]"></span>
+<span class="text-label-caps font-label-caps text-on-surface uppercase tracking-widest">Partenaire Officiel de Location</span>
+</div>
+<h1 class="text-display-hero-mobile md:text-display-hero font-display-hero text-on-surface mb-6 drop-shadow-2xl">
+                    High Fidelity <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-fuchsia to-primary neon-text-glow">Intelligence</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto mb-12">
+                    L'excellence sonore sans compromis. Accédez à l'inventaire premium Meyer Sound sur la marketplace exclusive RentSoundSystem pour vos productions les plus exigeantes.
+                </p>
+<div class="flex flex-col sm:flex-row gap-6">
+<button type="button" onclick="window.location.href='/catalog.html?search=Meyer%20Sound'" class="bg-brand-fuchsia text-white px-8 py-4 rounded-lg text-label-caps font-label-caps uppercase shadow-[0_0_20px_rgba(252,3,109,0.3)] hover:scale-105 transition-transform flex items-center gap-2">
+<span class="material-symbols-outlined">explore</span>
+                        Parcourir l'Inventaire
+                    </button>
+<button type="button" onclick="document.querySelector('#meyer-cases')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-surface-glass-border text-on-surface px-8 py-4 rounded-lg text-label-caps font-label-caps uppercase hover:bg-surface-container transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">play_circle</span>
+                        Voir en Action
+                    </button>
+</div>
+</div>
+</section>
+<!-- Localized Stock Map -->
+<section class="py-24 bg-surface relative">
+<div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+<div class="mb-16">
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Le son Meyer Sound à louer</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">Disponibilité en temps réel via le réseau de partenaires certifiés RentSoundSystem en France et en Europe.</p>
+</div>
+<div class="relative w-full h-[600px] rounded-2xl overflow-hidden glass-panel border-surface-glass-border">
+<div class="absolute inset-0 bg-surface-container-lowest/50 z-10 mix-blend-multiply"></div>
+<img alt="Map of Europe" class="w-full h-full object-cover grayscale opacity-50" data-location="France" src="https://lh3.googleusercontent.com/aida-public/AB6AXuANEHi_hcRm1-783FLTs5GC4i2l-H2gPo3eNty1kKjBBZsuqO1B7IHCkve8ua1d822MPxfnSmR7fNlMb6mEQplSHvl4LP3fE_9o3pkP0pe0wEVvB1LwGlG-OeHY_rs0mYs0iVpay6i4ldDvFHoF9E5J5aXkc4bu7wrEftYYk5SbbzrJCow4J8NXpN6g1AzjG72fU1CEpatTtbPQpimQe2FrmhRW0sCsvUPxs0pM2PjjYru4Ib4jPX9OX8iW3XF7RlDz3Imhmp2Gd0A"/>
+<!-- Neon Fuchsia Pins -->
+<div class="absolute z-20 top-[30%] left-[45%] flex flex-col items-center">
+<span class="relative flex h-6 w-6">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-fuchsia opacity-75"></span>
+<span class="relative inline-flex rounded-full h-6 w-6 bg-brand-fuchsia shadow-[0_0_15px_#FC036D]"></span>
+</span>
+<div class="mt-2 glass-panel px-3 py-1 rounded text-xs font-bold">Paris - 24 Unités</div>
+</div>
+<div class="absolute z-20 top-[60%] left-[55%] flex flex-col items-center">
+<span class="relative flex h-4 w-4">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-fuchsia opacity-75"></span>
+<span class="relative inline-flex rounded-full h-4 w-4 bg-brand-fuchsia shadow-[0_0_15px_#FC036D]"></span>
+</span>
+<div class="mt-2 glass-panel px-3 py-1 rounded text-xs font-bold">Lyon - 12 Unités</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Product Grid -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+<div class="flex justify-between items-end mb-16">
+<div>
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Systèmes Linéaires &amp; Subwoofers</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">La précision à l'état pur, conçue pour les tournées mondiales et les installations fixes complexes.</p>
+</div>
+<a class="hidden md:flex items-center gap-2 text-brand-fuchsia font-bold hover:underline" href="/catalog.html?search=Meyer%20Sound">
+                        Voir tout le catalogue <span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- PANTHER (Large Bento) -->
+<div id="meyer-product-slot-1" class="md:col-span-8 glass-panel rounded-2xl overflow-hidden group fuchsia-glow-hover transition-all duration-300">
+<div class="relative h-80 w-full bg-surface-container-low flex items-center justify-center p-8">
+<div class="absolute top-4 left-4 bg-surface-glass text-on-surface px-3 py-1 rounded text-label-caps font-label-caps uppercase border border-surface-glass-border">
+                                Flagship Line Array
+                            </div>
+<img alt="Meyer Sound PANTHER" class="object-contain h-full w-full mix-blend-screen opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="A highly detailed, studio-lit rendering of a massive, professional line array speaker system suspended by steel rigging against a pitch-black background. Subtle, elegant neon fuchsia rim lighting highlights the industrial curves and matte black metallic textures of the speaker cabinets. The aesthetic is ultra-premium, dark, and menacingly powerful, emphasizing technological perfection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVCyg9mHF_luKlVLwhJBs7h6cwzOqHto-19t1Wt0qfl3vP_rW1QmWQBw27ibwB9ri2wwD5Pqmd8M80FX5o4xzBBItWzTuoV2VkGRGbTX4ja2sTBKUChRFQ6Cz_Y3hLptvw235mlxC96pd4ChBrNW7GaGnLm31AGkTGcVSJrjh_C-7rNTMSdVC4vg5g_hjThCqgXDwiUQeLHm6JAXM53aKcOwx9vDY2MnFv9a8xyKnAgVyA_5YiVAYxWjykUmM7FqCzJcw10AxG7LM"/>
+</div>
+<div class="p-8 border-t border-surface-glass-border">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-2">PANTHER</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6">L'enceinte line array grand format la plus légère et la plus puissante de sa catégorie. Rendement exceptionnel et empreinte réduite.</p>
+<div class="flex justify-between items-center">
+<span class="text-brand-fuchsia font-bold">À partir de 180€ / jour</span>
+<a class="bg-surface-container-high hover:bg-brand-fuchsia text-on-surface hover:text-white px-4 py-2 rounded transition-colors text-sm font-semibold inline-block" href="/products/panther/details">Voir les détails</a>
+</div>
+</div>
+</div>
+<!-- LEOPARD -->
+<div id="meyer-product-slot-2" class="md:col-span-4 glass-panel rounded-2xl overflow-hidden group fuchsia-glow-hover transition-all duration-300">
+<div class="relative h-60 w-full bg-surface-container-low flex items-center justify-center p-6">
+<img alt="Meyer Sound LEOPARD" class="object-contain h-full w-full mix-blend-screen opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="A solitary, compact professional concert speaker cabinet shot head-on in a moody, dark studio environment. A striking neon magenta geometric graphic element glows in the background, contrasting with the speaker's matte black grille and rugged industrial casing. The lighting is precise, creating deep shadows and emphasizing the premium build quality." src="https://lh3.googleusercontent.com/aida/ADBb0ui57zWLdBPPhWJ0byzQMWWgGUiV0ssQ82eWnEtAjd2yHT78gjyvKmtBhW2uDoGREQP-g2NX22Onwns4CzxSJnrJ2MbqEEoL7S_nytv2DhiAfya2b1BDe6F7MmYJEkLF39_H9FKcFRAS7gzmLmjJhJGJkbEVrMY3NKQdpDbj-5BdeVrhZ934Pd6Vddh7MtmwB3X6Uf-JNkfEB-pGjRvtXlsQ3R0HmuIk_vP72XWAew39Bn0NNNsZBghyiAw"/>
+</div>
+<div class="p-6 border-t border-surface-glass-border">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-2">LEOPARD</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-4 text-sm">Line array compact, polyvalence absolue pour théâtres et clubs.</p>
+<div class="flex justify-between items-center mt-auto">
+<span class="text-brand-fuchsia font-bold text-sm">À partir de 85€ / jour</span>
+<button class="p-2 rounded bg-surface-container hover:bg-surface-bright transition-colors">
+<span class="material-symbols-outlined text-brand-fuchsia">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- 1100-LFC -->
+<div id="meyer-product-slot-3" class="md:col-span-12 glass-panel rounded-2xl overflow-hidden group fuchsia-glow-hover transition-all duration-300 flex flex-col md:flex-row">
+<div class="relative h-60 md:w-1/3 bg-surface-container-low flex items-center justify-center p-6">
+<img alt="Meyer Sound 1100-LFC" class="object-contain h-full w-full mix-blend-screen opacity-80 group-hover:scale-105 transition-transform duration-500" data-alt="A massive, rectangular professional subwoofer unit resting on a polished concrete floor in a dark warehouse setting. Intense, low-angle fuchsia LED lighting creates a dramatic, ominous glow underneath and around the heavy black cabinet. The aesthetic is raw, industrial, and focused on showcasing extreme low-frequency power." src="https://lh3.googleusercontent.com/aida/ADBb0uixX6Sm9JLSNhiJmrvxjPqI9eUZD5ngmSB1dVVgs_gI3CWcd-atidyBMYId9cCydiTtuFSf5ZZotB7x5DkuVN1Shj7vNSVA7W-NOioPJ9PTaR7GazJ_viyVCuLiVpl0oXQsJFpSheJi5rtnh1k2B5-Sf4mGppJ4PHPSHQuLbOgUIP5Lapti6cvl9yWamlMyEsLlrG_xwo_Dc_I7qLTABYqZRt0QpQYRJeNQGy2m1xdojqCyOTdr2gSYG98"/>
+</div>
+<div class="p-8 border-l border-surface-glass-border md:w-2/3 flex flex-col justify-center">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-brand-fuchsia text-sm">graphic_eq</span>
+<span class="text-label-caps font-label-caps text-brand-fuchsia uppercase tracking-widest">Low Frequency Control</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-4">1100-LFC</h3>
+<p class="text-body-md font-body-md text-on-surface-variant mb-6 max-w-2xl">L'élément de contrôle des basses fréquences définitif. Une clarté et un impact viscéral pour compléter tout système Meyer Sound, avec une linéarité parfaite même à des niveaux de pression acoustique extrêmes.</p>
+<div class="flex items-center gap-6">
+<span class="text-on-surface font-bold">120€ / jour</span>
+<button class="bg-transparent border border-brand-fuchsia text-brand-fuchsia px-6 py-2 rounded text-sm font-semibold hover:bg-brand-fuchsia hover:text-white transition-colors">
+                                    Ajouter au projet
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Video Case Studies -->
+<section id="meyer-cases" class="py-24 bg-surface">
+<div class="max-w-[1280px] mx-auto px-6 lg:px-10">
+<div class="text-center mb-16">
+<h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Études de Cas Vidéo</h2>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">Découvrez comment les systèmes Meyer Sound transforment l'expérience sonore des plus grands festivals européens, loués via RentSoundSystem.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="relative rounded-2xl overflow-hidden aspect-video group cursor-pointer border border-surface-glass-border">
+<img alt="Festival crowd" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60" data-alt="A vast, high-energy crowd at a night-time music festival, illuminated by sweeping, intense fuchsia and purple laser lights. Massive speaker arrays are visible in silhouette against the bright stage lighting. The mood is euphoric and electrifying, capturing the pinnacle of a live electronic music event in a premium, high-contrast dark aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAobCSApiaee5mTnTQjMhHvpdyu5MQnDBoQTWl0VFmao8NtrKzVx1IxYMsAJ1gxd3hW-eE0VL8mTtHoluT4k6BHKRbll7zwwkGAEphVA3zdYr3SKnma0ajpf3xaaz5TL2mbnzwIVZFqj55LCL74QeCkSHNEF1ZvhwutgvFlkbBwQAnKhoDjQRWKrzuL0Q-udjSPXGbUuhLHsO_tdGa2OBL6b2aq3_DugiAgsbCLFp533Y-ZeDghqpa-5OUrn1b4_wcC3QXC4qoAhqo"/>
+<div class="absolute inset-0 bg-surface-container-lowest/40 group-hover:bg-transparent transition-colors duration-300"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<div class="w-16 h-16 rounded-full bg-brand-fuchsia/90 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform shadow-[0_0_30px_rgba(252,3,109,0.5)] backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl ml-1">play_arrow</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-white font-bold drop-shadow-lg text-center px-4">Hellfest Mainstage 2023</h3>
+<p class="text-white/80 mt-2 text-sm font-semibold">Déploiement PANTHER massif</p>
+</div>
+</div>
+<div class="relative rounded-2xl overflow-hidden aspect-video group cursor-pointer border border-surface-glass-border">
+<img alt="Indoor arena concert" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-60" data-alt="An expansive view of a large indoor arena during a highly technical soundcheck. The massive empty space is dramatically lit by a few precise, structural beams of magenta light cutting through atmospheric haze. Elaborate audio rigging and complex sound consoles are visible in the foreground. The tone is industrial, professional, and expectant." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxxYB_0Wxj9yi_qphONfBY_MS3cvKGie2tpbopMTheI8A304u39FGtrG00qmBow68e7zDQIrfMIPgRKoUN23rEZNqyQ-gr2gLaNNXyQqa_o4bl8fMk-t8eJKDgHK106c8vV2POQB22e9rUFuh8CLp4276I50LwdLrgVrnIbHJd0i0dWHUqb0ZfTA8JoRJaCdBa6sTsgVu95ZLdK31IoHesrSJCSgfKfrVRJySIKxUfb090wM3WTyRvUEuyiXcT4n2ukFTp4xasww0"/>
+<div class="absolute inset-0 bg-surface-container-lowest/40 group-hover:bg-transparent transition-colors duration-300"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<div class="w-16 h-16 rounded-full bg-surface-glass border border-white/20 flex items-center justify-center mb-4 group-hover:bg-brand-fuchsia group-hover:border-brand-fuchsia transition-all shadow-lg backdrop-blur-sm">
+<span class="material-symbols-outlined text-white text-3xl ml-1">play_arrow</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-white font-bold drop-shadow-lg text-center px-4">Tournée Européenne Arena</h3>
+<p class="text-white/80 mt-2 text-sm font-semibold">Configuration spatiale Spacemap Go</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-marseille">Location Sono Marseille</a></li>
+<li><a href="/location-sono/location-sono-nice">Location Sono Nice</a></li>
+<li><a href="/location-sono/location-sono-cannes">Location Sono Cannes</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/catalog.html?search=line%20array">Line Array</a></li>
+<li><a href="/catalog.html?search=Meyer%20Sound">Meyer Sound</a></li>
+<li><a href="/catalog.html?search=subwoofer">Subwoofers</a></li>
+<li><a href="/catalog.html?search=enceintes">Enceintes professionnelles</a></li>
+<li><a href="/catalog.html">Sonorisation &amp; production</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-aide.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+</div>
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-meyer-runtime">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){console.error('Header load',e);}
+}
+
+function norm(v){return String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();}
+function publicStatus(item){
+  const s=norm(item&&item.status).trim();
+  return !['draft','pending','pending_review','archived','archive','deleted','disabled','rejected','refused','inactive'].includes(s);
+}
+function money(v){
+  const n=Number(v);
+  return Number.isFinite(n)&&n>0 ? Math.round(n)+'€ / jour' : 'Prix sur demande';
+}
+function getImage(item){
+  const imgs=Array.isArray(item.listing_images)?[...item.listing_images]:[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url||item.image_url||item.featured_image||item.thumbnail||item.cover_image||'';
+}
+function productUrl(item){
+  const id=item&&(item.original_id??item.id);
+  return id!==undefined&&id!==null&&String(id)!=='' ? '/product?original_id='+encodeURIComponent(id) : '/catalog.html?search=Meyer%20Sound';
+}
+function meyerMatch(item){
+  const t=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));
+  return t.includes('meyer sound')||t.includes('meyer')||t.includes('panther')||t.includes('leopard')||t.includes('1100-lfc')||t.includes('1100 lfc');
+}
+function chooseProduct(items,preferred,used){
+  const keys=preferred.map(norm);
+  let p=items.find(x=>{
+    const key=String(x.original_id??x.id??x.title??'');
+    if(used.has(key))return false;
+    const t=norm([x.brand,x.title,x.model,x.description].join(' '));
+    return keys.some(k=>t.includes(k));
+  });
+  if(!p)p=items.find(x=>!used.has(String(x.original_id??x.id??x.title??'')));
+  if(p)used.add(String(p.original_id??p.id??p.title??''));
+  return p;
+}
+function setSlot(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const h=slot.querySelector('h3');
+  const p=slot.querySelector('p');
+  const img=slot.querySelector('img');
+  const priceCandidates=[...slot.querySelectorAll('span')].filter(el=>/€|partir de|jour|120/.test(el.textContent||''));
+  const action=slot.querySelector('a,button');
+  if(h&&item.title)h.textContent=item.title;
+  if(p&&item.description)p.textContent=String(item.description).replace(/<[^>]*>/g,'').trim().slice(0,260);
+  const image=getImage(item);
+  if(img&&image){img.src=image;img.alt=item.title||'Meyer Sound';img.referrerPolicy='no-referrer';}
+  if(priceCandidates.length)priceCandidates[priceCandidates.length-1].textContent=money(item.price??item.price_day??item.price_per_day);
+  if(action){
+    const url=productUrl(item);
+    if(action.tagName==='A')action.href=url;
+    else{action.type='button';action.onclick=()=>window.location.href=url;}
+  }
+  slot.style.cursor='pointer';
+  slot.addEventListener('click',e=>{
+    if(e.target.closest('a,button'))return;
+    window.location.href=productUrl(item);
+  });
+}
+async function enrichImages(client,items){
+  const ids=items.map(x=>x.id).filter(Boolean);
+  if(ids.length){
+    const r=await client.from('listing_images').select('listing_id,image_url,position').in('listing_id',ids);
+    if(!r.error&&Array.isArray(r.data)){
+      const by={};
+      r.data.forEach(im=>(by[String(im.listing_id)]||=[]).push(im));
+      items.forEach(x=>{if(by[String(x.id)])x.listing_images=by[String(x.id)];});
+    }
+  }
+  const missing=items.filter(x=>!getImage(x)&&x.original_id).map(x=>x.original_id);
+  if(missing.length){
+    const r=await client.from('listing_images_staging').select('listing_original_id,image_url,position').in('listing_original_id',missing);
+    if(!r.error&&Array.isArray(r.data)){
+      const by={};
+      r.data.forEach(im=>(by[String(im.listing_original_id)]||=[]).push({image_url:im.image_url,position:im.position}));
+      items.forEach(x=>{if(!getImage(x)&&by[String(x.original_id)])x.listing_images=by[String(x.original_id)];});
+    }
+  }
+}
+async function loadMeyerProducts(){
+  try{
+    if(!window.supabase)return;
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const fields='id,original_id,title,description,status,category,price,price_day,price_per_day,brand,model,image_url,featured_image,thumbnail,cover_image,created_at,updated_at';
+    const safeFields='id,original_id,title,description,status,category,price,brand,model,created_at,updated_at';
+    async function q(field,value){
+      let r=await client.from('listings').select(fields).ilike(field,value).limit(60);
+      if(r.error)r=await client.from('listings').select(safeFields).ilike(field,value).limit(60);
+      return(!r.error&&Array.isArray(r.data))?r.data:[];
+    }
+    const groups=await Promise.all([
+      q('brand','%Meyer%'),
+      q('title','%Meyer%'),
+      q('title','%PANTHER%'),
+      q('title','%LEOPARD%'),
+      q('title','%1100%LFC%'),
+      q('model','%Meyer%')
+    ]);
+    const seen=new Set(),items=[];
+    groups.flat().forEach(x=>{
+      if(!meyerMatch(x)||!publicStatus(x))return;
+      const k=String(x.original_id??x.id??x.title??'');
+      if(!k||seen.has(k))return;
+      seen.add(k);items.push(x);
+    });
+    if(!items.length)return;
+    await enrichImages(client,items);
+    const used=new Set();
+    setSlot('meyer-product-slot-1',chooseProduct(items,['panther'],used));
+    setSlot('meyer-product-slot-2',chooseProduct(items,['leopard'],used));
+    setSlot('meyer-product-slot-3',chooseProduct(items,['1100-lfc','1100 lfc','lfc','subwoofer'],used));
+  }catch(e){console.warn('Meyer products',e);}
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+  loadMeyerProducts();
+});
+</script>
+
 </body></html>
