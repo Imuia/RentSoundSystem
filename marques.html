@@ -410,7 +410,10 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     "qsc": "/marque-qsc",
     "qsc-audio": "/marque-qsc",
     "qsc-systems": "/marque-qsc",
-    "sennheiser": "/marque-sennheiser"
+    "sennheiser": "/marque-sennheiser",
+    "allen-and-heath": "/marque-allen-heath",
+    "allen-heath": "/marque-allen-heath",
+    "allen-&-heath": "/marque-allen-heath"
   };
   function normalizeBrandKey(value){
     return String(value || "")
@@ -436,6 +439,7 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     if (combined.includes("electro-voice") || combined.includes("electrovoice")) return "/marque-electrovoice";
     if (combined.includes("qsc")) return "/marque-qsc";
     if (combined.includes("sennheiser")) return "/marque-sennheiser";
+    if (combined.includes("allen-and-heath") || combined.includes("allen-heath")) return "/marque-allen-heath";
 
     return "/marque-detail?slug=" + encodeURIComponent((brand && brand.slug) || slugKey || titleKey);
   }

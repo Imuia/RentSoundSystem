@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head><link as="fetch" crossorigin="" href="/header.html" rel="preload"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Allen &amp; Heath - Consoles Numériques &amp; Mixage | RentSoundSystem</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700;900&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#5a0022",
+                      "on-surface": "#e5e2e1",
+                      "inverse-primary": "#bc004f",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "primary-container": "#ff4d80",
+                      "on-primary-fixed": "#3f0016",
+                      "on-secondary-container": "#b5b5b6",
+                      "on-secondary": "#2f3132",
+                      "on-tertiary-container": "#2a2a2a",
+                      "neon-glow": "rgba(252, 3, 109, 0.3)",
+                      "surface-tint": "#ffb2bf",
+                      "on-surface-muted": "#E6BCC2",
+                      "surface-glass": "rgba(31, 31, 31, 0.6)",
+                      "surface-variant": "#353534",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "surface-bright": "#393939",
+                      "surface-container": "#201f1f",
+                      "surface-container-highest": "#353534",
+                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                      "primary": "#ffb2bf",
+                      "outline-variant": "#5d3f44",
+                      "surface": "#131313",
+                      "on-surface-variant": "#e6bcc2",
+                      "on-secondary-fixed-variant": "#454748",
+                      "error": "#ffb4ab",
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-dim": "#131313",
+                      "surface-container-lowest": "#0e0e0e",
+                      "outline": "#ac878d",
+                      "tertiary": "#c8c6c5",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "secondary-fixed": "#e3e2e3",
+                      "error-container": "#93000a",
+                      "on-background": "#e5e2e1",
+                      "secondary": "#c6c6c7",
+                      "on-primary-fixed-variant": "#90003b",
+                      "inverse-on-surface": "#313030",
+                      "on-primary": "#660028",
+                      "inverse-surface": "#e5e2e1",
+                      "background": "#131313",
+                      "primary-fixed": "#ffd9de",
+                      "surface-container-high": "#2a2a2a",
+                      "on-tertiary": "#303030",
+                      "tertiary-container": "#929090",
+                      "on-error": "#690005",
+                      "secondary-container": "#454748",
+                      "primary-fixed-dim": "#ffb2bf",
+                      "on-secondary-fixed": "#1a1c1d",
+                      "on-error-container": "#ffdad6",
+                      "brand-fuchsia": "#FC036D"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter-x": "2.5rem",
+                      "container-max": "1280px",
+                      "card-gap": "1.5rem",
+                      "section-padding-y": "6rem",
+                      "component-padding-y": "0.625rem",
+                      "component-padding-x": "1.5rem"
+              },
+              "fontFamily": {
+                      "display-hero-mobile": ["Manrope"],
+                      "body-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "headline-md": ["Manrope"],
+                      "headline-lg": ["Manrope"],
+                      "display-hero": ["Manrope"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .symbol-filled {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Subtle scanline overlay for industrial feel */
+        .scanlines {
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1));
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+<meta content="Louez les vrais produits Allen &amp; Heath disponibles sur RentSoundSystem : consoles dLive, Avantis, SQ et solutions de mixage numérique professionnel avec prix et disponibilité réels." name="description"/><link href="https://rentsoundsystem.com/marque-allen-heath" rel="canonical"/><meta content="Allen &amp; Heath - Consoles Numériques &amp; Mixage | RentSoundSystem" property="og:title"/><meta content="Découvrez les produits Allen &amp; Heath réellement disponibles à la location sur RentSoundSystem : consoles numériques, surfaces de contrôle et solutions FOH professionnelles." property="og:description"/><meta content="https://rentsoundsystem.com/marque-allen-heath" property="og:url"/><meta content="website" property="og:type"/><meta content="summary_large_image" name="twitter:card"/><meta content="Allen &amp; Heath - Location Audio Professionnel | RentSoundSystem" name="twitter:title"/><meta content="Produits Allen &amp; Heath réellement disponibles à la location sur RentSoundSystem." name="twitter:description"/><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script id="allen-heath-seo-schema" type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Brand", "@id": "https://rentsoundsystem.com/marque-allen-heath#brand", "name": "Allen & Heath", "url": "https://rentsoundsystem.com/marque-allen-heath", "description": "Allen & Heath est une marque de consoles de mixage numérique professionnelles proposée à la location sur RentSoundSystem."}, {"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Accueil", "item": "https://rentsoundsystem.com/"}, {"@type": "ListItem", "position": 2, "name": "Marques", "item": "https://rentsoundsystem.com/marques"}, {"@type": "ListItem", "position": 3, "name": "Allen & Heath", "item": "https://rentsoundsystem.com/marque-allen-heath"}]}]}</script><style id="rss-allen-heath-global-style">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;min-height:0;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+main{padding-top:0!important}
+.ah-real-product-card{cursor:pointer}
+.ah-product-image-fallback{background:radial-gradient(circle at 50% 40%,rgba(252,3,109,.12),transparent 35%),#201f1f;position:relative}
+.ah-product-image-fallback:after{content:'Image bientôt disponible';position:absolute;inset:0;display:grid;place-items:center;color:#e6bcc2;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.line-clamp-3{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+@media(max-width:767px){body{padding-top:72px!important}}
+</style><style id="rss-allen-heath-footer-style">
+#rss-footer,#rss-footer *{box-sizing:border-box}
+#rss-footer{width:100%;background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:64px 0 32px;color:#e2e2e2;font-family:Inter,Arial,sans-serif}
+#rss-footer .rss-footer-container{width:100%;max-width:1280px;margin:0 auto;padding:0 40px}
+#rss-footer .rss-footer-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:48px;margin-bottom:64px}
+#rss-footer .rss-footer-col{display:flex;flex-direction:column;gap:24px}
+#rss-footer .rss-footer-logo{display:inline-flex;align-items:center;text-decoration:none}
+#rss-footer .rss-footer-logo img{width:100px;height:auto;display:block!important}
+#rss-footer .rss-footer-text{margin:0;color:#e6bcc2;font-size:15px;line-height:1.7}
+#rss-footer .rss-footer-socials{display:flex;gap:14px}
+#rss-footer .rss-footer-social{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#1c1b1b;color:#e5e2e1;text-decoration:none;transition:.2s ease}
+#rss-footer .rss-footer-social:hover{background:#2a2a2a;color:#FC036D}
+#rss-footer .rss-footer-social .material-symbols-outlined{font-size:20px}
+#rss-footer .rss-footer-title{margin:0;color:#fff;font-size:13px;line-height:18px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+#rss-footer .rss-footer-nav{display:flex;flex-direction:column;gap:14px}
+#rss-footer .rss-footer-link{color:#e6bcc2;text-decoration:none;font-size:15px;line-height:20px;transition:.2s ease}
+#rss-footer .rss-footer-link:hover{color:#FC036D}
+#rss-footer .rss-footer-bottom{padding-top:30px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;gap:24px;color:#9d9d9d;font-size:12px}
+#rss-footer .rss-footer-legal{display:flex;gap:24px;flex-wrap:wrap}
+#rss-footer .rss-footer-legal a{color:#9d9d9d;text-decoration:none}.rss-footer-legal a:hover{color:#FC036D}
+@media(max-width:900px){#rss-footer .rss-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}}
+@media(max-width:600px){#rss-footer{padding:48px 0 24px}#rss-footer .rss-footer-container{padding:0 20px}#rss-footer .rss-footer-grid{grid-template-columns:1fr;margin-bottom:40px}#rss-footer .rss-footer-bottom{align-items:flex-start;flex-direction:column}#rss-footer .rss-footer-legal{gap:14px}}
+</style></head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-brand-fuchsia selection:text-white"><div id="header-container"></div>
+<!-- TopNavBar -->
+
+<!-- Main Content Canvas -->
+<main class="pb-section-padding-y">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex items-center justify-center overflow-hidden border-b border-surface-glass-border" id="allen-heath-hero">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<img alt="Allen &amp; Heath digital mixing console in dark studio" class="w-full h-full object-cover opacity-40 object-center mix-blend-luminosity" data-alt="A highly detailed, cinematic close-up of a high-end digital mixing console in a dimly lit, professional recording studio. The aesthetic is 'Nocturnal Premium', featuring deep obsidian surfaces and sophisticated technological complexity. Faders, knobs, and digital screens emit a vibrant, glowing 'Electric Magenta' and neon pink light that reflects off the sleek, metallic chassis. The lighting is high-contrast, creating a moody, exclusive, and industrial atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuARKLjMBkgQk0Mjonp7l5NQBN8YyuFc50rmzifi8Siecx7qfqVnMRBy2lf1QyVzwZobxGG01aYNm4Bw8_3A6Hfd9eu8xeWtjpSGagv2Q508ZY9KWQA0Fw0vIYrYN6mOGXxF_Twi438uBUWi-DMASxz08Nt3c-q2ACtO8zI2pclQH2KMD-ByeGpbuEBkT_O6YeJ0FGYDnAcu8sbWfGR0vmTZMYnZ6F8SsR4l8leoK10t6j-VnbvvLZS0AO3EOW8sB_NEeENqg6CksMk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 scanlines opacity-30"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-10 max-w-[1280px] mx-auto px-gutter-x text-center flex flex-col items-center">
+<div class="inline-flex items-center space-x-2 bg-surface-glass border border-brand-fuchsia/30 backdrop-blur-xl px-4 py-1.5 rounded-full mb-8 shadow-[0_0_15px_rgba(252,3,109,0.15)]">
+<span class="material-symbols-outlined text-brand-fuchsia text-sm symbol-filled">graphic_eq</span>
+<span class="font-label-caps text-label-caps text-brand-fuchsia uppercase tracking-widest">Partenaire Officiel</span>
+</div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-6 drop-shadow-2xl">
+<span class="block text-brand-fuchsia drop-shadow-[0_0_15px_rgba(252,3,109,0.5)]">Allen &amp; Heath.</span>
+                    Précision de Mixage.
+                </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    L'excellence sonore britannique pour le live et le studio. Louez les consoles numériques les plus demandées par les ingénieurs FOH, avec une intégration DANTE native et un traitement FPGA 96kHz.
+                </p>
+<div class="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
+<button class="bg-brand-fuchsia text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded shadow-[0_0_15px_rgba(252,3,109,0.3)] hover:bg-[#d6005c] transition-all duration-300 active:scale-95" onclick="document.getElementById('allen-heath-products')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button">
+                        Explorer le Catalogue
+                    </button>
+<button class="bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase px-8 py-4 rounded hover:bg-surface-container transition-all duration-300 active:scale-95 flex items-center space-x-2" onclick="document.getElementById('allen-heath-cases')?.scrollIntoView({behavior:'smooth',block:'start'})" type="button">
+<span class="material-symbols-outlined text-xl hover:text-brand-fuchsia transition-colors">play_circle</span>
+<span>Voir les Démos</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Locations Section: Bento Grid -->
+<section class="max-w-[1280px] mx-auto px-gutter-x py-section-padding-y" id="allen-heath-hubs">
+<div class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Le son Allen &amp; Heath à louer</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Disponibilité immédiate dans nos hubs logistiques premium.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-6 gap-card-gap">
+<!-- Primary Hub: Paris -->
+<div class="md:col-span-4 bg-surface-container-low rounded-xl border border-surface-glass-border overflow-hidden relative group" onclick="window.location.href='https://rentsoundsystem.com/location-sono/location-sonorisation-paris'" role="link" style="cursor:pointer" tabindex="0">
+<img alt="Paris Cityscape" class="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-30 transition-opacity duration-500 mix-blend-luminosity" data-location="Paris" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHDeb97kCgjevj0K0_rV0L4pqFfvhl_Xn39YSuDGa_neYUmiC8pws0ZmFW_7KNtsdsIXBX14WbFrEXZFN1uD7S7G6_PmY65wFbXzp4h2-XYZBNlcUDHfOvEHPxXcsw2H70I9is0Llx8V6-km0dO1ZHeCHsyqwHkSDXoMFM3fVmQ5aJwVgGlYnKebEzSEOCrJjz_zaXPhLUYa0gXH6e1NdS7pyBlfE-jgpp0ut_FF6GeY19AuzGFMi4JnMje48HsR2NNQCstRXepWE"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-low via-surface-container-low/80 to-transparent"></div>
+<div class="relative z-10 p-8 h-full flex flex-col justify-between min-h-[300px]">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-brand-fuchsia drop-shadow-[0_0_10px_rgba(252,3,109,0.3)]">Paris Hub</h3>
+<span class="material-symbols-outlined text-brand-fuchsia">location_on</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface mb-4">Notre centre principal. Parc complet dLive, Avantis et SQ. Configuration et patch DANTE sur mesure avant expédition.</p>
+<span class="inline-flex items-center space-x-2 text-xs font-label-caps text-label-caps uppercase text-tertiary">
+<span class="w-2 h-2 rounded-full bg-brand-fuchsia shadow-[0_0_10px_rgba(252,3,109,0.5)]"></span>
+<span>Stock Haute Disponibilité</span>
+</span>
+</div>
+</div>
+</div>
+<!-- Secondary Hubs: Bordeaux & Lille -->
+<div class="md:col-span-2 flex flex-col gap-card-gap">
+<!-- Bordeaux -->
+<div class="bg-surface-glass border border-surface-glass-border backdrop-blur-md rounded-xl p-6 flex-1 relative overflow-hidden group">
+<img alt="Bordeaux Architecture" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-500 mix-blend-luminosity" data-location="Bordeaux" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkX5M09SO7q60NqyejqYEah9EtrAhyXMslhB8in9aW9uzQNQq-E3GCNJrxaMjsFuG-2YQSoQv4BXWYTeIr3dmTeVD2HyA8g1WktGumrdBtw78-rTvQjkCYGcbhcclwAEA2wy3PfqyjqEQu9-H-HdVL9nFGsULZey9Ah3TGayl_RtvhzhITVkg9nm3ZLJJS-Z_DoWo6fj4zBeKkktaDJDX9fL-zqNHsE0WGqz5H4Y3e8o82N_LiYBhlWpeN6AgRbwZxGJGXw3xr6QM"/>
+<div class="relative z-10">
+<div class="flex items-center space-x-3 mb-4">
+<span class="material-symbols-outlined text-secondary group-hover:text-brand-fuchsia transition-colors">warehouse</span>
+<h3 class="font-headline-md text-headline-md text-on-surface text-lg">Bordeaux</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Idéal pour les tournées dans le grand Ouest. Focus sur les séries SQ et Qu.</p>
+</div>
+</div>
+<!-- Lille -->
+<div class="bg-surface-glass border border-surface-glass-border backdrop-blur-md rounded-xl p-6 flex-1 relative overflow-hidden group">
+<img alt="Lille Architecture" class="absolute inset-0 w-full h-full object-cover opacity-10 group-hover:opacity-20 transition-opacity duration-500 mix-blend-luminosity" data-location="Lille" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIokW-hszCVn-wbrV2vxpSOLgfmLRI31xFQWe_eRy0guyk_o4xBTYeJiwYUh0HX_-jwkkgzEFzhnYOde5PC29OAw1EKhPs4DML2V8QCHv-tasUDyXTGmBdRRWqgMq1n3g2TbiiGyv6HdLh_ao214FXzFRgMxRsxfKyxlgJ2G4MbrW5DctUqCiawCzmc5TggdkEJa6yEv1A-0SSMpHMvn7WPGMBEu9GN7Ivvaxq7dfSu1CHODIZiAnY0w-T0JcO05C0BvI4dPj_cko"/>
+<div class="relative z-10">
+<div class="flex items-center space-x-3 mb-4">
+<span class="material-symbols-outlined text-secondary group-hover:text-brand-fuchsia transition-colors">airport_shuttle</span>
+<h3 class="font-headline-md text-headline-md text-on-surface text-lg">Lille</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant text-sm">Carrefour européen. Logistique rapide vers la Belgique et le Nord de la France.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Catalog: Glassmorphism Cards -->
+<section class="max-w-[1280px] mx-auto px-gutter-x py-section-padding-y relative" id="allen-heath-products">
+<!-- Decorative background elements -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-fuchsia/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="mb-16 text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Écosystème Numérique Allen &amp; Heath</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Produits Allen &amp; Heath réellement publiés sur RentSoundSystem, avec images, tarifs et fiches produits issus de Supabase.</p>
+<a class="inline-flex items-center gap-2 mt-6 text-brand-fuchsia font-label-caps text-label-caps uppercase tracking-widest" href="/catalog.html?search=Allen%20%26%20Heath">Voir tout l'inventaire Allen &amp; Heath →</a></div>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="allen-heath-products-grid"><div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Chargement des produits Allen &amp; Heath disponibles...</div></div>
+</section>
+<!-- Video Case Studies (Asymmetric) -->
+<section class="border-t border-surface-glass-border bg-surface-container-lowest" id="allen-heath-cases">
+<div class="max-w-[1280px] mx-auto px-gutter-x py-section-padding-y">
+<div class="flex flex-col md:flex-row items-end justify-between mb-12">
+<div class="max-w-xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">En Situation.</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Découvrez comment nos consoles Allen &amp; Heath transforment le workflow des ingénieurs du son sur le terrain.</p>
+</div>
+<a class="inline-flex items-center space-x-2 text-brand-fuchsia hover:text-[#d6005c] transition-colors mt-4 md:mt-0" href="/blog.html">
+<span class="font-label-caps text-label-caps uppercase">Toutes les études de cas</span>
+<span class="material-symbols-outlined">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Main Feature Video -->
+<div class="md:col-span-8 relative rounded-xl overflow-hidden group cursor-pointer border border-surface-glass-border">
+<img alt="Live Touring with dLive" class="w-full h-full object-cover aspect-[16/9] group-hover:scale-105 transition-transform duration-700 mix-blend-luminosity opacity-80" data-alt="A massive outdoor music festival at night viewed from the Front of House (FOH) mixing position. In the foreground, the silhouette of a sound engineer operates a complex, glowing digital mixing console. The stage in the background is illuminated by spectacular lasers and pyrotechnics. The overall tone is 'Nocturnal Premium', heavily featuring deep blacks contrasting with intense 'Electric Magenta' and neon pink stage lights, capturing the high-energy atmosphere of professional live touring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC10SXRMGOWzjeIeQ9mEyM9hS8d1YdjSUnWcDQ5UKwfjcv3Umh-mculM0Nrt_qUxsaMk7rHRqDSKmXJExnTgp2X4zwOBSQLgiYdvuMZkis29mPldLybDL-5iyBSNQ_UDfY66bVjz0oSWQ1dluKbCs4Y2zM1Jyjt_G4xCgrmC56MGzhAxp47cM-i0THjLhay9Ilc4RRJ3xNDZHceOLwqp2XLGaQVhdQNExSnykXTqYdlKKZ43XGo7mLjTjGDTwTLnfHu7PPcNc0ZeI4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<!-- Play Button Overlay -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-20 h-20 rounded-full bg-surface-glass border border-brand-fuchsia/50 backdrop-blur-md flex items-center justify-center group-hover:bg-brand-fuchsia group-hover:border-brand-fuchsia shadow-[0_0_15px_rgba(252,3,109,0.3)] transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-white symbol-filled ml-1">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 p-8">
+<span class="inline-block bg-brand-fuchsia text-white font-label-caps text-label-caps px-3 py-1 rounded-full mb-3 shadow-[0_0_10px_rgba(252,3,109,0.5)] uppercase">Live Touring</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">dLive S5000 sur la tournée Européenne de Synthwave</h3>
+</div>
+</div>
+<!-- Sidebar Videos -->
+<div class="md:col-span-4 flex flex-col gap-card-gap">
+<!-- Video 2 -->
+<div class="relative rounded-xl overflow-hidden group cursor-pointer border border-surface-glass-border flex-1">
+<img alt="Corporate Event Setup" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 mix-blend-luminosity opacity-60" data-alt="A sophisticated, large-scale corporate conference hall during a keynote presentation. The camera angle is from the technical booth at the back, showing a sleek Avantis mixing console in the foreground. The stage features a massive LED screen displaying sleek graphics. The lighting is controlled and atmospheric, utilizing a dark, 'Nocturnal Premium' palette with striking accents of vibrant fuchsia and crisp white architectural lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDu9BsnV2_Jl65TFoKXTOAFzy46NI84QJzIbPhiR2vZj3tTZSzL9H1jZ7pnxtMRHquSAslJHIyNfFDnQ20SeLkACh2ZYAXAxtzNcLhKxWAWzAFHKPsaAJKZfTpceYPKU_7YAASmNYNZYVk4ZfBAMZ9UZ-P78U_zraeGlonOyBakoQTEAIp-D2L09CKqPJWylaC4g_ogGzeqY-6SJARhUrrMaw1vODpiXjWrZISaUjV9OK7w-vuNHpRrt9NM0mMfB-HuXeqTT6fAmzc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block border border-outline-variant text-secondary font-label-caps text-label-caps px-2 py-1 rounded-full mb-2 uppercase text-[10px]">Corporate Events</span>
+<h3 class="font-body-lg text-body-lg text-on-surface leading-tight">Gérer 40 micros HF avec Avantis</h3>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-glass border border-surface-glass-border backdrop-blur-md flex items-center justify-center group-hover:bg-brand-fuchsia transition-colors">
+<span class="material-symbols-outlined text-white symbol-filled">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Video 3 -->
+<div class="relative rounded-xl overflow-hidden group cursor-pointer border border-surface-glass-border flex-1">
+<img alt="Studio Recording" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 mix-blend-luminosity opacity-60" data-alt="A modern, high-end broadcast studio interior. The focal point is a compact SQ-5 digital mixing desk integrated into a custom studio furniture piece. Thick acoustic treatment panels line the dark grey walls. The scene is lit by subtle, recessed LED strips emitting a deep, 'Electric Magenta' glow, creating a focused, high-tech, and 'Nocturnal Premium' environment suitable for professional podcasting or broadcast audio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADZvge4UnZHgcrP4RmzEp5PfRC_UW8M5Whbwo1Y-FXcKMz9ZTOPFf5AzedjIHxM00SWwZ0XbND2OLtDuCkaDGypDrpgRgs6Hu7NCzXg0B2ZnpLvwr0EWTW8pcydgFvOnzZeYwa_JVIAc3HAUef1hjV5eLE6Mw-bjr-hKvB_xFBCQyd3mD9ltTYg0Au5f8Zeuf9neNsOLxkmHR_fEmDSIYjLQSbx3OSaTKBgrdx8x-F2ettZOmgaCXsabaFC66ui_OZ_ZKXE589xZQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-6 w-full">
+<div class="flex justify-between items-end">
+<div>
+<span class="inline-block border border-outline-variant text-secondary font-label-caps text-label-caps px-2 py-1 rounded-full mb-2 uppercase text-[10px]">Broadcast</span>
+<h3 class="font-body-lg text-body-lg text-on-surface leading-tight">SQ-5 en régie Broadcast Mobile</h3>
+</div>
+<div class="w-10 h-10 rounded-full bg-surface-glass border border-surface-glass-border backdrop-blur-md flex items-center justify-center group-hover:bg-brand-fuchsia transition-colors">
+<span class="material-symbols-outlined text-white symbol-filled">play_arrow</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Expert Reviews -->
+<section class="max-w-[1280px] mx-auto px-gutter-x py-section-padding-y" id="allen-heath-reviews">
+<div class="text-center mb-16">
+<span class="material-symbols-outlined text-brand-fuchsia text-4xl mb-4">forum</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">L'Avis des Experts FOH</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Ils font confiance à notre parc Allen &amp; Heath pour leurs productions.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Review 1 -->
+<div class="bg-surface-container-low border border-surface-glass-border rounded-xl p-8 relative">
+<span class="material-symbols-outlined absolute top-6 right-6 text-surface-bright text-6xl opacity-30 rotate-180">format_quote</span>
+<div class="mb-6">
+<span class="inline-flex items-center bg-brand-fuchsia/20 text-brand-fuchsia border border-brand-fuchsia/30 font-label-caps text-label-caps px-3 py-1 rounded-full uppercase">
+<span class="material-symbols-outlined text-[14px] mr-1">verified</span>
+                            FOH Engineer
+                        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic mb-8 relative z-10">"Louer une dLive chez RentSoundSystem, c'est l'assurance d'avoir une console parfaitement patchée selon ma fiche technique. Le moteur XCVI est un monstre de stabilité, et leur support technique est irréprochable."</p>
+<div class="flex items-center space-x-4 border-t border-outline-variant pt-6">
+<div class="w-12 h-12 rounded-full bg-surface-bright flex items-center justify-center text-brand-fuchsia font-bold">ML</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold text-sm">Marc L.</p>
+<p class="font-label-caps text-label-caps text-secondary">Tournée Zénith 2023</p>
+</div>
+</div>
+</div>
+<!-- Review 2 -->
+<div class="bg-surface-container-low border border-brand-fuchsia/20 shadow-[0_0_30px_rgba(252,3,109,0.05)] rounded-xl p-8 relative transform md:-translate-y-4">
+<span class="material-symbols-outlined absolute top-6 right-6 text-surface-bright text-6xl opacity-30 rotate-180">format_quote</span>
+<div class="mb-6">
+<span class="inline-flex items-center bg-brand-fuchsia/20 text-brand-fuchsia border border-brand-fuchsia/30 font-label-caps text-label-caps px-3 py-1 rounded-full uppercase">
+<span class="material-symbols-outlined text-[14px] mr-1">verified</span>
+                            Directeur Technique
+                        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic mb-8 relative z-10">"Pour nos événements corporate, l'Avantis louée ici est devenue notre standard. L'interface UI Continuity permet à nos techniciens freelance d'être opérationnels en 5 minutes. Le hub de Paris est hyper réactif."</p>
+<div class="flex items-center space-x-4 border-t border-outline-variant pt-6">
+<div class="w-12 h-12 rounded-full bg-surface-bright flex items-center justify-center text-brand-fuchsia font-bold">SJ</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold text-sm">Sophie J.</p>
+<p class="font-label-caps text-label-caps text-secondary">Agence Événementielle</p>
+</div>
+</div>
+</div>
+<!-- Review 3 -->
+<div class="bg-surface-container-low border border-surface-glass-border rounded-xl p-8 relative">
+<span class="material-symbols-outlined absolute top-6 right-6 text-surface-bright text-6xl opacity-30 rotate-180">format_quote</span>
+<div class="mb-6">
+<span class="inline-flex items-center bg-brand-fuchsia/20 text-brand-fuchsia border border-brand-fuchsia/30 font-label-caps text-label-caps px-3 py-1 rounded-full uppercase">
+<span class="material-symbols-outlined text-[14px] mr-1">verified</span>
+                            Ingé Son Studio
+                        </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface italic mb-8 relative z-10">"La SQ-5 est le couteau suisse parfait. Je la loue régulièrement pour des captations live complexes. Elle rentre dans le coffre, mais elle a le son des grandes. Le service de livraison de Bordeaux m'a sauvé la mise plus d'une fois."</p>
+<div class="flex items-center space-x-4 border-t border-outline-variant pt-6">
+<div class="w-12 h-12 rounded-full bg-surface-bright flex items-center justify-center text-brand-fuchsia font-bold">TR</div>
+<div>
+<p class="font-body-lg text-body-lg text-on-surface font-semibold text-sm">Thomas R.</p>
+<p class="font-label-caps text-label-caps text-secondary">Studio Mobile</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+
+<footer aria-label="Pied de page RentSoundSystem - page marque Allen &amp; Heath" id="rss-footer">
+<div class="rss-footer-container">
+<div class="rss-footer-grid">
+<div class="rss-footer-col">
+<a class="rss-footer-logo" href="/"><img alt="RentSoundSystem" src="/images/categories/logo.png"/></a>
+<p class="rss-footer-text">La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-socials">
+<a aria-label="Partager" class="rss-footer-social" href="#"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" class="rss-footer-social" href="#"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Email" class="rss-footer-social" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+<div class="rss-footer-col">
+<h4 class="rss-footer-title">Location Sono</h4>
+<nav class="rss-footer-nav">
+<a class="rss-footer-link" href="https://rentsoundsystem.com/location-sono/location-sonorisation-paris">Location Sono Paris</a>
+<a class="rss-footer-link" href="https://rentsoundsystem.com/location-sono/location-sono-cannes">Location Sono Cannes</a>
+<a class="rss-footer-link" href="https://rentsoundsystem.com/location-sono/location-sono-barcelone">Location Sono Barcelone</a>
+</nav>
+</div>
+<div class="rss-footer-col">
+<h4 class="rss-footer-title">Catégories</h4>
+<nav class="rss-footer-nav">
+<a class="rss-footer-link" href="/catalog.html?search=Console%20Digital">Consoles numériques</a>
+<a class="rss-footer-link" href="/catalog.html?search=Mixage">Mixage &amp; régie FOH</a>
+<a class="rss-footer-link" href="/catalog.html?search=DANTE">Audio réseau DANTE</a>
+<a class="rss-footer-link" href="/categorie-evenementiel-production.html">Événementiel &amp; production</a>
+<a class="rss-footer-link" href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a>
+</nav>
+</div>
+<div class="rss-footer-col">
+<h4 class="rss-footer-title">Support</h4>
+<nav class="rss-footer-nav">
+<a class="rss-footer-link" href="/centre-assistance.html">Centre d'aide</a>
+<a class="rss-footer-link" href="/contact.html">Contactez-nous</a>
+<a class="rss-footer-link" href="/blog.html">Blog</a>
+<a class="rss-footer-link" href="/faq.html">FAQ</a>
+</nav>
+</div>
+</div>
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<nav class="rss-footer-legal">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</nav>
+</div>
+</div>
+</footer><script id="rss-allen-heath-runtime">
+(function(){
+  const SUPABASE_URL='https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY='sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+
+  function esc(value){return String(value??'').replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[m]));}
+  function clean(value){return String(value??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();}
+  function norm(value){return String(value??'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/&/g,' and ').replace(/[^a-z0-9]+/g,' ').trim();}
+  function money(value){const n=Number(value||0);return Number.isFinite(n)&&n>0?n.toLocaleString('fr-FR',{maximumFractionDigits:0})+'€':'Sur devis';}
+  function firstImage(item){const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));return imgs[0]?.image_url||'';}
+  function productUrl(item){if(item.original_id!==undefined&&item.original_id!==null)return '/product?original_id='+encodeURIComponent(item.original_id);if(item.id)return '/product?id='+encodeURIComponent(item.id);return '/catalog.html?search=Allen%20%26%20Heath';}
+  function allenMatch(item){const n=norm([item.brand,item.title,item.model,item.category,item.description].join(' '));return n.includes('allen and heath')||n.includes('allen heath');}
+
+  async function loadSharedHeader(){
+    const target=document.getElementById('header-container');
+    if(!target)return;
+    try{
+      const response=await fetch('/header.html',{cache:'no-cache'});
+      if(!response.ok)throw new Error('/header.html : HTTP '+response.status);
+      target.innerHTML=await response.text();
+      target.querySelectorAll('script').forEach(oldScript=>{
+        const newScript=document.createElement('script');
+        Array.from(oldScript.attributes).forEach(attr=>newScript.setAttribute(attr.name,attr.value));
+        newScript.textContent=oldScript.textContent;
+        oldScript.replaceWith(newScript);
+      });
+      const mobileToggle=document.getElementById('rss-mobile-menu-toggle');
+      if(mobileToggle)mobileToggle.style.display='none';
+    }catch(err){console.error('RentSoundSystem header load error:',err);}
+  }
+
+  function updateItemListSchema(products){
+    let tag=document.getElementById('allen-heath-products-schema');
+    if(!tag){tag=document.createElement('script');tag.type='application/ld+json';tag.id='allen-heath-products-schema';document.head.appendChild(tag);}
+    tag.textContent=JSON.stringify({'@context':'https://schema.org','@type':'ItemList','name':'Produits Allen & Heath disponibles à la location','itemListElement':products.map((p,i)=>({'@type':'ListItem','position':i+1,'name':p.title||p.model||'Produit Allen & Heath','url':'https://rentsoundsystem.com'+productUrl(p)}))});
+  }
+
+  function renderProducts(products){
+    const grid=document.getElementById('allen-heath-products-grid');
+    if(!grid)return;
+    if(!products.length){
+      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Aucun produit Allen & Heath publié pour le moment. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue</a>.</div>';
+      updateItemListSchema([]);return;
+    }
+    grid.innerHTML=products.map((item,index)=>{
+      const title=esc(item.title||item.model||'Produit Allen & Heath');
+      const desc=esc(clean(item.description).slice(0,170)||'Produit Allen & Heath professionnel disponible à la location sur RentSoundSystem.');
+      const img=firstImage(item), price=money(item.price), url=productUrl(item), category=esc(item.category||'Allen & Heath');
+      const image=img?'<img alt="'+title+' - Allen & Heath en location" class="object-contain h-full w-full opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="'+esc(img)+'" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add(\'ah-product-image-fallback\');this.remove();">':'';
+      return '<article class="ah-real-product-card bg-surface-glass border border-surface-glass-border backdrop-blur-xl rounded-xl overflow-hidden group hover:-translate-y-2 transition-transform duration-300 flex flex-col" data-url="'+esc(url)+'">'
+        +'<div class="h-64 relative bg-surface-container-highest p-6 flex items-center justify-center overflow-hidden '+(!img?'ah-product-image-fallback':'')+'">'
+        +(index===0?'<span class="absolute left-4 top-4 z-10 bg-brand-fuchsia/10 text-brand-fuchsia border border-brand-fuchsia/30 px-2 py-1 rounded font-label-caps text-label-caps">Disponible</span>':'')+image+'</div>'
+        +'<div class="p-8 flex-1 flex flex-col"><span class="text-brand-fuchsia font-label-caps text-label-caps">'+category+'</span>'
+        +'<h3 class="font-headline-md text-headline-md text-on-surface mt-2 mb-3">'+title+'</h3>'
+        +'<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-1 line-clamp-3">'+desc+'</p>'
+        +'<div class="flex items-center justify-between gap-4"><span class="text-brand-fuchsia font-headline-md text-xl">'+price+'<span class="text-sm text-on-surface-variant font-body-md"> /jour</span></span>'
+        +'<button type="button" aria-label="Voir '+title+'" class="bg-surface-container border border-outline-variant hover:bg-brand-fuchsia hover:text-white text-on-surface p-3 rounded transition-colors"><span class="material-symbols-outlined">arrow_forward</span></button>'
+        +'</div></div></article>';
+    }).join('');
+    grid.querySelectorAll('.ah-real-product-card').forEach(card=>{
+      card.addEventListener('click',()=>location.href=card.dataset.url);
+      const btn=card.querySelector('button');if(btn)btn.addEventListener('click',e=>{e.stopPropagation();location.href=card.dataset.url;});
+    });
+    updateItemListSchema(products);
+  }
+
+  async function loadAllenHeathProducts(){
+    const grid=document.getElementById('allen-heath-products-grid');if(!grid)return;
+    try{
+      if(!window.supabase)throw new Error('Supabase client indisponible');
+      const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+      const result=await client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(1000);
+      if(result.error)throw result.error;
+      const products=(result.data||[]).filter(allenMatch);
+      renderProducts(products);
+    }catch(err){
+      console.warn('Allen & Heath products:',err);
+      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Les produits Allen & Heath sont temporairement indisponibles. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue Allen & Heath</a>.</div>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded',()=>{loadSharedHeader();loadAllenHeathProducts();});
+})();
+</script></body></html>
