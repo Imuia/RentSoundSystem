@@ -409,7 +409,8 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     "electrovoice": "/marque-electrovoice",
     "qsc": "/marque-qsc",
     "qsc-audio": "/marque-qsc",
-    "qsc-systems": "/marque-qsc"
+    "qsc-systems": "/marque-qsc",
+    "sennheiser": "/marque-sennheiser"
   };
   function normalizeBrandKey(value){
     return String(value || "")
@@ -434,6 +435,7 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     if (combined === "jbl" || combined.includes("jbl")) return "/marque-jbl";
     if (combined.includes("electro-voice") || combined.includes("electrovoice")) return "/marque-electrovoice";
     if (combined.includes("qsc")) return "/marque-qsc";
+    if (combined.includes("sennheiser")) return "/marque-sennheiser";
 
     return "/marque-detail?slug=" + encodeURIComponent((brand && brand.slug) || slugKey || titleKey);
   }
