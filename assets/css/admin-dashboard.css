@@ -228,7 +228,7 @@ a { color: inherit; }
 .history-item { padding: 11px; border: 1px solid var(--rss-border); border-radius: 10px; background: #fafafa; }
 .history-item p { margin: 5px 0; color: var(--rss-muted); }
 .review-actions { display: flex; gap: 9px; justify-content: flex-end; flex-wrap: wrap; margin-top: 12px; }
-.security-note { margin-top: 16px; padding: 12px 13px; border-left: 3px solid var(--rss-pink); background: rgba(252,3,109,.07); color: #a7a1aa; font-size: 11px; line-height: 1.55; border-radius: 0 9px 9px 0; }
+.security-note { margin-top: 16px; padding: 12px 13px; border-left: 3px solid var(--rss-pink); background: rgba(252,3,109,.12); color: #e4e1e8; font-size: 11px; line-height: 1.55; border-radius: 0 9px 9px 0; font-weight: 500; }
 .kicker { display: inline-flex; align-items: center; gap: 7px; padding: 6px 9px; border-radius: 999px; color: var(--rss-pink); background: var(--rss-pink-soft); font-size: 10px; font-weight: 900; letter-spacing: .08em; text-transform: uppercase; }
 
 /* Partenaires existant */

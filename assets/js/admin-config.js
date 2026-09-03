@@ -28,7 +28,7 @@ window.RSS_ADMIN_CONFIG = {
       status: ['status', 'reservation_status'],
       amount: ['total_price', 'amount', 'total', 'total_amount'],
       date: ['start_date', 'event_date', 'created_at', 'date'],
-      location: ['event_city', 'city', 'delivery_city', 'location']
+      location: ['event_city', 'delivery_city', 'city', 'location', 'event_address', 'address_1']
     },
     orders: {
       label: 'Commandes',
@@ -93,12 +93,12 @@ window.RSS_ADMIN_CONFIG = {
       readOnly: true,
       statusOptions: [],
       id: ['id', 'invoice_id', 'reservation_id'],
-      title: ['invoice_number', 'reference', 'order_reference', 'id'],
+      title: ['invoice_number', 'reference', 'order_reference', 'equipment_name', 'product_name', 'id'],
       subtitle: ['customer_email', 'email', 'customer_name', 'subtitle'],
       status: ['invoice_status', 'payment_status', 'status'],
       amount: ['total_price', 'amount', 'total', 'total_amount'],
       date: ['invoice_date', 'created_at', 'date'],
-      location: ['event_city', 'city', 'location']
+      location: ['event_city', 'delivery_city', 'city', 'location', 'event_address', 'address_1']
     },
     partners: {
       label: 'Partenaires',

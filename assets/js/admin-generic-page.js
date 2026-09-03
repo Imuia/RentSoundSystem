@@ -65,7 +65,7 @@
         <td>${A.escapeHtml(v.location || '—')}</td>
         <td>${v.amount === null || v.amount === '' ? '—' : A.formatMoney(v.amount, row.currency || 'EUR')}</td>
         <td>${A.formatDate(v.date, true)}</td>
-        <td><span class="admin-status ${A.statusClass(v.status)}">${A.escapeHtml(v.status)}</span></td>
+        <td><span class="admin-status ${A.statusClass(v.status)}">${A.escapeHtml(A.translateStatus(v.status))}</span></td>
         <td><div class="admin-table-actions">
           <button class="admin-table-action" type="button" title="Voir le détail" data-row-open><span class="material-symbols-outlined">visibility</span></button>
           ${canEdit ? '<button class="admin-table-action" type="button" title="Changer le statut" data-row-status><span class="material-symbols-outlined">edit_note</span></button>' : ''}

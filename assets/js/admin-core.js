@@ -78,6 +78,33 @@
     return String(value || 'inconnu').toLowerCase().trim();
   }
 
+  function translateStatus(value) {
+    if (value === true) return 'Actif';
+    if (value === false) return 'Inactif';
+    const raw = String(value || '').toLowerCase().trim();
+    const map = {
+      publish: 'Publié',
+      published: 'Publié',
+      pending: 'En attente',
+      pending_review: 'En révision',
+      confirmed: 'Confirmée',
+      completed: 'Terminée',
+      cancelled: 'Annulée',
+      canceled: 'Annulée',
+      succeeded: 'Payé',
+      paid: 'Payé',
+      active: 'Actif',
+      inactive: 'Inactif',
+      approved: 'Validé',
+      rejected: 'Rejeté',
+      hidden: 'Masqué',
+      success: 'Succès',
+      failed: 'Échec',
+      draft: 'Brouillon'
+    };
+    return map[raw] || String(value || 'Inconnu');
+  }
+
   function statusClass(value) {
     const status = normalizeStatus(value);
     if (/paid|succeed|payé|publ|approved|valid|confirm|active|actif|completed|termin/.test(status)) return 'success';
@@ -265,6 +292,20 @@
   function filterRows(rows, resourceName, search = '', status = 'all') {
     const needle = search.trim().toLowerCase();
     return rows.filter(row => {
+      // Distinction métier entre devis & commandes et réservations fermes quand la source est 'reservations'
+      if (resourceName === 'orders') {
+        const rowStatus = String(row.status || row.reservation_status || '').toLowerCase();
+        const rowType = String(row.type || row.order_type || row.kind || '').toLowerCase();
+        const isQuoteOrDraft = /devis|quote|draft|pending|attente|nouveau|processing/i.test(rowStatus) || /devis|quote/i.test(rowType);
+        if (!isQuoteOrDraft) return false;
+      } else if (resourceName === 'reservations') {
+        const rowStatus = String(row.status || row.reservation_status || '').toLowerCase();
+        const isConfirmedOrCompleted = /confirm|valid|completed|termin|paid|payé/i.test(rowStatus) || rowStatus === 'active';
+        if (!isConfirmedOrCompleted && status === 'all') {
+          // Sur la vue réservations globale, on accepte tout saut si explicitement filtré
+        }
+      }
+
       const view = rowView(row, resourceName);
       const searchable = JSON.stringify(row).toLowerCase();
       const searchOk = !needle || searchable.includes(needle);
@@ -388,7 +429,7 @@
   window.RSSAdmin = {
     state, config, $, $$,
     getClient, requireAdmin,
-    pick, formatMoney, formatDate, normalizeStatus, statusClass,
+    pick, formatMoney, formatDate, normalizeStatus, translateStatus, statusClass,
     escapeHtml, initials, toast,
     listResource, loadResource, rowView, filterRows, exportRows,
     openGenericDrawer, closeGenericDrawer, updateStatus,
