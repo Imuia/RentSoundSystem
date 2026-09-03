@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pioneer DJ - Standard Mondial | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#5a0022",
+                        "on-surface": "#e5e2e1",
+                        "inverse-primary": "#bc004f",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "primary-container": "#ff4d80",
+                        "on-primary-fixed": "#3f0016",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-secondary": "#2f3132",
+                        "on-tertiary-container": "#2a2a2a",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface-tint": "#ffb2bf",
+                        "on-surface-muted": "#E6BCC2",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "surface-variant": "#353534",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-bright": "#393939",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "primary": "#ffb2bf",
+                        "outline-variant": "#5d3f44",
+                        "surface": "#131313",
+                        "on-surface-variant": "#e6bcc2",
+                        "on-secondary-fixed-variant": "#454748",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#ac878d",
+                        "tertiary": "#c8c6c5",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "secondary-fixed": "#e3e2e3",
+                        "error-container": "#93000a",
+                        "on-background": "#e5e2e1",
+                        "secondary": "#c6c6c7",
+                        "on-primary-fixed-variant": "#90003b",
+                        "inverse-on-surface": "#313030",
+                        "on-primary": "#660028",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "primary-fixed": "#ffd9de",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#303030",
+                        "tertiary-container": "#929090",
+                        "on-error": "#690005",
+                        "secondary-container": "#454748",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter-x": "2.5rem",
+                        "container-max": "1280px",
+                        "card-gap": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "component-padding-y": "0.625rem",
+                        "component-padding-x": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .magenta-glow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 178, 191, 0.5);
+        }
+    </style>
+
+<meta name="description" content="Location Pioneer DJ sur RentSoundSystem : lecteurs CDJ, tables de mixage DJM, contrôleurs et équipements professionnels pour clubs, festivals et événements premium.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-pioneer-dj">
+<meta property="og:title" content="Pioneer DJ - Standard Mondial | RentSoundSystem">
+<meta property="og:description" content="Découvrez les équipements Pioneer DJ disponibles à la location pour clubs, festivals et événements premium.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-pioneer-dj">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Pioneer DJ","url":"https://rentsoundsystem.com/marque-pioneer-dj"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Pioneer DJ","item":"https://rentsoundsystem.com/marque-pioneer-dj"}]}]}
+</script>
+
+<style id="rss-pioneer-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+/* Même axe horizontal que le footer */
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+/* Footer global */
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1;text-decoration:none}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif;text-decoration:none}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+
+@media(max-width:900px){
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr 1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-page-wrap{padding-left:20px;padding-right:20px}
+  .rss-footer-grid{grid-template-columns:1fr}
+  .rss-footer-wrap{padding:0 20px}
+}
+</style>
+</head>
+<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col">
+<div id="header-container"></div>
+<!-- Main Content Canvas -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative min-h-[870px] flex items-center justify-center overflow-hidden border-b border-surface-glass-border">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<img alt="DJ Stage" class="w-full h-full object-cover opacity-40" data-alt="A massive, high-energy nightclub stage illuminated by intense, cutting-edge laser lighting in vivid shades of electric fuchsia and deep violet. In the foreground, the silhouette of a DJ stands commandingly over a glowing Pioneer DJ setup, emphasizing the 'Nocturnal Premium' brand identity. The atmosphere is charged with adrenaline, set against a cavernous, dark industrial space that perfectly frames the professional audio equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQJAdDNo3bpdRbeWefwkBdwrVpldfbWyuyHXQm3VwQ_cP84Tg1u5noUzvyQCYy0C-bWeADnWL38_RVBtL06GkX8KA6VCyrl5BEbvoNhoKYVewjEb9wQDzscQw0La1ElmZYhXccGqwywSkOAd9hgEmRIRdl3FWZw0pfHaO7yNcOGe-tWbVnoG4Yl9CPlnhG-RVRtwAXShyu8cuR268hxv1mBSKjmoq1syqB58VYGAspRsfby-LOBFK7EdJGnKNFLD3WU0G3CRmAUME"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 rss-page-wrap text-center flex flex-col items-center">
+<!-- Badge -->
+<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary font-label-caps text-label-caps mb-8 backdrop-blur-md">
+<span class="material-symbols-outlined text-[16px] mr-2">verified</span>
+                    Industry Standard
+                </div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-6 max-w-4xl text-glow">
+                    Pioneer DJ
+                </h1>
+<p class="font-headline-md text-headline-md text-primary font-bold tracking-widest uppercase mb-10 text-shadow">
+                    Standard Mondial
+                </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=Pioneer%20DJ'" class="bg-[#FC036D] text-white font-label-caps text-label-caps px-8 py-4 rounded-full uppercase tracking-wider magenta-glow hover:bg-opacity-90 transition-all active:scale-95 flex items-center justify-center">
+                        Explore Catalog
+                        <span class="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
+</button>
+<button type="button" onclick="document.querySelector('#pioneer-hubs')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps px-8 py-4 rounded-full uppercase tracking-wider hover:bg-surface-container transition-all active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined mr-2 text-[18px]">play_circle</span>
+                        Watch Case Study
+                    </button>
+</div>
+</div>
+</section>
+<!-- Locations Bento Grid -->
+<section id="pioneer-hubs" class="rss-page-wrap py-section-padding-y">
+<div class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Le son Pioneer DJ à louer</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Available in the world's most demanding electronic music capitals. Immediate deployment for tier-one events.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Ibiza -->
+<div id="pioneer-hub-ibiza" class="glass-panel rounded-xl overflow-hidden group relative h-[400px] cursor-pointer" role="link" tabindex="0">
+<img alt="Ibiza Setup" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="A sun-drenched yet moody open-air DJ booth in Ibiza at dusk. High-end Pioneer CDJs sit on an industrial metal table, perfectly framing the vibrant, fading orange sunset over the Mediterranean Sea. The scene perfectly captures the exclusive, premium atmosphere of a top-tier island club, infused with the sharp, high-contrast Nocturnal Premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6Am6SjiRaEelNG62k7EoAvyRF3a4WHeoYdJ65wreWA8Kx0oiY-WagyMdgj36gsFdK0ip6YbFA6V0ElG1FtH58dQlYMkrU__P48pa9KRLg8xs7RZhrgj7GbUxwY6Cy9Hw5ERGDp_wXXI_jDH0xnnYtDQBLdT5D76bWh6-aHyvEERApSK55NB4g2QgFgaI5C4xzUigEip2Lzl_5438PxNDhiL6mWB8a2VZt6PYVvhFOR4ws7Tk_1JT6cwnyPuWkyJXD-_AmztJA58o"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-90"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Ibiza</h3>
+<span class="material-symbols-outlined text-[#FC036D]">location_on</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">White Isle Deployment</p>
+</div>
+</div>
+<!-- London -->
+<div id="pioneer-hub-london" class="glass-panel rounded-xl overflow-hidden group relative h-[400px]">
+<img alt="London Setup" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="An underground, heavily soundproofed basement club in London, bathed in deep obsidian shadows and stark electric magenta light strips. The focus is on a sprawling Pioneer DJ setup on a concrete plinth, exuding a raw, industrial, yet highly sophisticated technical environment. The mood is gritty, professional, and undeniably nocturnal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPU1J2K6YqEy-dCpclXZ8qd64LlRYXVo_iwy_MmUb5aGIEphqIvNNeHhqp3f7qK_kKSEZ4zeu44wQAbkhI9WgZRQOHhIIDb7hF2tu16iYGmEIuc83iruvgmKuhYis0ler-DOjEwpicU8_0kiOOaPhkj6xbVlhjE2PSHITbzTRIgRntXOZ23h4SGzsndEWYUQwz5SO9vfOK1t0_rLi5cXfx5SxWKMtrAyMrCOjI37aExs9upKbA-TAW8D2Y5eF7UZmijPn0SNJg5OU"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-90"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">London</h3>
+<span class="material-symbols-outlined text-[#FC036D]">location_on</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Underground Hub</p>
+</div>
+</div>
+<!-- Amsterdam -->
+<div id="pioneer-hub-amsterdam" class="glass-panel rounded-xl overflow-hidden group relative h-[400px]">
+<img alt="Amsterdam Setup" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="A massive, high-tech festival mainstage structure in Amsterdam, seen from the DJ's perspective looking out over a sea of darkness punctuated by laser arrays. The foreground is a pristine row of Pioneer DJ gear reflecting the neon glow. The style is grand, imposing, and hyper-modern, fitting the Nocturnal Premium identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQjLEnv2Jtvv2Gf4DUSIuaLrIVYQra_qXC-A5SWaPzU6jMZjou-AzCu4qbACAhXqpIE5tuREDJuTGSS5gHqEStQnmze5IQNI7Ao4QFSC8vCaXXEAPllg45i3VYQ1zVMCCqg_PsQGF8n1PVO_JLHR5n7o7zWbDxijMdqltGk56McL-XKkAOBNUzFXe74PKk8kHnV5WYOnga_uc1XkJtadcSVisnyKF59QT6qbj5DpK9TZZUtZ9Bp8OpVcjemZWIV4EyzSrle_s_CtY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-90"></div>
+<div class="absolute bottom-0 left-0 p-8 w-full">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Amsterdam</h3>
+<span class="material-symbols-outlined text-[#FC036D]">location_on</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Festival Ready</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sono-ibiza">Location Sono Ibiza</a></li>
+<li><a href="/location-sono/location-sono-palma">Location Sono Palma</a></li>
+<li><a href="/location-sono/location-sono-madrid">Location Sono Madrid</a></li>
+<li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-assistance.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-pioneer-runtime">
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){
+    console.error('Header load',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  const ibiza=document.getElementById('pioneer-hub-ibiza');
+  if(ibiza){
+    const go=()=>location.href='/location-sono/location-sono-ibiza';
+    ibiza.addEventListener('click',go);
+    ibiza.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        go();
+      }
+    });
+  }
+});
+</script>
+
+</body></html>
