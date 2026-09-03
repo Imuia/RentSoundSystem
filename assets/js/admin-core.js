@@ -204,15 +204,37 @@
     const client = getClient();
     if (!client) throw new Error('Client Supabase introuvable');
     const limit = Math.min(Number(options.limit || config.maxRows || 2000), 5000);
-    const { data, error } = await client.rpc('admin_list_resource', {
-      p_resource: resourceName,
-      p_limit: limit,
-      p_offset: Number(options.offset || 0),
-      p_search: options.search || null,
-      p_status: options.status && options.status !== 'all' ? options.status : null
-    });
-    if (error) throw error;
-    return unwrapRpcRows(data);
+    const resourceDef = config.resources?.[resourceName] || {};
+
+    try {
+      const { data, error } = await client.rpc('admin_list_resource', {
+        p_resource: resourceName,
+        p_limit: limit,
+        p_offset: Number(options.offset || 0),
+        p_search: options.search || null,
+        p_status: options.status && options.status !== 'all' ? options.status : null
+      });
+      if (!error && data) return unwrapRpcRows(data);
+      if (error) console.warn(`[RSS Admin RPC Fallback] ${resourceName}:`, error.message);
+    } catch (e) {
+      console.warn(`[RSS Admin RPC Catch] ${resourceName}:`, e.message);
+    }
+
+    // Fallback transparent direct query on underlying Supabase table
+    const tableName = resourceDef.directTable || resourceDef.source || resourceName;
+    try {
+      let query = client.from(tableName).select('*').limit(limit);
+      if (options.status && options.status !== 'all') {
+        const statusKeys = resourceDef.status || ['status'];
+        if (statusKeys.length > 0) query = query.eq(statusKeys[0], options.status);
+      }
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (fallbackError) {
+      console.error(`[RSS Admin Direct Fallback Error] ${resourceName} / table ${tableName}:`, fallbackError);
+      throw fallbackError;
+    }
   }
 
   async function loadResource(resourceName, options = {}) {
@@ -321,13 +343,30 @@
     if (!resource.statusOptions?.includes(status)) throw new Error('Transition de statut non autorisée');
     const id = rowView(row, resourceName).id;
     const source = row._source || resource.source || resourceName;
-    const { data, error } = await client.rpc('admin_update_resource_status', {
-      p_resource: resourceName,
-      p_source: source,
-      p_id: String(id),
-      p_status: status,
-      p_note: note || null
-    });
+
+    try {
+      const { data, error } = await client.rpc('admin_update_resource_status', {
+        p_resource: resourceName,
+        p_source: source,
+        p_id: String(id),
+        p_status: status,
+        p_note: note || null
+      });
+      if (!error) return data;
+      console.warn('[RSS Admin Status RPC Fallback]', error.message);
+    } catch (e) {
+      console.warn('[RSS Admin Status RPC Catch]', e.message);
+    }
+
+    // Direct fallback update on Supabase table
+    const tableName = resource.directTable || resource.source || resourceName;
+    const statusCol = (resource.status && resource.status[0]) || 'status';
+    const idCol = (resource.id && resource.id[0]) || 'id';
+
+    const updatePayload = { [statusCol]: status };
+    if (row.updated_at !== undefined) updatePayload.updated_at = new Date().toISOString();
+
+    const { data, error } = await client.from(tableName).update(updatePayload).eq(idCol, id);
     if (error) throw error;
     return data;
   }
