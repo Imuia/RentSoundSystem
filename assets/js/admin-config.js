@@ -56,16 +56,16 @@ window.RSS_ADMIN_CONFIG = {
       location: ['location', 'city']
     },
     clients: {
-      label: 'Clients',
+      label: 'CRM & Clients',
       source: 'clients',
-      readOnly: true,
-      statusOptions: [],
+      readOnly: false,
+      statusOptions: ['lead', 'prospect', 'active', 'vip', 'inactive'],
       id: ['id', 'user_id'],
       title: ['title', 'full_name', 'company_name', 'email', 'id'],
       subtitle: ['subtitle', 'email', 'phone', 'company_name'],
-      status: ['status', 'account_status', 'user_type'],
-      amount: [],
-      date: ['date', 'created_at', 'updated_at'],
+      status: ['status', 'crm_stage', 'account_status', 'user_type'],
+      amount: ['deal_value', 'total_spent', 'total_amount'],
+      date: ['date', 'last_contact', 'created_at', 'updated_at'],
       location: ['location', 'city', 'country']
     },
     payments: {

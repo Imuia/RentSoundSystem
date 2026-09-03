@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Clients | Administration RentSoundSystem</title>
+  <title>CRM & Clients | Administration RentSoundSystem</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
@@ -21,7 +21,7 @@
 <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
 <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
 <div class="admin-nav-label">Gestion</div>
-<a class="admin-nav-link active" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+<a class="admin-nav-link active" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>CRM & Clients</a>
 <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
 <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
 <div class="admin-nav-label">Opérations</div>
@@ -40,43 +40,238 @@
     <header class="admin-topbar">
       <div class="admin-topbar-left">
         <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu"><span class="material-symbols-outlined">menu</span></button>
-        <div class="admin-page-heading"><h1>Clients</h1><p>Comptes clients, historique et valeur commerciale.</p></div>
+        <div class="admin-page-heading"><h1>CRM & Clients</h1><p>Gestion de la relation client, pipeline commercial et suivi des interactions.</p></div>
       </div>
       <div class="admin-topbar-actions">
-        <div class="admin-search-global"><span class="material-symbols-outlined">search</span><input type="search" placeholder="Rechercher dans l’administration…"></div>
+        <div class="admin-search-global"><span class="material-symbols-outlined">search</span><input type="search" placeholder="Rechercher dans le CRM…"></div>
         <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser"><span class="material-symbols-outlined">refresh</span></button>
         <a class="admin-icon-button" href="/" title="Voir le site"><span class="material-symbols-outlined">open_in_new</span></a>
       </div>
     </header>
     <div class="admin-content">
 <section class="admin-toolbar">
-  <div><h2>Clients</h2><p>Consultation sécurisée des profils clients et export contrôlé.</p></div>
-  <div class="admin-toolbar-actions"><button class="admin-button secondary" data-export-page type="button"><span class="material-symbols-outlined">download</span>Exporter</button><button class="admin-button primary" data-resource-refresh type="button"><span class="material-symbols-outlined">refresh</span>Actualiser</button></div>
+  <div>
+    <h2>Gestion Commerciale & CRM</h2>
+    <p>Suivez vos prospects, qualifiez vos opportunités et facilitez la conversion de vos devis en réservations.</p>
+  </div>
+  <div class="admin-toolbar-actions">
+    <button class="admin-button secondary" data-crm-export type="button"><span class="material-symbols-outlined">download</span>Exporter CSV</button>
+    <button class="admin-button primary" data-crm-add-lead type="button"><span class="material-symbols-outlined">person_add</span>Nouveau Contact / Lead</button>
+  </div>
 </section>
+
+<!-- KPIs CRM -->
+<div class="admin-kpis">
+  <article class="admin-card admin-kpi">
+    <div class="admin-kpi-icon"><span class="material-symbols-outlined">group</span></div>
+    <div class="admin-kpi-value" data-crm-kpi-total>0</div>
+    <div class="admin-kpi-label">Total Contacts & Clients</div>
+    <span class="admin-kpi-trend">Base CRM</span>
+  </article>
+  <article class="admin-card admin-kpi">
+    <div class="admin-kpi-icon"><span class="material-symbols-outlined">filter_alt</span></div>
+    <div class="admin-kpi-value" data-crm-kpi-leads>0</div>
+    <div class="admin-kpi-label">Leads & Prospects actifs</div>
+    <span class="admin-kpi-trend">En qualification</span>
+  </article>
+  <article class="admin-card admin-kpi">
+    <div class="admin-kpi-icon"><span class="material-symbols-outlined">query_stats</span></div>
+    <div class="admin-kpi-value" data-crm-kpi-pipeline>0 €</div>
+    <div class="admin-kpi-label">Valeur du Pipeline</div>
+    <span class="admin-kpi-trend">Opportunités</span>
+  </article>
+  <article class="admin-card admin-kpi">
+    <div class="admin-kpi-icon"><span class="material-symbols-outlined">verified</span></div>
+    <div class="admin-kpi-value" data-crm-kpi-converted>0</div>
+    <div class="admin-kpi-label">Clients VIP / Confirmés</div>
+    <span class="admin-kpi-trend">Fidélisés</span>
+  </article>
+</div>
+
+<!-- Filtres & Recherche Table -->
 <section class="admin-card">
   <div class="admin-filterbar">
-    <div class="admin-filter-group"><button class="admin-filter active" data-resource-status="all" type="button">Tous</button><button class="admin-filter " data-resource-status="active" type="button">Actifs</button><button class="admin-filter " data-resource-status="inactive" type="button">Inactifs</button><button class="admin-filter " data-resource-status="blocked" type="button">Bloqués</button></div>
-    <div style="display:flex;gap:9px;align-items:center;min-width:min(360px,100%)"><input class="admin-input" data-resource-search type="search" placeholder="Rechercher…"><span class="admin-note" data-resource-count>0 résultat</span></div>
+    <div class="admin-filter-group">
+      <button class="admin-filter active" data-crm-stage="all" type="button">Tous (<span id="count-all">0</span>)</button>
+      <button class="admin-filter" data-crm-stage="lead" type="button">Leads (<span id="count-lead">0</span>)</button>
+      <button class="admin-filter" data-crm-stage="prospect" type="button">Prospects (<span id="count-prospect">0</span>)</button>
+      <button class="admin-filter" data-crm-stage="active" type="button">Clients Actifs (<span id="count-active">0</span>)</button>
+      <button class="admin-filter" data-crm-stage="vip" type="button">VIP (<span id="count-vip">0</span>)</button>
+      <button class="admin-filter" data-crm-stage="inactive" type="button">Inactifs (<span id="count-inactive">0</span>)</button>
+    </div>
+    <div style="display:flex;gap:9px;align-items:center;min-width:min(360px,100%)">
+      <input class="admin-input" data-crm-search type="search" placeholder="Nom, e-mail, entreprise, ville...">
+      <span class="admin-note" data-crm-count>0 résultat</span>
+    </div>
   </div>
   <div class="admin-table-wrap">
     <table class="admin-table">
-      <thead><tr><th>Élément</th><th>Localisation</th><th>Montant</th><th>Date</th><th>Statut</th><th style="text-align:right">Actions</th></tr></thead>
-      <tbody data-resource-body></tbody>
+      <thead>
+        <tr>
+          <th>Client / Contact</th>
+          <th>Société / Localisation</th>
+          <th>Valeur Potentielle</th>
+          <th>Dernier Contact</th>
+          <th>Étape CRM</th>
+          <th style="text-align:right">Actions</th>
+        </tr>
+      </thead>
+      <tbody data-crm-body></tbody>
     </table>
-    <div class="loading" data-resource-loading><div><span class="material-symbols-outlined">sync</span><p>Chargement des données…</p></div></div>
-    <div class="admin-empty hidden" data-resource-empty><div><span class="material-symbols-outlined">inbox</span><h3>Aucun résultat</h3><p>Modifiez les filtres ou vérifiez la connexion Supabase.</p></div></div>
+    <div class="loading" data-crm-loading><div><span class="material-symbols-outlined">sync</span><p>Chargement du CRM…</p></div></div>
+    <div class="admin-empty hidden" data-crm-empty><div><span class="material-symbols-outlined">person_off</span><h3>Aucun contact trouvé</h3><p>Ajustez les filtres ou créez une nouvelle fiche prospect.</p></div></div>
   </div>
-  <div class="admin-pagination"><span class="admin-pagination-info" data-integration-note>Connexion aux données…</span><div class="admin-pagination-buttons"><button class="admin-button secondary" data-page-prev type="button">Précédent</button><span class="admin-button secondary" data-page-info>Page 1</span><button class="admin-button secondary" data-page-next type="button">Suivant</button></div></div>
-</section></div>
+  <div class="admin-pagination">
+    <span class="admin-pagination-info" data-crm-status-note>Connexion aux données CRM…</span>
+    <div class="admin-pagination-buttons">
+      <button class="admin-button secondary" data-crm-prev type="button">Précédent</button>
+      <span class="admin-button secondary" data-crm-page-info>Page 1</span>
+      <button class="admin-button secondary" data-crm-next type="button">Suivant</button>
+    </div>
+  </div>
+</section>
+    </div>
   </main>
 </div>
-<div class="admin-drawer-backdrop" data-generic-drawer aria-hidden="true">
-  <aside class="admin-drawer"><div class="drawer-head"><div><div class="kicker">Détail</div><h2 data-generic-drawer-title>Élément</h2><p>Informations complètes de l’enregistrement.</p></div><button class="icon-btn" data-generic-drawer-close type="button"><span class="material-symbols-outlined">close</span></button></div><div class="drawer-section"><div class="detail-grid" data-generic-drawer-content></div></div></aside>
+
+<!-- Modal / Drawer CRM Détail du client -->
+<div class="admin-drawer-backdrop" data-crm-drawer aria-hidden="true">
+  <aside class="admin-drawer">
+    <div class="drawer-head">
+      <div>
+        <div class="kicker"><span class="material-symbols-outlined" style="font-size:14px">badge</span> Fiche Commerciale CRM</div>
+        <h2 data-crm-drawer-name>Nom Client</h2>
+        <p data-crm-drawer-sub>contact@domaine.com</p>
+      </div>
+      <button class="icon-btn" data-crm-drawer-close type="button"><span class="material-symbols-outlined">close</span></button>
+    </div>
+
+    <!-- Actions Rapides -->
+    <div class="drawer-section">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <a class="admin-button secondary" id="crm-action-email" href="#" target="_blank"><span class="material-symbols-outlined">mail</span>Envoyer un e-mail</a>
+        <a class="admin-button secondary" id="crm-action-phone" href="#"><span class="material-symbols-outlined">call</span>Appeler</a>
+        <a class="admin-button secondary" id="crm-action-quote" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Créer un devis</a>
+      </div>
+    </div>
+
+    <!-- Informations Prospect / Client -->
+    <div class="drawer-section">
+      <h3>Informations Générales</h3>
+      <div class="detail-grid" id="crm-drawer-info"></div>
+    </div>
+
+    <!-- Mise à jour étape CRM -->
+    <div class="drawer-section">
+      <h3>Étape dans le Pipeline Commercial</h3>
+      <div class="admin-form-grid" style="margin-bottom:12px">
+        <div class="admin-field">
+          <label>Changer le statut CRM</label>
+          <select class="admin-select" id="crm-status-select">
+            <option value="lead">Lead (Nouveau)</option>
+            <option value="prospect">Prospect (Qualifié)</option>
+            <option value="active">Client Actif</option>
+            <option value="vip">Client VIP</option>
+            <option value="inactive">Inactif / Perdu</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label>Valeur estimée du deal (€)</label>
+          <input type="number" class="admin-input" id="crm-value-input" placeholder="0">
+        </div>
+      </div>
+      <button class="admin-button primary" id="crm-save-status" type="button"><span class="material-symbols-outlined">save</span>Mettre à jour l'étape</button>
+    </div>
+
+    <!-- Journal d'interactions & Notes CRM -->
+    <div class="drawer-section">
+      <h3>Journal des Interactions & Notes</h3>
+      <div class="admin-field" style="margin-bottom:10px">
+        <label>Ajouter une note de suivi / interaction</label>
+        <textarea class="admin-textarea" id="crm-note-text" placeholder="Ex: Appel téléphonique effectué, le client souhaite un devis pour 2 enceintes le mois prochain..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:15px">
+        <button class="admin-button primary" id="crm-add-note" type="button"><span class="material-symbols-outlined">add_comment</span>Enregistrer la note</button>
+      </div>
+      <div class="history" id="crm-notes-list"></div>
+    </div>
+
+    <!-- Historique des réservations du client -->
+    <div class="drawer-section">
+      <h3>Historique des Commandes & Réservations</h3>
+      <div id="crm-history-list"></div>
+    </div>
+  </aside>
 </div>
+
+<!-- Modal Création Contact / Lead -->
+<div class="admin-drawer-backdrop" data-crm-modal-new aria-hidden="true">
+  <aside class="admin-drawer" style="width:min(580px,94vw)">
+    <div class="drawer-head">
+      <div>
+        <div class="kicker">Nouveau Contact</div>
+        <h2>Ajouter un Lead / Contact</h2>
+        <p>Saisissez les coordonnées du prospect ou client.</p>
+      </div>
+      <button class="icon-btn" data-crm-modal-new-close type="button"><span class="material-symbols-outlined">close</span></button>
+    </div>
+
+    <form id="crm-new-lead-form" class="drawer-section" style="display:grid;gap:14px">
+      <div class="admin-field">
+        <label>Nom complet *</label>
+        <input type="text" class="admin-input" id="new-lead-name" required placeholder="Jean Dupont">
+      </div>
+      <div class="admin-form-grid">
+        <div class="admin-field">
+          <label>E-mail *</label>
+          <input type="email" class="admin-input" id="new-lead-email" required placeholder="jean.dupont@entreprise.com">
+        </div>
+        <div class="admin-field">
+          <label>Téléphone</label>
+          <input type="tel" class="admin-input" id="new-lead-phone" placeholder="06 12 34 56 78">
+        </div>
+      </div>
+      <div class="admin-form-grid">
+        <div class="admin-field">
+          <label>Société / Organisation</label>
+          <input type="text" class="admin-input" id="new-lead-company" placeholder="Événements & Co">
+        </div>
+        <div class="admin-field">
+          <label>Ville</label>
+          <input type="text" class="admin-input" id="new-lead-city" placeholder="Paris">
+        </div>
+      </div>
+      <div class="admin-form-grid">
+        <div class="admin-field">
+          <label>Statut CRM Initial</label>
+          <select class="admin-select" id="new-lead-stage">
+            <option value="lead" selected>Lead (Nouveau)</option>
+            <option value="prospect">Prospect (Qualifié)</option>
+            <option value="active">Client Actif</option>
+            <option value="vip">Client VIP</option>
+          </select>
+        </div>
+        <div class="admin-field">
+          <label>Valeur Estimée (€)</label>
+          <input type="number" class="admin-input" id="new-lead-value" placeholder="1500">
+        </div>
+      </div>
+      <div class="admin-field">
+        <label>Note / Besoin Initial</label>
+        <textarea class="admin-textarea" id="new-lead-note" placeholder="Besoins exprimés, équipement sonorisation souhaité..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:10px">
+        <button class="admin-button secondary" data-crm-modal-new-close type="button">Annuler</button>
+        <button class="admin-button primary" type="submit"><span class="material-symbols-outlined">check</span>Créer le contact</button>
+      </div>
+    </form>
+  </aside>
+</div>
+
 <div id="header-container" hidden></div><div id="footer-container" hidden></div>
 <script src="/assets/js/admin-config.js"></script>
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
-<script src="/assets/js/admin-generic-page.js"></script>
+<script src="/assets/js/admin-clients.js"></script>
 </body>
 </html>
