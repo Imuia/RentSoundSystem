@@ -157,6 +157,30 @@ body{padding-top:80px!important}
 @media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
 @media(max-width:600px){body{padding-top:72px!important}.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
 </style>
+
+<style id="rss-bose-section-alignment">
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+@media(max-width:900px){
+  .rss-page-wrap{
+    padding-left:24px;
+    padding-right:24px;
+  }
+}
+@media(max-width:600px){
+  .rss-page-wrap{
+    padding-left:20px;
+    padding-right:20px;
+  }
+}
+</style>
 </head>
 <body class="bg-background text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -170,7 +194,7 @@ body{padding-top:80px!important}
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
 </div>
 <!-- Hero Content -->
-<div class="relative z-10 w-full max-w-[container-max] mx-auto text-center flex flex-col items-center">
+<div class="relative z-10 rss-page-wrap text-center flex flex-col items-center">
 <div class="inline-flex items-center gap-2 bg-surface-glass border border-surface-glass-border rounded-full px-4 py-1.5 mb-8 backdrop-blur-md">
 <span class="material-symbols-outlined text-primary text-[16px]">stars</span>
 <span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Partenaire Officiel Bose Professional</span>
@@ -189,8 +213,8 @@ body{padding-top:80px!important}
 </div>
 </section>
 <!-- Bento Grid: The Bose Lineup -->
-<section class="w-full py-section-padding-y px-component-padding-x bg-background" id="inventory">
-<div class="max-w-[container-max] mx-auto">
+<section class="w-full py-section-padding-y bg-background" id="inventory">
+<div class="rss-page-wrap">
 <div class="mb-16 md:mb-24">
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Systèmes Portables <span class="text-primary">Premium</span></h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">L'ingénierie légendaire de Bose au service de vos événements les plus exigeants. Disponibles à la location immédiate.</p>
@@ -261,8 +285,8 @@ body{padding-top:80px!important}
 </div>
 </section>
 <!-- History/Asymmetric Section -->
-<section class="w-full py-section-padding-y px-component-padding-x bg-surface-container-lowest border-t border-outline-variant/10">
-<div class="max-w-[container-max] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<section class="w-full py-section-padding-y bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="rss-page-wrap grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
 <div class="order-2 lg:order-1">
 <span class="font-display-hero-mobile text-display-hero-mobile md:font-display-hero md:text-display-hero text-surface-bright opacity-20 block mb-2 pointer-events-none">1964</span>
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-6">Fondée sur la Recherche.<br>Propulsée par la <span class="text-primary">Passion.</span></h2>
