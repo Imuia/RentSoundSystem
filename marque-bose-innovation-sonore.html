@@ -1,0 +1,558 @@
+<!DOCTYPE html><html class="dark" lang="fr"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Bose - Innovation Sonore | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "surface-bright": "#393939",
+                        "on-surface-muted": "#E6BCC2",
+                        "background": "#131313",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-container": "#ff4d80",
+                        "secondary-container": "#454748",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-error": "#690005",
+                        "error": "#ffb4ab",
+                        "surface-container": "#201f1f",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-container": "#5a0022",
+                        "outline-variant": "#5d3f44",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "inverse-on-surface": "#313030",
+                        "secondary-fixed": "#e3e2e3",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#ffd9de",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "secondary": "#c6c6c7",
+                        "surface-container-highest": "#353534",
+                        "on-background": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "outline": "#ac878d",
+                        "on-secondary": "#2f3132",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#e6bcc2",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "on-tertiary": "#303030",
+                        "on-primary-fixed-variant": "#90003b",
+                        "surface-tint": "#ffb2bf",
+                        "on-primary-fixed": "#3f0016",
+                        "tertiary": "#c8c6c5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#929090",
+                        "surface": "#131313",
+                        "surface-variant": "#353534",
+                        "on-secondary-fixed-variant": "#454748",
+                        "on-primary": "#660028",
+                        "inverse-primary": "#bc004f",
+                        "primary": "#ffb2bf",
+                        "error-container": "#93000a",
+                        "surface-dim": "#131313",
+                        "on-secondary-container": "#b5b5b6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-y": "0.625rem",
+                        "component-padding-x": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "gutter-x": "2.5rem",
+                        "card-gap": "1.5rem",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "display-hero-mobile": ["Manrope", "sans-serif"],
+                        "display-hero": ["Manrope", "sans-serif"],
+                        "label-caps": ["Inter", "sans-serif"],
+                        "headline-md": ["Manrope", "sans-serif"],
+                        "headline-lg": ["Manrope", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill-icon {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom glow utility based on neon-glow color */
+        .glow-primary {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.3);
+        }
+        .glow-primary-hover:hover {
+            box-shadow: 0 0 40px rgba(252, 3, 109, 0.5);
+        }
+    </style>
+
+<meta name="description" content="Location Bose Professional sur RentSoundSystem : systèmes L1 Pro, S1 Pro+, F1 Model 812 et solutions de sonorisation portables pour événements, musiciens et installations professionnelles.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-bose">
+<meta property="og:title" content="Bose - Innovation Sonore | RentSoundSystem">
+<meta property="og:description" content="Découvrez les systèmes Bose Professional disponibles à la location : L1 Pro, S1 Pro+, F1 et solutions audio portables premium.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-bose">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Bose Professional","url":"https://rentsoundsystem.com/marque-bose"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Bose","item":"https://rentsoundsystem.com/marque-bose"}]}]}
+</script>
+
+<style id="rss-bose-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1;text-decoration:none}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif;text-decoration:none}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+@media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
+@media(max-width:600px){body{padding-top:72px!important}.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
+</style>
+</head>
+<body class="bg-background text-on-surface antialiased overflow-x-hidden min-h-screen flex flex-col">
+<div id="header-container"></div>
+<!-- Main Content Canvas -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative w-full min-h-[870px] flex items-center justify-center py-section-padding-y px-component-padding-x overflow-hidden">
+<!-- Background Image -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40" data-alt="A highly detailed, cinematic photograph of a cutting-edge professional audio stage setup in a dimly lit, nocturnal environment. Sleek black speaker arrays stand imposing against deep shadows, accented by vibrant, electric magenta LED uplighting that casts a technological glow. The scene evokes a premium, high-end live music production atmosphere with sharp contrasts, deep obsidian surfaces, and a feeling of exclusive, precise sonic engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpCculPlDM_ak7GTFE9Y_op3RxA6wYkk6VEGxFWhmbH8K6Br8aSMK5Dt7v1ovoWT3xoT0JH5CLmDTGjHTQiOVjlHUah3m0fAGvnP2Zx-UwQsYhbEXB5RE362SNlomREw_gdtfkCOOCcKr1XoAdsZaod5Rz9Fa83DHsCsAKXepECD6TyBbvsUtG_R-kpL9MIohLF9WTCI8XX5cNRhe33JTxnlI3kTIayTcPebGkokse7G9TdG79Jsr8VOKbQUD071jO_5ujJQqI4T8">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<!-- Hero Content -->
+<div class="relative z-10 w-full max-w-[container-max] mx-auto text-center flex flex-col items-center">
+<div class="inline-flex items-center gap-2 bg-surface-glass border border-surface-glass-border rounded-full px-4 py-1.5 mb-8 backdrop-blur-md">
+<span class="material-symbols-outlined text-primary text-[16px]">stars</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase tracking-wider">Partenaire Officiel Bose Professional</span>
+</div>
+<h1 class="font-display-hero-mobile text-display-hero-mobile md:font-display-hero md:text-display-hero text-on-surface mb-6 max-w-4xl drop-shadow-2xl">
+                    L'Excellence Sonore<br>
+<span class="text-primary glow-text">Depuis 1964.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Découvrez l'innovation acoustique de pointe. Des solutions audio professionnelles conçues pour une clarté absolue, une couverture uniforme et des performances sans compromis.
+                </p>
+<a href="/catalog.html?search=Bose%20Professional" class="bg-primary-container text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded-full glow-primary glow-primary-hover transition-all duration-300 flex items-center gap-3">
+<span class="">Explorer la Gamme</span>
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</a>
+</div>
+</section>
+<!-- Bento Grid: The Bose Lineup -->
+<section class="w-full py-section-padding-y px-component-padding-x bg-background" id="inventory">
+<div class="max-w-[container-max] mx-auto">
+<div class="mb-16 md:mb-24">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Systèmes Portables <span class="text-primary">Premium</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">L'ingénierie légendaire de Bose au service de vos événements les plus exigeants. Disponibles à la location immédiate.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Primary Feature Card (Spans 8 cols on desktop) -->
+<div id="bose-slot-l1pro" class="md:col-span-8 group relative bg-surface-container-low rounded-xl overflow-hidden border border-surface-glass-border hover:border-outline-variant/50 transition-colors duration-500 min-h-[500px] flex flex-col justify-end">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuCAQ4PF_aCGTXW9wL7MV2CKJrg0jPqlYWvT0LqUxfPx_mGXn-ULo6M6F_q50Z_lcIiMqimhjZKk0fOVXIJ0M8vcO2Xe-xtZnAr7zxcDJeRpr_Vsxz1SH6Z20VEP1Fz-Iukr3xff_kgLmSgNtfgV42lheyLaSgMnb_k6UzKHi9xIxYFnM80O5gaIiZ-0Y8HD7ghnH-m4WhaJcWGgW6rrkGd0qaix6E42guf-cPoNQbhx-1G4dnhEH-RA_S3sje1CTn6w3pojnfT3WM4" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A close-up product shot of a sleek, modern column PA speaker system in a dark studio setting. The speaker tower is matte black, featuring sophisticated metallic grilles and minimalist design language. Subtle fuchsia rim lighting highlights the elegant, vertical geometry of the equipment against a deep black background, emphasizing high-fidelity acoustic technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAQ4PF_aCGTXW9wL7MV2CKJrg0jPqlYWvT0LqUxfPx_mGXn-ULo6M6F_q50Z_lcIiMqimhjZKk0fOVXIJ0M8vcO2Xe-xtZnAr7zxcDJeRpr_Vsxz1SH6Z20VEP1Fz-Iukr3xff_kgLmSgNtfgV42lheyLaSgMnb_k6UzKHi9xIxYFnM80O5gaIiZ-0Y8HD7ghnH-m4WhaJcWGgW6rrkGd0qaix6E42guf-cPoNQbhx-1G4dnhEH-RA_S3sje1CTn6w3pojnfT3WM4">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+<div class="relative z-10 p-8 md:p-12 w-full md:w-3/4">
+<span class="inline-block px-3 py-1 bg-surface-glass border border-surface-glass-border rounded-full font-label-caps text-label-caps text-primary uppercase mb-4 backdrop-blur-md">Line Array Portable</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Famille L1 Pro</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                                Équilibre parfait entre puissance et portabilité. Les systèmes L1 Pro offrent une couverture horizontale à 180 degrés, garantissant un son d'une clarté exceptionnelle pour chaque spectateur.
+                            </p>
+<a href="/catalog.html?search=Bose%20L1%20Pro" class="text-primary hover:text-primary-fixed transition-colors font-label-caps text-label-caps uppercase flex items-center gap-2">
+                                Voir les spécifications <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Secondary Feature Card (Spans 4 cols on desktop) -->
+<div id="bose-slot-s1pro" class="md:col-span-4 group relative bg-surface-container-low rounded-xl overflow-hidden border border-surface-glass-border hover:border-outline-variant/50 transition-colors duration-500 min-h-[500px] flex flex-col justify-end">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuCbhqp2HjtSwGDMTLHaC3ecSSF6zIVTfUiejxfCwsksrbEPQ_oxmwTvV06kr44LygMWhowlpL-Msh_UXxUaeoVTJxY52kTndY8Hx0h1cBmFy7hBvORY7b_zJN7arqILURjkz3Q5DIMmmGCuURfGta5WIgQv21KwI5-w1UbdpyD37okNbpARPFN8OgMTrXhae6YrfICmWFKzknoOu6XzWjw94JGZgZdl_8ZqXYqNFsmJERReIkXFZYGkMmeZ46IzvfNZRLV9XtIa7jc" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700 ease-out" data-alt="A dramatic studio photograph of a compact, rugged portable PA speaker resting on a dark, reflective surface. The equipment features high-end matte black finishes and tactile control knobs. Atmospheric lighting with deep shadows and subtle magenta highlights creates a moody, premium aesthetic, showcasing the speaker's durable yet sophisticated build quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbhqp2HjtSwGDMTLHaC3ecSSF6zIVTfUiejxfCwsksrbEPQ_oxmwTvV06kr44LygMWhowlpL-Msh_UXxUaeoVTJxY52kTndY8Hx0h1cBmFy7hBvORY7b_zJN7arqILURjkz3Q5DIMmmGCuURfGta5WIgQv21KwI5-w1UbdpyD37okNbpARPFN8OgMTrXhae6YrfICmWFKzknoOu6XzWjw94JGZgZdl_8ZqXYqNFsmJERReIkXFZYGkMmeZ46IzvfNZRLV9XtIa7jc">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background/20"></div>
+<div class="relative z-10 p-8">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">S1 Pro+</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                                Le système de sonorisation ultra-portable ultime. Connectivité sans fil intégrée, table de mixage 3 canaux et positionnement polyvalent pour musiciens et présentateurs.
+                            </p>
+<a href="/catalog.html?search=Bose%20S1%20Pro%2B" class="bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase px-6 py-3 rounded-full hover:bg-surface-container transition-colors w-full text-center">
+                                Louer
+                            </a>
+</div>
+</div>
+<!-- Tertiary Feature Card (Spans 4 cols on desktop) -->
+<div id="bose-slot-f1" class="md:col-span-4 group relative bg-surface-glass backdrop-blur-md rounded-xl border border-surface-glass-border p-8 hover:bg-surface-container-low transition-colors duration-300">
+<div class="w-14 h-14 rounded-full bg-primary-container/20 flex items-center justify-center mb-6 border border-primary-container/50">
+<span class="material-symbols-outlined text-primary text-[28px] fill-icon">equalizer</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Technologie F1</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">
+                            Le premier système amplifié portable permettant de contrôler son profil de couverture verticale. Adaptez le son à n'importe quelle salle.
+                        </p>
+<a class="text-primary hover:text-primary-fixed transition-colors font-label-caps text-label-caps uppercase flex items-center gap-2" href="/catalog.html?search=Bose%20F1%20Model%20812">
+                            Découvrir F1 Model 812 <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</a>
+</div>
+<!-- Innovation Banner (Spans 8 cols on desktop) -->
+<div class="md:col-span-8 bg-surface-container-highest rounded-xl p-8 md:p-12 border border-surface-glass-border flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden">
+<div class="absolute right-0 top-0 w-1/2 h-full bg-gradient-to-l from-primary/10 to-transparent pointer-events-none"></div>
+<div class="flex-1 relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary">science</span>
+<span class="font-label-caps text-label-caps text-primary uppercase">Recherche &amp; Développement</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">L'Avantage Psychoacoustique</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                                Bose ne se contente pas de mesurer le son ; ils étudient comment les humains l'entendent. Cette approche scientifique fondamentale garantit que chaque composant loué chez Sonic Precision délivre une expérience émotionnelle et immersive inégalée.
+                            </p>
+</div>
+<div class="relative z-10 flex-shrink-0">
+<a href="/catalog.html?search=Bose%20L1%20Pro" class="text-primary hover:text-primary-fixed transition-colors font-label-caps text-label-caps uppercase flex items-center gap-2">
+                                Voir les spécifications <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- History/Asymmetric Section -->
+<section class="w-full py-section-padding-y px-component-padding-x bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="max-w-[container-max] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="order-2 lg:order-1">
+<span class="font-display-hero-mobile text-display-hero-mobile md:font-display-hero md:text-display-hero text-surface-bright opacity-20 block mb-2 pointer-events-none">1964</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-6">Fondée sur la Recherche.<br>Propulsée par la <span class="text-primary">Passion.</span></h2>
+<div class="space-y-6">
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Créée par le Dr. Amar G. Bose, professeur au MIT, Bose Corporation a commencé avec une question simple : pourquoi les systèmes audio de l'époque ne parvenaient-ils pas à reproduire la puissance et l'émotion d'un concert en direct ?
+                        </p>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                            Aujourd'hui, cette quête incessante de l'amélioration continue d'animer chaque produit. En tant que partenaire de location privilégié, RentSoundSystem vous donne accès à cet héritage d'innovation acoustique, vous assurant de bénéficier du son "Nocturnal Premium" pour vos productions.
+                        </p>
+</div>
+<div class="mt-10 flex items-center gap-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface uppercase">Qualité Garantie</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-sm">Entretien rigoureux</div>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full border-2 border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">support_agent</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface uppercase">Support Expert</div>
+<div class="font-body-md text-body-md text-on-surface-variant text-sm">Assistance 24/7</div>
+</div>
+</div>
+</div>
+</div>
+<div class="order-1 lg:order-2 relative rounded-xl overflow-hidden border border-surface-glass-border glow-primary bg-surface-container">
+<img class="w-full h-full object-cover min-h-[400px] lg:min-h-[600px] opacity-80 mix-blend-screen" data-alt="A conceptual, high-tech visualization of soundwaves propagating through a dark, void-like space. Glowing electric magenta lines undulate gracefully against an obsidian background, representing acoustic innovation and precision engineering. The aesthetic is purely digital, abstract, and deeply connected to the physics of high-end audio design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmz_rxlSyrTf69pU2142j8J1wqf-AL-4H_DZ4cbBxiMY2xs6ySMxy4KN4XwTIUG14Pj9bCqH-imEj2Mkbud_B9tnaR5lXFJelekVxK63b3xlXCeaGFyH-uaSYgS6_a27usHdsnY3kPqq3B10Zgg5VTHBF1bGNRoUltQS0spAAZVbKiP18xdW0hbGGlBwWV9tcGK5pgHBhmSafE5QUlAluMCAGq5-f2TDbBUDWj6tB72knrgppxGx12jzF-PJ8OQytH2liSwg6uQuY">
+<div class="absolute inset-0 bg-gradient-to-r from-surface-container-lowest/80 to-transparent lg:hidden"></div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sono-new-york">Location Sono New York</a></li>
+<li><a href="/location-sono/location-sono-dubai">Location Sono Dubai</a></li>
+<li><a href="/location-sono/location-sono-taipei">Location Sono Taipei</a></li>
+<li><a href="/location-sono/location-sono-marrakech">Location Sono Marrakech</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-aide.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-bose-runtime">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){console.error('Header load',e);}
+}
+
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=Bose%20Professional';
+}
+function productMatchesBose(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const full=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.category,item.description].join(' '));
+  return brand==='bose' || brand.includes('bose professional') || full.includes('bose professional') || /\bbose\b/.test(full);
+}
+function chooseStrict(items,terms,used){
+  const keys=terms.map(norm);
+  const p=items.find(item=>{
+    const id=String(item.original_id??item.id??item.title??'');
+    if(used.has(id))return false;
+    const text=norm([item.title,item.model,item.category,item.description].join(' '));
+    return keys.some(k=>text.includes(k));
+  }) || null;
+  if(p)used.add(String(p.original_id??p.id??p.title??''));
+  return p;
+}
+
+function setupFallback(slotId,searchTerm){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(searchTerm);
+  const action=slot.querySelector('a,button');
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  const go=()=>location.href=url;
+  slot.onclick=e=>{if(!e.target.closest('a,button'))go();};
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();go();
+    }
+  };
+
+  if(action){
+    if(action.tagName==='A')action.href=url;
+    else{
+      action.type='button';
+      action.onclick=e=>{e.stopPropagation();go();};
+    }
+  }
+}
+
+function applyProduct(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+  const img=slot.querySelector('img');
+  const action=slot.querySelector('a,button');
+  const url=productUrl(item);
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,260);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'Bose Professional';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      img.onerror=null;
+      if(fallback)img.src=fallback;
+    };
+    if(real)img.src=real;
+    else if(fallback)img.src=fallback;
+  }
+
+  if(action){
+    if(action.tagName==='A')action.href=url;
+    else{
+      action.type='button';
+      action.onclick=e=>{e.stopPropagation();location.href=url;};
+    }
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.onclick=e=>{if(!e.target.closest('a,button'))location.href=url;};
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+}
+
+async function loadBoseProducts(){
+  try{
+    if(!window.supabase)return;
+
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+    // Same product-source logic used on the other brand pages:
+    // published listings + listing_images.
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(productMatchesBose);
+    const used=new Set();
+
+    // Strict model matching: never put an unrelated Bose item in a Stitch card.
+    const l1=chooseStrict(products,[
+      'l1 pro','l1 pro8','l1 pro16','l1 pro32','l1 model'
+    ],used);
+
+    const s1=chooseStrict(products,[
+      's1 pro plus','s1 pro+','s1 pro'
+    ],used);
+
+    const f1=chooseStrict(products,[
+      'f1 model 812','f1 812','f1 model'
+    ],used);
+
+    applyProduct('bose-slot-l1pro',l1);
+    applyProduct('bose-slot-s1pro',s1);
+    applyProduct('bose-slot-f1',f1);
+
+    if(!l1)console.info('Bose: aucun L1 Pro exact publié — design Stitch + catalogue ciblé conservés.');
+    if(!s1)console.info('Bose: aucun S1 Pro+ exact publié — design Stitch + catalogue ciblé conservés.');
+    if(!f1)console.info('Bose: aucun F1 Model 812 exact publié — design Stitch + catalogue ciblé conservés.');
+
+    const schema=document.createElement('script');
+    schema.type='application/ld+json';
+    schema.textContent=JSON.stringify({
+      '@context':'https://schema.org',
+      '@type':'ItemList',
+      itemListElement:products.slice(0,12).map((x,i)=>({
+        '@type':'ListItem',
+        position:i+1,
+        url:'https://rentsoundsystem.com'+productUrl(x),
+        name:x.title||x.model||'Bose Professional'
+      }))
+    });
+    document.head.appendChild(schema);
+
+  }catch(e){
+    console.warn('Bose products:',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  setupFallback('bose-slot-l1pro','Bose L1 Pro');
+  setupFallback('bose-slot-s1pro','Bose S1 Pro+');
+  setupFallback('bose-slot-f1','Bose F1 Model 812');
+
+  loadBoseProducts();
+});
+</script>
+
+</body></html>
