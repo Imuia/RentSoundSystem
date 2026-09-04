@@ -1,3 +1,17 @@
+<!-- SEO global : autoriser l'indexation des pages publiques -->
+<script>
+(function () {
+  var content = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1';
+  var meta = document.querySelector('meta[name="robots"]');
+  if (!meta) {
+    meta = document.createElement('meta');
+    meta.setAttribute('name', 'robots');
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute('content', content);
+})();
+</script>
+
 <!-- TopNavBar -->
 <style id="rss-header-self-contained-style">
 /* Header RentSoundSystem autonome : même rendu sur toutes les pages */
