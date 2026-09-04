@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Apart Audio - Sonorisation Fixe & Mobile | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#ffb2bf",
+                      "surface-container-low": "#1c1b1b",
+                      "secondary-fixed": "#e3e2e3",
+                      "primary-fixed-dim": "#ffb2bf",
+                      "on-secondary-fixed": "#1a1c1d",
+                      "neon-glow": "rgba(252, 3, 109, 0.3)",
+                      "secondary": "#c6c6c7",
+                      "on-secondary": "#2f3132",
+                      "on-error": "#690005",
+                      "surface-bright": "#393939",
+                      "on-primary": "#660028",
+                      "background": "#131313",
+                      "outline-variant": "#5d3f44",
+                      "primary-container": "#ff4d80",
+                      "on-surface-muted": "#E6BCC2",
+                      "on-primary-fixed": "#3f0016",
+                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                      "inverse-on-surface": "#313030",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "on-primary-container": "#5a0022",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "inverse-primary": "#bc004f",
+                      "primary": "#ffb2bf",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "on-tertiary": "#303030",
+                      "surface": "#131313",
+                      "on-tertiary-container": "#2a2a2a",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "surface-container-high": "#2a2a2a",
+                      "primary-fixed": "#ffd9de",
+                      "on-surface-variant": "#e6bcc2",
+                      "error": "#ffb4ab",
+                      "secondary-container": "#454748",
+                      "outline": "#ac878d",
+                      "surface-container": "#201f1f",
+                      "inverse-surface": "#e5e2e1",
+                      "surface-dim": "#131313",
+                      "on-background": "#e5e2e1",
+                      "error-container": "#93000a",
+                      "on-surface": "#e5e2e1",
+                      "surface-variant": "#353534",
+                      "on-secondary-fixed-variant": "#454748",
+                      "surface-glass": "rgba(31, 31, 31, 0.6)",
+                      "tertiary-container": "#929090",
+                      "surface-container-highest": "#353534",
+                      "on-secondary-container": "#b5b5b6",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary-fixed-variant": "#90003b",
+                      "tertiary": "#c8c6c5",
+                      "tertiary-fixed": "#e5e2e1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "component-padding-x": "1.5rem",
+                      "container-max": "1280px",
+                      "card-gap": "1.5rem",
+                      "component-padding-y": "0.625rem",
+                      "section-padding-y": "6rem",
+                      "gutter-x": "2.5rem"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Manrope"],
+                      "headline-lg": ["Manrope"],
+                      "label-caps": ["Inter"],
+                      "body-md": ["Inter"],
+                      "display-hero-mobile": ["Manrope"],
+                      "display-hero": ["Manrope"]
+              },
+              "fontSize": {
+                      "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                      "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                      "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                      "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                      "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31,31,31,0.6) 0%, rgba(28,27,27,0.4) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-shadow {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.3);
+        }
+    </style>
+
+<meta name="description" content="Location Apart Audio sur RentSoundSystem : amplificateurs REVAMP, enceintes d'installation MASK, systèmes de paging et matrices audio pour installations fixes et événements professionnels.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-apart">
+<meta property="og:title" content="Apart Audio - Sonorisation Fixe & Mobile | RentSoundSystem">
+<meta property="og:description" content="Découvrez les solutions Apart Audio disponibles à la location pour sonorisation fixe, intégration, paging et amplification professionnelle.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-apart">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Apart Audio","url":"https://rentsoundsystem.com/marque-apart"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Apart Audio","item":"https://rentsoundsystem.com/marque-apart"}]}]}
+</script>
+
+<style id="rss-apart-global">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+.rss-brand-footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:72px 0 28px;
+  color:#e5e2e1
+}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1;text-decoration:none}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif;text-decoration:none}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+
+@media(max-width:900px){
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr 1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+</style>
+</head>
+<body class="font-body-md antialiased min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Apart Audio Equipment Showcase" class="w-full h-full object-cover opacity-20" data-alt="A dimly lit, high-tech recording studio featuring sleek Apart Audio amplifiers and installation speakers. The scene is illuminated by soft, moody lighting with electric magenta neon accents reflecting off brushed metal surfaces. The aesthetic is highly professional, technical, and premium, perfectly matching a dark mode interface. The equipment looks reliable and cutting-edge." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi4o9_KCW9ZdMNjramiXG5zWlE2BzECslTnTwcmb7R6qp4qc8k6eyqXqhmsFnaTyyb9U9UCYNI0rGuTmm2v9x6uXbDzhW952NCiaRQ0XnStOz-CYJpaNnR3qXayHXPq3stXnfriEPvUDU1DzdXtVSj73BxtRNxLqkAUTI7VzXIoDHDLfG6yLWgQSYGO7wW-7YgnYYZCm27qX5cmomfYmCK9QQ8qV_AVzFAx9gk_0RHcUuYMHGZ4iyeLIaHI8eW66mRyDjO-DtDCkI"/>
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-background"></div>
+</div>
+<div class="relative z-10 rss-page-wrap text-center">
+<span class="inline-flex items-center gap-2 bg-primary/10 border border-primary/20 text-primary px-4 py-1.5 rounded-full font-label-caps text-label-caps mb-8">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">campaign</span>
+                    Marque Partenaire Officielle
+                </span>
+<h1 class="font-display-hero text-display-hero text-on-surface mb-6">
+                    Apart Audio : <br/> <span class="text-primary">La Sonorisation Fixe &amp; Mobile</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl mx-auto mb-10">
+                    Fondée en Belgique en 1992, Apart Audio est reconnue mondialement pour ses solutions sonores professionnelles de haute qualité. Fiabilité technique et ingénierie de précision pour les experts de l'audio.
+                </p>
+<div class="flex justify-center gap-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=Apart%20Audio'" class="bg-[#FC036D] text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded glow-shadow hover:scale-95 transition-transform duration-200 flex items-center gap-2">
+<span class="material-symbols-outlined">explore</span>
+                        Explorer le Catalogue
+                    </button>
+<button type="button" onclick="document.querySelector('#apart-products')?.scrollIntoView({behavior:'smooth'})" class="border border-outline-variant text-on-surface font-label-caps text-label-caps uppercase px-8 py-4 rounded hover:bg-surface-container transition-colors duration-200">
+                        Lire l'Histoire
+                    </button>
+</div>
+</div>
+</section>
+<!-- Featured Equipment (Bento Grid) -->
+<section id="apart-products" class="py-section-padding-y bg-surface-container-low">
+<div class="rss-page-wrap">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-12">Équipement <span class="text-primary">Phare</span></h2>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Main Item -->
+<div id="apart-slot-revamp" class="md:col-span-8 glass-panel rounded-xl p-8 flex flex-col justify-end min-h-[400px] relative overflow-hidden group">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuBKjDX_MiYW0oIwM6nthXQ2YxvwChgs8SaDnsAgHal07BD4FlbPk26v4TbXfZXnVwd8jUWFq0R1M6D60F0dSaqGvGjoHua-j9ZSHL-FSwL4yifJj1rQurplrO9iDsZcEjnv81RsAzr9Yhn4Fl0oHaBmooEoXgV-a17A6wN5DvjYueO3CwzOXZjD2jkYxglw9MR1hfAITkhUV1r-GfInC6fUAeyDfy07s_Psz0MryoQuJV_hzalMiH6xIgnjIC6wLlNGpFd2Q6tjr-Y" alt="Apart Audio Amplifier" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" data-alt="A close-up, high-contrast shot of a premium Apart Audio rack-mounted amplifier. The sleek black metal chassis is highlighted by sharp, dramatic lighting with subtle magenta neon reflections on the dials. The setting is a professional server rack environment, conveying raw power and precision engineering in a dark, nocturnal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKjDX_MiYW0oIwM6nthXQ2YxvwChgs8SaDnsAgHal07BD4FlbPk26v4TbXfZXnVwd8jUWFq0R1M6D60F0dSaqGvGjoHua-j9ZSHL-FSwL4yifJj1rQurplrO9iDsZcEjnv81RsAzr9Yhn4Fl0oHaBmooEoXgV-a17A6wN5DvjYueO3CwzOXZjD2jkYxglw9MR1hfAITkhUV1r-GfInC6fUAeyDfy07s_Psz0MryoQuJV_hzalMiH6xIgnjIC6wLlNGpFd2Q6tjr-Y"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#131313] via-[#131313]/80 to-transparent"></div>
+<div class="relative z-10">
+<span class="text-primary font-label-caps text-label-caps mb-2 block">Amplificateurs de Puissance</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Série REVAMP</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-lg">Amplificateurs professionnels multicanaux offrant une fiabilité à toute épreuve pour les installations fixes exigeantes.</p>
+</div>
+</div>
+<!-- Secondary Item 1 -->
+<div id="apart-slot-mask" class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col relative overflow-hidden">
+<div class="mb-auto">
+<span class="material-symbols-outlined text-primary text-4xl mb-4">speaker</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Enceintes d'Installation</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Série MASK. Design élégant et dispersion sonore exceptionnelle.</p>
+</div>
+<button class="mt-6 text-primary font-label-caps text-label-caps uppercase flex items-center gap-1 hover:text-white transition-colors">
+                            Louer <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Secondary Item 2 -->
+<div id="apart-slot-paging" class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col relative overflow-hidden">
+<div class="mb-auto">
+<span class="material-symbols-outlined text-primary text-4xl mb-4">mic_external_on</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Systèmes de Paging</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Pupitres microphoniques robustes pour l'intégration commerciale.</p>
+</div>
+<button class="mt-6 text-primary font-label-caps text-label-caps uppercase flex items-center gap-1 hover:text-white transition-colors">
+                            Louer <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<!-- Secondary Item 3 -->
+<div id="apart-slot-matrix" class="md:col-span-8 glass-panel rounded-xl p-8 flex flex-col relative overflow-hidden border border-primary/30">
+<div class="absolute right-0 top-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex justify-between items-center h-full">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Matrice Audio</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Contrôle centralisé avec processeurs DSP intégrés pour une gestion complexe du signal.</p>
+</div>
+<span class="material-symbols-outlined text-6xl text-primary opacity-50">router</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Global Hubs -->
+<section class="py-section-padding-y">
+<div class="rss-page-wrap text-center">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Hubs de Location <span class="text-primary">Globaux</span></h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12">Disponibilité immédiate du matériel Apart Audio dans nos centres principaux.</p>
+<div class="flex flex-col md:flex-row justify-center gap-8">
+<div class="glass-panel p-6 rounded-xl flex-1 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div class="text-left">
+<h4 class="font-headline-md text-[20px] text-on-surface">Bruxelles</h4>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Hub HQ</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex-1 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div class="text-left">
+<h4 class="font-headline-md text-[20px] text-on-surface">Londres</h4>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Hub UK</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex-1 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div class="text-left">
+<h4 class="font-headline-md text-[20px] text-on-surface">Berlin</h4>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Hub EU Central</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
+<li><a href="/location-sono/location-sono-madrid">Location Sono Madrid</a></li>
+<li><a href="/location-sono/location-sono-monaco">Location Sono Monaco</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-assistance.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-apart-runtime">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){
+    console.error('RentSoundSystem header:',e);
+  }
+}
+
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=Apart%20Audio';
+}
+function isApart(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const all=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.description].join(' '));
+  return brand==='apart' || brand.includes('apart audio') || all.includes('apart audio');
+}
+function exactOne(items,terms){
+  const keys=terms.map(norm);
+  return items.find(item=>{
+    const t=norm([item.title,item.model,item.category,item.description].join(' '));
+    return keys.some(k=>t.includes(k));
+  }) || null;
+}
+function setupFallback(slotId,search){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(search);
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.addEventListener('click',e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  });
+  slot.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  });
+  slot.querySelectorAll('button').forEach(btn=>{
+    btn.type='button';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  });
+}
+function applyProduct(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url=productUrl(item);
+  const img=slot.querySelector('img');
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,260);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'Apart Audio';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      img.onerror=null;
+      if(fallback)img.src=fallback;
+    };
+    if(real)img.src=real;
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.onclick=e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  };
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+
+  slot.querySelectorAll('button').forEach(btn=>{
+    btn.type='button';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  });
+}
+
+async function loadApartProducts(){
+  try{
+    if(!window.supabase)return;
+
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(isApart);
+
+    const revamp=exactOne(products,['revamp']);
+    const mask=exactOne(products,['mask']);
+    const paging=exactOne(products,['paging','microphone paging','zone paging']);
+    const matrix=exactOne(products,['matrix','matrice','audio matrix']);
+
+    applyProduct('apart-slot-revamp',revamp);
+    applyProduct('apart-slot-mask',mask);
+    applyProduct('apart-slot-paging',paging);
+    applyProduct('apart-slot-matrix',matrix);
+
+  }catch(e){
+    console.warn('Apart products:',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  setupFallback('apart-slot-revamp','Apart REVAMP');
+  setupFallback('apart-slot-mask','Apart MASK');
+  setupFallback('apart-slot-paging','Apart paging');
+  setupFallback('apart-slot-matrix','Apart audio matrix');
+
+  loadApartProducts();
+});
+</script>
+
+</body>
+</html>
