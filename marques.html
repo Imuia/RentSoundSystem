@@ -442,7 +442,9 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     "audiohead7": "/marque-audio7",
     "audio-head7": "/marque-audio7",
     "audio-technica": "/marque-audio-technica",
-    "audio-technica-japonaise": "/marque-audio-technica"
+    "audio-technica-japonaise": "/marque-audio-technica",
+    "audiocase": "/marque-audiocase",
+    "audio-case": "/marque-audiocase"
   };
   function normalizeBrandKey(value){
     return String(value || "")
@@ -467,6 +469,7 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     if (combined === "jbl" || combined.includes("jbl")) return "/marque-jbl";
     if (combined.includes("electro-voice") || combined.includes("electrovoice")) return "/marque-electrovoice";
     if (combined.includes("audio-technica")) return "/marque-audio-technica";
+    if (combined.includes("audiocase") || combined.includes("audio-case")) return "/marque-audiocase";
     if (combined.includes("qsc")) return "/marque-qsc";
     if (combined.includes("sennheiser")) return "/marque-sennheiser";
     if (combined.includes("allen-and-heath") || combined.includes("allen-heath")) return "/marque-allen-heath";
