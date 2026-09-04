@@ -539,12 +539,37 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     return "/uploads/abouts/"+v;
   }
   function getLogo(b){return logoUrl(b.url_logo || b.logo_url || b.logo || b.image_url || b.image || b.logo_path || b.image_path || b.logo_filename || b.filename || b.file_name || b.public_url || b.url || b.src || b.renamed_logo || "")}
+  function placeholderLogoData(title){
+    const label = safe(String(title || 'Marque').slice(0, 40));
+    const initials = safe(String(title || 'M').split(/\s+/).filter(Boolean).slice(0,2).map(function(part){return part.charAt(0).toUpperCase();}).join('') || 'M');
+    return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 240">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ffffff"/>
+            <stop offset="100%" stop-color="#f4f4f6"/>
+          </linearGradient>
+          <linearGradient id="p" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#ff2b8d"/>
+            <stop offset="100%" stop-color="#fc036d"/>
+          </linearGradient>
+        </defs>
+        <rect width="520" height="240" rx="18" fill="url(#g)"/>
+        <circle cx="86" cy="85" r="46" fill="#121212"/>
+        <text x="86" y="100" text-anchor="middle" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700" fill="url(#p)">${initials}</text>
+        <text x="156" y="98" font-family="Inter,Arial,sans-serif" font-size="34" font-weight="700" fill="#181818">${label}</text>
+        <rect x="156" y="122" width="184" height="10" rx="5" fill="#d9d9dc"/>
+        <rect x="156" y="144" width="128" height="10" rx="5" fill="#ececef"/>
+        <path d="M34 206H486" stroke="#fc036d" stroke-width="4" opacity=".85"/>
+      </svg>`);
+  }
   function logoCandidates(b){
     const list=[];
     function add(v){const u=logoUrl(v); if(u && !list.includes(u)) list.push(u);}
     add(b.url_logo); add(b.logo_url); add(b.logo); add(b.image_url); add(b.image); add(b.logo_path); add(b.image_path); add(b.logo_filename); add(b.filename); add(b.file_name); add(b.public_url); add(b.url); add(b.src);
     add(b.renamed_logo);
     const slug=getSlug(b); ["jpg","jpeg","png","webp","svg"].forEach(function(ext){add("/uploads/abouts/"+slug+"."+ext);});
+    list.push(placeholderLogoData(getTitle(b)));
     return list;
   }
   window.rssTryNextBrandLogo=function(img){
@@ -606,8 +631,38 @@ transition: all .3s ease;mix-blend-mode:multiply;}
   }
   function setBrands(data){
     const unique={};
-    (data && data.length ? data : EMBEDDED_BRANDS).forEach(function(item){const slug=getSlug(item); if(!unique[slug]) unique[slug]=item;});
-    allBrands=mergeSpecialBrandPages(Object.values(unique)).sort(function(a,b){return getTitle(a).localeCompare(getTitle(b),"fr");});
+    (data && data.length ? data : EMBEDDED_BRANDS).forEach(function(item){
+      const slug=getSlug(item);
+      if(!unique[slug]) unique[slug]=item;
+    });
+
+    const routeCanonical = new Map();
+    (SPECIAL_BRAND_CARDS || []).forEach(function(item){
+      routeCanonical.set(brandPageUrl(item), item);
+    });
+
+    const dedupedByRoute = new Map();
+    mergeSpecialBrandPages(Object.values(unique)).forEach(function(item){
+      const route = brandPageUrl(item);
+      const existing = dedupedByRoute.get(route);
+      const canonical = routeCanonical.get(route);
+      const candidate = canonical ? Object.assign({}, item, canonical) : item;
+
+      if(!existing){
+        dedupedByRoute.set(route, candidate);
+        return;
+      }
+
+      const existingDesc = getDescription(existing).length;
+      const candidateDesc = getDescription(candidate).length;
+      const existingLogo = getLogo(existing);
+      const candidateLogo = getLogo(candidate);
+      const preferCandidate = (!!candidateLogo && !existingLogo) || candidateDesc > existingDesc;
+
+      dedupedByRoute.set(route, preferCandidate ? Object.assign({}, existing, candidate) : Object.assign({}, candidate, existing));
+    });
+
+    allBrands=Array.from(dedupedByRoute.values()).sort(function(a,b){return getTitle(a).localeCompare(getTitle(b),"fr");});
     const count=$("brand-count"); if(count) count.textContent=allBrands.length+" marques disponibles";
     render(allBrands);
   }
