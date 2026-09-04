@@ -3,9 +3,11 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Pioneer DJ - Standard Mondial | RentSoundSystem</title>
+<title>Pioneer DJ - Standard Club Professionnel | RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800;900&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
@@ -14,57 +16,53 @@
             theme: {
                 extend: {
                     "colors": {
-                        "on-primary-container": "#5a0022",
-                        "on-surface": "#e5e2e1",
                         "inverse-primary": "#bc004f",
-                        "tertiary-fixed-dim": "#c8c6c5",
-                        "secondary-fixed-dim": "#c6c6c7",
-                        "primary-container": "#ff4d80",
-                        "on-primary-fixed": "#3f0016",
-                        "on-secondary-container": "#b5b5b6",
-                        "on-secondary": "#2f3132",
-                        "on-tertiary-container": "#2a2a2a",
-                        "neon-glow": "rgba(252, 3, 109, 0.3)",
-                        "surface-tint": "#ffb2bf",
-                        "on-surface-muted": "#E6BCC2",
-                        "surface-glass": "rgba(31, 31, 31, 0.6)",
-                        "surface-variant": "#353534",
-                        "on-tertiary-fixed-variant": "#474746",
-                        "surface-bright": "#393939",
-                        "surface-container": "#201f1f",
-                        "surface-container-highest": "#353534",
-                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
-                        "primary": "#ffb2bf",
-                        "outline-variant": "#5d3f44",
-                        "surface": "#131313",
-                        "on-surface-variant": "#e6bcc2",
-                        "on-secondary-fixed-variant": "#454748",
-                        "error": "#ffb4ab",
-                        "tertiary-fixed": "#e5e2e1",
-                        "surface-container-low": "#1c1b1b",
-                        "surface-dim": "#131313",
-                        "surface-container-lowest": "#0e0e0e",
-                        "outline": "#ac878d",
                         "tertiary": "#c8c6c5",
-                        "on-tertiary-fixed": "#1b1b1c",
-                        "secondary-fixed": "#e3e2e3",
-                        "error-container": "#93000a",
-                        "on-background": "#e5e2e1",
-                        "secondary": "#c6c6c7",
-                        "on-primary-fixed-variant": "#90003b",
-                        "inverse-on-surface": "#313030",
-                        "on-primary": "#660028",
-                        "inverse-surface": "#e5e2e1",
-                        "background": "#131313",
-                        "primary-fixed": "#ffd9de",
-                        "surface-container-high": "#2a2a2a",
-                        "on-tertiary": "#303030",
+                        "on-tertiary": "#313030",
+                        "on-surface-variant": "#e6bcc2",
+                        "surface-variant": "#353535",
+                        "primary-container": "#ff4d80",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-tertiary-container": "#2a2a2a",
+                        "tertiary-fixed-dim": "#c8c6c5",
                         "tertiary-container": "#929090",
+                        "secondary-container": "#454747",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-bright": "#393939",
+                        "on-primary-fixed-variant": "#90003b",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-container": "#1f1f1f",
+                        "outline": "#ac878d",
+                        "primary-fixed": "#ffd9de",
+                        "background": "#131313",
                         "on-error": "#690005",
-                        "secondary-container": "#454748",
-                        "primary-fixed-dim": "#ffb2bf",
-                        "on-secondary-fixed": "#1a1c1d",
-                        "on-error-container": "#ffdad6"
+                        "secondary": "#c6c6c7",
+                        "on-background": "#e2e2e2",
+                        "inverse-surface": "#e2e2e2",
+                        "primary-fixed-dim": "#FC036D",
+                        "on-secondary-container": "#b4b5b5",
+                        "surface-dim": "#131313",
+                        "surface-tint": "#FC036D",
+                        "primary": "#FC036D",
+                        "surface-container-low": "#1b1b1b",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-primary-fixed": "#3f0016",
+                        "on-primary": "#ffffff",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#303030",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface": "#131313",
+                        "on-surface": "#e2e2e2",
+                        "outline-variant": "#5d3f44",
+                        "on-primary-container": "#5a0022",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353535",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "error-container": "#93000a"
                     },
                     "borderRadius": {
                         "DEFAULT": "0.125rem",
@@ -72,31 +70,11 @@
                         "xl": "0.5rem",
                         "full": "0.75rem"
                     },
-                    "spacing": {
-                        "gutter-x": "2.5rem",
-                        "container-max": "1280px",
-                        "card-gap": "1.5rem",
-                        "section-padding-y": "6rem",
-                        "component-padding-y": "0.625rem",
-                        "component-padding-x": "1.5rem"
-                    },
                     "fontFamily": {
-                        "display-hero-mobile": ["Manrope"],
-                        "body-md": ["Inter"],
-                        "label-caps": ["Inter"],
-                        "headline-md": ["Manrope"],
-                        "headline-lg": ["Manrope"],
-                        "display-hero": ["Manrope"],
-                        "body-lg": ["Inter"]
-                    },
-                    "fontSize": {
-                        "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
-                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                        "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                        "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
                     }
                 }
             }
@@ -104,28 +82,14 @@
     </script>
 <style>
         .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .icon-fill {
-            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .glass-panel {
-            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .magenta-glow {
-            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
-        }
-        .text-glow {
-            text-shadow: 0 0 10px rgba(255, 178, 191, 0.5);
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         }
     </style>
 
-<meta name="description" content="Location Pioneer DJ sur RentSoundSystem : lecteurs CDJ, tables de mixage DJM, contrôleurs et équipements professionnels pour clubs, festivals et événements premium.">
+<meta name="description" content="Location Pioneer DJ sur RentSoundSystem : CDJ-3000, DJM-V10, Opus Quad et équipements DJ professionnels pour clubs, festivals et événements premium.">
 <link rel="canonical" href="https://rentsoundsystem.com/marque-pioneer-dj">
-<meta property="og:title" content="Pioneer DJ - Standard Mondial | RentSoundSystem">
-<meta property="og:description" content="Découvrez les équipements Pioneer DJ disponibles à la location pour clubs, festivals et événements premium.">
+<meta property="og:title" content="Pioneer DJ - Standard Club Professionnel | RentSoundSystem">
+<meta property="og:description" content="Découvrez les équipements Pioneer DJ disponibles à la location : CDJ-3000, DJM-V10, Opus Quad et solutions professionnelles pour clubs et événements.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://rentsoundsystem.com/marque-pioneer-dj">
 <meta name="twitter:card" content="summary_large_image">
@@ -139,12 +103,19 @@
 {"@type":"ListItem","position":3,"name":"Pioneer DJ","item":"https://rentsoundsystem.com/marque-pioneer-dj"}]}]}
 </script>
 
-<style id="rss-pioneer-compat">
+<style id="rss-pioneer-v2-compat">
 html,body{overflow-x:hidden!important;background:#131313!important}
 body{padding-top:80px!important}
 #header-container{position:relative;z-index:9999;width:100%}
 #header-container header{z-index:9999!important}
 #rss-mobile-menu-toggle{display:none!important}
+
+/* Classes prévues par le DESIGN.md mais absentes du tailwind-config source */
+.text-headline-lg{font-size:40px!important;line-height:1.2!important}
+.text-headline-md{font-size:24px!important;line-height:1.4!important}
+.text-body-md{font-size:16px!important;line-height:1.6!important}
+.text-body-sm{font-size:14px!important;line-height:1.5!important}
+.text-label-caps{font-size:12px!important;line-height:1!important;letter-spacing:.15em!important}
 
 /* Même axe horizontal que le footer */
 .rss-page-wrap{
@@ -157,8 +128,13 @@ body{padding-top:80px!important}
   box-sizing:border-box;
 }
 
-/* Footer global */
-.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+/* Footer global contextualisé pour cette marque */
+.rss-brand-footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:72px 0 28px;
+  color:#e5e2e1
+}
 .rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
 .rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
 .rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
@@ -180,88 +156,127 @@ body{padding-top:80px!important}
 }
 @media(max-width:600px){
   body{padding-top:72px!important}
-  .rss-page-wrap{padding-left:20px;padding-right:20px}
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
   .rss-footer-grid{grid-template-columns:1fr}
-  .rss-footer-wrap{padding:0 20px}
+  .rss-footer-wrap{padding:0 24px}
 }
 </style>
 </head>
-<body class="bg-background text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container min-h-screen flex flex-col">
+<body class="bg-background text-on-background font-body antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
 <!-- Main Content Canvas -->
-<main class="flex-grow">
+<main class="flex-grow flex flex-col w-full pb-24 md:pb-0">
 <!-- Hero Section -->
-<section class="relative min-h-[870px] flex items-center justify-center overflow-hidden border-b border-surface-glass-border">
-<!-- Background Image -->
+<section class="relative w-full h-[614px] min-h-[500px] flex items-center justify-center bg-surface-container-lowest overflow-hidden">
+<!-- Hero Background Image -->
 <div class="absolute inset-0 z-0">
-<img alt="DJ Stage" class="w-full h-full object-cover opacity-40" data-alt="A massive, high-energy nightclub stage illuminated by intense, cutting-edge laser lighting in vivid shades of electric fuchsia and deep violet. In the foreground, the silhouette of a DJ stands commandingly over a glowing Pioneer DJ setup, emphasizing the 'Nocturnal Premium' brand identity. The atmosphere is charged with adrenaline, set against a cavernous, dark industrial space that perfectly frames the professional audio equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQJAdDNo3bpdRbeWefwkBdwrVpldfbWyuyHXQm3VwQ_cP84Tg1u5noUzvyQCYy0C-bWeADnWL38_RVBtL06GkX8KA6VCyrl5BEbvoNhoKYVewjEb9wQDzscQw0La1ElmZYhXccGqwywSkOAd9hgEmRIRdl3FWZw0pfHaO7yNcOGe-tWbVnoG4Yl9CPlnhG-RVRtwAXShyu8cuR268hxv1mBSKjmoq1syqB58VYGAspRsfby-LOBFK7EdJGnKNFLD3WU0G3CRmAUME"/>
+<img alt="Pioneer DJ setup in a dark nightclub" class="w-full h-full object-cover opacity-40" data-alt="A professional club DJ booth featuring an industry-standard Pioneer DJ setup with multiple CDJ-3000 multi-players and a flagship DJM-V10 mixer. The scene is illuminated by dramatic, high-contrast club lighting cutting through a subtle haze in a pitch-black room. The aesthetic perfectly embodies a raw, nocturnal energy with clinical precision. Deep blacks form the foundation, punctuated by vivid, energetic pink laser accents and the glowing red and blue LED indicators on the hardware itself, reflecting a premium, high-stakes live event production environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWFtWhDThROc6V4oDRiV1BDQL2vSG-HhjMXtRSDB8TnWDrAgICyXIQzW0C9aH1NlIh4ZYhu0oYjupZMxbUZs4wADi9oLM43b9Gy5kWgyv6LJz8kNBYa8cl5F6B5gZCEis-YLNfGTWnA-cg8GvYIIrKLKucTX9FA7Sk78CEkdyyLraDUozkZ4hubAUoTN9cSz8QRZA8f7sfm-sCMLmXesD-cHGmhVAUF0F6t9Rhx9HRL_LdbF6p75LXDlGdx6x4C0-uCyW_GTlJDk4"/>
+<!-- Gradient Overlay for legibility -->
 <div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
 </div>
-<div class="relative z-10 rss-page-wrap text-center flex flex-col items-center">
-<!-- Badge -->
-<div class="inline-flex items-center px-4 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary font-label-caps text-label-caps mb-8 backdrop-blur-md">
-<span class="material-symbols-outlined text-[16px] mr-2">verified</span>
-                    Industry Standard
-                </div>
-<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-6 max-w-4xl text-glow">
+<!-- Hero Content -->
+<div class="relative z-10 text-center px-6 max-w-4xl mx-auto flex flex-col items-center">
+<h1 class="font-headline font-bold text-5xl md:text-7xl text-on-surface mb-6 tracking-tight drop-shadow-md">
                     Pioneer DJ
                 </h1>
-<p class="font-headline-md text-headline-md text-primary font-bold tracking-widest uppercase mb-10 text-shadow">
-                    Standard Mondial
+<p class="font-body text-xl md:text-2xl text-on-surface-variant mb-10 max-w-2xl leading-relaxed">
+                    Le standard de l'industrie pour les performances club professionnelles. Une qualité audio sans compromis alliée à un contrôle intuitif.
                 </p>
-<div class="flex flex-col sm:flex-row gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Pioneer%20DJ'" class="bg-[#FC036D] text-white font-label-caps text-label-caps px-8 py-4 rounded-full uppercase tracking-wider magenta-glow hover:bg-opacity-90 transition-all active:scale-95 flex items-center justify-center">
-                        Explore Catalog
-                        <span class="material-symbols-outlined ml-2 text-[18px]">arrow_forward</span>
-</button>
-<button type="button" onclick="document.querySelector('#pioneer-hubs')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-outline-variant text-on-surface font-label-caps text-label-caps px-8 py-4 rounded-full uppercase tracking-wider hover:bg-surface-container transition-all active:scale-95 flex items-center justify-center">
-<span class="material-symbols-outlined mr-2 text-[18px]">play_circle</span>
-                        Watch Case Study
+<div class="flex gap-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=Pioneer%20DJ'" class="bg-primary text-on-primary font-bold py-3 px-8 rounded hover:bg-opacity-90 transition-colors duration-200 text-lg">
+                        Explorer l'Inventaire
+                    </button>
+<button type="button" onclick="document.querySelector('#pioneer-flagship')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-primary text-primary font-bold py-3 px-8 rounded hover:bg-primary/10 transition-colors duration-200 text-lg">
+                        Fiches Techniques
                     </button>
 </div>
 </div>
 </section>
-<!-- Locations Bento Grid -->
-<section id="pioneer-hubs" class="rss-page-wrap py-section-padding-y">
-<div class="mb-12">
-<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Le son Pioneer DJ à louer</h2>
-<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Available in the world's most demanding electronic music capitals. Immediate deployment for tier-one events.</p>
+<!-- Technical Highlights (Bento Grid) -->
+<section id="pioneer-flagship" class="rss-page-wrap py-20">
+<h2 class="font-headline font-bold text-headline-lg text-on-surface mb-12 border-b border-outline-variant pb-4">Écosystème Flagship</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Highlight (CDJ) -->
+<div id="pioneer-slot-cdj3000" class="md:col-span-2 bg-surface-container rounded-lg p-8 border border-outline-variant/30 flex flex-col md:flex-row gap-8 items-center group hover:border-outline-variant transition-colors duration-300">
+<div class="flex-1 space-y-4">
+<span class="inline-block bg-surface px-3 py-1 text-label-caps text-primary tracking-widest rounded">LECTEUR MULTIPARTIE</span>
+<h3 class="font-headline font-bold text-headline-md text-on-surface">CDJ-3000</h3>
+<p class="font-body text-body-md text-on-surface-variant/80">
+                            Le lecteur DJ ultime, propulsé par un nouveau MPU. Stabilité à toute épreuve, écran tactile avancé et fidélité audio supérieure conçue pour la scène principale.
+                        </p>
+<ul class="space-y-2 mt-4 text-body-sm text-tertiary">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Traitement MPU Avancé</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Écran Tactile Haute Résolution 9 pouces</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-sm">check_circle</span> Pro DJ Link Gigabit Ethernet</li>
+</ul>
 </div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
-<!-- Ibiza -->
-<div id="pioneer-hub-ibiza" class="glass-panel rounded-xl overflow-hidden group relative h-[400px] cursor-pointer" role="link" tabindex="0">
-<img alt="Ibiza Setup" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="A sun-drenched yet moody open-air DJ booth in Ibiza at dusk. High-end Pioneer CDJs sit on an industrial metal table, perfectly framing the vibrant, fading orange sunset over the Mediterranean Sea. The scene perfectly captures the exclusive, premium atmosphere of a top-tier island club, infused with the sharp, high-contrast Nocturnal Premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6Am6SjiRaEelNG62k7EoAvyRF3a4WHeoYdJ65wreWA8Kx0oiY-WagyMdgj36gsFdK0ip6YbFA6V0ElG1FtH58dQlYMkrU__P48pa9KRLg8xs7RZhrgj7GbUxwY6Cy9Hw5ERGDp_wXXI_jDH0xnnYtDQBLdT5D76bWh6-aHyvEERApSK55NB4g2QgFgaI5C4xzUigEip2Lzl_5438PxNDhiL6mWB8a2VZt6PYVvhFOR4ws7Tk_1JT6cwnyPuWkyJXD-_AmztJA58o"/>
-<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-90"></div>
-<div class="absolute bottom-0 left-0 p-8 w-full">
-<div class="flex items-center justify-between mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">Ibiza</h3>
-<span class="material-symbols-outlined text-[#FC036D]">location_on</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant">White Isle Deployment</p>
-</div>
-</div>
-<!-- London -->
-<div id="pioneer-hub-london" class="glass-panel rounded-xl overflow-hidden group relative h-[400px]">
-<img alt="London Setup" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="An underground, heavily soundproofed basement club in London, bathed in deep obsidian shadows and stark electric magenta light strips. The focus is on a sprawling Pioneer DJ setup on a concrete plinth, exuding a raw, industrial, yet highly sophisticated technical environment. The mood is gritty, professional, and undeniably nocturnal." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPU1J2K6YqEy-dCpclXZ8qd64LlRYXVo_iwy_MmUb5aGIEphqIvNNeHhqp3f7qK_kKSEZ4zeu44wQAbkhI9WgZRQOHhIIDb7hF2tu16iYGmEIuc83iruvgmKuhYis0ler-DOjEwpicU8_0kiOOaPhkj6xbVlhjE2PSHITbzTRIgRntXOZ23h4SGzsndEWYUQwz5SO9vfOK1t0_rLi5cXfx5SxWKMtrAyMrCOjI37aExs9upKbA-TAW8D2Y5eF7UZmijPn0SNJg5OU"/>
-<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-90"></div>
-<div class="absolute bottom-0 left-0 p-8 w-full">
-<div class="flex items-center justify-between mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">London</h3>
-<span class="material-symbols-outlined text-[#FC036D]">location_on</span>
-</div>
-<p class="font-body-md text-body-md text-on-surface-variant">Underground Hub</p>
+<div class="flex-1 w-full relative h-64 rounded bg-surface-dim overflow-hidden">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuBQq6K5gTIaGI4U292t28yzgZ2hiVpWwbcyq6kLv-EREpDAsl8Q8dgv1IflYvskJ0LrD-qIA6j40hvsiAs6v_QYNVV3i_VBIR9bqjJ4gIU4rz6QHNj5YfnbphfnmtwqV0YA7Q3uuflyvs_hJZWuk7J-FX-dcblrdjtKopEPfFxdY8xk3KH2fH1pQnL0EH8nmS4rFHtCX9U2RCpvB-v7B0Yxzoz7_qFQm5F7aNwQ8D3frJ5GZrnHQQ3Jg98DziV133-V8v86TTE7yyY" alt="Pioneer CDJ-3000 close up" class="w-full h-full object-cover opacity-80 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500" data-alt="A macro, clinical product shot of the Pioneer CDJ-3000 multi-player sitting on a dark charcoal surface. The lighting is precise and technical, highlighting the brushed metal textures, the large responsive jog wheel, and the vibrant 9-inch high-resolution touch screen displaying complex waveform data. The overall aesthetic is minimalist-corporate, utilizing a deep black foundation with low-contrast outlines to emphasize the premium build quality. Subtle vivid pink LED accents from the player's buttons provide a necessary visual anchor against the dark surroundings." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQq6K5gTIaGI4U292t28yzgZ2hiVpWwbcyq6kLv-EREpDAsl8Q8dgv1IflYvskJ0LrD-qIA6j40hvsiAs6v_QYNVV3i_VBIR9bqjJ4gIU4rz6QHNj5YfnbphfnmtwqV0YA7Q3uuflyvs_hJZWuk7J-FX-dcblrdjtKopEPfFxdY8xk3KH2fH1pQnL0EH8nmS4rFHtCX9U2RCpvB-v7B0Yxzoz7_qFQm5F7aNwQ8D3frJ5GZrnHQQ3Jg98DziV133-V8v86TTE7yyY"/>
 </div>
 </div>
-<!-- Amsterdam -->
-<div id="pioneer-hub-amsterdam" class="glass-panel rounded-xl overflow-hidden group relative h-[400px]">
-<img alt="Amsterdam Setup" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="A massive, high-tech festival mainstage structure in Amsterdam, seen from the DJ's perspective looking out over a sea of darkness punctuated by laser arrays. The foreground is a pristine row of Pioneer DJ gear reflecting the neon glow. The style is grand, imposing, and hyper-modern, fitting the Nocturnal Premium identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQjLEnv2Jtvv2Gf4DUSIuaLrIVYQra_qXC-A5SWaPzU6jMZjou-AzCu4qbACAhXqpIE5tuREDJuTGSS5gHqEStQnmze5IQNI7Ao4QFSC8vCaXXEAPllg45i3VYQ1zVMCCqg_PsQGF8n1PVO_JLHR5n7o7zWbDxijMdqltGk56McL-XKkAOBNUzFXe74PKk8kHnV5WYOnga_uc1XkJtadcSVisnyKF59QT6qbj5DpK9TZZUtZ9Bp8OpVcjemZWIV4EyzSrle_s_CtY"/>
-<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-90"></div>
-<div class="absolute bottom-0 left-0 p-8 w-full">
-<div class="flex items-center justify-between mb-2">
-<h3 class="font-headline-md text-headline-md text-on-surface">Amsterdam</h3>
-<span class="material-symbols-outlined text-[#FC036D]">location_on</span>
+<!-- Small Highlight (Mixer) -->
+<div id="pioneer-slot-djmv10" class="bg-surface-container rounded-lg p-8 border border-outline-variant/30 flex flex-col gap-6 group hover:border-outline-variant transition-colors duration-300">
+<div class="w-full relative h-48 rounded bg-surface-dim overflow-hidden">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuAeo4qCDUc5rGhDu8E4U45WFiri2ZCcjIZxst_8j-OtNBk2_kErVOscrQDDnp84Dh2nowcFG_2SCtP4rbaHXGvsWaovMHQdtQtuTdA-2pKuPyrPYd5WyPK1zcjXRD5Vs4i2FQCIEmdkNVhW1bVFFhOz2mjGT1HWuIoH_GDDWJMUVZsNbLTH2dikw3uYTZKjgNpZWgmxyrr5qEyAGjDkhcZbCFgXUIQKEtRPBSnpvYtOHtBlqJcZkpIZ9es2y3_nhdWx0VOUEOfO5qQ" alt="Pioneer DJM-V10 Mixer" class="w-full h-full object-cover opacity-80 mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500" data-alt="A top-down, razor-sharp product photograph of the Pioneer DJM-V10 6-channel professional DJ mixer. The mixer is set against a pure black background to maximize contrast. The lighting focuses intently on the dense array of rotary knobs, precise faders, and the sophisticated central display screen. The image exudes industrial professionalism and clinical precision, relying on a palette of cool grays and dark charcoal, with the essential visual cues provided by the mixer's own vivid pink and red LED level meters glowing intensely in the dark environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeo4qCDUc5rGhDu8E4U45WFiri2ZCcjIZxst_8j-OtNBk2_kErVOscrQDDnp84Dh2nowcFG_2SCtP4rbaHXGvsWaovMHQdtQtuTdA-2pKuPyrPYd5WyPK1zcjXRD5Vs4i2FQCIEmdkNVhW1bVFFhOz2mjGT1HWuIoH_GDDWJMUVZsNbLTH2dikw3uYTZKjgNpZWgmxyrr5qEyAGjDkhcZbCFgXUIQKEtRPBSnpvYtOHtBlqJcZkpIZ9es2y3_nhdWx0VOUEOfO5qQ"/>
 </div>
-<p class="font-body-md text-body-md text-on-surface-variant">Festival Ready</p>
+<div class="space-y-4">
+<span class="inline-block bg-surface px-3 py-1 text-label-caps text-primary tracking-widest rounded">TABLE DE MIXAGE</span>
+<h3 class="font-headline font-bold text-headline-md text-on-surface">DJM-V10</h3>
+<p class="font-body text-body-sm text-on-surface-variant/80">
+                            Sculptez votre propre son avec 6 canaux et un contrôle d'égalisation sans précédent. Mixage 64 bits de qualité studio.
+                        </p>
+</div>
+</div>
+<!-- Standalone Highlight (All-in-one) -->
+<div id="pioneer-slot-opusquad" class="md:col-span-3 bg-surface-container-low rounded-lg p-8 border border-outline-variant/30 flex flex-col md:flex-row-reverse gap-8 items-center mt-6">
+<div class="flex-1 space-y-4 pl-0 md:pl-8">
+<span class="inline-block bg-surface px-3 py-1 text-label-caps text-primary tracking-widest rounded">TOUT-EN-UN</span>
+<h3 class="font-headline font-bold text-headline-md text-on-surface">Opus Quad</h3>
+<p class="font-body text-body-md text-on-surface-variant/80">
+                            Une toute nouvelle approche de l'équipement DJ qui harmonise design et jouabilité. Élevez l'esthétique de n'importe quel lieu tout en offrant des performances professionnelles.
+                        </p>
+<button class="mt-4 bg-transparent border border-primary text-primary font-bold py-2 px-6 rounded hover:bg-primary/10 transition-colors duration-200">
+                            Vérifier la Disponibilité
+                        </button>
+</div>
+<div class="flex-1 w-full relative h-72 rounded bg-surface-dim overflow-hidden">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuA2x8nsMYXV8vPKi1ukMAralL0JLPGihdBEFAHW1t7AeRje7S3vw_aEo19cJpuPr1XduptjpfmFU2xC4TO8KujpIMTmVIc3oFwD8CEV85-zT5AougMtCY9km3bj--yMhhmxOzXBAHRybf4TRt4bVlGsH6uwaL0wrlPVeZxZj60_tkQYr53Vd9fk-KloNasZ-aDcXH3CNGYs9YayJBgaVsXj07ogjfNAA-aFf-QXjP_KE9hEw32eMqRrw4PwbJLpZgOY4YdcPH4vOjY" alt="Pioneer Opus Quad" class="w-full h-full object-cover opacity-70" data-alt="A sleek, architectural shot of the Pioneer Opus Quad all-in-one DJ system situated in a sophisticated, upscale lounge environment. The room is dimly lit, focusing entirely on the refined, fan-shaped design of the unit with its matte black finish and elegant bronze accents. The large central touch screen and individual deck displays glow warmly. The composition uses generous dark space to emphasize the premium, minimalist-corporate positioning, utilizing subtle tonal depth and low-contrast lighting to create a 'glass-on-black' sophisticated look that perfectly balances high-end aesthetics with technical capability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2x8nsMYXV8vPKi1ukMAralL0JLPGihdBEFAHW1t7AeRje7S3vw_aEo19cJpuPr1XduptjpfmFU2xC4TO8KujpIMTmVIc3oFwD8CEV85-zT5AougMtCY9km3bj--yMhhmxOzXBAHRybf4TRt4bVlGsH6uwaL0wrlPVeZxZj60_tkQYr53Vd9fk-KloNasZ-aDcXH3CNGYs9YayJBgaVsXj07ogjfNAA-aFf-QXjP_KE9hEw32eMqRrw4PwbJLpZgOY4YdcPH4vOjY"/>
+</div>
+</div>
+</div>
+</section>
+<!-- Professional Reviews / Trust -->
+<section class="w-full bg-surface-container-lowest py-20 border-t border-outline-variant/20">
+<div class="rss-page-wrap">
+<h2 class="font-headline font-bold text-headline-lg text-on-surface mb-12 text-center">Validation de l'Industrie</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Review Card 1 -->
+<div class="bg-surface p-8 rounded border border-surface-bright relative">
+<span class="material-symbols-outlined absolute top-6 right-6 text-primary opacity-20 text-4xl">format_quote</span>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-surface-bright"></div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Mainstage Productions</h4>
+<p class="font-body text-body-sm text-tertiary">Partenaire de Tournée Mondial</p>
+</div>
+</div>
+<p class="font-body text-body-md text-on-surface-variant italic">
+                            "Lorsque nous prescrivons de l'équipement pour un festival de 50 000 personnes, il n'y a aucune marge d'erreur. L'écosystème CDJ-3000 s'est avéré d'une stabilité irréprochable dans les conditions de tournée les plus éprouvantes. La fidélité audio sur des line arrays massifs est inégalée."
+                        </p>
+</div>
+<!-- Review Card 2 -->
+<div class="bg-surface p-8 rounded border border-surface-bright relative">
+<span class="material-symbols-outlined absolute top-6 right-6 text-primary opacity-20 text-4xl">format_quote</span>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-surface-bright"></div>
+<div>
+<h4 class="font-headline font-bold text-on-surface">Club Resonance</h4>
+<p class="font-body text-body-sm text-tertiary">Directeur Technique Résident</p>
+</div>
+</div>
+<p class="font-body text-body-md text-on-surface-variant italic">
+                            "Mettre à jour notre cabine avec la DJM-V10 a complètement changé la dynamique de notre système son. Le contrôle granulaire sur l'égalisation et la réserve de puissance massive permettent à nos DJ en tournée de pousser le système exactement comme il a été conçu pour l'être."
+                        </p>
 </div>
 </div>
 </div>
@@ -318,7 +333,10 @@ body{padding-top:80px!important}
 </div>
 </footer>
 
-<script id="rss-pioneer-runtime">
+<script id="rss-pioneer-products">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
 async function loadHeader(){
   const target=document.getElementById('header-container');
   if(!target)return;
@@ -337,21 +355,164 @@ async function loadHeader(){
   }
 }
 
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=Pioneer%20DJ';
+}
+function isPioneer(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const full=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.category,item.description].join(' '));
+  return brand.includes('pioneer') || full.includes('pioneer dj') || full.includes('pioneer');
+}
+function chooseExact(items,terms,used){
+  const keys=terms.map(norm);
+  const found=items.find(item=>{
+    const id=String(item.original_id??item.id??item.title??'');
+    if(used.has(id))return false;
+    const text=norm([item.title,item.model,item.category,item.description].join(' '));
+    return keys.some(k=>text.includes(k));
+  }) || null;
+  if(found)used.add(String(found.original_id??found.id??found.title??''));
+  return found;
+}
+function setupFallback(slotId,search){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(search);
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  slot.addEventListener('click',e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  });
+  slot.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  });
+
+  const button=slot.querySelector('button');
+  if(button){
+    button.type='button';
+    button.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  }
+}
+function applyProduct(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url=productUrl(item);
+  const img=slot.querySelector('img');
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+  const button=slot.querySelector('button');
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,260);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'Pioneer DJ';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      img.onerror=null;
+      if(fallback)img.src=fallback;
+    };
+    if(real)img.src=real;
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.onclick=e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  };
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+
+  if(button){
+    button.type='button';
+    button.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  }
+}
+
+async function loadPioneerProducts(){
+  try{
+    if(!window.supabase)return;
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(isPioneer);
+    const used=new Set();
+
+    const cdj=chooseExact(products,['cdj 3000','cdj-3000'],used);
+    const v10=chooseExact(products,['djm v10','djm-v10'],used);
+    const opus=chooseExact(products,['opus quad','opus-quad'],used);
+
+    applyProduct('pioneer-slot-cdj3000',cdj);
+    applyProduct('pioneer-slot-djmv10',v10);
+    applyProduct('pioneer-slot-opusquad',opus);
+
+    if(!cdj)console.info('Pioneer DJ: aucun CDJ-3000 exact publié — Stitch + catalogue ciblé conservés.');
+    if(!v10)console.info('Pioneer DJ: aucun DJM-V10 exact publié — Stitch + catalogue ciblé conservés.');
+    if(!opus)console.info('Pioneer DJ: aucun Opus Quad exact publié — Stitch + catalogue ciblé conservés.');
+
+  }catch(e){
+    console.warn('Pioneer DJ products:',e);
+  }
+}
+
 document.addEventListener('DOMContentLoaded',()=>{
   loadHeader();
 
-  const ibiza=document.getElementById('pioneer-hub-ibiza');
-  if(ibiza){
-    const go=()=>location.href='/location-sono/location-sono-ibiza';
-    ibiza.addEventListener('click',go);
-    ibiza.addEventListener('keydown',e=>{
-      if(e.key==='Enter'||e.key===' '){
-        e.preventDefault();
-        go();
-      }
-    });
-  }
+  setupFallback('pioneer-slot-cdj3000','Pioneer DJ CDJ-3000');
+  setupFallback('pioneer-slot-djmv10','Pioneer DJ DJM-V10');
+  setupFallback('pioneer-slot-opusquad','Pioneer DJ Opus Quad');
+
+  loadPioneerProducts();
 });
 </script>
 
-</body></html>
+</body>
+</html>
