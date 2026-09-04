@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audio-Technica : Précision Japonaise | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#ffb2bf",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-fixed": "#e3e2e3",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "secondary": "#c6c6c7",
+                        "on-secondary": "#2f3132",
+                        "on-error": "#690005",
+                        "surface-bright": "#393939",
+                        "on-primary": "#660028",
+                        "background": "#131313",
+                        "outline-variant": "#5d3f44",
+                        "primary-container": "#ff4d80",
+                        "on-surface-muted": "#E6BCC2",
+                        "on-primary-fixed": "#3f0016",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-primary-container": "#5a0022",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "inverse-primary": "#bc004f",
+                        "primary": "#ffb2bf",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary": "#303030",
+                        "surface": "#131313",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed": "#ffd9de",
+                        "on-surface-variant": "#e6bcc2",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#454748",
+                        "outline": "#ac878d",
+                        "surface-container": "#201f1f",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-dim": "#131313",
+                        "on-background": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "on-surface": "#e5e2e1",
+                        "surface-variant": "#353534",
+                        "on-secondary-fixed-variant": "#454748",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "tertiary-container": "#929090",
+                        "surface-container-highest": "#353534",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#90003b",
+                        "tertiary": "#c8c6c5",
+                        "tertiary-fixed": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-x": "1.5rem",
+                        "container-max": "1280px",
+                        "card-gap": "1.5rem",
+                        "component-padding-y": "0.625rem",
+                        "section-padding-y": "6rem",
+                        "gutter-x": "2.5rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-hero-mobile": ["Manrope"],
+                        "display-hero": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        
+        /* Custom scrollbar for a premium feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0e0e0e; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353534; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #454748; 
+        }
+        
+        /* Subtly animated gradient border utility */
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(42, 42, 42, 0.4) 0%, rgba(32, 31, 31, 0.2) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar Shared Component -->
+<nav class="bg-surface-glass dark:bg-surface-glass docked full-width top-0 sticky backdrop-blur-xl border-b border-surface-glass-border shadow-lg shadow-neon-glow z-50">
+<div class="flex justify-between items-center px-gutter-x py-component-padding-y max-w-container-max mx-auto">
+<a class="font-display-hero-mobile text-headline-md font-bold text-primary tracking-tighter" href="/">RentSoundSystem</a>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="/etudes-de-cas">Case Studies</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="/actualites">Industry News</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="/conseils">Expert Tips</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-caps text-label-caps" href="/marques">Marketplace</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-300 font-label-caps text-label-caps" href="/a-propos">About</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-high transition-all duration-200">
+<span class="material-symbols-outlined text-on-surface">search</span>
+</button>
+<a class="bg-primary-container text-on-primary-container px-6 py-2 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-widest shadow-[0_0_20px_rgba(252,3,109,0.3)] hover:scale-95 transition-transform duration-200" href="/connexion">Sign In</a>
+</div>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center pt-24 pb-section-padding-y overflow-hidden">
+<!-- Background Image with Overlay -->
+<div class="absolute inset-0 z-0">
+<img alt="Audio-Technica Heritage" class="w-full h-full object-cover object-center opacity-40" data-alt="A macro, cinematic shot of a high-end Audio-Technica turntable needle resting on a vinyl record in a dimly lit, professional recording studio environment. The lighting is nocturnal and moody, heavily emphasizing deep obsidian blacks and brushed metallic textures, with a subtle, electric fuchsia glow illuminating the edge of the platter, reflecting the 'Nocturnal Premium' brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAeh0xNmEdMwacoIkwGW6U6sIwnwvxqO-vJG74_bS1WxT6U5wWc_usWaYFlVldb1NH2rhkoxJP92CzTIAtw1k8UzuoM9AQfh3hmGPmizblgjvuoRB6Q3mXg8oPcbQw7aoSqd4zJ4DfBpVHxEh4VRqbfkvPqENvXhWzeOhXnl54KkDfEX4qzXRSglBdGPz6yGCVOTf3VKw3ImIP79tcXs0eaeCLeVxtEWl60-INjvtjc5vsAIQWG1Zl-j703qmSsp4fUg33dnIvnUYw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/50 to-transparent"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max mx-auto px-gutter-x">
+<div class="max-w-3xl">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface-container-highest border border-surface-glass-border mb-6">
+<span class="material-symbols-outlined text-primary text-sm icon-fill">verified</span>
+<span class="font-label-caps text-label-caps text-primary uppercase">Marque Partenaire Officielle</span>
+</div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-6">
+                        Audio-Technica : <br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary-container">Précision Japonaise</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-10 max-w-2xl">
+                        Fondée à Tokyo en 1962, Audio-Technica incarne la précision japonaise au service des professionnels du son. Des studios d'enregistrement aux scènes internationales, louez une référence reconnue pour sa fiabilité, sa clarté et son exigence acoustique.
+                    </p>
+<div class="flex flex-wrap gap-4">
+<a class="inline-flex items-center gap-2 bg-primary-container text-on-primary-container px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-widest shadow-[0_0_20px_rgba(252,3,109,0.3)] hover:bg-inverse-primary transition-all duration-300" href="#produits">
+                            Explorer l'Équipement
+                            <span class="material-symbols-outlined">arrow_downward</span>
+</a>
+<a class="inline-flex items-center gap-2 bg-transparent text-on-surface px-8 py-4 rounded-DEFAULT border border-outline-variant hover:bg-surface-container transition-all duration-300 font-label-caps text-label-caps uppercase tracking-widest" href="#disponibilite">
+                            Voir la Disponibilité
+                        </a>
+</div>
+</div>
+</div>
+</section>
+<!-- Featured Products (Bento Grid) -->
+<section class="py-section-padding-y bg-surface-container-lowest relative" id="produits">
+<!-- Decorative Glow -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="max-w-container-max mx-auto px-gutter-x relative z-10">
+<div class="mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Ingénierie de Précision</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-3xl">L'équipement de référence pour les professionnels de l'audio. Disponible immédiatement à la location.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Large Feature Card 1 -->
+<div class="md:col-span-8 glass-panel rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-surface-container-high/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="flex flex-col md:flex-row gap-8 h-full relative z-10">
+<div class="flex-1 flex flex-col justify-between">
+<div>
+<div class="inline-block px-3 py-1 rounded border border-primary/30 text-primary font-label-caps text-label-caps mb-4">Studio &amp; Broadcast</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Microphones Série AT40</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">La référence mondiale pour la capture vocale et instrumentale. Condensateurs à large diaphragme offrant une chaleur et une clarté exceptionnelles pour les enregistrements critiques.</p>
+</div>
+<div>
+<div class="flex items-center justify-between mb-4">
+<span class="text-on-surface-variant font-body-md text-body-md">À partir de</span>
+<span class="font-headline-md text-headline-md text-primary">45€ <span class="text-sm text-on-surface-muted font-normal">/jour</span></span>
+</div>
+<button class="w-full bg-surface-container text-on-surface border border-surface-glass-border hover:border-primary hover:text-primary py-3 rounded transition-all duration-300 font-label-caps text-label-caps uppercase flex items-center justify-center gap-2">
+                                        Vérifier les dates <span class="material-symbols-outlined text-sm">calendar_month</span>
+</button>
+</div>
+</div>
+<div class="flex-1 rounded-lg overflow-hidden border border-surface-glass-border bg-surface-container-highest relative">
+<img alt="Audio-Technica Microphone" class="w-full h-full object-cover object-center mix-blend-luminosity group-hover:mix-blend-normal transition-all duration-500 opacity-80 group-hover:opacity-100" data-alt="A sleek, professional Audio-Technica studio condenser microphone mounted on a heavy-duty shock mount in a dark, soundproofed recording booth. The metallic grille catches a sharp highlight from a single overhead spotlight, while the background falls off into deep obsidian shadow, accented by subtle, out-of-focus electric fuchsia LEDs from an audio interface console." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0G0GEO3k7ubB_Lz3sj7jHVUwE51-pjNN4Jji7JDbq0aVHhRI4Jurv_IokWyrWe8oDgLPKI9lfBY1ENKpCVWpxpe8WB_TQB9E-6pcl_6VgqWvc1I5fjLlG3sBq-uTXlDEoxOGsdbqDPAMoVEPHSlDiFE3vAeAxzbw9CMQfswAJWHLRwP1n9k3g0Yna3q33enfDpV4bMFO37a8eNErKKYLZHiffe-OH0FpD0xOhpwPAdBB6UUQnlmfVHn8ibQJKsSAwCakAcu0Gtck"/>
+</div>
+</div>
+</div>
+<!-- Medium Feature Card 1 -->
+<div class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col justify-between group hover:border-primary/50 transition-colors duration-300">
+<div>
+<span class="material-symbols-outlined text-primary text-4xl mb-4">headphones</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">ATH-M50x</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Le casque de monitoring studio le plus acclamé par les professionnels de l'industrie pour son isolation sonore parfaite et sa réponse en fréquence étendue.</p>
+</div>
+<div>
+<div class="flex flex-wrap gap-2 mb-6">
+<span class="px-2 py-1 bg-surface-container text-on-surface-muted text-xs rounded border border-surface-glass-border">Filaire</span>
+<span class="px-2 py-1 bg-surface-container text-on-surface-muted text-xs rounded border border-surface-glass-border">Fermé</span>
+</div>
+<button class="w-full bg-transparent text-primary border border-primary hover:bg-primary/10 py-3 rounded transition-all duration-300 font-label-caps text-label-caps uppercase">
+                                Réserver
+                            </button>
+</div>
+</div>
+<!-- Medium Feature Card 2 -->
+<div class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col justify-between group hover:border-primary/50 transition-colors duration-300">
+<div>
+<span class="material-symbols-outlined text-primary text-4xl mb-4">album</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">Platines Direct-Drive</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Moteurs à entraînement direct haute fidélité pour les DJ professionnels et les audiophiles. Stabilité absolue de la rotation et châssis anti-résonance.</p>
+</div>
+<button class="w-full bg-transparent text-primary border border-primary hover:bg-primary/10 py-3 rounded transition-all duration-300 font-label-caps text-label-caps uppercase">
+                            Réserver
+                        </button>
+</div>
+<!-- Large Feature Card 2 -->
+<div class="md:col-span-8 glass-panel rounded-xl p-8 flex items-center justify-center relative overflow-hidden group min-h-[300px]">
+<div class="absolute inset-0">
+<img alt="Studio Mixer" class="w-full h-full object-cover object-center opacity-30 group-hover:opacity-40 transition-opacity duration-700" data-alt="A sprawling, high-end professional audio mixing console in a dimly lit, premium recording studio. Dozens of metallic faders, knobs, and illuminated buttons stretch across the surface. The scene is rendered in deep dark mode tones with 'Nocturnal Premium' styling, featuring crisp electric fuchsia accent lights glowing from specific channel strips and digital meter displays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4HdP1ig92c_iXYrFDJsUi7h81XBIESD6rDjHGTTExYXQXd7e6Kxs5dxT28Y88wqIdNC02b6dnGbQOCw_yQVSTo3VoMwRoRD-J5x4f3IayNbbLNKGvfTrhY1p6nZzQmWTs_oM-Ku8wj_Hx5qph4cx7EbBHdz1dAJhOsqItiLRdz9kQ2TgKynzA77Qek9phmWRm65JwbqY7R6xRb4BWQg5YxTiVBqW_igE21Mf2fqqbtw1cF-yNMyafe1mZxMSgb4dQCUwOxm6wb6c"/>
+<div class="absolute inset-0 bg-surface-container-lowest/60"></div>
+</div>
+<div class="relative z-10 text-center max-w-lg">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Kits de Captation Complets</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Solutions pré-assemblées pour podcasting, enregistrement sur site et live streaming, incluant microphones, casques et interfaces certifiées.</p>
+<a class="inline-flex items-center gap-2 text-primary font-label-caps text-label-caps uppercase tracking-widest hover:text-primary-fixed transition-colors" href="#">
+                                Voir les Kits <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Global Availability Section -->
+<section class="py-section-padding-y bg-surface-dim relative border-y border-surface-glass-border" id="disponibilite">
+<div class="max-w-container-max mx-auto px-gutter-x">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div class="max-w-2xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Disponibilité Globale</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">L'équipement Audio-Technica est stocké et maintenu dans nos hubs logistiques principaux, garantissant une livraison le jour même pour vos productions critiques.</p>
+</div>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full border border-surface-glass-border flex items-center justify-center hover:bg-surface-container hover:text-primary transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-surface-glass-border flex items-center justify-center hover:bg-surface-container hover:text-primary transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Hub Card: Paris -->
+<div class="glass-panel rounded-xl overflow-hidden border border-surface-glass-border group cursor-pointer">
+<div class="h-48 relative overflow-hidden bg-surface-container-highest">
+<div class="absolute inset-0 flex items-center justify-center opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary" data-location="Paris">location_city</span>
+</div>
+<div class="absolute bottom-4 left-4 z-10">
+<span class="px-2 py-1 bg-background/80 backdrop-blur text-primary text-xs font-label-caps rounded uppercase">Hub Européen</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Paris, FR</h3>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(252,3,109,0.8)]"></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Inventaire complet M-Series et AT40. Livraison express Île-de-France.</p>
+<div class="flex items-center gap-2 text-sm text-on-surface-muted">
+<span class="material-symbols-outlined text-sm">inventory_2</span> 142 articles disponibles
+                            </div>
+</div>
+</div>
+<!-- Hub Card: Tokyo -->
+<div class="glass-panel rounded-xl overflow-hidden border border-surface-glass-border group cursor-pointer">
+<div class="h-48 relative overflow-hidden bg-surface-container-highest">
+<div class="absolute inset-0 flex items-center justify-center opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary" data-location="Tokyo">public</span>
+</div>
+<div class="absolute bottom-4 left-4 z-10">
+<span class="px-2 py-1 bg-background/80 backdrop-blur text-primary text-xs font-label-caps rounded uppercase">Siège Historique</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">Tokyo, JP</h3>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(252,3,109,0.8)]"></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Éditions limitées et équipement broadcast haute capacité.</p>
+<div class="flex items-center gap-2 text-sm text-on-surface-muted">
+<span class="material-symbols-outlined text-sm">inventory_2</span> 89 articles disponibles
+                            </div>
+</div>
+</div>
+<!-- Hub Card: New York -->
+<div class="glass-panel rounded-xl overflow-hidden border border-surface-glass-border group cursor-pointer">
+<div class="h-48 relative overflow-hidden bg-surface-container-highest">
+<div class="absolute inset-0 flex items-center justify-center opacity-20">
+<span class="material-symbols-outlined text-6xl text-primary" data-location="New York">domain</span>
+</div>
+<div class="absolute bottom-4 left-4 z-10">
+<span class="px-2 py-1 bg-background/80 backdrop-blur text-primary text-xs font-label-caps rounded uppercase">Hub Amériques</span>
+</div>
+</div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md text-on-surface">New York, US</h3>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(252,3,109,0.8)]"></div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Stock spécialisé pour les scènes live et studios d'enregistrement.</p>
+<div class="flex items-center gap-2 text-sm text-on-surface-muted">
+<span class="material-symbols-outlined text-sm">inventory_2</span> 215 articles disponibles
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shared Component -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest full-width pt-section-padding-y pb-gutter-x border-t border-surface-glass-border">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-card-gap px-gutter-x max-w-container-max mx-auto">
+<!-- Brand Column -->
+<div class="md:col-span-1 mb-8 md:mb-0">
+<div class="font-display-hero-mobile text-headline-md font-bold text-primary mb-6">RentSoundSystem</div>
+<p class="text-on-surface-variant text-sm mb-6">
+                    La plateforme de référence pour la location d'équipement audio professionnel. Connectant les créateurs aux meilleurs outils de l'industrie.
+                </p>
+<div class="text-on-surface-muted text-xs">
+                    © 2024 RentSoundSystem. Precision Audio Engineering.
+                </div>
+</div>
+<!-- Links Column 1 -->
+<div class="md:col-span-1">
+<h4 class="font-label-caps text-label-caps text-on-surface mb-6 uppercase tracking-wider">Ressources</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-on-surface underline-offset-4 hover:underline transition-colors duration-200" href="#">Technical Documentation</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface underline-offset-4 hover:underline transition-colors duration-200" href="#">Case Study Archive</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface underline-offset-4 hover:underline transition-colors duration-200" href="#">Industry Insights</a></li>
+</ul>
+</div>
+<!-- Links Column 2 -->
+<div class="md:col-span-1">
+<h4 class="font-label-caps text-label-caps text-on-surface mb-6 uppercase tracking-wider">Légal</h4>
+<ul class="space-y-4">
+<li><a class="text-on-surface-variant hover:text-on-surface underline-offset-4 hover:underline transition-colors duration-200" href="#">Rental Terms</a></li>
+<li><a class="text-on-surface-variant hover:text-on-surface underline-offset-4 hover:underline transition-colors duration-200" href="#">Privacy Policy</a></li>
+</ul>
+</div>
+<!-- Contact Column -->
+<div class="md:col-span-1">
+<h4 class="font-label-caps text-label-caps text-on-surface mb-6 uppercase tracking-wider">Support</h4>
+<ul class="space-y-4 mb-8">
+<li><a class="text-on-surface-variant hover:text-on-surface underline-offset-4 hover:underline transition-colors duration-200" href="#">Contact Support</a></li>
+</ul>
+<a class="inline-flex items-center gap-2 text-primary hover:text-primary-fixed transition-colors text-sm" href="#">
+<span class="material-symbols-outlined text-base">mail</span> assistance@rentsoundsystem.com
+                </a>
+</div>
+</div>
+</footer>
+</body></html>
