@@ -446,7 +446,9 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     "audiocase": "/marque-audiocase",
     "audio-case": "/marque-audiocase",
     "apart": "/marque-apart",
-    "apart-audio": "/marque-apart"
+    "apart-audio": "/marque-apart",
+    "american-dj": "/marque-american-dj",
+    "adj": "/marque-american-dj"
   };
   function normalizeBrandKey(value){
     return String(value || "")
@@ -473,6 +475,7 @@ transition: all .3s ease;mix-blend-mode:multiply;}
     if (combined.includes("audio-technica")) return "/marque-audio-technica";
     if (combined.includes("audiocase") || combined.includes("audio-case")) return "/marque-audiocase";
     if (combined.includes("apart")) return "/marque-apart";
+    if (combined.includes("american-dj") || combined === "adj") return "/marque-american-dj";
     if (combined.includes("qsc")) return "/marque-qsc";
     if (combined.includes("sennheiser")) return "/marque-sennheiser";
     if (combined.includes("allen-and-heath") || combined.includes("allen-heath")) return "/marque-allen-heath";
