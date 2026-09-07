@@ -68,7 +68,24 @@
       const form=$("form-step3"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ coverage_area:val("coverage_area"), delivery_radius:val("delivery_radius"), handover_mode:val("handover_mode"), technician_available:val("technician_available"), deposit_policy:val("deposit_policy"), insurance_status:val("insurance_status"), logistics_notes:val("logistics_notes") }); go("/inscription-partenaire-kyc.html"); }, true);
     }
     if(p==="inscription-partenaire-kyc.html"){
-      const form=$("form-kyc"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); const btn=$("submit-kyc"); if(btn) btn.disabled=true; await submitFinal(); if(btn) btn.disabled=false; }, true);
+      const submitBtn = $("kyc-submit") || $("submit-kyc");
+      if(submitBtn){
+        submitBtn.addEventListener("click", async function(e){
+          e.preventDefault();
+          if(submitBtn.disabled) return;
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Envoi du dossier...";
+          try {
+            await submitFinal();
+          } catch(err) {
+            console.error("Erreur soumission dossier:", err);
+            show("kyc-message", false, "Une erreur s’est produite : " + (err.message || "Impossible de contacter le serveur"));
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Soumettre mon dossier";
+          }
+        });
+      }
     }
     if(p==="ajouter-annonce.html"){
       const form=$("rss-listing-form"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); await submitListing(form); }, true);
