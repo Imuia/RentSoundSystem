@@ -26,7 +26,16 @@
     if(!d.email || !d.full_name || !d.company_name){ show("kyc-message", false, "Veuillez revenir aux étapes précédentes et compléter les champs obligatoires."); return; }
     const c=client(); if(!c){ show("kyc-message", false, "Supabase n’est pas chargé."); return; }
     const payload = { company_name:d.company_name||"", full_name:d.full_name||"", contact_name:d.full_name||"", email:String(d.email||"").toLowerCase().trim(), phone:d.phone||"", country:d.country||"", city:d.city||"", website:d.website||"", registration_number:d.registration_number||d.reg_number||"", tax_id:d.tax_id||d.vat_number||"", address_1:d.address_1||"", postal_code:d.postal_code||"", categories:d.categories||[], equipment_types:d.categories||[], equipment_count:Number(d.equipment_count||0), fleet_value:d.fleet_value||"", equipment_condition:d.equipment_condition||"", equipment_description:d.equipment_description||"", coverage_area:d.coverage_area||"", delivery_radius:d.delivery_radius||"", handover_mode:d.handover_mode||"", technician_available:d.technician_available||"", deposit_policy:d.deposit_policy||"", insurance_status:d.insurance_status||"", logistics_notes:d.logistics_notes||"", document_urls:d.document_urls||"", status:"pending", payment_status:"unpaid", stripe_status:"not_started", source:"partner_onboarding" };
-    const {data,error}=await c.from("partner_requests").insert(payload).select().single();
+
+    const existing = await fetchPartnerByEmail(payload.email);
+    let data, error;
+    if (existing && existing.id) {
+      const res = await c.from("partner_requests").update(payload).eq("id", existing.id).select().single();
+      data = res.data; error = res.error;
+    } else {
+      const res = await c.from("partner_requests").insert(payload).select().single();
+      data = res.data; error = res.error;
+    }
     if(error){ console.error(error); show("kyc-message", false, "Erreur Supabase : "+error.message); return; }
     setEmail(payload.email); localStorage.setItem(REQUEST_ID_KEY, data.id); localStorage.removeItem(DRAFT_KEY); go("/partenaire-soumis.html");
   }
