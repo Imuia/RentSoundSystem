@@ -26,8 +26,32 @@
   function fill(){ const d=getDraft(); Object.keys(d).forEach(k=>{ const el=$(k); if(el && typeof d[k] === "string") el.value = d[k]; }); if(d.categories){ qa('input[name="categories"]').forEach(el => { el.checked = d.categories.includes(el.value); }); } }
   async function fetchPartnerByEmail(email){ const c=client(); email=clean(email || getEmail()).toLowerCase(); if(!c || !email) return null; const {data,error}=await c.from("partner_requests").select("*").eq("email", email).order("created_at",{ascending:false}).limit(1).maybeSingle(); if(error){ console.warn("partner fetch", error); return null; } return data; }
   async function submitFinal(){
-    const d = Object.assign(getDraft(), { registration_number: val("registration_number"), tax_id: val("tax_id"), document_urls: val("document_urls"), status: "pending", payment_status: "unpaid" });
-    if(!d.email || !d.full_name || !d.company_name){ show("kyc-message", false, "Veuillez revenir aux étapes précédentes et compléter les champs obligatoires."); return; }
+    const draft = getDraft();
+    const fullName = draft.full_name || draft.fullName || draft.contact_name || "";
+    const companyName = draft.company_name || draft.company || "";
+    const email = String(draft.email || getEmail() || "").toLowerCase().trim();
+
+    const d = Object.assign(draft, {
+      full_name: fullName,
+      fullName: fullName,
+      company_name: companyName,
+      email: email,
+      registration_number: val("registration_number") || draft.registration_number || draft.reg_number || "",
+      tax_id: val("tax_id") || draft.tax_id || draft.vat_number || "",
+      document_urls: val("document_urls") || draft.document_urls || "",
+      status: "pending",
+      payment_status: "unpaid"
+    });
+
+    const missing = [];
+    if (!d.email) missing.push("Adresse e-mail");
+    if (!d.full_name) missing.push("Nom complet");
+    if (!d.company_name) missing.push("Nom de la société");
+
+    if (missing.length > 0) {
+      show("kyc-message", false, "Champs obligatoires manquants : " + missing.join(", ") + ". Veuillez revenir aux étapes précédentes.");
+      return;
+    }
     const c=client(); if(!c){ show("kyc-message", false, "Supabase n’est pas chargé."); return; }
     const payload = { company_name:d.company_name||"", full_name:d.full_name||"", contact_name:d.full_name||"", email:String(d.email||"").toLowerCase().trim(), phone:d.phone||"", country:d.country||"", city:d.city||"", website:d.website||"", registration_number:d.registration_number||d.reg_number||"", tax_id:d.tax_id||d.vat_number||"", address_1:d.address_1||"", postal_code:d.postal_code||"", categories:d.categories||[], equipment_types:d.categories||[], equipment_count:Number(d.equipment_count||0), fleet_value:d.fleet_value||"", equipment_condition:d.equipment_condition||"", equipment_description:d.equipment_description||"", coverage_area:d.coverage_area||"", delivery_radius:d.delivery_radius||"", handover_mode:d.handover_mode||"", technician_available:d.technician_available||"", deposit_policy:d.deposit_policy||"", insurance_status:d.insurance_status||"", logistics_notes:d.logistics_notes||"", document_urls:d.document_urls||"", status:"pending", payment_status:"unpaid", stripe_status:"not_started", source:"partner_onboarding" };
 
