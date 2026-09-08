@@ -313,10 +313,10 @@ html, body {
 </section><section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements à proximité</h2>
+<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Top des équipements les plus loués</h2>
 <div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-[24px]">location_on</span>
-<span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
+<span class="material-symbols-outlined text-[24px]">trending_up</span>
+<span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Les plus demandés</span>
 </div>
 </div>
 <a class="text-primary hover:underline font-label-md text-[14px] uppercase tracking-wide flex items-center gap-1" href="/catalog.html">Voir tout <span class="material-symbols-outlined text-[20px]">arrow_forward</span></a>
@@ -420,8 +420,8 @@ html, body {
 <!-- Featured Categories Bento Grid -->
 <section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux équipements à louer</h2>
-<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées sur la marketplace, toutes villes et tous pays confondus.</p>
+<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux matériels à proximité</h2>
+<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées autour de votre position ou de la ville sélectionnée.</p>
 </div>
 <div id="newest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <!-- New Product Card 1 -->
@@ -1254,15 +1254,50 @@ html, body {
     }
   }
 
+  function topRentedItems(center, limit) {
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    // Conservation temporaire de la logique de proximité car aucun compteur de réservations réelles par annonce n'existe dans la table public listings
+    return nearbyItems(center || currentCenter, safeLimit);
+  }
+
   function newestNearbyItems(center, limit) {
-    return newestItems(limit);
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    const pos = center || currentCenter;
+    let filtered = [];
+
+    // 1. Filtrage géographique autour de la position active (100 km)
+    if (pos && Number.isFinite(Number(pos.lat)) && Number.isFinite(Number(pos.lng))) {
+      filtered = allListings
+        .filter(hasCoordinates)
+        .filter(item => haversineKm(pos, item) <= 100);
+    }
+
+    // 2. Fallback par nom de ville ou pays
+    if (!filtered.length && currentCityName) {
+      const normalizedCity = normalizeText(currentCityName);
+      filtered = allListings.filter(item => {
+        const itemCity = normalizeText(item.city || item.location || '');
+        const itemCountry = normalizeText(item.country || '');
+        return itemCity.includes(normalizedCity) || normalizedCity.includes(itemCity) || itemCountry.includes(normalizedCity);
+      });
+    }
+
+    // 3. Fallback sur les dernières annonces mondiales si aucune annonce n'est à proximité
+    if (!filtered.length) {
+      return newestItems(safeLimit);
+    }
+
+    // Tri par date récente décroissante
+    return filtered
+      .sort((a, b) => listingDateValue(b) - listingDateValue(a))
+      .slice(0, safeLimit);
   }
 
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
-    const nearest = nearbyItems(center || currentCenter, 4);
-    const newest = newestItems(4);
+    const nearest = topRentedItems(center || currentCenter, 4);
+    const newest = newestNearbyItems(center || currentCenter, 4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length

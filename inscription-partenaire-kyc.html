@@ -307,7 +307,33 @@
     });
   });
 
-  // Le clic sur #kyc-submit est géré par partner-flow.js qui appelle submitFinal() et effectue l'enregistrement Supabase.
+  if(submit){
+    submit.addEventListener('click', function(){
+      const missing = Array.from(document.querySelectorAll('.kyc-file-input'))
+        .filter(input => !input.files || !input.files.length)
+        .map(input => input.getAttribute('data-label'));
+
+      if(missing.length){
+        show('error', 'Merci d’ajouter les documents obligatoires : ' + missing.join(', ') + '.');
+        return;
+      }
+
+      const files = {};
+      document.querySelectorAll('.kyc-file-input').forEach(input => {
+        files[input.id] = input.files[0].name;
+      });
+
+      setDraft({
+        kyc_files: files,
+        kyc_status: 'submitted',
+        status: 'pending',
+        submitted_at: new Date().toISOString()
+      });
+
+      show('success', 'Documents vérifiés côté formulaire. Envoi du dossier...');
+      setTimeout(() => { window.location.href = '/partenaire-soumis.html'; }, 700);
+    });
+  }
 })();
 </script>
 

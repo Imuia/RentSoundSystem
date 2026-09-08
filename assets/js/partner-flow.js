@@ -9,11 +9,7 @@
   function q(sel){ return document.querySelector(sel); }
   function qa(sel){ return Array.from(document.querySelectorAll(sel)); }
   function clean(v){ return String(v || "").trim(); }
-  function page(){
-    let p = (location.pathname.split("/").pop() || "").toLowerCase();
-    if (p.endsWith(".html")) p = p.slice(0, -5);
-    return p;
-  }
+  function page(){ return (location.pathname.split("/").pop() || "").toLowerCase(); }
   function getDraft(){ try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}"); } catch(e){ return {}; } }
   function saveDraft(data){ localStorage.setItem(DRAFT_KEY, JSON.stringify(Object.assign(getDraft(), data || {}))); }
   function setEmail(email){ if(email) localStorage.setItem(EMAIL_KEY, String(email).toLowerCase().trim()); }
@@ -26,44 +22,11 @@
   function fill(){ const d=getDraft(); Object.keys(d).forEach(k=>{ const el=$(k); if(el && typeof d[k] === "string") el.value = d[k]; }); if(d.categories){ qa('input[name="categories"]').forEach(el => { el.checked = d.categories.includes(el.value); }); } }
   async function fetchPartnerByEmail(email){ const c=client(); email=clean(email || getEmail()).toLowerCase(); if(!c || !email) return null; const {data,error}=await c.from("partner_requests").select("*").eq("email", email).order("created_at",{ascending:false}).limit(1).maybeSingle(); if(error){ console.warn("partner fetch", error); return null; } return data; }
   async function submitFinal(){
-    const draft = getDraft();
-    const fullName = draft.full_name || draft.fullName || draft.contact_name || "";
-    const companyName = draft.company_name || draft.company || "";
-    const email = String(draft.email || getEmail() || "").toLowerCase().trim();
-
-    const d = Object.assign(draft, {
-      full_name: fullName,
-      fullName: fullName,
-      company_name: companyName,
-      email: email,
-      registration_number: val("registration_number") || draft.registration_number || draft.reg_number || "",
-      tax_id: val("tax_id") || draft.tax_id || draft.vat_number || "",
-      document_urls: val("document_urls") || draft.document_urls || "",
-      status: "pending",
-      payment_status: "unpaid"
-    });
-
-    const missing = [];
-    if (!d.email) missing.push("Adresse e-mail");
-    if (!d.full_name) missing.push("Nom complet");
-    if (!d.company_name) missing.push("Nom de la société");
-
-    if (missing.length > 0) {
-      show("kyc-message", false, "Champs obligatoires manquants : " + missing.join(", ") + ". Veuillez revenir aux étapes précédentes.");
-      return;
-    }
+    const d = Object.assign(getDraft(), { registration_number: val("registration_number"), tax_id: val("tax_id"), document_urls: val("document_urls"), status: "pending", payment_status: "unpaid" });
+    if(!d.email || !d.full_name || !d.company_name){ show("kyc-message", false, "Veuillez revenir aux étapes précédentes et compléter les champs obligatoires."); return; }
     const c=client(); if(!c){ show("kyc-message", false, "Supabase n’est pas chargé."); return; }
     const payload = { company_name:d.company_name||"", full_name:d.full_name||"", contact_name:d.full_name||"", email:String(d.email||"").toLowerCase().trim(), phone:d.phone||"", country:d.country||"", city:d.city||"", website:d.website||"", registration_number:d.registration_number||d.reg_number||"", tax_id:d.tax_id||d.vat_number||"", address_1:d.address_1||"", postal_code:d.postal_code||"", categories:d.categories||[], equipment_types:d.categories||[], equipment_count:Number(d.equipment_count||0), fleet_value:d.fleet_value||"", equipment_condition:d.equipment_condition||"", equipment_description:d.equipment_description||"", coverage_area:d.coverage_area||"", delivery_radius:d.delivery_radius||"", handover_mode:d.handover_mode||"", technician_available:d.technician_available||"", deposit_policy:d.deposit_policy||"", insurance_status:d.insurance_status||"", logistics_notes:d.logistics_notes||"", document_urls:d.document_urls||"", status:"pending", payment_status:"unpaid", stripe_status:"not_started", source:"partner_onboarding" };
-
-    const existing = await fetchPartnerByEmail(payload.email);
-    let data, error;
-    if (existing && existing.id) {
-      const res = await c.from("partner_requests").update(payload).eq("id", existing.id).select().single();
-      data = res.data; error = res.error;
-    } else {
-      const res = await c.from("partner_requests").insert(payload).select().single();
-      data = res.data; error = res.error;
-    }
+    const {data,error}=await c.from("partner_requests").insert(payload).select().single();
     if(error){ console.error(error); show("kyc-message", false, "Erreur Supabase : "+error.message); return; }
     setEmail(payload.email); localStorage.setItem(REQUEST_ID_KEY, data.id); localStorage.removeItem(DRAFT_KEY); go("/partenaire-soumis.html");
   }
@@ -80,46 +43,29 @@
   }
   function bind(){
     fill(); const p=page();
-    if(p==="connexion-partenaire" || p==="connexion-partenaire.html"){
+    if(p==="connexion-partenaire.html"){
       const form=$("partner-login-form"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); const email=clean($("partner-login-email").value).toLowerCase(); setEmail(email); show("partner-login-message", true, "Vérification du dossier..."); const partner=await fetchPartnerByEmail(email); if(!partner){ show("partner-login-message", false, "Aucun dossier partenaire trouvé pour cet email. Créez une demande partenaire."); return; } localStorage.setItem(REQUEST_ID_KEY, partner.id); if(partner.status==="approved") go("/tableau-de-bord-partenaire.html"); else go("/partenaire-en-attente.html"); });
     }
-    if(p==="inscription-partenaire" || p==="inscription-partenaire.html"){
+    if(p==="inscription-partenaire.html"){
       const form=q("form"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); const full=val("fullName")||val("full_name")||clean(q('[name="fullName"]')?.value); const email=(val("email")||clean(q('[name="email"]')?.value)).toLowerCase(); const password=val("password")||clean(q('[name="password"]')?.value); if(!full || !email){ alert("Merci de renseigner votre nom et votre email."); return; } saveDraft({full_name:full, fullName:full, email:email, password:password}); setEmail(email); go("/partenaire-societe.html"); }, true);
     }
-    if(p==="partenaire-societe" || p==="partenaire-societe.html"){
+    if(p==="partenaire-societe.html"){
       const form=q("form"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ company_name:val("company_name"), reg_number:val("reg_number"), registration_number:val("reg_number"), vat_number:val("vat_number"), tax_id:val("vat_number"), address_1:val("address_1"), city:val("city"), postal_code:val("postal_code"), country:val("country") }); go("/inscription-partenaire-materiel.html"); }, true);
     }
-    if(p==="inscription-partenaire-materiel" || p==="inscription-partenaire-materiel.html"){
+    if(p==="inscription-partenaire-materiel.html"){
       const form=$("form-step2"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ categories:checked("categories"), equipment_count:val("equipment_count"), fleet_value:val("fleet_value"), equipment_condition:val("equipment_condition"), equipment_description:val("equipment_description") }); go("/inscription-partenaire-logistique.html"); }, true);
     }
-    if(p==="inscription-partenaire-logistique" || p==="inscription-partenaire-logistique.html"){
+    if(p==="inscription-partenaire-logistique.html"){
       const form=$("form-step3"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ coverage_area:val("coverage_area"), delivery_radius:val("delivery_radius"), handover_mode:val("handover_mode"), technician_available:val("technician_available"), deposit_policy:val("deposit_policy"), insurance_status:val("insurance_status"), logistics_notes:val("logistics_notes") }); go("/inscription-partenaire-kyc.html"); }, true);
     }
-    if(p==="inscription-partenaire-kyc" || p==="inscription-partenaire-kyc.html"){
-      const submitBtn = $("kyc-submit") || $("submit-kyc");
-      if(submitBtn){
-        submitBtn.addEventListener("click", async function(e){
-          e.preventDefault();
-          if(submitBtn.disabled) return;
-          submitBtn.disabled = true;
-          submitBtn.textContent = "Envoi du dossier...";
-          try {
-            await submitFinal();
-          } catch(err) {
-            console.error("Erreur soumission dossier:", err);
-            show("kyc-message", false, "Une erreur s’est produite : " + (err.message || "Impossible de contacter le serveur"));
-          } finally {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Soumettre mon dossier";
-          }
-        });
-      }
+    if(p==="inscription-partenaire-kyc.html"){
+      const form=$("form-kyc"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); const btn=$("submit-kyc"); if(btn) btn.disabled=true; await submitFinal(); if(btn) btn.disabled=false; }, true);
     }
-    if(p==="ajouter-annonce" || p==="ajouter-annonce.html"){
+    if(p==="ajouter-annonce.html"){
       const form=$("rss-listing-form"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); await submitListing(form); }, true);
     }
-    if(["partenaire-en-attente","partenaire-en-attente.html","tableau-de-bord-partenaire","tableau-de-bord-partenaire.html","partenaire-paiement","partenaire-paiement.html"].includes(p)){
-      fetchPartnerByEmail().then(function(partner){ if(!partner) return; qa("[data-partner-company]").forEach(el=>el.textContent=partner.company_name||""); qa("[data-partner-status]").forEach(el=>el.textContent=partner.status||"pending"); if((p==="tableau-de-bord-partenaire" || p==="tableau-de-bord-partenaire.html") && partner.status!=="approved") go("/partenaire-en-attente.html"); });
+    if(["partenaire-en-attente.html","tableau-de-bord-partenaire.html","partenaire-paiement.html"].includes(p)){
+      fetchPartnerByEmail().then(function(partner){ if(!partner) return; qa("[data-partner-company]").forEach(el=>el.textContent=partner.company_name||""); qa("[data-partner-status]").forEach(el=>el.textContent=partner.status||"pending"); if(p==="tableau-de-bord-partenaire.html" && partner.status!=="approved") go("/partenaire-en-attente.html"); });
     }
   }
   if(document.readyState!=="loading") bind(); else document.addEventListener("DOMContentLoaded", bind);
