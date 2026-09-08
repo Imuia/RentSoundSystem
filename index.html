@@ -315,7 +315,7 @@ html, body {
 </section><section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements à proximité</h2>
+<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements populaires à proximité</h2>
 <div class="flex items-center gap-2 text-primary">
 <span class="material-symbols-outlined text-[24px]">location_on</span>
 <span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
@@ -422,8 +422,8 @@ html, body {
 <!-- Featured Categories Bento Grid -->
 <section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux équipements à louer</h2>
-<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées sur la marketplace, toutes villes et tous pays confondus.</p>
+<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux matériels à proximité</h2>
+<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées autour de votre position ou de la ville sélectionnée.</p>
 </div>
 <div id="newest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <!-- New Product Card 1 -->
@@ -1257,25 +1257,46 @@ html, body {
     }
   }
 
+  function popularNearbyItems(center, limit) {
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    const candidates = nearbyItems(center || currentCenter, 200);
+    return candidates
+      .slice()
+      .sort((a, b) => {
+        const featuredDiff = Number(b.featured || 0) - Number(a.featured || 0);
+        if (featuredDiff) return featuredDiff;
+        const viewsDiff = Number(b.views || 0) - Number(a.views || 0);
+        if (viewsDiff) return viewsDiff;
+        const da = typeof a._distanceKm === 'number' ? a._distanceKm : Number.POSITIVE_INFINITY;
+        const db = typeof b._distanceKm === 'number' ? b._distanceKm : Number.POSITIVE_INFINITY;
+        return da - db;
+      })
+      .slice(0, safeLimit);
+  }
+
   function newestNearbyItems(center, limit) {
-    return newestItems(limit);
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    return nearbyItems(center || currentCenter, 200)
+      .slice()
+      .sort((a, b) => listingDateValue(b) - listingDateValue(a))
+      .slice(0, safeLimit);
   }
 
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
-    const nearest = nearbyItems(center || currentCenter, 4);
-    const newest = newestItems(4);
+    const nearest = popularNearbyItems(center || currentCenter, 4);
+    const newest = newestNearbyItems(center || currentCenter, 4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
         ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Aucune annonce n’est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Aucun équipement populaire n’est actuellement disponible dans cette zone.</p></div></div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucune nouvelle annonce disponible.</strong><p>Les dernières annonces publiées apparaîtront ici dès qu’elles seront disponibles.</p></div></div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucun nouveau matériel disponible à proximité pour le moment.</strong><p>Essayez une autre ville ou élargissez votre recherche.</p></div></div>';
     }
   }
 
@@ -1431,13 +1452,19 @@ html, body {
     allListings = uniqueListings(data);
     activeListings = allListings;
 
-    // Garantit que les nouveaux produits avec ville/pays sont localisables,
-    // même si lat/lng n'ont pas encore été enregistrés dans Supabase.
-    await localizeNewestProducts();
-
     listingsReady = true;
     renderProductGrids(currentCenter);
     renderMapMarkers(currentCenter);
+
+    // La géolocalisation complémentaire ne doit jamais bloquer l'affichage initial.
+    localizeNewestProducts()
+      .then(function () {
+        renderProductGrids(currentCenter);
+        renderMapMarkers(currentCenter);
+      })
+      .catch(function (e) {
+        console.warn('[RSS] Localisation complémentaire non bloquante:', e);
+      });
   }
 
   function initMap() {
