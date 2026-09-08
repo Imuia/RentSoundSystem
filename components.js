@@ -5,6 +5,23 @@ if (window.__rssComponentsGlobalBoot) {
 window.__rssComponentsGlobalBoot = true;
 const RSS_WEGLOT_API_KEY = "wg_404ba8763ad2fbd7361777eb8a48a0e08";
 
+/* SEO global :
+   ajoute la directive robots sur les pages qui n'en ont pas déjà une.
+   Une page avec son propre noindex/index spécifique reste prioritaire. */
+function ensureGlobalRobotsMeta() {
+  if (document.querySelector('meta[name="robots"]')) return;
+
+  const meta = document.createElement("meta");
+  meta.setAttribute("name", "robots");
+  meta.setAttribute(
+    "content",
+    "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+  );
+
+  document.head.appendChild(meta);
+}
+
+
 async function loadComponent(id, file) {
   const el = document.getElementById(id);
   if (!el) return;
@@ -246,6 +263,7 @@ function loadGlobalWeglot() {
  * pour toute la page. Le header ne sert plus qu'à choisir FR / EN.
  */
 async function bootGlobalComponents() {
+  ensureGlobalRobotsMeta();
   rssSaveLanguage(rssSavedLanguage());
 
   // Démarre la traduction sur le document complet.

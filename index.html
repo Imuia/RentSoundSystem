@@ -1,5 +1,7 @@
 <!DOCTYPE html><html class="dark" lang="fr"><head>
 <meta charset="utf-8">
+<meta name="google-site-verification" content="MvzIIwvnYpCHqfFo0V_nBq2g4TMAa0g2dM26k-72t5g" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta content="width=device-width, initial-scale=1.0" name="viewport">
 <link rel="canonical" href="https://rentsoundsystem.com/">
 <title>RentSoundSystem | Location Sonorisation Professionnelle, Line Array &amp; Éclairage Événementiel</title>
@@ -313,10 +315,10 @@ html, body {
 </section><section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements populaires à proximité</h2>
+<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements à proximité</h2>
 <div class="flex items-center gap-2 text-primary">
 <span class="material-symbols-outlined text-[24px]">location_on</span>
-<span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Les plus demandés</span>
+<span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
 </div>
 </div>
 <a class="text-primary hover:underline font-label-md text-[14px] uppercase tracking-wide flex items-center gap-1" href="/catalog.html">Voir tout <span class="material-symbols-outlined text-[20px]">arrow_forward</span></a>
@@ -405,7 +407,7 @@ html, body {
   <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
     <div class="flex flex-col gap-2 ">
       <h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Équipements disponibles autour de vous</h2>
-      <p id="map-city-label" class="font-body-md text-[18px] text-primary">Paris, FR • Les plus demandés</p>
+      <p id="map-city-label" class="font-body-md text-[18px] text-primary">Paris, FR • Autour de vous</p>
     </div>
     <button id="use-my-location" type="button" class="self-start md:self-auto bg-surface-container-high border border-white/10 text-on-surface px-4 py-3 rounded-lg hover:text-primary hover:border-primary transition-colors flex items-center gap-2">
       <span class="material-symbols-outlined">my_location</span> Utiliser ma position
@@ -420,8 +422,8 @@ html, body {
 <!-- Featured Categories Bento Grid -->
 <section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux matériels à proximité</h2>
-<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées autour de votre position ou de la ville sélectionnée.</p>
+<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux équipements à louer</h2>
+<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées sur la marketplace, toutes villes et tous pays confondus.</p>
 </div>
 <div id="newest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
 <!-- New Product Card 1 -->
@@ -533,8 +535,9 @@ html, body {
 
   const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
   const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
-  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 12 };
+  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 14 };
   const DEFAULT_RADIUS_KM = 150;
+  // Affichage map : villes et géolocalisation resserrés de +2 niveaux de zoom. Les vues pays restent inchangées.
 
   let supabaseClient = null;
   let map = null;
@@ -705,28 +708,28 @@ html, body {
 
 
   const GEO_PRESETS = {
-    agadir: { name: 'Agadir', country: 'Maroc', countryCode: 'ma', lat: 30.4278, lng: -9.5981, zoom: 12, searchType: 'city' },
+    agadir: { name: 'Agadir', country: 'Maroc', countryCode: 'ma', lat: 30.4278, lng: -9.5981, zoom: 14, searchType: 'city' },
     maroc: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
     morocco: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
-    cannes: { name: 'Cannes', country: 'France', countryCode: 'fr', lat: 43.5528, lng: 7.0174, zoom: 12, searchType: 'city' },
-    nice: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 12, searchType: 'city' },
-    nices: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 12, searchType: 'city' },
-    paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 12, searchType: 'city' },
+    cannes: { name: 'Cannes', country: 'France', countryCode: 'fr', lat: 43.5528, lng: 7.0174, zoom: 14, searchType: 'city' },
+    nice: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 14, searchType: 'city' },
+    nices: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 14, searchType: 'city' },
+    paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 14, searchType: 'city' },
     france: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, searchType: 'country' },
-    antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
-    tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
-    tana: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 12, searchType: 'city' },
+    antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
+    tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
+    tana: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
     madagascar: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, searchType: 'country' },
-    casablanca: { name: 'Casablanca', country: 'Maroc', countryCode: 'ma', lat: 33.5731, lng: -7.5898, zoom: 12, searchType: 'city' },
-    marrakech: { name: 'Marrakech', country: 'Maroc', countryCode: 'ma', lat: 31.6295, lng: -7.9811, zoom: 12, searchType: 'city' },
-    rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 12, searchType: 'city' },
-    essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 12, searchType: 'city' },
-    taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 12, searchType: 'city' },
-    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 12, searchType: 'city' },
-    dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
-    'dubaï': { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 12, searchType: 'city' },
-    ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 12, searchType: 'city' },
-    'santa eularia des riu': { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 12, searchType: 'city' }
+    casablanca: { name: 'Casablanca', country: 'Maroc', countryCode: 'ma', lat: 33.5731, lng: -7.5898, zoom: 14, searchType: 'city' },
+    marrakech: { name: 'Marrakech', country: 'Maroc', countryCode: 'ma', lat: 31.6295, lng: -7.9811, zoom: 14, searchType: 'city' },
+    rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 14, searchType: 'city' },
+    essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 14, searchType: 'city' },
+    taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 14, searchType: 'city' },
+    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 14, searchType: 'city' },
+    dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 14, searchType: 'city' },
+    'dubaï': { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 14, searchType: 'city' },
+    ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 14, searchType: 'city' },
+    'santa eularia des riu': { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 14, searchType: 'city' }
   };
 
   function presetPlaceFromQuery(query) {
@@ -1116,7 +1119,7 @@ html, body {
       countryCode: foundCountryCode,
       lat: parseFloat(result.lat),
       lng: parseFloat(result.lon),
-      zoom: isCountryResult ? 6 : 13,
+      zoom: isCountryResult ? 6 : 15,
       searchType: isCountryResult ? 'country' : 'city',
       bounds: boundsFromNominatim(result)
     };
@@ -1254,83 +1257,25 @@ html, body {
     }
   }
 
-  function popularNearbyItems(center, limit) {
-    const safeLimit = Math.max(1, Number(limit) || 4);
-    const pos = center || currentCenter;
-    let candidates = [];
-
-    if (pos && Number.isFinite(Number(pos.lat)) && Number.isFinite(Number(pos.lng))) {
-      candidates = allListings
-        .filter(hasCoordinates)
-        .filter(item => haversineKm(pos, item) <= 100);
-    }
-
-    if (!candidates.length && currentCityName) {
-      const normalizedCity = normalizeText(currentCityName);
-      candidates = allListings.filter(item => {
-        const itemCity = normalizeText(item.city || item.location || '');
-        const itemCountry = normalizeText(item.country || '');
-        return itemCity.includes(normalizedCity) || normalizedCity.includes(itemCity) || itemCountry.includes(normalizedCity);
-      });
-    }
-
-    if (!candidates.length) {
-      candidates = [...allListings];
-    }
-
-    return candidates
-      .sort((a, b) => {
-        const scoreA = Number(a.views || 0) + (a.featured ? 50 : 0);
-        const scoreB = Number(b.views || 0) + (b.featured ? 50 : 0);
-        return scoreB - scoreA;
-      })
-      .slice(0, safeLimit);
-  }
-
   function newestNearbyItems(center, limit) {
-    const safeLimit = Math.max(1, Number(limit) || 4);
-    const pos = center || currentCenter;
-    let filtered = [];
-
-    if (pos && Number.isFinite(Number(pos.lat)) && Number.isFinite(Number(pos.lng))) {
-      filtered = allListings
-        .filter(hasCoordinates)
-        .filter(item => haversineKm(pos, item) <= 100);
-    }
-
-    if (!filtered.length && currentCityName) {
-      const normalizedCity = normalizeText(currentCityName);
-      filtered = allListings.filter(item => {
-        const itemCity = normalizeText(item.city || item.location || '');
-        const itemCountry = normalizeText(item.country || '');
-        return itemCity.includes(normalizedCity) || normalizedCity.includes(itemCity) || itemCountry.includes(normalizedCity);
-      });
-    }
-
-    if (!filtered.length) {
-      return [];
-    }
-
-    return filtered
-      .sort((a, b) => listingDateValue(b) - listingDateValue(a))
-      .slice(0, safeLimit);
+    return newestItems(limit);
   }
 
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
-    const nearest = popularNearbyItems(center || currentCenter, 4);
-    const newest = newestNearbyItems(center || currentCenter, 4);
+    const nearest = nearbyItems(center || currentCenter, 4);
+    const newest = newestItems(4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
-        ? nearest.map(item => productCard(item, 'Populaire')).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucun équipement disponible pour cette zone.</strong><p>Aucun équipement n’est actuellement disponible pour cette localisation.</p></div></div>';
+        ? nearest.map(item => productCard(item, null)).join('')
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Aucune annonce n’est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucun nouveau matériel disponible à proximité pour le moment.</strong><p>Aucun nouveau matériel n’a été publié récemment autour de cette zone.</p></div></div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucune nouvelle annonce disponible.</strong><p>Les dernières annonces publiées apparaîtront ici dès qu’elles seront disponibles.</p></div></div>';
     }
   }
 
@@ -1376,7 +1321,7 @@ html, body {
       const group = L.featureGroup(productMarkers);
       map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 7, animate: true });
     } else {
-      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 12, { animate: true });
+      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 14, { animate: true });
     }
 
     setTimeout(fixMapSize, 50);
@@ -1421,7 +1366,7 @@ html, body {
           .bindPopup('Votre position', { className: 'rss-popup' });
       }
 
-      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 13, { animate: true });
+      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 15, { animate: true });
     }
 
     if (listingsReady) {
@@ -1547,7 +1492,7 @@ html, body {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const place = await reversePlace(lat, lng);
-        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 13 }, { isGeolocation: true });
+        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 15 }, { isGeolocation: true });
       },
       function () {
         if (!showError && manualSearchDone) return;

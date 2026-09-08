@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AudioCase - Protection & Logistique | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#ffb2bf",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-fixed": "#e3e2e3",
+                    "primary-fixed-dim": "#ffb2bf",
+                    "on-secondary-fixed": "#1a1c1d",
+                    "neon-glow": "rgba(252, 3, 109, 0.3)",
+                    "secondary": "#c6c6c7",
+                    "on-secondary": "#2f3132",
+                    "on-error": "#690005",
+                    "surface-bright": "#393939",
+                    "on-primary": "#660028",
+                    "background": "#131313",
+                    "outline-variant": "#5d3f44",
+                    "primary-container": "#ff4d80",
+                    "on-surface-muted": "#E6BCC2",
+                    "on-primary-fixed": "#3f0016",
+                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                    "inverse-on-surface": "#313030",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-primary-container": "#5a0022",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "inverse-primary": "#bc004f",
+                    "primary": "#ffb2bf",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-tertiary": "#303030",
+                    "surface": "#131313",
+                    "on-tertiary-container": "#2a2a2a",
+                    "on-tertiary-fixed": "#1b1b1c",
+                    "surface-container-high": "#2a2a2a",
+                    "primary-fixed": "#ffd9de",
+                    "on-surface-variant": "#e6bcc2",
+                    "error": "#ffb4ab",
+                    "secondary-container": "#454748",
+                    "outline": "#ac878d",
+                    "surface-container": "#201f1f",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-dim": "#131313",
+                    "on-background": "#e5e2e1",
+                    "error-container": "#93000a",
+                    "on-surface": "#e5e2e1",
+                    "surface-variant": "#353534",
+                    "on-secondary-fixed-variant": "#454748",
+                    "surface-glass": "rgba(31, 31, 31, 0.6)",
+                    "tertiary-container": "#929090",
+                    "surface-container-highest": "#353534",
+                    "on-secondary-container": "#b5b5b6",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-primary-fixed-variant": "#90003b",
+                    "tertiary": "#c8c6c5",
+                    "tertiary-fixed": "#e5e2e1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "component-padding-x": "1.5rem",
+                    "container-max": "1280px",
+                    "card-gap": "1.5rem",
+                    "component-padding-y": "0.625rem",
+                    "section-padding-y": "6rem",
+                    "gutter-x": "2.5rem"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "label-caps": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-hero-mobile": ["Manrope"],
+                    "display-hero": ["Manrope"]
+            },
+            "fontSize": {
+                    "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                    "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                    "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                    "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        .neon-shadow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.8) 0%, rgba(31, 31, 31, 0.4) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+
+<meta name="description" content="AudioCase sur RentSoundSystem : flight cases, racks 19 pouces, malles de câblage et aménagements mousse CNC pour la protection et la logistique du matériel audio professionnel.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-audiocase">
+<meta property="og:title" content="AudioCase - Protection & Logistique | RentSoundSystem">
+<meta property="og:description" content="Découvrez les solutions AudioCase pour le transport, la protection et la logistique du matériel audio professionnel.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-audiocase">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"AudioCase","url":"https://rentsoundsystem.com/marque-audiocase"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"AudioCase","item":"https://rentsoundsystem.com/marque-audiocase"}]}]}
+</script>
+
+<style id="rss-audiocase-global">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+/* Même axe que les autres pages Marques */
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+/* Footer commun Marques */
+.rss-brand-footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:72px 0 28px;
+  color:#e5e2e1
+}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1;text-decoration:none}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif;text-decoration:none}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+
+@media(max-width:900px){
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr 1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative pt-section-padding-y pb-section-padding-y overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Hero Background" class="w-full h-full object-cover opacity-30" data-alt="A dimly lit, high-tech recording studio environment focusing on heavy-duty, industrial flight cases stacked meticulously. The scene emphasizes a 'Nocturnal Premium' aesthetic with deep obsidian surfaces and vibrant 'Electric Magenta' neon accents reflecting off the metallic hardware. The lighting is dramatic, highlighting the rugged textures and protective nature of the equipment transport solutions. The overall mood conveys exclusivity, reliability, and cutting-edge professional audio logistics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY-CRCZJbAr5D0K0PGmiUaosw66WLJYP60BwybUw8xoNORIczzxboptVKLwA83IB9vFsPk-DKGrwugbANLnktpSIGtCluLkGT_eRC4FbVx6FpkcJYbHVoTtWLT-A6TnNrEtInRy3gxOUMtGTU1IR7JCc9_zMnqzjC3ALhEaUuLMeqdLS0qJobP44weKHwqNHBgetpMcLUDCT6Hatdi9ypFQalG2wDy79jV625kh_zMJuVQb1jvIT9ZUXJxr2753Bu6nrmZZ18xTgc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="relative z-10 rss-page-wrap text-center">
+<span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-caps text-label-caps mb-8">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+                    PARTENAIRE OFFICIEL
+                </span>
+<h1 class="font-display-hero text-display-hero mb-6 text-on-surface leading-tight">AudioCase : <br/><span class="text-primary">Protection &amp; Logistique</span></h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    L'excellence en matière de conception et de fabrication de solutions de transport et de protection pour l'équipement audio professionnel. Une robustesse à toute épreuve pour vos tournées mondiales.
+                </p>
+<div class="flex justify-center gap-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=AudioCase'" class="bg-primary-container text-white px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase neon-shadow hover:bg-primary transition-colors flex items-center gap-2">
+                        Découvrir la Gamme
+                        <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button type="button" onclick="window.location.href='/contact.html?subject=Projet%20sur%20mesure%20AudioCase'" class="bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase hover:bg-surface-container transition-colors">
+                        Sur Mesure
+                    </button>
+</div>
+</div>
+</section>
+<!-- Featured Equipment Bento Grid -->
+<section id="audiocase-products" class="rss-page-wrap py-section-padding-y">
+<div class="mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Équipements Phares</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Des solutions conçues pour les exigences extrêmes des tournées professionnelles.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Large Card 1 -->
+<div id="audiocase-slot-flightcase" class="md:col-span-8 glass-panel rounded-xl p-8 relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuAg_z5WLTEd5L_-TXnzI_U2WGyTI1l_FoPrha61mgIt8FKniNN31_arnlr6yfso2Oi6nzibsZhZQKlTasWcgf_doCmzyFBRKGqlP_6I_nP8XJPtzydDc9DEfgTdj4s2l5zJJSF8_2-p6Uo7k3FZeJmHoMvHIYGzsi7lSi4mO-0jMIZcBS7qZ30l8kKfWKEQGg2qSavFfLpwOJqm3Bt8DZAkwXbrLSv06xZ3nPPU6vPEPVd2DIcMZNY_sTAbYHX5dRU_nWAjaqVKSMg" alt="Flight Case Pro" class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" data-alt="A close-up shot of a massive, heavy-duty black flight case for a professional audio mixing console, sitting in a dark, moody staging area. The case features reinforced steel corners, thick aluminum extrusion edges, and robust butterfly latches. Subtle 'Electric Magenta' neon light spills across the textured surface of the case, emphasizing its rugged, protective qualities. The setting reflects a 'Nocturnal Premium' professional touring environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAg_z5WLTEd5L_-TXnzI_U2WGyTI1l_FoPrha61mgIt8FKniNN31_arnlr6yfso2Oi6nzibsZhZQKlTasWcgf_doCmzyFBRKGqlP_6I_nP8XJPtzydDc9DEfgTdj4s2l5zJJSF8_2-p6Uo7k3FZeJmHoMvHIYGzsi7lSi4mO-0jMIZcBS7qZ30l8kKfWKEQGg2qSavFfLpwOJqm3Bt8DZAkwXbrLSv06xZ3nPPU6vPEPVd2DIcMZNY_sTAbYHX5dRU_nWAjaqVKSMg"/>
+</div>
+<div class="relative z-10 h-full flex flex-col justify-end">
+<span class="inline-block bg-surface-container/80 backdrop-blur-md px-3 py-1 rounded-full border border-surface-glass-border font-label-caps text-label-caps text-primary w-max mb-4">Série Touring X</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Flight Case Console SSL Live</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Protection blindée avec système d'amortissement interne (Doghouse intégré) pour consoles de mixage grand format.</p>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div id="audiocase-slot-rack19" class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col justify-between">
+<div class="w-12 h-12 rounded-full bg-surface-container-high border border-primary flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-primary icon-fill">shield</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Racks 19" Antichoc</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Suspension sur silentblocs pour protéger les amplificateurs et processeurs DSP sensibles.</p>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div id="audiocase-slot-cable" class="md:col-span-4 glass-panel rounded-xl p-8 flex flex-col justify-between">
+<div class="w-12 h-12 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary">inventory_2</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Malles de Câblage</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Organisation modulaire avec séparateurs ajustables pour la gestion optimale du câblage sur scène.</p>
+</div>
+</div>
+<!-- Medium Card 1 -->
+<div id="audiocase-slot-cnc" class="md:col-span-8 glass-panel rounded-xl p-8 bg-surface-container-low flex items-center gap-8">
+<div class="flex-1">
+<span class="inline-block bg-surface-container/80 backdrop-blur-md px-3 py-1 rounded-full border border-surface-glass-border font-label-caps text-label-caps text-primary w-max mb-4">Sur Mesure</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Aménagement Intérieur Mousse Usinée CNC</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Nous concevons des calages en mousse Plastazote haute densité découpée numériquement pour épouser parfaitement la forme de vos micros, émetteurs HF et in-ears.</p>
+<button type="button" onclick="window.location.href='/contact.html?subject=Devis%20AudioCase%20mousse%20CNC'" class="text-primary font-label-caps text-label-caps uppercase hover:underline flex items-center gap-1">Demander un devis <span class="material-symbols-outlined text-[16px]">chevron_right</span></button>
+</div>
+<div class="w-1/3 h-48 rounded-lg overflow-hidden hidden md:block">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuCNq7Lx22O373yWQfWm1f1YJ_0hfFzN5zq5Ccs5d18lzf_aURIlTapWIi6V51um5QiI7BO2FxjtqZChaUsiq9ChzSXkueF2u_u_AvSFwe9E0P6muOGqHb-uDDxGpi_Dcaf986Lr1esDPbzRTCIMp0sv2f9dpjTJe5lg5JTyxgejeeu5zZqGCH3ygRBc1DlypQ4nGPT0lhmAy8GL8y8VFbeY38wFoife8mzP07yoixxj1TB3CD4Awe2JHFdtMMXDtOvPzQfEmvjgpZ4" alt="CNC Foam" class="w-full h-full object-cover" data-alt="A close-up top-down view of high-density black protective foam inside a flight case, precision-cut using a CNC machine to perfectly fit expensive wireless microphones and in-ear monitor packs. The edges of the cut foam are sharp and clean. The lighting is low and moody, with a subtle 'Electric Magenta' rim light highlighting the precise contours of the cutouts, embodying a 'Nocturnal Premium' technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNq7Lx22O373yWQfWm1f1YJ_0hfFzN5zq5Ccs5d18lzf_aURIlTapWIi6V51um5QiI7BO2FxjtqZChaUsiq9ChzSXkueF2u_u_AvSFwe9E0P6muOGqHb-uDDxGpi_Dcaf986Lr1esDPbzRTCIMp0sv2f9dpjTJe5lg5JTyxgejeeu5zZqGCH3ygRBc1DlypQ4nGPT0lhmAy8GL8y8VFbeY38wFoife8mzP07yoixxj1TB3CD4Awe2JHFdtMMXDtOvPzQfEmvjgpZ4"/>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-cannes">Location Sono Cannes</a></li>
+<li><a href="/location-sono/location-sono-madrid">Location Sono Madrid</a></li>
+<li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-assistance.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-audiocase-runtime">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){
+    console.error('RentSoundSystem header:',e);
+  }
+}
+
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=AudioCase';
+}
+function isAudioCase(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const all=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.description].join(' '));
+  return brand.includes('audiocase') || all.includes('audiocase');
+}
+function exactOne(items,terms){
+  const keys=terms.map(norm);
+  return items.find(item=>{
+    const t=norm([item.title,item.model,item.category,item.description].join(' '));
+    return keys.some(k=>t.includes(k));
+  }) || null;
+}
+function setupFallback(slotId,search){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(search);
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.addEventListener('click',e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  });
+  slot.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  });
+}
+function applyProduct(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url=productUrl(item);
+  const img=slot.querySelector('img');
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,260);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'AudioCase';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      img.onerror=null;
+      if(fallback)img.src=fallback;
+    };
+    if(real)img.src=real;
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.onclick=e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  };
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+}
+
+async function loadAudioCaseProducts(){
+  try{
+    if(!window.supabase)return;
+
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(isAudioCase);
+
+    const flight=exactOne(products,['flight case','console ssl live','ssl live']);
+    const rack=exactOne(products,['rack 19','19 inch rack','rack antichoc']);
+    const cable=exactOne(products,['malle cablage','cable case','cabling case']);
+    const cnc=exactOne(products,['mousse cnc','plastazote','foam cnc','custom foam']);
+
+    applyProduct('audiocase-slot-flightcase',flight);
+    applyProduct('audiocase-slot-rack19',rack);
+    applyProduct('audiocase-slot-cable',cable);
+    applyProduct('audiocase-slot-cnc',cnc);
+
+  }catch(e){
+    console.warn('AudioCase products:',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  setupFallback('audiocase-slot-flightcase','AudioCase flight case');
+  setupFallback('audiocase-slot-rack19','AudioCase rack 19');
+  setupFallback('audiocase-slot-cable','AudioCase malle cablage');
+  setupFallback('audiocase-slot-cnc','AudioCase mousse CNC');
+
+  loadAudioCaseProducts();
+});
+</script>
+
+</body>
+</html>

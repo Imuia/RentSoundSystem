@@ -18,6 +18,8 @@
     const {data:{session}}=await state.sb.auth.getSession();
     if(!session?.user){location.href="/connexion-inscription.html?redirect="+encodeURIComponent(location.pathname);return false;}
     state.user=session.user;
+    const userEmail = state.user.email || "Compte connecté";
+    document.querySelectorAll("[data-admin-email], #admin-email, #support-user-email").forEach(el => el.textContent = userEmail);
     const [{data:agent,error:agentError},{data:adminRole,error:adminError}]=await Promise.all([
       state.sb.from("support_agents").select("role,active").eq("user_id",state.user.id).maybeSingle(),
       state.sb.rpc("my_admin_role")

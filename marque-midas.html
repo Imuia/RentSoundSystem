@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Midas - Signature Sonore | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#393939",
+                      "primary-fixed-dim": "#ffb2bf",
+                      "error": "#ffb4ab",
+                      "secondary": "#c6c6c7",
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-variant": "#353534",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "on-primary-container": "#5a0022",
+                      "on-tertiary": "#303030",
+                      "on-surface-variant": "#e6bcc2",
+                      "secondary-fixed": "#e3e2e3",
+                      "outline-variant": "#5d3f44",
+                      "neon-glow": "rgba(252, 3, 109, 0.3)",
+                      "surface": "#131313",
+                      "on-secondary-fixed": "#1a1c1d",
+                      "secondary-container": "#454748",
+                      "background": "#131313",
+                      "tertiary-container": "#929090",
+                      "on-primary": "#660028",
+                      "on-background": "#e5e2e1",
+                      "inverse-surface": "#e5e2e1",
+                      "error-container": "#93000a",
+                      "primary-container": "#ff4d80",
+                      "on-surface-muted": "#E6BCC2",
+                      "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                      "surface-container-low": "#1c1b1b",
+                      "outline": "#ac878d",
+                      "on-error": "#690005",
+                      "on-tertiary-container": "#2a2a2a",
+                      "surface-container-high": "#2a2a2a",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "on-primary-fixed-variant": "#90003b",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "surface-container-lowest": "#0e0e0e",
+                      "primary-fixed": "#ffd9de",
+                      "surface-dim": "#131313",
+                      "on-primary-fixed": "#3f0016",
+                      "on-surface": "#e5e2e1",
+                      "surface-glass": "rgba(31, 31, 31, 0.6)",
+                      "on-secondary-container": "#b5b5b6",
+                      "inverse-primary": "#bc004f",
+                      "primary": "#ffb2bf",
+                      "tertiary": "#c8c6c5",
+                      "surface-container": "#201f1f",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#454748",
+                      "inverse-on-surface": "#313030",
+                      "surface-container-highest": "#353534",
+                      "on-secondary": "#2f3132",
+                      "surface-tint": "#ffb2bf"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "card-gap": "1.5rem",
+                      "component-padding-x": "1.5rem",
+                      "gutter-x": "2.5rem",
+                      "component-padding-y": "0.625rem",
+                      "section-padding-y": "6rem",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "headline-md": [
+                              "Manrope"
+                      ],
+                      "display-hero-mobile": [
+                              "Manrope"
+                      ],
+                      "display-hero": [
+                              "Manrope"
+                      ],
+                      "label-caps": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Manrope"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "1.4",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-hero-mobile": [
+                              "48px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "display-hero": [
+                              "72px",
+                              {
+                                      "lineHeight": "1.1",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-caps": [
+                              "12px",
+                              {
+                                      "lineHeight": "1.0",
+                                      "letterSpacing": "0.15em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg": [
+                              "40px",
+                              {
+                                      "lineHeight": "1.2",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-lg": [
+                              "20px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "1.6",
+                                      "fontWeight": "400"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+        }
+        .shadow-neon-glow {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+        }
+        .btn-magenta {
+            background-color: #FC036D;
+            color: white;
+            text-transform: uppercase;
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+            border-radius: 0.25rem;
+            padding: 0.75rem 1.5rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            transition: all 0.3s ease;
+        }
+        .btn-magenta:hover {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.5);
+            transform: translateY(-2px);
+        }
+        .text-magenta {
+            color: #FC036D;
+        }
+        .border-magenta {
+            border-color: #FC036D;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(28, 27, 27, 0.8));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+
+<meta name="description" content="Location Midas sur RentSoundSystem : HD96-24, consoles PRO Series, M32 LIVE et solutions de mixage professionnelles pour tournées, festivals et studios.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-midas">
+<meta property="og:title" content="Midas - Signature Sonore | RentSoundSystem">
+<meta property="og:description" content="Découvrez les consoles Midas disponibles à la location : HD96-24, PRO Series, M32 LIVE et équipements de mixage professionnels.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-midas">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Midas","url":"https://rentsoundsystem.com/marque-midas"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Midas","item":"https://rentsoundsystem.com/marque-midas"}]}]}
+</script>
+
+<style id="rss-midas-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+.rss-brand-footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:72px 0 28px;
+  color:#e5e2e1
+}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1;text-decoration:none}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif;text-decoration:none}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+
+@media(max-width:900px){
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr 1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+</style>
+</head>
+<body class="antialiased min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative min-h-[819px] flex items-center justify-center py-section-padding-y overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Hero Background" class="w-full h-full object-cover opacity-30" data-alt="A massive, professional Midas HD96 audio mixing console in a dimly lit, high-end recording studio. The console is illuminated by glowing LED meters and neon fuchsia accents, contrasting sharply with the deep obsidian background. The atmosphere is nocturnal, premium, and technologically advanced, conveying exclusivity and high fidelity. The lighting highlights the intricate knobs, faders, and digital displays of the equipment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZTmXlDMSgMi_FJ5MR_Isdzcd1XaaGLv_NIRPNYtLsJ12j5Q0m09rQM-w1J2kY1qtoWqUHHczeOz3Q4Nk2yPKrLWYBuvb_jiLgCIQ5YujfFyS1Uc0QkcNr3lR4pDGal2gNvLZ6APU7Hq6YAwOlfeTkHz16JQAgl6GXmDS_C10Ld2vOhNyY4pW6JQwjZRrQ16uJiIHfeXvbgC4dDgSLBN-edfkKCRgaje78dFZAuBvnc5oZt2US72lZx7fxNWX3NeTah1Z-FvUBn0c"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<div class="rss-page-wrap relative z-10 text-center flex flex-col items-center">
+<div class="inline-flex items-center space-x-2 bg-surface-glass border border-surface-glass-border px-4 py-1 rounded-full mb-8">
+<span class="material-symbols-outlined text-magenta text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-caps text-label-caps text-on-surface">Premium Brand Partner</span>
+</div>
+<h1 class="font-display-hero-mobile md:font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-6">
+                    Midas : La Signature Sonore <span class="text-magenta block">de Référence</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto mb-10">
+                    Découvrez l'excellence audio britannique. Des préamplis légendaires aux consoles de mixage numériques de pointe, l'équipement Midas définit le standard de l'industrie pour les tournées mondiales et les studios professionnels.
+                </p>
+<div class="flex space-x-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=Midas'" class="btn-magenta flex items-center space-x-2">
+<span>Explorer le Catalogue</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<button type="button" onclick="document.querySelector('#midas-products')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-outline-variant text-on-surface hover:bg-surface-container font-label-caps text-label-caps px-6 py-3 rounded uppercase transition-colors flex items-center space-x-2">
+<span class="material-symbols-outlined text-sm">play_circle</span>
+<span>Voir la démo HD96</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Global Presence -->
+<section class="py-section-padding-y bg-surface-container-low">
+<div class="rss-page-wrap">
+<div class="text-center mb-16">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Présence Globale</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Disponibilité immédiate du matériel Midas dans nos hubs majeurs.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-card-gap">
+<!-- Map Hub 1 -->
+<div id="midas-hub-paris" class="glass-panel rounded-xl p-8 flex flex-col items-center text-center hover:border-magenta transition-colors duration-300 group cursor-pointer" role="link" tabindex="0">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-outline-variant group-hover:border-magenta group-hover:shadow-neon-glow transition-all mb-6">
+<img alt="Paris" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" data-location="Paris" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDllUy3RZ0fX-iEuCFGmClVLvkVq-cyg0DgIz6A3gYWvyeqxbXsmBDvwEf_lC7NkUbgu9gwFlssTYuTRXhLHg2HRzKI1huUe9V9D4hjNMnPYVbLvgdELzfKL4yMzKogAQt4xEqPzdDNIfaRqDrhvTWwKuEfB_FfOdnBtVcSPwtXdz92Ytjd1CEnQYBNJpg6GUAT9-AQfhqerbdSqDMWJQUTMv4POsN0RtnFv1oHiOmPjLathx2tzDBdbiBUhMfl0mggXRxzcLKajp4"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Paris</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Hub Européen Principal</p>
+<div class="mt-auto inline-flex items-center space-x-2 text-magenta font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span>Voir les disponibilités</span>
+</div>
+</div>
+<!-- Map Hub 2 -->
+<div id="midas-hub-la" class="glass-panel rounded-xl p-8 flex flex-col items-center text-center hover:border-magenta transition-colors duration-300 group">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-outline-variant group-hover:border-magenta group-hover:shadow-neon-glow transition-all mb-6">
+<img alt="Los Angeles" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" data-location="Los Angeles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfEnyfOJaJrFRjHwYc8JnaL3Z8QU-1dYfTZKEZw-gcHYj36oRLdT7aXssBjwpKVYujHM8ACOa1DLN3cMW2evZ_uPDAEfVpt2NVzssVOfLzlhOoQTguZIAvD_hfZfH9xB5_QqqYVZv6QJNyVdDoZWWSFE-DdA1XbOpwTT4n-wv8zB2Eyq9Tn0_G71Uhly1IIrIa_ETdEnDRJasa0Ft3ICWZSxAlPwCPaRuBxBCE75xtWKTten6nN1mGrFlQgvDBciWBz30Bx1EUlyI"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Los Angeles</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Centre de Tournée US</p>
+<div class="mt-auto inline-flex items-center space-x-2 text-magenta font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span>Disponibilité selon inventaire</span>
+</div>
+</div>
+<!-- Map Hub 3 -->
+<div id="midas-hub-tokyo" class="glass-panel rounded-xl p-8 flex flex-col items-center text-center hover:border-magenta transition-colors duration-300 group">
+<div class="w-24 h-24 rounded-full overflow-hidden border-2 border-outline-variant group-hover:border-magenta group-hover:shadow-neon-glow transition-all mb-6">
+<img alt="Tokyo" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" data-location="Tokyo" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfBpT2ATduWTn-IRlnU3vaOzCG-hLgkLDKkGaOvva-JGbQ3ljGHGpVA8OqRlVOwjeWD8A9TnRmrdK8COtz6bbdRwWNxw6UQEsWcuB8W7PkkbgGiBC64Nlwb_0DIK_SiD62WSdzU3yVE7G2TGCUcm9KVL4dKTz4VduriH5RvRGa_bwKvRQppKStjsldJl7gTEqsOJQwFb0xUj76HMf--ZBXsTP1pdnnDcs01R5O9VDy6UPKJq-Ge7jcs6aW3buXuLaos6izCf4RWpA"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Tokyo</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Logistique Asie-Pacifique</p>
+<div class="mt-auto inline-flex items-center space-x-2 text-magenta font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm">inventory_2</span>
+<span>Disponibilité selon inventaire</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Catalog Bento Grid -->
+<section id="midas-products" class="py-section-padding-y">
+<div class="rss-page-wrap">
+<div class="flex justify-between items-end mb-12">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Équipement Vedette</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">L'arsenal Midas disponible à la location.</p>
+</div>
+<button type="button" onclick="window.location.href='/catalog.html?search=Midas'" class="hidden md:flex bg-transparent border border-outline-variant text-on-surface hover:bg-surface-container font-label-caps text-label-caps px-4 py-2 rounded uppercase transition-colors items-center space-x-2">
+<span>Voir tout l'inventaire</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Featured Product 1 (Spans 8 cols) -->
+<div id="midas-slot-hd96" class="md:col-span-8 glass-panel rounded-xl overflow-hidden group flex flex-col md:flex-row">
+<div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuCCqnZiyO9L1NsdW2gwOQFWk_N0r4G0j30DJOF5RNARNRbrFOQQzpx7Hdjm6NMZQp5Hlj2oQNN_RH3jZC1o1qYLH_5WMlMWz3H2j27KlXkAKfSTURK7SQ1jKTuorEOmBkEg0suBJZXkRWM17n2LcUYq4P02qkKuIgnKwuB7dNvjBBWx98H7rhQ0zi7_qI3O12_7DQ8BhNjTohoWV3dHpsRcclFxdA_pJpZP26YDxPEKOQpZhPBYf0HY7ehH9TyLQBuoMzV18wXizWI" alt="Midas HD96-24" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" data-alt="A close-up view of the Midas HD96-24 digital mixing console interface, highlighting the vibrant touch screen and motorized faders. The dark studio environment enhances the glow of the fuchsia and cyan LED indicators on the board. The image conveys a high-tech, premium aesthetic suitable for professional audio engineers. The composition focuses on the precision and build quality of the hardware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCqnZiyO9L1NsdW2gwOQFWk_N0r4G0j30DJOF5RNARNRbrFOQQzpx7Hdjm6NMZQp5Hlj2oQNN_RH3jZC1o1qYLH_5WMlMWz3H2j27KlXkAKfSTURK7SQ1jKTuorEOmBkEg0suBJZXkRWM17n2LcUYq4P02qkKuIgnKwuB7dNvjBBWx98H7rhQ0zi7_qI3O12_7DQ8BhNjTohoWV3dHpsRcclFxdA_pJpZP26YDxPEKOQpZhPBYf0HY7ehH9TyLQBuoMzV18wXizWI"/>
+<div class="absolute top-4 left-4 bg-primary/20 backdrop-blur-md border border-primary/50 text-magenta font-label-caps text-label-caps px-3 py-1 rounded-full">
+                                Flagship
+                            </div>
+</div>
+<div class="md:w-1/2 p-8 flex flex-col justify-center">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">HD96-24</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Le système de mixage live Heritage-D définit une nouvelle ère de flux de travail. 144 entrées flexibles, 120 bus flexibles, 24 effets.</p>
+<div class="mt-auto pt-6 border-t border-surface-glass-border flex justify-between items-center">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">À partir de</span>
+<span id="midas-price-hd96" class="font-headline-md text-headline-md text-on-surface">Voir disponibilité</span>
+</div>
+<button class="btn-magenta">Réserver</button>
+</div>
+</div>
+</div>
+<!-- Product 2 (Spans 4 cols) -->
+<div id="midas-slot-pro" class="md:col-span-4 glass-panel rounded-xl p-6 flex flex-col group hover:border-magenta/50 transition-colors">
+<div class="h-48 rounded-lg overflow-hidden mb-6 relative">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuCrKYAhbwe0RVEEXgoqPAnm37srdL7J6SrfLU0gMQiW-tOmCRy7iiBSobSsJUImCoEs8IJZBUCmHiww4z0peKK1F0eeeda5wH3cPesl-2BhvVlKZkyfjVyqrZROnl7gOX-VZSPYtRUH8MmjyRusyOVp9-xsAPs_ypkj0GcLxeKyvYlkZxPbxuKy14S_33gEVQmP99F36WHc8SSIWsB4I-W8n3QGHoIY4pGF_8djv75xjsF6AsfcOn6wJygzxvrOxQyZnKjqJdrFtpI" alt="Midas Pro Series" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" data-alt="A sleek Midas PRO Series digital mixing console positioned in a live sound environment. The stage lighting faintly illuminates the edges of the desk, while the console's screens and buttons glow brightly in the nocturnal setting. The image captures the robust, road-ready design of the professional touring equipment. High contrast between the deep blacks and the colorful interface elements emphasizes its premium nature." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrKYAhbwe0RVEEXgoqPAnm37srdL7J6SrfLU0gMQiW-tOmCRy7iiBSobSsJUImCoEs8IJZBUCmHiww4z0peKK1F0eeeda5wH3cPesl-2BhvVlKZkyfjVyqrZROnl7gOX-VZSPYtRUH8MmjyRusyOVp9-xsAPs_ypkj0GcLxeKyvYlkZxPbxuKy14S_33gEVQmP99F36WHc8SSIWsB4I-W8n3QGHoIY4pGF_8djv75xjsF6AsfcOn6wJygzxvrOxQyZnKjqJdrFtpI"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">PRO Series</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">La référence absolue pour les tournées mondiales. Préamplis primés.</p>
+<div class="pt-4 border-t border-surface-glass-border flex justify-between items-center">
+<span id="midas-price-pro" class="font-body-lg text-body-lg text-on-surface font-semibold">Voir disponibilité</span>
+<button class="text-magenta hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Product 3 (Spans 4 cols) -->
+<div id="midas-slot-m32" class="md:col-span-4 glass-panel rounded-xl p-6 flex flex-col group hover:border-magenta/50 transition-colors">
+<div class="h-48 rounded-lg overflow-hidden mb-6 relative">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuAy-fI0NefIflWRo7fYbw474ifRO4aT3ihiOcxgG2ICRcP6kBnzW1Y-abPw843fAO_tZxialFlHbwOASLakMB7YM_on95BC8l4FAt9QC4h8XLNFGBl70OH0WquLICMdd4kRPnMsebEns0Q85hblDHKVUUHtQ3azArbGTwURkjlDTD6OqBYmVJUalRF7eapyiV0zOO22eJV93RfWSIAYOIQs6XZGuv7I-4b6hPrjSkjJSWokWBclDva5-LNoqaeaMoIbcVhFhRjstVc" alt="Midas M32" class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity" data-alt="A top-down view of the compact yet powerful Midas M32 digital console. The brushed metal finish and sleek carbon fiber accents are subtly lit by overhead studio lights. The faders are aligned perfectly, and the LCD scribble strips glow vividly against the dark surface. The image exudes a sense of precise engineering and professional capability in a modern studio setup." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAy-fI0NefIflWRo7fYbw474ifRO4aT3ihiOcxgG2ICRcP6kBnzW1Y-abPw843fAO_tZxialFlHbwOASLakMB7YM_on95BC8l4FAt9QC4h8XLNFGBl70OH0WquLICMdd4kRPnMsebEns0Q85hblDHKVUUHtQ3azArbGTwURkjlDTD6OqBYmVJUalRF7eapyiV0zOO22eJV93RfWSIAYOIQs6XZGuv7I-4b6hPrjSkjJSWokWBclDva5-LNoqaeaMoIbcVhFhRjstVc"/>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">M32 LIVE</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6 flex-grow">Console numérique 40 entrées pour le live et le studio. Un classique intemporel.</p>
+<div class="pt-4 border-t border-surface-glass-border flex justify-between items-center">
+<span id="midas-price-m32" class="font-body-lg text-body-lg text-on-surface font-semibold">Voir disponibilité</span>
+<button class="text-magenta hover:text-primary transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Case Studies & Video -->
+<section class="py-section-padding-y bg-surface-container-low border-y border-outline-variant/30">
+<div class="rss-page-wrap">
+<div class="text-center mb-12">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Midas en Action</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Découvrez comment les professionnels utilisent Midas sur le terrain.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Video 1 -->
+<div class="relative rounded-xl overflow-hidden group cursor-pointer aspect-video bg-surface">
+<img alt="Live Mixing Excellence" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" data-alt="A vibrant live concert scene viewed from the Front of House (FOH) mixing position. In the foreground, the silhouette of an audio engineer's hands operates a glowing Midas mixing console. The background features a brightly lit stage with dynamic magenta and blue laser lights cutting through atmospheric fog. The image conveys the high energy of a live show paired with the technical control of premium audio gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxdBvH9l6SIU6pMP2zbtA552JB5X_YVfgEKHtMbO8eXJIoTChaHBiC-4fsUn3cqH6dUmZdmPYnOdTEXIrSU63hGKTQk5YXbXuoQO-m8yusyfbVNZCU8_MlCCRwIWlkyECA5u8Ld8MdhgciUP7uZ2Oz9HwUY1wu1-3npCLpdxGoFb6U-wYqGauWWIJZwjWDce4_UFki_YEa4ePazEmWIjGj2pz0cePHFWG4kGvyFZeKaPn-jF9zDWlamani8NkJ5OSagy4GlUSpQoI"/>
+<div class="absolute inset-0 flex flex-col justify-center items-center p-6 bg-gradient-to-t from-background/90 to-transparent">
+<div class="w-16 h-16 rounded-full bg-magenta/20 backdrop-blur-md flex items-center justify-center border border-magenta mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-magenta text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-center">Live Mixing Excellence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-center mt-2">Tournée des Stades 2023 avec la HD96</p>
+</div>
+</div>
+<!-- Video 2 -->
+<div class="relative rounded-xl overflow-hidden group cursor-pointer aspect-video bg-surface">
+<img alt="Studio Recording Setup" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500" data-alt="An intimate, high-end recording studio control room bathed in soft, moody lighting. A large analog-style Midas console dominates the center, surrounded by rack-mounted outboard gear and nearfield studio monitors. The aesthetic is warm yet high-tech, with glowing LEDs contrasting against dark acoustic paneling. It represents the pinnacle of studio recording environments focused on pristine audio quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFVDG6awTK863KW2VQaz_bZN7eqgl7ufUHgXzYZfA4vFDb5byM7z8LWuULBh1gLB4TR8evVURZNnZMHjmJ5KVgJ1Kb31mXZTdZEC7RReuiyGYBeHjW2apejbvT9Ee5JRhiziNItxZ45MDpazKbQok4G3LGlVg2qN3Jy_8QzzQ4SSJ_plb187p5eUj0HFVIkLgFOcBNowj2TyevsOZFIiYBHFqO0zUXCXQjMZ6MpZaSOzH_W4BLhtfEjffMcs_o0lK8eriX1DME_mA"/>
+<div class="absolute inset-0 flex flex-col justify-center items-center p-6 bg-gradient-to-t from-background/90 to-transparent">
+<div class="w-16 h-16 rounded-full bg-magenta/20 backdrop-blur-md flex items-center justify-center border border-magenta mb-4 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-magenta text-3xl" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface text-center">Studio Recording Setup</h3>
+<p class="font-body-md text-body-md text-on-surface-variant text-center mt-2">L'intégration Midas en studio d'enregistrement</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-new-york">Location Sono New York</a></li>
+<li><a href="/location-sono/location-sono-dubai">Location Sono Dubai</a></li>
+<li><a href="/location-sono/location-sono-taipei">Location Sono Taipei</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-assistance.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-midas-products">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){
+    console.error('Header load',e);
+  }
+}
+
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=Midas';
+}
+function isMidas(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const full=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.category,item.description].join(' '));
+  return brand==='midas' || brand.includes('midas') || full.includes('midas');
+}
+function exactOne(items,terms){
+  const keys=terms.map(norm);
+  return items.find(item=>{
+    const text=norm([item.title,item.model,item.category,item.description].join(' '));
+    return keys.some(k=>text.includes(k));
+  }) || null;
+}
+function numericPrice(item){
+  const candidates=[item?.price_per_day,item?.daily_price,item?.price,item?.prix,item?.rental_price];
+  for(const v of candidates){
+    if(v===null||v===undefined||v==='')continue;
+    const n=Number(String(v).replace(',','.').replace(/[^\d.]/g,''));
+    if(Number.isFinite(n) && n>0)return n;
+  }
+  return null;
+}
+function setupFallback(slotId,search){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(search);
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  slot.addEventListener('click',e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  });
+  slot.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  });
+
+  slot.querySelectorAll('button').forEach(btn=>{
+    btn.type='button';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  });
+}
+function applyProduct(slotId,priceId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url=productUrl(item);
+  const img=slot.querySelector('img');
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+  const price=document.getElementById(priceId);
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,280);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'Midas';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{img.onerror=null;if(fallback)img.src=fallback;};
+    if(real)img.src=real;
+  }
+
+  const p=numericPrice(item);
+  if(price){
+    price.innerHTML=p
+      ? new Intl.NumberFormat('fr-FR',{maximumFractionDigits:0}).format(p)+'€<span class="text-sm font-normal text-on-surface-variant">/jour</span>'
+      : 'Voir disponibilité';
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.onclick=e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  };
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+
+  slot.querySelectorAll('button').forEach(btn=>{
+    btn.type='button';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  });
+}
+
+async function loadMidasProducts(){
+  try{
+    if(!window.supabase)return;
+
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(isMidas);
+
+    const hd96=exactOne(products,['hd96 24','hd96-24','heritage d hd96']);
+    const pro=exactOne(products,['pro series','pro2','pro 2','pro x','pro-x','pro6','pro 6']);
+    const m32=exactOne(products,['m32 live','m32-live','m32']);
+
+    applyProduct('midas-slot-hd96','midas-price-hd96',hd96);
+    applyProduct('midas-slot-pro','midas-price-pro',pro);
+    applyProduct('midas-slot-m32','midas-price-m32',m32);
+
+    if(!hd96)console.info('Midas: aucun HD96-24 exact publié — Stitch + catalogue ciblé conservés.');
+    if(!pro)console.info('Midas: aucune PRO Series exacte publiée — Stitch + catalogue ciblé conservés.');
+    if(!m32)console.info('Midas: aucun M32 LIVE exact publié — Stitch + catalogue ciblé conservés.');
+
+  }catch(e){
+    console.warn('Midas products:',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  setupFallback('midas-slot-hd96','Midas HD96-24');
+  setupFallback('midas-slot-pro','Midas PRO Series');
+  setupFallback('midas-slot-m32','Midas M32 LIVE');
+
+  const paris=document.getElementById('midas-hub-paris');
+  if(paris){
+    const go=()=>location.href='/location-sono/location-sonorisation-paris';
+    paris.addEventListener('click',go);
+    paris.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}
+    });
+  }
+
+  loadMidasProducts();
+});
+</script>
+
+</body>
+</html>

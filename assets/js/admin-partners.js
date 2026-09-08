@@ -165,14 +165,29 @@
   async function loadRequests(){
     $("#partner-request-list").innerHTML = `<div class="loading"><span class="material-symbols-outlined">sync</span></div>`;
     setNote("Synchronisation des dossiers partenaires…");
-    const {data,error} = await state.sb.rpc("admin_list_partner_requests");
-    if(error){
-      console.error("Admin partenaires",error);
-      $("#partner-request-list").innerHTML = `<div class="empty"><span class="material-symbols-outlined">error</span><h3>Chargement indisponible</h3><p>Exécutez le fichier SQL du module Admin Partenaires, puis rechargez la page.</p></div>`;
-      setNote("Impossible de charger les dossiers : " + (error.message || "erreur Supabase"),true);
-      return;
+
+    let requestsData = null;
+    try {
+      const {data, error} = await state.sb.rpc("admin_list_partner_requests");
+      if(!error && data) requestsData = data;
+    } catch(err) {
+      console.warn("RPC admin_list_partner_requests fallback:", err);
     }
-    state.requests = data || [];
+
+    if(!requestsData) {
+      try {
+        const {data, error} = await state.sb.from("partner_requests").select("*").order("created_at", {ascending: false});
+        if(error) throw error;
+        requestsData = data || [];
+      } catch(err) {
+        console.error("Admin partenaires direct query error", err);
+        $("#partner-request-list").innerHTML = `<div class="empty"><span class="material-symbols-outlined">error</span><h3>Chargement indisponible</h3><p>Erreur d'accès à la table partner_requests.</p></div>`;
+        setNote("Impossible de charger les dossiers : " + (err.message || "erreur Supabase"), true);
+        return;
+      }
+    }
+
+    state.requests = requestsData || [];
     renderRequests();
     setNote("Dossiers synchronisés.");
   }

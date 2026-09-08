@@ -1,163 +1,405 @@
-<!DOCTYPE html>
-<html class="dark" lang="fr">
-<head>
+<!DOCTYPE html><html class="dark" lang="fr"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Notre processus | RentSoundSystem</title>
-<meta name="description" content="Découvrez le fonctionnement RentSoundSystem pour louer ou proposer du matériel de sonorisation, d'éclairage et d'instruments de musique.">
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Processus de Location - Partenaires & Loueurs | RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<script>
-tailwind.config={darkMode:'class',theme:{extend:{colors:{background:'#131313',surface:'#131313','surface-container':'#1f1f1f','surface-container-low':'#1b1b1b','surface-container-lowest':'#0e0e0e','surface-container-high':'#2a2a2a','surface-container-highest':'#353535',primary:'#FC036D','primary-container':'#c40254','on-background':'#e2e2e2','on-surface':'#e2e2e2','on-surface-variant':'#e6bcc2','on-primary':'#ffffff',outline:'#ac878d','outline-variant':'#5d3f44'},fontFamily:{headline:['Manrope','sans-serif'],body:['Inter','sans-serif'],label:['Inter','sans-serif']},borderRadius:{DEFAULT:'0.125rem',lg:'0.25rem',xl:'0.5rem',full:'0.75rem'}}}}
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "surface-container-high": "#2a2a2a",
+                "on-surface": "#e5e2e1",
+                "on-secondary-fixed-variant": "#454748",
+                "on-tertiary-fixed": "#1b1b1c",
+                "surface-container-highest": "#353534",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "outline": "#ac878d",
+                "secondary-fixed-dim": "#c6c6c7",
+                "on-primary": "#ffffff",
+                "surface": "#131313",
+                "primary": "#FC036D",
+                "surface-tint": "#ffb2bf",
+                "on-tertiary-container": "#2a2a2a",
+                "on-primary-fixed": "#3f0016",
+                "on-error": "#690005",
+                "surface-bright": "#393939",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-container-lowest": "#0e0e0e",
+                "on-tertiary-fixed-variant": "#474746",
+                "on-secondary-container": "#b5b5b6",
+                "on-tertiary": "#303030",
+                "inverse-primary": "#bc004f",
+                "on-background": "#e5e2e1",
+                "error-container": "#93000a",
+                "surface-container-low": "#1c1b1b",
+                "secondary-container": "#454748",
+                "surface-dim": "#131313",
+                "on-primary-container": "#ffffff",
+                "primary-fixed": "#ffd9de",
+                "on-surface-variant": "#e6bcc2",
+                "outline-variant": "#5d3f44",
+                "inverse-on-surface": "#313030",
+                "primary-fixed-dim": "#FC036D",
+                "on-secondary": "#2f3132",
+                "neon-glow": "rgba(252, 3, 109, 0.3)",
+                "primary-container": "#FC036D",
+                "background": "#131313",
+                "on-primary-fixed-variant": "#90003b",
+                "inverse-surface": "#e5e2e1",
+                "surface-variant": "#353534",
+                "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                "error": "#ffb4ab",
+                "tertiary": "#c8c6c5",
+                "tertiary-container": "#929090",
+                "surface-container": "#201f1f",
+                "on-surface-muted": "#E6BCC2",
+                "surface-glass": "rgba(31, 31, 31, 0.6)",
+                "secondary-fixed": "#e3e2e3",
+                "on-error-container": "#ffdad6",
+                "on-secondary-fixed": "#1a1c1d",
+                "secondary": "#c6c6c7"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "gutter-x": "2.5rem",
+                "component-padding-y": "0.625rem",
+                "card-gap": "1.5rem",
+                "container-max": "1280px",
+                "component-padding-x": "1.5rem",
+                "section-padding-y": "6rem"
+        },
+        "fontFamily": {
+                "label-caps": [
+                        "Inter"
+                ],
+                "headline-md": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "display-hero": [
+                        "Manrope"
+                ],
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "display-hero-mobile": [
+                        "Manrope"
+                ],
+                "body-lg": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.15em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.4",
+                                "fontWeight": "600"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "display-hero": [
+                        "72px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "display-hero-mobile": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "20px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
 </script>
 <style>
-body{background:#131313;color:#e2e2e2;font-family:Inter,sans-serif}.font-headline{font-family:Manrope,sans-serif}.material-symbols-outlined{font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24}#header-container{min-height:73px}#footer-container{min-height:320px}#header-container header,#footer-container footer{display:block}.rss-card{background:linear-gradient(145deg,rgba(31,31,31,.94),rgba(19,19,19,.88));border:1px solid rgba(255,255,255,.08)}.rss-card:hover{border-color:rgba(252,3,109,.5);box-shadow:0 0 35px rgba(252,3,109,.10)}.rss-step-number{background:rgba(252,3,109,.12);border:1px solid rgba(252,3,109,.45);color:#FC036D}.rss-line{background:linear-gradient(90deg,rgba(252,3,109,.75),rgba(255,255,255,.08))}
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+             font-variation-settings: 'FILL' 1;
+        }
+    </style>
 
-/* === RSS footer/header alignment compatibility fix === */
-html, body { width:100%; overflow-x:hidden; }
-#header-container,
-#footer-container {
+<meta name="description" content="Découvrez le processus de location RentSoundSystem pour les partenaires et loueurs : inscription, mise en ligne assistée par IA, gestion des réservations, revenus et logistique.">
+<link rel="canonical" href="https://rentsoundsystem.com/notre-processus.html">
+<meta property="og:title" content="Processus de Location | RentSoundSystem">
+<meta property="og:description" content="Inscription, publication assistée par IA, réservations, revenus et logistique : découvrez le processus RentSoundSystem pour les loueurs professionnels.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/notre-processus.html">
+<meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@type":"WebPage",
+  "name":"Processus de Location RentSoundSystem",
+  "url":"https://rentsoundsystem.com/notre-processus.html",
+  "description":"Processus RentSoundSystem pour les partenaires et loueurs professionnels."
+}
+</script>
+
+<style id="rss-process-global-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#footer-container{width:100%}
+#rss-mobile-menu-toggle{display:none!important}
+
+/* Global RentSoundSystem axis: same 1280px / 40px rule as the design system */
+.rss-process-wrap{
   width:100%;
-  flex-shrink:0;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
 }
-#footer-container {
-  background:#0e0e0e;
-  border-top:1px solid rgba(255,255,255,.05);
+@media(max-width:900px){
+  .rss-process-wrap{padding-left:24px;padding-right:24px}
 }
-#header-container header,
-#footer-container footer {
-  width:100% !important;
-  display:block !important;
-}
-#header-container .max-w-container-max,
-#footer-container .max-w-container-max,
-#footer-container footer > .max-w-container-max,
-#footer-container footer > div {
-  max-width:1280px !important;
-  margin-left:auto !important;
-  margin-right:auto !important;
-}
-#header-container .px-margin-mobile,
-#footer-container .px-margin-mobile,
-#footer-container footer > div {
-  padding-left:40px !important;
-  padding-right:40px !important;
-}
-#header-container .gap-stack-sm,
-#footer-container .gap-stack-sm { gap:12px !important; }
-#header-container .gap-stack-md,
-#footer-container .gap-stack-md { gap:24px !important; }
-#header-container .gap-stack-lg,
-#footer-container .gap-stack-lg { gap:48px !important; }
-#header-container .font-headline,
-#header-container .font-headline-md,
-#footer-container .font-headline,
-#footer-container .font-headline-md {
-  font-family:Manrope, sans-serif !important;
-}
-#header-container .font-body,
-#header-container .font-body-md,
-#footer-container .font-body,
-#footer-container .font-body-md {
-  font-family:Inter, sans-serif !important;
-}
-#header-container .text-headline-md,
-#footer-container .text-headline-md {
-  font-size:24px !important;
-  line-height:32px !important;
-  font-weight:600 !important;
-}
-#header-container .text-body-md,
-#footer-container .text-body-md {
-  font-size:16px !important;
-  line-height:24px !important;
-}
-#header-container .text-label-md,
-#footer-container .text-label-md {
-  font-size:12px !important;
-  line-height:16px !important;
-}
-@media (max-width: 767px) {
-  #header-container .px-margin-mobile,
-  #footer-container .px-margin-mobile,
-  #footer-container footer > div {
-    padding-left:16px !important;
-    padding-right:16px !important;
-  }
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-process-wrap{padding-left:24px;padding-right:24px}
 }
 </style>
 </head>
-<body class="bg-background text-on-background min-h-screen flex flex-col">
+<body class="bg-background text-on-surface font-body-md antialiased">
 <div id="header-container"></div>
-<main class="flex-grow">
-<section class="relative overflow-hidden border-b border-white/5 pt-28 pb-24 px-6 md:px-10">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(252,3,109,.18),transparent_34%),linear-gradient(180deg,#131313,#0e0e0e)] -z-10"></div>
-  <div class="max-w-[1280px] mx-auto grid lg:grid-cols-2 gap-12 items-center">
-    <div>
-      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 text-primary mb-6">
-        <span class="material-symbols-outlined text-lg">sync_alt</span><span class="text-xs uppercase tracking-[.18em] font-bold">Comment ça marche</span>
-      </div>
-      <h1 class="font-headline text-4xl md:text-6xl font-extrabold leading-tight mb-6">Un processus simple pour <span class="text-primary">louer ou proposer</span> du matériel.</h1>
-      <p class="text-lg md:text-xl text-on-surface-variant max-w-2xl">RentSoundSystem met en relation locataires et propriétaires de matériel de sonorisation, éclairage, instruments, studio et prestations événementielles, avec une recherche géolocalisée et un parcours sécurisé.</p>
-      <div class="flex flex-col sm:flex-row gap-4 mt-9">
-        <a href="/catalog.html" class="bg-primary text-white px-7 py-4 rounded font-bold uppercase tracking-wider text-sm text-center hover:bg-primary-container transition">Louer du matériel</a>
-        <a href="/devenir-partenaire.html" class="bg-surface-container border border-white/10 text-on-surface px-7 py-4 rounded font-bold uppercase tracking-wider text-sm text-center hover:border-primary hover:text-primary transition">Déposer une annonce</a>
-      </div>
-    </div>
-    <div class="rss-card rounded-xl p-6 md:p-8">
-      <div class="grid grid-cols-3 gap-4 text-center">
-        <div class="bg-surface-container-low rounded-lg p-5"><span class="material-symbols-outlined text-primary text-4xl">search</span><p class="font-bold mt-3">Chercher</p></div>
-        <div class="bg-surface-container-low rounded-lg p-5"><span class="material-symbols-outlined text-primary text-4xl">payments</span><p class="font-bold mt-3">Réserver</p></div>
-        <div class="bg-surface-container-low rounded-lg p-5"><span class="material-symbols-outlined text-primary text-4xl">handshake</span><p class="font-bold mt-3">Récupérer</p></div>
-      </div>
-      <p class="text-on-surface-variant mt-6">Le site officiel présente trois actions clés : choisir sa sonorisation ou son instrument, louer et payer en ligne, puis récupérer le matériel chez le loueur.</p>
-    </div>
-  </div>
+<!-- Hero Section -->
+<section class="relative pt-32 pb-24 overflow-hidden">
+<div class="rss-process-wrap">
+<div class="absolute inset-0 bg-surface-container-lowest -z-10"></div>
+<!-- Abstract gradient background -->
+<div class="absolute top-0 right-0 w-[800px] h-[800px] bg-primary/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 -z-10 pointer-events-none"></div>
+<div class="max-w-4xl mx-auto text-center space-y-6 relative z-10">
+<span class="inline-block border border-surface-glass-border text-on-surface text-label-caps font-label-caps uppercase px-4 py-1 rounded-full bg-surface-glass backdrop-blur-sm">
+                Partenaires &amp; Loueurs
+            </span>
+<h1 class="font-display-hero-mobile md:font-display-hero text-on-surface">
+                Notre Processus <span class="text-primary drop-shadow-[0_0_15px_rgba(252,3,109,0.5)]">Intelligent</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-muted max-w-2xl mx-auto">
+                Découvrez comment notre intelligence artificielle simplifie la mise en location de votre équipement audio professionnel. Un flux de travail conçu pour la précision et la rentabilité.
+            </p>
+</div>
+</div>
 </section>
-<section class="py-20 px-6 md:px-10 bg-surface-container-lowest">
-  <div class="max-w-[1280px] mx-auto">
-    <div class="text-center max-w-3xl mx-auto mb-14">
-      <h2 class="font-headline text-3xl md:text-5xl font-bold mb-4">Pour les locataires</h2>
-      <p class="text-on-surface-variant text-lg">Vous cherchez une location de sono, un instrument de musique, un éclairage de scène, un home studio ou un prestataire ? Voici le parcours.</p>
-    </div>
-    <div class="grid md:grid-cols-5 gap-5">
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">1</div><h3 class="font-headline text-xl font-bold mb-3">Cherchez</h3><p class="text-sm text-on-surface-variant">Recherchez dans la base géolocalisée par ville, dates, horaires, type de matériel, prix et options.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">2</div><h3 class="font-headline text-xl font-bold mb-3">Créez un compte</h3><p class="text-sm text-on-surface-variant">Créez votre compte et renseignez les informations nécessaires pour votre demande de location.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">3</div><h3 class="font-headline text-xl font-bold mb-3">Louez en ligne</h3><p class="text-sm text-on-surface-variant">Sélectionnez les dates de location et de restitution, puis envoyez votre demande ou finalisez le paiement selon le parcours disponible.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">4</div><h3 class="font-headline text-xl font-bold mb-3">Récupérez</h3><p class="text-sm text-on-surface-variant">Retrouvez le propriétaire pour prendre possession du matériel et vérifier son état de fonctionnement.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">5</div><h3 class="font-headline text-xl font-bold mb-3">Évaluez</h3><p class="text-sm text-on-surface-variant">Après restitution, évaluez la location, le propriétaire et le matériel pour renforcer la confiance de la communauté.</p></div>
-    </div>
-  </div>
+<!-- Step-by-Step Flow -->
+<section class="py-24 bg-surface">
+<div class="rss-process-wrap">
+<div class="max-w-6xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+<!-- Step 1 -->
+<div class="relative group">
+<div class="h-full bg-surface-container border border-surface-glass-border rounded-lg p-8 hover:border-primary/50 transition-colors duration-300 relative z-10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center mb-6 text-primary border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined" data-icon="how_to_reg">how_to_reg</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">1. Inscription &amp; Vérification</h3>
+<p class="font-body-md text-body-md text-on-surface-muted">
+                            Créez votre compte partenaire en quelques minutes. Notre processus KYC (Know Your Customer) automatisé valide votre identité et vos informations professionnelles instantanément.
+                        </p>
+</div>
+<!-- Connection Line (Desktop) -->
+<div class="hidden lg:block absolute top-14 left-[calc(100%-2rem)] w-[calc(100%+1rem)] h-[1px] bg-surface-glass-border -z-10"></div>
+</div>
+<!-- Step 2 -->
+<div class="relative group">
+<div class="h-full bg-surface-container border border-surface-glass-border rounded-lg p-8 hover:border-primary/50 transition-colors duration-300 relative z-10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center mb-6 text-primary border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">2. Mise en ligne assistée par l'IA</h3>
+<p class="font-body-md text-body-md text-on-surface-muted">
+                            Uploadez de simples photos. Notre IA génère automatiquement les descriptions techniques complètes, optimise les images et suggère un prix de location basé sur le marché.
+                        </p>
+</div>
+<!-- Connection Line (Desktop) -->
+<div class="hidden lg:block absolute top-14 left-[calc(100%-2rem)] w-[calc(100%+1rem)] h-[1px] bg-surface-glass-border -z-10"></div>
+</div>
+<!-- Step 3 -->
+<div class="relative group">
+<div class="h-full bg-surface-container border border-surface-glass-border rounded-lg p-8 hover:border-primary/50 transition-colors duration-300 relative z-10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center mb-6 text-primary border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">3. Gestion des Réservations</h3>
+<p class="font-body-md text-body-md text-on-surface-muted">
+                            Recevez les demandes de location qualifiées. Gérez votre calendrier de disponibilité en temps réel via un tableau de bord intuitif et centralisé.
+                        </p>
+</div>
+<!-- Connection Line (Desktop) -->
+<div class="hidden lg:block absolute top-14 left-[calc(100%-2rem)] w-[calc(100%+1rem)] h-[1px] bg-surface-glass-border -z-10"></div>
+</div>
+<!-- Step 4 -->
+<div class="relative group">
+<div class="h-full bg-surface-container border border-surface-glass-border rounded-lg p-8 hover:border-primary/50 transition-colors duration-300 relative z-10 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="w-12 h-12 bg-surface-container-high rounded-full flex items-center justify-center mb-6 text-primary border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.2)]">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">4. Revenus &amp; Logistique</h3>
+<p class="font-body-md text-body-md text-on-surface-muted">
+                            Bénéficiez de paiements sécurisés et d'un suivi logistique automatisé. Vos revenus sont garantis et transférés directement sur votre compte.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section class="py-20 px-6 md:px-10 bg-background">
-  <div class="max-w-[1280px] mx-auto">
-    <div class="text-center max-w-3xl mx-auto mb-14">
-      <h2 class="font-headline text-3xl md:text-5xl font-bold mb-4">Pour les propriétaires</h2>
-      <p class="text-on-surface-variant text-lg">Vous avez du matériel de sonorisation, un instrument ou un studio ? Rentabilisez-le sur la plateforme.</p>
-    </div>
-    <div class="grid md:grid-cols-5 gap-5">
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">1</div><h3 class="font-headline text-xl font-bold mb-3">Inscription</h3><p class="text-sm text-on-surface-variant">Inscrivez-vous gratuitement et créez votre espace propriétaire.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">2</div><h3 class="font-headline text-xl font-bold mb-3">Annonce</h3><p class="text-sm text-on-surface-variant">Publiez vos annonces avec description, prix, photos, disponibilités et géolocalisation.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">3</div><h3 class="font-headline text-xl font-bold mb-3">Demandes</h3><p class="text-sm text-on-surface-variant">Recevez des demandes qualifiées selon vos disponibilités, votre matériel et vos services.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">4</div><h3 class="font-headline text-xl font-bold mb-3">Remise</h3><p class="text-sm text-on-surface-variant">Organisez la remise en mains propres ou la logistique avec le locataire.</p></div>
-      <div class="rss-card rounded-xl p-6"><div class="rss-step-number w-11 h-11 rounded-full flex items-center justify-center font-bold mb-5">5</div><h3 class="font-headline text-xl font-bold mb-3">Retour</h3><p class="text-sm text-on-surface-variant">Récupérez votre matériel, faites l’état des lieux et évaluez la location.</p></div>
-    </div>
-  </div>
+<!-- Technical Section (Bento Grid) -->
+<section class="py-24 bg-surface-container-lowest">
+<div class="rss-process-wrap">
+<div class="max-w-6xl mx-auto space-y-12">
+<div class="text-center max-w-3xl mx-auto">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">L'Avantage de l'Agent IA</h2>
+<p class="font-body-lg text-body-lg text-on-surface-muted">
+                    Notre technologie ne s'arrête pas à la mise en ligne. Un agent intelligent surveille activement votre flotte pour maximiser sa rentabilité.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Large Card -->
+<div class="md:col-span-2 bg-surface-container border border-surface-glass-border rounded-xl p-8 relative overflow-hidden group shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary text-3xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]" data-icon="health_and_safety">health_and_safety</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Monitoring de l'État du Matériel</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-muted mb-6 max-w-md">
+                            L'IA analyse les rapports d'utilisation et les retours de location pour anticiper les besoins de maintenance de vos amplificateurs, consoles et enceintes, garantissant une durée de vie prolongée de votre équipement.
+                        </p>
+<!-- Simulated Data Viz -->
+<div class="bg-surface border border-surface-glass-border rounded p-4">
+<div class="flex justify-between text-label-caps font-label-caps text-on-surface-muted uppercase mb-2">
+<span class="">Santé de la flotte</span>
+<span class="text-primary font-bold">94%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-lowest rounded-full overflow-hidden border border-surface-glass-border">
+<div class="h-full bg-primary w-[94%] shadow-[0_0_10px_rgba(252,3,109,0.8)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Small Card 1 -->
+<div class="bg-surface-container border border-surface-glass-border rounded-xl p-8 flex flex-col justify-between shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary text-2xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]" data-icon="trending_up">trending_up</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Analyse Sociale</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-muted">
+                            Notre système scanne l'engagement sur les réseaux sociaux professionnels (forums techniques, groupes de techniciens) pour ajuster les recommandations de location selon la demande locale.
+                        </p>
+</div>
+</div>
+<!-- Small Card 2 -->
+<div class="bg-surface-container border border-surface-glass-border rounded-xl p-8 flex flex-col justify-between md:col-start-3 shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-md">
+<div>
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary text-2xl drop-shadow-[0_0_10px_rgba(252,3,109,0.5)]" data-icon="price_check">price_check</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Tarification Dynamique</h3>
+</div>
+<p class="font-body-md text-body-md text-on-surface-muted">
+                            Ajustement automatique des prix en fonction de la saisonnalité, de la disponibilité locale des équipements similaires et des grands événements régionaux.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+</div>
 </section>
-<section class="py-20 px-6 md:px-10 bg-surface-container-lowest">
-  <div class="max-w-[1000px] mx-auto rss-card rounded-2xl p-8 md:p-12 text-center">
-    <h2 class="font-headline text-3xl md:text-4xl font-bold mb-5">Un réseau mondial de location sono</h2>
-    <p class="text-on-surface-variant text-lg mb-8">Le site officiel référence des villes et destinations comme Paris, Marseille, Lyon, Casablanca, Agadir, Madagascar, Nosy Be, Tananarive et d’autres zones internationales.</p>
-    <div class="flex flex-col sm:flex-row gap-4 justify-center"><a href="/catalog.html" class="bg-primary text-white px-8 py-4 rounded uppercase font-bold tracking-wider text-sm">Voir le catalogue</a><a href="/contact.html" class="border border-white/15 px-8 py-4 rounded uppercase font-bold tracking-wider text-sm hover:border-primary hover:text-primary">Nous contacter</a></div>
-  </div>
+<!-- Call to Action -->
+<section class="py-32 bg-surface relative overflow-hidden">
+<div class="rss-process-wrap">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CgkJPHBhdGggZD0iTTIwIDIwTDIwIDBMNDAgMEw0MCAyMEwyMCAyMFoiIGZpbGw9InJnYmEoMjU1LCAyNTUsIDI1NSwgMC4wMikiIC8+Cgk8L3N2Zz4=')] opacity-20"></div>
+<div class="max-w-4xl mx-auto text-center relative z-10 bg-surface-container border border-surface-glass-border p-12 rounded-xl backdrop-blur-md shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-6">Prêt à monétiser votre équipement ?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-muted mb-10 max-w-2xl mx-auto">
+                Rejoignez le réseau RentSoundSystem. Profitez d'une plateforme conçue pour les professionnels exigeants et augmentez le rendement de votre parc matériel.
+            </p>
+<button type="button" onclick="window.location.href='/devenir-partenaire.html'" class="bg-primary text-on-primary font-label-caps text-label-caps uppercase px-8 py-4 rounded hover:bg-primary/80 transition-all hover:scale-105 duration-200 shadow-[0_0_20px_rgba(252,3,109,0.4)]">
+                Commencer l'aventure
+            </button>
+</div>
+</div>
 </section>
-</main>
+
 <div id="footer-container"></div>
-<script src="/components.js"></script>
+
+<script id="rss-process-components">
+async function rssLoadComponent(targetId, url){
+  const target=document.getElementById(targetId);
+  if(!target)return;
+  try{
+    const response=await fetch(url,{cache:'no-cache'});
+    if(!response.ok)throw new Error(url+' HTTP '+response.status);
+    target.innerHTML=await response.text();
+
+    /* Execute scripts contained in shared components. */
+    target.querySelectorAll('script').forEach(oldScript=>{
+      const script=document.createElement('script');
+      [...oldScript.attributes].forEach(attr=>script.setAttribute(attr.name,attr.value));
+      script.textContent=oldScript.textContent;
+      oldScript.replaceWith(script);
+    });
+  }catch(error){
+    console.error('RentSoundSystem component:',error);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  rssLoadComponent('header-container','/header.html');
+  rssLoadComponent('footer-container','/footer.html');
+});
+</script>
+
 </body>
 </html>

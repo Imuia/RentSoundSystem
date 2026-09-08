@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Rane - Performance Sans Compromis | RentSoundSystem</title>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary-fixed-variant": "#474746",
+                "inverse-surface": "#e5e2e1",
+                "inverse-primary": "#bc004f",
+                "on-secondary-container": "#b5b5b6",
+                "error-container": "#93000a",
+                "surface-glass": "rgba(31, 31, 31, 0.6)",
+                "inverse-on-surface": "#313030",
+                "surface-container": "#201f1f",
+                "outline": "#ac878d",
+                "secondary-fixed": "#e3e2e3",
+                "secondary": "#c6c6c7",
+                "primary-fixed-dim": "#ffb2bf",
+                "tertiary": "#c8c6c5",
+                "on-surface-muted": "#E6BCC2",
+                "neon-glow": "rgba(252, 3, 109, 0.3)",
+                "surface-tint": "#FC036D",
+                "secondary-container": "#454748",
+                "on-tertiary-fixed": "#1b1b1c",
+                "on-secondary-fixed": "#1a1c1d",
+                "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                "on-tertiary-container": "#2a2a2a",
+                "on-secondary": "#2f3132",
+                "on-error-container": "#ffdad6",
+                "surface-container-low": "#1c1b1b",
+                "on-error": "#690005",
+                "surface-variant": "#353534",
+                "on-tertiary": "#303030",
+                "surface-dim": "#131313",
+                "primary-container": "#ff4d80",
+                "on-surface-variant": "#e6bcc2",
+                "on-background": "#e5e2e1",
+                "surface-container-lowest": "#0e0e0e",
+                "secondary-fixed-dim": "#c6c6c7",
+                "on-primary": "#660028",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-container-high": "#2a2a2a",
+                "surface": "#131313",
+                "surface-container-highest": "#353534",
+                "outline-variant": "#5d3f44",
+                "on-primary-fixed": "#3f0016",
+                "on-surface": "#e5e2e1",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "on-secondary-fixed-variant": "#454748",
+                "background": "#131313",
+                "on-primary-container": "#5a0022",
+                "primary-fixed": "#ffd9de",
+                "on-primary-fixed-variant": "#90003b",
+                "surface-bright": "#393939",
+                "primary": "#FC036D",
+                "error": "#ffb4ab",
+                "tertiary-container": "#929090"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "container-max": "1280px",
+                "section-padding-y": "6rem",
+                "card-gap": "1.5rem",
+                "gutter-x": "2.5rem",
+                "component-padding-y": "0.625rem",
+                "component-padding-x": "1.5rem"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Manrope"
+                ],
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "label-caps": [
+                        "Inter"
+                ],
+                "display-hero-mobile": [
+                        "Manrope"
+                ],
+                "display-hero": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ],
+                "headline": ["Manrope"],
+                "display": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.4",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.15em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-hero-mobile": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "display-hero": [
+                        "72px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "20px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-family: 'Material Symbols Outlined', sans-serif;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+    </style>
+
+<meta name="description" content="Location Rane sur RentSoundSystem : Seventy-Two MKII, Twelve MKII et équipements DJ professionnels pour scratch, turntablism, clubs et tournées.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-rane">
+<meta property="og:title" content="Rane - Performance Sans Compromis | RentSoundSystem">
+<meta property="og:description" content="Découvrez les équipements Rane disponibles à la location : Seventy-Two MKII, Twelve MKII et solutions professionnelles pour DJs et turntablists.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-rane">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Rane","url":"https://rentsoundsystem.com/marque-rane"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Rane","item":"https://rentsoundsystem.com/marque-rane"}]}]}
+</script>
+
+<style id="rss-rane-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+/* Même axe horizontal que le footer */
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+/* Footer global contextualisé */
+.rss-brand-footer{
+  background:#0e0e0e;
+  border-top:1px solid rgba(255,255,255,.05);
+  padding:72px 0 28px;
+  color:#e5e2e1
+}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{
+  display:grid;
+  grid-template-columns:1.25fr 1fr 1fr 1fr;
+  gap:56px;
+  margin-bottom:58px
+}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{
+  color:#e6bcc2;
+  font:400 14px/1.65 Inter,sans-serif;
+  max-width:280px;
+  margin:0 0 24px
+}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{
+  width:42px;height:42px;border-radius:50%;
+  background:#1c1b1b;
+  display:grid;place-items:center;
+  color:#e5e2e1;text-decoration:none
+}
+.rss-footer-col h3{
+  font:700 13px/1 Inter,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#fff;
+  margin:0 0 24px
+}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{
+  color:#e6bcc2;
+  font:400 14px/1.35 Inter,sans-serif;
+  text-decoration:none
+}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{
+  border-top:1px solid rgba(255,255,255,.05);
+  padding-top:26px;
+  display:flex;
+  justify-content:space-between;
+  gap:24px;
+  flex-wrap:wrap;
+  color:#8f7f82;
+  font:400 11px/1.5 Inter,sans-serif
+}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+
+@media(max-width:900px){
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr 1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+</style>
+</head>
+<body class="bg-surface text-on-surface font-body antialiased selection:bg-primary selection:text-white min-h-screen flex flex-col">
+<div id="header-container"></div>
+<!-- Main Canvas -->
+<main class="flex-grow">
+<!-- Hero Section -->
+<section class="relative w-full overflow-hidden border-b border-outline-variant/10">
+<div class="absolute inset-0 bg-surface-container z-0">
+<img alt="Rane Equipment Hero" class="w-full h-full object-cover opacity-30 mix-blend-luminosity" data-alt="A dramatic, low-angle shot of professional DJ equipment in a pitch-black club environment. The gear is illuminated by striking, vivid pink accent lights that cut through the darkness, highlighting the sleek, minimalist metallic surfaces. The overall aesthetic is raw, nocturnal, and highly technical, perfectly aligning with a dark-mode corporate design system. Deep charcoal shadows contrast sharply with pristine white indicator LEDs, emphasizing premium craftsmanship and uncompromising performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9C3HUGyhoNcAcRJV3-CUHCPBJQYt5K9PtMyhUIKGDvEDpxIo48eUn29r_ATJ600nVvTazygB159xDmjXA3wwjK5ohWDpx3kUGVeWSr6uNsiLZfQjKqAXdH6nRp2qkPc1gAXsF-CXw5GjGla8UYjWmbt-dia7IjeD0Xrg5PFL9DByp8WFtl2uLDT8co9d1Uc6fQq4IMSa0Zd-S0TXXpGv8-KZHs8KS-UAcsya95rPooWMSpY3TwJc8Axmv6th_lGbXhD6nN0rIoUE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-transparent"></div>
+</div>
+<div class="relative z-10 rss-page-wrap py-24 md:py-32 lg:py-48 flex flex-col items-start justify-end min-h-[716px]">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant/30 mb-6">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-body text-[12px] font-semibold uppercase tracking-[0.05em] text-on-surface">Partenaire Officiel</span>
+</div>
+<h1 class="font-headline text-[48px] md:text-[64px] font-bold leading-[1.1] tracking-[-0.02em] text-on-surface max-w-4xl mb-6">
+                    Rane : Performance <span class="text-primary block md:inline">Sans Compromis</span>
+</h1>
+<p class="font-body text-[18px] leading-[28px] text-on-surface-variant max-w-2xl mb-10">
+                    L'équipement de choix pour les turntablists professionnels et les scènes les plus exigeantes. Une construction en acier massif, une précision numérique implacable et une ergonomie conçue pour l'instinct.
+                </p>
+<div class="flex gap-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=Rane'" class="bg-primary text-white font-body text-[14px] font-semibold uppercase tracking-wide px-8 py-4 rounded hover:bg-primary/90 transition-all active:scale-95 shadow-[0_0_15px_rgba(252,3,109,0.5)]">
+                        Explorer l'Inventaire
+                    </button>
+<button type="button" onclick="document.querySelector('#rane-arsenal')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-outline text-on-surface font-body text-[14px] font-semibold uppercase tracking-wide px-8 py-4 rounded hover:bg-surface-container-high transition-all active:scale-95 flex items-center gap-2">
+                        Fiches Techniques
+                        <span class="material-symbols-outlined text-sm">download</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Bento Grid Products Showcase -->
+<section id="rane-arsenal" class="rss-page-wrap py-24">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<h2 class="font-headline text-[32px] font-semibold leading-[40px] tracking-[-0.01em] text-on-surface mb-2">L'Arsenal Technique</h2>
+<p class="font-body text-[16px] text-on-surface-variant">Conçu pour résister aux tournées mondiales.</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 rounded border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">arrow_back</span>
+</button>
+<button class="p-2 rounded border border-outline-variant/30 text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Main Feature: Seventy-Two -->
+<div id="rane-slot-seventytwo" class="md:col-span-8 bg-surface-container-low border border-outline-variant/10 rounded-lg overflow-hidden group hover:border-primary/50 transition-colors duration-300 flex flex-col hover:shadow-[0_0_20px_rgba(252,3,109,0.15)]">
+<div class="h-64 md:h-80 w-full bg-surface-container relative overflow-hidden">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuAzCmFVL2d4ahlJCUwU5m-c95dlD89kwLGZWEbC-gzI6KXHfjQOKjcz9SN3iAQUgdlqiG9b7RHW6R0NrhkJYQoaT3F6JJ8LmljYV0gU1yovmOmI_ATOZr2MCYZXhWztH6y2bWLKcG740V0oVwZJZdECyL5rw8IYgTwm3KB_quNVztmfcIETsAGDch8mxZkmBtRzBKYBH-LgC0I9U5z4e2eHO9VuI9jU_N7mydkq0QWGpq9sRs8yuO52pK6YC1M8iz1uGkgJalY9qnw" alt="Rane Seventy-Two Mixer" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-500 mix-blend-luminosity" data-alt="A top-down, ultra-detailed close-up of a high-end DJ battle mixer resting on a dark charcoal surface. The focus is tightly locked on the precision faders, rotary knobs, and a central touch screen glowing with sharp white technical data. Subtle vivid pink underglow hints at the system's power, while the surrounding environment remains immersed in deep, pure black. The image radiates an industrial, minimalist-corporate vibe, showcasing military-grade build quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzCmFVL2d4ahlJCUwU5m-c95dlD89kwLGZWEbC-gzI6KXHfjQOKjcz9SN3iAQUgdlqiG9b7RHW6R0NrhkJYQoaT3F6JJ8LmljYV0gU1yovmOmI_ATOZr2MCYZXhWztH6y2bWLKcG740V0oVwZJZdECyL5rw8IYgTwm3KB_quNVztmfcIETsAGDch8mxZkmBtRzBKYBH-LgC0I9U5z4e2eHO9VuI9jU_N7mydkq0QWGpq9sRs8yuO52pK6YC1M8iz1uGkgJalY9qnw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+<div class="absolute bottom-4 left-6">
+<span class="px-2 py-1 bg-surface-container text-on-surface font-body text-[12px] uppercase tracking-widest font-bold rounded border border-outline-variant/50">Série Battle</span>
+</div>
+</div>
+<div class="p-8 flex flex-col flex-grow">
+<h3 class="font-headline text-[24px] font-semibold text-on-surface mb-2">Seventy-Two MKII</h3>
+<p class="font-body text-[16px] text-on-surface-variant mb-6">Mélangeur de combat Premium 2 canaux. Doté de faders MAG FOUR ultra-légers, d'un écran tactile 4.3" pour le retour d'onde et de doubles connexions USB pour des transitions de DJ fluides.</p>
+<div class="grid grid-cols-2 gap-4 mt-auto">
+<div class="flex flex-col gap-1">
+<span class="font-body text-[12px] text-on-surface-variant uppercase tracking-widest">Construction</span>
+<span class="font-body text-[14px] text-on-surface font-semibold">Acier Massif</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-body text-[12px] text-on-surface-variant uppercase tracking-widest">Faders</span>
+<span class="font-body text-[14px] text-primary font-semibold">3x MAG FOUR</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Feature: Twelve -->
+<div id="rane-slot-twelve" class="md:col-span-4 bg-surface-container-low border border-outline-variant/10 rounded-lg overflow-hidden group hover:border-primary/50 transition-colors duration-300 flex flex-col hover:shadow-[0_0_20px_rgba(252,3,109,0.15)]">
+<div class="h-48 md:h-64 w-full bg-surface-container relative overflow-hidden">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuDuWI77qFjvIqkoOVkXEp4G-O9M-PZWHyFZGsy7pQTxG55sK8fa_wGhI0gZAY3Olp9h98mGQBQsC5qoqchTrwCB1ccSrPPz6BHLNCCDg7gwPjgX0CBRctc3W2bwuwFwEL53pMZ7Br06d_-RiPrdgNt7t2p0ph3yYXl2al1VlzWl7Ro4mMxDnjGtE2thD1tpU_FkdeL-FspZmw622CkX2shtu51D5-mqtIRwPs_TNPp4_sZH4Cnz97vLq49zniFmrvh_RIho_7hXHts" alt="Rane Twelve Turntable" class="w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500 mix-blend-luminosity" data-alt="A dynamic, angled view of a heavy-duty motorized DJ controller platter spinning rapidly in a dimly lit studio. The brushed steel chassis reflects minimal light, standing out against a pure black background. A focused beam of vivid pink light sweeps across the textured vinyl surface, emphasizing motion and tactile control. The lighting setup is high-contrast and nocturnal, designed to seamlessly blend into a dark-mode, technically focused professional interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDuWI77qFjvIqkoOVkXEp4G-O9M-PZWHyFZGsy7pQTxG55sK8fa_wGhI0gZAY3Olp9h98mGQBQsC5qoqchTrwCB1ccSrPPz6BHLNCCDg7gwPjgX0CBRctc3W2bwuwFwEL53pMZ7Br06d_-RiPrdgNt7t2p0ph3yYXl2al1VlzWl7Ro4mMxDnjGtE2thD1tpU_FkdeL-FspZmw622CkX2shtu51D5-mqtIRwPs_TNPp4_sZH4Cnz97vLq49zniFmrvh_RIho_7hXHts"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow">
+<h3 class="font-headline text-[24px] font-semibold text-on-surface mb-2">Twelve MKII</h3>
+<p class="font-body text-[14px] text-on-surface-variant mb-6">Contrôleur motorisé à plateau de 12 pouces. L'expérience tactile du vinyle, sans la fragilité des diamants.</p>
+<div class="flex items-center justify-between mt-auto pt-4 border-t border-outline-variant/10">
+<span class="font-body text-[14px] text-on-surface-variant">Couple Moteur</span>
+<span class="font-body text-[14px] text-primary font-bold">5.0 kfcm</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Expertise Asymmetric Layout -->
+<section class="bg-surface-container border-y border-outline-variant/10">
+<div class="rss-page-wrap py-24 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+<div class="flex flex-col gap-10">
+<div>
+<h2 class="font-headline text-[32px] font-semibold leading-[40px] tracking-[-0.01em] text-on-surface mb-4">Ingénierie de Précision</h2>
+<p class="font-body text-[18px] leading-[28px] text-on-surface-variant">
+                            Depuis 1981, Rane définit les standards de l'industrie pour les équipements audio professionnels. L'approche est clinique : concevoir des outils qui ne faillissent jamais, même dans les conditions de performance les plus extrêmes.
+                        </p>
+</div>
+<div class="flex flex-col gap-6">
+<div class="flex items-start gap-4">
+<div class="p-3 bg-surface border border-outline-variant/20 rounded text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">precision_manufacturing</span>
+</div>
+<div>
+<h4 class="font-body text-[16px] font-semibold text-on-surface mb-1">Composants de Grade Militaire</h4>
+<p class="font-body text-[14px] text-on-surface-variant">Châssis en acier massif et composants internes isolés contre les vibrations et l'humidité des clubs.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="p-3 bg-surface border border-outline-variant/20 rounded text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">speed</span>
+</div>
+<div>
+<h4 class="font-body text-[16px] font-semibold text-on-surface mb-1">Latence Zéro</h4>
+<p class="font-body text-[14px] text-on-surface-variant">Architecture DSP avancée garantissant une réponse instantanée des faders et des plateaux motorisés.</p>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="p-3 bg-surface border border-outline-variant/20 rounded text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings_input_component</span>
+</div>
+<div>
+<h4 class="font-body text-[16px] font-semibold text-on-surface mb-1">Routage Audio Isolé</h4>
+<p class="font-body text-[14px] text-on-surface-variant">Circuits audio séparés physiquement des circuits numériques pour un rapport signal/bruit exceptionnel de 114dB.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative w-full h-[500px] bg-surface-container-lowest rounded-lg border border-outline-variant/20 flex items-center justify-center overflow-hidden">
+<!-- Tech schematic background effect -->
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#ac878d 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="relative z-10 text-center p-8 bg-surface-container-low/80 backdrop-blur-md border border-outline-variant/30 rounded">
+<span class="material-symbols-outlined text-primary text-[48px] mb-4" style="font-variation-settings: 'FILL' 0;">memory</span>
+<div class="font-body text-[12px] uppercase tracking-[0.05em] text-on-surface-variant mb-2">Architecture Interne</div>
+<div class="font-headline text-[24px] font-bold text-on-surface tracking-tighter">Double DSP 32-bit</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sono-ibiza">Location Sono Ibiza</a></li>
+<li><a href="/location-sono/location-sono-marrakech">Location Sono Marrakech</a></li>
+<li><a href="/location-sono/location-sono-dubai">Location Sono Dubai</a></li>
+<li><a href="/location-sono/location-sono-new-york">Location Sono New York</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-assistance.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-rane-products">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){
+    console.error('Header load',e);
+  }
+}
+
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=Rane';
+}
+function isRane(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const full=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.category,item.description].join(' '));
+  return brand==='rane' || brand.includes('rane') || full.includes('rane');
+}
+function exactOne(items,terms){
+  const keys=terms.map(norm);
+  return items.find(item=>{
+    const text=norm([item.title,item.model,item.category,item.description].join(' '));
+    return keys.some(k=>text.includes(k));
+  }) || null;
+}
+function setupFallback(slotId,search){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url='/catalog.html?search='+encodeURIComponent(search);
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  slot.addEventListener('click',e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  });
+  slot.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  });
+}
+function applyProduct(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url=productUrl(item);
+  const img=slot.querySelector('img');
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,280);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'Rane';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      img.onerror=null;
+      if(fallback)img.src=fallback;
+    };
+    if(real)img.src=real;
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+  slot.onclick=e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  };
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+}
+
+async function loadRaneProducts(){
+  try{
+    if(!window.supabase)return;
+
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(isRane);
+
+    const seventyTwo=exactOne(products,[
+      'seventy two mkii',
+      'seventy-two mkii',
+      'seventy two mk2',
+      'seventy-two mk2',
+      'seventy 72 mkii'
+    ]);
+
+    const twelve=exactOne(products,[
+      'twelve mkii',
+      'twelve-mkii',
+      'twelve mk2',
+      'twelve-mk2'
+    ]);
+
+    applyProduct('rane-slot-seventytwo',seventyTwo);
+    applyProduct('rane-slot-twelve',twelve);
+
+    if(!seventyTwo)console.info('Rane: aucun Seventy-Two MKII exact publié — Stitch + catalogue ciblé conservés.');
+    if(!twelve)console.info('Rane: aucun Twelve MKII exact publié — Stitch + catalogue ciblé conservés.');
+
+  }catch(e){
+    console.warn('Rane products:',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  setupFallback('rane-slot-seventytwo','Rane Seventy-Two MKII');
+  setupFallback('rane-slot-twelve','Rane Twelve MKII');
+
+  loadRaneProducts();
+});
+</script>
+
+</body>
+</html>

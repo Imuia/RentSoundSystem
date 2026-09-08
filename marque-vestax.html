@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vestax - L'Héritage du Puriste | RentSoundSystem</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "on-tertiary-fixed-variant": "#474746",
+                "inverse-surface": "#e5e2e1",
+                "inverse-primary": "#bc004f",
+                "on-secondary-container": "#b5b5b6",
+                "error-container": "#93000a",
+                "surface-glass": "rgba(31, 31, 31, 0.6)",
+                "inverse-on-surface": "#313030",
+                "surface-container": "#201f1f",
+                "outline": "#ac878d",
+                "secondary-fixed": "#e3e2e3",
+                "secondary": "#c6c6c7",
+                "primary-fixed-dim": "#ffb2bf",
+                "tertiary": "#c8c6c5",
+                "on-surface-muted": "#E6BCC2",
+                "neon-glow": "rgba(252, 3, 109, 0.3)",
+                "surface-tint": "#ffb2bf",
+                "secondary-container": "#454748",
+                "on-tertiary-fixed": "#1b1b1c",
+                "on-secondary-fixed": "#1a1c1d",
+                "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                "on-tertiary-container": "#2a2a2a",
+                "on-secondary": "#2f3132",
+                "on-error-container": "#ffdad6",
+                "surface-container-low": "#1c1b1b",
+                "on-error": "#690005",
+                "surface-variant": "#353534",
+                "on-tertiary": "#303030",
+                "surface-dim": "#131313",
+                "primary-container": "#ff4d80",
+                "on-surface-variant": "#e6bcc2",
+                "on-background": "#e5e2e1",
+                "surface-container-lowest": "#0e0e0e",
+                "secondary-fixed-dim": "#c6c6c7",
+                "on-primary": "#660028",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-container-high": "#2a2a2a",
+                "surface": "#131313",
+                "surface-container-highest": "#353534",
+                "outline-variant": "#5d3f44",
+                "on-primary-fixed": "#3f0016",
+                "on-surface": "#e5e2e1",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "on-secondary-fixed-variant": "#454748",
+                "background": "#131313",
+                "on-primary-container": "#5a0022",
+                "primary-fixed": "#ffd9de",
+                "on-primary-fixed-variant": "#90003b",
+                "surface-bright": "#393939",
+                "primary": "#ffb2bf",
+                "error": "#ffb4ab",
+                "tertiary-container": "#929090",
+                "fuchsia": "#FC036D"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "container-max": "1280px",
+                "section-padding-y": "6rem",
+                "card-gap": "1.5rem",
+                "gutter-x": "2.5rem",
+                "component-padding-y": "0.625rem",
+                "component-padding-x": "1.5rem"
+        },
+        "fontFamily": {
+                "headline-md": [
+                        "Manrope"
+                ],
+                "headline-lg": [
+                        "Manrope"
+                ],
+                "label-caps": [
+                        "Inter"
+                ],
+                "display-hero-mobile": [
+                        "Manrope"
+                ],
+                "display-hero": [
+                        "Manrope"
+                ],
+                "body-md": [
+                        "Inter"
+                ],
+                "body-lg": [
+                        "Inter"
+                ]
+        },
+        "fontSize": {
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.4",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "40px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.0",
+                                "letterSpacing": "0.15em",
+                                "fontWeight": "600"
+                        }
+                ],
+                "display-hero-mobile": [
+                        "48px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "display-hero": [
+                        "72px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "body-lg": [
+                        "20px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #131313; color: #e5e2e1; }
+        h1, h2, h3, h4, h5, h6, .font-headline { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0; }
+        .material-symbols-outlined.fill { font-variation-settings: 'FILL' 1; }
+    </style>
+
+<meta name="description" content="Location Vestax sur RentSoundSystem : tables de mixage PMC, platines PDX et équipements DJ légendaires pour scratch, turntablism, clubs et performances professionnelles.">
+<link rel="canonical" href="https://rentsoundsystem.com/marque-vestax">
+<meta property="og:title" content="Vestax - L'Héritage du Puriste | RentSoundSystem">
+<meta property="og:description" content="Découvrez les équipements Vestax disponibles à la location : PMC-05 Pro IV, PDX-3000, PMC-06 Pro A et références historiques du turntablism.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://rentsoundsystem.com/marque-vestax">
+<meta name="twitter:card" content="summary_large_image">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+{"@type":"Brand","name":"Vestax","url":"https://rentsoundsystem.com/marque-vestax"},
+{"@type":"BreadcrumbList","itemListElement":[
+{"@type":"ListItem","position":1,"name":"Accueil","item":"https://rentsoundsystem.com/"},
+{"@type":"ListItem","position":2,"name":"Marques","item":"https://rentsoundsystem.com/marques"},
+{"@type":"ListItem","position":3,"name":"Vestax","item":"https://rentsoundsystem.com/marque-vestax"}]}]}
+</script>
+
+<style id="rss-vestax-compat">
+html,body{overflow-x:hidden!important;background:#131313!important}
+body{padding-top:80px!important}
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+#rss-mobile-menu-toggle{display:none!important}
+
+.rss-page-wrap{
+  width:100%;
+  max-width:1280px;
+  margin-left:auto;
+  margin-right:auto;
+  padding-left:40px;
+  padding-right:40px;
+  box-sizing:border-box;
+}
+
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1;text-decoration:none}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif;text-decoration:none}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2;text-decoration:none}
+
+@media(max-width:900px){
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr 1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+@media(max-width:600px){
+  body{padding-top:72px!important}
+  .rss-page-wrap{padding-left:24px;padding-right:24px}
+  .rss-footer-grid{grid-template-columns:1fr}
+  .rss-footer-wrap{padding:0 24px}
+}
+</style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col antialiased">
+<div id="header-container"></div>
+<!-- Main Content -->
+<main class="rss-page-wrap flex-grow py-8 flex flex-col gap-12 md:gap-24">
+<!-- Hero Section -->
+<section class="relative w-full rounded-xl overflow-hidden min-h-[614px] flex items-center p-8 md:p-16 border border-surface-container-high bg-surface-container-lowest">
+<div class="absolute inset-0 z-0 opacity-40">
+<img class="w-full h-full object-cover" data-alt="Close up of a professional DJ mixer in a dark, moody studio setting. The mixer features precise, metallic knobs and faders illuminated by stark, cool white and subtle pink lighting. The aesthetic is industrial, technical, and high-end, focusing on the mechanical beauty of analog audio gear against a deep black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwA3_KkU34jFwZjDeiuwiD7rV_5TbcKMT-_yXSO2T_HWgxZGnbErrYg_uXINE5zkfF44Uscmi4x9OyooGZGviGRrlYezRJNH_6Plq7BNVAMkalR2UWll9vguanMzjp8wD6J-Eejnqguf4rBfzEDBBSNv90Jqn9sbAKSClpa75nmmnXhTLP6GAOtcYPCDgtds0flKPSRemZ67sCp62XczlAdFwhvtgmioRGFHgb3WpaNk3z8-ryb1bYXxE61SMBmCJXrugIYcWtTRQ"/>
+</div>
+<div class="relative z-10 max-w-2xl flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full border border-surface-container-high self-start">
+<span class="w-2 h-2 rounded-full bg-fuchsia animate-pulse shadow-[0_0_8px_rgba(252,3,109,0.8)]"></span>
+<span class="font-label text-[12px] font-semibold tracking-widest uppercase text-on-surface">Héritage Légendaire</span>
+</div>
+<h1 class="font-headline text-[48px] md:text-[64px] font-bold leading-tight tracking-tight text-white drop-shadow-md">
+                    Vestax : Le Pouls du Puriste.
+                </h1>
+<p class="font-body text-[18px] text-on-surface-variant max-w-xl">
+                    Conçu pour les exigences exactes de la culture scratch et des puristes du vinyle. Découvrez la légendaire série PMC et les platines PDX — où la précision mécanique rencontre l'énergie nocturne.
+                </p>
+<div class="flex gap-4 mt-4">
+<button type="button" onclick="window.location.href='/catalog.html?search=Vestax'" class="bg-fuchsia text-white px-6 py-3 rounded font-body font-medium hover:bg-fuchsia/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)]">
+                        Explorer l'Inventaire
+                    </button>
+<button type="button" onclick="document.querySelector('#vestax-products')?.scrollIntoView({behavior:'smooth'})" class="px-6 py-3 rounded font-body font-medium text-white border border-outline-variant hover:bg-surface-container transition-colors">
+                        Voir les Spécifications
+                    </button>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-background to-transparent z-0"></div>
+</section>
+<!-- Product Grid (Bento Style) -->
+<section id="vestax-products" class="flex flex-col gap-8">
+<div class="flex justify-between items-end border-b border-surface-container-high pb-4">
+<div>
+<h2 class="font-headline text-[32px] font-semibold text-white">Matériel Légendaire</h2>
+<p class="font-body text-[16px] text-on-surface-variant mt-2">Les outils qui ont défini une génération d'artistes scratch.</p>
+</div>
+<a class="text-white font-medium hover:text-fuchsia transition-colors flex items-center gap-1 text-[14px]" href="/catalog.html?search=Vestax">
+                    Voir Tous les Modèles <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
+<!-- PMC-05 Pro IV (Large Card) -->
+<div id="vestax-slot-pmc05" class="md:col-span-2 md:row-span-2 rounded-xl bg-surface-container-low border border-surface-container-high overflow-hidden group relative flex flex-col justify-end p-8">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuAxRjqMCcBatcBc6XUNMz_iZsKhZft0omxu8xbYg2Qh4P2tZk1OLnj4L7FcJuu1YasdkMc8ymdxg0_CinlKmeuxaSM_sFaI_tq310bpafCxwPGjFKozXWFRqf0ou8odA6PQ8hrfpb360VhSdsF1-BvpZlsNIcUt0NruBGXVlt1UXus_B6eB76XxSyg-AvAqas6hSJ6atKSl4ts6M-durlTmRyUlBh-HWl_YZBun3II0ZLtn5iNORV7KCwGzfcJmmyrugtvh3EFhsjI" class="absolute inset-0 w-full h-full object-cover opacity-50 group-hover:opacity-70 transition-opacity duration-500" data-alt="A top-down view of a classic Vestax PMC-05 Pro IV DJ mixer in a dimly lit studio. The silver faceplate contrasts with the deep black background. Small glowing LEDs highlight the precision faders and EQ knobs. The scene exudes a minimalist, technical, and professional audio atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxRjqMCcBatcBc6XUNMz_iZsKhZft0omxu8xbYg2Qh4P2tZk1OLnj4L7FcJuu1YasdkMc8ymdxg0_CinlKmeuxaSM_sFaI_tq310bpafCxwPGjFKozXWFRqf0ou8odA6PQ8hrfpb360VhSdsF1-BvpZlsNIcUt0NruBGXVlt1UXus_B6eB76XxSyg-AvAqas6hSJ6atKSl4ts6M-durlTmRyUlBh-HWl_YZBun3II0ZLtn5iNORV7KCwGzfcJmmyrugtvh3EFhsjI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-4">
+<span class="px-2 py-1 bg-surface-container-highest text-white text-[12px] font-label font-semibold tracking-wider rounded uppercase border border-surface-glass-border">Table de Mixage Phare</span>
+<span id="vestax-pmc05-availability" class="hidden flex items-center gap-1 text-fuchsia text-[14px] font-medium bg-background/80 px-2 py-1 rounded border border-surface-glass-border shadow-[0_0_10px_rgba(252,3,109,0.1)]"><span class="w-1.5 h-1.5 rounded-full bg-fuchsia shadow-[0_0_5px_rgba(252,3,109,0.8)]"></span><span id="vestax-pmc05-count"></span></span>
+</div>
+<h3 class="font-headline text-[32px] font-bold text-white mb-2">PMC-05 Pro IV</h3>
+<p class="font-body text-[16px] text-on-surface-variant max-w-md mb-6">La table de mixage scratch ultime. Dotée de la courbe de crossfader légendaire et d'une qualité de fabrication robuste requise pour le turntablism agressif.</p>
+<button class="flex items-center gap-2 text-fuchsia hover:text-white transition-colors font-medium">
+                            Louer Maintenant <span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- PDX-3000 -->
+<div id="vestax-slot-pdx3000" class="rounded-xl bg-surface-container-low border border-surface-container-high overflow-hidden group relative flex flex-col justify-end p-6">
+<img data-stitch-fallback="https://lh3.googleusercontent.com/aida-public/AB6AXuASsomjwWTS4noTt2IBEZUM9OjT-Hk9o_TP9h8vRNW2NI_Y_7I12P9-FjuyABX-AIh3t-n7Tp1BxsYirXp_OQinspvU5dKfVXJShtAit-Ne-zrupkCmgFUek0W6DIio1dT0EceDyYALmkoiJLUDhq_qeAWCtCPJmqoEyjHqra-EW2_a6OD6v2FHH55jU3vPTq830p10lKf8RORBucNmrfo29245Vq4lPVvWN3Jcm-ms6u9sWD5YLro_djHk4dXOXhrIheOIkCWwaA4" class="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity duration-500" data-alt="A close-up of a direct-drive turntable platter and tonearm in a dark environment. A sleek vinyl record sits on the platter, illuminated by a stark, focused light beam casting deep shadows. The aesthetic is industrial and precise, highlighting the mechanical components." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASsomjwWTS4noTt2IBEZUM9OjT-Hk9o_TP9h8vRNW2NI_Y_7I12P9-FjuyABX-AIh3t-n7Tp1BxsYirXp_OQinspvU5dKfVXJShtAit-Ne-zrupkCmgFUek0W6DIio1dT0EceDyYALmkoiJLUDhq_qeAWCtCPJmqoEyjHqra-EW2_a6OD6v2FHH55jU3vPTq830p10lKf8RORBucNmrfo29245Vq4lPVvWN3Jcm-ms6u9sWD5YLro_djHk4dXOXhrIheOIkCWwaA4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="relative z-10">
+<span class="px-2 py-1 bg-surface-container-highest text-white text-[10px] font-label font-semibold tracking-wider rounded uppercase mb-3 inline-block border border-surface-glass-border">Entraînement Direct</span>
+<h3 class="font-headline text-[24px] font-semibold text-white mb-1">PDX-3000</h3>
+<p class="font-body text-[14px] text-on-surface-variant mb-4">Couple inégalé et compatibilité MIDI.</p>
+<button class="flex items-center gap-2 text-white hover:text-fuchsia transition-colors text-[14px] font-medium">
+                            Voir Spécifications <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</button>
+</div>
+</div>
+<!-- PMC-06 Pro -->
+<div id="vestax-slot-pmc06" class="rounded-xl bg-surface-container-low border border-surface-container-high overflow-hidden group relative flex flex-col justify-end p-6">
+<div class="absolute inset-0 bg-surface-container-highest/20 group-hover:bg-surface-container-highest/40 transition-colors duration-500"></div>
+<div class="relative z-10">
+<span class="px-2 py-1 bg-surface-container-highest text-white text-[10px] font-label font-semibold tracking-wider rounded uppercase mb-3 inline-block border border-surface-glass-border">Série Compacte</span>
+<h3 class="font-headline text-[24px] font-semibold text-white mb-1">PMC-06 Pro A</h3>
+<p class="font-body text-[14px] text-on-surface-variant mb-4">La table de mixage "stick". Épurée pour la performance de battle pure.</p>
+<button class="flex items-center gap-2 text-white hover:text-fuchsia transition-colors text-[14px] font-medium">
+                            Voir Spécifications <span class="material-symbols-outlined text-[16px]">arrow_outward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
+</div>
+</div>
+
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sono-new-york">Location Sono New York</a></li>
+<li><a href="/location-sono/location-sono-ibiza">Location Sono Ibiza</a></li>
+<li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
+<li><a href="/location-sono/location-sono-madrid">Location Sono Madrid</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/categorie-casques-ecouteurs.html">Casques &amp; écouteurs</a></li>
+<li><a href="/categorie-dj-djing.html">DJ &amp; DJing</a></li>
+<li><a href="/categorie-evenementiel-production.html">Événementiel &amp; production</a></li>
+<li><a href="/categorie-instruments-music.html">Instruments music</a></li>
+<li><a href="/categorie-multimedia-digital.html">Multimédia &amp; digital</a></li>
+<li><a href="/categorie-sonorisation-eclairage.html">Sonorisation &amp; éclairage</a></li>
+</ul></div>
+
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-assistance.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
+
+</div>
+
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
+</div>
+</div>
+</footer>
+
+<script id="rss-vestax-products">
+const SUPABASE_URL="https://crxofkxinsspfgdsxpiy.supabase.co";
+const SUPABASE_KEY="sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+
+async function loadHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const r=await fetch('/header.html',{cache:'no-cache'});
+    if(!r.ok)throw new Error(r.status);
+    target.innerHTML=await r.text();
+    target.querySelectorAll('script').forEach(old=>{
+      const s=document.createElement('script');
+      [...old.attributes].forEach(a=>s.setAttribute(a.name,a.value));
+      s.textContent=old.textContent;
+      old.replaceWith(s);
+    });
+  }catch(e){
+    console.error('Header load',e);
+  }
+}
+
+function clean(v){
+  return String(v??'').replace(/<[^>]*>?/gm,'').replace(/&nbsp;/g,' ').trim();
+}
+function norm(v){
+  return String(v??'').toLowerCase().normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^a-z0-9]+/g,' ')
+    .trim();
+}
+function firstImage(item){
+  const imgs=Array.isArray(item.listing_images)?item.listing_images.slice():[];
+  imgs.sort((a,b)=>Number(a.position||0)-Number(b.position||0));
+  return imgs[0]?.image_url || item.image_url || item.image || item.cover_image || '';
+}
+function productUrl(item){
+  if(item && item.original_id!==undefined && item.original_id!==null){
+    return '/product?original_id='+encodeURIComponent(item.original_id);
+  }
+  if(item && item.id!==undefined && item.id!==null){
+    return '/product?id='+encodeURIComponent(item.id);
+  }
+  return '/catalog.html?search=Vestax';
+}
+function isVestax(item){
+  const brand=norm([item.brand,item.brand_name,item.marque].join(' '));
+  const full=norm([item.brand,item.brand_name,item.marque,item.title,item.model,item.category,item.description].join(' '));
+  return brand==='vestax' || brand.includes('vestax') || full.includes('vestax');
+}
+function modelText(item){
+  return norm([item.title,item.model,item.category,item.description].join(' '));
+}
+function exactMatches(items,terms){
+  const keys=terms.map(norm);
+  return items.filter(item=>{
+    const text=modelText(item);
+    return keys.some(k=>text.includes(k));
+  });
+}
+function setupFallback(slotId,search){
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+  const url='/catalog.html?search='+encodeURIComponent(search);
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  slot.addEventListener('click',e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  });
+  slot.addEventListener('keydown',e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  });
+
+  slot.querySelectorAll('button').forEach(btn=>{
+    btn.type='button';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  });
+}
+function applyProduct(slotId,item){
+  if(!item)return;
+  const slot=document.getElementById(slotId);
+  if(!slot)return;
+
+  const url=productUrl(item);
+  const img=slot.querySelector('img');
+  const title=slot.querySelector('h3');
+  const desc=slot.querySelector('p');
+
+  if(title && item.title)title.textContent=item.title;
+  if(desc && item.description)desc.textContent=clean(item.description).slice(0,260);
+
+  if(img){
+    const fallback=img.getAttribute('data-stitch-fallback')||img.src||'';
+    const real=firstImage(item);
+    img.alt=item.title||img.alt||'Vestax';
+    img.referrerPolicy='no-referrer';
+    img.onerror=()=>{
+      img.onerror=null;
+      if(fallback)img.src=fallback;
+    };
+    if(real)img.src=real;
+  }
+
+  slot.style.cursor='pointer';
+  slot.setAttribute('role','link');
+  slot.setAttribute('tabindex','0');
+
+  slot.onclick=e=>{
+    if(!e.target.closest('a,button'))location.href=url;
+  };
+  slot.onkeydown=e=>{
+    if(e.key==='Enter'||e.key===' '){
+      e.preventDefault();
+      location.href=url;
+    }
+  };
+
+  slot.querySelectorAll('button').forEach(btn=>{
+    btn.type='button';
+    btn.onclick=e=>{
+      e.stopPropagation();
+      location.href=url;
+    };
+  });
+}
+
+async function loadVestaxProducts(){
+  try{
+    if(!window.supabase)return;
+
+    const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+    const res=await client
+      .from('listings')
+      .select('*, listing_images(image_url, position)')
+      .eq('status','publish')
+      .limit(500);
+
+    if(res.error)throw res.error;
+
+    const products=(res.data||[]).filter(isVestax);
+
+    const pmc05=exactMatches(products,['pmc 05 pro iv','pmc-05 pro iv','pmc 05 pro 4','pmc-05 pro 4']);
+    const pdx3000=exactMatches(products,['pdx 3000','pdx-3000']);
+    const pmc06=exactMatches(products,['pmc 06 pro a','pmc-06 pro a','pmc 06 pro','pmc-06 pro']);
+
+    applyProduct('vestax-slot-pmc05',pmc05[0]);
+    applyProduct('vestax-slot-pdx3000',pdx3000[0]);
+    applyProduct('vestax-slot-pmc06',pmc06[0]);
+
+    // Real availability count only.
+    const badge=document.getElementById('vestax-pmc05-availability');
+    const count=document.getElementById('vestax-pmc05-count');
+    if(badge && count && pmc05.length){
+      count.textContent=pmc05.length+' disponible'+(pmc05.length>1?'s':'');
+      badge.classList.remove('hidden');
+    }
+
+    if(!pmc05.length)console.info('Vestax: aucun PMC-05 Pro IV exact publié — Stitch + catalogue ciblé conservés.');
+    if(!pdx3000.length)console.info('Vestax: aucun PDX-3000 exact publié — Stitch + catalogue ciblé conservés.');
+    if(!pmc06.length)console.info('Vestax: aucun PMC-06 exact publié — Stitch + catalogue ciblé conservés.');
+
+  }catch(e){
+    console.warn('Vestax products:',e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  loadHeader();
+
+  setupFallback('vestax-slot-pmc05','Vestax PMC-05 Pro IV');
+  setupFallback('vestax-slot-pdx3000','Vestax PDX-3000');
+  setupFallback('vestax-slot-pmc06','Vestax PMC-06 Pro A');
+
+  loadVestaxProducts();
+});
+</script>
+
+</body>
+</html>
