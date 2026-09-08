@@ -315,7 +315,7 @@ html, body {
 <div class="flex flex-col gap-2 ">
 <h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements populaires à proximité</h2>
 <div class="flex items-center gap-2 text-primary">
-<span class="material-symbols-outlined text-[24px]">trending_up</span>
+<span class="material-symbols-outlined text-[24px]">location_on</span>
 <span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Les plus demandés</span>
 </div>
 </div>
@@ -405,7 +405,7 @@ html, body {
   <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
     <div class="flex flex-col gap-2 ">
       <h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Équipements disponibles autour de vous</h2>
-      <p id="map-city-label" class="font-body-md text-[18px] text-primary">Paris, FR • Autour de vous</p>
+      <p id="map-city-label" class="font-body-md text-[18px] text-primary">Paris, FR • Les plus demandés</p>
     </div>
     <button id="use-my-location" type="button" class="self-start md:self-auto bg-surface-container-high border border-white/10 text-on-surface px-4 py-3 rounded-lg hover:text-primary hover:border-primary transition-colors flex items-center gap-2">
       <span class="material-symbols-outlined">my_location</span> Utiliser ma position
@@ -1259,7 +1259,6 @@ html, body {
     const pos = center || currentCenter;
     let candidates = [];
 
-    // Sélection des éléments proches
     if (pos && Number.isFinite(Number(pos.lat)) && Number.isFinite(Number(pos.lng))) {
       candidates = allListings
         .filter(hasCoordinates)
@@ -1279,7 +1278,6 @@ html, body {
       candidates = [...allListings];
     }
 
-    // Tri par combinaison de popularité réelle (views) et statut 'featured'
     return candidates
       .sort((a, b) => {
         const scoreA = Number(a.views || 0) + (a.featured ? 50 : 0);
@@ -1294,14 +1292,12 @@ html, body {
     const pos = center || currentCenter;
     let filtered = [];
 
-    // 1. Filtrage géographique autour de la position active (100 km)
     if (pos && Number.isFinite(Number(pos.lat)) && Number.isFinite(Number(pos.lng))) {
       filtered = allListings
         .filter(hasCoordinates)
         .filter(item => haversineKm(pos, item) <= 100);
     }
 
-    // 2. Fallback par nom de ville ou pays
     if (!filtered.length && currentCityName) {
       const normalizedCity = normalizeText(currentCityName);
       filtered = allListings.filter(item => {
@@ -1311,12 +1307,10 @@ html, body {
       });
     }
 
-    // Aucun fallback vers les annonces mondiales : si rien à proximité, retourner []
     if (!filtered.length) {
       return [];
     }
 
-    // Tri par date de création/publication récente décroissante
     return filtered
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, safeLimit);
