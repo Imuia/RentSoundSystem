@@ -101,9 +101,7 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
         <p id="partner-description" class="partner-description">Location de matériel et services événementiels professionnels.</p>
         <div id="partner-meta" class="partner-meta"></div>
         <div id="partner-actions" class="partner-actions">
-          <a id="partner-email" class="rss-btn rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">mail</span> Contacter par e-mail</a>
-          <a id="partner-phone" class="rss-btn rss-btn-secondary hidden" href="#"><span class="material-symbols-outlined">call</span> Appeler</a>
-          <a id="partner-whatsapp" class="rss-btn rss-btn-primary hidden" href="#" target="_blank" rel="noopener"><span class="material-symbols-outlined">chat</span> WhatsApp</a>
+          <a id="partner-contact" class="rss-btn rss-btn-primary" href="/demande-de-devis.html"><span class="material-symbols-outlined">mail</span> Contacter le partenaire</a>
         </div>
       </div>
     </div>
@@ -474,13 +472,16 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
     $('partner-meta').innerHTML=meta.join('');
 
     setLogo(profile.logo_url,profile.name);
-    setContactLink('partner-email',profile.email?'mailto:'+profile.email:'','Contacter par e-mail','mail');
-    setContactLink('partner-phone',profile.phone?'tel:'+profile.phone.replace(/\s+/g,''):'',profile.phone,'call');
 
-    const whatsapp=profile.allow_whatsapp && profile.phone
-      ? 'https://wa.me/'+profile.phone.replace(/[^\d]/g,'')
-      : '';
-    setContactLink('partner-whatsapp',whatsapp,'WhatsApp','chat');
+    const contactButton=$('partner-contact');
+    if(contactButton){
+      const key=partnerKey();
+      const params=new URLSearchParams();
+      if(key.partnerId) params.set('partner_id',key.partnerId);
+      if(key.legacy) params.set('legacy_user_id',key.legacy);
+      if(key.username) params.set('username',key.username);
+      contactButton.href='/demande-de-devis.html'+(params.toString()?'?'+params.toString():'');
+    }
 
     const fields=[
       ['partner-main-equipment',specialty],

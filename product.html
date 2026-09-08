@@ -506,11 +506,8 @@
   <hr class="rss-added-separator my-7">
   <p id="rss-owner-description" class="rss-added-desc">Partenaire RentSoundSystem spécialisé dans la location de matériel événementiel professionnel.</p>
   <div class="mt-5 grid grid-cols-1 gap-2">
-    <a id="rss-owner-email-commercial" href="mailto:commercial@rentsoundsystem.com" class="rss-added-contact px-3 py-2 rounded-full text-sm transition">
-      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>commercial@rentsoundsystem.com
-    </a>
-    <a id="rss-owner-email-info" href="mailto:info@rentsoundsystem.com" class="rss-added-contact px-3 py-2 rounded-full text-sm transition">
-      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>info@rentsoundsystem.com
+    <a id="rss-owner-contact" href="/demande-de-devis.html" class="rss-added-contact px-3 py-2 rounded-full text-sm transition inline-flex items-center justify-center">
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>Contacter le partenaire
     </a>
   </div>
   <span id="rss-owner-username" class="hidden"></span>
@@ -2192,8 +2189,6 @@ function applyOwnerDisplay(item){
       ownerName: item.owner_name || ownerName(item) || document.getElementById('rss-owner-name')?.textContent?.trim() || '',
       ownerLocation: [item.owner_city || item.city, item.owner_country || item.country].filter(Boolean).join(', ') || document.getElementById('rss-owner-location')?.textContent?.trim() || '',
       ownerUsername: item.owner_username || document.getElementById('rss-owner-username')?.textContent?.replace('@','').trim() || '',
-      ownerEmail: item.owner_email || document.getElementById('rss-owner-email')?.href?.replace('mailto:','') || '',
-      ownerPhone: item.owner_phone || document.getElementById('rss-owner-phone')?.textContent?.trim() || '',
       legacyUserId: item.legacy_user_id || '',
       minDuration: item.min_duration || '',
       maxDuration: item.max_duration || ''
@@ -2293,6 +2288,24 @@ function applyOwnerDisplay(item){
     return false;
   }
 
+
+  function bindOwnerContactButton(){
+    const btn = document.getElementById('rss-owner-contact');
+    if(!btn) return;
+    btn.addEventListener('click', function(e){
+      e.preventDefault();
+      const draft = currentProductDraft();
+      try{
+        localStorage.setItem('rssQuoteDraft', JSON.stringify(draft));
+        localStorage.setItem('rssSelectedProduct', JSON.stringify(draft.product));
+      }catch(err){}
+      const params = new URLSearchParams();
+      if(draft.product.original_id) params.set('original_id', draft.product.original_id);
+      if(draft.product.id) params.set('id', draft.product.id);
+      window.location.href = '/demande-de-devis.html' + (params.toString() ? '?' + params.toString() : '');
+    });
+  }
+
   function goCheckout(){
     if (!requireSelectedDatesBeforeCheckout()) return;
     const draft = currentProductDraft();
@@ -2308,6 +2321,7 @@ function applyOwnerDisplay(item){
     window.location.href = '/tunnel-de-commande.html' + (params.toString() ? '?' + params.toString() : '');
   }
   ready(function(){
+    bindOwnerContactButton();
     document.addEventListener('click', function(e){
       const btn = e.target.closest('button');
       if(!btn) return;
