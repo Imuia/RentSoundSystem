@@ -9,7 +9,11 @@
   function q(sel){ return document.querySelector(sel); }
   function qa(sel){ return Array.from(document.querySelectorAll(sel)); }
   function clean(v){ return String(v || "").trim(); }
-  function page(){ return (location.pathname.split("/").pop() || "").toLowerCase(); }
+  function page(){
+    let p = (location.pathname.split("/").pop() || "").toLowerCase();
+    if (p.endsWith(".html")) p = p.slice(0, -5);
+    return p;
+  }
   function getDraft(){ try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}"); } catch(e){ return {}; } }
   function saveDraft(data){ localStorage.setItem(DRAFT_KEY, JSON.stringify(Object.assign(getDraft(), data || {}))); }
   function setEmail(email){ if(email) localStorage.setItem(EMAIL_KEY, String(email).toLowerCase().trim()); }
@@ -52,22 +56,22 @@
   }
   function bind(){
     fill(); const p=page();
-    if(p==="connexion-partenaire.html"){
+    if(p==="connexion-partenaire" || p==="connexion-partenaire.html"){
       const form=$("partner-login-form"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); const email=clean($("partner-login-email").value).toLowerCase(); setEmail(email); show("partner-login-message", true, "Vérification du dossier..."); const partner=await fetchPartnerByEmail(email); if(!partner){ show("partner-login-message", false, "Aucun dossier partenaire trouvé pour cet email. Créez une demande partenaire."); return; } localStorage.setItem(REQUEST_ID_KEY, partner.id); if(partner.status==="approved") go("/tableau-de-bord-partenaire.html"); else go("/partenaire-en-attente.html"); });
     }
-    if(p==="inscription-partenaire.html"){
+    if(p==="inscription-partenaire" || p==="inscription-partenaire.html"){
       const form=q("form"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); const full=val("fullName")||val("full_name")||clean(q('[name="fullName"]')?.value); const email=(val("email")||clean(q('[name="email"]')?.value)).toLowerCase(); const password=val("password")||clean(q('[name="password"]')?.value); if(!full || !email){ alert("Merci de renseigner votre nom et votre email."); return; } saveDraft({full_name:full, fullName:full, email:email, password:password}); setEmail(email); go("/partenaire-societe.html"); }, true);
     }
-    if(p==="partenaire-societe.html"){
+    if(p==="partenaire-societe" || p==="partenaire-societe.html"){
       const form=q("form"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ company_name:val("company_name"), reg_number:val("reg_number"), registration_number:val("reg_number"), vat_number:val("vat_number"), tax_id:val("vat_number"), address_1:val("address_1"), city:val("city"), postal_code:val("postal_code"), country:val("country") }); go("/inscription-partenaire-materiel.html"); }, true);
     }
-    if(p==="inscription-partenaire-materiel.html"){
+    if(p==="inscription-partenaire-materiel" || p==="inscription-partenaire-materiel.html"){
       const form=$("form-step2"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ categories:checked("categories"), equipment_count:val("equipment_count"), fleet_value:val("fleet_value"), equipment_condition:val("equipment_condition"), equipment_description:val("equipment_description") }); go("/inscription-partenaire-logistique.html"); }, true);
     }
-    if(p==="inscription-partenaire-logistique.html"){
+    if(p==="inscription-partenaire-logistique" || p==="inscription-partenaire-logistique.html"){
       const form=$("form-step3"); if(form) form.addEventListener("submit", function(e){ e.preventDefault(); saveDraft({ coverage_area:val("coverage_area"), delivery_radius:val("delivery_radius"), handover_mode:val("handover_mode"), technician_available:val("technician_available"), deposit_policy:val("deposit_policy"), insurance_status:val("insurance_status"), logistics_notes:val("logistics_notes") }); go("/inscription-partenaire-kyc.html"); }, true);
     }
-    if(p==="inscription-partenaire-kyc.html"){
+    if(p==="inscription-partenaire-kyc" || p==="inscription-partenaire-kyc.html"){
       const submitBtn = $("kyc-submit") || $("submit-kyc");
       if(submitBtn){
         submitBtn.addEventListener("click", async function(e){
@@ -87,11 +91,11 @@
         });
       }
     }
-    if(p==="ajouter-annonce.html"){
+    if(p==="ajouter-annonce" || p==="ajouter-annonce.html"){
       const form=$("rss-listing-form"); if(form) form.addEventListener("submit", async function(e){ e.preventDefault(); await submitListing(form); }, true);
     }
-    if(["partenaire-en-attente.html","tableau-de-bord-partenaire.html","partenaire-paiement.html"].includes(p)){
-      fetchPartnerByEmail().then(function(partner){ if(!partner) return; qa("[data-partner-company]").forEach(el=>el.textContent=partner.company_name||""); qa("[data-partner-status]").forEach(el=>el.textContent=partner.status||"pending"); if(p==="tableau-de-bord-partenaire.html" && partner.status!=="approved") go("/partenaire-en-attente.html"); });
+    if(["partenaire-en-attente","partenaire-en-attente.html","tableau-de-bord-partenaire","tableau-de-bord-partenaire.html","partenaire-paiement","partenaire-paiement.html"].includes(p)){
+      fetchPartnerByEmail().then(function(partner){ if(!partner) return; qa("[data-partner-company]").forEach(el=>el.textContent=partner.company_name||""); qa("[data-partner-status]").forEach(el=>el.textContent=partner.status||"pending"); if((p==="tableau-de-bord-partenaire" || p==="tableau-de-bord-partenaire.html") && partner.status!=="approved") go("/partenaire-en-attente.html"); });
     }
   }
   if(document.readyState!=="loading") bind(); else document.addEventListener("DOMContentLoaded", bind);
