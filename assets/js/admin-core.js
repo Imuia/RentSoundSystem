@@ -78,33 +78,6 @@
     return String(value || 'inconnu').toLowerCase().trim();
   }
 
-  function translateStatus(value) {
-    if (value === true) return 'Actif';
-    if (value === false) return 'Inactif';
-    const raw = String(value || '').toLowerCase().trim();
-    const map = {
-      publish: 'Publié',
-      published: 'Publié',
-      pending: 'En attente',
-      pending_review: 'En révision',
-      confirmed: 'Confirmée',
-      completed: 'Terminée',
-      cancelled: 'Annulée',
-      canceled: 'Annulée',
-      succeeded: 'Payé',
-      paid: 'Payé',
-      active: 'Actif',
-      inactive: 'Inactif',
-      approved: 'Validé',
-      rejected: 'Rejeté',
-      hidden: 'Masqué',
-      success: 'Succès',
-      failed: 'Échec',
-      draft: 'Brouillon'
-    };
-    return map[raw] || String(value || 'Inconnu');
-  }
-
   function statusClass(value) {
     const status = normalizeStatus(value);
     if (/paid|succeed|payé|publ|approved|valid|confirm|active|actif|completed|termin/.test(status)) return 'success';
@@ -231,37 +204,15 @@
     const client = getClient();
     if (!client) throw new Error('Client Supabase introuvable');
     const limit = Math.min(Number(options.limit || config.maxRows || 2000), 5000);
-    const resourceDef = config.resources?.[resourceName] || {};
-
-    try {
-      const { data, error } = await client.rpc('admin_list_resource', {
-        p_resource: resourceName,
-        p_limit: limit,
-        p_offset: Number(options.offset || 0),
-        p_search: options.search || null,
-        p_status: options.status && options.status !== 'all' ? options.status : null
-      });
-      if (!error && data) return unwrapRpcRows(data);
-      if (error) console.warn(`[RSS Admin RPC Fallback] ${resourceName}:`, error.message);
-    } catch (e) {
-      console.warn(`[RSS Admin RPC Catch] ${resourceName}:`, e.message);
-    }
-
-    // Fallback transparent direct query on underlying Supabase table
-    const tableName = resourceDef.directTable || resourceDef.source || resourceName;
-    try {
-      let query = client.from(tableName).select('*').limit(limit);
-      if (options.status && options.status !== 'all') {
-        const statusKeys = resourceDef.status || ['status'];
-        if (statusKeys.length > 0) query = query.eq(statusKeys[0], options.status);
-      }
-      const { data, error } = await query;
-      if (error) throw error;
-      return data || [];
-    } catch (fallbackError) {
-      console.error(`[RSS Admin Direct Fallback Error] ${resourceName} / table ${tableName}:`, fallbackError);
-      throw fallbackError;
-    }
+    const { data, error } = await client.rpc('admin_list_resource', {
+      p_resource: resourceName,
+      p_limit: limit,
+      p_offset: Number(options.offset || 0),
+      p_search: options.search || null,
+      p_status: options.status && options.status !== 'all' ? options.status : null
+    });
+    if (error) throw error;
+    return unwrapRpcRows(data);
   }
 
   async function loadResource(resourceName, options = {}) {
@@ -292,20 +243,6 @@
   function filterRows(rows, resourceName, search = '', status = 'all') {
     const needle = search.trim().toLowerCase();
     return rows.filter(row => {
-      // Distinction métier entre devis & commandes et réservations fermes quand la source est 'reservations'
-      if (resourceName === 'orders') {
-        const rowStatus = String(row.status || row.reservation_status || '').toLowerCase();
-        const rowType = String(row.type || row.order_type || row.kind || '').toLowerCase();
-        const isQuoteOrDraft = /devis|quote|draft|pending|attente|nouveau|processing/i.test(rowStatus) || /devis|quote/i.test(rowType);
-        if (!isQuoteOrDraft) return false;
-      } else if (resourceName === 'reservations') {
-        const rowStatus = String(row.status || row.reservation_status || '').toLowerCase();
-        const isConfirmedOrCompleted = /confirm|valid|completed|termin|paid|payé/i.test(rowStatus) || rowStatus === 'active';
-        if (!isConfirmedOrCompleted && status === 'all') {
-          // Sur la vue réservations globale, on accepte tout saut si explicitement filtré
-        }
-      }
-
       const view = rowView(row, resourceName);
       const searchable = JSON.stringify(row).toLowerCase();
       const searchOk = !needle || searchable.includes(needle);
@@ -384,30 +321,13 @@
     if (!resource.statusOptions?.includes(status)) throw new Error('Transition de statut non autorisée');
     const id = rowView(row, resourceName).id;
     const source = row._source || resource.source || resourceName;
-
-    try {
-      const { data, error } = await client.rpc('admin_update_resource_status', {
-        p_resource: resourceName,
-        p_source: source,
-        p_id: String(id),
-        p_status: status,
-        p_note: note || null
-      });
-      if (!error) return data;
-      console.warn('[RSS Admin Status RPC Fallback]', error.message);
-    } catch (e) {
-      console.warn('[RSS Admin Status RPC Catch]', e.message);
-    }
-
-    // Direct fallback update on Supabase table
-    const tableName = resource.directTable || resource.source || resourceName;
-    const statusCol = (resource.status && resource.status[0]) || 'status';
-    const idCol = (resource.id && resource.id[0]) || 'id';
-
-    const updatePayload = { [statusCol]: status };
-    if (row.updated_at !== undefined) updatePayload.updated_at = new Date().toISOString();
-
-    const { data, error } = await client.from(tableName).update(updatePayload).eq(idCol, id);
+    const { data, error } = await client.rpc('admin_update_resource_status', {
+      p_resource: resourceName,
+      p_source: source,
+      p_id: String(id),
+      p_status: status,
+      p_note: note || null
+    });
     if (error) throw error;
     return data;
   }
@@ -429,7 +349,7 @@
   window.RSSAdmin = {
     state, config, $, $$,
     getClient, requireAdmin,
-    pick, formatMoney, formatDate, normalizeStatus, translateStatus, statusClass,
+    pick, formatMoney, formatDate, normalizeStatus, statusClass,
     escapeHtml, initials, toast,
     listResource, loadResource, rowView, filterRows, exportRows,
     openGenericDrawer, closeGenericDrawer, updateStatus,

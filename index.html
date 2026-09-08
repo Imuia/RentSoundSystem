@@ -313,7 +313,7 @@ html, body {
 </section><section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
 <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div class="flex flex-col gap-2 ">
-<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Top des équipements les plus loués</h2>
+<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements populaires à proximité</h2>
 <div class="flex items-center gap-2 text-primary">
 <span class="material-symbols-outlined text-[24px]">trending_up</span>
 <span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Les plus demandés</span>
@@ -1254,10 +1254,39 @@ html, body {
     }
   }
 
-  function topRentedItems(center, limit) {
+  function popularNearbyItems(center, limit) {
     const safeLimit = Math.max(1, Number(limit) || 4);
-    // Conservation temporaire de la logique de proximité car aucun compteur de réservations réelles par annonce n'existe dans la table public listings
-    return nearbyItems(center || currentCenter, safeLimit);
+    const pos = center || currentCenter;
+    let candidates = [];
+
+    // Sélection des éléments proches
+    if (pos && Number.isFinite(Number(pos.lat)) && Number.isFinite(Number(pos.lng))) {
+      candidates = allListings
+        .filter(hasCoordinates)
+        .filter(item => haversineKm(pos, item) <= 100);
+    }
+
+    if (!candidates.length && currentCityName) {
+      const normalizedCity = normalizeText(currentCityName);
+      candidates = allListings.filter(item => {
+        const itemCity = normalizeText(item.city || item.location || '');
+        const itemCountry = normalizeText(item.country || '');
+        return itemCity.includes(normalizedCity) || normalizedCity.includes(itemCity) || itemCountry.includes(normalizedCity);
+      });
+    }
+
+    if (!candidates.length) {
+      candidates = [...allListings];
+    }
+
+    // Tri par combinaison de popularité réelle (views) et statut 'featured'
+    return candidates
+      .sort((a, b) => {
+        const scoreA = Number(a.views || 0) + (a.featured ? 50 : 0);
+        const scoreB = Number(b.views || 0) + (b.featured ? 50 : 0);
+        return scoreB - scoreA;
+      })
+      .slice(0, safeLimit);
   }
 
   function newestNearbyItems(center, limit) {
@@ -1282,12 +1311,12 @@ html, body {
       });
     }
 
-    // 3. Fallback sur les dernières annonces mondiales si aucune annonce n'est à proximité
+    // Aucun fallback vers les annonces mondiales : si rien à proximité, retourner []
     if (!filtered.length) {
-      return newestItems(safeLimit);
+      return [];
     }
 
-    // Tri par date récente décroissante
+    // Tri par date de création/publication récente décroissante
     return filtered
       .sort((a, b) => listingDateValue(b) - listingDateValue(a))
       .slice(0, safeLimit);
@@ -1296,18 +1325,18 @@ html, body {
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
-    const nearest = topRentedItems(center || currentCenter, 4);
+    const nearest = popularNearbyItems(center || currentCenter, 4);
     const newest = newestNearbyItems(center || currentCenter, 4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
-        ? nearest.map(item => productCard(item, null)).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Aucune annonce n’est actuellement disponible pour cette ville ou ce pays. Vous pouvez essayer une autre destination ou consulter les dernières annonces publiées dans le monde.</p></div></div>';
+        ? nearest.map(item => productCard(item, 'Populaire')).join('')
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucun équipement disponible pour cette zone.</strong><p>Aucun équipement n’est actuellement disponible pour cette localisation.</p></div></div>';
     }
     if (newestGrid) {
       newestGrid.innerHTML = newest.length
         ? newest.map(item => productCard(item, 'Nouveau')).join('')
-        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucune nouvelle annonce disponible.</strong><p>Les dernières annonces publiées apparaîtront ici dès qu’elles seront disponibles.</p></div></div>';
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucun nouveau matériel disponible à proximité pour le moment.</strong><p>Aucun nouveau matériel n’a été publié récemment autour de cette zone.</p></div></div>';
     }
   }
 
