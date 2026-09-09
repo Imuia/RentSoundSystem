@@ -1166,27 +1166,44 @@ html, body {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    let filtered = equipmentFilter(source)
-      .filter(item => listingCountryMatchesCenter(item, safeCenter))
-      .filter(item => listingCityMatchesCenter(item, safeCenter));
+    const sameCountry = equipmentFilter(source)
+      .filter(item => listingCountryMatchesCenter(item, safeCenter));
 
-    // Logique officielle :
-    // - recherche pays (ex: Maroc) : toutes les annonces du pays, même sans rayon ville ;
-    // - recherche ville (ex: Agadir) : ville + pays + rayon autour de la ville.
+    // Recherche pays : toutes les annonces du pays.
     if (isCountryCenter(safeCenter)) {
-      return uniqueListings(filtered)
+      return uniqueListings(sameCountry)
         .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
         .slice(0, limit);
     }
 
-    filtered = filtered.filter(item => hasCoordinates(item));
-    const sorted = enrichByDistance(filtered, safeCenter);
-    const inRadius = sorted.filter(item =>
-      typeof item._distanceKm === 'number' &&
-      item._distanceKm <= DEFAULT_RADIUS_KM
-    );
+    // 1. Priorité absolue aux annonces de la ville recherchée.
+    const exactCity = sameCountry
+      .filter(item => listingCityMatchesCenter(item, safeCenter))
+      .filter(item => hasCoordinates(item));
 
-    return inRadius.slice(0, limit);
+    const exactInRadius = enrichByDistance(exactCity, safeCenter)
+      .filter(item =>
+        typeof item._distanceKm === 'number' &&
+        item._distanceKm <= DEFAULT_RADIUS_KM
+      );
+
+    if (exactInRadius.length) {
+      return exactInRadius.slice(0, limit);
+    }
+
+    // 2. Si la ville n'a aucune annonce, élargir automatiquement aux villes voisines
+    // du même pays, dans le rayon existant, triées de la plus proche à la plus éloignée.
+    const neighboring = enrichByDistance(
+      sameCountry.filter(item => hasCoordinates(item)),
+      safeCenter
+    )
+      .filter(item =>
+        typeof item._distanceKm === 'number' &&
+        item._distanceKm <= DEFAULT_RADIUS_KM
+      )
+      .sort((a, b) => a._distanceKm - b._distanceKm);
+
+    return neighboring.slice(0, limit);
   }
 
   function canonicalCity(value) {
@@ -1351,9 +1368,18 @@ html, body {
         .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
     }).filter(Boolean);
 
-    if (isCountryCenter(safeCenter) && productMarkers.length) {
+    const hasExactCityResult = items.some(item => listingCityMatchesCenter(item, safeCenter));
+
+    if (productMarkers.length && (isCountryCenter(safeCenter) || !hasExactCityResult)) {
       const group = L.featureGroup(productMarkers);
-      map.fitBounds(group.getBounds().pad(0.18), { maxZoom: 7, animate: true });
+      const bounds = group.getBounds();
+      if (!isCountryCenter(safeCenter)) {
+        bounds.extend([safeCenter.lat, safeCenter.lng]);
+      }
+      map.fitBounds(bounds.pad(0.18), {
+        maxZoom: isCountryCenter(safeCenter) ? 7 : 12,
+        animate: true
+      });
     } else {
       map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 14, { animate: true });
     }
