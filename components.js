@@ -67,8 +67,14 @@ async function loadComponent(id, file) {
   }
 }
 
+const RSS_SUPPORTED_LANGUAGES = [
+  'fr', 'en', 'es', 'de', 'it', 'pt', 'nl', 'ca', 'pl', 'uk', 'zh', 'ja', 'ar'
+];
+
 function rssNormalizeLanguage(value) {
-  return String(value || "").toLowerCase() === "en" ? "en" : "fr";
+  if (!value) return "fr";
+  const clean = String(value).toLowerCase().trim().split('-')[0].split('_')[0];
+  return RSS_SUPPORTED_LANGUAGES.includes(clean) ? clean : "fr";
 }
 
 function rssSavedLanguage() {
@@ -190,9 +196,25 @@ function rssSwitchWholeSite(language) {
   return true;
 }
 
+function loadScriptIfNeeded(src, checkVar, callback) {
+  if (window[checkVar]) {
+    if (callback) callback();
+    return;
+  }
+  const script = document.createElement("script");
+  script.src = src;
+  script.async = true;
+  if (callback) script.onload = callback;
+  document.head.appendChild(script);
+}
+
 async function bootGlobalComponents() {
   ensureGlobalRobotsMeta();
   rssSaveLanguage(rssSavedLanguage());
+
+  // Chargement asynchrone des moteurs autonomes i18n & devises
+  loadScriptIfNeeded("/assets/js/rss-i18n.js", "RssI18n");
+  loadScriptIfNeeded("/assets/js/rss-currency.js", "RssCurrency");
 
   await Promise.all([
     loadComponent("header-container", "/header.html"),

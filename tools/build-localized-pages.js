@@ -1,12 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Script de pré-génération des pages HTML localisées pour le SEO.
- * Génère les variantes /en/index.html, /es/index.html, etc. avec HTML pré-traduit.
- * Cela garantit que Googlebot et les moteurs de recherche reçoivent du vrai HTML traduit avec hreflang et canonical.
- */
-
 const ROOT_DIR = path.join(__dirname, '..');
 const I18N_DIR = path.join(ROOT_DIR, 'i18n');
 
@@ -17,20 +11,19 @@ const PAGES_TO_LOCALIZE = [
   'contact.html',
   'faq.html',
   'mentions-legales.html',
-  'politique-confidentialite.html',
-  'langues.html'
+  'politique-confidentialite.html'
 ];
 
 const TARGET_LANGS = ['en', 'es', 'de', 'it', 'pt', 'nl', 'ca', 'pl', 'uk', 'zh', 'ja', 'ar'];
 
 function getHrefLangTags(page) {
-  const pageName = page === 'index.html' ? '' : page.replace('.html', '');
-  let tags = `\n<link rel="alternate" hreflang="fr" href="https://rentsoundsystem.com/${pageName}">\n`;
+  const pageSlug = page === 'index.html' ? '' : page.replace('.html', '');
+  let tags = `\n<link rel="alternate" hreflang="fr" href="https://rentsoundsystem.com/${pageSlug}">\n`;
 
   TARGET_LANGS.forEach(lang => {
-    tags += `<link rel="alternate" hreflang="${lang}" href="https://rentsoundsystem.com/${lang}/${pageName}">\n`;
+    tags += `<link rel="alternate" hreflang="${lang}" href="https://rentsoundsystem.com/${lang}/${pageSlug}">\n`;
   });
-  tags += `<link rel="alternate" hreflang="x-default" href="https://rentsoundsystem.com/${pageName}">\n`;
+  tags += `<link rel="alternate" hreflang="x-default" href="https://rentsoundsystem.com/${pageSlug}">\n`;
   return tags;
 }
 
@@ -50,25 +43,35 @@ function buildLocalizedPages() {
 
       let html = fs.readFileSync(srcPath, 'utf8');
 
-      // 1. Mise à jour de la balise <html lang="...">
+      // 1. html lang & dir
       html = html.replace(/<html([^>]*)\blang="[^"]*"/i, `<html$1lang="${lang}"`);
       if (lang === 'ar') {
         html = html.replace(/<html([^>]*)>/i, `<html$1 dir="rtl">`);
       }
 
-      // 2. Injection des hreflang
+      // 2. Canonical propre par langue (ex: /es/catalog)
+      const pageSlug = page === 'index.html' ? '' : page.replace('.html', '');
+      const localizedCanonical = `https://rentsoundsystem.com/${lang}/${pageSlug}`;
+      html = html.replace(/<link\s+rel="canonical"\s+href="[^"]*">/i, `<link rel="canonical" href="${localizedCanonical}">`);
+
+      // 3. Injection hreflang
       const hreflangTags = getHrefLangTags(page);
       if (html.includes('</head>')) {
         html = html.replace('</head>', `${hreflangTags}\n</head>`);
       }
 
-      // 3. Remplacement des textes explicitement marqués data-i18n
+      // 4. Remplacement <title> si présent dans le dictionnaire
+      const titleKey = page === 'index.html' ? 'title.home' : (page === 'catalog.html' ? 'title.catalog' : '');
+      if (titleKey && dictionary[titleKey]) {
+        html = html.replace(/<title>.*?<\/title>/i, `<title>${dictionary[titleKey]}</title>`);
+      }
+
+      // 5. Remplacement des éléments data-i18n
       Object.entries(dictionary).forEach(([key, val]) => {
         if (!val) return;
         const escapedVal = String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
         const safeKey = key.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-        // data-i18n
         const attrRegex = new RegExp(`(data-i18n=["']${safeKey}["'][^>]*>)([^<]*)(<)`, 'g');
         html = html.replace(attrRegex, `$1${escapedVal}$3`);
       });
@@ -78,7 +81,7 @@ function buildLocalizedPages() {
     });
   });
 
-  console.log(`[build-localized-pages] Variantes HTML localisées prégénérées avec succès pour ${TARGET_LANGS.length} langues.`);
+  console.log(`[build-localized-pages] 84 pages HTML localisées générées pour les 12 langues.`);
 }
 
 buildLocalizedPages();

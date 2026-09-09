@@ -5,7 +5,7 @@
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <link rel="preload" href="/header.html" as="fetch" crossorigin>
 <link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<title>Catalogue de Location - RentSoundSystem.com</title>
+<title>Catálogo de Equipamentos de Áudio e Iluminação Pro | RentSoundSystem</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
@@ -348,15 +348,15 @@ html, body {
 
 <aside class="w-full md:w-64 flex-shrink-0 space-y-stack-md">
 <div class="bg-surface-container rounded-xl p-stack-md border border-white/10">
-<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Filtres</h2>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm" data-i18n="catalog.filters">Filtros</h2>
 <!-- Category Filter -->
 <div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
-<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Catégorie</h3>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest" data-i18n="catalog.category">Categoria</h3>
 <div id="catalog-category-list" class="space-y-2"></div>
 </div>
 <!-- Price Filter -->
 <div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
-<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Tarif Journalier</h3>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest" data-i18n="catalog.daily_rate">Diária</h3>
 <div class="flex items-center gap-2">
 <input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-2 py-1 placeholder:text-on-surface-variant" id="filter-min-price" placeholder="Min" type="number"/>
 <span class="text-on-surface-variant">-</span>
@@ -391,7 +391,7 @@ html, body {
 <div class="flex flex-col gap-stack-sm mb-stack-md">
   <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-stack-sm">
     <div>
-      <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">Catalogue de Location</h1>
+      <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2" data-i18n="catalog.title">Catálogo de Aluguel</h1>
       <p class="font-body-md text-body-md text-on-surface-variant"><span id="catalog-count">Chargement des annonces...</span></p>
     </div>
     <div class="flex items-center gap-2">

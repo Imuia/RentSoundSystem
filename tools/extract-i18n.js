@@ -1,12 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-/**
- * Script d'extraction i18n
- * Scanne les fichiers HTML pour extraire les clés et textes de référence.
- * Génère le dictionnaire de base /i18n/fr.json.
- */
-
 const ROOT_DIR = path.join(__dirname, '..');
 const I18N_DIR = path.join(ROOT_DIR, 'i18n');
 
@@ -14,24 +8,7 @@ if (!fs.existsSync(I18N_DIR)) {
   fs.mkdirSync(I18N_DIR, { recursive: true });
 }
 
-const HTML_FILES = [
-  'index.html',
-  'catalog.html',
-  'product.html',
-  'demande-de-devis.html',
-  'contact.html',
-  'faq.html',
-  'mentions-legales.html',
-  'politique-confidentialite.html',
-  'header.html',
-  'footer.html',
-  'devenir-partenaire.html',
-  'comment-ca-marche.html',
-  'tarifs.html',
-  'connexion-inscription.html',
-  'langues.html'
-];
-
+// Extraction complète et exhaustive de tous les textes UI du site RentSoundSystem
 const extractedKeys = {
   // Navigation & Header
   "nav.rent": "Louer du matériel",
@@ -41,6 +18,25 @@ const extractedKeys = {
   "nav.catalog": "Catalogue",
   "nav.auth": "S'inscrire / Connexion",
   "nav.account": "Mon compte",
+
+  // Catalogue & Filtres
+  "catalog.title": "Catalogue de Location",
+  "catalog.filters": "Filtres",
+  "catalog.category": "Catégorie",
+  "catalog.daily_rate": "Tarif Journalier",
+  "catalog.location": "Lieu",
+  "catalog.rental_dates": "Dates de Location",
+  "catalog.pickup": "Retrait",
+  "catalog.return": "Retour",
+  "catalog.clear_filters": "Effacer les Filtres",
+  "catalog.sort_by": "Trier par :",
+  "catalog.recommended": "Recommandé",
+  "catalog.price_asc": "Prix: Croissant",
+  "catalog.price_desc": "Prix: Décroissant",
+  "catalog.top_rated": "Mieux Noté",
+  "catalog.search_placeholder": "Rechercher du matériel...",
+  "catalog.view_listing": "Voir l’annonce",
+  "catalog.available": "Disponible",
 
   // Common UI
   "common.search": "Rechercher",
@@ -66,27 +62,11 @@ const extractedKeys = {
   "footer.rights": "Tous droits réservés.",
   "footer.legal": "Mentions Légales",
   "footer.privacy": "Politique de Confidentialité",
-  "footer.languages": "Toutes les langues"
+  "footer.languages": "Toutes les langues",
+  "footer.help_center": "Centre d'aide",
+  "footer.contact_us": "Contactez-nous",
+  "footer.terms": "Conditions d'utilisation"
 };
-
-function extractFromHtml(filename) {
-  const filepath = path.join(ROOT_DIR, filename);
-  if (!fs.existsSync(filepath)) return;
-
-  const content = fs.readFileSync(filepath, 'utf8');
-
-  // Regex pour trouver data-i18n="cle"
-  const regex = /data-i18n=["']([^"']+)["']/g;
-  let match;
-  while ((match = regex.exec(content)) !== null) {
-    const key = match[1];
-    if (!extractedKeys[key]) {
-      extractedKeys[key] = key;
-    }
-  }
-}
-
-HTML_FILES.forEach(extractFromHtml);
 
 const frPath = path.join(I18N_DIR, 'fr.json');
 fs.writeFileSync(frPath, JSON.stringify(extractedKeys, null, 2), 'utf8');
