@@ -1,8 +1,4 @@
-/**
- * RentSoundSystem - Moteur Multi-Devise Autonome Indépendant (Client-side)
- * Effectue un formateur visuel à l'affichage des prix SANS toucher aux montants bruts Stripe / Supabase.
- * Toutes les transactions restent exécutées à 100% en EUR.
- */
+/* RentSoundSystem - Moteur Multi-Devise Autonome Indépendant */
 (function() {
   'use strict';
 
@@ -23,7 +19,6 @@
   };
 
   let currentCurrency = DEFAULT_CURRENCY;
-  let customRates = {};
 
   function normalizeCurrency(code) {
     if (!code) return DEFAULT_CURRENCY;
@@ -41,31 +36,13 @@
     return DEFAULT_CURRENCY;
   }
 
-  async function fetchLiveRates() {
-    try {
-      const res = await fetch('https://open.er-api.com/v6/latest/EUR');
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.rates) {
-          Object.keys(SUPPORTED_CURRENCIES).forEach(code => {
-            if (data.rates[code]) {
-              SUPPORTED_CURRENCIES[code].rate = data.rates[code];
-            }
-          });
-        }
-      }
-    } catch (err) {
-      console.warn('[rss-currency] Utilisation des taux de change fallbacks.', err);
-    }
-  }
-
   function convertPrice(amountEUR, targetCurrency) {
     const num = Number(amountEUR || 0);
     if (!num || isNaN(num)) return 0;
 
     const curr = normalizeCurrency(targetCurrency || currentCurrency);
     const info = SUPPORTED_CURRENCIES[curr];
-    const rate = customRates[curr] || info.rate || 1.0;
+    const rate = info.rate || 1.0;
 
     return num * rate;
   }
@@ -79,14 +56,12 @@
     const showDecimals = options && options.decimals !== undefined ? options.decimals : (curr === 'JPY' ? 0 : 0);
 
     try {
-      const formatted = new Intl.NumberFormat(locale, {
+      return new Intl.NumberFormat(locale, {
         style: 'currency',
         currency: curr,
         maximumFractionDigits: showDecimals,
         minimumFractionDigits: showDecimals
       }).format(converted);
-
-      return formatted;
     } catch (e) {
       return Math.round(converted) + ' ' + info.symbol;
     }
@@ -100,7 +75,7 @@
       const amountEUR = parseFloat(el.getAttribute('data-rss-price-eur'));
       if (isNaN(amountEUR)) return;
 
-      const formatOption = el.getAttribute('data-rss-price-format'); // ex: 'per_day'
+      const formatOption = el.getAttribute('data-rss-price-format');
       const formatted = formatPrice(amountEUR, currentCurrency);
 
       if (formatOption === 'per_day') {
@@ -108,6 +83,15 @@
       } else {
         el.textContent = formatted;
       }
+    });
+
+    // Sync UI currency labels
+    document.querySelectorAll('[data-rss-currency-label]').forEach(node => {
+      node.textContent = SUPPORTED_CURRENCIES[currentCurrency].symbol;
+    });
+    document.querySelectorAll('[data-rss-currency-choice]').forEach(button => {
+      const active = button.getAttribute('data-rss-currency-choice') === currentCurrency;
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
   }
 
@@ -126,9 +110,6 @@
   const RssCurrency = {
     init: function() {
       currentCurrency = detectCurrency();
-      fetchLiveRates().then(() => {
-        applyCurrencyToDOM(document);
-      });
       applyCurrencyToDOM(document);
     },
     setCurrency: setCurrency,
