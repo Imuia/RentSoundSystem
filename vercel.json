@@ -459,33 +459,18 @@
   ],
   "redirects": [
     {
-      "source": "/en",
-      "destination": "/",
-      "permanent": true
-    },
-    {
       "source": "/web",
       "destination": "/",
       "permanent": true
     },
     {
       "source": "/web/en",
-      "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/fr",
-      "destination": "/",
+      "destination": "/en",
       "permanent": true
     },
     {
       "source": "/web/fr",
       "destination": "/",
-      "permanent": true
-    },
-    {
-      "source": "/en/how-it-work",
-      "destination": "/comment-ca-marche",
       "permanent": true
     },
     {
@@ -516,16 +501,6 @@
     {
       "source": "/fr/:category/:original_id-louer-:slug",
       "destination": "/produit/:original_id/:slug",
-      "permanent": true
-    },
-    {
-      "source": "/en/faq",
-      "destination": "/faq",
-      "permanent": true
-    },
-    {
-      "source": "/en/contact",
-      "destination": "/contact",
       "permanent": true
     },
     {

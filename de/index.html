@@ -1,0 +1,1697 @@
+<!DOCTYPE html><html class="dark" lang="de"><head>
+<meta charset="utf-8">
+<meta name="google-site-verification" content="MvzIIwvnYpCHqfFo0V_nBq2g4TMAa0g2dM26k-72t5g" />
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<link rel="canonical" href="https://rentsoundsystem.com/de/">
+<title>RentSoundSystem | Professionelle Tontechnik, Line Array & Eventbeleuchtung mieten</title>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "RentSoundSystem",
+  "url": "https://rentsoundsystem.com",
+  "logo": "https://rentsoundsystem.com/logo.png",
+  "description": "Marketplace de location de matériel de sonorisation et éclairage professionnel.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://rentsoundsystem.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+<meta content="RentSoundSystem : votre marketplace de confiance pour la location de sonorisation professionnelle, systèmes line array et éclairage événementiel. Matériel haut de gamme pour experts." name="description">
+<meta content="RentSoundSystem | Location Sonorisation &amp; Éclairage Pro" property="og:title">
+<meta content="Plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts." property="og:description">
+<meta content="https://lh3.googleusercontent.com/aida-public/AB6AXuBMiGU28hdqafXqdQxg8L3-yOK3NoGBcEglo3AAk0QNSlIlrNK9FjX5XkS4CC0sreZdct4OzDGSeC4sxIHo6XbrJQoaDRKd7fFNJy8dimiFCMAIG49ndIKwBxf3Ia0HZYxs6LvjS9CP4lBJ7WtFpYaxRIh36F9dXWC5RuQAQxKZKv4iiQIjqaBkl6cKSiYd0Iax7QwLkqykPB271U0pLl-lx9TArmEYHOcyst25f8yJKDPzpAz1ucYV7r7_F84vJw8jgg7SUEJhKDc" property="og:image">
+<meta content="website" property="og:type">
+<meta content="summary_large_image" name="twitter:card">
+<meta content="RentSoundSystem | Location Sonorisation &amp; Éclairage Pro" name="twitter:title">
+<meta content="Louez du matériel audio, d'éclairage et de scène de premier ordre auprès de partenaires vérifiés." name="twitter:description">
+<meta content="https://lh3.googleusercontent.com/aida-public/AB6AXuBMiGU28hdqafXqdQxg8L3-yOK3NoGBcEglo3AAk0QNSlIlrNK9FjX5XkS4CC0sreZdct4OzDGSeC4sxIHo6XbrJQoaDRKd7fFNJy8dimiFCMAIG49ndIKwBxf3Ia0HZYxs6LvjS9CP4lBJ7WtFpYaxRIh36F9dXWC5RuQAQxKZKv4iiQIjqaBkl6cKSiYd0Iax7QwLkqykPB271U0pLl-lx9TArmEYHOcyst25f8yJKDPzpAz1ucYV7r7_F84vJw8jgg7SUEJhKDc" name="twitter:image">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+
+<!-- Leaflet map assets -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<style>
+  #rss-map-wrap {
+    height: 600px !important;
+    min-height: 600px !important;
+  }
+
+
+  #rss-map {
+    width: 100% !important;
+    height: 600px !important;
+    min-height: 600px !important;
+    display: block !important;
+    position: relative !important;
+    z-index: 1 !important;
+    background: #1f1f1f !important;
+  }
+
+  #rss-map.leaflet-container {
+    width: 100% !important;
+    height: 600px !important;
+    min-height: 600px !important;
+    background: #1f1f1f !important;
+    font-family: Inter, sans-serif !important;
+  }
+
+  #rss-map .leaflet-tile {
+    max-width: none !important;
+    max-height: none !important;
+  }
+
+  #rss-map .leaflet-control-attribution {
+    background: rgba(19,19,19,.75) !important;
+    color: #aaa !important;
+  }
+
+  #rss-map .leaflet-control-attribution a {
+    color: #FC036D !important;
+  }
+
+  .rss-product-marker,
+  .rss-user-marker {
+    background: transparent !important;
+    border: 0 !important;
+  }
+
+  .rss-pin {
+    color: #FC036D;
+    font-size: 38px;
+    line-height: 38px;
+    filter: drop-shadow(0 0 10px rgba(252,3,109,.85));
+  }
+
+  .rss-user-dot {
+    width: 20px;
+    height: 20px;
+    background: #FC036D;
+    border: 3px solid #fff;
+    border-radius: 999px;
+    box-shadow: 0 0 0 8px rgba(252,3,109,.22), 0 0 16px rgba(252,3,109,.8);
+  }
+
+  .rss-popup .leaflet-popup-content-wrapper {
+    background: #1f1f1f;
+    color: #e2e2e2;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 12px;
+  }
+
+  .rss-popup .leaflet-popup-tip {
+    background: #1f1f1f;
+  }
+  /* MAP DARK GREY */
+#rss-map .leaflet-tile {
+  filter:
+    grayscale(100%)
+    brightness(0.45)
+    contrast(1.2);
+}
+
+#rss-map.leaflet-container {
+  background: #111111 !important;
+}
+
+  .rss-loading-products { color:#e6bcc2; font-size:14px; padding:18px 0; }
+  .rss-card-placeholder { position:absolute; inset:0; background:radial-gradient(circle at 35% 20%, rgba(252,3,109,.22), transparent 35%), linear-gradient(135deg,#242424,#111); opacity:.9; }
+  .rss-empty-state {
+    grid-column: 1 / -1;
+    background: linear-gradient(145deg, rgba(31,31,31,.92), rgba(14,14,14,.96));
+    border: 1px solid rgba(252,3,109,.25);
+    border-radius: 14px;
+    padding: 28px;
+    color: #e6bcc2;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .rss-empty-state .material-symbols-outlined {
+    color: #FC036D;
+    font-size: 28px;
+    flex: 0 0 auto;
+  }
+  .rss-empty-state strong {
+    display:block;
+    color:#e2e2e2;
+    margin-bottom:6px;
+    font-family: Manrope, sans-serif;
+  }
+  .rss-empty-state p {
+    margin:0;
+    color:#e6bcc2;
+    line-height:1.55;
+  }
+
+</style>
+
+<style id="rss-hero-image-crisp-v1">
+  /* Image hero nette : pas de blur, pas de mix-blend-mode. */
+  .rss-hero-image{
+    opacity:.84!important;
+    mix-blend-mode:normal!important;
+    filter:none!important;
+    image-rendering:auto;
+    transform:translateZ(0);
+  }
+  .rss-hero-overlay{
+    background:linear-gradient(
+      180deg,
+      rgba(14,14,14,.14) 0%,
+      rgba(14,14,14,.20) 42%,
+      rgba(19,19,19,.88) 100%
+    );
+  }
+  @media(max-width:768px){
+    .rss-hero-image{opacity:.76!important;}
+    .rss-hero-overlay{
+      background:linear-gradient(
+        180deg,
+        rgba(14,14,14,.28) 0%,
+        rgba(14,14,14,.38) 44%,
+        rgba(19,19,19,.92) 100%
+      );
+    }
+  }
+</style>
+
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#ffffff", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#c40254", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#ffd9de", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
+<style>
+        body { background-color: #131313; color: #e2e2e2; }
+    </style>
+
+<style id="rss-responsive-home-fix">
+html, body {
+  overflow-x:hidden !important;
+}
+
+@media (max-width:1024px){
+  h1.font-headline-xl{
+    font-size:52px !important;
+    line-height:58px !important;
+  }
+}
+
+@media (max-width:768px){
+
+  section.relative.w-full.min-h-screen{
+    min-height:auto !important;
+    padding-top:120px !important;
+    padding-bottom:80px !important;
+  }
+
+  h1.font-headline-xl{
+    font-size:38px !important;
+    line-height:44px !important;
+  }
+
+  h2.font-headline-lg{
+    font-size:30px !important;
+    line-height:36px !important;
+  }
+
+  .font-body-lg.text-\[22px\]{
+    font-size:17px !important;
+    line-height:28px !important;
+  }
+
+  .max-w-2xl.bg-surface\/80{
+    flex-direction:column !important;
+    align-items:stretch !important;
+    gap:12px !important;
+    padding:14px !important;
+  }
+
+  .max-w-2xl.bg-surface\/80 button{
+    width:100% !important;
+  }
+
+  .h-8.w-px{
+    display:none !important;
+  }
+
+  .group.relative.aspect-\[3\/4\]{
+    aspect-ratio:1/1.15 !important;
+  }
+
+  .group.relative.aspect-\[3\/4\] h3{
+    font-size:20px !important;
+  }
+
+  .min-h-\[500px\]{
+    min-height:320px !important;
+  }
+
+  #rss-map-wrap,
+  #rss-map,
+  #rss-map.leaflet-container{
+    height:420px !important;
+    min-height:420px !important;
+  }
+
+  .px-margin-mobile{
+    padding-left:14px !important;
+    padding-right:14px !important;
+  }
+}
+
+@media (max-width:480px){
+
+  h1.font-headline-xl{
+    font-size:32px !important;
+    line-height:38px !important;
+  }
+
+  h2.font-headline-lg{
+    font-size:26px !important;
+    line-height:32px !important;
+  }
+
+  .group.relative.aspect-\[3\/4\] h3{
+    font-size:18px !important;
+    line-height:24px !important;
+  }
+
+}
+</style>
+
+
+<link rel="alternate" hreflang="fr" href="https://rentsoundsystem.com/">
+<link rel="alternate" hreflang="en" href="https://rentsoundsystem.com/en/">
+<link rel="alternate" hreflang="es" href="https://rentsoundsystem.com/es/">
+<link rel="alternate" hreflang="de" href="https://rentsoundsystem.com/de/">
+<link rel="alternate" hreflang="it" href="https://rentsoundsystem.com/it/">
+<link rel="alternate" hreflang="pt" href="https://rentsoundsystem.com/pt/">
+<link rel="alternate" hreflang="nl" href="https://rentsoundsystem.com/nl/">
+<link rel="alternate" hreflang="ca" href="https://rentsoundsystem.com/ca/">
+<link rel="alternate" hreflang="pl" href="https://rentsoundsystem.com/pl/">
+<link rel="alternate" hreflang="uk" href="https://rentsoundsystem.com/uk/">
+<link rel="alternate" hreflang="zh" href="https://rentsoundsystem.com/zh/">
+<link rel="alternate" hreflang="ja" href="https://rentsoundsystem.com/ja/">
+<link rel="alternate" hreflang="ar" href="https://rentsoundsystem.com/ar/">
+<link rel="alternate" hreflang="x-default" href="https://rentsoundsystem.com/">
+
+</head>
+<body class="font-body-md text-body-md bg-background text-on-background min-h-screen flex flex-col">
+<div id="header-container"></div>
+<main class="flex-grow flex flex-col">
+<!-- Hero Section -->
+<section class="relative w-full min-h-screen flex items-center justify-center overflow-hidden border-b border-white/5 pt-20">
+<div class="absolute inset-0 z-0">
+<img alt="Marketplace RentSoundSystem - Location de matériel audio et éclairage professionnel" class="rss-hero-image w-full h-full object-cover" data-alt="Une capture d'écran de l'interface du site web Vantage Audio Marketplace. Le design présente une esthétique en mode sombre avec des arrière-plans noirs profonds et des accents roses vibrants. Le matériel audio professionnel est affiché dans une disposition épurée et minimaliste. L'ambiance est corporate, technique et très dynamique." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMiGU28hdqafXqdQxg8L3-yOK3NoGBcEglo3AAk0QNSlIlrNK9FjX5XkS4CC0sreZdct4OzDGSeC4sxIHo6XbrJQoaDRKd7fFNJy8dimiFCMAIG49ndIKwBxf3Ia0HZYxs6LvjS9CP4lBJ7WtFpYaxRIh36F9dXWC5RuQAQxKZKv4iiQIjqaBkl6cKSiYd0Iax7QwLkqykPB271U0pLl-lx9TArmEYHOcyst25f8yJKDPzpAz1ucYV7r7_F84vJw8jgg7SUEJhKDc" loading="eager" fetchpriority="high" decoding="async">
+<div class="absolute inset-0 rss-hero-overlay"></div>
+</div>
+<div class="relative z-10 w-full max-w-container-max px-margin-mobile md:px-margin-desktop flex flex-col items-center text-center gap-stack-lg">
+<div class="max-w-4xl flex flex-col gap-stack-sm">
+<h1 class="font-headline-xl text-[64px] leading-[72px] text-on-background tracking-tighter drop-shadow-2xl">Location de sono et matériel DJ professionnel</h1>
+<p class="font-body-lg text-[22px] leading-relaxed text-on-surface-variant max-w-3xl mx-auto drop-shadow-lg">Louez une sono professionnelle, du matériel DJ, des enceintes, systèmes line array, consoles et éclairages auprès de partenaires vérifiés pour vos soirées, mariages, concerts et événements.</p>
+</div>
+<div class="w-full max-w-xxl bg-surface/80 backdrop-blur-md rounded-xl border border-white/20 p-2.5 flex items-center gap-3 focus-within:border-primary transition-all shadow-2xl">
+<div class="flex flex-1 items-center min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant pl-4 text-[28px]">search</span>
+<input class="w-full bg-transparent border-none text-on-background focus:ring-0 font-body-lg text-[18px] placeholder:text-on-surface-variant/70" placeholder="De quel équipement avez-vous besoin ?" type="text">
+</div>
+<div class="h-8 w-px bg-white/20 hidden sm:block"></div>
+<div class="flex flex-1 items-center min-w-0">
+<span class="material-symbols-outlined text-on-surface-variant pl-2 text-[24px]">location_on</span>
+<input class="w-full bg-transparent border-none text-on-background focus:ring-0 font-body-lg text-[18px] placeholder:text-on-surface-variant/70" placeholder="Ville ou code postal" type="text">
+</div>
+<button aria-label="Rechercher du matériel" class="bg-primary text-on-primary font-label-md text-[16px] uppercase tracking-wider font-bold px-8 py-4 rounded hover:bg-primary-container transition-colors whitespace-nowrap">Rechercher</button>
+</div>
+</div>
+</section><section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div class="flex flex-col gap-2 ">
+<h2 class="font-headline-lg text-[40px]leading-[50px] text-on-background tracking-tight">Équipements populaires à proximité</h2>
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-[24px]">location_on</span>
+<span id="nearby-city-label" class="font-body-md text-[18px] font-medium">Paris, FR • Autour de vous</span>
+</div>
+</div>
+<a class="text-primary hover:underline font-label-md text-[14px] uppercase tracking-wide flex items-center gap-1" href="/catalog.html">Voir tout <span class="material-symbols-outlined text-[20px]">arrow_forward</span></a>
+</div>
+<div id="nearest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Product Card 1 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Enceinte Line Array L-Acoustics K2 en location" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0ujIZ-By40k7Jm_dx4ZIKTB4tQS9nvDHxibg6yHdBZYneOXlmj44ew22d6ub_jv-F_7WMpCL-JO_a3mcesX9W4ycRYU2PF8a_yCIrIJRss0tKlfjMwzDPezBAzRjwo6JLXZHwQ3i46LBSQ05IqWIFFMXdIM_lrUXWkjlVpj6_7Exckrc2NTrsfH0Ke6H_3RCdex7dmnqYNuCMd_058Pon0LFdvyNzkh3pQuPfkM-Tzpjd7tPmNve463US_JpaEZ3qasD3z7arsZB">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-background/80 backdrop-blur-md text-on-surface text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">Audio Pro</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">L-Acoustics K2</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
+<span class="material-symbols-outlined text-[18px]">near_me</span>
+<span class="">2.4 km • Saint-Denis</span>
+</div>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">450€</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Platine DJ Pioneer CDJ-3000 professionnelle en location" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0ug9Wa8J98lpEiroPWAEBHe30MWh5Gm5tKUmuHB7Z1bIG0nh2b6ioB5s6B_WosWw6n9ayaMOmGx8CWwmxoWwVTyleMJdgWNyoY0w_2e6AgUZ4i3lu1WN2hnJYdxjNwWU0JkjRx8S74N2_gDDR9ETFlEi-NzFFwIANBEKR0nW9FoP2LSDGMac2EUFjPRr4LY8kZY8RXDQVRh04sESoJs9u3QgfiR2gUgA4-5N3w0M3CCME0XRz3Z2gF4TGA6OD_2vUJD5YRyTxWKSug">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-background/80 backdrop-blur-md text-on-surface text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">DJ Gear</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">Pioneer CDJ-3000</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
+<span class="material-symbols-outlined text-[18px]">near_me</span>
+<span class="">0.8 km • Paris 11e</span>
+</div>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">85€</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Console de mixage Yamaha Rivage PM7" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0uj09tQWkZu19WZznVkG0X_TlkrcBB6rDK4lESnVasM1Y6TR0AF-b-BbyoyOx17uBe3h_z7DNw-UzHuj4syfycRrLmAsb5baqaPm0nBo3MeJizG9YE_2N2t2l042YgoVIOCEc9jUHBrHxQum7nB_U_Rsxvi2b_BdZaXGFK1a6HD82zJZa6b7pb0Vm_qVRkieN9uOKcmYrYGH2hs4xLQhTigHbJwwdWblixUXGgUN6DvEHIcjmDnXGaVwLCz-_yW-jGaHu4im6AvDhg">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-background/80 backdrop-blur-md text-on-surface text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">Consoles</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">Yamaha Rivage PM7</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
+<span class="material-symbols-outlined text-[18px]">near_me</span>
+<span class="">5.1 km • Boulogne</span>
+</div>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">1200€</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Système sans fil Shure AD4D Axient Digital" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0ujT1J9285dB1yhcWfejwNmE9ctvgsylhYNRlKk-3cIQwKIco6KPjqefm2LuTR-8RJLEH8XQRTEFiwc43C14wvAtruKWV9_d3KnGBIdbP3FxeThQ4osr-_XZCirdYx38NRA4PIshltPZttuHFzsookc37Ow-k6nYWChZgaQ4AV0UasqwWdp5Ra6_7xvIPFlyXJI8FrKKssypyfMXSXaI_M-e6XLboZkuK7tDtfMCbFteCtpUTaDkdRDsPiA">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-background/80 backdrop-blur-md text-on-surface text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">Wireless</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">Shure AD4D Axient</h3>
+<div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
+<span class="material-symbols-outlined text-[18px]">near_me</span>
+<span class="">1.2 km • Paris 15e</span>
+</div>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">150€</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Map Section -->
+<section class="w-full pb-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-md">
+  <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+    <div class="flex flex-col gap-2 ">
+      <h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Équipements disponibles autour de vous</h2>
+      <p id="map-city-label" class="font-body-md text-[18px] text-primary">Paris, FR • Autour de vous</p>
+    </div>
+    <button id="use-my-location" type="button" class="self-start md:self-auto bg-surface-container-high border border-white/10 text-on-surface px-4 py-3 rounded-lg hover:text-primary hover:border-primary transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined">my_location</span> Utiliser ma position
+    </button>
+  </div>
+
+  <div id="rss-map-wrap" class="relative w-full h-[600px] min-h-[600px] rounded-xl overflow-hidden border border-white/10 bg-surface-container">
+    <div id="rss-map" aria-label="Carte des équipements disponibles autour de vous"></div>
+  </div>
+</section>
+
+<!-- Featured Categories Bento Grid -->
+<section class="w-full py-stack-lg px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
+<div class="flex flex-col gap-2 ">
+<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Nouveaux matériels à proximité</h2>
+<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Découvrez les dernières annonces publiées autour de votre position ou de la ville sélectionnée.</p>
+</div>
+<div id="newest-products-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- New Product Card 1 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Allen &amp; Heath dLive S5000" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0uhu0myPBrSCOLLDv9gGfufp9Ktn0uTSdQDsETv2aJEN63G-t8KYiblFuN767IulVHAXQKfeboRaBs1jlz_bTS0Pr-hfSqxBHBknHlhw9jxnFd3wbzSpQyIXZrb-_kx6SHYo54kNRZaOEIUQhmnP8vblVVQdSH-oerQjwHuybVoiWSJa8Eo0wRaeMyk7wU7ydxnmIhm0TTU-5W4G5K8xrM6VBkxdqMisiyL_qTqKCumHXpk4poz2Eob20g">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10 flex gap-2">
+<span class="bg-primary text-on-primary text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded shadow-lg">Nouveau</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">Allen &amp; Heath dLive S5000</h3>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">350€</span>
+</div>
+</div>
+</div>
+<!-- New Product Card 2 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Martin MAC Ultra Performance" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0uiQco5_m1KczNrJ_Gra8TPHMAPFSmyXDIgeR4PytBZrgF3KjQMmiMdGLZ5o9GE2kMbkCNPw0QLnVRoLqlsHU5SAOS6wDndwu-a31oYlXV9L7RFVKsoSgCT2vdmxAOlrbPqhbIt8vWuM2j1MIIhdv07ZoCYE8EzkQYpA92EV5zDcinLd2euO5MdVdNdsCDbn8DjlDdzc92IsqgVYV9uFtOTfpKuXkyZgBW_pJjTGiFZkT60H3lr-1Hc8ZwU">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-primary text-on-primary text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded shadow-lg">Nouveau</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">Martin MAC Ultra Perf</h3>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">220€</span>
+</div>
+</div>
+</div>
+<!-- New Product Card 3 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="Meyer Sound Leopard" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0ui61gYKx8fSOBF1gf7Yg6Cxcm_BiV-JIWib-WdLwziUQmU4PY5_fKoFy-khYCQpnsHaIOoVNK4V_CGQHKTBwMv0pd0gkCLixVn74fkSNUEa1GRFjQ_Lgqv7w31fPq53chXxF3km1oHp5DPuVITloim6c7NXvMjGLRaopuiVZa_kxri419AP__-iYA9ryR2Kpu1SYXjUq-oPI2ObneutQgBNDuH_HkacCbu7imhPmI8sIJUWIli1q4qXh2o">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-primary text-on-primary text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded shadow-lg">Nouveau</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">Meyer Sound Leopard</h3>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">280€</span>
+</div>
+</div>
+</div>
+<!-- New Product Card 4 -->
+<div class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer">
+<img alt="MA Lighting grandMA3 compact XT" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/ADBb0uhu0myPBrSCOLLDv9gGfufp9Ktn0uTSdQDsETv2aJEN63G-t8KYiblFuN767IulVHAXQKfeboRaBs1jlz_bTS0Pr-hfSqxBHBknHlhw9jxnFd3wbzSpQyIXZrb-_kx6SHYo54kNRZaOEIUQhmnP8vblVVQdSH-oerQjwHuybVoiWSJa8Eo0wRaeMyk7wU7ydxnmIhm0TTU-5W4G5K8xrM6VBkxdqMisiyL_qTqKCumHXpk4poz2Eob20g">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+<div class="absolute top-4 left-4 z-10">
+<span class="bg-primary text-on-primary text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded shadow-lg">Nouveau</span>
+</div>
+<div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+<h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md">grandMA3 compact XT</h3>
+<div class="pt-3 border-t border-white/20 flex justify-between items-center">
+<span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+<span class="text-primary font-bold text-2xl drop-shadow">410€</span>
+</div>
+</div>
+</div>
+</div>
+</section><section class="w-full pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto flex flex-col gap-stack-lg">
+<div class="flex flex-col gap-2 ">
+<h2 class="font-headline-lg text-[40px] leading-[50px] text-on-background tracking-tight">Catégories d'équipement</h2>
+<p class="font-body-md text-[18px] text-on-surface-variant max-w-2xl">Explorez notre vaste inventaire de matériel de qualité professionnelle pour vos productions les plus exigeantes.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Main Category -->
+<a class="md:col-span-2 relative min-h-[500px] rounded-xl overflow-hidden group border border-white/10 hover:border-primary/50 transition-all block" href="/categorie-sonorisation-eclairage.html#category-listings"><img alt="JBL Professional - Line arrays et systèmes de sonorisation" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-90" src="/images/categories/electrovoice.jpg">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
+<div class="bg-background/80 backdrop-blur-md self-start px-4 py-2 rounded-md mb-4 border border-white/10">
+<span class="font-label-caps text-[13px] text-primary tracking-widest font-bold">AUDIO PRO</span>
+</div>
+<h3 class="font-headline-md text-[36px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-lg">Line Arrays et Systèmes de Sonorisation</h3>
+<p class="font-body-sm text-[16px] text-on-surface-variant mt-3 max-w-lg drop-shadow">Systèmes de sonorisation de concert conformes aux normes de l'industrie pour les grands espaces et les tournées.</p>
+</div>
+</a>
+<!-- Sub Category 1 -->
+<a class="relative min-h-[500px] rounded-xl overflow-hidden group border border-white/10 hover:border-primary/50 transition-all block" href="/categorie-sonorisation-eclairage.html#category-listings"><img alt="Turbosound - systèmes line array et enceintes professionnelles" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000 opacity-90" src="/images/categories/turbosound.jpg">
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent"></div>
+<div class="absolute inset-0 p-8 flex flex-col justify-end z-10">
+<div class="bg-background/80 backdrop-blur-md self-start px-4 py-2 rounded-md mb-4 border border-white/10">
+<span class="font-label-caps text-[13px] text-primary tracking-widest font-bold">ÉCLAIRAGE</span>
+</div>
+<h3 class="font-headline-md text-[28px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-lg">Lyres &amp; FX</h3>
+<p class="font-body-sm text-[15px] text-on-surface-variant mt-3 drop-shadow">Projecteurs intelligents pour scènes dynamiques.</p>
+</div>
+
+</a>
+</div>
+
+<div class="mt-2 max-w-4xl">
+  <h2 class="font-headline-md text-[28px] leading-[36px] text-on-background tracking-tight mb-3">Location de sono et matériel DJ professionnel</h2>
+  <p class="font-body-md text-[16px] leading-[26px] text-on-surface-variant">
+    RentSoundSystem permet de trouver facilement du matériel de sonorisation professionnel à louer pour une soirée, un mariage, un concert, un festival ou un événement d’entreprise. Comparez les offres de location de sono, enceintes, caissons de basses, platines DJ, consoles, systèmes line array et éclairages proposés par des partenaires vérifiés.
+  </p>
+</div>
+</section>
+</main>
+<div id="footer-container"></div>
+
+
+<script id="rss-geo-products-map">
+(function () {
+  'use strict';
+
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const DEFAULT_CITY = { name: 'Paris, FR', lat: 48.8566, lng: 2.3522, zoom: 14 };
+  const DEFAULT_RADIUS_KM = 150;
+  // Affichage map : villes et géolocalisation resserrés de +2 niveaux de zoom. Les vues pays restent inchangées.
+
+  let supabaseClient = null;
+  let map = null;
+  let userMarker = null;
+  let productMarkers = [];
+  let allListings = [];
+  let activeListings = [];
+  let currentCenter = DEFAULT_CITY;
+  let manualSearchDone = false;
+  let mapReady = false;
+  let listingsReady = false;
+
+  function ready(fn) {
+    if (document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+
+  function escapeHtml(value) {
+    return String(value || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  function slugify(value) {
+    return String(value || 'produit')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      .replace(/(^-|-$)/g, '') || 'produit';
+  }
+
+  function formatPrice(value) {
+    const n = Number(value || 0);
+    if (!n) return 'Prix sur demande';
+    return Math.round(n) + '€';
+  }
+
+  function toNumber(value) {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  }
+
+  function getLat(item) { return toNumber(item.lat ?? item.latitude); }
+  function getLng(item) { return toNumber(item.lng ?? item.lon ?? item.longitude); }
+  function hasCoordinates(item) { return getLat(item) !== null && getLng(item) !== null; }
+
+  function getImage(item) {
+    const imgs = Array.isArray(item.listing_images) ? [...item.listing_images] : [];
+    imgs.sort((a, b) => Number(a.position || 0) - Number(b.position || 0));
+    return imgs[0]?.image_url || item.image_url || item.featured_image || item.thumbnail || '';
+  }
+
+  function productUrl(item) {
+    const slug = encodeURIComponent(slugify(item.title || 'annonce'));
+
+    // Les nouvelles annonces partenaires ont un id UUID.
+    // Les anciennes annonces importées utilisent original_id.
+    const uuid = item && item.id ? String(item.id).trim() : '';
+    const originalRaw = item && item.original_id !== undefined && item.original_id !== null ? String(item.original_id).trim() : '';
+    const hasRealOriginalId = originalRaw && originalRaw !== '-' && originalRaw !== '0' && /^\d+$/.test(originalRaw);
+
+    if (uuid && !hasRealOriginalId) {
+      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    }
+
+    if (hasRealOriginalId) {
+      return `/product.html?original_id=${encodeURIComponent(originalRaw)}&slug=${slug}`;
+    }
+
+    if (uuid) {
+      return `/product.html?id=${encodeURIComponent(uuid)}&slug=${slug}`;
+    }
+
+    return '/catalog.html';
+  }
+
+  function haversineKm(aLat, aLng, bLat, bLng) {
+    const R = 6371;
+    const dLat = (bLat - aLat) * Math.PI / 180;
+    const dLng = (bLng - aLng) * Math.PI / 180;
+    const x = Math.sin(dLat / 2) ** 2 +
+      Math.cos(aLat * Math.PI / 180) * Math.cos(bLat * Math.PI / 180) *
+      Math.sin(dLng / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(x), Math.sqrt(1 - x));
+  }
+
+  function distanceText(item) {
+    if (typeof item._distanceKm === 'number') {
+      if (item._distanceKm < 1) return Math.round(item._distanceKm * 1000) + ' m';
+      return item._distanceKm.toFixed(item._distanceKm < 10 ? 1 : 0) + ' km';
+    }
+    return '';
+  }
+
+
+  function normalizeText(value) {
+    return String(value || '')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .toLowerCase().trim();
+  }
+
+  function listingDateValue(item) {
+    return new Date(item.published_at || item.created_at || item.updated_at || 0).getTime() || 0;
+  }
+
+  function uniqueListings(items) {
+    const seen = new Set();
+    return (items || []).filter(function (item) {
+      const key = String(item.id || item.original_id || item.title || Math.random());
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function sameCountryItems(center) {
+    const country = normalizeText(center && center.country);
+    const countryCode = normalizeText(center && center.countryCode);
+    if (!country && !countryCode) return [];
+    return allListings.filter(function (item) {
+      return listingCountryMatchesCenter(item, center);
+    });
+  }
+
+  function listingCountryMatchesCenter(item, center) {
+    const centerCode = normalizeText(center && center.countryCode);
+    const centerCountry = normalizeText(center && center.country);
+    const itemCode = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
+    const itemCountry = normalizeText(item && item.country);
+
+    // Si l'annonce possède un pays, il doit correspondre au pays détecté/recherché.
+    // Si le pays de l'annonce est absent, on ne bloque pas ici : la ville + la distance
+    // seront obligatoires dans listingCityMatchesCenter() et nearbyItems().
+    if (!centerCode && !centerCountry) return false;
+    if (!itemCode && !itemCountry) return true;
+
+    if (centerCode && itemCode) return itemCode === centerCode;
+    if (centerCountry && itemCountry) return itemCountry === centerCountry;
+
+    return false;
+  }
+
+  const COUNTRY_ALIASES = {
+    ma: ['ma', 'maroc', 'morocco', 'المغرب', 'morroco'],
+    mg: ['mg', 'madagascar', 'madagasikara'],
+    fr: ['fr', 'france'],
+    es: ['es', 'espagne', 'spain'],
+    be: ['be', 'belgique', 'belgium'],
+    ch: ['ch', 'suisse', 'switzerland'],
+    us: ['us', 'usa', 'etats unis', 'états unis', 'united states'],
+    gb: ['gb', 'uk', 'royaume uni', 'united kingdom'],
+    ae: ['ae', 'uae', 'emirats arabes unis', 'émirats arabes unis', 'united arab emirates', 'dubai', 'dubaï']
+  };
+
+  const COUNTRY_DISPLAY = {
+    ma: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, bounds: { minLat: 21.0, maxLat: 36.2, minLng: -17.5, maxLng: -0.8 } },
+    mg: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, bounds: { minLat: -26.0, maxLat: -11.0, minLng: 43.0, maxLng: 51.5 } },
+    fr: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, bounds: { minLat: 41.0, maxLat: 51.5, minLng: -5.5, maxLng: 10.0 } },
+    es: { name: 'Espagne', country: 'Espagne', countryCode: 'es', lat: 40.4637, lng: -3.7492, zoom: 6, bounds: { minLat: 27.0, maxLat: 44.5, minLng: -18.5, maxLng: 5.0 } },
+    be: { name: 'Belgique', country: 'Belgique', countryCode: 'be', lat: 50.5039, lng: 4.4699, zoom: 7, bounds: { minLat: 49.4, maxLat: 51.6, minLng: 2.5, maxLng: 6.5 } },
+    ch: { name: 'Suisse', country: 'Suisse', countryCode: 'ch', lat: 46.8182, lng: 8.2275, zoom: 7, bounds: { minLat: 45.6, maxLat: 48.0, minLng: 5.8, maxLng: 10.7 } },
+    us: { name: 'États-Unis', country: 'United States', countryCode: 'us', lat: 39.8283, lng: -98.5795, zoom: 4, bounds: { minLat: 24.0, maxLat: 49.8, minLng: -125.0, maxLng: -66.0 } },
+    gb: { name: 'Royaume-Uni', country: 'United Kingdom', countryCode: 'gb', lat: 55.3781, lng: -3.4360, zoom: 6, bounds: { minLat: 49.5, maxLat: 59.5, minLng: -8.8, maxLng: 2.2 } },
+    ae: { name: 'Émirats arabes unis', country: 'United Arab Emirates', countryCode: 'ae', lat: 23.4241, lng: 53.8478, zoom: 7, bounds: { minLat: 22.4, maxLat: 26.2, minLng: 51.4, maxLng: 56.5 } }
+  };
+
+
+  const GEO_PRESETS = {
+    agadir: { name: 'Agadir', country: 'Maroc', countryCode: 'ma', lat: 30.4278, lng: -9.5981, zoom: 14, searchType: 'city' },
+    maroc: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
+    morocco: { name: 'Maroc', country: 'Maroc', countryCode: 'ma', lat: 31.7917, lng: -7.0926, zoom: 6, searchType: 'country' },
+    cannes: { name: 'Cannes', country: 'France', countryCode: 'fr', lat: 43.5528, lng: 7.0174, zoom: 14, searchType: 'city' },
+    nice: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 14, searchType: 'city' },
+    nices: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 14, searchType: 'city' },
+    paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 14, searchType: 'city' },
+    france: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, searchType: 'country' },
+    antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
+    tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
+    tana: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
+    madagascar: { name: 'Madagascar', country: 'Madagascar', countryCode: 'mg', lat: -18.7669, lng: 46.8691, zoom: 6, searchType: 'country' },
+    casablanca: { name: 'Casablanca', country: 'Maroc', countryCode: 'ma', lat: 33.5731, lng: -7.5898, zoom: 14, searchType: 'city' },
+    marrakech: { name: 'Marrakech', country: 'Maroc', countryCode: 'ma', lat: 31.6295, lng: -7.9811, zoom: 14, searchType: 'city' },
+    rabat: { name: 'Rabat', country: 'Maroc', countryCode: 'ma', lat: 34.0209, lng: -6.8416, zoom: 14, searchType: 'city' },
+    essaouira: { name: 'Essaouira', country: 'Maroc', countryCode: 'ma', lat: 31.5085, lng: -9.7595, zoom: 14, searchType: 'city' },
+    taghazout: { name: 'Taghazout', country: 'Maroc', countryCode: 'ma', lat: 30.5426, lng: -9.7112, zoom: 14, searchType: 'city' },
+    tamraght: { name: 'Tamraght', country: 'Maroc', countryCode: 'ma', lat: 30.5116, lng: -9.6785, zoom: 14, searchType: 'city' },
+    dubai: { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 14, searchType: 'city' },
+    'dubaï': { name: 'Dubai', country: 'United Arab Emirates', countryCode: 'ae', lat: 25.2048, lng: 55.2708, zoom: 14, searchType: 'city' },
+    ibiza: { name: 'Ibiza', country: 'Espagne', countryCode: 'es', lat: 38.9067, lng: 1.4206, zoom: 14, searchType: 'city' },
+    'santa eularia des riu': { name: 'Santa Eulària des Riu', country: 'Espagne', countryCode: 'es', lat: 38.9846, lng: 1.5341, zoom: 14, searchType: 'city' }
+  };
+
+  function presetPlaceFromQuery(query) {
+    const key = compactWords(query);
+    return GEO_PRESETS[key] ? Object.assign({}, GEO_PRESETS[key]) : null;
+  }
+
+  const CITY_COUNTRY_HINTS = {
+    ma: ['agadir','casablanca','marrakech','marrakesh','essaouira','rabat','tanger','tangier','fes','fès','meknes','meknès','ouarzazate','taghazout','tamraght','tetouan','tétouan'],
+    mg: ['antananarivo','tananarive','tana','tanà','nosy be','nosy-be','hell ville','hell-ville','toamasina','tamatave','mahajanga','majunga','fianarantsoa','antsiranana','diego suarez','diego-suarez'],
+    fr: ['paris','lyon','marseille','nice','nices','cannes','toulouse','bordeaux','lille','nantes','strasbourg','montpellier']
+  };
+
+  function compactWords(value) {
+    return normalizeText(value)
+      .replace(/\b(location|sono|son|ville|pays|autour|pres|près|de|du|des|le|la|les|a|à|en|au|aux)\b/g, ' ')
+      .replace(/[,•]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function countryCodeFromText(value) {
+    const text = compactWords(value);
+    if (!text) return '';
+    for (const code in COUNTRY_ALIASES) {
+      if (COUNTRY_ALIASES[code].some(alias => text === alias || text.indexOf(alias) !== -1)) return code;
+    }
+    return '';
+  }
+
+  function cityCountryHintFromText(value) {
+    const text = compactWords(value);
+    if (!text) return '';
+    for (const code in CITY_COUNTRY_HINTS) {
+      if (CITY_COUNTRY_HINTS[code].some(city => {
+        const c = normalizeText(city);
+        return text === c || text.indexOf(c) !== -1 || c.indexOf(text) !== -1;
+      })) return code;
+    }
+    return '';
+  }
+
+  function boundsFromNominatim(item) {
+    const b = item && item.boundingbox;
+    if (!Array.isArray(b) || b.length < 4) return null;
+    const minLat = toNumber(b[0]);
+    const maxLat = toNumber(b[1]);
+    const minLng = toNumber(b[2]);
+    const maxLng = toNumber(b[3]);
+    if (minLat === null || maxLat === null || minLng === null || maxLng === null) return null;
+    return { minLat, maxLat, minLng, maxLng };
+  }
+
+  function boundsContainCoords(bounds, lat, lng) {
+    if (!bounds || lat === null || lng === null) return false;
+    return lat >= bounds.minLat && lat <= bounds.maxLat && lng >= bounds.minLng && lng <= bounds.maxLng;
+  }
+
+  function centerBounds(center) {
+    const code = centerCountryCode(center);
+    if (center && center.bounds) return center.bounds;
+    if (code && COUNTRY_DISPLAY[code] && COUNTRY_DISPLAY[code].bounds) return COUNTRY_DISPLAY[code].bounds;
+    return null;
+  }
+
+  function inferCountryCodeFromListing(item) {
+    const explicit = normalizeText(item && (item.country_code || item.countryCode || item.country_iso || item.iso_country));
+    if (explicit) {
+      if (explicit === 'morocco') return 'ma';
+      if (explicit === 'madagascar') return 'mg';
+      if (explicit === 'france') return 'fr';
+      return explicit.slice(0, 2);
+    }
+
+    const country = normalizeText(item && item.country);
+    const fromCountry = countryCodeFromText(country);
+    if (fromCountry) return fromCountry;
+
+    const text = compactWords([item && item.city, item && item.location, item && item.address].join(' '));
+    for (const code in CITY_COUNTRY_HINTS) {
+      if (CITY_COUNTRY_HINTS[code].some(city => text === normalizeText(city) || text.indexOf(normalizeText(city)) !== -1)) return code;
+    }
+
+    return '';
+  }
+
+  function isCountryCenter(center) {
+    return Boolean(center && (center.searchType === 'country' || countryCodeFromText(center.name) || (center.countryCode && normalizeText(center.name) === normalizeText(center.country))));
+  }
+
+  function centerCountryCode(center) {
+    return normalizeText(center && center.countryCode) || countryCodeFromText(center && (center.country || center.name));
+  }
+
+  function itemMatchesCountry(item, center) {
+    const code = centerCountryCode(center);
+    if (!code) return false;
+    return inferCountryCodeFromListing(item) === code;
+  }
+
+  function centerCityName(center) {
+    const countryCode = centerCountryCode(center);
+    const countryWords = [];
+    if (countryCode && COUNTRY_ALIASES[countryCode]) countryWords.push(...COUNTRY_ALIASES[countryCode]);
+    if (center && center.country) countryWords.push(center.country);
+
+    let city = cleanCityName((center && center.name) || '');
+    countryWords.forEach(word => {
+      if (!word) return;
+      city = city.replace(new RegExp('\\b' + String(word).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'gi'), ' ');
+    });
+
+    return city
+      .replace(/\b(france|madagascar|maroc|morocco|usa|uk|royaume uni|états unis|etats unis)\b/gi, ' ')
+      .replace(/[,•]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+
+  function listingCountryMatchesCenter(item, center) {
+    const centerCode = centerCountryCode(center);
+    if (!centerCode) return false;
+    const itemCode = inferCountryCodeFromListing(item);
+
+    // Si le pays est connu côté annonce ou déductible par ville, il doit correspondre.
+    // Si aucun pays n'est détectable, on laisse passer uniquement pour les recherches ville,
+    // puis listingCityMatchesCenter() + rayon filtrent. Pour une recherche pays, l'annonce doit
+    // obligatoirement être rattachable à ce pays.
+    if (itemCode) return itemCode === centerCode;
+    return !isCountryCenter(center);
+  }
+
+  function listingCityMatchesCenter(item, center) {
+    if (isCountryCenter(center)) return true;
+
+    const city = normalizeText(centerCityName(center));
+    if (!city || city === 'votre position' || city === 'autour de vous') return false;
+
+    const candidates = [item && item.city, item && item.location, item && item.address]
+      .map(normalizeText)
+      .filter(Boolean);
+
+    if (!candidates.length) return false;
+
+    // Recherche ville : la ville doit correspondre ET le rayon GPS s'applique ensuite.
+    return candidates.some(function (value) {
+      return value === city || value.indexOf(city) !== -1 || (city.length > 4 && city.indexOf(value) !== -1);
+    });
+  }
+
+
+  /* ==========================================================================
+     FILTRAGE GEO UNIVERSEL - VILLES ET PAYS
+     Règle définitive :
+     - recherche pays : seules les annonces dans les limites GPS du pays passent ;
+     - recherche ville : pays correct + ville correcte + rayon ;
+     - aucune annonce ambiguë hors pays ne doit apparaître.
+     ========================================================================== */
+
+  function listingCountryMatchesCenter(item, center) {
+    const code = centerCountryCode(center);
+    if (!code) return false;
+
+    const itemLat = getLat(item);
+    const itemLng = getLng(item);
+    const bounds = centerBounds(center);
+
+    // Si l'annonce a des coordonnées et que le pays recherché a des limites,
+    // les coordonnées sont la source de vérité.
+    if (itemLat !== null && itemLng !== null && bounds) {
+      return boundsContainCoords(bounds, itemLat, itemLng);
+    }
+
+    // Sinon on utilise les champs texte clairement identifiables.
+    const itemCode = inferCountryCodeFromListing(item);
+    if (itemCode) return itemCode === code;
+
+    // Pour une recherche pays, on refuse les annonces sans pays clair.
+    if (isCountryCenter(center)) return false;
+
+    // Pour une recherche ville, la ville + le rayon filtreront ensuite.
+    return true;
+  }
+
+  function nearbyItems(center, limit) {
+    const safeCenter = center || currentCenter;
+    const source = activeListings.length ? activeListings : allListings;
+
+    const sameCountry = equipmentFilter(source)
+      .filter(item => listingCountryMatchesCenter(item, safeCenter));
+
+    if (isCountryCenter(safeCenter)) {
+      return uniqueListings(sameCountry)
+        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
+        .slice(0, limit);
+    }
+
+    // Priorité aux annonces de la ville recherchée.
+    const exactCity = sameCountry
+      .filter(item => listingCityMatchesCenter(item, safeCenter))
+      .filter(item => hasCoordinates(item));
+
+    const exactSorted = enrichByDistance(exactCity, safeCenter)
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+
+    if (exactSorted.length) {
+      return exactSorted.slice(0, limit);
+    }
+
+    // Si rien n'est disponible dans la ville, élargir aux villes voisines
+    // du même pays, classées par distance réelle autour du point recherché.
+    return enrichByDistance(
+      sameCountry.filter(item => hasCoordinates(item)),
+      safeCenter
+    )
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
+      .sort((a, b) => a._distanceKm - b._distanceKm)
+      .slice(0, limit);
+  }
+
+
+  function productCard(item, badge) {
+    const title = escapeHtml(item.title || 'Matériel professionnel');
+    const place = [item.city || item.location, item.country]
+      .filter(function(value, index, values) {
+        const normalized = normalizeText(value);
+        return normalized && values.findIndex(v => normalizeText(v) === normalized) === index;
+      })
+      .join(', ') || 'Localisation non précisée';
+    const category = escapeHtml(item.category || 'Audio Pro').replace(/-/g, ' ');
+    const image = getImage(item);
+    const price = formatPrice(item.price);
+    const distance = distanceText(item);
+    const locationLine = distance ? `${distance} • ${place}` : place;
+
+    return `
+      <a href="${productUrl(item)}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
+        <div class="rss-card-placeholder"></div>
+        ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
+        <div class="absolute top-4 left-4 z-10">
+          <span class="${badge === 'Nouveau' ? 'bg-primary text-on-primary' : 'bg-background/80 text-on-surface'} backdrop-blur-md text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">${badge || category}</span>
+        </div>
+        <div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
+          <h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md line-clamp-2">${title}</h3>
+          <div class="flex items-center gap-1 text-on-surface-variant font-body-sm text-[14px] mb-2 drop-shadow">
+            <span class="material-symbols-outlined text-[18px]">near_me</span>
+            <span>${escapeHtml(locationLine)}</span>
+          </div>
+          <div class="pt-3 border-t border-white/20 flex justify-between items-center">
+            <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
+            <span class="text-primary font-bold text-2xl drop-shadow">${price}</span>
+          </div>
+        </div>
+      </a>`;
+  }
+
+  function showLoading() {
+    const grid = document.getElementById('nearest-products-grid');
+    if (grid) grid.innerHTML = '<div class="rss-loading-products col-span-full">Recherche des équipements proches de votre position...</div>';
+  }
+
+  function cleanCityName(label) {
+    return String(label || '').replace(/\s*•.*$/, '').replace(', FR', '').trim();
+  }
+
+  function currentCatalogUrl() {
+    const params = new URLSearchParams();
+    const city = cleanCityName(currentCenter.name || '');
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const q = equipmentInput && equipmentInput.value ? equipmentInput.value.trim() : '';
+    if (q) params.set('q', q);
+    if (city && city !== 'Votre position' && city !== 'Autour de vous') params.set('city', city);
+    if (currentCenter.lat && currentCenter.lng) {
+      params.set('lat', String(currentCenter.lat));
+      params.set('lng', String(currentCenter.lng));
+      params.set('radius', String(DEFAULT_RADIUS_KM));
+    }
+    return '/catalog.html' + (params.toString() ? '?' + params.toString() : '');
+  }
+
+  function setLabels(label) {
+    const clean = label || 'Autour de vous';
+    const text = clean + ' • Autour de vous';
+    const nearby = document.getElementById('nearby-city-label');
+    const mapLabel = document.getElementById('map-city-label');
+    if (nearby) nearby.textContent = text;
+    if (mapLabel) mapLabel.textContent = text;
+    document.querySelectorAll('a[href^="/catalog.html"]').forEach(a => { a.href = currentCatalogUrl(); });
+  }
+
+  function setHeroCityInput(label) {
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const clean = cleanCityName(label);
+    if (cityInput && clean && !cityInput.value) cityInput.value = clean;
+  }
+
+  function saveLocation(center) {
+    try {
+      localStorage.setItem('rssUserLocation', JSON.stringify({
+        name: center.name,
+        country: center.country || '',
+        countryCode: center.countryCode || '',
+        lat: center.lat,
+        lng: center.lng,
+        zoom: center.zoom || 13,
+        savedAt: Date.now()
+      }));
+    } catch (e) {}
+  }
+
+  function loadSavedLocation() {
+    try {
+      const saved = JSON.parse(localStorage.getItem('rssUserLocation') || 'null');
+      if (!saved || !saved.lat || !saved.lng) return null;
+      return saved;
+    } catch (e) { return null; }
+  }
+
+  async function reversePlace(lat, lng) {
+    try {
+      const res = await fetch('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&lat=' + encodeURIComponent(lat) + '&lon=' + encodeURIComponent(lng));
+      const data = await res.json();
+      const a = data && data.address ? data.address : {};
+      return {
+        name: a.city || a.town || a.village || a.municipality || a.county || 'Votre position',
+        country: a.country || '',
+        countryCode: a.country_code || ''
+      };
+    } catch (e) {
+      return { name: 'Votre position', country: '', countryCode: '' };
+    }
+  }
+
+  async function geocodeCity(query) {
+    const rawQuery = String(query || '').trim();
+    if (!rawQuery) return null;
+
+    // Priorité aux presets locaux : évite Cannes/Nice qui partent parfois en Espagne.
+    const preset = presetPlaceFromQuery(rawQuery);
+    if (preset) return preset;
+
+    const countryCode = countryCodeFromText(rawQuery);
+    if (countryCode && COUNTRY_DISPLAY[countryCode]) {
+      return Object.assign({ searchType: 'country' }, COUNTRY_DISPLAY[countryCode]);
+    }
+
+    const hintedCountryCode = cityCountryHintFromText(rawQuery);
+
+    async function nominatimSearch(params) {
+      const url = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams(params).toString();
+      const res = await fetch(url);
+      return await res.json();
+    }
+
+    let data = [];
+    if (hintedCountryCode) {
+      data = await nominatimSearch({
+        format: 'json',
+        addressdetails: '1',
+        limit: '5',
+        countrycodes: hintedCountryCode,
+        q: rawQuery
+      });
+    }
+
+    if (!data || !data.length) {
+      data = await nominatimSearch({
+        format: 'json',
+        addressdetails: '1',
+        limit: '5',
+        q: rawQuery
+      });
+    }
+
+    if (!data || !data.length) return null;
+
+    let result = data[0];
+
+    if (hintedCountryCode) {
+      const preferred = data.find(item => {
+        const a = item.address || {};
+        return normalizeText(a.country_code || '') === hintedCountryCode;
+      });
+      if (preferred) result = preferred;
+    }
+
+    const a = result.address || {};
+    const foundCountryCode = normalizeText(a.country_code || hintedCountryCode || '');
+    const foundCountry = a.country || (COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].country) || '';
+    const hasCity = Boolean(a.city || a.town || a.village || a.municipality || a.county);
+    const isCountryResult = Boolean(
+      result.type === 'country' ||
+      (result.class === 'boundary' && a.country && !hasCity && !hintedCountryCode)
+    );
+
+    return {
+      name: isCountryResult ? ((COUNTRY_DISPLAY[foundCountryCode] && COUNTRY_DISPLAY[foundCountryCode].name) || rawQuery) : rawQuery,
+      country: foundCountry,
+      countryCode: foundCountryCode,
+      lat: parseFloat(result.lat),
+      lng: parseFloat(result.lon),
+      zoom: isCountryResult ? 6 : 15,
+      searchType: isCountryResult ? 'country' : 'city',
+      bounds: boundsFromNominatim(result)
+    };
+  }
+
+  function equipmentFilter(items) {
+    const input = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const q = input && input.value ? input.value.trim().toLowerCase() : '';
+    if (!q) return items;
+    return items.filter(item => {
+      const haystack = [item.title, item.description, item.category, item.brand, item.city, item.location].join(' ').toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  function enrichByDistance(items, center) {
+    return (items || []).map(item => {
+      const lat = getLat(item);
+      const lng = getLng(item);
+      const copy = Object.assign({}, item);
+      if (lat !== null && lng !== null && center) copy._distanceKm = haversineKm(center.lat, center.lng, lat, lng);
+      return copy;
+    }).sort((a, b) => {
+      const da = typeof a._distanceKm === 'number' ? a._distanceKm : 999999;
+      const db = typeof b._distanceKm === 'number' ? b._distanceKm : 999999;
+      return da - db;
+    });
+  }
+
+  function nearbyItems(center, limit) {
+    const safeCenter = center || currentCenter;
+    const source = activeListings.length ? activeListings : allListings;
+
+    const sameCountry = equipmentFilter(source)
+      .filter(item => listingCountryMatchesCenter(item, safeCenter));
+
+    // Recherche pays : toutes les annonces du pays.
+    if (isCountryCenter(safeCenter)) {
+      return uniqueListings(sameCountry)
+        .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
+        .slice(0, limit);
+    }
+
+    // 1. Priorité absolue aux annonces de la ville recherchée.
+    const exactCity = sameCountry
+      .filter(item => listingCityMatchesCenter(item, safeCenter))
+      .filter(item => hasCoordinates(item));
+
+    const exactInRadius = enrichByDistance(exactCity, safeCenter)
+      .filter(item =>
+        typeof item._distanceKm === 'number' &&
+        item._distanceKm <= DEFAULT_RADIUS_KM
+      );
+
+    if (exactInRadius.length) {
+      return exactInRadius.slice(0, limit);
+    }
+
+    // 2. Si la ville n'a aucune annonce, élargir automatiquement aux villes voisines
+    // du même pays, dans le rayon existant, triées de la plus proche à la plus éloignée.
+    const neighboring = enrichByDistance(
+      sameCountry.filter(item => hasCoordinates(item)),
+      safeCenter
+    )
+      .filter(item =>
+        typeof item._distanceKm === 'number' &&
+        item._distanceKm <= DEFAULT_RADIUS_KM
+      )
+      .sort((a, b) => a._distanceKm - b._distanceKm);
+
+    return neighboring.slice(0, limit);
+  }
+
+  function canonicalCity(value) {
+    const v = normalizeText(value)
+      .replace(/\bville\b/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    // Alias utiles pour éviter les faux affichages :
+    // Antananarivo et Tananarive désignent la même zone.
+    if (v === 'tananarive' || v === 'antananarivo') return 'antananarivo';
+    if (v === 'tanà' || v === 'tana') return 'antananarivo';
+    return v;
+  }
+
+  function listingLooksLikeCurrentCity(item, center) {
+    const current = canonicalCity(centerCityName(center));
+    if (!current || current === 'votre position' || current === 'autour de vous') return false;
+
+    const candidates = [item && item.city, item && item.location, item && item.address]
+      .map(canonicalCity)
+      .filter(Boolean);
+
+    return candidates.some(function (value) {
+      return value === current;
+    });
+  }
+
+  function uniqueNewestListings(items) {
+    const seen = new Set();
+    return (items || []).filter(function (item) {
+      // Une annonce différente reste visible, même avec le même titre/prix.
+      const key = String(item?.id || item?.original_id || item?.created_at || item?.title || '');
+      if (!key || seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function newestItems(limit) {
+    /*
+      Les dernières annonces publiées sur toute la marketplace.
+      AUCUN filtre de ville, position ou pays ne s'applique ici.
+    */
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    return uniqueNewestListings(allListings)
+      .sort((a, b) => listingDateValue(b) - listingDateValue(a))
+      .slice(0, safeLimit);
+  }
+
+  async function localizeNewestProducts() {
+    // Localise uniquement les 4 annonces les plus récentes qui ont une ville/pays
+    // mais pas encore de latitude/longitude.
+    const newest = newestItems(4);
+    const cache = new Map();
+
+    for (const item of newest) {
+      if (!item || hasCoordinates(item)) continue;
+
+      const city = String(item.city || item.location || '').trim();
+      const country = String(item.country || '').trim();
+      if (!city) continue;
+
+      const query = [city, country].filter(Boolean).join(', ');
+      const key = normalizeText(query);
+
+      try {
+        let place = cache.get(key);
+        if (place === undefined) {
+          place = await geocodeCity(query);
+          cache.set(key, place || null);
+        }
+
+        if (place && Number.isFinite(Number(place.lat)) && Number.isFinite(Number(place.lng))) {
+          item.lat = Number(place.lat);
+          item.lng = Number(place.lng);
+        }
+      } catch (e) {
+        console.warn('[RSS] Localisation automatique nouveau produit impossible:', query, e);
+      }
+    }
+  }
+
+  function popularNearbyItems(center, limit) {
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    const candidates = nearbyItems(center || currentCenter, 200);
+    return candidates
+      .slice()
+      .sort((a, b) => {
+        const featuredDiff = Number(b.featured || 0) - Number(a.featured || 0);
+        if (featuredDiff) return featuredDiff;
+        const viewsDiff = Number(b.views || 0) - Number(a.views || 0);
+        if (viewsDiff) return viewsDiff;
+        const da = typeof a._distanceKm === 'number' ? a._distanceKm : Number.POSITIVE_INFINITY;
+        const db = typeof b._distanceKm === 'number' ? b._distanceKm : Number.POSITIVE_INFINITY;
+        return da - db;
+      })
+      .slice(0, safeLimit);
+  }
+
+  function newestNearbyItems(center, limit) {
+    const safeLimit = Math.max(1, Number(limit) || 4);
+    return nearbyItems(center || currentCenter, 200)
+      .slice()
+      .sort((a, b) => listingDateValue(b) - listingDateValue(a))
+      .slice(0, safeLimit);
+  }
+
+  function renderProductGrids(center) {
+    const nearestGrid = document.getElementById('nearest-products-grid');
+    const newestGrid = document.getElementById('newest-products-grid');
+    const nearest = popularNearbyItems(center || currentCenter, 4);
+    const newest = newestNearbyItems(center || currentCenter, 4);
+
+    if (nearestGrid) {
+      nearestGrid.innerHTML = nearest.length
+        ? nearest.map(item => productCard(item, null)).join('')
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Aucun équipement populaire n’est actuellement disponible dans cette zone.</p></div></div>';
+    }
+    if (newestGrid) {
+      newestGrid.innerHTML = newest.length
+        ? newest.map(item => productCard(item, 'Nouveau')).join('')
+        : '<div class="rss-empty-state"><span class="material-symbols-outlined">inventory_2</span><div><strong>Aucun nouveau matériel disponible à proximité pour le moment.</strong><p>Essayez une autre ville ou élargissez votre recherche.</p></div></div>';
+    }
+  }
+
+  function productPopupHtml(item) {
+    return '<div style="min-width:190px">' +
+      '<strong style="color:#fff">' + escapeHtml(item.title || 'Matériel professionnel') + '</strong><br>' +
+      '<span style="color:#b4b5b5">' + escapeHtml(item.city || item.location || '') + '</span><br>' +
+      '<strong style="color:#FC036D">' + escapeHtml(formatPrice(item.price)) + ' / jour</strong><br>' +
+      '<a style="color:#FC036D;text-decoration:underline" href="' + productUrl(item) + '">Voir l’annonce</a>' +
+      '</div>';
+  }
+
+  function clearProductMarkers() {
+    if (!map) return;
+    productMarkers.forEach(marker => map.removeLayer(marker));
+    productMarkers = [];
+  }
+
+  function renderMapMarkers(center) {
+    if (!mapReady || !map) return;
+    clearProductMarkers();
+
+    const productIcon = L.divIcon({
+      className: 'rss-product-marker',
+      html: '<span class="material-symbols-outlined rss-pin" style="font-variation-settings:\'FILL\' 1;">location_on</span>',
+      iconSize: [38, 38],
+      iconAnchor: [19, 38],
+      popupAnchor: [0, -38]
+    });
+
+    const safeCenter = center || currentCenter;
+    const items = nearbyItems(safeCenter, 30);
+    productMarkers = items.map(item => {
+      const lat = getLat(item);
+      const lng = getLng(item);
+      if (lat === null || lng === null) return null;
+      return L.marker([lat, lng], { icon: productIcon })
+        .addTo(map)
+        .bindPopup(productPopupHtml(item), { className: 'rss-popup' });
+    }).filter(Boolean);
+
+    const hasExactCityResult = items.some(item => listingCityMatchesCenter(item, safeCenter));
+
+    if (productMarkers.length && (isCountryCenter(safeCenter) || !hasExactCityResult)) {
+      const group = L.featureGroup(productMarkers);
+      const bounds = group.getBounds();
+      if (!isCountryCenter(safeCenter)) {
+        bounds.extend([safeCenter.lat, safeCenter.lng]);
+      }
+      map.fitBounds(bounds.pad(0.18), {
+        maxZoom: isCountryCenter(safeCenter) ? 7 : 12,
+        animate: true
+      });
+    } else {
+      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 14, { animate: true });
+    }
+
+    setTimeout(fixMapSize, 50);
+    setTimeout(fixMapSize, 300);
+  }
+
+  function fixMapSize() {
+    const mapEl = document.getElementById('rss-map');
+    const mapWrap = document.getElementById('rss-map-wrap');
+    if (!mapEl || !mapWrap || !map) return;
+    const h = window.innerWidth < 768 ? '420px' : '600px';
+    mapEl.style.height = h;
+    mapEl.style.minHeight = h;
+    mapWrap.style.height = h;
+    mapWrap.style.minHeight = h;
+    map.invalidateSize(true);
+  }
+
+  function updateCenter(center, options) {
+    currentCenter = Object.assign({}, DEFAULT_CITY, { country: '', countryCode: '' }, center || {});
+    if (options && options.isGeolocation) saveLocation(currentCenter);
+    setLabels(currentCenter.name || 'Votre position');
+    setHeroCityInput(currentCenter.name || '');
+
+    if (mapReady && map) {
+      if (userMarker) {
+        map.removeLayer(userMarker);
+        userMarker = null;
+      }
+
+      if (options && options.isGeolocation) {
+        const userIcon = L.divIcon({
+          className: 'rss-user-marker',
+          html: '<div class="rss-user-dot"></div>',
+          iconSize: [20, 20],
+          iconAnchor: [10, 10],
+          popupAnchor: [0, -10]
+        });
+
+        userMarker = L.marker([currentCenter.lat, currentCenter.lng], { icon: userIcon, zIndexOffset: 1000 })
+          .addTo(map)
+          .bindPopup('Votre position', { className: 'rss-popup' });
+      }
+
+      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 15, { animate: true });
+    }
+
+    if (listingsReady) {
+      renderProductGrids(currentCenter);
+      renderMapMarkers(currentCenter);
+    }
+  }
+
+  async function loadListings() {
+    if (!window.supabase) {
+      console.error('Supabase JS non chargé');
+      return;
+    }
+
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    let { data, error } = await supabaseClient
+      .from('listings')
+      .select('*, listing_images ( image_url, position )')
+      .eq('status', 'publish')
+      .order('created_at', { ascending: false })
+      .limit(200);
+
+    if (error) {
+      console.warn('Chargement avec filtre lat/lng impossible, fallback sans filtre:', error);
+      const fallback = await supabaseClient
+        .from('listings')
+        .select('*, listing_images ( image_url, position )')
+        .eq('status', 'publish')
+        .order('created_at', { ascending: false })
+        .limit(200);
+      data = fallback.data || [];
+      error = fallback.error;
+    }
+
+    if (error) {
+      console.error('Erreur chargement produits Supabase:', error);
+      return;
+    }
+
+    data = Array.isArray(data) ? data : [];
+
+    const missingImages = data.every(item => !Array.isArray(item.listing_images) || !item.listing_images.length);
+    if (missingImages && data.length) {
+      const originalIds = data.map(item => item.original_id).filter(Boolean);
+      const staging = await supabaseClient
+        .from('listing_images_staging')
+        .select('listing_original_id,image_url,position')
+        .in('listing_original_id', originalIds);
+
+      if (!staging.error && staging.data && staging.data.length) {
+        const byOriginalId = {};
+        staging.data.forEach(img => {
+          const key = String(img.listing_original_id);
+          if (!byOriginalId[key]) byOriginalId[key] = [];
+          byOriginalId[key].push({ image_url: img.image_url, position: img.position });
+        });
+        data = data.map(item => ({ ...item, listing_images: byOriginalId[String(item.original_id)] || item.listing_images || [] }));
+      }
+    }
+
+    allListings = uniqueListings(data);
+    activeListings = allListings;
+
+    listingsReady = true;
+    renderProductGrids(currentCenter);
+    renderMapMarkers(currentCenter);
+
+    // La géolocalisation complémentaire ne doit jamais bloquer l'affichage initial.
+    localizeNewestProducts()
+      .then(function () {
+        renderProductGrids(currentCenter);
+        renderMapMarkers(currentCenter);
+      })
+      .catch(function (e) {
+        console.warn('[RSS] Localisation complémentaire non bloquante:', e);
+      });
+  }
+
+  function initMap() {
+    if (typeof L === 'undefined') {
+      console.error('Leaflet non chargé');
+      return;
+    }
+
+    const mapEl = document.getElementById('rss-map');
+    const mapWrap = document.getElementById('rss-map-wrap');
+    if (!mapEl || !mapWrap) return;
+
+    if (mapEl._leaflet_id) {
+      mapEl._leaflet_id = null;
+      mapEl.innerHTML = '';
+    }
+
+    map = L.map(mapEl, {
+      zoomControl: false,
+      scrollWheelZoom: true,
+      preferCanvas: false,
+      maxZoom: 18
+    }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], DEFAULT_CITY.zoom);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      minZoom: 2,
+      maxZoom: 18,
+      tileSize: 256,
+      attribution: '&copy; OpenStreetMap'
+    }).addTo(map);
+
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
+    mapReady = true;
+    fixMapSize();
+    setTimeout(fixMapSize, 100);
+    setTimeout(fixMapSize, 500);
+    setTimeout(fixMapSize, 1000);
+    window.addEventListener('load', fixMapSize);
+    window.addEventListener('resize', fixMapSize);
+  }
+
+  async function locateUser(showError) {
+    if (!navigator.geolocation) {
+      if (showError) alert('Géolocalisation non disponible sur ce navigateur.');
+      updateCenter(DEFAULT_CITY, { isFallback: true });
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async function (pos) {
+        if (!showError && manualSearchDone) return;
+        const lat = pos.coords.latitude;
+        const lng = pos.coords.longitude;
+        const place = await reversePlace(lat, lng);
+        updateCenter({ name: place.name, country: place.country, countryCode: place.countryCode, lat, lng, zoom: 15 }, { isGeolocation: true });
+      },
+      function () {
+        if (!showError && manualSearchDone) return;
+        const saved = loadSavedLocation();
+        if (saved) {
+          updateCenter(saved, { isSaved: true });
+        } else {
+          updateCenter(DEFAULT_CITY, { isFallback: true });
+        }
+        if (showError) alert('Position refusée. Tapez une ville ou un code postal dans la recherche.');
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+    );
+  }
+
+  async function searchAroundCity() {
+    manualSearchDone = true;
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const query = cityInput && cityInput.value ? cityInput.value.trim() : '';
+
+    if (!query) {
+      await locateUser(true);
+      return;
+    }
+
+    try {
+      const city = await geocodeCity(query);
+      if (!city) {
+        alert('Ville introuvable.');
+        return;
+      }
+
+      activeListings = allListings;
+      updateCenter(city, { isSearch: true });
+
+      const nearest = nearbyItems(city, 4);
+      if (!nearest.length) {
+        const nearestGrid = document.getElementById('nearest-products-grid');
+        if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Il n’existe pas encore d’annonce disponible pour cette ville ou ce pays. Essayez une autre destination ou consultez les dernières annonces publiées dans le monde.</p></div></div>';
+      }
+
+      document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } catch (e) {
+      console.error(e);
+      alert('Erreur de recherche de ville.');
+    }
+  }
+
+  ready(function () {
+    showLoading();
+    initMap();
+    loadListings();
+
+    const saved = loadSavedLocation();
+    if (saved) updateCenter(saved, { isSaved: true });
+
+    document.getElementById('use-my-location')?.addEventListener('click', function () {
+      locateUser(true);
+    });
+
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const searchButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim().toLowerCase() === 'rechercher');
+
+    if (cityInput) {
+      cityInput.setAttribute('autocomplete', 'off');
+      cityInput.addEventListener('input', function () {
+        if (cityInput.value && cityInput.value.trim()) manualSearchDone = true;
+      });
+    }
+
+    searchButton?.addEventListener('click', function (e) {
+      e.preventDefault();
+      searchAroundCity();
+    });
+
+    [cityInput, equipmentInput].forEach(function (input) {
+      input?.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          searchAroundCity();
+        }
+      });
+    });
+
+    equipmentInput?.addEventListener('input', function () {
+      if (listingsReady) {
+        setLabels(currentCenter.name || DEFAULT_CITY.name);
+        renderProductGrids(currentCenter);
+        renderMapMarkers(currentCenter);
+      }
+    });
+
+    setLabels(saved?.name || DEFAULT_CITY.name);
+    setTimeout(function () { locateUser(false); }, saved ? 1200 : 700);
+  });
+})();
+</script>
+
+<script src="/components.js"></script>
+
+
+<script id="rss-mobile-map-fix">
+window.addEventListener('resize', function(){
+  if(window.innerWidth < 768){
+    const map = document.getElementById('rss-map');
+    const wrap = document.getElementById('rss-map-wrap');
+    if(map){
+      map.style.height='420px';
+      map.style.minHeight='420px';
+    }
+    if(wrap){
+      wrap.style.height='420px';
+      wrap.style.minHeight='420px';
+    }
+  }
+});
+</script>
+
+</body></html>

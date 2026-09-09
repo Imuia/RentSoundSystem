@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <title data-i18n="title.languages">Test Isolations i18n & Devise</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#131313] text-white p-10">
+  <h1 class="text-3xl font-bold mb-4" data-i18n="title.languages">Page de Test Isolée i18n</h1>
+  <p class="mb-4" data-i18n="common.search_placeholder">De quel équipement avez-vous besoin ?</p>
+
+  <div class="p-4 bg-gray-800 rounded my-4">
+    <p>Test affichage prix EUR converti visuellement :</p>
+    <p class="text-2xl text-[#fc036d] font-bold" data-rss-price-eur="250" data-rss-price-format="per_day">250 € / jour</p>
+  </div>
+
+  <script src="/assets/js/rss-i18n.js"></script>
+  <script src="/assets/js/rss-currency.js"></script>
+</body>
+</html>
