@@ -918,22 +918,35 @@ html, body {
     const safeCenter = center || currentCenter;
     const source = activeListings.length ? activeListings : allListings;
 
-    let filtered = equipmentFilter(source)
+    const sameCountry = equipmentFilter(source)
       .filter(item => listingCountryMatchesCenter(item, safeCenter));
 
     if (isCountryCenter(safeCenter)) {
-      return uniqueListings(filtered)
+      return uniqueListings(sameCountry)
         .sort((a, b) => Number(b.featured || 0) - Number(a.featured || 0) || listingDateValue(b) - listingDateValue(a))
         .slice(0, limit);
     }
 
-    filtered = filtered
+    // Priorité aux annonces de la ville recherchée.
+    const exactCity = sameCountry
       .filter(item => listingCityMatchesCenter(item, safeCenter))
       .filter(item => hasCoordinates(item));
 
-    const sorted = enrichByDistance(filtered, safeCenter);
-    return sorted
+    const exactSorted = enrichByDistance(exactCity, safeCenter)
+      .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM);
+
+    if (exactSorted.length) {
+      return exactSorted.slice(0, limit);
+    }
+
+    // Si rien n'est disponible dans la ville, élargir aux villes voisines
+    // du même pays, classées par distance réelle autour du point recherché.
+    return enrichByDistance(
+      sameCountry.filter(item => hasCoordinates(item)),
+      safeCenter
+    )
       .filter(item => typeof item._distanceKm === 'number' && item._distanceKm <= DEFAULT_RADIUS_KM)
+      .sort((a, b) => a._distanceKm - b._distanceKm)
       .slice(0, limit);
   }
 
