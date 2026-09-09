@@ -3,6 +3,27 @@ if (window.__rssComponentsGlobalBoot) {
   console.warn("RentSoundSystem components.js déjà initialisé.");
 } else {
 window.__rssComponentsGlobalBoot = true;
+
+/*
+ * Feature Flag d'arrêt d'urgence i18n natif.
+ * Valeur par défaut en production : false (Weglot / FR natif d'origine actif).
+ * Peut être activé via URL (?i18n_preview=1) ou localStorage pour tests isolés.
+ */
+if (typeof window.RSS_I18N_ENABLED === "undefined") {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("i18n_preview") === "1") {
+      window.RSS_I18N_ENABLED = true;
+    } else if (localStorage.getItem("rss_i18n_enabled") === "true") {
+      window.RSS_I18N_ENABLED = true;
+    } else {
+      window.RSS_I18N_ENABLED = false;
+    }
+  } catch (e) {
+    window.RSS_I18N_ENABLED = false;
+  }
+}
+
 const RSS_WEGLOT_API_KEY = "wg_404ba8763ad2fbd7361777eb8a48a0e08";
 
 /* SEO global :
@@ -163,111 +184,15 @@ function rssSwitchWholeSite(language) {
   rssSaveLanguage(language);
   syncHeaderLanguageUI();
 
-  if (
-    window.Weglot &&
-    window.Weglot.initialized &&
-    typeof window.Weglot.switchTo === "function"
-  ) {
-    try {
-      const current =
-        typeof window.Weglot.getCurrentLang === "function"
-          ? rssNormalizeLanguage(window.Weglot.getCurrentLang())
-          : "";
-
-      if (current !== language) {
-        window.Weglot.switchTo(language);
-      }
-
-      window.__rssTranslationStatus = "translated-" + language;
-      return true;
-    } catch (err) {
-      console.error("Erreur changement langue Weglot :", err);
-    }
+  if (window.RssI18n && typeof window.RssI18n.setLanguage === "function") {
+    window.RssI18n.setLanguage(language);
   }
-
-  window.__rssPendingLanguage = language;
-  return false;
+  return true;
 }
 
-function initGlobalWeglot() {
-  if (!window.Weglot || window.__rssGlobalWeglotInitialized) return;
-
-  window.__rssGlobalWeglotInitialized = true;
-
-  try {
-    window.Weglot.on("initialized", function () {
-      window.__rssTranslationStatus = "ready";
-
-      const wanted = window.__rssPendingLanguage || rssSavedLanguage();
-      rssSwitchWholeSite(wanted);
-    });
-
-    window.Weglot.on("languageChanged", function (language) {
-      const normalized = rssSaveLanguage(language);
-      syncHeaderLanguageUI();
-      window.__rssTranslationStatus = "translated-" + normalized;
-    });
-
-    window.Weglot.initialize({
-      api_key: RSS_WEGLOT_API_KEY,
-      hide_switcher: true,
-      cache: true,
-      wait_transition: true,
-      translate_search: true,
-      excluded_blocks: [
-        { value: ".rss-preference-controls" },
-        { value: ".rss-mobile-preferences" },
-        { value: ".material-symbols-outlined" },
-        { value: ".StripeElement" },
-        { value: "#stripe-card-element" },
-        { value: ".leaflet-container" },
-        { value: ".notranslate" }
-      ]
-    });
-  } catch (err) {
-    window.__rssGlobalWeglotInitialized = false;
-    window.__rssTranslationStatus = "init-error";
-    console.error("Erreur initialisation Weglot :", err);
-  }
-}
-
-function loadGlobalWeglot() {
-  if (window.Weglot) {
-    initGlobalWeglot();
-    return;
-  }
-
-  const existing = document.querySelector("script[data-rss-global-weglot]");
-  if (existing) {
-    existing.addEventListener("load", initGlobalWeglot, { once: true });
-    return;
-  }
-
-  const script = document.createElement("script");
-  script.src = "https://cdn.weglot.com/weglot.min.js";
-  script.async = true;
-  script.dataset.rssGlobalWeglot = "1";
-
-  script.onload = initGlobalWeglot;
-  script.onerror = function () {
-    window.__rssTranslationStatus = "sdk-error";
-    console.error("Impossible de charger Weglot.");
-  };
-
-  document.head.appendChild(script);
-}
-
-/*
- * IMPORTANT :
- * Weglot est initialisé ici, dans components.js, donc UNE SEULE FOIS
- * pour toute la page. Le header ne sert plus qu'à choisir FR / EN.
- */
 async function bootGlobalComponents() {
   ensureGlobalRobotsMeta();
   rssSaveLanguage(rssSavedLanguage());
-
-  // Démarre la traduction sur le document complet.
-  loadGlobalWeglot();
 
   await Promise.all([
     loadComponent("header-container", "/header.html"),
@@ -277,14 +202,9 @@ async function bootGlobalComponents() {
   bindGlobalLanguageSelector();
   syncHeaderLanguageUI();
 
-  // Réapplique la langue sauvegardée une fois header/footer injectés.
   setTimeout(function () {
     rssSwitchWholeSite(rssSavedLanguage());
   }, 300);
-
-  setTimeout(function () {
-    rssSwitchWholeSite(rssSavedLanguage());
-  }, 1200);
 }
 
 if (document.readyState === "loading") {
