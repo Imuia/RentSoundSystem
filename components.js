@@ -6,25 +6,23 @@ window.__rssComponentsGlobalBoot = true;
 
 /*
  * Feature Flag d'arrêt d'urgence i18n natif.
- * Valeur par défaut en production : false (Weglot / FR natif d'origine actif).
- * Peut être activé via URL (?i18n_preview=1) ou localStorage pour tests isolés.
+ * Actif par défaut en production.
+ * Kill-switch immédiat : ?i18n_off=1 ou localStorage rss_i18n_enabled="false".
  */
 if (typeof window.RSS_I18N_ENABLED === "undefined") {
   try {
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.get("i18n_preview") === "1") {
-      window.RSS_I18N_ENABLED = true;
-    } else if (localStorage.getItem("rss_i18n_enabled") === "true") {
-      window.RSS_I18N_ENABLED = true;
-    } else {
+    const stored = localStorage.getItem("rss_i18n_enabled");
+
+    if (urlParams.get("i18n_off") === "1" || stored === "false") {
       window.RSS_I18N_ENABLED = false;
+    } else {
+      window.RSS_I18N_ENABLED = true;
     }
   } catch (e) {
-    window.RSS_I18N_ENABLED = false;
+    window.RSS_I18N_ENABLED = true;
   }
 }
-
-const RSS_WEGLOT_API_KEY = "wg_404ba8763ad2fbd7361777eb8a48a0e08";
 
 /* SEO global :
    ajoute la directive robots sur les pages qui n'en ont pas déjà une.
@@ -77,12 +75,20 @@ function rssNormalizeLanguage(value) {
   return RSS_SUPPORTED_LANGUAGES.includes(clean) ? clean : "fr";
 }
 
-function rssSavedLanguage() {
-  try {
-    return rssNormalizeLanguage(localStorage.getItem("rss_language") || "fr");
-  } catch (e) {
-    return "fr";
+function rssLanguageFromPath() {
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  if (parts.length && RSS_SUPPORTED_LANGUAGES.includes(parts[0].toLowerCase())) {
+    return rssNormalizeLanguage(parts[0]);
   }
+  return null;
+}
+
+function rssSavedLanguage() {
+  const fromPath = rssLanguageFromPath();
+  if (fromPath) return fromPath;
+
+  // Les URLs françaises restent sans préfixe.
+  return "fr";
 }
 
 function rssSaveLanguage(language) {
@@ -190,9 +196,27 @@ function rssSwitchWholeSite(language) {
   rssSaveLanguage(language);
   syncHeaderLanguageUI();
 
+  const parts = window.location.pathname.split("/").filter(Boolean);
+  if (parts.length && RSS_SUPPORTED_LANGUAGES.includes(parts[0].toLowerCase())) {
+    parts.shift();
+  }
+
+  let basePath = "/" + parts.join("/");
+  if (basePath === "/") basePath = "/";
+
+  const targetPath = language === "fr"
+    ? basePath
+    : "/" + language + (basePath === "/" ? "/" : basePath);
+
+  if (window.location.pathname !== targetPath) {
+    window.location.assign(targetPath + window.location.search + window.location.hash);
+    return true;
+  }
+
   if (window.RssI18n && typeof window.RssI18n.setLanguage === "function") {
     window.RssI18n.setLanguage(language);
   }
+
   return true;
 }
 
