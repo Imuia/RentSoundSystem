@@ -1,15 +1,9 @@
 const fs = require('fs');
 const path = require('path');
-const https = require('https');
 
 const ROOT_DIR = path.join(__dirname, '..');
 const I18N_DIR = path.join(ROOT_DIR, 'i18n');
 const FR_PATH = path.join(I18N_DIR, 'fr.json');
-
-if (!fs.existsSync(FR_PATH)) {
-  console.error("[auto-translate] /i18n/fr.json introuvable.");
-  process.exit(1);
-}
 
 const frData = JSON.parse(fs.readFileSync(FR_PATH, 'utf8'));
 
@@ -22,6 +16,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Catalog",
     "nav.auth": "Register / Sign in",
     "nav.account": "My account",
+    "home.hero_title": "Professional Sound & DJ Equipment Rental",
+    "home.hero_subtitle": "Rent professional sound systems, DJ gear, speakers, line arrays, mixers, and lighting from verified partners for your parties, weddings, concerts, and events.",
+    "home.new_nearby_subtitle": "Discover the latest listings published around your location or selected city.",
+    "home.categories_subtitle": "Explore our vast inventory of professional-grade equipment for your most demanding productions.",
     "catalog.title": "Rental Catalog",
     "catalog.filters": "Filters",
     "catalog.category": "Category",
@@ -71,6 +69,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Catálogo",
     "nav.auth": "Registrarse / Iniciar sesión",
     "nav.account": "Mi cuenta",
+    "home.hero_title": "Alquiler de sonido y equipo DJ profesional",
+    "home.hero_subtitle": "Alquile sonido profesional, equipos DJ, altavoces, sistemas line array, mesas de mezclas e iluminación con socios verificados para sus fiestas, bodas, conciertos y eventos.",
+    "home.new_nearby_subtitle": "Descubra los últimos anuncios publicados cerca de su ubicación o ciudad seleccionada.",
+    "home.categories_subtitle": "Explore nuestro amplio inventario de equipos profesionales para sus producciones más exigentes.",
     "catalog.title": "Catálogo de Alquiler",
     "catalog.filters": "Filtros",
     "catalog.category": "Categoría",
@@ -120,6 +122,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Katalog",
     "nav.auth": "Registrieren / Anmelden",
     "nav.account": "Mein Konto",
+    "home.hero_title": "Professionelle Ton- und DJ-Ausrüstung mieten",
+    "home.hero_subtitle": "Mieten Sie professionelle Tonanlagen, DJ-Equipment, Lautsprecher, Line-Arrays, Mischpulte und Beleuchtung von verifizierten Partnern für Ihre Partys, Hochzeiten, Konzerte und Events.",
+    "home.new_nearby_subtitle": "Entdecken Sie die neuesten Angebote in Ihrer Nähe oder der ausgewählten Stadt.",
+    "home.categories_subtitle": "Erkunden Sie unser umfangreiches Inventar an professionellem Equipment für anspruchsvolle Produktionen.",
     "catalog.title": "Mietkatalog",
     "catalog.filters": "Filter",
     "catalog.category": "Kategorie",
@@ -169,6 +175,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Catalogo",
     "nav.auth": "Registrati / Accedi",
     "nav.account": "Il mio account",
+    "home.hero_title": "Noleggio impianto audio e attrezzatura DJ professionale",
+    "home.hero_subtitle": "Noleggia impianti audio professionali, consolle DJ, casse, sistemi line array, mixer e luci da partner verificati per feste, matrimoni, concerti ed eventi.",
+    "home.new_nearby_subtitle": "Scopri gli ultimi annunci pubblicati vicino alla tua posizione o nella città selezionata.",
+    "home.categories_subtitle": "Esplora il nostro ampio inventario di attrezzature professionali per le tue produzioni più esigenti.",
     "catalog.title": "Catalogo Noleggio",
     "catalog.filters": "Filtri",
     "catalog.category": "Categoria",
@@ -218,6 +228,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Catálogo",
     "nav.auth": "Registrar / Entrar",
     "nav.account": "Minha conta",
+    "home.hero_title": "Aluguel de equipamento de som e DJ profissional",
+    "home.hero_subtitle": "Alugue som profissional, equipamentos DJ, caixas de som, sistemas line array, mesas de som e iluminação de parceiros verificados para suas festas, casamentos, shows e eventos.",
+    "home.new_nearby_subtitle": "Descubra os últimos anúncios publicados perto da sua localização ou cidade selecionada.",
+    "home.categories_subtitle": "Explore nosso vasto inventário de equipamentos profissionais para suas produções mais exigentes.",
     "catalog.title": "Catálogo de Aluguel",
     "catalog.filters": "Filtros",
     "catalog.category": "Categoria",
@@ -267,6 +281,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Catalogus",
     "nav.auth": "Registreren / Inloggen",
     "nav.account": "Mijn account",
+    "home.hero_title": "Professionele geluidsinstallatie en DJ-apparatuur huren",
+    "home.hero_subtitle": "Huur professionele geluidsinstallaties, DJ-gear, luidsprekers, line arrays, mengpanelen en verlichting van geverifieerde partners voor uw feesten, bruiloften, concerten en evenementen.",
+    "home.new_nearby_subtitle": "Ontdek de nieuwste advertenties in de buurt van uw locatie of gekozen stad.",
+    "home.categories_subtitle": "Verken onze uitgebreide voorraad professionele apparatuur voor uw meest veeleisende producties.",
     "catalog.title": "Verhuurcatalogus",
     "catalog.filters": "Filters",
     "catalog.category": "Categorie",
@@ -316,6 +334,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Catàleg",
     "nav.auth": "Registrar-se / Iniciar sessió",
     "nav.account": "El meu compte",
+    "home.hero_title": "Lloguer de so i equip DJ professional",
+    "home.hero_subtitle": "Lloga so professional, equips DJ, altveus, sistemes line array, taules de mescles i il·luminació amb socis verificats per a les teves festes, casaments, concerts i esdeveniments.",
+    "home.new_nearby_subtitle": "Descobreix els últims anuncis publicats a prop de la teva ubicació o ciutat seleccionada.",
+    "home.categories_subtitle": "Explora el nostre ampli inventari d'equips professionals per a les teves produccions més exigents.",
     "catalog.title": "Catàleg de Lloguer",
     "catalog.filters": "Filtres",
     "catalog.category": "Categoria",
@@ -365,6 +387,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Katalog",
     "nav.auth": "Zarejestruj się / Zaloguj",
     "nav.account": "Moje konto",
+    "home.hero_title": "Wynajem nagłośnienia i profesjonalnego sprzętu DJ",
+    "home.hero_subtitle": "Wypożycz profesjonalne nagłośnienie, sprzęt DJ, głośniki, systemy line array, miksery i oświetlenie od zweryfikowanych partnerów na imprezy, wesela, koncerty i wydarzenia.",
+    "home.new_nearby_subtitle": "Odkryj najnowsze ogłoszenia opublikowane w Twojej okolicy lub wybranym mieście.",
+    "home.categories_subtitle": "Przeglądaj nasz bogaty asortyment profesjonalnego sprzętu na najbardziej wymagające wydarzenia.",
     "catalog.title": "Katalog Wypożyczeń",
     "catalog.filters": "Filtry",
     "catalog.category": "Kategoria",
@@ -414,6 +440,10 @@ const TARGET_LANGS = {
     "nav.catalog": "Каталог",
     "nav.auth": "Реєстрація / Вхід",
     "nav.account": "Мій кабінет",
+    "home.hero_title": "Оренда звукового та DJ обладнання",
+    "home.hero_subtitle": "Орендуйте професійне звукове обладнання, DJ-апаратуру, колонки, лінійні масиви, пульти та світло у перевірених партнерів для вечірок, весіль, концертів та заходів.",
+    "home.new_nearby_subtitle": "Дізнайтеся про найновіші оголошення у вашому регіоні або обраному місті.",
+    "home.categories_subtitle": "Ознайомтеся з нашим величезним вибором професійного обладнання для найвибагливіших подій.",
     "catalog.title": "Каталог Оренди",
     "catalog.filters": "Фільтри",
     "catalog.category": "Категорія",
@@ -463,6 +493,10 @@ const TARGET_LANGS = {
     "nav.catalog": "产品目录",
     "nav.auth": "注册 / 登录",
     "nav.account": "我的账户",
+    "home.hero_title": "专业音响与DJ设备租赁",
+    "home.hero_subtitle": "向经过验证的合作伙伴租赁专业音响、DJ设备、音箱、线阵列、调音台和灯光，适用于派对、婚礼、音乐会和活动。",
+    "home.new_nearby_subtitle": "探索您附近或所选城市的最新租赁信息。",
+    "home.categories_subtitle": "探索我们丰富的专业级设备库存，满足您高标准的生产需求。",
     "catalog.title": "租赁目录",
     "catalog.filters": "筛选",
     "catalog.category": "类别",
@@ -512,6 +546,10 @@ const TARGET_LANGS = {
     "nav.catalog": "カタログ",
     "nav.auth": "新規登録 / ログイン",
     "nav.account": "マイアカウント",
+    "home.hero_title": "プロ仕様の音響＆DJ機材レンタル",
+    "home.hero_subtitle": "パーティー、結婚式、コンサート、イベント用に、認証済みパートナーからプロ仕様の音響システム、DJ機材、スピーカー、ラインアレイ、ミキサー、照明をレンタルできます。",
+    "home.new_nearby_subtitle": "現在地や選択した都市の周辺で掲載された最新機材をチェック。",
+    "home.categories_subtitle": "プロフェッショナルなイベント制作に対応する豊富な機材ラインナップ。",
     "catalog.title": "レンタルカタログ",
     "catalog.filters": "絞り込み",
     "catalog.category": "カテゴリー",
@@ -561,6 +599,10 @@ const TARGET_LANGS = {
     "nav.catalog": "الكتالوج",
     "nav.auth": "تسجيل / دخول",
     "nav.account": "حسابي",
+    "home.hero_title": "تأجير معدات الصوت والدي جي الاحترافية",
+    "home.hero_subtitle": "استأجر أنظمة صوتية احترافية، معدات دي جي، مكبرات صوت، أنظمة لاين أري، مكسرات وإضاءة من شركاء موثوقين لحفلاتك، أعراسك، كونسيرتاتك وفعالياتك.",
+    "home.new_nearby_subtitle": "اكتشف أحدث الإعلانات المعروضة بالقرب من موقعك أو المدينة المحددة.",
+    "home.categories_subtitle": "استكشف مجموعتنا الواسعة من المعدات الاحترافية المناسبة لأرقى الفعاليات.",
     "catalog.title": "كتالوج التأجير",
     "catalog.filters": "التصفية",
     "catalog.category": "الفئة",
@@ -604,13 +646,9 @@ const TARGET_LANGS = {
   }
 };
 
-function generateLanguageFiles() {
-  for (const [code, dict] of Object.entries(TARGET_LANGS)) {
-    const filePath = path.join(I18N_DIR, `${code}.json`);
-    fs.writeFileSync(filePath, JSON.stringify(dict, null, 2), 'utf8');
-    console.log(`[auto-translate] Dictionnaire ${code}.json (${Object.keys(dict).length} clés) créé avec succès.`);
-  }
-  console.log("[auto-translate] Tous les dictionnaires i18n ont été générés.");
+for (const [code, dict] of Object.entries(TARGET_LANGS)) {
+  const filePath = path.join(I18N_DIR, `${code}.json`);
+  fs.writeFileSync(filePath, JSON.stringify(dict, null, 2), 'utf8');
 }
 
-generateLanguageFiles();
+console.log("[auto-translate] Tous les dictionnaires i18n complets ont été mis à jour.");
