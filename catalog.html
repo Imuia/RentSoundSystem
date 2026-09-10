@@ -443,11 +443,16 @@ html, body {
     });
   }
 
-  function clean(value) {
-    return String(value || "Annonce disponible sur RentSoundSystem.")
+  function cleanRaw(value) {
+    return String(value == null ? "" : value)
       .replace(/<[^>]*>?/gm, "")
       .replace(/&nbsp;/g, " ")
       .trim();
+  }
+
+  function clean(value) {
+    const raw = cleanRaw(value);
+    return raw || "Annonce disponible sur RentSoundSystem.";
   }
 
   function money(value) {
@@ -466,7 +471,7 @@ html, body {
   }
 
   function normalizeBrandKey(value) {
-    return clean(value)
+    return cleanRaw(value)
       .toLocaleLowerCase("fr-FR")
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
@@ -476,8 +481,55 @@ html, body {
       .trim();
   }
 
+  const BRAND_ALIASES = {
+    "l acoustics": "L-Acoustics",
+    "lacoustics": "L-Acoustics",
+    "l acoustic": "L-Acoustics",
+    "electro voice": "Electro-Voice",
+    "electrovoice": "Electro-Voice"
+  };
+
+  function canonicalBrandLabel(value) {
+    const raw = cleanRaw(value);
+    if (!raw) return "";
+    const key = normalizeBrandKey(raw);
+    return BRAND_ALIASES[key] || raw;
+  }
+
+  function inferLegacyBrand(item) {
+    const text = normalizeBrandKey([
+      item.title,
+      item.model,
+      item.description,
+      item.category
+    ].map(cleanRaw).join(" "));
+
+    if (!text) return "";
+
+    // Anciennes annonces L-Acoustics : parfois le champ marque est vide
+    // alors que le modèle/titre permet de l'identifier clairement.
+    if (
+      text.includes("l acoustics") ||
+      text.includes("lacoustics") ||
+      /\b(k1|k2|kara(?: ii)?|ks28|sb28|la12x|la4x|a10|a15|x15 hiq|syva)\b/.test(text)
+    ) {
+      return "L-Acoustics";
+    }
+
+    // Même principe pour Electro-Voice.
+    if (
+      text.includes("electro voice") ||
+      text.includes("electrovoice") ||
+      /\b(zlx|elx|ekx|etx|evolve(?: 30m| 50m| 70)?|re3)\b/.test(text)
+    ) {
+      return "Electro-Voice";
+    }
+
+    return "";
+  }
+
   function resolveBrandLabel(item) {
-    return clean(
+    const explicit = canonicalBrandLabel(
       item.brand ||
       item.brand_name ||
       item.manufacturer ||
@@ -485,6 +537,8 @@ html, body {
       item.marque ||
       ""
     );
+
+    return explicit || inferLegacyBrand(item);
   }
 
   function looksLikeIdentifier(value) {
@@ -664,7 +718,7 @@ html, body {
         item.marque,
         item.title,
         item.model
-      ].join(" "));
+      ].map(cleanRaw).join(" "));
 
       if (f.search && text.indexOf(f.search) === -1) return false;
       if (f.city && cityKey !== f.city) return false;
@@ -866,9 +920,11 @@ html, body {
     const brands = new Map();
 
     allItems.forEach(function (item) {
-      const label = item.brand_label || "";
-      const key = item.brand_key || "";
-      if (label && key && !brands.has(key)) brands.set(key, label);
+      const label = canonicalBrandLabel(item.brand_label || "");
+      const key = normalizeBrandKey(label);
+      if (!label || !key) return;
+      if (key === normalizeBrandKey("Annonce disponible sur RentSoundSystem.")) return;
+      if (!brands.has(key)) brands.set(key, label);
     });
 
     requestedBrandParams().forEach(function (label) {
@@ -1033,6 +1089,12 @@ html, body {
     categoryLookup = await loadCategoryLookup();
     allItems = (result.data || []).map(normalizeListing);
     filteredItems = allItems.slice();
+
+    console.info("[Catalog brands]", {
+      total: allItems.length,
+      lAcoustics: allItems.filter(function (item) { return item.brand_key === normalizeBrandKey("L-Acoustics"); }).length,
+      electroVoice: allItems.filter(function (item) { return item.brand_key === normalizeBrandKey("Electro-Voice"); }).length
+    });
 
     loadDynamicCategories();
     loadDynamicBrands();
