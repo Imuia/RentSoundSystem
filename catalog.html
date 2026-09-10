@@ -481,6 +481,12 @@ html, body {
       .trim();
   }
 
+  // Liste maître synchronisée depuis la page /marques :
+  // 101 marques dédoublonnées selon les mêmes routes canoniques.
+  const CATALOG_MASTER_BRANDS = ["Alcons Audio","Allen & Heath","Alto","American audio","American DJ","Apart","Audio Technica","AudioCase","AudioHead7","Behringer","Bergerault","Black Swamp Percussion","BoomTone DJ","Bose","Botex","Cameo","Celestion","Cerwin Vega","Coda Audio","Community Professional Loudspeakers","d&b audiotechnik","D.A.S","DB Technologies","De Haske","Denis Wick","Denon","DiGiCo","Dunlop","EAW (Eastern Acoustic Works)","Ecler","Edition Dux","Electro-Voice","Elokance","ESP","Faber Music","Faderfox","FBT Audio","Fischer Amps","Formula Sound","Friedman","Funktion One","Gemini","GHS","Gibraltar","Goldon","Hercules DJ","HK","Jakob Winter","Jamey Aebersold","Jargar","JBL","Joral","Kaufmann","KRK Systems","KV2 Audio","L-Acoustics","LD Systems","Lindy","Litecraft","Mac Mah","Marshall","Martin Audio","Meyer Sound","Midas","Native Instruments","Neumann","Nexo Sound","Numark","Ohm Audio","Omnitronic","Ortofon","Ottolink","Outline Audio","Ovation","Oxford University Press","Paiste","Peavey Commercial Audio","Pioneer DJ","Presonus","QSC","Quilter","Rane","RCF","Reloop","Renkus-Heinz","Rode Microphones","Roland","Sennheiser","Shure","Silent Arena","Silent Disco","Soundcraft","Studio 49","Tannoy","Technics","The box","Turbo Sound","Ulsa","Vestax","Void Acoustics","Yamaha"];
+
+  const MASTER_BRAND_ALIASES = {"black swamp":"Black Swamp Percussion","pioneer":"Pioneer DJ","electro voice ev":"Electro-Voice","allen heath":"Allen & Heath","shure micros":"Shure","electrovoice":"Electro-Voice","d b audiotechnik":"d&b audiotechnik"};
+
   const BRAND_ALIASES = {
     "l acoustics": "L-Acoustics",
     "lacoustics": "L-Acoustics",
@@ -493,7 +499,14 @@ html, body {
     const raw = cleanRaw(value);
     if (!raw) return "";
     const key = normalizeBrandKey(raw);
-    return BRAND_ALIASES[key] || raw;
+
+    if (MASTER_BRAND_ALIASES[key]) return MASTER_BRAND_ALIASES[key];
+    if (BRAND_ALIASES[key]) return BRAND_ALIASES[key];
+
+    const master = CATALOG_MASTER_BRANDS.find(function (name) {
+      return normalizeBrandKey(name) === key;
+    });
+    return master || raw;
   }
 
   function inferLegacyBrand(item) {
@@ -919,6 +932,16 @@ html, body {
 
     const brands = new Map();
 
+    // 1. La page Marques est la source maître : les 101 marques sont toujours
+    //    présentes dans le filtre, même si une marque n'a encore aucune annonce.
+    CATALOG_MASTER_BRANDS.forEach(function (label) {
+      const canonical = canonicalBrandLabel(label);
+      const key = normalizeBrandKey(canonical);
+      if (canonical && key && !brands.has(key)) brands.set(key, canonical);
+    });
+
+    // 2. Les marques réellement présentes dans les annonces sont fusionnées,
+    //    sans créer de doublons d'alias.
     allItems.forEach(function (item) {
       const label = canonicalBrandLabel(item.brand_label || "");
       const key = normalizeBrandKey(label);
@@ -927,9 +950,11 @@ html, body {
       if (!brands.has(key)) brands.set(key, label);
     });
 
+    // 3. Une marque passée dans l'URL reste visible/cochable même si elle est nouvelle.
     requestedBrandParams().forEach(function (label) {
-      const key = normalizeBrandKey(label);
-      if (key && !brands.has(key)) brands.set(key, label);
+      const canonical = canonicalBrandLabel(label);
+      const key = normalizeBrandKey(canonical);
+      if (canonical && key && !brands.has(key)) brands.set(key, canonical);
     });
 
     const entries = Array.from(brands.entries())
@@ -1091,7 +1116,8 @@ html, body {
     filteredItems = allItems.slice();
 
     console.info("[Catalog brands]", {
-      total: allItems.length,
+      masterBrands: CATALOG_MASTER_BRANDS.length,
+      listings: allItems.length,
       lAcoustics: allItems.filter(function (item) { return item.brand_key === normalizeBrandKey("L-Acoustics"); }).length,
       electroVoice: allItems.filter(function (item) { return item.brand_key === normalizeBrandKey("Electro-Voice"); }).length
     });
