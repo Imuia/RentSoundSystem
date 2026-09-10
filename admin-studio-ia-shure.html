@@ -77,6 +77,19 @@
     .studio-linkedin h4{font-size:18px;margin-bottom:14px!important}
     .studio-linkedin p{color:var(--studio-muted)!important;font-size:14px;line-height:1.65;white-space:pre-line}
     .studio-full-btn{width:100%;margin-top:4px;padding:15px}
+
+    .studio-platform{cursor:pointer;font:inherit}
+    .studio-platform:not(.active){border-color:var(--studio-border);background:var(--studio-card);opacity:.62}
+    .studio-platform:not(.active) .studio-platform-radio{color:var(--studio-muted)!important}
+    .studio-icon-action{border:0;background:transparent;color:#b5b5b6;padding:3px;cursor:pointer;display:inline-flex;align-items:center}
+    .studio-icon-action:hover{color:var(--studio-pink)}
+    .studio-editing{outline:1px solid var(--studio-pink);border-radius:6px;padding:6px;background:rgba(252,3,109,.06)}
+    .studio-btn[disabled]{opacity:.55;cursor:not-allowed}
+    .studio-btn.approved{background:rgba(34,197,94,.12);border-color:rgba(34,197,94,.55);color:#86efac}
+    .studio-toast{position:fixed;right:24px;bottom:24px;z-index:1000;max-width:390px;padding:13px 16px;border-radius:10px;background:#201f1f;color:#e5e2e1;border:1px solid rgba(255,255,255,.12);box-shadow:0 18px 55px rgba(0,0,0,.35);display:none}
+    .studio-toast.show{display:block}
+    .studio-toast.error{border-color:rgba(255,77,128,.6);color:#ffd9de}
+
     @media(max-width:1100px){.studio-grid{grid-template-columns:1fr}}
     @media(max-width:720px){
       .studio-ia-wrap{padding:18px;border-radius:12px}
@@ -145,7 +158,7 @@
             <h2 id="studio-main-title">Configuration de Campagne Shure</h2>
             <p>Assistez l’IA dans la création de votre campagne promotionnelle pour la gamme Shure Wireless Excellence. Définissez l’audience, les plateformes et le ton.</p>
           </div>
-          <button class="studio-btn" type="button"><span class="material-symbols-outlined">save</span>Sauvegarder brouillon</button>
+          <button class="studio-btn" id="studio-save-draft" type="button"><span class="material-symbols-outlined">save</span><span>Sauvegarder brouillon</span></button>
         </div>
 
         <div class="studio-grid">
@@ -174,17 +187,17 @@
                 <div class="studio-field">
                   <span class="studio-label">Audience cible (multi-sélection)</span>
                   <div class="studio-chips">
-                    <button class="studio-chip active" type="button"><span class="material-symbols-outlined" style="font-size:16px">check</span>Ingénieurs du Son</button>
-                    <button class="studio-chip active" type="button"><span class="material-symbols-outlined" style="font-size:16px">check</span>Pro de l’Événementiel</button>
-                    <button class="studio-chip" type="button"><span class="material-symbols-outlined" style="font-size:16px">add</span>Salles de Concert</button>
+                    <button class="studio-chip active" data-audience="Ingénieurs du Son" type="button"><span class="material-symbols-outlined" style="font-size:16px">check</span><span>Ingénieurs du Son</span></button>
+                    <button class="studio-chip active" data-audience="Pro de l’Événementiel" type="button"><span class="material-symbols-outlined" style="font-size:16px">check</span><span>Pro de l’Événementiel</span></button>
+                    <button class="studio-chip" data-audience="Salles de Concert" type="button"><span class="material-symbols-outlined" style="font-size:16px">add</span><span>Salles de Concert</span></button>
                   </div>
                 </div>
 
                 <div class="studio-field">
                   <span class="studio-label">Plateformes sociales</span>
                   <div class="studio-platforms">
-                    <div class="studio-platform"><span><span class="material-symbols-outlined studio-pink">photo_camera</span>Instagram</span><span class="material-symbols-outlined studio-pink">radio_button_checked</span></div>
-                    <div class="studio-platform"><span><span class="material-symbols-outlined studio-pink">work</span>LinkedIn</span><span class="material-symbols-outlined studio-pink">radio_button_checked</span></div>
+                    <button class="studio-platform active" data-platform="instagram" type="button"><span><span class="material-symbols-outlined studio-pink">photo_camera</span>Instagram</span><span class="material-symbols-outlined studio-pink studio-platform-radio">radio_button_checked</span></button>
+                    <button class="studio-platform active" data-platform="linkedin" type="button"><span><span class="material-symbols-outlined studio-pink">work</span>LinkedIn</span><span class="material-symbols-outlined studio-pink studio-platform-radio">radio_button_checked</span></button>
                   </div>
                 </div>
 
@@ -199,25 +212,25 @@
               </div>
             </section>
 
-            <button class="studio-btn primary studio-full-btn" type="button"><span class="material-symbols-outlined">auto_awesome</span>Générer contenus IA</button>
+            <button class="studio-btn primary studio-full-btn" id="studio-generate" type="button"><span class="material-symbols-outlined">auto_awesome</span><span>Générer contenus IA</span></button>
           </div>
 
           <div>
             <div class="studio-output-title">
               <h3><span class="material-symbols-outlined studio-pink">magic_button</span>Propositions générées</h3>
-              <span class="studio-live"><i></i>Généré à l’instant</span>
+              <span class="studio-live" id="studio-generation-status"><i></i><span>Prêt à générer</span></span>
             </div>
 
             <div class="studio-stack">
               <article class="studio-card" style="border-left:4px solid #FC036D">
                 <div class="studio-draft-head">
                   <strong><span class="material-symbols-outlined studio-pink">photo_camera</span>Draft Instagram - Visuel Carré</strong>
-                  <span style="display:flex;gap:8px;color:#b5b5b6"><span class="material-symbols-outlined">edit</span><span class="material-symbols-outlined">content_copy</span></span>
+                  <span style="display:flex;gap:8px;color:#b5b5b6"><button class="studio-icon-action" data-edit="linkedin" type="button" title="Modifier"><span class="material-symbols-outlined">edit</span></button><button class="studio-icon-action" data-copy="linkedin" type="button" title="Copier"><span class="material-symbols-outlined">content_copy</span></button></span>
                 </div>
                 <div class="studio-draft-main">
                   <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGAE2pyCg4dWlyl2sFH_EiXYNIqwbybkEIxUJOVbnWPBwcmHemX8jzBkLq74DDfJqUA24-SdIOkpJErXl1Vv_E4XK6MbLX2zG8zjq-J_03IewYmsYpV3CcRq0RPDkcxZmaSeeWAN7WDE7Vbse-YcI5DW_86N1G0tpEFSrb9Ek4KnTRDnX1NtElPQXhReVK49kkLWGam506AT8-5ltapgiEg3enxUZj4JWLfOhdOKIaOxZzRLwFl0SfoDChq78B07aomEzCCOR_dFA" alt="Microphone Shure sans fil">
                   <div>
-                    <div class="studio-copy">L’imprévu n’a pas sa place sur scène. 🎛️⚡
+                    <div class="studio-copy" id="studio-instagram-copy" tabindex="0">L’imprévu n’a pas sa place sur scène. 🎛️⚡
 
 Pour vos événements critiques, louez la tranquillité d’esprit. La gamme Shure Wireless Excellence garantit une stabilité de signal à toute épreuve, même dans les environnements RF les plus saturés.
 
@@ -225,8 +238,8 @@ Ne laissez plus les décrochages gâcher le show. Matériel dispo immédiatement
 
 #SoundEngineer #LiveSound #Shure #EventPro #RentSoundSystem</div>
                     <div class="studio-draft-actions">
-                      <button class="studio-btn" type="button">Régénérer texte</button>
-                      <button class="studio-btn ghost-pink" type="button">Approuver</button>
+                      <button class="studio-btn" id="studio-regenerate-instagram" type="button">Régénérer texte</button>
+                      <button class="studio-btn ghost-pink" id="studio-approve-instagram" type="button">Approuver</button>
                     </div>
                   </div>
                 </div>
@@ -235,18 +248,18 @@ Ne laissez plus les décrochages gâcher le show. Matériel dispo immédiatement
               <article class="studio-card" style="border-left:4px solid #c6c6c7">
                 <div class="studio-draft-head">
                   <strong><span class="material-symbols-outlined">work</span>Draft LinkedIn - Article Court</strong>
-                  <span style="display:flex;gap:8px;color:#b5b5b6"><span class="material-symbols-outlined">edit</span><span class="material-symbols-outlined">content_copy</span></span>
+                  <span style="display:flex;gap:8px;color:#b5b5b6"><button class="studio-icon-action" data-edit="linkedin" type="button" title="Modifier"><span class="material-symbols-outlined">edit</span></button><button class="studio-icon-action" data-copy="linkedin" type="button" title="Copier"><span class="material-symbols-outlined">content_copy</span></button></span>
                 </div>
                 <div class="studio-linkedin">
-                  <h4>Sécurisez l’audio de vos productions majeures.</h4>
-                  <p>En tant que prestataires techniques, nous savons que la fiabilité de la liaison HF est la clé de voûte de toute captation ou prestation live réussie.
+                  <h4 id="studio-linkedin-title" tabindex="0">Sécurisez l’audio de vos productions majeures.</h4>
+                  <p id="studio-linkedin-copy" tabindex="0">En tant que prestataires techniques, nous savons que la fiabilité de la liaison HF est la clé de voûte de toute captation ou prestation live réussie.
 
 C’est pourquoi RentSoundSystem élargit son parc de location avec les dernières solutions Shure Axient. Conçues pour repousser les limites de la stabilité RF, elles offrent aux directeurs techniques et ingénieurs du son l’assurance d’un signal pur, sans compromis.
 
 Découvrez nos offres de location pour votre prochaine tournée ou événement corporate d’envergure. Contactez notre équipe technique pour dimensionner votre plan de fréquences.</p>
                   <div class="studio-draft-actions" style="justify-content:flex-end">
-                    <button class="studio-btn" type="button">Régénérer</button>
-                    <button class="studio-btn ghost-pink" type="button">Approuver</button>
+                    <button class="studio-btn" id="studio-regenerate-linkedin" type="button">Régénérer</button>
+                    <button class="studio-btn ghost-pink" id="studio-approve-linkedin" type="button">Approuver</button>
                   </div>
                 </div>
               </article>
@@ -258,9 +271,11 @@ Découvrez nos offres de location pour votre prochaine tournée ou événement c
   </main>
 </div>
 
+<div id="studio-toast" class="studio-toast" role="status" aria-live="polite"></div>
 <div id="header-container" hidden></div><div id="footer-container" hidden></div>
 <script src="/assets/js/admin-config.js"></script>
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
+<script src="/assets/js/admin-studio-ia.js"></script>
 </body>
 </html>
