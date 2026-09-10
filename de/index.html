@@ -981,13 +981,23 @@ html, body {
     const distance = distanceText(item);
     const locationLine = distance ? `${distance} • ${place}` : place;
 
+    const pricePerDayLabel = (window.RssI18n && typeof window.RssI18n.t === 'function')
+      ? window.RssI18n.t('common.per_day', 'Prix / Jour')
+      : 'Prix / Jour';
+
+    const newLabel = (window.RssI18n && typeof window.RssI18n.t === 'function')
+      ? window.RssI18n.t('common.new', 'Nouveau')
+      : 'Nouveau';
+
+    const displayBadge = badge === 'Nouveau' ? newLabel : category;
+
     return `
       <a href="${productUrl(item)}" class="group relative aspect-[3/4] bg-surface-container rounded-xl overflow-hidden border border-white/10 hover:border-primary/50 transition-all cursor-pointer block">
         <div class="rss-card-placeholder"></div>
         ${image ? `<img alt="${title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" src="${escapeHtml(image)}" loading="eager" fetchpriority="high" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}
         <div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent opacity-90 group-hover:opacity-100 transition-opacity"></div>
         <div class="absolute top-4 left-4 z-10">
-          <span class="${badge === 'Nouveau' ? 'bg-primary text-on-primary' : 'bg-background/80 text-on-surface'} backdrop-blur-md text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10">${badge || category}</span>
+          <span class="${badge === 'Nouveau' ? 'bg-primary text-on-primary' : 'bg-background/80 text-on-surface'} backdrop-blur-md text-[11px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-white/10" data-i18n="${badge === 'Nouveau' ? 'common.new' : ''}">${escapeHtml(displayBadge)}</span>
         </div>
         <div class="absolute bottom-0 left-0 right-0 p-5 flex flex-col gap-2 z-10 translate-y-2 group-hover:translate-y-0 transition-transform">
           <h3 class="font-headline-md text-[22px] leading-tight text-on-background group-hover:text-primary transition-colors drop-shadow-md line-clamp-2">${title}</h3>
@@ -996,8 +1006,8 @@ html, body {
             <span>${escapeHtml(locationLine)}</span>
           </div>
           <div class="pt-3 border-t border-white/20 flex justify-between items-center">
-            <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium">Prix / Jour</span>
-            <span class="text-primary font-bold text-2xl drop-shadow">${price}</span>
+            <span class="text-on-surface-variant text-[13px] uppercase tracking-wider font-medium" data-i18n="common.per_day">Preis / Tag</span>
+            <span class="text-primary font-bold text-2xl drop-shadow" data-rss-price-eur="${Number(item.price || 0)}">${price}</span>
           </div>
         </div>
       </a>`;
@@ -1029,7 +1039,10 @@ html, body {
 
   function setLabels(label) {
     const clean = label || 'Autour de vous';
-    const text = clean + ' • Autour de vous';
+    const aroundLabel = (window.RssI18n && typeof window.RssI18n.t === 'function')
+      ? window.RssI18n.t('home.around_you', 'Autour de vous')
+      : 'Autour de vous';
+    const text = clean + ' • ' + aroundLabel;
     const nearby = document.getElementById('nearby-city-label');
     const mapLabel = document.getElementById('map-city-label');
     if (nearby) nearby.textContent = text;
