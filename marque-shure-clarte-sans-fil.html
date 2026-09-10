@@ -137,40 +137,37 @@
 ]}
 </script>
 
+
+<style id="rss-brand-shell">
+
+#header-container{position:relative;z-index:9999;width:100%}
+#header-container header{z-index:9999!important}
+
+/* Header / footer standard des pages marque */
+.rss-brand-footer{background:#0e0e0e;border-top:1px solid rgba(255,255,255,.05);padding:72px 0 28px;color:#e5e2e1}
+.rss-footer-wrap{max-width:1280px;margin:0 auto;padding:0 40px}
+.rss-footer-grid{display:grid;grid-template-columns:1.25fr 1fr 1fr 1fr;gap:56px;margin-bottom:58px}
+.rss-footer-logo{width:100px;height:auto;display:block;margin-bottom:24px}
+.rss-footer-brand p{color:#e6bcc2;font:400 14px/1.65 Inter,sans-serif;max-width:280px;margin:0 0 24px}
+.rss-footer-social{display:flex;gap:14px}
+.rss-footer-social a{width:42px;height:42px;border-radius:50%;background:#1c1b1b;display:grid;place-items:center;color:#e5e2e1}
+.rss-footer-col h3{font:700 13px/1 Inter,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 24px}
+.rss-footer-col ul{list-style:none;padding:0;margin:0;display:grid;gap:14px}
+.rss-footer-col a{color:#e6bcc2;font:400 14px/1.35 Inter,sans-serif}
+.rss-footer-col a:hover{color:#FC036D}
+.rss-footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:26px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:#8f7f82;font:400 11px/1.5 Inter,sans-serif}
+.rss-footer-bottom-links{display:flex;gap:24px;flex-wrap:wrap}
+.rss-footer-bottom a{color:#b99da2}
+@media(max-width:900px){.rss-footer-grid{grid-template-columns:1fr 1fr}.rss-footer-wrap{padding:0 24px}}
+@media(max-width:767px){#shure-map-layer .shure-card{width:190px;padding:8px 10px}}
+@media(max-width:600px){.rss-footer-grid{grid-template-columns:1fr}.rss-footer-wrap{padding:0 20px}}
+</style>
+
 </head>
 <body class="font-body-md text-body-md selection:bg-primary-container selection:text-on-primary-container">
-<!-- TopNavBar -->
-<nav class="fixed top-0 w-full backdrop-blur-xl bg-surface-glass border-b border-surface-glass-border shadow-neon-glow z-50">
-<div class="max-w-[1280px] mx-auto flex items-center justify-between px-gutter-x py-component-padding-y">
-<!-- Brand -->
-<a class="font-headline-md text-headline-md font-bold text-primary tracking-tighter" href="/">
-                RentSoundSystem
-            </a>
-<!-- Links (Desktop) -->
-<div class="hidden md:flex items-center space-x-8">
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="/catalog.html">Marketplace</a>
-<a class="font-body-md text-body-md text-primary font-bold border-b-2 border-primary pb-1" href="/marques.html">Brands</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Studios</a>
-<a class="font-body-md text-body-md text-on-surface-variant hover:text-on-surface transition-colors" href="#">Logistics</a>
-</div>
-<!-- Actions -->
-<div class="flex items-center space-x-4">
-<button type="button" onclick="window.location.href='/inscription-partenaire.html'" class="font-body-md text-body-md bg-primary-container text-on-primary-container px-4 py-2 rounded-lg hover:bg-surface-container-highest/50 transition-all duration-300 active:scale-95 shadow-neon-glow">
-                    List Gear
-                </button>
-<div class="flex space-x-2">
-<button class="p-2 text-primary hover:bg-surface-container-highest/50 rounded-full transition-all duration-300 active:scale-95">
-<span class="material-symbols-outlined">shopping_cart</span>
-</button>
-<button class="p-2 text-primary hover:bg-surface-container-highest/50 rounded-full transition-all duration-300 active:scale-95">
-<span class="material-symbols-outlined">account_circle</span>
-</button>
-</div>
-</div>
-</div>
-</nav>
+<div id="header-container"></div>
 <!-- Main Content Canvas -->
-<main class="pt-[100px]">
+<main>
 <!-- Hero Section -->
 <section class="relative w-full min-h-[819px] flex items-center justify-center overflow-hidden">
 <!-- Background Image -->
@@ -298,30 +295,70 @@
 </div>
 </section>
 </main>
-<!-- Mega Footer -->
-<footer class="w-full mt-section-padding-y border-t border-primary-fuchsia/20 bg-surface-container-lowest dark:bg-surface-container-lowest">
-<div class="max-w-[1280px] mx-auto px-gutter-x py-section-padding-y grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-card-gap">
-<div class="col-span-2 md:col-span-4 lg:col-span-2 mb-8 lg:mb-0">
-<div class="font-headline-lg text-headline-lg font-black text-on-surface mb-4">RentSoundSystem</div>
-<p class="font-body-md text-body-md text-secondary mb-6 max-w-sm">La plateforme de location d'équipement audio professionnel haut de gamme pour les experts de l'industrie.</p>
-<div class="font-label-caps text-label-caps text-secondary">
-                    © 2026 RentSoundSystem Professional. All rights reserved.
-                </div>
+<footer class="rss-brand-footer">
+<div class="rss-footer-wrap">
+<div class="rss-footer-grid">
+<div class="rss-footer-brand">
+<img alt="RentSoundSystem" class="rss-footer-logo" src="/images/categories/logo.png"/>
+<p>La plateforme de référence pour la location de matériel de sonorisation et d'éclairage professionnel entre experts de l'événementiel.</p>
+<div class="rss-footer-social">
+<a aria-label="Partager" href="/contact.html"><span class="material-symbols-outlined">share</span></a>
+<a aria-label="Site" href="/"><span class="material-symbols-outlined">public</span></a>
+<a aria-label="Contact" href="/contact.html"><span class="material-symbols-outlined">mail</span></a>
 </div>
-<div class="flex flex-col space-y-4">
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary-fuchsia hover:translate-x-1 transition-transform duration-200 focus:ring-2 focus:ring-primary" href="/marques.html">Browse Brands</a>
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary-fuchsia hover:translate-x-1 transition-transform duration-200 focus:ring-2 focus:ring-primary" href="#">City Hubs</a>
 </div>
-<div class="flex flex-col space-y-4">
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary-fuchsia hover:translate-x-1 transition-transform duration-200 focus:ring-2 focus:ring-primary" href="#">Insurance</a>
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary-fuchsia hover:translate-x-1 transition-transform duration-200 focus:ring-2 focus:ring-primary" href="/centre-aide.html">Technical Support</a>
+<div class="rss-footer-col"><h3>Location Sono</h3><ul>
+<li><a href="/location-sono/location-sonorisation-paris">Location Sono Paris</a></li>
+<li><a href="/location-sono/location-sono-cannes">Location Sono Cannes</a></li>
+<li><a href="/location-sono/location-sono-monaco">Location Sono Monaco</a></li>
+<li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Catégories</h3><ul>
+<li><a href="/catalog.html?search=Shure">Shure</a></li>
+<li><a href="/catalog.html?search=Shure%20Axient%20Digital">Axient Digital</a></li>
+<li><a href="/catalog.html?search=Shure%20PSM1000">PSM1000</a></li>
+<li><a href="/catalog.html?search=Shure%20ULX-D">ULX-D</a></li>
+<li><a href="/catalog.html?search=microphone%20sans%20fil">Microphones sans fil</a></li>
+</ul></div>
+<div class="rss-footer-col"><h3>Support</h3><ul>
+<li><a href="/centre-aide.html">Centre d'aide</a></li>
+<li><a href="/contact.html">Contactez-nous</a></li>
+<li><a href="/blog.html">Blog</a></li>
+<li><a href="/faq.html">FAQ</a></li>
+</ul></div>
 </div>
-<div class="flex flex-col space-y-4">
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary-fuchsia hover:translate-x-1 transition-transform duration-200 focus:ring-2 focus:ring-primary" href="/conditions-utilisation.html">Terms of Service</a>
-<a class="font-label-caps text-label-caps text-on-tertiary-fixed-variant hover:text-primary-fuchsia hover:translate-x-1 transition-transform duration-200 focus:ring-2 focus:ring-primary" href="/politique-confidentialite.html">Privacy Policy</a>
+<div class="rss-footer-bottom">
+<span>© 2026 RentSoundSystem.com. Logistique Sonore Professionnelle.</span>
+<div class="rss-footer-bottom-links">
+<a href="/conditions-utilisation.html">Conditions d'utilisation</a>
+<a href="/politique-confidentialite.html">Politique de confidentialité</a>
+<a href="/mentions-legales.html">Mentions légales</a>
+</div>
 </div>
 </div>
 </footer>
 
+
+
+<script id="rss-global-header-loader">
+async function loadRentSoundSystemHeader(){
+  const target=document.getElementById('header-container');
+  if(!target)return;
+  try{
+    const response=await fetch('/header.html',{cache:'no-cache'});
+    if(!response.ok)throw new Error(response.status);
+    target.innerHTML=await response.text();
+    target.querySelectorAll('script').forEach(oldScript=>{
+      const script=document.createElement('script');
+      [...oldScript.attributes].forEach(a=>script.setAttribute(a.name,a.value));
+      script.textContent=oldScript.textContent;
+      oldScript.replaceWith(script);
+    });
+  }catch(error){
+    console.error('Header load',error);
+  }
+}
+document.addEventListener('DOMContentLoaded',loadRentSoundSystemHeader);
+</script>
 
 </body></html>
