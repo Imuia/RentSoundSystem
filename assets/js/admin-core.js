@@ -5,37 +5,29 @@
   const state = {
     supabase: null,
     user: null,
-    role: null,
     currentResource: null,
+    currentTable: null,
     rows: [],
     filtered: [],
     page: 1,
-    pageSize: Number(config.pageSize || 20),
+    pageSize: Number(config.pageSize || 12),
     search: '',
-    status: 'all',
-    loading: false
+    status: 'all'
   };
 
   const $ = (selector, root = document) => root.querySelector(selector);
   const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
 
   function getClient() {
-    if (state.supabase && typeof state.supabase.from === 'function') return state.supabase;
-    if (window.rssSupabase && typeof window.rssSupabase.from === 'function') {
-      state.supabase = window.rssSupabase;
-      return state.supabase;
-    }
+    if (state.supabase) return state.supabase;
     for (const key of config.clientCandidates || []) {
       if (window[key] && typeof window[key].from === 'function') {
         state.supabase = window[key];
         return state.supabase;
       }
     }
-    if (config.supabaseUrl && config.supabaseAnonKey && window.supabase?.createClient) {
-      state.supabase = window.supabase.createClient(config.supabaseUrl, config.supabaseAnonKey, {
-        auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-      });
-      window.rssSupabase = state.supabase;
+    if (window.supabaseClient && typeof window.supabaseClient.from === 'function') {
+      state.supabase = window.supabaseClient;
       return state.supabase;
     }
     return null;
@@ -54,9 +46,7 @@
     const number = Number(value);
     if (!Number.isFinite(number)) return '—';
     try {
-      return new Intl.NumberFormat('fr-FR', {
-        style: 'currency', currency, maximumFractionDigits: 2
-      }).format(number);
+      return new Intl.NumberFormat('fr-FR', { style: 'currency', currency, maximumFractionDigits: 0 }).format(number);
     } catch {
       return `${number.toLocaleString('fr-FR')} €`;
     }
@@ -80,9 +70,9 @@
 
   function statusClass(value) {
     const status = normalizeStatus(value);
-    if (/paid|succeed|payé|publ|approved|valid|confirm|active|actif|completed|termin/.test(status)) return 'success';
+    if (/paid|payé|publ|approved|valid|confirm|active|actif|completed|termin/.test(status)) return 'success';
     if (/pending|attente|draft|devis|processing|nouveau|review/.test(status)) return 'warning';
-    if (/fail|échec|cancel|annul|refund|litige|rejet|inactif|disabled|hidden|blocked/.test(status)) return 'danger';
+    if (/fail|échec|cancel|annul|refund|litige|rejet|inactif|disabled/.test(status)) return 'danger';
     if (/sent|envoy|scheduled|planifi|open|ouvert/.test(status)) return 'info';
     return 'neutral';
   }
@@ -116,16 +106,34 @@
     item.className = `admin-toast ${type}`.trim();
     item.textContent = message;
     container.appendChild(item);
-    setTimeout(() => item.remove(), 4200);
+    setTimeout(() => item.remove(), 3600);
   }
 
-  function showFatal(title, message) {
-    const content = $('.admin-content');
-    if (!content) return;
-    content.innerHTML = `<section class="admin-card"><div class="admin-empty"><div><span class="material-symbols-outlined">lock</span><h3>${escapeHtml(title)}</h3><p>${escapeHtml(message)}</p></div></div></section>`;
+
+  function ensureStudioIaNavLink() {
+    const nav = $('.admin-nav');
+    if (!nav || $('[data-nav-page="studio-ia"]', nav)) return;
+
+    const link = document.createElement('a');
+    link.className = 'admin-nav-link';
+    link.dataset.navPage = 'studio-ia';
+    link.href = '/admin-studio-ia-shure.html';
+    link.innerHTML = '<span class="material-symbols-outlined">auto_awesome</span>Studio IA';
+
+    const listings = $('[data-nav-page="listings"]', nav);
+    const reservations = $('[data-nav-page="reservations"]', nav);
+
+    if (listings && listings.parentNode === nav) {
+      listings.insertAdjacentElement('afterend', link);
+    } else if (reservations && reservations.parentNode === nav) {
+      reservations.insertAdjacentElement('beforebegin', link);
+    } else {
+      nav.appendChild(link);
+    }
   }
 
   function setupShell() {
+    ensureStudioIaNavLink();
     const sidebar = $('.admin-sidebar');
     const overlay = $('.admin-mobile-overlay');
     const menu = $('[data-admin-menu]');
@@ -145,119 +153,68 @@
     }
 
     $('[data-refresh-page]')?.addEventListener('click', () => window.location.reload());
-
-    const globalSearch = $('.admin-search-global input');
-    globalSearch?.addEventListener('keydown', event => {
-      if (event.key !== 'Enter') return;
-      const value = globalSearch.value.trim();
-      const local = $('[data-resource-search]');
-      if (local) {
-        local.value = value;
-        local.dispatchEvent(new Event('input', { bubbles: true }));
-      } else if (value) {
-        location.href = `/admin-reservations.html?q=${encodeURIComponent(value)}`;
-      }
-    });
   }
 
-  async function requireAdmin() {
+  async function detectUser() {
     const client = getClient();
-    if (!client) {
-      showFatal('Supabase indisponible', 'Le client Supabase ne peut pas être initialisé.');
-      throw new Error('Client Supabase introuvable');
+    const emailTargets = $$('[data-admin-email], #admin-email');
+    if (!client?.auth?.getUser) {
+      emailTargets.forEach(el => { el.textContent = 'Administrateur'; });
+      return null;
     }
-
-    const { data: sessionData, error: sessionError } = await client.auth.getSession();
-    if (sessionError) throw sessionError;
-    const session = sessionData?.session;
-    if (!session?.user) {
-      const redirect = location.pathname + location.search;
-      location.href = `${config.loginUrl || '/connexion-inscription.html'}?redirect=${encodeURIComponent(redirect)}`;
-      return false;
-    }
-
-    state.user = session.user;
-    $$('[data-admin-email], #admin-email').forEach(el => { el.textContent = state.user.email || 'Administrateur'; });
-
-    const { data: role, error } = await client.rpc('my_admin_role');
-    const allowed = config.allowedAdminRoles || ['admin', 'super_admin'];
-    if (error || !allowed.includes(String(role || ''))) {
-      showFatal('Accès non autorisé', 'Cette page est réservée aux administrateurs RentSoundSystem actifs.');
-      console.warn('[RSS Admin] rôle refusé', error || role);
-      return false;
-    }
-
-    state.role = String(role);
-    document.documentElement.dataset.adminRole = state.role;
-    return true;
-  }
-
-  function unwrapRpcRows(data) {
-    if (!Array.isArray(data)) return [];
-    return data.map(item => {
-      if (item && typeof item === 'object' && item.row_data && typeof item.row_data === 'object') return item.row_data;
-      return item;
-    }).filter(item => item && typeof item === 'object');
-  }
-
-  async function listResource(resourceName, options = {}) {
-    const client = getClient();
-    if (!client) throw new Error('Client Supabase introuvable');
-    const limit = Math.min(Number(options.limit || config.maxRows || 2000), 5000);
-    const resourceDef = config.resources?.[resourceName] || {};
-
     try {
-      const { data, error } = await client.rpc('admin_list_resource', {
-        p_resource: resourceName,
-        p_limit: limit,
-        p_offset: Number(options.offset || 0),
-        p_search: options.search || null,
-        p_status: options.status && options.status !== 'all' ? options.status : null
-      });
-      if (!error && data) return unwrapRpcRows(data);
-      if (error) console.warn(`[RSS Admin RPC Fallback] ${resourceName}:`, error.message);
-    } catch (e) {
-      console.warn(`[RSS Admin RPC Catch] ${resourceName}:`, e.message);
-    }
-
-    // Fallback transparent direct query on underlying Supabase table
-    const tableName = resourceDef.directTable || resourceDef.source || resourceName;
-    try {
-      let query = client.from(tableName).select('*').limit(limit);
-      if (options.status && options.status !== 'all') {
-        const statusKeys = resourceDef.status || ['status'];
-        if (statusKeys.length > 0) query = query.eq(statusKeys[0], options.status);
-      }
-      const { data, error } = await query;
+      const { data, error } = await client.auth.getUser();
       if (error) throw error;
-      return data || [];
-    } catch (fallbackError) {
-      console.error(`[RSS Admin Direct Fallback Error] ${resourceName} / table ${tableName}:`, fallbackError);
-      throw fallbackError;
+      state.user = data?.user || null;
+      const email = state.user?.email || 'Administrateur';
+      emailTargets.forEach(el => { el.textContent = email; });
+      return state.user;
+    } catch (error) {
+      emailTargets.forEach(el => { el.textContent = 'Session à vérifier'; });
+      console.warn('[RSS Admin] Auth non vérifiée:', error);
+      return null;
     }
+  }
+
+  async function tryTable(tables, options = {}) {
+    const client = getClient();
+    if (!client) return { rows: [], table: null, error: new Error('Client Supabase introuvable') };
+    let lastError = null;
+    for (const table of tables || []) {
+      try {
+        let query = client.from(table).select('*');
+        if (options.limit) query = query.limit(options.limit);
+        const { data, error } = await query;
+        if (error) throw error;
+        return { rows: Array.isArray(data) ? data : [], table, error: null };
+      } catch (error) {
+        lastError = error;
+      }
+    }
+    return { rows: [], table: null, error: lastError || new Error('Aucune table compatible trouvée') };
   }
 
   async function loadResource(resourceName, options = {}) {
     const resource = config.resources?.[resourceName];
     if (!resource) throw new Error(`Ressource inconnue : ${resourceName}`);
     state.currentResource = resourceName;
-    const rows = await listResource(resourceName, options);
-    state.rows = rows;
-    state.filtered = rows;
-    return { rows, resource, table: resource.source, error: null };
+    const result = await tryTable(resource.tables, options);
+    state.currentTable = result.table;
+    state.rows = result.rows;
+    state.filtered = result.rows;
+    return { ...result, resource };
   }
 
   function rowView(row, resourceName = state.currentResource) {
     const resource = config.resources?.[resourceName] || {};
     return {
-      id: pick(row, resource.id, row.id || ''),
-      title: pick(row, resource.title, row.title || 'Sans titre'),
-      subtitle: pick(row, resource.subtitle, row.subtitle || ''),
-      status: pick(row, resource.status, row.status || 'inconnu'),
-      amount: pick(row, resource.amount, row.amount ?? null),
-      date: pick(row, resource.date, row.date || null),
-      location: pick(row, resource.location, row.location || ''),
-      source: row._source || resource.source || resourceName,
+      id: pick(row, resource.id, ''),
+      title: pick(row, resource.title, 'Sans titre'),
+      subtitle: pick(row, resource.subtitle, ''),
+      status: pick(row, resource.status, 'inconnu'),
+      amount: pick(row, resource.amount, null),
+      date: pick(row, resource.date, null),
+      location: pick(row, resource.location, ''),
       raw: row
     };
   }
@@ -274,9 +231,11 @@
   }
 
   function exportRows(rows, filename = 'export.csv') {
-    if (!rows?.length) return toast('Aucune donnée à exporter', 'error');
-    const hidden = new Set(['password', 'access_token', 'refresh_token', 'service_role_key']);
-    const keys = Array.from(new Set(rows.flatMap(row => Object.keys(row)))).filter(key => !hidden.has(key));
+    if (!rows?.length) {
+      toast('Aucune donnée à exporter', 'error');
+      return;
+    }
+    const keys = Array.from(new Set(rows.flatMap(row => Object.keys(row))));
     const csv = [keys.join(';')]
       .concat(rows.map(row => keys.map(key => {
         const value = row[key];
@@ -294,26 +253,18 @@
     toast('Export CSV créé', 'success');
   }
 
-  function valueHtml(value) {
-    if (value === null || value === undefined || value === '') return '—';
-    if (typeof value === 'object') return escapeHtml(JSON.stringify(value, null, 2));
-    const text = String(value);
-    if (/^https?:\/\//i.test(text)) {
-      return `<a href="${escapeHtml(text)}" target="_blank" rel="noopener" style="color:var(--rss-info);word-break:break-all">Ouvrir le lien</a>`;
-    }
-    return escapeHtml(text);
+  function exportCurrentRows() {
+    exportRows(state.filtered, `${state.currentResource || 'admin'}-${new Date().toISOString().slice(0,10)}.csv`);
   }
 
   function openGenericDrawer(row, title = 'Détail') {
     const backdrop = $('[data-generic-drawer]');
     const content = $('[data-generic-drawer-content]');
     const heading = $('[data-generic-drawer-title]');
-    if (!backdrop || !content || !heading) return;
+    if (!backdrop || !content) return;
     heading.textContent = title;
-    const ignored = new Set(['_resource', '_source', 'title', 'subtitle', 'amount', 'date', 'location']);
     content.innerHTML = Object.entries(row)
-      .filter(([key]) => !ignored.has(key))
-      .map(([key, value]) => `<div class="detail"><span>${escapeHtml(key.replaceAll('_', ' '))}</span><strong>${valueHtml(value)}</strong></div>`)
+      .map(([key, value]) => `<div class="detail"><span>${escapeHtml(key.replaceAll('_', ' '))}</span><strong>${escapeHtml(typeof value === 'object' ? JSON.stringify(value) : value)}</strong></div>`)
       .join('');
     backdrop.classList.add('open');
     backdrop.setAttribute('aria-hidden', 'false');
@@ -327,76 +278,59 @@
 
   function setupGenericDrawer() {
     $('[data-generic-drawer-close]')?.addEventListener('click', closeGenericDrawer);
-    $('[data-generic-drawer]')?.addEventListener('click', event => {
+    $('[data-generic-drawer]')?.addEventListener('click', (event) => {
       if (event.target.matches('[data-generic-drawer]')) closeGenericDrawer();
     });
-    document.addEventListener('keydown', event => {
-      if (event.key === 'Escape') closeGenericDrawer();
-    });
   }
 
-  async function updateStatus(row, status, resourceName = state.currentResource, note = null) {
+  async function updateStatus(row, status, resourceName = state.currentResource) {
     const client = getClient();
     const resource = config.resources?.[resourceName];
-    if (!client || !resource) throw new Error('Connexion ou ressource indisponible');
-    if (resource.readOnly) throw new Error('Cette ressource est en lecture seule');
-    if (!resource.statusOptions?.includes(status)) throw new Error('Transition de statut non autorisée');
-    const id = rowView(row, resourceName).id;
-    const source = row._source || resource.source || resourceName;
-
-    try {
-      const { data, error } = await client.rpc('admin_update_resource_status', {
-        p_resource: resourceName,
-        p_source: source,
-        p_id: String(id),
-        p_status: status,
-        p_note: note || null
-      });
-      if (!error) return data;
-      console.warn('[RSS Admin Status RPC Fallback]', error.message);
-    } catch (e) {
-      console.warn('[RSS Admin Status RPC Catch]', e.message);
-    }
-
-    // Direct fallback update on Supabase table
-    const tableName = resource.directTable || resource.source || resourceName;
-    const statusCol = (resource.status && resource.status[0]) || 'status';
-    const idCol = (resource.id && resource.id[0]) || 'id';
-
-    const updatePayload = { [statusCol]: status };
-    if (row.updated_at !== undefined) updatePayload.updated_at = new Date().toISOString();
-
-    const { data, error } = await client.from(tableName).update(updatePayload).eq(idCol, id);
+    if (!client || !state.currentTable || !resource) throw new Error('Connexion ou table indisponible');
+    const idField = resource.id?.find(key => row[key] !== undefined);
+    const statusField = resource.status?.find(key => row[key] !== undefined);
+    if (!idField || !statusField) throw new Error('Champ identifiant ou statut introuvable');
+    const { error } = await client.from(state.currentTable).update({ [statusField]: status }).eq(idField, row[idField]);
     if (error) throw error;
-    return data;
+    row[statusField] = status;
+    return row;
   }
 
-  async function getSettings() {
-    const client = getClient();
-    const { data, error } = await client.rpc('admin_get_settings');
-    if (error) throw error;
-    return data || {};
-  }
-
-  async function saveSettings(settings) {
-    const client = getClient();
-    const { data, error } = await client.rpc('admin_save_settings', { p_settings: settings || {} });
-    if (error) throw error;
-    return data;
+  function getIntegrationState() {
+    return {
+      connected: Boolean(getClient()),
+      table: state.currentTable,
+      resource: state.currentResource
+    };
   }
 
   window.RSSAdmin = {
-    state, config, $, $$,
-    getClient, requireAdmin,
-    pick, formatMoney, formatDate, normalizeStatus, statusClass,
-    escapeHtml, initials, toast,
-    listResource, loadResource, rowView, filterRows, exportRows,
-    openGenericDrawer, closeGenericDrawer, updateStatus,
-    getSettings, saveSettings
+    state,
+    config,
+    $, $$,
+    getClient,
+    pick,
+    formatMoney,
+    formatDate,
+    normalizeStatus,
+    statusClass,
+    escapeHtml,
+    initials,
+    toast,
+    tryTable,
+    loadResource,
+    rowView,
+    filterRows,
+    exportRows,
+    openGenericDrawer,
+    closeGenericDrawer,
+    updateStatus,
+    getIntegrationState
   };
 
   document.addEventListener('DOMContentLoaded', () => {
     setupShell();
     setupGenericDrawer();
+    detectUser();
   });
 })();

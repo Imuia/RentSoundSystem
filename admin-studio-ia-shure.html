@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Studio IA - Configuration Campagne Shure | Administration RentSoundSystem</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+  <style id="rss-studio-ia-shure">
+    .studio-ia-wrap {
+      --studio-bg:#131313;
+      --studio-low:#1c1b1b;
+      --studio-card:#201f1f;
+      --studio-high:#2a2a2a;
+      --studio-highest:#353534;
+      --studio-text:#e5e2e1;
+      --studio-muted:#b5b5b6;
+      --studio-pink:#FC036D;
+      --studio-border:rgba(255,255,255,.10);
+      background:var(--studio-bg)!important;
+      color:var(--studio-text)!important;
+      border-radius:18px;
+      padding:30px;
+      min-height:calc(100vh - 150px);
+      box-shadow:0 20px 70px rgba(0,0,0,.22);
+      font-family:Inter,Arial,sans-serif;
+    }
+    .studio-ia-wrap *{box-sizing:border-box}
+    .studio-ia-wrap h1,.studio-ia-wrap h2,.studio-ia-wrap h3,.studio-ia-wrap h4{
+      font-family:Manrope,Arial,sans-serif;
+      color:var(--studio-text)!important;
+      margin:0;
+    }
+    .studio-kicker-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+    .studio-pill{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(252,3,109,.10);border:1px solid rgba(252,3,109,.45);color:var(--studio-pink);font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+    .studio-store{display:inline-flex;align-items:center;gap:6px;color:var(--studio-muted);font-size:13px}
+    .studio-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;padding-bottom:24px;border-bottom:1px solid var(--studio-border);margin-bottom:28px}
+    .studio-head h2{font-size:38px;line-height:1.12;letter-spacing:-.02em}
+    .studio-head p{color:var(--studio-muted)!important;max-width:760px;margin:8px 0 0;line-height:1.6}
+    .studio-btn{border:1px solid var(--studio-border);background:var(--studio-highest);color:var(--studio-text);padding:12px 16px;border-radius:8px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;cursor:pointer}
+    .studio-btn.primary{background:var(--studio-pink);border-color:var(--studio-pink);color:#fff;box-shadow:0 0 28px rgba(252,3,109,.22)}
+    .studio-btn.ghost-pink{background:rgba(252,3,109,.08);border-color:rgba(252,3,109,.45);color:var(--studio-pink)}
+    .studio-grid{display:grid;grid-template-columns:minmax(300px,5fr) minmax(380px,7fr);gap:24px;align-items:start}
+    .studio-stack{display:grid;gap:20px}
+    .studio-card{background:linear-gradient(145deg,rgba(31,31,31,.72),rgba(20,20,20,.92));border:1px solid var(--studio-border);border-radius:14px;overflow:hidden;color:var(--studio-text)!important}
+    .studio-card-body{padding:22px}
+    .studio-section-title{display:flex;align-items:center;gap:10px;font-size:22px;padding-bottom:15px;border-bottom:1px solid var(--studio-border);margin-bottom:18px!important}
+    .studio-section-title .material-symbols-outlined,.studio-pink{color:var(--studio-pink)!important}
+    .studio-field{display:grid;gap:8px;margin-bottom:18px}
+    .studio-label{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--studio-muted)!important}
+    .studio-input,.studio-select{width:100%;background:var(--studio-highest)!important;border:1px solid var(--studio-border)!important;color:var(--studio-text)!important;border-radius:8px;padding:13px 14px;font:inherit;outline:none}
+    .studio-input:focus,.studio-select:focus{border-color:var(--studio-pink)!important;box-shadow:0 0 0 1px var(--studio-pink)}
+    .studio-product{display:flex;align-items:center;gap:13px;background:var(--studio-highest);border:1px solid var(--studio-border);padding:10px;border-radius:8px}
+    .studio-product img{width:52px;height:52px;object-fit:cover;border-radius:6px;background:#181818}
+    .studio-product strong{display:block;color:var(--studio-text)!important}
+    .studio-product small{display:block;color:var(--studio-muted)!important;margin-top:3px}
+    .studio-chips{display:flex;gap:9px;flex-wrap:wrap}
+    .studio-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--studio-border);background:var(--studio-card);color:var(--studio-muted);padding:8px 12px;border-radius:999px;font-size:13px}
+    .studio-chip.active{border-color:var(--studio-pink);background:rgba(252,3,109,.12);color:var(--studio-pink)}
+    .studio-platforms{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .studio-platform{border:1px solid var(--studio-pink);background:rgba(252,3,109,.05);padding:14px;border-radius:8px;display:flex;align-items:center;justify-content:space-between;color:var(--studio-text)!important;font-weight:700}
+    .studio-platform span:first-child{display:flex;align-items:center;gap:9px}
+    .studio-output-title{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+    .studio-output-title h3{display:flex;align-items:center;gap:8px;font-size:24px}
+    .studio-live{display:inline-flex;align-items:center;gap:7px;color:var(--studio-muted);font-size:12px}
+    .studio-live i{width:8px;height:8px;border-radius:50%;background:#22c55e;display:block}
+    .studio-draft-head{padding:15px 18px;background:rgba(53,53,52,.55);border-bottom:1px solid var(--studio-border);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .studio-draft-head strong{display:flex;align-items:center;gap:8px;color:var(--studio-text)!important}
+    .studio-draft-main{padding:20px;display:grid;grid-template-columns:minmax(190px,.9fr) minmax(240px,1.1fr);gap:20px}
+    .studio-draft-main img{width:100%;aspect-ratio:1/1;object-fit:cover;border:1px solid var(--studio-border);border-radius:8px;background:#111}
+    .studio-copy{color:var(--studio-text)!important;font-size:14px;line-height:1.62;white-space:pre-line}
+    .studio-draft-actions{display:flex;gap:10px;border-top:1px solid var(--studio-border);margin-top:16px;padding-top:14px}
+    .studio-draft-actions .studio-btn{flex:1}
+    .studio-linkedin{padding:22px}
+    .studio-linkedin h4{font-size:18px;margin-bottom:14px!important}
+    .studio-linkedin p{color:var(--studio-muted)!important;font-size:14px;line-height:1.65;white-space:pre-line}
+    .studio-full-btn{width:100%;margin-top:4px;padding:15px}
+    @media(max-width:1100px){.studio-grid{grid-template-columns:1fr}}
+    @media(max-width:720px){
+      .studio-ia-wrap{padding:18px;border-radius:12px}
+      .studio-head{align-items:flex-start;flex-direction:column}
+      .studio-head h2{font-size:30px}
+      .studio-draft-main{grid-template-columns:1fr}
+      .studio-platforms{grid-template-columns:1fr}
+      .studio-draft-actions{flex-direction:column}
+    }
+  </style>
+</head>
+<body data-admin-page="studio-ia">
+<div class="admin-app">
+  <aside class="admin-sidebar">
+    <a class="admin-brand" href="/admin-dashboard.html"><span class="admin-brand-mark">R</span><span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span></a>
+    <nav class="admin-nav">
+      <div class="admin-nav-label">Pilotage</div>
+      <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+      <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+      <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+      <a class="admin-nav-link active" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+      <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+      <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+      <div class="admin-nav-label">Gestion</div>
+      <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+      <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+      <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+      <div class="admin-nav-label">Opérations</div>
+      <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+      <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+      <div class="admin-nav-label">Système</div>
+      <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+    </nav>
+    <div class="admin-sidebar-footer">
+      <div class="admin-profile-mini"><div class="admin-avatar">AD</div><div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div></div>
+      <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+    </div>
+  </aside>
+
+  <div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+  <main class="admin-main">
+    <header class="admin-topbar">
+      <div class="admin-topbar-left">
+        <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu"><span class="material-symbols-outlined">menu</span></button>
+        <div class="admin-page-heading">
+          <h1>Studio IA - Configuration Campagne Shure</h1>
+          <p>Préparez les audiences, plateformes et contenus promotionnels assistés par IA.</p>
+        </div>
+      </div>
+      <div class="admin-topbar-actions">
+        <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser"><span class="material-symbols-outlined">refresh</span></button>
+        <a class="admin-icon-button" href="/" title="Voir le site"><span class="material-symbols-outlined">open_in_new</span></a>
+      </div>
+    </header>
+
+    <div class="admin-content">
+      <section class="studio-ia-wrap" aria-labelledby="studio-main-title">
+        <div class="studio-kicker-row">
+          <span class="studio-pill"><span class="material-symbols-outlined" style="font-size:16px">mic</span>Location de matériel</span>
+          <span class="studio-store"><span class="material-symbols-outlined" style="font-size:15px">storefront</span>RentSoundSystem</span>
+        </div>
+
+        <div class="studio-head">
+          <div>
+            <h2 id="studio-main-title">Configuration de Campagne Shure</h2>
+            <p>Assistez l’IA dans la création de votre campagne promotionnelle pour la gamme Shure Wireless Excellence. Définissez l’audience, les plateformes et le ton.</p>
+          </div>
+          <button class="studio-btn" type="button"><span class="material-symbols-outlined">save</span>Sauvegarder brouillon</button>
+        </div>
+
+        <div class="studio-grid">
+          <div class="studio-stack">
+            <section class="studio-card">
+              <div class="studio-card-body">
+                <h3 class="studio-section-title"><span class="material-symbols-outlined">tune</span>Paramètres généraux</h3>
+                <div class="studio-field">
+                  <label class="studio-label" for="studio-campaign-name">Nom de la campagne</label>
+                  <input class="studio-input" id="studio-campaign-name" type="text" value="Excellence Sans Fil Shure">
+                </div>
+                <div class="studio-field" style="margin-bottom:0">
+                  <span class="studio-label">Produit phare</span>
+                  <div class="studio-product">
+                    <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqvM0sWZL9k7xj5RQCncoA90JnwrWscY8RqZpDafwZlJbtSl284mUlsDF9ZMiLnndkrVtvWVBN-nenNKuzAQL9b0yMOQ1hppugNu2_AL5NFyXc6kB1qR5x-TKwb4fLeo3_wBIcreQCWuUNCPTOHd_cHD7q9X0f7BG4MqMmmoBiWhWh-EXZmXxKgB3ysbSij3wEOPzXG_8RFqdgNIdYonjWUkIku8ffcmGsTVoAiNbDXC1hhSC7sH1_lGU7dfrk86QAKvCMS37_7Jo" alt="Shure Axient Digital">
+                    <div><strong>Gamme Shure Axient Digital</strong><small>Microphones HF Premium</small></div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section class="studio-card">
+              <div class="studio-card-body">
+                <h3 class="studio-section-title"><span class="material-symbols-outlined">group_add</span>Ciblage & diffusion</h3>
+
+                <div class="studio-field">
+                  <span class="studio-label">Audience cible (multi-sélection)</span>
+                  <div class="studio-chips">
+                    <button class="studio-chip active" type="button"><span class="material-symbols-outlined" style="font-size:16px">check</span>Ingénieurs du Son</button>
+                    <button class="studio-chip active" type="button"><span class="material-symbols-outlined" style="font-size:16px">check</span>Pro de l’Événementiel</button>
+                    <button class="studio-chip" type="button"><span class="material-symbols-outlined" style="font-size:16px">add</span>Salles de Concert</button>
+                  </div>
+                </div>
+
+                <div class="studio-field">
+                  <span class="studio-label">Plateformes sociales</span>
+                  <div class="studio-platforms">
+                    <div class="studio-platform"><span><span class="material-symbols-outlined studio-pink">photo_camera</span>Instagram</span><span class="material-symbols-outlined studio-pink">radio_button_checked</span></div>
+                    <div class="studio-platform"><span><span class="material-symbols-outlined studio-pink">work</span>LinkedIn</span><span class="material-symbols-outlined studio-pink">radio_button_checked</span></div>
+                  </div>
+                </div>
+
+                <div class="studio-field" style="margin-bottom:0">
+                  <label class="studio-label" for="studio-tone">Axe de communication (IA)</label>
+                  <select class="studio-select" id="studio-tone">
+                    <option>Stabilité & Fiabilité Absolue</option>
+                    <option>Qualité Audio Studio</option>
+                    <option>Facilité de Déploiement</option>
+                  </select>
+                </div>
+              </div>
+            </section>
+
+            <button class="studio-btn primary studio-full-btn" type="button"><span class="material-symbols-outlined">auto_awesome</span>Générer contenus IA</button>
+          </div>
+
+          <div>
+            <div class="studio-output-title">
+              <h3><span class="material-symbols-outlined studio-pink">magic_button</span>Propositions générées</h3>
+              <span class="studio-live"><i></i>Généré à l’instant</span>
+            </div>
+
+            <div class="studio-stack">
+              <article class="studio-card" style="border-left:4px solid #FC036D">
+                <div class="studio-draft-head">
+                  <strong><span class="material-symbols-outlined studio-pink">photo_camera</span>Draft Instagram - Visuel Carré</strong>
+                  <span style="display:flex;gap:8px;color:#b5b5b6"><span class="material-symbols-outlined">edit</span><span class="material-symbols-outlined">content_copy</span></span>
+                </div>
+                <div class="studio-draft-main">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGAE2pyCg4dWlyl2sFH_EiXYNIqwbybkEIxUJOVbnWPBwcmHemX8jzBkLq74DDfJqUA24-SdIOkpJErXl1Vv_E4XK6MbLX2zG8zjq-J_03IewYmsYpV3CcRq0RPDkcxZmaSeeWAN7WDE7Vbse-YcI5DW_86N1G0tpEFSrb9Ek4KnTRDnX1NtElPQXhReVK49kkLWGam506AT8-5ltapgiEg3enxUZj4JWLfOhdOKIaOxZzRLwFl0SfoDChq78B07aomEzCCOR_dFA" alt="Microphone Shure sans fil">
+                  <div>
+                    <div class="studio-copy">L’imprévu n’a pas sa place sur scène. 🎛️⚡
+
+Pour vos événements critiques, louez la tranquillité d’esprit. La gamme Shure Wireless Excellence garantit une stabilité de signal à toute épreuve, même dans les environnements RF les plus saturés.
+
+Ne laissez plus les décrochages gâcher le show. Matériel dispo immédiatement chez RentSoundSystem.
+
+#SoundEngineer #LiveSound #Shure #EventPro #RentSoundSystem</div>
+                    <div class="studio-draft-actions">
+                      <button class="studio-btn" type="button">Régénérer texte</button>
+                      <button class="studio-btn ghost-pink" type="button">Approuver</button>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="studio-card" style="border-left:4px solid #c6c6c7">
+                <div class="studio-draft-head">
+                  <strong><span class="material-symbols-outlined">work</span>Draft LinkedIn - Article Court</strong>
+                  <span style="display:flex;gap:8px;color:#b5b5b6"><span class="material-symbols-outlined">edit</span><span class="material-symbols-outlined">content_copy</span></span>
+                </div>
+                <div class="studio-linkedin">
+                  <h4>Sécurisez l’audio de vos productions majeures.</h4>
+                  <p>En tant que prestataires techniques, nous savons que la fiabilité de la liaison HF est la clé de voûte de toute captation ou prestation live réussie.
+
+C’est pourquoi RentSoundSystem élargit son parc de location avec les dernières solutions Shure Axient. Conçues pour repousser les limites de la stabilité RF, elles offrent aux directeurs techniques et ingénieurs du son l’assurance d’un signal pur, sans compromis.
+
+Découvrez nos offres de location pour votre prochaine tournée ou événement corporate d’envergure. Contactez notre équipe technique pour dimensionner votre plan de fréquences.</p>
+                  <div class="studio-draft-actions" style="justify-content:flex-end">
+                    <button class="studio-btn" type="button">Régénérer</button>
+                    <button class="studio-btn ghost-pink" type="button">Approuver</button>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<div id="header-container" hidden></div><div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>
