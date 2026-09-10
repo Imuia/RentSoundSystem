@@ -8,7 +8,6 @@ if (!fs.existsSync(I18N_DIR)) {
   fs.mkdirSync(I18N_DIR, { recursive: true });
 }
 
-// Extraction complète et exhaustive de tous les textes UI du site RentSoundSystem
 const extractedKeys = {
   // Navigation & Header
   "nav.rent": "Louer du matériel",
@@ -18,6 +17,12 @@ const extractedKeys = {
   "nav.catalog": "Catalogue",
   "nav.auth": "S'inscrire / Connexion",
   "nav.account": "Mon compte",
+
+  // Home Hero & Sections
+  "home.hero_title": "Location de sono et matériel DJ professionnel",
+  "home.hero_subtitle": "Louez une sono professionnelle, du matériel DJ, des enceintes, systèmes line array, consoles et éclairages auprès de partenaires vérifiés pour vos soirées, mariages, concerts et événements.",
+  "home.new_nearby_subtitle": "Découvrez les dernières annonces publiées autour de votre position ou de la ville sélectionnée.",
+  "home.categories_subtitle": "Explorez notre vaste inventaire de matériel de qualité professionnelle pour vos productions les plus exigeantes.",
 
   // Catalogue & Filtres
   "catalog.title": "Catalogue de Location",
