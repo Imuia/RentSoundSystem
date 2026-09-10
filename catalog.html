@@ -341,7 +341,7 @@ html, body {
 <!-- Brand Filter -->
 <div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
 <h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Marque</h3>
-<div id="catalog-brand-list" class="space-y-2 max-h-[260px] overflow-y-auto pr-1"></div>
+<div id="catalog-brand-list" class="space-y-2"></div>
 </div>
 <!-- Price Filter -->
 <div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
@@ -465,6 +465,28 @@ html, body {
       .trim();
   }
 
+  function normalizeBrandKey(value) {
+    return clean(value)
+      .toLocaleLowerCase("fr-FR")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function resolveBrandLabel(item) {
+    return clean(
+      item.brand ||
+      item.brand_name ||
+      item.manufacturer ||
+      item.manufacturer_name ||
+      item.marque ||
+      ""
+    );
+  }
+
   function looksLikeIdentifier(value) {
     const v = String(value || "").trim();
     return /^[0-9]+$/.test(v) ||
@@ -536,14 +558,14 @@ html, body {
   function normalizeListing(item) {
     const categoryLabel = resolveCategoryLabel(item.category);
     const cityLabel = resolveCityLabel(item);
-    const brandLabel = clean(item.brand || item.brand_name || item.marque || "");
+    const brandLabel = resolveBrandLabel(item);
     return Object.assign({}, item, {
       category_label: categoryLabel,
       category_key: normalizeKey(categoryLabel),
       city_label: cityLabel,
       city_key: normalizeKey(cityLabel),
       brand_label: brandLabel,
-      brand_key: normalizeKey(brandLabel)
+      brand_key: normalizeBrandKey(brandLabel)
     });
   }
 
@@ -634,13 +656,26 @@ html, body {
       const cityKey = item.city_key || "";
       const categoryKey = item.category_key || "";
       const brandKey = item.brand_key || "";
+      const brandFallbackText = normalizeBrandKey([
+        item.brand,
+        item.brand_name,
+        item.manufacturer,
+        item.manufacturer_name,
+        item.marque,
+        item.title,
+        item.model
+      ].join(" "));
 
       if (f.search && text.indexOf(f.search) === -1) return false;
       if (f.city && cityKey !== f.city) return false;
       if (f.min && price < f.min) return false;
       if (f.max && price > f.max) return false;
       if (f.categories.length && f.categories.indexOf(categoryKey) === -1) return false;
-      if (f.brands.length && f.brands.indexOf(brandKey) === -1) return false;
+      if (f.brands.length && !f.brands.some(function (wantedBrand) {
+        return brandKey === wantedBrand ||
+          brandFallbackText === wantedBrand ||
+          brandFallbackText.indexOf(wantedBrand) !== -1;
+      })) return false;
 
       return true;
     });
@@ -812,15 +847,33 @@ html, body {
     });
   }
 
+
+  function requestedBrandParams() {
+    try {
+      return new URLSearchParams(window.location.search)
+        .getAll("brand")
+        .map(function (value) { return value.trim(); })
+        .filter(Boolean);
+    } catch (_) {
+      return [];
+    }
+  }
+
   function loadDynamicBrands() {
     const brandBox = document.getElementById("catalog-brand-list");
     if (!brandBox) return;
 
     const brands = new Map();
+
     allItems.forEach(function (item) {
-      const key = item.brand_key || "";
       const label = item.brand_label || "";
-      if (key && label && !brands.has(key)) brands.set(key, label);
+      const key = item.brand_key || "";
+      if (label && key && !brands.has(key)) brands.set(key, label);
+    });
+
+    requestedBrandParams().forEach(function (label) {
+      const key = normalizeBrandKey(label);
+      if (key && !brands.has(key)) brands.set(key, label);
     });
 
     const entries = Array.from(brands.entries())
@@ -848,32 +901,35 @@ html, body {
     });
   }
 
-  function applyInitialUrlFilters() {
-    const params = new URLSearchParams(window.location.search);
-    const requestedBrands = params.getAll("brand").filter(Boolean);
-    const searchParam = (params.get("search") || "").trim();
+  function applyUrlFilters() {
+    let params;
+    try { params = new URLSearchParams(window.location.search); }
+    catch (_) { return; }
 
-    // brand=L-Acoustics / brand=Electro-Voice : coche réellement la marque.
+    const requestedBrands = params.getAll("brand")
+      .map(normalizeBrandKey)
+      .filter(Boolean);
+
+    const searchValue = (params.get("search") || "").trim();
+
     if (requestedBrands.length) {
-      const wanted = requestedBrands.map(normalizeKey);
       document.querySelectorAll(".catalog-brand").forEach(function (input) {
-        input.checked = wanted.indexOf(input.dataset.brandKey || "") !== -1;
+        input.checked = requestedBrands.indexOf(input.dataset.brandKey || "") !== -1;
       });
     }
 
-    // Compatibilité avec les anciennes pages marque utilisant ?search=NomDeMarque.
-    // Si la recherche correspond exactement à une marque existante, on la transforme
-    // en filtre de marque coché au lieu d'une simple recherche texte.
-    if (searchParam) {
-      const searchKey = normalizeKey(searchParam);
+    if (searchValue) {
+      const exactBrandKey = normalizeBrandKey(searchValue);
       const exactBrand = Array.from(document.querySelectorAll(".catalog-brand"))
-        .find(function (input) { return (input.dataset.brandKey || "") === searchKey; });
+        .find(function (input) {
+          return (input.dataset.brandKey || "") === exactBrandKey;
+        });
 
       if (exactBrand && !requestedBrands.length) {
         exactBrand.checked = true;
         if ($("catalog-search")) $("catalog-search").value = "";
       } else if ($("catalog-search")) {
-        $("catalog-search").value = searchParam;
+        $("catalog-search").value = searchValue;
       }
     }
   }
@@ -883,11 +939,10 @@ html, body {
       const params = new URLSearchParams(window.location.search);
       params.delete("brand");
 
-      const selectedBrands = Array.from(document.querySelectorAll(".catalog-brand:checked"))
+      Array.from(document.querySelectorAll(".catalog-brand:checked"))
         .map(function (input) { return input.dataset.brandLabel || ""; })
-        .filter(Boolean);
-
-      selectedBrands.forEach(function (brand) { params.append("brand", brand); });
+        .filter(Boolean)
+        .forEach(function (label) { params.append("brand", label); });
 
       const searchValue = ($("catalog-search") && $("catalog-search").value || "").trim();
       if (searchValue) params.set("search", searchValue);
@@ -982,7 +1037,7 @@ html, body {
     loadDynamicCategories();
     loadDynamicBrands();
     loadDynamicCities();
-    applyInitialUrlFilters();
+    applyUrlFilters();
     applyFilters();
   }
 
