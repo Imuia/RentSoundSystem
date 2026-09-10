@@ -159,10 +159,27 @@ Préparez votre prochain événement avec un matériel dimensionné selon vos be
       throw new Error('Plateforme manquante');
     }
 
-    const response = await fetch('/api/studio-ia-generate', {
+    const adminClient = window.RSSAdmin?.getClient?.();
+    if (!adminClient?.auth?.getSession) {
+      throw new Error('Session Supabase administrateur indisponible.');
+    }
+
+    const { data: sessionData, error: sessionError } = await adminClient.auth.getSession();
+    if (sessionError) throw sessionError;
+
+    const accessToken = sessionData?.session?.access_token;
+    if (!accessToken) {
+      throw new Error('Session administrateur expirée. Reconnectez-vous.');
+    }
+
+    const response = await fetch('/api/stripe/config', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${accessToken}`
+      },
       body: JSON.stringify({
+        action: 'studio_ia_generate',
         campaignName: state.campaignName,
         product: state.product,
         audiences: state.audiences,
