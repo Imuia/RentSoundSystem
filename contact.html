@@ -178,33 +178,6 @@ html,body{
 
 
 <style id="rss-contact-map-formsubmit">
-.rss-grey-map{
-  background:
-    radial-gradient(circle at 50% 50%, rgba(252,3,109,.12), transparent 28%),
-    linear-gradient(135deg, #3b3b3b 0%, #2d2d2d 45%, #222 100%);
-}
-.rss-map-grid{
-  position:absolute; inset:-20%;
-  background-image:
-    linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
-  background-size:34px 34px;
-  transform:rotate(-12deg);
-}
-.rss-map-river{
-  position:absolute; left:-10%; top:46%; width:120%; height:34px;
-  background:rgba(190,190,190,.18);
-  transform:rotate(-8deg);
-}
-.rss-map-road{
-  position:absolute;
-  background:rgba(255,255,255,.12);
-  border-radius:999px;
-}
-.rss-map-road-1{left:5%; top:25%; width:90%; height:4px; transform:rotate(12deg);}
-.rss-map-road-2{left:20%; top:10%; width:4px; height:85%; transform:rotate(20deg);}
-.rss-map-road-3{left:8%; bottom:22%; width:80%; height:3px; transform:rotate(-18deg);}
-.rss-map-road-4{right:20%; top:8%; width:3px; height:90%; transform:rotate(-25deg);}
 .rss-form-status{
   margin-top:14px;
   padding:12px 14px;
@@ -238,7 +211,7 @@ html,body{
             </p>
 </section>
 <!-- Main Content: Two Columns -->
-<section class="grid grid-cols-1 md:grid-cols-2 gap-card-gap mb-24">
+<section class="max-w-2xl mx-auto mb-24">
 <!-- Left Column: Form -->
 <div class="glass-panel p-8 rounded-xl relative overflow-hidden contact-card-hover">
 <!-- Subtle glow effect inside the card -->
@@ -278,87 +251,7 @@ html,body{
                     </button>
 </form>
 </div>
-<!-- Right Column: Contact Info & Map Placeholder -->
-<div class="space-y-card-gap">
-<!-- Contact Info Card -->
-<div class="bg-surface-container-low border border-surface-glass-border p-8 rounded-xl h-fit contact-card-hover">
-<h2 class="font-headline-md text-headline-md text-on-surface mb-8">Nos Coordonnées</h2>
-<div class="space-y-6">
-<div class="flex items-start gap-4 contact-mobile-stack">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">call</span>
-</div>
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">TÉLÉPHONE</p>
-<p class="font-body-lg text-body-lg text-on-surface">+33 1 89 70 63 30</p>
-</div>
-</div>
-<div class="flex items-start gap-4 contact-mobile-stack">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">mail</span>
-</div>
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">EMAIL</p>
-<p class="font-body-lg text-body-lg text-on-surface">info@rentsoundsystem.com</p>
-</div>
-</div>
-<div class="flex items-start gap-4 contact-mobile-stack">
-<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 border border-primary/20">
-<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">location_on</span>
-</div>
-<div>
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">ADRESSE</p>
-<p class="font-body-lg text-body-lg text-on-surface">61 rue de Lyon<br/>75012 Paris, France</p>
-</div>
-</div>
-</div>
 
-<!-- <div class="mt-10 pt-8 border-t border-surface-glass-border">
-<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">SUIVEZ-NOUS</p>
-<div class="flex gap-4">
-<a class="w-12 h-12 rounded-full border border-surface-glass-border flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-300 text-on-surface-variant contact-social" href="#">
-
-<span class="material-symbols-outlined">work</span>
-</a>
-<a class="w-12 h-12 rounded-full border border-surface-glass-border flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-300 text-on-surface-variant contact-social" href="#">
-
-<span class="material-symbols-outlined">photo_camera</span>
-</a>
-<a class="w-12 h-12 rounded-full border border-surface-glass-border flex items-center justify-center hover:border-primary hover:text-primary transition-all duration-300 text-on-surface-variant contact-social" href="#">
-
-<span class="material-symbols-outlined">smart_display</span>
-</a>
-</div>
-</div>-->
-</div>
-
-<!-- Map Block Placeholder -->
-<div class="relative w-full h-64 rounded-xl overflow-hidden border border-surface-glass-border group map-mobile bg-[#2a2a2a]">
-  <div class="absolute inset-0 rss-grey-map">
-    <div class="rss-map-grid"></div>
-    <div class="rss-map-river"></div>
-    <div class="rss-map-road rss-map-road-1"></div>
-    <div class="rss-map-road rss-map-road-2"></div>
-    <div class="rss-map-road rss-map-road-3"></div>
-    <div class="rss-map-road rss-map-road-4"></div>
-  </div>
-
-  <div class="absolute top-5 left-5 z-20 bg-surface/85 backdrop-blur-md border border-white/10 rounded-lg px-4 py-3">
-    <p class="font-label-caps text-label-caps text-primary uppercase tracking-widest mb-1">Ville</p>
-    <p class="font-headline-md text-headline-md text-on-surface leading-none">Paris</p>
-    <p class="font-body-md text-[13px] text-on-surface-variant mt-1">75012 · France</p>
-  </div>
-
-  <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center z-20">
-    <div class="w-5 h-5 bg-primary rounded-full neon-shadow z-10 border-2 border-white/80"></div>
-    <div class="w-14 h-14 bg-primary/20 rounded-full absolute animate-ping"></div>
-
-    <div class="mt-7 bg-background/90 border border-primary/40 rounded px-3 py-1 text-xs text-on-surface whitespace-nowrap">
-      61 rue de Lyon
-    </div>
-  </div>
-</div>
-</div>
 </section>
 
 </main>
