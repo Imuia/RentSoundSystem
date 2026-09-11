@@ -3,267 +3,448 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>RentSoundSystem Onboarding Partenaire - Étape 2</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<title>Inscription Entreprise - Étape 2 sur 4 | RentSoundSystem</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800;900&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "primary": "#FC036D",
-                        "primary-container": "#FC036D",
-                        "inverse-primary": "#d9025e",
-                        "surface-dim": "#131313",
-                        "surface-glass": "rgba(31, 31, 31, 0.6)",
-                        "error-container": "#93000a",
-                        "secondary-container": "#454748",
-                        "secondary-fixed-dim": "#c6c6c7",
-                        "surface-container-low": "#1c1b1b",
-                        "on-secondary-fixed": "#1a1c1d",
-                        "surface-bright": "#393939",
-                        "error": "#ffb4ab",
-                        "surface-container": "#201f1f",
-                        "on-tertiary": "#303030",
-                        "on-secondary": "#2f3132",
-                        "surface-container-highest": "#353534",
-                        "surface-container-lowest": "#0e0e0e",
-                        "tertiary-container": "#929090",
-                        "inverse-on-surface": "#313030",
-                        "on-error": "#690005",
-                        "outline": "#ac878d",
-                        "tertiary-fixed": "#e5e2e1",
-                        "on-secondary-container": "#b5b5b6",
-                        "surface-variant": "#353534",
-                        "surface-container-high": "#2a2a2a",
-                        "secondary": "#c6c6c7",
-                        "surface": "#131313",
-                        "on-tertiary-fixed": "#1b1b1c",
-                        "on-secondary-fixed-variant": "#454748",
-                        "tertiary": "#c8c6c5",
-                        "on-tertiary-container": "#2a2a2a",
-                        "inverse-surface": "#e5e2e1",
-                        "neon-glow": "rgba(252, 3, 109, 0.3)",
-                        "on-error-container": "#ffdad6",
-                        "on-surface-variant": "#e6bcc2",
-                        "outline-variant": "#5d3f44",
-                        "tertiary-fixed-dim": "#c8c6c5",
-                        "secondary-fixed": "#e3e2e3",
-                        "on-surface": "#e5e2e1",
-                        "background": "#131313",
-                        "on-background": "#e5e2e1",
-                        "surface-tint": "#FC036D",
-                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
-                        "on-surface-muted": "#E6BCC2"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.125rem",
-                        "lg": "0.25rem",
-                        "xl": "0.5rem",
-                        "full": "0.75rem"
-                    },
-                    "spacing": {
-                        "component-padding-x": "1.5rem",
-                        "card-gap": "1.5rem",
-                        "container-max": "1280px",
-                        "gutter-x": "2.5rem",
-                        "component-padding-y": "0.625rem",
-                        "section-padding-y": "6rem"
-                    },
-                    "fontFamily": {
-                        "display-hero": ["Manrope"],
-                        "body-lg": ["Inter"],
-                        "display-hero-mobile": ["Manrope"],
-                        "headline-md": ["Manrope"],
-                        "label-caps": ["Inter"],
-                        "headline-lg": ["Manrope"],
-                        "body-md": ["Inter"]
-                    },
-                    "fontSize": {
-                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
-                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
-                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
-                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
-                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
-                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
-                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
-                    }
-                }
-            }
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#c8c6c5",
+            "primary-fixed-dim": "#ffb2bf",
+            "on-primary-fixed": "#3f0016",
+            "inverse-surface": "#e5e2e1",
+            "on-primary-fixed-variant": "#90003b",
+            "inverse-primary": "#bc004f",
+            "tertiary": "#c8c6c5",
+            "tertiary-fixed": "#e5e2e1",
+            "on-secondary-container": "#b5b5b6",
+            "surface-container-low": "#1c1b1b",
+            "on-tertiary-container": "#2a2a2a",
+            "on-primary-container": "#5a0022",
+            "secondary": "#c6c6c7",
+            "on-error": "#690005",
+            "tertiary-container": "#929090",
+            "background": "#131313",
+            "surface-variant": "#353534",
+            "on-surface-muted": "#E6BCC2",
+            "surface-dim": "#131313",
+            "inverse-on-surface": "#313030",
+            "on-tertiary-fixed-variant": "#474746",
+            "on-surface-variant": "#e6bcc2",
+            "on-tertiary-fixed": "#1b1b1c",
+            "surface-container-highest": "#353534",
+            "surface-container-lowest": "#0e0e0e",
+            "on-secondary-fixed-variant": "#454748",
+            "primary-container": "#ff4d80",
+            "secondary-fixed": "#e3e2e3",
+            "error": "#ffb4ab",
+            "outline": "#ac878d",
+            "surface-tint": "#ffb2bf",
+            "secondary-fixed-dim": "#c6c6c7",
+            "primary": "#ffb2bf",
+            "surface-bright": "#393939",
+            "on-tertiary": "#303030",
+            "on-secondary-fixed": "#1a1c1d",
+            "on-primary": "#660028",
+            "neon-glow": "rgba(252, 3, 109, 0.3)",
+            "on-background": "#e5e2e1",
+            "surface-container": "#201f1f",
+            "on-secondary": "#2f3132",
+            "surface-glass": "rgba(31, 31, 31, 0.6)",
+            "primary-fixed": "#ffd9de",
+            "outline-variant": "#5d3f44",
+            "error-container": "#93000a",
+            "surface-container-high": "#2a2a2a",
+            "surface": "#131313",
+            "on-surface": "#e5e2e1",
+            "secondary-container": "#454748",
+            "surface-glass-border": "rgba(255, 255, 255, 0.05)"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "section-padding-y": "6rem",
+            "container-max": "1280px",
+            "component-padding-y": "0.625rem",
+            "gutter-x": "2.5rem",
+            "component-padding-x": "1.5rem",
+            "card-gap": "1.5rem"
+          },
+          "fontFamily": {
+            "body-md": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-lg": ["Manrope", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "headline-md": ["Manrope", "sans-serif"],
+            "display-hero-mobile": ["Manrope", "sans-serif"],
+            "display-hero": ["Manrope", "sans-serif"]
+          }
         }
-    </script>
-<style>
-        body { background-color: #131313; color: #e5e2e1; }
-        .glass-panel {
-            background: linear-gradient(145deg, rgba(31,31,31,0.6) 0%, rgba(20,20,20,0.8) 100%);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-        }
-        .neon-shadow { box-shadow: 0 0 30px rgba(252, 3, 109, 0.3); }
-        .input-dark {
-            background-color: #353534;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            color: #e5e2e1;
-        }
-        .input-dark:focus {
-            border-color: #FC036D;
-            box-shadow: 0 0 10px rgba(252, 3, 109, 0.2);
-            outline: none;
-        }
-        
-        /* Tooltip */
-        .tooltip-container { position: relative; display: inline-block; }
-        .tooltip-text {
-            visibility: hidden;
-            width: 250px;
-            background-color: #2a2a2a;
-            color: #e5e2e1;
-            text-align: left;
-            border-radius: 0.25rem;
-            padding: 12px;
-            position: absolute;
-            z-index: 10;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -125px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            border: 1px solid rgba(255,255,255,0.05);
-            font-family: 'Inter', sans-serif;
-            font-size: 14px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
-        }
-        .tooltip-text::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: #2a2a2a transparent transparent transparent;
-        }
-        .tooltip-container:hover .tooltip-text { visibility: visible; opacity: 1; }
-    </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+      }
+    }
+  </script>
 
 <style id="rss-global-component-fix">
-  #header-container { min-height: 73px; }
+  #header-container { min-height: 73px; position:relative; z-index:9999; }
   #footer-container { min-height: 320px; }
-  #header-container header { display:block; }
-  #footer-container footer { display:block; }
+  #header-container header { z-index:9999 !important; }
 </style>
 
 </head>
-<body class="font-body-md antialiased min-h-screen flex flex-col">
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-primary-container selection:text-white min-h-screen flex flex-col">
 <div id="header-container"></div>
-<!-- Main Content -->
-<main class="flex-grow flex items-center justify-center py-section-padding-y px-gutter-x">
-<div class="max-w-[800px] w-full">
-<!-- Header Area -->
-<div class="text-center mb-12">
-<h1 class="font-display-hero text-display-hero-mobile md:text-display-hero text-on-surface mb-4">Intégration Partenaire</h1>
-<p class="font-body-lg text-body-lg text-on-surface-muted">Établissez votre identité technique sur la plateforme.</p>
+<!-- Shared Component TopNavBar (Strict Placement) -->
+<div class="relative flex h-auto w-full flex-col bg-[#231018] dark group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 md:px-12 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+
+<!-- Shared Breadcrumb & Step Indicators -->
+<div class="flex flex-wrap gap-2 p-4">
+<a class="text-[#cd8ea9] text-base font-medium leading-normal hover:text-white" href="#">Accueil</a>
+<span class="text-[#cd8ea9] text-base font-medium leading-normal">/</span>
+<a class="text-[#cd8ea9] text-base font-medium leading-normal hover:text-white" href="#">Inscription Entreprise</a>
+<span class="text-[#cd8ea9] text-base font-medium leading-normal">/</span>
+<span class="text-white text-base font-medium leading-normal">Étape 2 : Détails de la société</span>
 </div>
-<!-- Progress Bar (Step 2/4) -->
-<div class="mb-12">
-<div class="flex justify-between items-end mb-2">
-<span class="font-label-caps text-label-caps text-primary uppercase tracking-widest">Étape 2 : Détails de l'entreprise</span>
-<span class="font-body-md text-body-md text-on-surface-muted">50%</span>
-</div>
-<div class="w-full bg-surface-container h-2 rounded-full overflow-hidden">
-<div class="bg-primary-container h-full rounded-full neon-shadow" style="width: 50%"></div>
+<div class="flex flex-wrap justify-between gap-3 p-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Informations de votre entreprise</p>
+<p class="text-[#cd8ea9] text-base font-normal leading-normal">Étape 2 sur 4 : Renseignez les coordonnées légales pour la facturation et les contrats pro.</p>
 </div>
 </div>
-<!-- Form Container -->
-<div class="glass-panel rounded-xl p-8 md:p-12">
-<form id="form-step-societe" action="/inscription-partenaire-materiel.html" class="space-y-8" method="GET">
-<!-- Form Section: Identity -->
-<div>
-<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-surface-glass-border pb-2">Identité de l'entreprise</h2>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between">
+<p class="text-white text-base font-medium leading-normal">Étape 2 sur 4</p>
+<p class="text-white text-sm font-normal leading-normal">50%</p>
+</div>
+<div class="rounded bg-[#6a2f49]"><div class="h-2 rounded bg-[#fc036f]" style="width: 50%;"></div></div>
+<p class="text-[#cd8ea9] text-sm font-normal leading-normal">Détails de l'entreprise</p>
+</div>
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Identité légale de l'établissement</h2>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Form Section -->
+<main class="flex-1 bg-surface-dim px-4 md:px-12 lg:px-40 py-8 flex justify-center">
+<div class="w-full max-w-[960px] flex flex-col gap-8">
+<!-- Stepper Quick Pill Review -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+<div class="p-3 bg-surface-container-low border border-outline-variant/30 rounded flex items-center gap-3">
+<div class="size-7 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center text-xs font-bold">
+<span class="material-symbols-outlined text-sm text-primary">check</span>
+</div>
+<div class="truncate">
+<p class="text-[10px] text-on-surface-variant uppercase tracking-wider font-semibold">Étape 1</p>
+<p class="text-xs font-medium text-on-surface truncate">Compte &amp; Contact</p>
+</div>
+</div>
+<div class="p-3 bg-surface-container-high border-l-4 border-primary-container rounded flex items-center gap-3 shadow-[0_0_15px_rgba(252,3,109,0.15)]">
+<div class="size-7 rounded-full bg-primary-container text-white flex items-center justify-center text-xs font-black">2</div>
+<div class="truncate">
+<p class="text-[10px] text-primary-fixed-dim uppercase tracking-wider font-semibold">En cours</p>
+<p class="text-xs font-bold text-white truncate">Détails Société</p>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant/20 rounded opacity-60 flex items-center gap-3">
+<div class="size-7 rounded-full bg-surface-container text-secondary flex items-center justify-center text-xs font-bold">3</div>
+<div class="truncate">
+<p class="text-[10px] text-secondary uppercase tracking-wider">Étape 3</p>
+<p class="text-xs font-medium text-secondary truncate">Matériel &amp; parc</p>
+</div>
+</div>
+<div class="p-3 bg-surface-container-low border border-outline-variant/20 rounded opacity-60 flex items-center gap-3">
+<div class="size-7 rounded-full bg-surface-container text-secondary flex items-center justify-center text-xs font-bold">4</div>
+<div class="truncate">
+<p class="text-[10px] text-secondary uppercase tracking-wider">Étape 4</p>
+<p class="text-xs font-medium text-secondary truncate">Conditions &amp; Validation</p>
+</div>
+</div>
+</div>
+<!-- Legal Info Form Container -->
+<form id="form-step-societe" action="/inscription-partenaire-materiel.html" method="GET" class="bg-surface-container p-6 md:p-8 rounded-lg border border-outline-variant/30 shadow-2xl flex flex-col gap-6">
+<!-- Info Alert Banner -->
+<div class="flex items-start gap-4 p-4 rounded bg-[#351624] border border-[#ff4d80]/40 text-on-surface">
+<span class="material-symbols-outlined text-primary-container text-2xl flex-shrink-0">verified</span>
+<div class="text-sm">
+<h4 class="font-bold text-white mb-0.5">Accès Tarifaire Professionnel &amp; Dégressif</h4>
+<p class="text-on-surface-variant text-xs leading-relaxed">
+              La fourniture de votre numéro SIRET valide garantit l'accès au parc technique audiovisuel pro (L-Acoustics, Pioneer DJ, Robe Lighting) ainsi qu'à la facturation hors-taxes intra-communautaire.
+            </p>
+</div>
+</div>
+<!-- Inputs Grid -->
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<!-- Company Name -->
-<div class="col-span-1 md:col-span-2">
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="company_name">Nom légal *</label>
-<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="company_name" name="company_name" placeholder="ex. Sonic Solutions SARL" required="" type="text"/>
-</div>
-<!-- Registration Number -->
-<div>
-<div class="flex items-center gap-2 mb-2">
-<label class="block font-label-caps text-label-caps text-on-surface" for="reg_number">Numéro de SIRET/SIREN *</label>
-<div class="tooltip-container">
-<span class="material-symbols-outlined text-on-surface-muted text-[16px] cursor-help" data-icon="info">info</span>
-<span class="tooltip-text">Requis pour la vérification commerciale dans l'UE. Généralement 9 ou 14 chiffres selon le format d'incorporation régional.</span>
+<!-- Legal Name -->
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-semibold text-white flex items-center justify-between" for="company_name">
+<span>Nom légal de la société (Dénomination sociale) <span class="text-primary-container">*</span></span>
+<span class="text-xs font-normal text-on-surface-variant">Conforme au Registre du Commerce</span>
+</label>
+<div class="relative">
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm" id="company_name" name="company_name" placeholder="Ex: RESONANCE PRODUCTIONS SAS" required="" type="text"/>
+<span class="material-symbols-outlined absolute right-3.5 top-3 text-secondary pointer-events-none text-xl">domain</span>
 </div>
 </div>
-<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="reg_number" name="reg_number" placeholder="000 000 000" required="" type="text"/>
+<!-- SIRET -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white flex items-center justify-between" for="reg_number">
+<span>Numéro SIRET / immatriculation <span class="text-primary-container">*</span></span>
+<span class="text-xs font-normal text-on-surface-variant">14 chiffres en France</span>
+</label>
+<div class="relative">
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm tracking-wider font-mono" id="reg_number" maxlength="14" name="reg_number" placeholder="802 458 912 00024" required="" type="text"/>
+<span class="material-symbols-outlined absolute right-3.5 top-3 text-secondary pointer-events-none text-xl">badge</span>
 </div>
-<!-- VAT Number -->
-<div>
-<div class="flex items-center gap-2 mb-2">
-<label class="block font-label-caps text-label-caps text-on-surface" for="vat_number">Numéro de TVA</label>
-<div class="tooltip-container">
-<span class="material-symbols-outlined text-on-surface-muted text-[16px] cursor-help" data-icon="info">info</span>
-<span class="tooltip-text">Obligatoire pour les transactions B2B afin de permettre l'autoliquidation transfrontalière. Laissez vide si non enregistré.</span>
+<p class="text-[11px] text-on-surface-variant">Vérification automatique auprès de l'annuaire des entreprises.</p>
 </div>
+<!-- Numéro de TVA -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white flex items-center justify-between" for="vat_number">
+<span>Numéro de TVA intracommunautaire</span>
+<span class="text-xs font-normal text-on-surface-variant">Ex: FR + 11 chiffres</span>
+</label>
+<div class="relative">
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm uppercase tracking-wider font-mono" id="vat_number" name="vat_number" placeholder="FR 72 802458912" type="text"/>
+<span class="material-symbols-outlined absolute right-3.5 top-3 text-secondary pointer-events-none text-xl">account_balance</span>
 </div>
-<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="vat_number" name="vat_number" placeholder="ex. FR00000000000" type="text"/>
+<p class="text-[11px] text-on-surface-variant">Nécessaire pour l'exonération et l'émission des factures dématérialisées.</p>
 </div>
+<!-- Section Divider -->
+<div class="md:col-span-2 pt-3 border-t border-outline-variant/20">
+<h3 class="text-base font-bold text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container text-xl">location_on</span>
+              Adresse du siège social
+            </h3>
+<p class="text-xs text-on-surface-variant mt-0.5">Adresse légale d'enregistrement pour l'établissement de la convention de location.</p>
 </div>
+<!-- Head Office Address Full Line -->
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-semibold text-white" for="address_1">
+              Adresse du siège (Voie et numéro) <span class="text-primary-container">*</span>
+</label>
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm" id="address_1" name="address_1" placeholder="Ex: 42 Boulevard de la Villette" required="" type="text"/>
 </div>
-<!-- Form Section: Location -->
-<div class="pt-6">
-<h2 class="font-headline-md text-headline-md text-on-surface mb-6 border-b border-surface-glass-border pb-2">Siège Social</h2>
-<div class="space-y-6">
-<!-- Address Line 1 -->
-<div>
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="address_1">Adresse du siège *</label>
-<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="address_1" name="address_1" placeholder="123 rue de la Musique, Suite 4B" required="" type="text"/>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-<!-- City -->
-<div class="md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="city">Ville *</label>
-<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="city" name="city" placeholder="Paris" required="" type="text"/>
+<!-- Complement -->
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-semibold text-white flex items-center justify-between" for="address_complement">
+<span>Complément d'adresse</span>
+<span class="text-xs font-normal text-secondary">Optionnel</span>
+</label>
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm" id="address_complement" name="address_complement" placeholder="Bâtiment B, Étage 3, Code accès..." type="text"/>
 </div>
 <!-- Postal Code -->
-<div class="md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="postal_code">Code postal *</label>
-<input class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200" id="postal_code" name="postal_code" placeholder="75001" required="" type="text"/>
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white" for="postal_code">
+              Code postal <span class="text-primary-container">*</span>
+</label>
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm font-mono" id="postal_code" name="postal_code" placeholder="75019" required="" type="text"/>
+</div>
+<!-- City -->
+<div class="flex flex-col gap-2">
+<label class="text-sm font-semibold text-white" for="city">
+              Ville <span class="text-primary-container">*</span>
+</label>
+<input class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white placeholder-secondary focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm" id="city" name="city" placeholder="Paris" required="" type="text"/>
 </div>
 <!-- Country -->
-<div class="md:col-span-1">
-<label class="block font-label-caps text-label-caps text-on-surface mb-2" for="country">Pays *</label>
-<select class="input-dark w-full rounded-lg px-4 py-3 font-body-md text-body-md transition-all duration-200 appearance-none" id="country" name="country" required="">
-<option disabled="" selected="" value="">Sélectionner le pays</option>
+<div class="flex flex-col gap-2 md:col-span-2">
+<label class="text-sm font-semibold text-white" for="country">
+              Pays du siège <span class="text-primary-container">*</span>
+</label>
+<select class="w-full h-12 px-4 rounded bg-surface-container-low border border-outline-variant/60 text-white focus:border-primary-container focus:ring-1 focus:ring-primary-container transition-all outline-none text-sm" id="country" name="country" required="">
+<option value="">Sélectionner le pays</option>
 <option value="FR">France</option>
+<option value="BE">Belgique</option>
+<option value="CH">Suisse</option>
+<option value="LU">Luxembourg</option>
+<option value="MC">Monaco</option>
+<option value="MA">Maroc</option>
+<option value="MG">Madagascar</option>
+<option value="ES">Espagne</option>
 <option value="DE">Allemagne</option>
-<option value="UK">Royaume-Uni</option>
+<option value="IT">Italie</option>
+<option value="PT">Portugal</option>
+<option value="NL">Pays-Bas</option>
+<option value="PL">Pologne</option>
+<option value="UA">Ukraine</option>
+<option value="GB">Royaume-Uni</option>
 <option value="US">États-Unis</option>
+<option value="AE">Émirats arabes unis</option>
+<option value="CN">Chine</option>
+<option value="JP">Japon</option>
 </select>
 </div>
+<!-- Billing checkbox toggle -->
+<div class="md:col-span-2 pt-2">
+<label class="inline-flex items-center gap-3 cursor-pointer select-none">
+<input id="billing_same" name="billing_same" checked class="rounded bg-surface-container-low border-outline-variant text-primary-container focus:ring-primary-container size-4" type="checkbox"/>
+<span class="text-sm text-on-surface">L'adresse de facturation est identique à celle du siège social</span>
+</label>
 </div>
 </div>
-</div>
-<!-- Actions -->
-<div class="pt-8 flex flex-col sm:flex-row gap-4 justify-between items-center border-t border-surface-glass-border">
-<button class="px-6 py-3 rounded-lg border border-outline-variant text-on-surface font-label-caps text-label-caps hover:bg-surface-container transition-colors w-full sm:w-auto" type="button" onclick="location.href='/inscription-partenaire.html'">
-                        Retour
-                    </button>
-<button class="px-8 py-3 rounded-lg bg-primary-container text-white font-label-caps text-label-caps uppercase tracking-widest neon-shadow hover:bg-inverse-primary transition-colors w-full sm:w-auto" type="submit">
-                        Continuer
-                    </button>
+<!-- Form Navigation Actions -->
+<div class="flex flex-col-reverse sm:flex-row items-center justify-between gap-4 pt-6 border-t border-outline-variant/30 mt-2">
+<button class="w-full sm:w-auto h-12 px-6 rounded bg-surface-container-high hover:bg-surface-variant text-on-surface font-semibold text-sm flex items-center justify-center gap-2 transition-colors" type="button" onclick="window.location.href='/inscription-partenaire.html'">
+<span class="material-symbols-outlined text-lg">arrow_back</span>
+            Étape 1 : Coordonnées du contact
+          </button>
+<button class="w-full sm:w-auto h-12 px-8 rounded bg-[#fc036f] hover:bg-[#d8025e] shadow-[0_4px_16px_rgba(252,3,109,0.35)] text-white font-bold text-sm tracking-wide flex items-center justify-center gap-2 transition-all" type="submit">
+            Continuer vers le matériel (Étape 3)
+            <span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
 </div>
 </form>
+<!-- Trust Badges Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 py-4">
+<div class="flex items-center gap-3.5 p-4 rounded bg-surface-container-low border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-container text-3xl">lock</span>
+<div>
+<p class="text-sm font-bold text-white">Transmission Sécurisée</p>
+<p class="text-xs text-on-surface-variant">Cryptage TLS 256 bits conforme RGPD Pro.</p>
+</div>
+</div>
+<div class="flex items-center gap-3.5 p-4 rounded bg-surface-container-low border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-container text-3xl">bolt</span>
+<div>
+<p class="text-sm font-bold text-white">Validation en 2h chrono</p>
+<p class="text-xs text-on-surface-variant">Comptes validés sans interruption d'astreinte.</p>
+</div>
+</div>
+<div class="flex items-center gap-3.5 p-4 rounded bg-surface-container-low border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-container text-3xl">support_agent</span>
+<div>
+<p class="text-sm font-bold text-white">Support Dédié B2B</p>
+<p class="text-xs text-on-surface-variant">Ligne technique prioritaire 7j/7 pour régisseurs.</p>
+</div>
+</div>
 </div>
 </div>
 </main>
-<!-- SEO-optimized Mega Footer -->
+<!-- Footer global RentSoundSystem -->
 <div id="footer-container"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="/components.js"></script>
 <script>window.RSS_PARTNER_PAGE="partenaire-societe.html";</script>
+
+<script id="rss-partenaire-societe-ui">
+(function(){
+  "use strict";
+  const DRAFT_KEY = "rss_partner_draft";
+
+  function readDraft(){
+    try { return JSON.parse(localStorage.getItem(DRAFT_KEY) || "{}"); }
+    catch(e){ return {}; }
+  }
+
+  function patchDraft(data){
+    try {
+      const current = readDraft();
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(Object.assign(current, data || {})));
+    } catch(e) {
+      console.warn("Partner draft extra fields", e);
+    }
+  }
+
+  function init(){
+    const form = document.getElementById("form-step-societe");
+    if(!form) return;
+
+    const complement = document.getElementById("address_complement");
+    const billingSame = document.getElementById("billing_same");
+    const country = document.getElementById("country");
+    const reg = document.getElementById("reg_number");
+    const vat = document.getElementById("vat_number");
+    const draft = readDraft();
+
+    if(complement && typeof draft.address_complement === "string"){
+      complement.value = draft.address_complement;
+    }
+    if(billingSame && typeof draft.billing_same === "boolean"){
+      billingSame.checked = draft.billing_same;
+    }
+
+    if(complement){
+      complement.addEventListener("input", function(){
+        patchDraft({address_complement: complement.value.trim()});
+      });
+    }
+    if(billingSame){
+      billingSame.addEventListener("change", function(){
+        patchDraft({billing_same: billingSame.checked});
+      });
+    }
+
+    // Nettoyage visuel sans changer la valeur métier sauvegardée.
+    if(reg){
+      reg.addEventListener("input", function(){
+        if(country && country.value === "FR"){
+          const digits = reg.value.replace(/\D/g, "").slice(0,14);
+          reg.value = digits.replace(/(\d{3})(?=\d)/g, "$1 ").trim();
+        }
+      });
+    }
+
+    if(vat){
+      vat.addEventListener("input", function(){
+        vat.value = vat.value.toUpperCase().replace(/\s{2,}/g, " ");
+      });
+    }
+
+    form.addEventListener("submit", function(event){
+      const company = document.getElementById("company_name");
+      const address = document.getElementById("address_1");
+      const city = document.getElementById("city");
+      const postal = document.getElementById("postal_code");
+
+      if(!company?.value.trim() || !reg?.value.trim() || !address?.value.trim() ||
+         !city?.value.trim() || !postal?.value.trim() || !country?.value){
+        event.preventDefault();
+        alert("Merci de compléter tous les champs obligatoires.");
+        return;
+      }
+
+      if(country.value === "FR"){
+        const digits = reg.value.replace(/\D/g, "");
+        if(digits.length !== 9 && digits.length !== 14){
+          event.preventDefault();
+          alert("Pour la France, saisissez un SIREN (9 chiffres) ou un SIRET (14 chiffres).");
+          reg.focus();
+          return;
+        }
+      }
+
+      patchDraft({
+        address_complement: complement ? complement.value.trim() : "",
+        billing_same: billingSame ? billingSame.checked : true
+      });
+    }, true);
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 <script src="/assets/js/partner-flow.js"></script>
+
 </body></html>
