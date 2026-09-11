@@ -3,382 +3,623 @@
 <html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
-<title>RentSoundSystem - Inscription Partenaire Étape 3 : Logistique</title>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<title>RentSoundSystem - Étape 3 sur 4 : Logistique &amp; Couverture</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script id="tailwind-config">
-      tailwind.config = {
-        darkMode: "class",
-        theme: {
-          extend: {
-            "colors": {
-                    "on-primary": "#ffffff",
-                    "surface-container": "#201f1f",
-                    "on-tertiary": "#303030",
-                    "on-secondary-fixed": "#1a1c1d",
-                    "on-secondary": "#2f3132",
-                    "primary": "#FC036D",
-                    "inverse-on-surface": "#313030",
-                    "surface-container-low": "#1c1b1b",
-                    "tertiary-container": "#929090",
-                    "surface-bright": "#393939",
-                    "surface-tint": "#FC036D",
-                    "primary-fixed": "#ffb2cf",
-                    "on-secondary-fixed-variant": "#454748",
-                    "surface-variant": "#353534",
-                    "inverse-primary": "#bc004f",
-                    "surface-container-high": "#2a2a2a",
-                    "tertiary": "#c8c6c5",
-                    "primary-fixed-dim": "#ff8ab2",
-                    "on-surface-variant": "#e6bcc2",
-                    "on-primary-fixed": "#3f0016",
-                    "error": "#ffb4ab",
-                    "on-primary-fixed-variant": "#90003b",
-                    "on-surface": "#e5e2e1",
-                    "on-error": "#690005",
-                    "on-tertiary-fixed-variant": "#474746",
-                    "on-surface-muted": "#E6BCC2",
-                    "on-tertiary-container": "#2a2a2a",
-                    "secondary-fixed": "#e3e2e3",
-                    "on-secondary-container": "#b5b5b6",
-                    "inverse-surface": "#e5e2e1",
-                    "on-background": "#e5e2e1",
-                    "on-primary-container": "#ffb2cf",
-                    "surface-container-highest": "#353534",
-                    "primary-container": "#90003b",
-                    "tertiary-fixed": "#e5e2e1",
-                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
-                    "error-container": "#93000a",
-                    "surface-container-lowest": "#0e0e0e",
-                    "on-error-container": "#ffdad6",
-                    "tertiary-fixed-dim": "#c8c6c5",
-                    "outline-variant": "#5d3f44",
-                    "secondary": "#c6c6c7",
-                    "background": "#131313",
-                    "neon-glow": "rgba(252, 3, 109, 0.3)",
-                    "secondary-fixed-dim": "#c6c6c7",
-                    "on-tertiary-fixed": "#1b1b1c",
-                    "surface-glass": "rgba(31, 31, 31, 0.6)",
-                    "secondary-container": "#454748",
-                    "surface": "#131313",
-                    "surface-dim": "#131313",
-                    "outline": "#ac878d"
-            },
-            "borderRadius": {
-                    "DEFAULT": "0.125rem",
-                    "lg": "0.25rem",
-                    "xl": "0.5rem",
-                    "full": "0.75rem"
-            },
-            "spacing": {
-                    "component-padding-y": "0.625rem",
-                    "card-gap": "1.5rem",
-                    "section-padding-y": "6rem",
-                    "container-max": "1280px",
-                    "gutter-x": "2.5rem",
-                    "component-padding-x": "1.5rem"
-            },
-            "fontFamily": {
-                    "headline-md": ["Manrope"],
-                    "body-md": ["Inter"],
-                    "display-hero-mobile": ["Manrope"],
-                    "headline-lg": ["Manrope"],
-                    "label-caps": ["Inter"],
-                    "display-hero": ["Manrope"],
-                    "body-lg": ["Inter"]
-            },
-            "fontSize": {
-                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
-                    "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
-                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
-                    "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
-                    "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}]
-            }
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#2a2a2a",
+            "on-primary-fixed-variant": "#90003b",
+            "on-tertiary-container": "#2a2a2a",
+            "error-container": "#93000a",
+            "on-tertiary-fixed": "#1b1b1c",
+            "surface-variant": "#353534",
+            "on-surface-muted": "#E6BCC2",
+            "on-surface-variant": "#e6bcc2",
+            "on-secondary-fixed-variant": "#454748",
+            "on-error-container": "#ffdad6",
+            "tertiary-fixed-dim": "#c8c6c5",
+            "tertiary-container": "#929090",
+            "secondary-fixed": "#e3e2e3",
+            "tertiary": "#c8c6c5",
+            "inverse-primary": "#bc004f",
+            "on-tertiary-fixed-variant": "#474746",
+            "surface": "#131313",
+            "surface-container-lowest": "#0e0e0e",
+            "on-secondary": "#2f3132",
+            "on-primary-fixed": "#3f0016",
+            "outline-variant": "#5d3f44",
+            "on-surface": "#e5e2e1",
+            "inverse-on-surface": "#313030",
+            "primary-fixed-dim": "#ffb2bf",
+            "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+            "surface-dim": "#131313",
+            "on-background": "#e5e2e1",
+            "secondary": "#c6c6c7",
+            "outline": "#ac878d",
+            "error": "#ffb4ab",
+            "surface-container-highest": "#353534",
+            "surface-bright": "#393939",
+            "on-error": "#690005",
+            "tertiary-fixed": "#e5e2e1",
+            "surface-container": "#201f1f",
+            "primary": "#ffb2bf",
+            "secondary-fixed-dim": "#c6c6c7",
+            "primary-container": "#ff4d80",
+            "surface-tint": "#ffb2bf",
+            "background": "#131313",
+            "on-tertiary": "#303030",
+            "on-primary-container": "#5a0022",
+            "surface-glass": "rgba(31, 31, 31, 0.6)",
+            "primary-fixed": "#ffd9de",
+            "surface-container-low": "#1c1b1b",
+            "on-primary": "#660028",
+            "on-secondary-container": "#b5b5b6",
+            "on-secondary-fixed": "#1a1c1d",
+            "inverse-surface": "#e5e2e1",
+            "secondary-container": "#454748",
+            "neon-glow": "rgba(252, 3, 109, 0.3)"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "gutter-x": "2.5rem",
+            "component-padding-y": "0.625rem",
+            "component-padding-x": "1.5rem",
+            "section-padding-y": "6rem",
+            "card-gap": "1.5rem",
+            "container-max": "1280px"
+          },
+          "fontFamily": {
+            "body-md": ["Inter", "sans-serif"],
+            "display-hero-mobile": ["Manrope", "sans-serif"],
+            "label-caps": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "headline-lg": ["Manrope", "sans-serif"],
+            "headline-md": ["Manrope", "sans-serif"],
+            "display-hero": ["Manrope", "sans-serif"]
           }
-        }
-      }
-    </script>
+        },
+      },
+    }
+  </script>
 <style>
-        .glass-panel {
-            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6), rgba(20, 20, 20, 0.8));
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--surface-glass-border, rgba(255, 255, 255, 0.05));
-        }
-        .neon-shadow {
-            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
-        }
-        .neon-text-glow {
-            text-shadow: 0 0 10px rgba(252, 3, 109, 0.5);
-        }
-        /* Custom scrollbar for regions list */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(252, 3, 109, 0.5);
-        }
-    </style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
 
 <style id="rss-global-component-fix">
-  #header-container { min-height: 73px; }
-  #footer-container { min-height: 320px; }
-  #header-container header { display:block; }
-  #footer-container footer { display:block; }
+  #header-container { min-height:73px; position:relative; z-index:9999; }
+  #footer-container { min-height:320px; }
+  #header-container header { z-index:9999 !important; }
+  [data-delivery-card] { min-height:100%; }
+  [data-delivery-card].rss-method-active {
+    border-color:#fc036f !important;
+    border-width:2px !important;
+    opacity:1 !important;
+    box-shadow:0 8px 30px rgba(252,3,109,.08);
+  }
 </style>
+
 </head>
-<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased">
+<body class="bg-[#231018] text-on-surface antialiased selection:bg-[#fc036f] selection:text-white font-body-md min-h-screen flex flex-col justify-between">
 <div id="header-container"></div>
-<main class="flex-grow pt-28 pb-section-padding-y px-gutter-x max-w-container-max mx-auto w-full flex flex-col md:flex-row gap-8 lg:gap-16">
-<!-- Left Column: Progress & Context -->
-<aside class="w-full md:w-1/3 lg:w-1/4 flex flex-col gap-8">
-<!-- Progress Tracker -->
-<div class="glass-panel p-6 rounded-xl flex flex-col gap-6 sticky top-28">
-<div>
-<h2 class="font-headline-md text-headline-md text-on-surface mb-2">Progression de la configuration</h2>
-<p class="text-on-surface-muted text-sm">Étape 3 sur 4</p>
+<!-- Top Shared Anchor Component (TopNavBar & Context Progress) -->
+<div class="relative flex h-auto w-full flex-col bg-[#231018] dark group/design-root overflow-x-hidden" style='font-family: Manrope, "Noto Sans", sans-serif;'>
+<div class="layout-container flex h-full grow flex-col">
+<div class="px-4 sm:px-12 lg:px-40 flex flex-1 justify-center py-5">
+<div class="layout-content-container flex flex-col max-w-[960px] flex-1">
+
+<div class="flex flex-wrap gap-2 p-4">
+<a class="text-[#cd8ea9] text-base font-medium leading-normal hover:underline" href="#">Accueil</a>
+<span class="text-[#cd8ea9] text-base font-medium leading-normal">/</span>
+<a class="text-[#cd8ea9] text-base font-medium leading-normal hover:underline" href="#">Espace Loueur</a>
+<span class="text-[#cd8ea9] text-base font-medium leading-normal">/</span>
+<span class="text-white text-base font-medium leading-normal">Logistique &amp; Couverture</span>
 </div>
-<div class="flex flex-col gap-4 relative">
-<!-- Connecting Line -->
-<div class="absolute left-4 top-4 bottom-4 w-0.5 bg-surface-container-high -z-10"></div>
-<!-- Step 1 -->
-<div class="flex items-start gap-4">
-<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(252,3,109,0.2)]">
-<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
-</div>
-<div class="pt-1">
-<p class="font-label-caps text-label-caps text-on-surface">Configuration du compte</p>
+<div class="flex flex-wrap justify-between gap-3 p-4">
+<div class="flex min-w-72 flex-col gap-3">
+<p class="text-white text-4xl font-black leading-tight tracking-[-0.033em]">Étape 3 sur 4 : Logistique &amp; Couverture</p>
+<p class="text-[#cd8ea9] text-base font-normal leading-normal">Configurez la capacité de votre flotte, vos modes d'expédition et vos zones d'intervention.</p>
 </div>
 </div>
-<!-- Step 2 -->
-<div class="flex items-start gap-4">
-<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-[0_0_10px_rgba(252,3,109,0.2)]">
-<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+<div class="flex flex-col gap-3 p-4">
+<div class="flex gap-6 justify-between">
+<p class="text-white text-base font-medium leading-normal">Progression de l'inscription</p>
+<p class="text-white text-sm font-normal leading-normal">75%</p>
 </div>
-<div class="pt-1">
-<p class="font-label-caps text-label-caps text-on-surface">Détails de l'entreprise</p>
+<div class="rounded bg-[#6a2f49]"><div class="h-2 rounded bg-[#fc036f]" style="width: 75%;"></div></div>
+<p class="text-[#cd8ea9] text-sm font-normal leading-normal">Étape 3 sur 4</p>
 </div>
-</div>
-<!-- Step 3 (Active) -->
-<div class="flex items-start gap-4">
-<div class="w-8 h-8 rounded-full border-2 border-primary bg-surface flex items-center justify-center shrink-0 neon-shadow relative">
-<!-- Inner glow dot -->
-<div class="w-2 h-2 rounded-full bg-primary"></div>
-</div>
-<div class="pt-1">
-<p class="font-label-caps text-label-caps text-primary font-bold">Logistique et couverture</p>
-<p class="text-xs text-on-surface-muted mt-1">Zones de livraison &amp; taille de la flotte</p>
-</div>
-</div>
-<!-- Step 4 -->
-<div class="flex items-start gap-4 opacity-50">
-<div class="w-8 h-8 rounded-full border-2 border-surface-container-high bg-surface flex items-center justify-center shrink-0">
-<span class="text-xs font-bold text-on-surface-muted">4</span>
-</div>
-<div class="pt-1">
-<p class="font-label-caps text-label-caps text-on-surface">Vérification</p>
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Capacité de la flotte</h2>
 </div>
 </div>
 </div>
 </div>
-</aside>
-<!-- Right Column: Form Area -->
-<div class="w-full md:w-2/3 lg:w-3/4 flex flex-col gap-8">
-<div class="flex flex-col gap-2 border-b border-surface-glass-border pb-6">
-<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Logistique et couverture</h1>
-<p class="font-body-lg text-body-lg text-on-surface-muted">Définissez votre territoire opérationnel et vos capacités de livraison pour correspondre aux demandes de location locales.</p>
+<!-- Main Multi-step Form Content -->
+<main class="w-full flex justify-center px-4 sm:px-12 lg:px-40 pb-16">
+<div class="max-w-[960px] w-full flex flex-col gap-10">
+<form id="form-step3" action="/inscription-partenaire-kyc.html" method="GET" class="flex flex-col gap-10">
+
+<!-- Champs métier attendus par /assets/js/partner-flow.js -->
+<input type="hidden" id="coverage_area" name="coverage_area" value="">
+<input type="hidden" id="delivery_radius" name="delivery_radius" value="75">
+<input type="hidden" id="handover_mode" name="handover_mode" value="pickup,delivery">
+<input type="hidden" id="technician_available" name="technician_available" value="yes">
+<input type="hidden" id="deposit_policy" name="deposit_policy" value="standard">
+<input type="hidden" id="insurance_status" name="insurance_status" value="not_provided">
+<input type="hidden" id="logistics_notes" name="logistics_notes" value="">
+
+<!-- Section 1: Fleet Capacity -->
+<section class="bg-surface-container-low border border-surface-glass-border p-6 rounded-xl flex flex-col gap-6 shadow-xl">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-5 bg-surface rounded-lg border border-outline-variant flex flex-col justify-between hover:border-primary-container transition-colors">
+<div class="flex items-center gap-3 text-primary-fixed mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="inventory_2">inventory_2</span>
+<span class="font-bold text-sm tracking-wider uppercase">Volumes audio</span>
 </div>
-<form class="flex flex-col gap-8">
-<!-- Section: Fleet & Capacity -->
-<section class="glass-panel p-6 lg:p-8 rounded-xl flex flex-col gap-6">
-<div class="flex items-center gap-3 border-b border-surface-glass-border pb-4">
-<span class="material-symbols-outlined text-primary" data-icon="inventory_2">inventory_2</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Capacité de la flotte</h3>
-</div>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-muted">Taille moyenne de la flotte</label>
-<div class="relative">
-<select id="fleet_size" name="fleet_size" class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
-<option disabled="" selected="" value="">Sélectionnez la catégorie de flotte...</option>
-<option value="boutique">Boutique (1-10 systèmes)</option>
-<option value="medium">Moyenne (11-50 systèmes)</option>
-<option value="large">Grande (50+ systèmes)</option>
-<option value="enterprise">Entreprise / Tournée</option>
-</select>
-<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-muted pointer-events-none" data-icon="expand_more">expand_more</span>
-</div>
-</div>
-<div class="flex flex-col gap-2">
-<label class="font-label-caps text-label-caps text-on-surface-muted">Type d'équipement principal</label>
-<div class="relative">
-<select id="main_equipment_type" name="main_equipment_type" class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary appearance-none transition-colors">
-<option value="pa">Systèmes de sonorisation live</option>
-<option value="dj">Équipement DJ</option>
-<option value="studio">Studio / Matériel d'enregistrement</option>
-<option value="lighting">Éclairage &amp; Visuels</option>
-<option value="mixed">Inventaire mixte</option>
-</select>
-<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-on-surface-muted pointer-events-none" data-icon="expand_more">expand_more</span>
+<label class="text-xs text-on-surface-muted mb-2">Nombre d'unités de diffusion simultanées disponibles</label>
+<div class="flex items-center justify-between mt-2">
+<span class="text-2xl font-bold text-white"><span id="audio-units-value">45</span> <span class="text-xs font-normal text-on-surface-muted">packs</span></span>
+<button type="button" data-adjust="audio" class="px-3 py-1 bg-surface-variant hover:bg-outline-variant text-white text-xs font-semibold rounded border border-outline-variant">Ajuster</button>
 </div>
 </div>
+<div class="p-5 bg-surface rounded-lg border border-outline-variant flex flex-col justify-between hover:border-primary-container transition-colors">
+<div class="flex items-center gap-3 text-primary-fixed mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="local_shipping">local_shipping</span>
+<span class="font-bold text-sm tracking-wider uppercase">Véhicules utilitaires</span>
 </div>
-</section>
-<!-- Section: Delivery Methods -->
-<section class="glass-panel p-6 lg:p-8 rounded-xl flex flex-col gap-6">
-<div class="flex items-center gap-3 border-b border-surface-glass-border pb-4">
-<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
-<h3 class="font-headline-md text-headline-md text-on-surface">Méthodes de livraison</h3>
-</div>
-<p class="text-sm text-on-surface-muted">Sélectionnez toutes les façons dont les clients peuvent recevoir de l'équipement de votre part.</p>
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<!-- Option 1 -->
-<label class="relative flex flex-col gap-3 p-5 rounded-lg border border-surface-glass-border bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors group">
-<input checked="" class="peer sr-only" name="delivery_method" type="checkbox" value="pickup"/>
-<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-primary transition-colors pointer-events-none"></div>
-<div class="flex justify-between items-start">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-muted peer-checked:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
-</div>
-<div class="w-5 h-5 rounded border border-surface-glass-border flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-colors">
-<span class="material-symbols-outlined text-xs text-on-primary opacity-0 peer-checked:opacity-100" data-icon="check">check</span>
+<label class="text-xs text-on-surface-muted mb-2">Capacité de transport interne disponible</label>
+<div class="flex items-center justify-between mt-2">
+<span class="text-2xl font-bold text-white"><span id="utility-vehicles-value">3</span> <span class="text-xs font-normal text-on-surface-muted">fourgons</span></span>
+<button type="button" data-adjust="vehicles" class="px-3 py-1 bg-surface-variant hover:bg-outline-variant text-white text-xs font-semibold rounded border border-outline-variant">Ajuster</button>
 </div>
 </div>
-<div>
-<h4 class="font-bold text-on-surface mb-1">Retrait local</h4>
-<p class="text-xs text-on-surface-muted">Les clients récupèrent à votre dépôt enregistré.</p>
+<div class="p-5 bg-surface rounded-lg border border-outline-variant flex flex-col justify-between hover:border-primary-container transition-colors">
+<div class="flex items-center gap-3 text-primary-fixed mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="engineering">engineering</span>
+<span class="font-bold text-sm tracking-wider uppercase">Régisseurs &amp; Techniciens</span>
 </div>
-</label>
-<!-- Option 2 -->
-<label class="relative flex flex-col gap-3 p-5 rounded-lg border border-surface-glass-border bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors group">
-<input class="peer sr-only" name="delivery_method" type="checkbox" value="delivery"/>
-<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-primary transition-colors pointer-events-none"></div>
-<div class="flex justify-between items-start">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-muted peer-checked:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
-</div>
-<div class="w-5 h-5 rounded border border-surface-glass-border flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-colors">
-<span class="material-symbols-outlined text-xs text-on-primary opacity-0 peer-checked:opacity-100" data-icon="check">check</span>
+<label class="text-xs text-on-surface-muted mb-2">Techniciens son pour installation sur site</label>
+<div class="flex items-center justify-between mt-2">
+<span class="text-2xl font-bold text-white"><span id="technicians-value">6</span> <span class="text-xs font-normal text-on-surface-muted">experts certifiés</span></span>
+<button type="button" data-adjust="technicians" class="px-3 py-1 bg-surface-variant hover:bg-outline-variant text-white text-xs font-semibold rounded border border-outline-variant">Ajuster</button>
 </div>
 </div>
-<div>
-<h4 class="font-bold text-on-surface mb-1">Livraison directe</h4>
-<p class="text-xs text-on-surface-muted">Vous transportez l'équipement directement sur le lieu de l'événement.</p>
 </div>
-</label>
-<!-- Option 3 -->
-<label class="relative flex flex-col gap-3 p-5 rounded-lg border border-surface-glass-border bg-surface-container-low cursor-pointer hover:bg-surface-container transition-colors group">
-<input class="peer sr-only" name="delivery_method" type="checkbox" value="shipping"/>
-<div class="absolute inset-0 rounded-lg border-2 border-transparent peer-checked:border-primary transition-colors pointer-events-none"></div>
-<div class="flex justify-between items-start">
-<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-muted peer-checked:text-primary transition-colors">
-<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
-</div>
-<div class="w-5 h-5 rounded border border-surface-glass-border flex items-center justify-center peer-checked:bg-primary peer-checked:border-primary transition-colors">
-<span class="material-symbols-outlined text-xs text-on-primary opacity-0 peer-checked:opacity-100" data-icon="check">check</span>
-</div>
-</div>
-<div>
-<h4 class="font-bold text-on-surface mb-1">Transporteur</h4>
-<p class="text-xs text-on-surface-muted">Expédiez les articles légers via des transporteurs tiers.</p>
-</div>
-</label>
-</div>
-</section>
-<!-- Section: Service Regions (Bento Layout) -->
-<section class="glass-panel rounded-xl overflow-hidden flex flex-col">
-<div class="p-6 lg:p-8 flex items-center justify-between border-b border-surface-glass-border bg-surface-container-low/50">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-surface-container-high/50 p-4 rounded-lg border border-surface-glass-border">
 <div class="flex items-center gap-3">
-<span class="material-symbols-outlined text-primary" data-icon="map">map</span>
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="calendar_month">calendar_month</span>
 <div>
-<h3 class="font-headline-md text-headline-md text-on-surface">Zones de couverture</h3>
-<p class="text-sm text-on-surface-muted mt-1">Sélectionnez les zones où vous proposez la livraison ou le retrait.</p>
+<p class="text-sm font-semibold text-white">Gestion de calendrier de charge maximale</p>
+<p class="text-xs text-on-surface-muted">Bloquer automatiquement les nouvelles réservations en cas de saturation de stock.</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer mt-3 sm:mt-0">
+<input id="capacity-calendar" name="capacity_calendar" checked class="sr-only peer" type="checkbox" value="enabled"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#fc036f]"></div>
+</label>
+</div>
+</section>
+<!-- Section 2: Delivery Methods -->
+<section class="flex flex-col gap-4">
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">Méthodes de livraison</h2>
+<p class="text-on-surface-muted text-sm -mt-2">Sélectionnez et affinez les options logistiques proposées à vos clients finaux.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-2">
+<!-- Card: Retrait local -->
+<button type="button" data-delivery-card="pickup" aria-pressed="true" class="text-left relative bg-surface-container-low border-2 border-[#fc036f] p-6 rounded-xl flex flex-col justify-between hover:shadow-lg hover:shadow-[#fc036f]/10 transition-all">
+<div class="absolute top-4 right-4">
+<span class="px-2 py-0.5 text-[11px] font-semibold bg-[#fc036f] text-white rounded" data-method-status="pickup">Actif</span>
+</div>
+<div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-4 text-[#fc036f]">
+<span class="material-symbols-outlined text-3xl" data-icon="warehouse">warehouse</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">Retrait local</h3>
+<p class="text-sm text-on-surface-muted leading-relaxed mb-4">
+                Le client retire le matériel directement à votre entrepôt principal ou point relais partenaire.
+              </p>
+</div>
+<div class="border-t border-surface-glass-border pt-4 mt-2">
+<div class="flex items-center justify-between text-xs text-on-surface-muted">
+<span>Frais fixes :</span>
+<span class="text-white font-semibold">Gratuit (0,00 €)</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-muted mt-2">
+<span>Délai min. de préparation :</span>
+<span class="text-white font-semibold">2 heures</span>
+</div>
+</div>
+</button>
+<!-- Card: Livraison directe -->
+<button type="button" data-delivery-card="delivery" aria-pressed="true" class="text-left relative bg-surface-container-low border-2 border-[#fc036f] p-6 rounded-xl flex flex-col justify-between hover:shadow-lg hover:shadow-[#fc036f]/10 transition-all">
+<div class="absolute top-4 right-4">
+<span class="px-2 py-0.5 text-[11px] font-semibold bg-[#fc036f] text-white rounded" data-method-status="delivery">Actif</span>
+</div>
+<div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-4 text-[#fc036f]">
+<span class="material-symbols-outlined text-3xl" data-icon="electric_car">electric_car</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">Livraison directe</h3>
+<p class="text-sm text-on-surface-muted leading-relaxed mb-4">
+                Livraison par vos soins sur le lieu de l'événement avec option de déchargement et mise en service.
+              </p>
+</div>
+<div class="border-t border-surface-glass-border pt-4 mt-2">
+<div class="flex items-center justify-between text-xs text-on-surface-muted">
+<span>Tarif de base :</span>
+<span class="text-white font-semibold">1,20 € / km</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-muted mt-2">
+<span>Installation incluse :</span>
+<span class="text-[#fc036f] font-semibold">En option (+45 €)</span>
+</div>
+</div>
+</button>
+<!-- Card: Transporteur -->
+<button type="button" data-delivery-card="shipping" aria-pressed="false" class="text-left relative bg-surface-container-low border border-surface-glass-border p-6 rounded-xl flex flex-col justify-between opacity-80 hover:opacity-100 hover:border-outline transition-all">
+<div class="absolute top-4 right-4">
+<span class="px-2 py-0.5 text-[11px] font-semibold bg-surface-variant text-on-surface-muted rounded" data-method-status="shipping">Désactivé</span>
+</div>
+<div>
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest flex items-center justify-center mb-4 text-on-surface-muted">
+<span class="material-symbols-outlined text-3xl" data-icon="conveyor_belt">conveyor_belt</span>
+</div>
+<h3 class="text-lg font-bold text-white mb-2">Transporteur</h3>
+<p class="text-sm text-on-surface-muted leading-relaxed mb-4">
+                Expédition par fret privé ou messagerie express sécurisée en flight cases capitonnés.
+              </p>
+</div>
+<div class="border-t border-surface-glass-border pt-4 mt-2">
+<div class="flex items-center justify-between text-xs text-on-surface-muted">
+<span>Partenaires logistiques :</span>
+<span class="text-white font-semibold">Geodis, DHL Freight</span>
+</div>
+<div class="flex items-center justify-between text-xs text-on-surface-muted mt-2">
+<span>Délai min. préavis :</span>
+<span class="text-white font-semibold">48 heures</span>
 </div>
 </div>
 </div>
-<div class="grid grid-cols-1 lg:grid-cols-3 h-[400px]">
-<!-- Region List -->
-<div class="col-span-1 border-r border-surface-glass-border bg-surface-container-highest/30 p-4 overflow-y-auto custom-scrollbar flex flex-col gap-2">
-<!-- Search -->
-<div class="relative mb-4">
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-muted text-sm" data-icon="search">search</span>
-<input class="w-full bg-surface-container-low border border-surface-glass-border rounded-lg pl-9 pr-4 py-2 text-sm text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors" placeholder="Rechercher des zones..." type="text"/>
+</button>
+</section>
+<!-- Section 3: Coverage Areas & Map -->
+<section class="flex flex-col gap-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between">
+<div>
+<h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">Zones de couverture</h2>
+<p class="text-on-surface-muted text-sm">Définissez vos rayons d'intervention et exclusions territoriales.</p>
 </div>
-<!-- Checkbox List -->
-<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
-<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
-<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Région du Grand Londres</span>
-</label>
-<label class="flex items-center gap-3 p-3 rounded-lg bg-surface-container-low border-l-2 border-primary cursor-pointer transition-colors group">
-<input checked="" class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
-<span class="text-sm text-on-surface font-semibold text-primary">Manchester &amp; Nord-Ouest</span>
-</label>
-<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
-<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
-<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Birmingham &amp; Midlands</span>
-</label>
-<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
-<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
-<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Écosse (Ceinture centrale)</span>
-</label>
-<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
-<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
-<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Pays de Galles (Sud)</span>
-</label>
-<label class="flex items-center gap-3 p-3 rounded-lg hover:bg-surface-container-low cursor-pointer transition-colors group">
-<input class="form-checkbox text-primary bg-surface-container border-surface-glass-border rounded focus:ring-primary focus:ring-offset-surface" type="checkbox"/>
-<span class="text-sm text-on-surface group-hover:text-primary transition-colors">Yorkshire</span>
-</label>
+<div class="mt-3 sm:mt-0 flex gap-2">
+<button id="add-zone-btn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-variant border border-outline-variant text-white text-xs font-semibold hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add_location_alt">add_location_alt</span>
+              Ajouter une zone
+            </button>
+<button id="access-filters-btn" type="button" class="flex items-center gap-1.5 px-3 py-1.5 rounded bg-surface-variant border border-outline-variant text-white text-xs font-semibold hover:bg-outline-variant transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="tune">tune</span>
+              Filtres d'accès
+            </button>
 </div>
-<!-- Map Visualizer (Placeholder using a dark styled map image) -->
-<div class="col-span-2 relative bg-surface-container-lowest h-full min-h-[300px] flex items-center justify-center overflow-hidden">
-<!-- In a real implementation, this would be an interactive map canvas (e.g., Mapbox with dark theme) -->
-<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?ixlib=rb-4.0.3&amp;auto=format&amp;fit=crop&amp;w=1200&amp;q=80')] bg-cover bg-center opacity-20 mix-blend-luminosity grayscale" data-alt="A dark, high-contrast, stylized geographical map interface showing a region of the United Kingdom, specifically highlighting the North West area."></div>
-<!-- Overlay Gradient -->
-<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest via-transparent to-surface-container-lowest/50"></div>
-<!-- Fake Map Pins -->
+</div>
+<!-- Dark Map & Radius Settings UI -->
+<div class="relative w-full rounded-xl overflow-hidden border border-surface-glass-border bg-surface-container-lowest shadow-2xl">
+<!-- Realistic Map View with Data Location -->
+<div class="relative h-[420px] w-full bg-cover bg-center" data-alt="Dark high-contrast satellite style geographical digital map of the metropolitan area of Paris at night with neon fuchsia glowing delivery coverage radius rings and illuminated transport arteries. Sleek modern high-end user interface overlay with dark slate tones and electric fuchsia accents matching the event technology rental brand." data-location="Paris" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCNvWFmbqKLkrREXjyKYxQJM4FeGEzsY8YhTLw0ICpUbepr3urrQdYr2gk_m95qK9S-cswyO571_G40VaTESRIjxIV_K6Ctka3XBp92gCf3V2FoN4SWrGLDbfXYkAGH0RiUA5H5Y9e0-9vtzUbTHqMW9GOArfdNHa_7xd_2Cfdz-579l9uMjCSyzZF0AcZV7Z7UyVStBMsNLbG11TLMUlKZNWJtWknWHVnj5B_A32QmsCpz5XKbHeoD')">
+<!-- Semi-transparent overlay to ensure contrast with UI widgets -->
+<div class="absolute inset-0 bg-[#131313]/60 backdrop-blur-[1px]"></div>
+<!-- Custom interactive map indicators -->
 <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-<div class="w-24 h-24 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center animate-[pulse_3s_ease-in-out_infinite]">
-<div class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-<div class="w-4 h-4 rounded-full bg-primary neon-shadow"></div>
+<div class="w-48 h-48 rounded-full border-2 border-[#fc036f] bg-[#fc036f]/10 animate-pulse flex items-center justify-center">
+<div class="w-24 h-24 rounded-full border border-dashed border-[#fc036f] bg-[#fc036f]/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#fc036f] text-3xl drop-shadow-[0_0_8px_#fc036f]" data-icon="radio_button_checked">radio_button_checked</span>
 </div>
 </div>
-<div class="mt-2 px-3 py-1 bg-surface-container-high/80 backdrop-blur border border-surface-glass-border rounded text-xs text-on-surface font-semibold">
-                                    Hub de Manchester sélectionné
-                                </div>
+<span class="mt-2 text-xs font-bold text-white bg-surface-container-high px-2 py-0.5 rounded border border-outline-variant shadow">Rayon Actif : <span id="radius-display">75</span> km</span>
+</div>
+<!-- Floating Map Controls Widget -->
+<div class="absolute top-4 left-4 max-w-xs bg-surface/90 backdrop-blur-md p-4 rounded-lg border border-surface-glass-border shadow-xl">
+<div class="flex items-center justify-between mb-3">
+<span class="text-xs font-bold uppercase tracking-wider text-[#fc036f]">Dépôt Principal</span>
+<span class="text-[10px] bg-primary/20 text-[#fc036f] px-2 py-0.5 rounded font-mono">IDF-75</span>
+</div>
+<p id="coverage-zone-title" class="text-sm font-semibold text-white">Paris &amp; Île-de-France</p>
+<p class="text-xs text-on-surface-muted mt-1">Rayon d'action standard : 0 à 75 km inclus dans le barème forfaitaire.</p>
+<div class="mt-3 pt-3 border-t border-outline-variant/40 flex items-center justify-between text-xs">
+<span class="text-on-surface-muted">Supplément au-delà :</span>
+<span class="text-white font-bold">1,80 € / km sup.</span>
+</div>
+</div>
+<!-- Map Zoom & Tools Controls -->
+<div class="absolute bottom-4 right-4 flex flex-col gap-1.5 bg-surface/90 backdrop-blur-md p-1.5 rounded-lg border border-surface-glass-border">
+<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-white hover:bg-[#fc036f] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-white hover:bg-[#fc036f] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="remove">remove</span>
+</button>
+<button class="w-8 h-8 rounded bg-surface-container flex items-center justify-center text-white hover:bg-[#fc036f] transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="my_location">my_location</span>
+</button>
+</div>
+</div>
+<!-- Bottom bar with coverage settings -->
+<div class="p-4 bg-surface-container-low border-t border-surface-glass-border flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#fc036f]" data-icon="pin_drop">pin_drop</span>
+<div>
+<p class="text-xs font-semibold text-white">Département d'attachement principal</p>
+<p id="coverage-depot-label" class="text-xs text-on-surface-muted">Paris — zone principale</p>
+</div>
+</div>
+<div class="flex items-center gap-4 w-full md:w-auto">
+<div class="flex items-center gap-2">
+<span class="text-xs text-on-surface-muted">Rayon max :</span>
+<select id="delivery-radius-select" class="bg-surface border border-outline-variant rounded text-white text-xs px-2 py-1 pr-6 focus:ring-1 focus:ring-[#fc036f]">
+<option value="50">50 km</option>
+<option value="75" selected>75 km</option>
+<option value="100">100 km</option>
+<option value="200">200 km (National)</option>
+</select>
+</div>
+<button id="manage-exclusions-btn" type="button" class="px-3 py-1 bg-surface-variant hover:bg-outline-variant text-white text-xs font-semibold rounded border border-outline-variant">
+                Gérer les exclusions
+              </button>
 </div>
 </div>
 </div>
 </section>
-<!-- Action Buttons -->
-<div class="flex justify-between items-center pt-4 border-t border-surface-glass-border mt-4">
-<a href="/inscription-partenaire-materiel.html" class="px-6 py-3 rounded-lg text-on-surface-muted hover:text-on-surface hover:bg-surface-container transition-colors font-label-caps text-label-caps flex items-center gap-2">
-<span class="material-symbols-outlined text-sm" data-icon="arrow_back">arrow_back</span>
-                        Retour au matériel
-                    </a>
-<a href="/inscription-partenaire-kyc.html" id="logistique-next" class="px-8 py-3 rounded-lg bg-primary text-on-primary font-label-caps text-label-caps uppercase hover:bg-primary/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)] flex items-center gap-2 group">
-                        Enregistrer et continuer
-                        <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
-</a>
+<!-- Step Action Buttons -->
+<div class="flex items-center justify-between pt-6 border-t border-surface-glass-border">
+<button type="button" onclick="window.location.href='/inscription-partenaire-materiel.html'" class="flex items-center gap-2 px-6 py-3 rounded bg-surface-container border border-outline-variant text-white text-sm font-semibold hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-base" data-icon="arrow_back">arrow_back</span>
+          Étape précédente : Matériel
+        </button>
+<button id="submit-logistique" type="submit" class="flex items-center gap-2 px-8 py-3 rounded bg-[#fc036f] text-white text-sm font-bold hover:brightness-110 shadow-lg shadow-[#fc036f]/30 transition-all">
+          Valider &amp; Étape suivante : Vérification
+          <span class="material-symbols-outlined text-base" data-icon="arrow_forward">arrow_forward</span>
+</button>
 </div>
 </form>
 </div>
 </main>
+<!-- Footer global RentSoundSystem -->
 <div id="footer-container"></div>
+
 <script src="/components.js"></script>
 <script>window.RSS_PARTNER_PAGE="inscription-partenaire-logistique.html";</script>
+
+<script id="rss-logistics-ui-bridge">
+(function(){
+  "use strict";
+
+  const DRAFT_KEY = "rss_partner_draft";
+  const UI_KEY = "rss_partner_logistics_ui";
+
+  function readJson(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || "") || fallback; }
+    catch(e){ return fallback; }
+  }
+  function writeJson(key, value){
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){}
+  }
+  function byId(id){ return document.getElementById(id); }
+  function clampInt(v, min, max){
+    const n = parseInt(String(v || "").replace(/[^\d-]/g, ""), 10);
+    if(!Number.isFinite(n)) return min;
+    return Math.max(min, Math.min(max, n));
+  }
+
+  function init(){
+    const form = byId("form-step3");
+    if(!form) return;
+
+    const draft = readJson(DRAFT_KEY, {});
+    const ui = Object.assign({
+      audio_units: 45,
+      utility_vehicles: 3,
+      technicians: 6,
+      capacity_calendar: true,
+      delivery_methods: ["pickup","delivery"],
+      coverage_zone: "",
+      exclusions: ""
+    }, readJson(UI_KEY, {}));
+
+    const city = String(draft.city || "").trim();
+    const country = String(draft.country || "").trim();
+    if(!ui.coverage_zone){
+      ui.coverage_zone = city ? city + (country ? " (" + country + ")" : "") : "Zone principale";
+    }
+
+    const audioEl = byId("audio-units-value");
+    const vehiclesEl = byId("utility-vehicles-value");
+    const techEl = byId("technicians-value");
+    const calendarEl = byId("capacity-calendar");
+    const radiusSelect = byId("delivery-radius-select");
+    const radiusDisplay = byId("radius-display");
+    const zoneTitle = byId("coverage-zone-title");
+    const depotLabel = byId("coverage-depot-label");
+
+    function selectedMethods(){
+      return Array.from(document.querySelectorAll("[data-delivery-card]"))
+        .filter(el => el.getAttribute("aria-pressed") === "true")
+        .map(el => el.dataset.deliveryCard);
+    }
+
+    function paintDelivery(){
+      document.querySelectorAll("[data-delivery-card]").forEach(function(card){
+        const method = card.dataset.deliveryCard;
+        const active = ui.delivery_methods.includes(method);
+        card.setAttribute("aria-pressed", active ? "true" : "false");
+        card.classList.toggle("rss-method-active", active);
+        const status = card.querySelector("[data-method-status]");
+        if(status){
+          status.textContent = active ? "Actif" : "Désactivé";
+          status.className = active
+            ? "px-2 py-0.5 text-[11px] font-semibold bg-[#fc036f] text-white rounded"
+            : "px-2 py-0.5 text-[11px] font-semibold bg-surface-variant text-on-surface-muted rounded";
+        }
+      });
+    }
+
+    function render(){
+      if(audioEl) audioEl.textContent = String(ui.audio_units);
+      if(vehiclesEl) vehiclesEl.textContent = String(ui.utility_vehicles);
+      if(techEl) techEl.textContent = String(ui.technicians);
+      if(calendarEl) calendarEl.checked = !!ui.capacity_calendar;
+
+      const draftRadius = String(draft.delivery_radius || "").replace(/\D/g, "");
+      const radius = ["50","75","100","200"].includes(draftRadius)
+        ? draftRadius
+        : String(ui.delivery_radius || 75);
+      if(radiusSelect) radiusSelect.value = ["50","75","100","200"].includes(radius) ? radius : "75";
+      if(radiusDisplay) radiusDisplay.textContent = radiusSelect ? radiusSelect.value : "75";
+
+      if(zoneTitle) zoneTitle.textContent = ui.coverage_zone;
+      if(depotLabel) depotLabel.textContent = ui.coverage_zone + " — zone principale";
+
+      paintDelivery();
+    }
+
+    function saveUi(){
+      ui.delivery_methods = selectedMethods();
+      ui.delivery_radius = radiusSelect ? radiusSelect.value : "75";
+      writeJson(UI_KEY, ui);
+    }
+
+    function syncBusinessFields(){
+      saveUi();
+
+      byId("coverage_area").value = ui.coverage_zone || city || "";
+      byId("delivery_radius").value = radiusSelect ? radiusSelect.value : "75";
+      byId("handover_mode").value = ui.delivery_methods.join(",");
+      byId("technician_available").value = ui.technicians > 0 ? "yes" : "no";
+      byId("deposit_policy").value = "standard";
+      byId("insurance_status").value = String(draft.insurance_status || "not_provided");
+
+      byId("logistics_notes").value = JSON.stringify({
+        audio_units: ui.audio_units,
+        utility_vehicles: ui.utility_vehicles,
+        technicians: ui.technicians,
+        capacity_calendar: !!ui.capacity_calendar,
+        delivery_methods: ui.delivery_methods,
+        coverage_zone: ui.coverage_zone,
+        delivery_radius_km: radiusSelect ? Number(radiusSelect.value) : 75,
+        exclusions: ui.exclusions || ""
+      });
+    }
+
+    document.querySelectorAll("[data-adjust]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        const type = btn.dataset.adjust;
+        const config = {
+          audio: ["Nombre de packs audio disponibles", ui.audio_units, 0, 10000, "audio_units"],
+          vehicles: ["Nombre de véhicules utilitaires", ui.utility_vehicles, 0, 1000, "utility_vehicles"],
+          technicians: ["Nombre de régisseurs / techniciens disponibles", ui.technicians, 0, 1000, "technicians"]
+        }[type];
+        if(!config) return;
+
+        const answer = window.prompt(config[0], String(config[1]));
+        if(answer === null) return;
+        ui[config[4]] = clampInt(answer, config[2], config[3]);
+        saveUi();
+        render();
+      });
+    });
+
+    document.querySelectorAll("[data-delivery-card]").forEach(function(card){
+      card.addEventListener("click", function(){
+        const method = card.dataset.deliveryCard;
+        const set = new Set(ui.delivery_methods);
+        if(set.has(method)) set.delete(method); else set.add(method);
+
+        if(set.size === 0){
+          alert("Sélectionnez au moins une méthode de livraison.");
+          return;
+        }
+        ui.delivery_methods = Array.from(set);
+        saveUi();
+        render();
+      });
+    });
+
+    if(calendarEl){
+      calendarEl.addEventListener("change", function(){
+        ui.capacity_calendar = calendarEl.checked;
+        saveUi();
+      });
+    }
+
+    if(radiusSelect){
+      radiusSelect.addEventListener("change", function(){
+        ui.delivery_radius = radiusSelect.value;
+        if(radiusDisplay) radiusDisplay.textContent = radiusSelect.value;
+        saveUi();
+      });
+    }
+
+    const addZoneBtn = byId("add-zone-btn");
+    if(addZoneBtn){
+      addZoneBtn.addEventListener("click", function(){
+        const answer = window.prompt("Zone principale de couverture", ui.coverage_zone || city || "");
+        if(answer === null) return;
+        const value = answer.trim();
+        if(!value) return;
+        ui.coverage_zone = value;
+        saveUi();
+        render();
+      });
+    }
+
+    function editExclusions(){
+      const answer = window.prompt(
+        "Zones exclues ou contraintes d'accès (optionnel)",
+        ui.exclusions || ""
+      );
+      if(answer === null) return;
+      ui.exclusions = answer.trim();
+      saveUi();
+    }
+    const filtersBtn = byId("access-filters-btn");
+    const exclusionsBtn = byId("manage-exclusions-btn");
+    if(filtersBtn) filtersBtn.addEventListener("click", editExclusions);
+    if(exclusionsBtn) exclusionsBtn.addEventListener("click", editExclusions);
+
+    form.addEventListener("submit", function(event){
+      if(!selectedMethods().length){
+        event.preventDefault();
+        alert("Sélectionnez au moins une méthode de livraison.");
+        return;
+      }
+      syncBusinessFields();
+    }, true);
+
+    render();
+    syncBusinessFields();
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
+
 <script src="/assets/js/partner-flow.js"></script>
+
 </body></html>
