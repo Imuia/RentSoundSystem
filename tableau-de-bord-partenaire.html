@@ -131,6 +131,151 @@
   }
 </style>
 
+
+<style id="rss-pending-sidebar-like-validated">
+  :root{--rss-pink:#FC036D;--rss-bg:#0e0e0e;--rss-card:#1b1b1b}
+  #header-container{
+    min-height:80px;
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:1000;
+  }
+  #header-container header{
+    background:rgba(19,19,19,.86);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(255,255,255,.10);
+  }
+
+  #partner-sidebar.rss-sidebar{
+    position:fixed!important;
+    left:0!important;
+    top:80px!important;
+    width:280px!important;
+    height:calc(100vh - 80px)!important;
+    background:#101010!important;
+    border-right:1px solid rgba(255,255,255,.10)!important;
+    padding:22px!important;
+    z-index:50!important;
+    overflow-y:auto!important;
+    display:flex!important;
+    flex-direction:column!important;
+  }
+
+  .rss-sidebar-brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    margin-bottom:30px;
+  }
+  .rss-sidebar-logo{
+    width:48px;height:48px;border-radius:16px;
+    background:rgba(252,3,109,.10);
+    border:1px solid rgba(252,3,109,.35);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--rss-pink);
+    flex:0 0 auto;
+  }
+  .rss-sidebar-title{
+    font-family:Manrope,sans-serif;
+    font-size:18px;
+    font-weight:900;
+    color:var(--rss-pink);
+    line-height:1.15;
+  }
+  .rss-sidebar-status{
+    font-size:12px;
+    color:#e6bcc2;
+    margin-top:4px;
+  }
+
+  .rss-nav{
+    display:grid;
+    gap:8px;
+  }
+  .rss-nav-link{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:12px 14px;
+    border-radius:12px;
+    color:#cbb8bd;
+    text-decoration:none;
+    font-weight:700;
+    transition:.2s ease;
+    border:1px solid transparent;
+  }
+  .rss-nav-link:hover,
+  .rss-nav-link.active{
+    background:linear-gradient(135deg,rgba(252,3,109,.24),rgba(252,3,109,.08));
+    color:white;
+    border-color:rgba(252,3,109,.22);
+  }
+  .rss-nav-link.locked{
+    opacity:.42;
+    cursor:not-allowed;
+    pointer-events:none;
+  }
+  .rss-nav-link .rss-lock-icon{
+    margin-left:auto;
+    font-size:16px;
+  }
+
+  .rss-sidebar-bottom{
+    margin-top:auto;
+    padding-top:22px;
+    border-top:1px solid rgba(255,255,255,.10);
+  }
+  .rss-sidebar-btn{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 15px;
+    border-radius:10px;
+    font-weight:800;
+    font-size:13px;
+    text-decoration:none;
+    transition:.2s ease;
+  }
+  .rss-sidebar-btn.disabled{
+    background:rgba(252,3,109,.07);
+    border:1px solid rgba(252,3,109,.30);
+    color:#e6bcc2;
+    opacity:.55;
+    cursor:not-allowed;
+    pointer-events:none;
+    margin-bottom:12px;
+  }
+  .rss-sidebar-btn.logout{
+    border:1px solid rgba(252,3,109,.55);
+    color:white;
+    background:rgba(252,3,109,.05);
+    cursor:pointer;
+  }
+
+  .partner-shell{
+    margin-left:280px!important;
+    padding-top:104px!important;
+  }
+  #footer-container{
+    margin-left:280px;
+    min-height:320px;
+    background:#0e0e0e;
+    border-top:1px solid rgba(255,255,255,.06);
+  }
+
+  @media(max-width:900px){
+    #partner-sidebar.rss-sidebar{display:none!important;}
+    .partner-shell{
+      margin-left:0!important;
+      padding-top:92px!important;
+    }
+    #footer-container{margin-left:0!important;}
+    #header-container{min-height:72px;}
+  }
+</style>
+
 </head>
 <body class="bg-surface-dim text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
 <div id="header-container"></div>
@@ -138,81 +283,73 @@
 <div class="partner-shell flex-1 md:ml-64 w-auto px-4 sm:px-6 lg:px-8 py-6 pt-[96px]">
 
 <!-- Sidebar partenaire fixe -->
-<aside id="partner-sidebar" class="hidden md:flex flex-col h-[calc(100vh-73px)] w-64 fixed left-0 top-[73px] bg-surface-container-low border-r border-surface-glass-border py-6 px-4 gap-4 z-40 overflow-y-auto">
-  <div class="p-4 rounded-xl bg-surface-container border border-surface-glass-border">
-    <div class="flex items-center gap-3">
-      <div class="size-11 rounded-lg bg-surface-container-highest border border-primary/30 flex items-center justify-center shrink-0 text-primary">
-        <span class="material-symbols-outlined">storefront</span>
+
+<aside id="partner-sidebar" class="rss-sidebar">
+  <div class="rss-sidebar-brand">
+    <div class="rss-sidebar-logo">
+      <span class="material-symbols-outlined">storefront</span>
+    </div>
+    <div>
+      <div class="rss-sidebar-title">RentSoundSystem</div>
+      <div id="partner-status-label" class="rss-sidebar-status">Partenaire en validation</div>
+    </div>
+  </div>
+
+  <div style="margin-bottom:22px;padding:14px;border-radius:14px;background:#1b1b1b;border:1px solid rgba(255,255,255,.08)">
+    <div style="display:flex;align-items:center;gap:10px">
+      <div style="width:38px;height:38px;border-radius:10px;background:rgba(252,3,109,.10);display:flex;align-items:center;justify-content:center;color:#FC036D">
+        <span class="material-symbols-outlined">business</span>
       </div>
-      <div class="overflow-hidden">
-        <h3 id="sidebar-company" class="text-white text-sm font-bold truncate">Partenaire RentSoundSystem</h3>
-        <span id="sidebar-status" class="inline-flex items-center gap-1 text-[11px] text-primary font-medium tracking-tight mt-0.5">
-          <span class="size-1.5 rounded-full bg-primary animate-pulse"></span>
-          En attente d'examen
-        </span>
+      <div style="min-width:0">
+        <div id="sidebar-company" style="font-size:13px;font-weight:800;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Partenaire RentSoundSystem</div>
+        <div id="sidebar-status" style="font-size:11px;color:#ffb2bf;margin-top:3px">En attente d'examen</div>
       </div>
     </div>
   </div>
 
-  <nav class="flex flex-col gap-1.5">
-    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-primary-container/15 text-primary border border-primary/30 font-medium text-sm transition-all shadow-[0_0_12px_rgba(252,3,109,0.15)]"
-       href="/tableau-de-bord-partenaire.html">
-      <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">dashboard</span>
-      <span>Tableau de bord</span>
+  <nav class="rss-nav">
+    <a href="/tableau-de-bord-partenaire.html" class="rss-nav-link active">
+      <span class="material-symbols-outlined">dashboard</span>
+      Tableau de bord
     </a>
 
-    <a id="side-equipment" class="rss-lock flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant font-medium text-sm transition-all" href="#">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[20px]">speaker</span>
-        <span>Mes équipements</span>
-      </div>
-      <span class="material-symbols-outlined text-xs text-outline">lock</span>
+    <a id="side-equipment" href="#" class="rss-nav-link locked">
+      <span class="material-symbols-outlined">inventory_2</span>
+      Mes annonces
+      <span class="material-symbols-outlined rss-lock-icon">lock</span>
     </a>
 
-    <a id="side-reservations" class="rss-lock flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant font-medium text-sm transition-all" href="#">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
-        <span>Réservations</span>
-      </div>
-      <span class="material-symbols-outlined text-xs text-outline">lock</span>
+    <a id="side-reservations" href="#" class="rss-nav-link locked">
+      <span class="material-symbols-outlined">event_available</span>
+      Réservations
+      <span class="material-symbols-outlined rss-lock-icon">lock</span>
     </a>
 
-    <a id="side-revenue" class="rss-lock flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant font-medium text-sm transition-all" href="#">
-      <div class="flex items-center gap-3">
-        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
-        <span>Revenus</span>
-      </div>
-      <span class="material-symbols-outlined text-xs text-outline">lock</span>
+    <a id="side-revenue" href="#" class="rss-nav-link locked">
+      <span class="material-symbols-outlined">payments</span>
+      Revenus
+      <span class="material-symbols-outlined rss-lock-icon">lock</span>
     </a>
 
-    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-white font-medium text-sm transition-all"
-       href="/parametres-partenaire.html">
-      <span class="material-symbols-outlined text-[20px]">settings</span>
-      <span>Paramètres</span>
+    <a href="/mon-profil-partenaire.html" class="rss-nav-link">
+      <span class="material-symbols-outlined">settings</span>
+      Mon profil
     </a>
   </nav>
 
-  <div class="mt-auto p-4 rounded-xl bg-gradient-to-br from-surface-container to-surface-container-lowest border border-surface-glass-border">
-    <div class="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider mb-1.5">
-      <span class="material-symbols-outlined text-[16px]">verified_user</span>
-      Garantie matériel
+  <div class="rss-sidebar-bottom">
+    <div class="rss-sidebar-btn disabled">
+      <span class="material-symbols-outlined">lock</span>
+      Ajouter du matériel après validation
     </div>
-    <p class="text-xs text-secondary leading-relaxed mb-3">
-      Chaque location bénéficie des protections prévues par RentSoundSystem.
-    </p>
-    <a href="/contact.html?service=partner"
-       class="block w-full py-2 px-3 rounded text-xs font-semibold bg-surface-container-high hover:bg-surface-variant text-white transition-colors text-center border border-outline-variant">
-      Contacter le support
-    </a>
-  </div>
 
-  <div class="pt-4 border-t border-surface-glass-border">
-    <button id="partner-logout" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-white font-medium text-sm transition-all text-left">
-      <span class="material-symbols-outlined text-[20px]">logout</span>
-      <span>Déconnexion</span>
+    <button id="partner-logout" type="button" class="rss-sidebar-btn logout">
+      <span class="material-symbols-outlined">logout</span>
+      Déconnexion
     </button>
   </div>
 </aside>
+
 
 <!-- Main Dynamic Section -->
 <main class="max-w-[1280px] mx-auto flex flex-col gap-6">
@@ -472,6 +609,7 @@
 <script src="/components.js"></script>
 <script>window.RSS_PARTNER_PAGE="tableau-de-bord-partenaire.html";</script>
 
+
 <script id="rss-partner-validation-dashboard">
 (function(){
   "use strict";
@@ -480,85 +618,127 @@
   const SUPABASE_KEY = "sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
   const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
+  const clean = value => String(value || "").trim().toLowerCase();
+
   function setText(id, value){
     const el = document.getElementById(id);
     if(el) el.textContent = value;
   }
 
-  function goSupport(extra){
-    const suffix = extra ? "&action=" + encodeURIComponent(extra) : "";
-    window.location.href = "/contact.html?service=partner" + suffix;
+  function goSupport(action){
+    window.location.href = "/contact.html?service=partner" +
+      (action ? "&action=" + encodeURIComponent(action) : "");
+  }
+
+  function setCompany(company){
+    const name = company || "Partenaire RentSoundSystem";
+    setText("sidebar-company", name);
   }
 
   function setPending(company){
-    setText("sidebar-company", company || "Partenaire RentSoundSystem");
+    setCompany(company);
+    setText("partner-status-label", "Partenaire en validation");
     setText("sidebar-status", "En attente d'examen");
     setText("validation-badge-text", "Examen en cours");
-    setText("dashboard-subtitle",
-      "Suivez en temps réel la validation de votre profil partenaire RentSoundSystem. Votre dossier est actuellement en cours d'examen.");
-    setText("validation-step-title", "Étape 2 sur 4 : Examen par notre équipe technique");
-    setText("validation-banner-title", "Votre dossier est en cours d'examen");
+    setText(
+      "dashboard-subtitle",
+      "Suivez en temps réel la validation de votre profil partenaire RentSoundSystem. Votre dossier est actuellement en cours d'examen."
+    );
+    setText(
+      "validation-step-title",
+      "Étape 2 sur 4 : Examen par notre équipe technique"
+    );
+    setText(
+      "validation-banner-title",
+      "Votre dossier est en cours d'examen"
+    );
   }
 
   function setRejected(company){
-    setText("sidebar-company", company || "Partenaire RentSoundSystem");
+    setCompany(company);
+    setText("partner-status-label", "Correction requise");
     setText("sidebar-status", "Correction requise");
     setText("validation-badge-text", "Correction requise");
-    setText("dashboard-subtitle",
-      "Votre dossier nécessite une correction avant validation. Consultez les éléments demandés ou contactez le support partenaire.");
-    setText("validation-step-title", "Étape 2 sur 4 : Correction du dossier");
-    setText("validation-banner-title", "Votre dossier nécessite une correction");
+    setText(
+      "dashboard-subtitle",
+      "Votre dossier nécessite une correction avant validation. Consultez les éléments demandés ou contactez le support partenaire."
+    );
+    setText(
+      "validation-step-title",
+      "Étape 2 sur 4 : Correction du dossier"
+    );
+    setText(
+      "validation-banner-title",
+      "Votre dossier nécessite une correction"
+    );
   }
 
-  async function loadStatus(){
-    try{
-      if(!sb){
-        setPending("");
-        return;
-      }
-
-      const { data: userData } = await sb.auth.getUser();
-      const user = userData && userData.user;
-
-      if(!user){
-        window.location.href = "/connexion-partenaire.html";
-        return;
-      }
-
-      const { data: partner, error } = await sb
-        .from("partners")
-        .select("status, company_name")
-        .eq("user_id", user.id)
-        .maybeSingle();
-
-      if(error) console.warn("Partner dashboard:", error);
-
-      const company = partner && partner.company_name ? String(partner.company_name) : "";
-      const status = partner && partner.status
-        ? String(partner.status).trim().toLowerCase()
-        : "pending";
-
-      // Le dashboard validé reste une page séparée.
-      if(["approved","validated","valid","active"].includes(status)){
-        window.location.replace("/tableau-de-bord-partenaire-valide.html");
-        return;
-      }
-
-      if(["rejected","refused","correction_required","needs_changes"].includes(status)){
-        setRejected(company);
-      } else {
-        setPending(company);
-      }
-
-    } catch(error){
-      console.warn("Erreur chargement statut partenaire:", error);
+  async function loadPartnerContext(){
+    if(!sb) {
       setPending("");
+      return;
     }
+
+    const { data: sessionData } = await sb.auth.getSession();
+    const user = sessionData?.session?.user || null;
+
+    if(!user){
+      window.location.href =
+        "/connexion-inscription.html?redirect=/tableau-de-bord-partenaire.html";
+      return;
+    }
+
+    const email = clean(user.email);
+
+    const { data: profile } = await sb
+      .from("profiles")
+      .select("id,email,full_name,company_name,role,phone")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    if(profile?.role === "client"){
+      window.location.href = "/espace-client.html";
+      return;
+    }
+
+    const { data: partner, error } = await sb
+      .from("partners")
+      .select("*")
+      .ilike("email", email)
+      .maybeSingle();
+
+    if(error){
+      console.warn("Partner dashboard pending:", error);
+    }
+
+    const company =
+      partner?.company_name ||
+      partner?.name ||
+      profile?.company_name ||
+      profile?.full_name ||
+      "Partenaire RentSoundSystem";
+
+    const status = clean(partner?.status || "pending");
+
+    // IMPORTANT :
+    // cette page reste uniquement le dashboard EN ATTENTE / À CORRIGER.
+    // Une fois validé, on envoie vers le dashboard partenaire validé existant.
+    if(["approved","active","validated","valid"].includes(status)){
+      window.location.replace("/tableau-de-bord-partenaire-valide.html");
+      return;
+    }
+
+    if(["rejected","refused","correction_required","needs_changes"].includes(status)){
+      setRejected(company);
+      return;
+    }
+
+    setPending(company);
   }
 
   document.getElementById("partner-logout")?.addEventListener("click", async function(){
     try { if(sb) await sb.auth.signOut(); } catch(e) {}
-    window.location.href = "/connexion-partenaire.html";
+    window.location.href = "/connexion-inscription.html";
   });
 
   document.getElementById("priority-help-btn")?.addEventListener("click", function(){
@@ -571,9 +751,10 @@
     goSupport("appointment");
   });
 
-  loadStatus();
+  loadPartnerContext();
 })();
 </script>
+
 
 <script src="/assets/js/partner-flow.js"></script>
 
