@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="description" content="Découvrez les destinations et hubs mondiaux RentSoundSystem pour louer du matériel de sonorisation professionnel à Paris, Ibiza, Marrakech, Cannes, Dubaï, Barcelone, Los Angeles, Nosy Be et Tokyo.">
+<title>Destinations &amp; Hubs Mondiaux - RentSoundSystem</title>
+<link rel="canonical" href="https://rentsoundsystem.com/destinations-hubs-mondiaux">
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com"></script>
+<!-- Google Fonts: Manrope -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<!-- Lucide Icons CDN -->
+<script src="https://unpkg.com/lucide@latest"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              fuchsia: '#fc036d',
+              fuchsiaHover: '#e0025f',
+              fuchsiaGlow: 'rgba(252, 3, 109, 0.35)',
+              dark: '#0e0e11',
+              card: '#16161b',
+              cardBorder: '#26262e',
+              surfaceLight: '#1f1f26',
+            }
+          },
+          fontFamily: {
+            sans: ['Manrope', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace']
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'ping-slow': 'ping 2.5s cubic-bezier(0, 0, 0.2, 1) infinite',
+            'float': 'float 4s ease-in-out infinite',
+          },
+          keyframes: {
+            float: {
+              '0%, 100%': { transform: 'translateY(0px)' },
+              '50%': { transform: 'translateY(-6px)' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      background-color: #0c0c0f;
+      color: #f1f1f4;
+      font-family: 'Manrope', sans-serif;
+      overflow-x: hidden;
+    }
+    .neon-border-fuchsia {
+      box-shadow: 0 0 25px rgba(252, 3, 109, 0.25);
+    }
+    .neon-text-glow {
+      text-shadow: 0 0 18px rgba(252, 3, 109, 0.6);
+    }
+    .city-card:hover .city-img {
+      transform: scale(1.06);
+    }
+    .radar-pulse-ring {
+      border: 1px solid rgba(252, 3, 109, 0.6);
+      animation: pulseRings 2.8s infinite cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    @keyframes pulseRings {
+      0% { transform: scale(0.6); opacity: 0.9; }
+      100% { transform: scale(2.4); opacity: 0; }
+    }
+  </style>
+
+<style id="rss-destinations-global-shell">
+  body { padding-top: 72px !important; }
+  #header-container {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 9999;
+    min-height: 72px;
+  }
+  #header-container header { z-index: 9999 !important; }
+  #footer-container { width: 100%; }
+  @media (max-width: 767px) {
+    body { padding-top: 72px !important; }
+  }
+</style>
+
+</head>
+<body class="bg-[#0c0c0f] text-slate-100 min-h-screen flex flex-col selection:bg-[#fc036d] selection:text-white">
+<div id="header-container"></div>
+<main class="flex-grow">
+<!-- ==================== HERO AVEC SHADER ANIMÉ & RADAR MONDIAL ==================== -->
+<section class="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center overflow-hidden border-b border-[#23232c]">
+<!-- Background WebGL Shader (Rayonnement radar et pulsations des nœuds mondiaux) -->
+<!-- STITCH_SHADER_START:ANIMATION_1170 class="absolute inset-0 w-full h-full opacity-65" -->
+<div class="absolute inset-0 w-full h-full opacity-65" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_1170" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_1170');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform float u_time;
+uniform vec2 u_resolution;
+uniform vec2 u_mouse;
+
+// Global soundwave & radar pulse shader for RentSoundSystem world hub map
+void main() {
+    vec2 st = (gl_FragCoord.xy - 0.5 * u_resolution.xy) / min(u_resolution.x, u_resolution.y);
+    float t = u_time * 0.7;
+    
+    // Grid coordinate
+    vec2 grid = fract(st * 18.0) - 0.5;
+    float dGrid = length(grid);
+    float gridDots = smoothstep(0.08, 0.02, dGrid) * 0.18;
+    
+    // Multi-center radiating pulses (representing major hubs: Paris/Europe, NYC/LA, Marrakech, Singapore)
+    vec2 hub1 = vec2(-0.25, 0.15); // Europe
+    vec2 hub2 = vec2(-0.55, 0.10); // Americas
+    vec2 hub3 = vec2(-0.15, -0.10); // Africa
+    vec2 hub4 = vec2(0.40, -0.05); // Asia
+    
+    float p1 = sin(length(st - hub1) * 35.0 - t * 4.0);
+    float p2 = sin(length(st - hub2) * 30.0 - t * 3.5);
+    float p3 = sin(length(st - hub3) * 32.0 - t * 4.2);
+    float p4 = sin(length(st - hub4) * 28.0 - t * 3.8);
+    
+    float wave1 = smoothstep(0.96, 0.99, p1) / (1.0 + length(st - hub1) * 4.0);
+    float wave2 = smoothstep(0.96, 0.99, p2) / (1.0 + length(st - hub2) * 4.0);
+    float wave3 = smoothstep(0.96, 0.99, p3) / (1.0 + length(st - hub3) * 4.0);
+    float wave4 = smoothstep(0.96, 0.99, p4) / (1.0 + length(st - hub4) * 4.0);
+    
+    float totalWave = wave1 + wave2 + wave3 + wave4;
+    
+    // Subtle cybernetic wave sweeping vertically
+    float scanline = sin(st.y * 80.0 + t * 2.0) * 0.03;
+    
+    // Ambient dark background with deep charcoal and fuchsia (#FC036D) neon tint
+    vec3 bgColor = vec3(0.055, 0.055, 0.065);
+    vec3 fuchsiaNeon = vec3(0.988, 0.012, 0.427); // #FC036D
+    vec3 glowColor = vec3(0.4, 0.05, 0.2);
+    
+    vec3 finalColor = bgColor + gridDots * vec3(0.4, 0.3, 0.4);
+    finalColor += totalWave * fuchsiaNeon * 1.6;
+    finalColor += glowColor * (wave1 + wave2 + wave3 + wave4);
+    finalColor += scanline;
+    
+    // Hub core beacons
+    float beacon1 = smoothstep(0.03, 0.005, length(st - hub1));
+    float beacon2 = smoothstep(0.03, 0.005, length(st - hub2));
+    float beacon3 = smoothstep(0.03, 0.005, length(st - hub3));
+    float beacon4 = smoothstep(0.03, 0.005, length(st - hub4));
+    finalColor += (beacon1 + beacon2 + beacon3 + beacon4) * fuchsiaNeon * 2.0;
+
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_1170 -->
+<!-- Gradient Vignette -->
+<div class="absolute inset-0 bg-gradient-to-t from-[#0c0c0f] via-transparent to-[#0c0c0f]/80 pointer-events-none"></div>
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#0c0c0f_80%)] pointer-events-none"></div>
+<!-- Contenu Hero -->
+<div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+<div class="inline-flex items-center space-x-2 bg-[#fc036d]/15 border border-[#fc036d]/30 text-[#fc036d] px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider mb-6 animate-float">
+<i class="w-3.5 h-3.5" data-lucide="globe"></i>
+<span>RÉSEAU LOGISTIQUE INTERNATIONAL PRO-AUDIO</span>
+</div>
+<h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white mb-6">
+          Où trouver du son de prestige ?<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-white">Découvrez nos</span>
+<span class="text-[#fc036d] neon-text-glow"> Villes &amp; Hubs Mondiaux</span>
+</h1>
+<p class="text-base sm:text-lg lg:text-xl text-slate-300 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+          De <strong class="text-white">Paris</strong> à <strong class="text-white">Tokyo</strong>, d'<strong class="text-white">Ibiza</strong> à <strong class="text-white">Marrakech</strong>, bénéficiez des flottes d'enceintes Line Array (L-Acoustics, Meyer Sound, Funktion-One), régies DJ Pioneer CDJ-3000 et micros HF étalonnées selon les standards riders internationaux.
+        </p>
+<!-- Barre de recherche rapide de ville & filtre continent -->
+<div class="max-w-2xl mx-auto bg-[#16161c]/90 backdrop-blur-xl border border-[#2b2b36] rounded-2xl p-2.5 shadow-2xl shadow-black/80 flex flex-col sm:flex-row items-center gap-2">
+<div class="flex items-center space-x-3 w-full px-3.5 py-2">
+<i class="w-5 h-5 text-[#fc036d]" data-lucide="map-pin"></i>
+<input class="w-full bg-transparent text-sm text-white placeholder-slate-400 focus:outline-none font-medium" id="citySearchInput" placeholder="Rechercher une ville, pays ou région (ex: Ibiza, Cannes, Dubaï...)" type="text"/>
+</div>
+<button class="w-full sm:w-auto flex items-center justify-center space-x-2 bg-[#fc036d] hover:bg-[#e0025f] text-white px-6 py-3 rounded-xl text-sm font-bold tracking-wide transition-all shadow-lg shadow-[#fc036d]/30 whitespace-nowrap" onclick="scrollToCities()">
+<i class="w-4 h-4" data-lucide="search"></i>
+<span>EXPLORER</span>
+</button>
+</div>
+<!-- Chiffres clés animés -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-12 max-w-4xl mx-auto pt-6 border-t border-white/10">
+<div class="text-center">
+<div class="text-2xl sm:text-3xl font-black text-[#fc036d] font-mono">42+</div>
+<div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Villes &amp; Hubs Logistiques</div>
+</div>
+<div class="text-center">
+<div class="text-2xl sm:text-3xl font-black text-white font-mono">1 450+</div>
+<div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Systèmes Pro en Stock</div>
+</div>
+<div class="text-center">
+<div class="text-2xl sm:text-3xl font-black text-[#fc036d] font-mono">&lt; 30 min</div>
+<div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Réactivité Technique Régie</div>
+</div>
+<div class="text-center">
+<div class="text-2xl sm:text-3xl font-black text-white font-mono">1M €</div>
+<div class="text-xs text-slate-400 font-medium uppercase tracking-wider mt-1">Assurance Matériel AXA</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION CARTE VECTORIELLE MONDIALE & RADAR ==================== -->
+<section class="py-16 bg-[#0f0f14] border-b border-[#23232c] relative">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-10">
+<div>
+<div class="text-[#fc036d] text-xs font-bold uppercase tracking-widest flex items-center gap-2 mb-2">
+<span class="w-2 h-2 rounded-full bg-[#fc036d] animate-ping"></span>
+              MAILLAGE GÉOGRAPHIQUE CONTINENTAL
+            </div>
+<h2 class="text-3xl sm:text-4xl font-black tracking-tight text-white">Cartographie des Régies &amp; Dépôts</h2>
+</div>
+<p class="text-sm text-slate-400 max-w-md mt-4 md:mt-0">
+            Sélectionnez un continent ou cliquez sur un pôle logistique pour afficher instantanément la flotte de sonorisation disponible.
+          </p>
+</div>
+<!-- Filtres Onglets Continents -->
+<div class="flex flex-wrap items-center gap-2 mb-8" id="continentFilters">
+<button class="continent-btn active px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#fc036d] text-white shadow-lg shadow-[#fc036d]/30" data-continent="all" onclick="filterContinent('all')">
+            Tous les Hubs (42)
+          </button>
+<button class="continent-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#1b1b22] text-slate-300 hover:text-white hover:bg-[#25252e] border border-white/5" data-continent="europe" onclick="filterContinent('europe')">
+            Europe (18)
+          </button>
+<button class="continent-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#1b1b22] text-slate-300 hover:text-white hover:bg-[#25252e] border border-white/5" data-continent="americas" onclick="filterContinent('americas')">
+            Amériques (8)
+          </button>
+<button class="continent-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#1b1b22] text-slate-300 hover:text-white hover:bg-[#25252e] border border-white/5" data-continent="africa" onclick="filterContinent('africa')">
+            Afrique &amp; Océan Indien (8)
+          </button>
+<button class="continent-btn px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider transition-all bg-[#1b1b22] text-slate-300 hover:text-white hover:bg-[#25252e] border border-white/5" data-continent="asia" onclick="filterContinent('asia')">
+            Asie-Pacifique &amp; Moyen-Orient (8)
+          </button>
+</div>
+<!-- Carte SVG Interactive avec Points Fuchsia Clignotants -->
+<div class="relative bg-[#14141a] rounded-3xl border border-[#262632] overflow-hidden p-4 sm:p-8 neon-border-fuchsia">
+<div class="absolute top-4 right-4 z-20 flex items-center space-x-3 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/10 text-xs">
+<span class="flex items-center gap-1.5 text-emerald-400 font-mono"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> Live Telemetry</span>
+<span class="text-slate-500">|</span>
+<span class="text-slate-300 font-mono">Dépôts certifiés ISO 9001</span>
+</div>
+<!-- SVG World Map Stylisée Sombre avec Villes RentSoundSystem -->
+<div class="relative w-full aspect-[21/9] min-h-[360px] flex items-center justify-center">
+<svg class="w-full h-full opacity-40 text-slate-700" viewbox="0 0 1000 440">
+<!-- World Continents Shapes Simplifiés -->
+<path d="M150,110 Q220,90 280,120 Q310,160 260,210 Q210,230 180,180 Z" fill="currentColor"></path> <!-- North America -->
+<path d="M260,240 Q320,250 310,340 Q280,390 250,330 Q240,280 260,240 Z" fill="currentColor"></path> <!-- South America -->
+<path d="M470,80 Q560,70 540,140 Q490,160 460,130 Z" fill="currentColor"></path> <!-- Europe -->
+<path d="M470,170 Q560,180 540,300 Q480,330 460,250 Z" fill="currentColor"></path> <!-- Africa -->
+<path d="M570,80 Q760,70 780,190 Q680,240 580,170 Z" fill="currentColor"></path> <!-- Asia -->
+<path d="M720,270 Q830,260 800,340 Q730,350 710,300 Z" fill="currentColor"></path> <!-- Australia -->
+</svg>
+<!-- Lignes de routage fret audio mondiales (Fuchsia SVG Curves) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 1000 440">
+<path class="opacity-60 animate-pulse" d="M 485 125 Q 360 80 230 135" fill="none" stroke="#fc036d" stroke-dasharray="4 4" stroke-width="1.2"></path>
+<path class="opacity-70" d="M 485 125 Q 490 190 480 220" fill="none" stroke="#fc036d" stroke-dasharray="4 4" stroke-width="1.2"></path>
+<path class="opacity-60 animate-pulse" d="M 485 125 Q 610 140 700 235" fill="none" stroke="#fc036d" stroke-dasharray="4 4" stroke-width="1.2"></path>
+<path class="opacity-50" d="M 480 220 Q 560 300 580 290" fill="none" stroke="#fc036d" stroke-dasharray="4 4" stroke-width="1.2"></path>
+<path class="opacity-60" d="M 640 180 Q 700 200 700 235" fill="none" stroke="#fc036d" stroke-dasharray="4 4" stroke-width="1.2"></path>
+</svg>
+<!-- Pins interactifs positionnés sur les grandes métropoles -->
+<!-- 1. Paris (Hub Europe Ouest) -->
+<div class="absolute left-[48.5%] top-[28%] group cursor-pointer" onclick="selectCity('Paris')">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-6 h-6 rounded-full bg-[#fc036d]/30 animate-ping"></span>
+<span class="w-3.5 h-3.5 rounded-full bg-[#fc036d] border-2 border-white shadow-lg shadow-[#fc036d]"></span>
+</div>
+<div class="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-white text-[10px] font-bold px-2 py-0.5 rounded border border-[#fc036d]/50 whitespace-nowrap group-hover:scale-110 transition-transform">
+                PARIS HQ
+              </div>
+</div>
+<!-- 2. Londres -->
+<div class="absolute left-[46.8%] top-[24%] group cursor-pointer" onclick="selectCity('Londres')">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fc036d] border border-white block"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#16161c] text-slate-300 text-[9px] font-semibold px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                Londres
+              </div>
+</div>
+<!-- 3. Ibiza & Baléares -->
+<div class="absolute left-[47.5%] top-[34%] group cursor-pointer" onclick="selectCity('Ibiza')">
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white shadow-md shadow-[#fc036d] block animate-pulse"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#fc036d] text-white text-[9px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                IBIZA
+              </div>
+</div>
+<!-- 4. Barcelone & Madrid -->
+<div class="absolute left-[46.5%] top-[32%] group cursor-pointer" onclick="selectCity('Barcelone')">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fc036d] block"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#16161c] text-slate-300 text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
+                Barcelone
+              </div>
+</div>
+<!-- 5. Cannes & Monaco -->
+<div class="absolute left-[49.8%] top-[31.5%] group cursor-pointer" onclick="selectCity('Cannes')">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fc036d] block"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#16161c] text-slate-300 text-[9px] px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 whitespace-nowrap">
+                Cannes / Monaco
+              </div>
+</div>
+<!-- 6. Marrakech (Hub Afrique du Nord) -->
+<div class="absolute left-[45.5%] top-[39%] group cursor-pointer" onclick="selectCity('Marrakech')">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-5 h-5 rounded-full bg-[#fc036d]/30 animate-ping"></span>
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white"></span>
+</div>
+<div class="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-[#fc036d] text-[10px] font-bold px-2 py-0.5 rounded border border-[#fc036d]/40 whitespace-nowrap">
+                MARRAKECH
+              </div>
+</div>
+<!-- 7. Nosy Be (Océan Indien) -->
+<div class="absolute left-[58%] top-[65%] group cursor-pointer" onclick="selectCity('Nosy Be')">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fc036d] block animate-pulse"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#16161c] text-white text-[9px] font-bold px-1.5 py-0.5 rounded border border-[#fc036d]/30 whitespace-nowrap">
+                Nosy Be
+              </div>
+</div>
+<!-- 8. New York (US East) -->
+<div class="absolute left-[27%] top-[29%] group cursor-pointer" onclick="selectCity('New York')">
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white block"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-white text-[10px] font-bold px-1.5 py-0.5 rounded border border-white/20 whitespace-nowrap">
+                NEW YORK
+              </div>
+</div>
+<!-- 9. Los Angeles & Burbank (US West) -->
+<div class="absolute left-[18%] top-[32%] group cursor-pointer" onclick="selectCity('Los Angeles')">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-5 h-5 rounded-full bg-[#fc036d]/30 animate-ping"></span>
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white"></span>
+</div>
+<div class="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-white text-[10px] font-bold px-2 py-0.5 rounded border border-[#fc036d]/40 whitespace-nowrap">
+                LOS ANGELES
+              </div>
+</div>
+<!-- 10. Dubaï (Moyen-Orient) -->
+<div class="absolute left-[62%] top-[38%] group cursor-pointer" onclick="selectCity('Dubaï')">
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white block animate-pulse"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-white text-[9px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                DUBAÏ
+              </div>
+</div>
+<!-- 11. Singapour (Asie-Pacifique Hub) -->
+<div class="absolute left-[73%] top-[53%] group cursor-pointer" onclick="selectCity('Singapour')">
+<div class="relative flex items-center justify-center">
+<span class="absolute w-5 h-5 rounded-full bg-[#fc036d]/30 animate-ping"></span>
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white"></span>
+</div>
+<div class="absolute -top-7 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-[#fc036d] text-[10px] font-bold px-2 py-0.5 rounded border border-[#fc036d]/40 whitespace-nowrap">
+                SINGAPOUR
+              </div>
+</div>
+<!-- 12. Tokyo (Japon) -->
+<div class="absolute left-[83%] top-[32%] group cursor-pointer" onclick="selectCity('Tokyo')">
+<span class="w-3 h-3 rounded-full bg-[#fc036d] border-2 border-white block"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#1b1b22] text-white text-[10px] font-bold px-1.5 py-0.5 rounded whitespace-nowrap">
+                TOKYO
+              </div>
+</div>
+<!-- 13. Sydney (Australie) -->
+<div class="absolute left-[85%] top-[76%] group cursor-pointer" onclick="selectCity('Sydney')">
+<span class="w-2.5 h-2.5 rounded-full bg-[#fc036d] block"></span>
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-[#16161c] text-slate-300 text-[9px] px-1.5 py-0.5 rounded whitespace-nowrap">
+                Sydney
+              </div>
+</div>
+</div>
+<!-- Légende interactive & Hubs principaux -->
+<div class="mt-6 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="p-3.5 rounded-xl bg-[#1b1b24] border border-[#2b2b38] flex items-center space-x-3">
+<div class="w-8 h-8 rounded-lg bg-[#fc036d]/15 flex items-center justify-center text-[#fc036d]">
+<i class="w-4 h-4" data-lucide="shield-check"></i>
+</div>
+<div>
+<div class="text-xs font-bold text-white">Hubs Sous Accord Cadre</div>
+<div class="text-[11px] text-slate-400">Dépôts certifiés tournée &amp; régie</div>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-[#1b1b24] border border-[#2b2b38] flex items-center space-x-3">
+<div class="w-8 h-8 rounded-lg bg-emerald-500/15 flex items-center justify-center text-emerald-400">
+<i class="w-4 h-4" data-lucide="truck"></i>
+</div>
+<div>
+<div class="text-xs font-bold text-white">Fret Aérien &amp; Routier Direct</div>
+<div class="text-[11px] text-slate-400">Flight cases capitonnés sécurisés</div>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-[#1b1b24] border border-[#2b2b38] flex items-center space-x-3">
+<div class="w-8 h-8 rounded-lg bg-[#fc036d]/15 flex items-center justify-center text-[#fc036d]">
+<i class="w-4 h-4" data-lucide="users"></i>
+</div>
+<div>
+<div class="text-xs font-bold text-white">Ingénieurs Son Certifiés</div>
+<div class="text-[11px] text-slate-400">Calage acoustique &amp; rigging local</div>
+</div>
+</div>
+<div class="p-3.5 rounded-xl bg-[#1b1b24] border border-[#2b2b38] flex items-center space-x-3">
+<div class="w-8 h-8 rounded-lg bg-amber-500/15 flex items-center justify-center text-amber-400">
+<i class="w-4 h-4" data-lucide="headphones"></i>
+</div>
+<div>
+<div class="text-xs font-bold text-white">Astreinte VIP 24h/24</div>
+<div class="text-[11px] text-slate-400">Remplacement express sous 2h</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== GRILLE ENRICHIE DES VILLES & PAYS ==================== -->
+<section class="py-20 bg-[#0c0c0f]" id="villesSection">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+<div>
+<div class="text-[#fc036d] text-xs font-bold uppercase tracking-widest mb-2">CATALOGUE DES DESTINATIONS</div>
+<h2 class="text-3xl sm:text-4xl font-black text-white tracking-tight">Répertoire Mondial des Pôles Sonores</h2>
+</div>
+<div class="mt-4 md:mt-0 text-sm text-slate-400 flex items-center gap-2 font-mono">
+<i class="w-4 h-4 text-[#fc036d]" data-lucide="sliders-horizontal"></i>
+<span id="activeCountDisplay">Affichage de 12 hubs phares</span>
+</div>
+</div>
+<!-- Cartes des Villes (Grid Responsive) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="citiesGrid">
+<!-- 1. IBIZA -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="europe">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sonorisation Ibiza" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1VAF86-D56q087dhP9S3HQ_87pvUE4PK_ujNO4WjEs0V9E9X3nwXGxCh4_i_E0e1KxKk6z-SyKoLr-4Zyo8tYzjrgCVeZoZHgVIlOKge5Bj0IRy17di-NdHAt__bqjUIALCtMCsX1H33oSZzqaTGT69GYSn-WjS5kOJWHJFOPpYd9StM1hImG_IOH_cS2WYYE-b1UHAkDrgDu-C-9mLmSwbRG3kOYR5fhxHZgsXQhiJIpGatXKetXIty5LF3RPZBM9Rw0MeYZO7gg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-[#fc036d] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                CLUBBING &amp; VILLAS VIP
+              </span>
+<span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[11px] font-mono px-2 py-0.5 rounded">
+                ● 14 Régies Prêtes
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Ibiza</h3>
+<span class="text-xs font-semibold text-slate-300">Baléares, Espagne</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Leader incontesté des réceptions de prestige à Platja d'en Bossa, San Antonio et villas privées de Santa Eulàlia. Déploiement express de régies DJ Pioneer CDJ-3000 / DJM-V10 et systèmes Void Acoustics.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">Funktion-One Evo &amp; L-Acoustics Syva</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Livraison &amp; Setup</span>
+<span class="font-bold text-emerald-400">&lt; 60 min toute l'île</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="award"></i> Tarifs Indicatifs</span>
+<span class="font-bold text-white">Dès 450 € / jour</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/location-sono/location-sono-ibiza">
+                  Découvrir le Hub Ibiza
+                </a>
+<a class="p-2.5 rounded-xl bg-[#23232c] hover:bg-[#2e2e3a] text-slate-300 hover:text-white transition-colors" href="/contact.html?service=location&ville=Ibiza" title="Contacter la régie Ibiza">
+<i class="w-4 h-4" data-lucide="phone-call"></i>
+</a>
+</div>
+</div>
+</article>
+<!-- 2. PARIS -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="europe">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Paris" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1VozuSonOavT5pqogoSd5c_4q34oOj7iePijIHHh3xtSzif4Rgjz91nIRuVpGF3j0Ko7J3o2drKmMfv3fdkYe-pRxWLVucTHirlZK6q0eJ90oxGlFaXoG0ugwsop2VXMpauoMV8GRq-VRz8Ba2bb48mYOjjxPB9IAIU3TWxuRDVrO7c1CCIAIWsE5SxSPqrNGGwF4-cSNFvafg78fYy16KYMfNGdQfZMQOEZw4CFNCxi2zpprOfBw1f868"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-white text-[#0e0e12] text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                SIÈGE &amp; RÉGIE OUEST
+              </span>
+<span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[11px] font-mono px-2 py-0.5 rounded">
+                ● 28 Systèmes Actifs
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Paris &amp; Île-de-France</h3>
+<span class="text-xs font-semibold text-slate-300">France</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Dépôt central de Paris (61 Rue de Lyon, 75012) et plateforme logistique de Saint-Denis. Spécialiste des défilés Fashion Week, zéniths, festivals électro et réceptions corporate d'exception.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">L-Acoustics K2, Kara, d&amp;b J-Series</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Retrait / Livraison</span>
+<span class="font-bold text-emerald-400">Retrait 2h ou coursier direct</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="award"></i> Tarifs Indicatifs</span>
+<span class="font-bold text-white">Dès 350 € / jour</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/location-sono/location-sonorisation-paris">
+                  Découvrir le Hub Paris
+                </a>
+<a class="p-2.5 rounded-xl bg-[#23232c] hover:bg-[#2e2e3a] text-slate-300 hover:text-white transition-colors" href="/contact.html?service=location&ville=Paris" title="Contacter la régie Paris">
+<i class="w-4 h-4" data-lucide="phone-call"></i>
+</a>
+</div>
+</div>
+</article>
+<!-- 3. MARRAKECH -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="africa">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Marrakech" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1Uj8En3BFsW6sjE_OEZYNlowPAw6lu0ug38wgA9XZkqsrkNTMXANPulv-OF7Zik-_rL7c36twSBQs55fSh5DkR3I7NfA0XpVa8tc1iTmxyw3uWPwrLOa67NNkNnr8VOdiYZVBSdOQGke82L3glZjlJQPi-WpH-l60wv7_oy2VoZx2oRdnclpXFSDc_B8fbI8irnIXpW4RyLMpDRKuOE1lePV3R2h98ZCLCAnIwx-_uWEAZkyw7uO8XDytdOWh3eWMCTA7YdUh4lvQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-[#fc036d] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                PALMERAIE &amp; DÉSERT D'AGAFAY
+              </span>
+<span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[11px] font-mono px-2 py-0.5 rounded">
+                ● 18 Régies Prêtes
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Marrakech</h3>
+<span class="text-xs font-semibold text-slate-300">Maroc, Afrique</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Centre logistique basé à Sidi Ghanem. Équipement de pointe pour mariages orientaux somptueux, festivals électro désertiques et lancements de marques de luxe. Camions climatisés tout-terrain.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">JBL VTX, L-Acoustics Syva, CDJ-3000</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Zone d'intervention</span>
+<span class="font-bold text-emerald-400">Guéliz, Hivernage, Agafay, Ourika</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="award"></i> Tarifs Indicatifs</span>
+<span class="font-bold text-white">Dès 3 800 MAD / jour</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/location-sono/location-sono-marrakech">
+                  Découvrir le Hub Marrakech
+                </a>
+<a class="p-2.5 rounded-xl bg-[#23232c] hover:bg-[#2e2e3a] text-slate-300 hover:text-white transition-colors" href="/contact.html?service=location&ville=Marrakech" title="Contacter la régie Marrakech">
+<i class="w-4 h-4" data-lucide="phone-call"></i>
+</a>
+</div>
+</div>
+</article>
+<!-- 4. CANNES & MONACO -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="europe">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Cannes Monaco" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1V0MXJVhvVaFSPaIvU2b7xxlBs_GXDKeXi232yq1uF6PW4xNjF8DAK_dmEgzpDw2UlFXbcFxuu_VfWpjRxkCHtNIh23pwiJTQjpoxMEu_PohO4iBD2wjSl52p0dyUmiF6isL6Zt7QTfG1jUdOuClSSmbz7rqeSlebuwNRTNsJeSawJPCEx141MtSoJYylX9sXbJehVpt9mVoHnlAxkUKbggYOmQbYozSPJzl9lgdJMfqB0fYgFTn4DbHw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-[#fc036d] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                FESTIVALS, YACHTS &amp; GALAS
+              </span>
+<span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[11px] font-mono px-2 py-0.5 rounded">
+                ● 16 Régies Prêtes
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Cannes &amp; Monaco</h3>
+<span class="text-xs font-semibold text-slate-300">Côte d'Azur, Riviera</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Régies techniques spécialisées pour les événements sur la Croisette, Grand Prix de Monaco, terrasses de superyachts et plages privées de Juan-les-Pins. Systèmes discrets et étanches haute fidélité.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">Meyer Sound PANTHER &amp; Casques Silent Arena</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Accréditations</span>
+<span class="font-bold text-emerald-400">Pass Port Hercule &amp; Palais des Festivals</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="award"></i> Tarifs Indicatifs</span>
+<span class="font-bold text-white">Dès 500 € / jour</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/location-sono/location-sono-cannes">
+                  Découvrir le Hub Riviera
+                </a>
+<a class="p-2.5 rounded-xl bg-[#23232c] hover:bg-[#2e2e3a] text-slate-300 hover:text-white transition-colors" href="#" title="Contacter Cannes &amp; Monaco">
+<i class="w-4 h-4" data-lucide="phone-call"></i>
+</a>
+</div>
+</div>
+</article>
+<!-- 5. LOS ANGELES & BURBANK -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="americas">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Los Angeles" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1W4Pm7iEkW1c0GOu022ylAtxGHm8YOIjtcV0eaoe3ZLr_tGtWGHqNgSYrG8QqZtMowjh0xS8ostX34bn1nyrI7aTA2ybSsCgRui6EIR5KA9oLELUsnS7leAZKCeaMFkYJDQmKpBZ84EWne03wFUVOPWOqjc4snSPWoGEiKfmEsoaxjURp5lH4FNzG4ignXhyiNPZoUOywxgwMYzKhyHqUFBNhXNK6HC4gLC0f6Wh2nb468gmIXLOaA440w"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-white text-black text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                TOURING &amp; CINEMA DEPOT
+              </span>
+<span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[11px] font-mono px-2 py-0.5 rounded">
+                ● 35 Systèmes Tournée
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Los Angeles &amp; Burbank</h3>
+<span class="text-xs font-semibold text-slate-300">Californie, USA</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Dépôt situé au cœur des studios à Burbank (2450 N Ontario St). Spécialiste des tournées stades aux USA, avant-premières d'Hollywood et festivals Coachella / Joshua Tree.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">Shure Axient Digital, DiGiCo Quantum</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Hubs Connectés</span>
+<span class="font-bold text-white">LA, Las Vegas, New York, Miami</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="award"></i> Tarifs Indicatifs</span>
+<span class="font-bold text-white">Dès $450 / jour</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/fr/location-sono-particuliers-Los%20Angeles.html">
+                  Découvrir le Hub USA
+                </a>
+<a class="p-2.5 rounded-xl bg-[#23232c] hover:bg-[#2e2e3a] text-slate-300 hover:text-white transition-colors" href="#" title="Contacter USA Depot">
+<i class="w-4 h-4" data-lucide="phone-call"></i>
+</a>
+</div>
+</div>
+</article>
+<!-- 6. DUBAÏ & SINGAPOUR -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="asia">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Singapour Dubaï" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1WZyXrIcVF-4jPlpMHSu5C_3ClnbTmvnIAy7fa-5F94d-3NJqKiXBfQ0FgKM3p8A6oucACIG9CWdYbXW6Php_y6xVy0v9VHljvrnKRatLCgMlFyCxpbd3FtfN3dChOdBd77ObBLg08_UuxowA4_iDiH33oeHsBVPFKnHnaiIps5o--BNeg0Wu8-6KvZkhqeBLKTM84HDvdP9Vgn1B3oP6Hos0tPgfGvqER1hA3mPypGmzMaYiXN20IIh-NSX2mz9969ECDZEOPg3A"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-[#fc036d] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                MEGA-EVENTS &amp; CORPORATE ASIA
+              </span>
+<span class="absolute top-3.5 right-3.5 bg-black/60 backdrop-blur-md text-emerald-400 border border-emerald-500/30 text-[11px] font-mono px-2 py-0.5 rounded">
+                ● 22 Régies Prêtes
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Singapour &amp; Dubaï</h3>
+<span class="text-xs font-semibold text-slate-300">Asie-Pacifique &amp; Golfe</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Bureaux régionaux à Marina Bay Financial Centre et Downtown Dubaï. Solutions audio certifiées pour les sommets mondiaux, grands prix F1 et résidences de DJs internationaux.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">L-Acoustics K2, DiGiCo SD12, Sennheiser 6000</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Zones Connectées</span>
+<span class="font-bold text-white">Dubaï, Abu Dhabi, Singapour, Tokyo</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="award"></i> Disponibilité</span>
+<span class="font-bold text-emerald-400">Stock permanent certifié</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/location-sono/location-sono-dubai">
+                  Découvrir le Hub APAC
+                </a>
+<a class="p-2.5 rounded-xl bg-[#23232c] hover:bg-[#2e2e3a] text-slate-300 hover:text-white transition-colors" href="#" title="Contacter APAC">
+<i class="w-4 h-4" data-lucide="phone-call"></i>
+</a>
+</div>
+</div>
+</article>
+<!-- 7. NOSY BE & OCÉAN INDIEN -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="africa">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Nosy Be" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1VfcqISeqDbFLB85rzCorBcJBOaw6wk2pi60gvzdFBFXltbmHilFXwPb42JCqm8FZd2pUjwA6E4ei4rxCwBj6lscZ-ri6zzEs6TynMcyk7TTlPEo7_4vc1xAKhoQUMIwACNBASJ_QeyI2jyQepCKqP4M4kihQe4iHohOv4EkHt5QL2U1CTTdfLfocsXdJqCKE4NBczH8ogsBpQyM0ySMK_yweJuBwReriMtwG5WTMzwesWjst7LXpvpP2D7tAJgJ4a8CvoCMtKT"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-[#fc036d] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                MARIAGES &amp; ÎLES PARADISIAQUES
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Nosy Be</h3>
+<span class="text-xs font-semibold text-slate-300">Madagascar, Océan Indien</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Pôle événementiel pour mariages de rêve sur la plage, hôtels 5 étoiles et festivals de l'Océan Indien. Packs autonomes avec groupes électrogènes insonorisés et enceintes traitées tropicales.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">Systèmes RCF Evox, Pack Mariage DJ</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Logistique Maritime</span>
+<span class="font-bold text-white">Bateaux régie Hell-Ville &amp; Nosy Komba</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/fr/location-sono-particuliers-Nosy%20Be.html">
+                  Découvrir le Hub Nosy Be
+                </a>
+</div>
+</div>
+</article>
+<!-- 8. BARCELONE & MADRID -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="europe">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Barcelone" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1UWdM1ttBL5k586hOB7ix4k0beshneTAJDNgYsEZBL0jq1550QjNmtzg1gebCEYCWWbd101i0Ik8oSCaEEWNgyQ7c99FI0dqnzc3lxUf66WAElxZ3nZefZ0P0L2hkwiBVk_0EQJJOTOYYfcWnU3s--YCvLdVw7EhA12qxcUdb9CADWOlpq1avuoKEeD4GQDBeU_o92MDBZ6v4n6pE6XJXCtyQYjpwDYo67iqVj6f-ptXEZw9qNLAW3XI8nKbi8vwHeCCUi0xKEC"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-white text-black text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                SONAR &amp; CLUBS ÉLECTRO
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Barcelone &amp; Madrid</h3>
+<span class="text-xs font-semibold text-slate-300">Espagne</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Dépôts stratégiques à Poblenou (Barcelone) et Méndez Álvaro (Madrid). Matériel optimisé pour les rooftops, clubs souterrains et grands festivals open air en Catalogne et Castille.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">Pioneer NXS2/3, Void Air Motion</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Tarification</span>
+<span class="font-bold text-white">Dès 280 € / jour</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/location-sono/location-sono-barcelone">
+                  Découvrir le Hub Espagne
+                </a>
+</div>
+</div>
+</article>
+<!-- 9. TOKYO -->
+<article class="city-card group bg-[#16161c] rounded-2xl border border-[#262632] overflow-hidden hover:border-[#fc036d]/60 transition-all duration-300 hover:shadow-xl hover:shadow-[#fc036d]/10 flex flex-col" data-continent="asia">
+<div class="relative h-60 overflow-hidden bg-slate-900">
+<img alt="Location sono Tokyo" class="city-img w-full h-full object-cover transition-transform duration-500" src="https://lh3.googleusercontent.com/aida/AEtjO1Wr80H3-7iBN1Eo7hp24pYDhS6lV1RKqrbJ2TAe3A9lETq9fPbtyuT-p6SOCM8uHyq1RImS9QflhoVLvlfo1b6CCLNENz6JlyhRL9xw9WokuqZ2npwo8NzR_sRWmCd6m76LuZGxPXK53HFemSK89HK0zXMCBOBih-uQ_z6WH5blxollmgMlZUF12fE3EXzET4V1s70P7n1rqB4lI8_eitnkIED7GBlI-7bP_lV3Xr7HUiTy3N8KUE6ENQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#16161c] via-transparent to-black/40"></div>
+<span class="absolute top-3.5 left-3.5 bg-[#fc036d] text-white text-[11px] font-black uppercase px-2.5 py-1 rounded-md tracking-wider">
+                PRÉCISION JAPONAISE &amp; AUDIOPHILE
+              </span>
+<div class="absolute bottom-3 left-4 right-4 flex items-baseline justify-between text-white">
+<h3 class="text-2xl font-black tracking-tight">Tokyo &amp; Shibuya</h3>
+<span class="text-xs font-semibold text-slate-300">Japon</span>
+</div>
+</div>
+<div class="p-6 flex-grow flex flex-col justify-between">
+<div>
+<p class="text-xs text-slate-300 leading-relaxed mb-4">
+                  Dépôt situé à Koto-ku avec liaisons rapides vers Shibuya, Shinjuku et Roppongi. Flotte dédiée aux listening bars haut de gamme, clubs underground et tournées internationales d'artistes au Japon.
+                </p>
+<div class="space-y-2 mb-6">
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="volume-2"></i> Flotte Vedette</span>
+<span class="font-bold text-white">Yamaha Rivage PM, Technics SL-1200G</span>
+</div>
+<div class="flex items-center justify-between text-xs py-1 border-b border-white/5">
+<span class="text-slate-400 flex items-center gap-1.5"><i class="w-3.5 h-3.5 text-[#fc036d]" data-lucide="clock"></i> Normes Électriques</span>
+<span class="font-bold text-white">Distros 100V / 200V calibrées</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-3 pt-2">
+<a class="flex-1 text-center bg-[#fc036d] hover:bg-[#e0025f] text-white text-xs font-bold uppercase py-3 rounded-xl tracking-wider transition-colors shadow-md shadow-[#fc036d]/20" href="/fr/location-sono-particuliers-Tokyo.html">
+                  Découvrir le Hub Tokyo
+                </a>
+</div>
+</div>
+</article>
+</div>
+<!-- Bouton Charger Toutes les Villes (42 au total) -->
+<div class="mt-14 text-center">
+<div class="inline-flex flex-col items-center">
+<p class="text-xs text-slate-400 mb-3 font-mono">Besoin d'une livraison dans une autre ville (Lyon, Bordeaux, Bruxelles, Genève, Berlin...) ?</p>
+<a class="inline-flex items-center space-x-2 bg-[#1b1b24] hover:bg-[#262633] text-white border border-[#fc036d]/40 hover:border-[#fc036d] px-6 py-3.5 rounded-xl text-sm font-bold tracking-wide transition-all shadow-lg hover:shadow-[#fc036d]/20" href="#">
+<i class="w-4 h-4 text-[#fc036d]" data-lucide="map"></i>
+<span>CONSULTER L'ANNUAIRE COMPLET DES 42 VILLES COUVERTES</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== SECTION PROCEDURE & ENGAGEMENT QUALITÉ MONDIAL ==================== -->
+<section class="py-16 bg-[#111116] border-b border-[#23232c]">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
+<div class="lg:col-span-1">
+<span class="text-[#fc036d] text-xs font-bold uppercase tracking-widest block mb-2">ENGAGEMENT LOGISTIQUE 2026</span>
+<h2 class="text-3xl font-black text-white tracking-tight mb-4">Le Protocole Zéro Rupture</h2>
+<p class="text-sm text-slate-300 leading-relaxed">
+              Pour chaque festival, tournée ou soirée privée, nous déployons une garantie matérielle intégrale avec backup à chaud en régie et ingénieurs de calage formés aux logiciels Soundvision, MAPP 3D et Ease Focus.
+            </p>
+</div>
+<div class="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div class="bg-[#17171e] p-5 rounded-2xl border border-white/5 flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-[#fc036d]/10 flex-shrink-0 flex items-center justify-center text-[#fc036d]">
+<i class="w-5 h-5" data-lucide="shield-alert"></i>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Régies Doublées (Redondance)</h4>
+<p class="text-xs text-slate-400">Amplificateurs de rechange et boucles Dante secondaires systématiquement préparées.</p>
+</div>
+</div>
+<div class="bg-[#17171e] p-5 rounded-2xl border border-white/5 flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-[#fc036d]/10 flex-shrink-0 flex items-center justify-center text-[#fc036d]">
+<i class="w-5 h-5" data-lucide="plane-takeoff"></i>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Accords Tournées Multi-Villes</h4>
+<p class="text-xs text-slate-400">Un interlocuteur unique pour coordonner votre son sur 5, 10 ou 20 dates en Europe et dans le monde.</p>
+</div>
+</div>
+<div class="bg-[#17171e] p-5 rounded-2xl border border-white/5 flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-[#fc036d]/10 flex-shrink-0 flex items-center justify-center text-[#fc036d]">
+<i class="w-5 h-5" data-lucide="file-check"></i>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Caution Séquestrée Stripe B2B</h4>
+<p class="text-xs text-slate-400">Pas de débit abusif : empreinte bancaire sécurisée et libérée sous 24h après check retour.</p>
+</div>
+</div>
+<div class="bg-[#17171e] p-5 rounded-2xl border border-white/5 flex items-start space-x-4">
+<div class="w-10 h-10 rounded-xl bg-[#fc036d]/10 flex-shrink-0 flex items-center justify-center text-[#fc036d]">
+<i class="w-5 h-5" data-lucide="badge-percent"></i>
+</div>
+<div>
+<h4 class="text-sm font-bold text-white mb-1">Assurance AXA Tous Risques</h4>
+<p class="text-xs text-slate-400">Couverture casse, vol et intempéries jusqu'à 1 000 000 € incluse dans chaque contrat de location.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== BANNIÈRE CTA DEVIS RAPIDE ==================== -->
+<section class="py-16 bg-gradient-to-r from-[#14141a] via-[#1a1218] to-[#14141a] border-b border-[#23232c] text-center">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<h3 class="text-2xl sm:text-3xl font-black text-white mb-4">
+          Vous préparez un événement dans l'un de nos hubs ?
+        </h3>
+<p class="text-sm text-slate-300 mb-8 max-w-xl mx-auto">
+          Transmettez-nous votre rider technique. Nos régisseurs vous répondent sous 2 heures avec la liste exacte des références en stock.
+        </p>
+<div class="flex flex-wrap items-center justify-center gap-4">
+<a class="bg-[#fc036d] hover:bg-[#e0025f] text-white font-bold text-sm uppercase tracking-wider px-8 py-3.5 rounded-xl shadow-lg shadow-[#fc036d]/30 transition-all" href="#">
+            DÉPOSER UN CAHIER DES CHARGES
+          </a>
+<a class="bg-[#24242e] hover:bg-[#2d2d3a] text-slate-200 font-bold text-sm uppercase tracking-wider px-8 py-3.5 rounded-xl transition-all border border-white/10" href="#">
+            CONTACTER UNE RÉGIE LOCALE
+          </a>
+</div>
+</div>
+</section>
+</main>
+<div id="footer-container"></div>
+<!-- Lucide Icon Trigger & Interactive Filtering Script -->
+<script>
+    lucide.createIcons();
+
+    function scrollToCities() {
+      const el = document.getElementById('villesSection');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function filterContinent(continent) {
+      // Boutons classes
+      const buttons = document.querySelectorAll('.continent-btn');
+      buttons.forEach(btn => {
+        if (btn.getAttribute('data-continent') === continent) {
+          btn.classList.remove('bg-[#1b1b22]', 'text-slate-300');
+          btn.classList.add('bg-[#fc036d]', 'text-white', 'shadow-lg', 'shadow-[#fc036d]/30');
+        } else {
+          btn.classList.remove('bg-[#fc036d]', 'text-white', 'shadow-lg', 'shadow-[#fc036d]/30');
+          btn.classList.add('bg-[#1b1b22]', 'text-slate-300');
+        }
+      });
+
+      // Filtrer les cartes
+      const cards = document.querySelectorAll('.city-card');
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const c = card.getAttribute('data-continent');
+        if (continent === 'all' || c === continent) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      const display = document.getElementById('activeCountDisplay');
+      if (display) {
+        display.textContent = `Affichage de ${visibleCount} hubs actifs`;
+      }
+    }
+
+    function selectCity(cityName) {
+      const searchInput = document.getElementById('citySearchInput');
+      if (searchInput) {
+        searchInput.value = cityName;
+      }
+      scrollToCities();
+    }
+
+    // Recherche dynamique par mot-clé
+    document.getElementById('citySearchInput')?.addEventListener('input', function(e) {
+      const query = e.target.value.toLowerCase();
+      const cards = document.querySelectorAll('.city-card');
+      let count = 0;
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        if (text.includes(query)) {
+          card.style.display = 'flex';
+          count++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      const display = document.getElementById('activeCountDisplay');
+      if (display) {
+        display.textContent = `Affichage de ${count} hubs correspondants`;
+      }
+    });
+  </script>
+
+<script src="/components.js"></script>
+<script id="rss-destinations-global-components">
+(function(){
+  async function loadFragment(targetId, url){
+    const target = document.getElementById(targetId);
+    if(!target) return;
+    try{
+      const response = await fetch(url, {cache:'no-cache'});
+      if(!response.ok) throw new Error(url + ' HTTP ' + response.status);
+      target.innerHTML = await response.text();
+
+      target.querySelectorAll('script').forEach(function(oldScript){
+        const script = document.createElement('script');
+        Array.from(oldScript.attributes).forEach(function(attr){
+          script.setAttribute(attr.name, attr.value);
+        });
+        script.textContent = oldScript.textContent;
+        oldScript.replaceWith(script);
+      });
+    }catch(error){
+      console.error('RentSoundSystem component load error:', error);
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    loadFragment('header-container', '/header.html');
+    loadFragment('footer-container', '/footer.html');
+  });
+})();
+</script>
+
+</body>
+</html>
