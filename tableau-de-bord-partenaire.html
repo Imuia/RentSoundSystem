@@ -1,476 +1,580 @@
 <!DOCTYPE html>
-<html class="dark" lang="fr">
-<head>
+
+<html class="dark" lang="fr"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<link rel="preload" href="/header.html" as="fetch" crossorigin>
-<link rel="preload" href="/footer.html" as="fetch" crossorigin>
-
-<title>Tableau de bord partenaire | RentSoundSystem</title>
-
+<title>RentSoundSystem Partner - Statut de Validation</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Fonts: Manrope & Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+<!-- Tailwind Configuration -->
 <script id="tailwind-config">
-tailwind.config = {
-  darkMode: "class",
-  theme: {
-    extend: {
-      colors: {
-        primary: "#FC036D",
-        "primary-container": "#FC036D",
-        "on-primary": "#ffffff",
-        background: "#131313",
-        surface: "#131313",
-        "surface-dim": "#131313",
-        "surface-container-lowest": "#0e0e0e",
-        "surface-container-low": "#1c1b1b",
-        "surface-container": "#201f1f",
-        "surface-container-high": "#2a2a2a",
-        "surface-container-highest": "#353534",
-        "surface-glass": "rgba(31, 31, 31, 0.60)",
-        "surface-glass-border": "rgba(255,255,255,0.06)",
-        "on-surface": "#e5e2e1",
-        "on-surface-variant": "#e6bcc2",
-        secondary: "#c6c6c7",
-        "secondary-fixed-dim": "#c6c6c7",
-        outline: "#ac878d",
-        "outline-variant": "#5d3f44",
-        error: "#ffb4ab",
-        "error-container": "#93000a"
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "tertiary": "#c8c6c5",
+            "background": "#131313",
+            "on-secondary-fixed": "#1a1c1d",
+            "outline-variant": "#5d3f44",
+            "primary-fixed": "#ffd9de",
+            "secondary": "#c6c6c7",
+            "surface": "#131313",
+            "surface-container-highest": "#353534",
+            "secondary-fixed": "#e3e2e3",
+            "tertiary-fixed": "#e5e2e1",
+            "surface-container": "#201f1f",
+            "tertiary-container": "#929090",
+            "surface-glass": "rgba(31, 31, 31, 0.6)",
+            "primary-container": "#ff4d80",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#2a2a2a",
+            "on-secondary-container": "#b5b5b6",
+            "on-tertiary-fixed": "#1b1b1c",
+            "on-tertiary-fixed-variant": "#474746",
+            "on-primary": "#660028",
+            "surface-container-lowest": "#0e0e0e",
+            "primary": "#ffb2bf",
+            "surface-dim": "#131313",
+            "on-secondary-fixed-variant": "#454748",
+            "error": "#ffb4ab",
+            "on-primary-fixed-variant": "#90003b",
+            "surface-variant": "#353534",
+            "secondary-container": "#454748",
+            "neon-glow": "rgba(252, 3, 109, 0.3)",
+            "inverse-primary": "#bc004f",
+            "tertiary-fixed-dim": "#c8c6c5",
+            "on-error": "#690005",
+            "on-surface-muted": "#E6BCC2",
+            "outline": "#ac878d",
+            "on-tertiary-container": "#2a2a2a",
+            "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+            "error-container": "#93000a",
+            "on-primary-fixed": "#3f0016",
+            "secondary-fixed-dim": "#c6c6c7",
+            "surface-container-low": "#1c1b1b",
+            "on-surface": "#e5e2e1",
+            "on-secondary": "#2f3132",
+            "on-tertiary": "#303030",
+            "surface-bright": "#393939",
+            "inverse-surface": "#e5e2e1",
+            "on-background": "#e5e2e1",
+            "on-primary-container": "#5a0022",
+            "inverse-on-surface": "#313030",
+            "primary-fixed-dim": "#ffb2bf",
+            "surface-tint": "#ffb2bf",
+            "on-surface-variant": "#e6bcc2"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "container-max": "1280px",
+            "gutter-x": "2.5rem",
+            "card-gap": "1.5rem",
+            "component-padding-x": "1.5rem",
+            "component-padding-y": "0.625rem",
+            "section-padding-y": "6rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Manrope"],
+            "label-caps": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-hero": ["Manrope"],
+            "display-hero-mobile": ["Manrope"],
+            "headline-lg": ["Manrope"]
+          },
+          "fontSize": {
+            "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+            "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+            "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }]
+          }
+        },
       },
-      fontFamily: {
-        headline: ["Manrope", "sans-serif"],
-        body: ["Inter", "sans-serif"],
-        "headline-md": ["Manrope", "sans-serif"],
-        "headline-lg": ["Manrope", "sans-serif"],
-        "label-caps": ["Inter", "sans-serif"],
-        "body-md": ["Inter", "sans-serif"]
-      },
-      fontSize: {
-        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
-        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
-        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": ".15em", "fontWeight": "600"}],
-        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
-      },
-      spacing: {
-        "container-max": "1280px",
-        "card-gap": "1.5rem",
-        "gutter-x": "2.5rem"
-      },
-      borderRadius: {
-        lg: "0.25rem",
-        xl: "0.5rem",
-        full: "0.75rem"
-      }
     }
-  }
-}
-</script>
-
+  </script>
 <style>
-  html, body {
-    background:#131313;
-    color:#e5e2e1;
-    font-family: Inter, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-  .font-headline { font-family: Manrope, sans-serif; }
-  .material-symbols-outlined {
-    font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
-  }
-  .glass-panel {
-    background: linear-gradient(145deg, rgba(31,31,31,.62), rgba(28,27,27,.44));
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,.06);
-  }
-  .neon-line {
-    box-shadow: 0 0 10px rgba(252,3,109,.8);
-  }
-  .rss-sidebar-link {
-    transition: .2s ease;
-  }
-  .rss-sidebar-link:hover {
-    color:#FC036D;
-    background:#2a2a2a;
-  }
-  .rss-lock {
-    opacity:.42;
-    cursor:not-allowed;
-  }
-  .rss-lock a,
-  .rss-lock button {
-    pointer-events:none;
-  }
-  #header-container { min-height:73px; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1;
+    }
+  </style>
+
+<style id="rss-partner-dashboard-shell">
+  #header-container { min-height:73px; position:relative; z-index:9999; }
   #footer-container { min-height:320px; }
-  @media(max-width:768px){
-    .partner-shell{ margin-left:0!important; }
-    .partner-content{ padding-left:1rem!important; padding-right:1rem!important; }
+  #header-container header { z-index:9999 !important; }
+  .rss-lock { opacity:.48; cursor:not-allowed; }
+  .rss-lock { pointer-events:none; }
+  @media(max-width:767px){
+    .partner-shell { margin-left:0!important; padding-top:88px!important; }
   }
 </style>
+
 </head>
-
-<body class="min-h-screen bg-surface-dim text-on-surface">
+<body class="bg-surface-dim text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary selection:text-on-primary">
 <div id="header-container"></div>
+<!-- Main Body Content: Side Drawer + Content Canvas -->
+<div class="partner-shell flex-1 md:ml-64 w-auto px-4 sm:px-6 lg:px-8 py-6 pt-[96px]">
 
-<!-- SideNavBar inspirée Stitch -->
-<nav class="hidden md:flex flex-col h-[calc(100vh-73px)] w-64 fixed left-0 top-[73px] bg-surface-container-low border-r border-surface-glass-border py-8 px-4 gap-4 z-40">
-  <div class="mb-8 px-4">
-    <h1 class="font-headline-md text-headline-md text-primary">RentSoundSystem</h1>
-    <p class="font-label-caps text-label-caps text-secondary mt-2">Partner Portal</p>
-    <p id="sidebar-status" class="font-label-caps text-label-caps text-primary mt-1">Validation Phase</p>
-  </div>
-
-  <div class="flex-1 flex flex-col gap-2">
-    <a class="rss-sidebar-link flex items-center gap-3 px-4 py-3 bg-primary text-on-primary rounded-lg font-bold font-label-caps text-label-caps" href="/tableau-de-bord-partenaire.html">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span>
-      Overview
-    </a>
-
-    <a class="rss-sidebar-link flex items-center gap-3 px-4 py-3 text-secondary rounded-lg font-label-caps text-label-caps" href="/inscription-partenaire-kyc.html">
-      <span class="material-symbols-outlined">verified_user</span>
-      Vérification
-    </a>
-
-    <a id="side-inventory" class="rss-sidebar-link rss-lock flex items-center gap-3 px-4 py-3 text-surface-variant rounded-lg font-label-caps text-label-caps" href="#">
-      <span class="material-symbols-outlined">inventory_2</span>
-      Inventaire
-      <span class="material-symbols-outlined ml-auto text-[16px]">lock</span>
-    </a>
-
-    <a id="side-documents" class="rss-sidebar-link rss-lock flex items-center gap-3 px-4 py-3 text-surface-variant rounded-lg font-label-caps text-label-caps" href="#">
-      <span class="material-symbols-outlined">description</span>
-      Documents
-      <span class="material-symbols-outlined ml-auto text-[16px]">lock</span>
-    </a>
-
-    <a id="side-quotes" class="rss-sidebar-link rss-lock flex items-center gap-3 px-4 py-3 text-surface-variant rounded-lg font-label-caps text-label-caps" href="#">
-      <span class="material-symbols-outlined">request_quote</span>
-      Devis
-      <span class="material-symbols-outlined ml-auto text-[16px]">lock</span>
-    </a>
-
-    <a class="rss-sidebar-link flex items-center gap-3 px-4 py-3 text-secondary rounded-lg transition-colors font-label-caps text-label-caps mt-auto" href="/contact.html">
-      <span class="material-symbols-outlined">contact_support</span>
-      Help Center
-    </a>
-  </div>
-
-  <div class="mt-auto flex flex-col gap-2 pt-4 border-t border-surface-glass-border">
-    <button id="contact-manager" class="w-full py-2 px-4 rounded border border-outline-variant text-secondary hover:bg-surface-container transition-colors font-label-caps text-label-caps mb-4">
-      Contact Manager
-    </button>
-    <a class="rss-sidebar-link flex items-center gap-3 px-4 py-3 text-secondary rounded-lg font-label-caps text-label-caps" href="/parametres-partenaire.html">
-      <span class="material-symbols-outlined">settings</span>
-      Settings
-    </a>
-    <button id="partner-logout" class="rss-sidebar-link flex items-center gap-3 px-4 py-3 text-secondary rounded-lg font-label-caps text-label-caps text-left">
-      <span class="material-symbols-outlined">logout</span>
-      Logout
-    </button>
-  </div>
-</nav>
-
-<main class="partner-shell flex-1 md:ml-64 flex flex-col min-h-screen relative overflow-hidden pt-[73px]">
-  <!-- Mobile topbar -->
-  <header class="bg-surface-glass backdrop-blur-xl border-b border-surface-glass-border sticky top-[73px] z-30 w-full flex justify-between items-center px-4 md:px-gutter-x py-3 md:hidden">
-    <div class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">RentSoundSystem</div>
-    <button id="mobile-status" class="text-primary px-4 py-2 bg-surface-container rounded-full font-label-caps text-label-caps border border-primary-container shadow-[0_0_15px_rgba(252,3,109,0.2)]">
-      Partner Status
-    </button>
-  </header>
-
-  <div class="partner-content flex-1 max-w-container-max mx-auto w-full px-4 md:px-gutter-x py-8 md:py-12">
-    <!-- Page Header -->
-    <div class="mb-10">
-      <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Tableau de Bord</h2>
-      <p id="dashboard-subtitle" class="font-body-md text-body-md text-on-surface-variant">
-        Bienvenue dans votre espace partenaire. Suivez votre progression pour commencer à louer votre équipement professionnel.
-      </p>
+<!-- Sidebar partenaire fixe -->
+<aside id="partner-sidebar" class="hidden md:flex flex-col h-[calc(100vh-73px)] w-64 fixed left-0 top-[73px] bg-surface-container-low border-r border-surface-glass-border py-6 px-4 gap-4 z-40 overflow-y-auto">
+  <div class="p-4 rounded-xl bg-surface-container border border-surface-glass-border">
+    <div class="flex items-center gap-3">
+      <div class="size-11 rounded-lg bg-surface-container-highest border border-primary/30 flex items-center justify-center shrink-0 text-primary">
+        <span class="material-symbols-outlined">storefront</span>
+      </div>
+      <div class="overflow-hidden">
+        <h3 id="sidebar-company" class="text-white text-sm font-bold truncate">Partenaire RentSoundSystem</h3>
+        <span id="sidebar-status" class="inline-flex items-center gap-1 text-[11px] text-primary font-medium tracking-tight mt-0.5">
+          <span class="size-1.5 rounded-full bg-primary animate-pulse"></span>
+          En attente d'examen
+        </span>
+      </div>
     </div>
-
-    <!-- Onboarding Tracker -->
-    <section class="glass-panel rounded-xl p-8 mb-8 relative overflow-hidden">
-      <div class="absolute top-0 left-0 w-full h-1 bg-surface-container-highest">
-        <div id="progress-line" class="h-full bg-primary neon-line w-1/2 rounded-r-full"></div>
-      </div>
-
-      <h3 class="font-headline-md text-headline-md text-on-surface mb-8">Progression de l'Intégration</h3>
-
-      <div class="flex flex-col md:flex-row justify-between items-start md:items-center relative z-10 gap-8 md:gap-0">
-        <div class="hidden md:block absolute top-6 left-[12.5%] right-[12.5%] h-0.5 bg-surface-variant -z-0">
-          <div id="progress-line-middle" class="h-full bg-primary w-[50%] relative"></div>
-        </div>
-
-        <div class="flex flex-col items-center relative z-20 flex-1">
-          <div class="w-12 h-12 rounded-lg bg-surface-container-high border-2 border-primary flex items-center justify-center text-primary mb-3 z-10 shadow-[0_0_15px_rgba(252,3,109,0.3)]">
-            <span class="material-symbols-outlined">check</span>
-          </div>
-          <p class="font-label-caps text-label-caps text-on-surface text-center mt-2">Inscription</p>
-        </div>
-
-        <div id="step-validation" class="flex flex-col items-center relative z-20 flex-1">
-          <div class="w-14 h-14 rounded-lg bg-primary border-4 border-surface flex items-center justify-center text-on-primary mb-3 z-10 shadow-[0_0_20px_rgba(252,3,109,0.5)]">
-            <span class="material-symbols-outlined">pending_actions</span>
-          </div>
-          <p class="font-label-caps text-label-caps text-primary text-center">Validation</p>
-          <span id="validation-pill" class="px-3 py-1 bg-surface-container rounded-full text-xs text-on-surface-variant mt-2 border border-surface-glass-border">En cours</span>
-        </div>
-
-        <div id="step-inventory" class="flex flex-col items-center relative z-20 flex-1 opacity-40">
-          <div class="w-12 h-12 rounded-lg bg-surface-container-high border-2 border-surface-variant flex items-center justify-center text-surface-variant mb-3 z-10">
-            <span class="material-symbols-outlined">inventory_2</span>
-          </div>
-          <p class="font-label-caps text-label-caps text-secondary text-center mt-2">Inventaire</p>
-        </div>
-
-        <div id="step-active" class="flex flex-col items-center relative z-20 flex-1 opacity-40">
-          <div class="w-12 h-12 rounded-lg bg-surface-container-high border-2 border-surface-variant flex items-center justify-center text-surface-variant mb-3 z-10">
-            <span class="material-symbols-outlined">storefront</span>
-          </div>
-          <p class="font-label-caps text-label-caps text-secondary text-center mt-2">Actif</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- Bento Grid Layout -->
-    <section class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
-      <!-- Main Status Card -->
-      <div class="lg:col-span-2 glass-panel rounded-xl p-8 flex flex-col justify-center relative overflow-hidden group">
-        <div class="absolute -right-20 -top-20 w-64 h-64 bg-primary rounded-full mix-blend-screen filter blur-[100px] opacity-10 group-hover:opacity-20 transition-opacity duration-700"></div>
-        <div class="flex items-start gap-6">
-          <div id="main-icon-wrap" class="p-4 bg-surface-container rounded-lg border border-surface-glass-border text-primary shrink-0">
-            <span id="main-icon" class="material-symbols-outlined text-[32px]">manage_search</span>
-          </div>
-          <div>
-            <h3 id="main-title" class="font-headline-md text-headline-md text-on-surface mb-3">Vos documents sont en cours d'examen</h3>
-            <p id="main-description" class="font-body-md text-body-md text-on-surface-variant mb-6 max-w-2xl">
-              Notre équipe vérifie actuellement les informations de votre profil, vos documents KYC et vos zones de couverture. Ce processus garantit la qualité premium du réseau RentSoundSystem.
-              <br><br>
-              Délai estimé : <strong class="text-primary">24 à 48 heures</strong>.
-            </p>
-            <div class="flex flex-wrap gap-3">
-              <a id="main-action" href="/contact.html" class="bg-surface-container text-on-surface border border-outline-variant px-6 py-3 rounded uppercase font-label-caps text-label-caps hover:bg-surface-container-high transition-colors">
-                Contacter le support
-              </a>
-              <a href="/devenir-partenaire.html" class="bg-primary text-on-primary px-6 py-3 rounded uppercase font-label-caps text-label-caps hover:opacity-90 transition-colors shadow-[0_0_18px_rgba(252,3,109,.25)]">
-                Parcours partenaire
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pending Tasks Sidebar -->
-      <div class="glass-panel rounded-xl p-6 flex flex-col">
-        <h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
-          <span class="material-symbols-outlined text-secondary">checklist</span>
-          Tâches en attente
-        </h3>
-
-        <ul id="tasks-list" class="flex flex-col gap-4 flex-1">
-          <li class="bg-surface-container-low p-4 rounded-lg border border-surface-glass-border flex gap-4 items-start">
-            <div class="mt-0.5 text-primary">
-              <span class="material-symbols-outlined">menu_book</span>
-            </div>
-            <div>
-              <h4 class="font-body-md text-body-md font-bold text-on-surface mb-1">Lire le Guide Partenaire</h4>
-              <p class="text-sm text-on-surface-variant mb-3">Découvrez nos standards de qualité pour la location d'équipement audio.</p>
-              <a class="text-primary font-label-caps text-label-caps hover:underline uppercase tracking-widest" href="/notre-processus.html">Ouvrir le guide</a>
-            </div>
-          </li>
-
-          <li class="bg-surface-container-low p-4 rounded-lg border border-surface-glass-border flex gap-4 items-start opacity-70">
-            <div class="mt-0.5 text-secondary">
-              <span class="material-symbols-outlined">add_a_photo</span>
-            </div>
-            <div>
-              <h4 class="font-body-md text-body-md font-bold text-secondary mb-1">Préparer vos photos</h4>
-              <p class="text-sm text-secondary mb-2">Photos HD du matériel, accessoires inclus, état et références visibles.</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-
-      <!-- Locked / Active Features -->
-      <div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-card-gap mt-4">
-        <a id="feature-revenue" class="feature-card bg-surface-container-lowest p-6 rounded-xl border border-surface-variant opacity-40 flex items-center gap-4 cursor-not-allowed relative" href="#">
-          <div class="p-3 bg-surface-container rounded-lg text-surface-variant">
-            <span class="material-symbols-outlined">account_balance_wallet</span>
-          </div>
-          <div>
-            <p class="font-label-caps text-label-caps text-secondary mb-1">Revenus</p>
-            <p id="revenue-value" class="font-headline-md text-headline-md text-surface-variant">-- €</p>
-          </div>
-          <span class="lock-icon material-symbols-outlined absolute top-4 right-4 text-surface-variant">lock</span>
-        </a>
-
-        <a id="feature-orders" class="feature-card bg-surface-container-lowest p-6 rounded-xl border border-surface-variant opacity-40 flex items-center gap-4 cursor-not-allowed relative" href="#">
-          <div class="p-3 bg-surface-container rounded-lg text-surface-variant">
-            <span class="material-symbols-outlined">shopping_cart</span>
-          </div>
-          <div>
-            <p class="font-label-caps text-label-caps text-secondary mb-1">Commandes actives</p>
-            <p id="orders-value" class="font-headline-md text-headline-md text-surface-variant">0</p>
-          </div>
-          <span class="lock-icon material-symbols-outlined absolute top-4 right-4 text-surface-variant">lock</span>
-        </a>
-
-        <a id="feature-inventory" class="feature-card bg-surface-container-lowest p-6 rounded-xl border border-surface-variant opacity-40 flex items-center gap-4 cursor-not-allowed relative" href="#">
-          <div class="p-3 bg-surface-container rounded-lg text-surface-variant">
-            <span class="material-symbols-outlined">equalizer</span>
-          </div>
-          <div>
-            <p class="font-label-caps text-label-caps text-secondary mb-1">Annonces publiées</p>
-            <p id="inventory-value" class="font-headline-md text-headline-md text-surface-variant">0</p>
-          </div>
-          <span class="lock-icon material-symbols-outlined absolute top-4 right-4 text-surface-variant">lock</span>
-        </a>
-      </div>
-    </section>
   </div>
 
-  <div id="footer-container"></div>
+  <nav class="flex flex-col gap-1.5">
+    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg bg-primary-container/15 text-primary border border-primary/30 font-medium text-sm transition-all shadow-[0_0_12px_rgba(252,3,109,0.15)]"
+       href="/tableau-de-bord-partenaire.html">
+      <span class="material-symbols-outlined text-[20px]" style="font-variation-settings:'FILL' 1;">dashboard</span>
+      <span>Tableau de bord</span>
+    </a>
+
+    <a id="side-equipment" class="rss-lock flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant font-medium text-sm transition-all" href="#">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px]">speaker</span>
+        <span>Mes équipements</span>
+      </div>
+      <span class="material-symbols-outlined text-xs text-outline">lock</span>
+    </a>
+
+    <a id="side-reservations" class="rss-lock flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant font-medium text-sm transition-all" href="#">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px]">calendar_today</span>
+        <span>Réservations</span>
+      </div>
+      <span class="material-symbols-outlined text-xs text-outline">lock</span>
+    </a>
+
+    <a id="side-revenue" class="rss-lock flex items-center justify-between px-3.5 py-2.5 rounded-lg text-on-surface-variant font-medium text-sm transition-all" href="#">
+      <div class="flex items-center gap-3">
+        <span class="material-symbols-outlined text-[20px]">account_balance_wallet</span>
+        <span>Revenus</span>
+      </div>
+      <span class="material-symbols-outlined text-xs text-outline">lock</span>
+    </a>
+
+    <a class="flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-white font-medium text-sm transition-all"
+       href="/parametres-partenaire.html">
+      <span class="material-symbols-outlined text-[20px]">settings</span>
+      <span>Paramètres</span>
+    </a>
+  </nav>
+
+  <div class="mt-auto p-4 rounded-xl bg-gradient-to-br from-surface-container to-surface-container-lowest border border-surface-glass-border">
+    <div class="flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-wider mb-1.5">
+      <span class="material-symbols-outlined text-[16px]">verified_user</span>
+      Garantie matériel
+    </div>
+    <p class="text-xs text-secondary leading-relaxed mb-3">
+      Chaque location bénéficie des protections prévues par RentSoundSystem.
+    </p>
+    <a href="/contact.html?service=partner"
+       class="block w-full py-2 px-3 rounded text-xs font-semibold bg-surface-container-high hover:bg-surface-variant text-white transition-colors text-center border border-outline-variant">
+      Contacter le support
+    </a>
+  </div>
+
+  <div class="pt-4 border-t border-surface-glass-border">
+    <button id="partner-logout" class="w-full flex items-center gap-3 px-3.5 py-2.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-white font-medium text-sm transition-all text-left">
+      <span class="material-symbols-outlined text-[20px]">logout</span>
+      <span>Déconnexion</span>
+    </button>
+  </div>
+</aside>
+
+<!-- Main Dynamic Section -->
+<main class="max-w-[1280px] mx-auto flex flex-col gap-6">
+<!-- Breadcrumb Bar -->
+<nav class="flex items-center gap-2 text-xs font-medium text-on-surface-variant">
+<a class="hover:text-white transition-colors" href="#">Espace Partenaire</a>
+<span class="text-outline">/</span>
+<span class="text-primary font-semibold">Statut de Validation</span>
+</nav>
+<!-- Page Header with nocturnal glow accent -->
+<div class="relative overflow-hidden p-6 sm:p-8 rounded-xl bg-surface-container-low border border-surface-glass-border">
+<div class="absolute -top-24 -right-24 size-64 bg-primary-container/10 rounded-full blur-3xl pointer-events-none"></div>
+<div class="relative flex flex-col md:flex-row md:items-center justify-between gap-6">
+<div class="space-y-2 max-w-xl">
+<span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#fc036d]/15 text-[#fc036d] border border-[#fc036d]/30">
+<span class="size-2 rounded-full bg-[#fc036d] animate-ping"></span>
+              <span id="validation-badge-text">Examen en cours</span>
+            </span>
+<h1 class="text-2xl sm:text-3xl font-headline-lg font-bold text-white tracking-tight">Progression de l'Intégration</h1>
+<p id="dashboard-subtitle" class="text-sm text-secondary leading-relaxed">Suivez en temps réel la validation de votre profil partenaire RentSoundSystem et commencez à louer votre régie son.</p>
+</div>
+<div class="shrink-0 flex items-center gap-3">
+<button id="priority-help-btn" type="button" class="h-10 px-4 rounded-lg bg-[#fc036d] hover:bg-[#fc036d]/90 text-white text-xs font-bold tracking-wide transition-all shadow-[0_0_20px_rgba(252,3,109,0.35)] flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span>Centre d'aide prioritaire</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Main Stepper Card: 4 Stages -->
+<div class="p-6 rounded-xl bg-surface-container-low border border-surface-glass-border space-y-6">
+<!-- Stepper Header & Global Progress Bar -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="text-white text-sm font-semibold"><span id="validation-step-title">Étape 2 sur 4 : Examen par notre équipe technique</span></span>
+<span class="px-2 py-0.5 rounded text-[11px] font-bold bg-primary-container/20 text-[#fc036d]">50%</span>
+</div>
+<span class="text-xs text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-[#fc036d]">schedule</span>
+              Validation estimée sous 24h à 48h
+            </span>
+</div>
+<!-- 50% Progress Bar -->
+<div class="w-full h-2 rounded-full bg-surface-container-highest overflow-hidden p-0.5 border border-surface-glass-border">
+<div class="h-full rounded-full bg-gradient-to-r from-[#fc036d] via-primary to-[#fc036d] shadow-[0_0_10px_#fc036d]" style="width: 50%;"></div>
+</div>
+</div>
+<!-- Four Steps Interactive Timeline -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+<!-- Step 1: Completed -->
+<div class="p-4 rounded-lg bg-surface-container border border-surface-glass-border flex flex-col gap-3 relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="size-7 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 flex items-center justify-center text-sm">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</span>
+<span class="text-[10px] font-bold uppercase tracking-wider text-emerald-400">Terminé</span>
+</div>
+<div>
+<p class="text-white font-bold text-sm">1. Inscription</p>
+<p class="text-xs text-secondary mt-1">Identité, KBIS et coordonnées bancaires renseignés avec succès.</p>
+</div>
+</div>
+<!-- Step 2: Active / In Progress -->
+<div class="p-4 rounded-lg bg-surface-container border-2 border-[#fc036d] flex flex-col gap-3 relative overflow-hidden shadow-[0_0_20px_rgba(252,3,109,0.15)]">
+<div class="flex items-center justify-between">
+<span class="size-7 rounded-full bg-[#fc036d] text-white flex items-center justify-center text-xs font-bold shadow-[0_0_10px_#fc036d]">
+                2
+              </span>
+<span class="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#fc036d]">
+<span class="size-1.5 rounded-full bg-[#fc036d] animate-pulse"></span>
+                En cours
+              </span>
+</div>
+<div>
+<p class="text-white font-bold text-sm">2. Validation</p>
+<p class="text-xs text-secondary mt-1">Vérification de sécurité et conformité légale par nos modérateurs audio.</p>
+</div>
+</div>
+<!-- Step 3: Locked -->
+<div class="p-4 rounded-lg bg-surface-container/40 border border-surface-glass-border flex flex-col gap-3 opacity-60">
+<div class="flex items-center justify-between">
+<span class="size-7 rounded-full bg-surface-container-highest text-secondary flex items-center justify-center text-xs font-medium">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+</span>
+<span class="text-[10px] font-medium uppercase tracking-wider text-outline">Verrouillé</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-bold text-sm">3. Inventaire</p>
+<p class="text-xs text-outline mt-1">Dépôt de votre catalogue de caissons, consoles et micros sonorisation.</p>
+</div>
+</div>
+<!-- Step 4: Locked -->
+<div class="p-4 rounded-lg bg-surface-container/40 border border-surface-glass-border flex flex-col gap-3 opacity-60">
+<div class="flex items-center justify-between">
+<span class="size-7 rounded-full bg-surface-container-highest text-secondary flex items-center justify-center text-xs font-medium">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+</span>
+<span class="text-[10px] font-medium uppercase tracking-wider text-outline">Verrouillé</span>
+</div>
+<div>
+<p class="text-on-surface-variant font-bold text-sm">4. Activation</p>
+<p class="text-xs text-outline mt-1">Lancement des réservations publiques et premières rentrées locatives.</p>
+</div>
+</div>
+</div>
+<!-- Banner Info: 24-48h Notice -->
+<div class="p-4 rounded-lg bg-surface-container-high/60 border border-outline-variant/30 flex items-start sm:items-center gap-3.5">
+<div class="size-9 rounded-lg bg-primary-container/20 text-[#fc036d] flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]">hourglass_top</span>
+</div>
+<div class="flex-1">
+<h4 class="text-sm font-bold text-white"><span id="validation-banner-title">Votre dossier est en cours d'examen</span></h4>
+<p class="text-xs text-secondary leading-relaxed mt-0.5">
+              Notre équipe d'ingénieurs du son contrôle les documents techniques. Délai moyen de réponse actuel : <strong>24 à 48 heures ouvrées</strong>. Vous recevrez une notification par SMS et e-mail dès validation.
+            </p>
+</div>
+</div>
+</div>
+<!-- Preparation Checklist & Tasks Card -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Checklist: Actions to prepare while waiting -->
+<div class="p-6 rounded-xl bg-surface-container-low border border-surface-glass-border space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[22px]">checklist</span>
+<h3 class="font-headline-md text-base font-bold text-white">Actions recommandées en attente</h3>
+</div>
+<span class="text-xs text-on-surface-variant font-medium">0 / 2 terminé</span>
+</div>
+<p class="text-xs text-secondary">
+            Maximisez votre taux de location dès l'ouverture de votre vitrine en complétant ces deux étapes préparatoires.
+          </p>
+<div class="space-y-3 pt-1">
+<!-- Task 1 -->
+<a class="group p-3.5 rounded-lg bg-surface-container hover:bg-surface-container-high border border-surface-glass-border hover:border-primary/40 transition-all flex items-center justify-between" href="/notre-processus.html">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-[#fc036d] group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">auto_stories</span>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Lire le Guide Partenaire</h4>
+<p class="text-xs text-secondary">Règles de caution, protocole de test et remise en main propre.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-white transition-transform group-hover:translate-x-1 text-[18px]">chevron_right</span>
+</a>
+<!-- Task 2 -->
+<a class="group p-3.5 rounded-lg bg-surface-container hover:bg-surface-container-high border border-surface-glass-border hover:border-primary/40 transition-all flex items-center justify-between" href="/ajouter-annonce.html">
+<div class="flex items-center gap-3">
+<div class="size-8 rounded bg-surface-container-highest flex items-center justify-center text-primary group-hover:bg-[#fc036d] group-hover:text-white transition-colors">
+<span class="material-symbols-outlined text-[18px]">photo_camera</span>
+</div>
+<div>
+<h4 class="text-sm font-semibold text-white group-hover:text-primary transition-colors">Préparer vos photos de matériel</h4>
+<p class="text-xs text-secondary">Consultez nos standards visuels pour optimiser vos futures annonces.</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-white transition-transform group-hover:translate-x-1 text-[18px]">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Direct Live Contact Box with Sound Advisor -->
+<div class="p-6 rounded-xl bg-surface-container-low border border-surface-glass-border flex flex-col justify-between space-y-4">
+<div class="space-y-3">
+<div class="flex items-center gap-2.5">
+<span class="material-symbols-outlined text-primary text-[22px]">contact_support</span>
+<h3 class="font-headline-md text-base font-bold text-white">Besoin d'aide pour votre dossier ?</h3>
+</div>
+<p class="text-xs text-secondary leading-relaxed">
+              Un interlocuteur dédié vous assiste si vous souhaitez soumettre des pièces justificatives complémentaires ou planifier un rendez-vous téléphonique avec notre technicien son.
+            </p>
+</div>
+<div class="p-3.5 rounded-lg bg-surface-container border border-surface-glass-border flex items-center gap-3">
+<div class="size-10 rounded-full bg-cover bg-center border border-primary/40 shrink-0" data-alt="Close up portrait photo of a professional onboarding manager with studio headphones against a dark acoustic foam background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCwh0SOuCKOLWicFw6crJRA-dCHZf0PZ_cNilNDMnNFT3MnINoJzRHLFpVIgqg4UZobXL1c7x5GlEXCb3Q2kYAqAHhHJt2e6Eg2beoYwUe2RWYEWDlO73Sg1h7YAAKhVierQ6_GdmUvOAmMSYQsIKMGZYNYs4n3Xj2RCQRdxq_7-CtRdVcshCemlK9fckxbE1b0lOiUA0VYnhMnDeGfbZz9Rm3Vt1-AMfd5q64jhtq5FdRZX6p6dOyV')"></div>
+<div class="flex-1">
+<p class="text-xs font-bold text-white">Marc Valente</p>
+<p class="text-[11px] text-secondary">Responsable Onboarding Partenaires</p>
+</div>
+<span class="size-2.5 rounded-full bg-emerald-500"></span>
+</div>
+<div class="flex items-center gap-2.5">
+<button id="write-support-btn" type="button" class="flex-1 py-2 px-3 rounded text-xs font-semibold bg-surface-container-high hover:bg-surface-variant text-white border border-surface-glass-border transition-colors text-center">Écrire au support</button>
+<button id="appointment-btn" type="button" class="flex-1 py-2 px-3 rounded text-xs font-semibold bg-[#fc036d] hover:bg-[#fc036d]/90 text-white transition-colors text-center shadow-[0_0_15px_rgba(252,3,109,0.3)]">Prendre rendez-vous</button>
+</div>
+</div>
+</div>
+<!-- Disabled Dashboard Stats with Clear Lock Overlay -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<h3 class="text-sm font-bold uppercase tracking-wider text-secondary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+            Aperçu des indicateurs d'activité (Verrouillé en cours de validation)
+          </h3>
+<span class="text-xs text-outline">Actif après l'étape 4</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Stat 1: Locked Earnings -->
+<div class="relative p-5 rounded-xl bg-surface-container-low border border-surface-glass-border overflow-hidden select-none">
+<div class="filter blur-[2px] opacity-35 space-y-2 pointer-events-none">
+<p class="text-xs text-secondary font-medium">Revenus Générés</p>
+<p class="text-2xl font-bold font-headline-md text-white">2 450,00 €</p>
+<span class="text-xs text-emerald-400">+18% ce mois</span>
+</div>
+<div class="absolute inset-0 bg-surface-container-lowest/60 backdrop-blur-[1.5px] flex flex-col items-center justify-center text-center p-3">
+<span class="material-symbols-outlined text-outline text-[22px] mb-1">lock</span>
+<span class="text-[11px] font-bold text-white uppercase tracking-wider">Revenus non débloqués</span>
+<span class="text-[10px] text-outline">Validation en attente</span>
+</div>
+</div>
+<!-- Stat 2: Locked Orders -->
+<div class="relative p-5 rounded-xl bg-surface-container-low border border-surface-glass-border overflow-hidden select-none">
+<div class="filter blur-[2px] opacity-35 space-y-2 pointer-events-none">
+<p class="text-xs text-secondary font-medium">Commandes Totales</p>
+<p class="text-2xl font-bold font-headline-md text-white">14</p>
+<span class="text-xs text-on-surface-variant">0 en attente</span>
+</div>
+<div class="absolute inset-0 bg-surface-container-lowest/60 backdrop-blur-[1.5px] flex flex-col items-center justify-center text-center p-3">
+<span class="material-symbols-outlined text-outline text-[22px] mb-1">lock</span>
+<span class="text-[11px] font-bold text-white uppercase tracking-wider">Réservations verrouillées</span>
+<span class="text-[10px] text-outline">Validation en attente</span>
+</div>
+</div>
+<!-- Stat 3: Locked Inventory Count -->
+<div class="relative p-5 rounded-xl bg-surface-container-low border border-surface-glass-border overflow-hidden select-none">
+<div class="filter blur-[2px] opacity-35 space-y-2 pointer-events-none">
+<p class="text-xs text-secondary font-medium">Systèmes en Ligne</p>
+<p class="text-2xl font-bold font-headline-md text-white">0 / 8</p>
+<span class="text-xs text-secondary">Catalogue non publié</span>
+</div>
+<div class="absolute inset-0 bg-surface-container-lowest/60 backdrop-blur-[1.5px] flex flex-col items-center justify-center text-center p-3">
+<span class="material-symbols-outlined text-outline text-[22px] mb-1">lock</span>
+<span class="text-[11px] font-bold text-white uppercase tracking-wider">Catalogue verrouillé</span>
+<span class="text-[10px] text-outline">Validation en attente</span>
+</div>
+</div>
+<!-- Stat 4: Locked Rating -->
+<div class="relative p-5 rounded-xl bg-surface-container-low border border-surface-glass-border overflow-hidden select-none">
+<div class="filter blur-[2px] opacity-35 space-y-2 pointer-events-none">
+<p class="text-xs text-secondary font-medium">Score Confiance Partenaire</p>
+<p class="text-2xl font-bold font-headline-md text-white">100%</p>
+<span class="text-xs text-secondary">Vérification en cours</span>
+</div>
+<div class="absolute inset-0 bg-surface-container-lowest/60 backdrop-blur-[1.5px] flex flex-col items-center justify-center text-center p-3">
+<span class="material-symbols-outlined text-outline text-[22px] mb-1">lock</span>
+<span class="text-[11px] font-bold text-white uppercase tracking-wider">Score non activé</span>
+<span class="text-[10px] text-outline">Validation en attente</span>
+</div>
+</div>
+</div>
+</div>
 </main>
+</div>
+<div id="footer-container"></div>
 
-<script>
-window.RSS_PARTNER_PAGE = "tableau-de-bord-partenaire.html";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/components.js"></script>
+<script>window.RSS_PARTNER_PAGE="tableau-de-bord-partenaire.html";</script>
 
-(function () {
+<script id="rss-partner-validation-dashboard">
+(function(){
   "use strict";
 
   const SUPABASE_URL = "https://crxofkxinsspfgdsxpiy.supabase.co";
   const SUPABASE_KEY = "sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
   const sb = window.supabase ? window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
-  function setText(id, value) {
+  function setText(id, value){
     const el = document.getElementById(id);
-    if (el) el.textContent = value;
+    if(el) el.textContent = value;
   }
 
-  function removeLocks() {
-    ["side-inventory","side-documents","side-quotes","feature-revenue","feature-orders","feature-inventory"].forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.classList.remove("rss-lock", "opacity-40", "cursor-not-allowed", "text-surface-variant");
-      el.classList.add("hover:border-primary", "hover:text-primary", "transition-colors");
-      el.querySelectorAll(".lock-icon, .material-symbols-outlined").forEach(icon => {
-        if (icon.textContent.trim() === "lock") icon.remove();
-      });
-    });
-
-    const links = {
-      "side-inventory": "/mes-annonces.html",
-      "side-documents": "/documents-partenaire.html",
-      "side-quotes": "/mes-devis.html",
-      "feature-revenue": "/paiements-partenaire.html",
-      "feature-orders": "/mes-devis.html",
-      "feature-inventory": "/mes-annonces.html"
-    };
-
-    Object.entries(links).forEach(([id, href]) => {
-      const el = document.getElementById(id);
-      if (el) el.href = href;
-    });
+  function goSupport(extra){
+    const suffix = extra ? "&action=" + encodeURIComponent(extra) : "";
+    window.location.href = "/contact.html?service=partner" + suffix;
   }
 
-  function setApprovedState() {
-    setText("sidebar-status", "Compte Validé");
-    setText("mobile-status", "Validé");
-    setText("validation-pill", "Validé");
-    setText("dashboard-subtitle", "Votre espace partenaire est actif. Vous pouvez publier vos annonces et gérer vos demandes.");
-    setText("main-title", "Votre compte partenaire est validé");
-    setText("main-description", "Vous pouvez maintenant ajouter votre matériel, gérer vos demandes de devis, suivre vos paiements et préparer vos cautions.");
-    setText("main-action", "Ajouter une annonce");
-    setText("revenue-value", "0 €");
-    setText("orders-value", "0");
-    setText("inventory-value", "0");
-    document.getElementById("main-action")?.setAttribute("href", "/ajouter-annonce.html");
-    document.getElementById("main-icon").textContent = "verified";
-    document.getElementById("progress-line").style.width = "100%";
-    document.getElementById("progress-line-middle").style.width = "100%";
-    document.getElementById("step-inventory").classList.remove("opacity-40");
-    document.getElementById("step-active").classList.remove("opacity-40");
-    removeLocks();
+  function setPending(company){
+    setText("sidebar-company", company || "Partenaire RentSoundSystem");
+    setText("sidebar-status", "En attente d'examen");
+    setText("validation-badge-text", "Examen en cours");
+    setText("dashboard-subtitle",
+      "Suivez en temps réel la validation de votre profil partenaire RentSoundSystem. Votre dossier est actuellement en cours d'examen.");
+    setText("validation-step-title", "Étape 2 sur 4 : Examen par notre équipe technique");
+    setText("validation-banner-title", "Votre dossier est en cours d'examen");
   }
 
-  function setRejectedState() {
-    setText("sidebar-status", "Correction Requise");
-    setText("mobile-status", "À corriger");
-    setText("validation-pill", "À corriger");
-    setText("main-title", "Votre dossier nécessite une correction");
-    setText("main-description", "Notre équipe a besoin d'informations complémentaires avant de valider votre compte partenaire. Contactez le support pour corriger votre dossier.");
-    document.getElementById("main-icon").textContent = "error";
-    document.getElementById("progress-line").style.width = "35%";
-    document.getElementById("progress-line-middle").style.width = "35%";
+  function setRejected(company){
+    setText("sidebar-company", company || "Partenaire RentSoundSystem");
+    setText("sidebar-status", "Correction requise");
+    setText("validation-badge-text", "Correction requise");
+    setText("dashboard-subtitle",
+      "Votre dossier nécessite une correction avant validation. Consultez les éléments demandés ou contactez le support partenaire.");
+    setText("validation-step-title", "Étape 2 sur 4 : Correction du dossier");
+    setText("validation-banner-title", "Votre dossier nécessite une correction");
   }
 
-  function setPendingState() {
-    setText("sidebar-status", "Validation Phase");
-    setText("mobile-status", "En validation");
-    setText("validation-pill", "En cours");
-  }
-
-  async function loadPartnerStatus() {
-    try {
-      if (!sb) return setPendingState();
+  async function loadStatus(){
+    try{
+      if(!sb){
+        setPending("");
+        return;
+      }
 
       const { data: userData } = await sb.auth.getUser();
       const user = userData && userData.user;
 
-      if (!user) {
-        setText("main-title", "Connectez-vous pour suivre votre dossier");
-        setText("main-description", "Votre dossier partenaire a été soumis. Connectez-vous avec le même email pour suivre sa validation.");
-        const action = document.getElementById("main-action");
-        if (action) {
-          action.href = "/connexion-partenaire.html";
-          action.textContent = "Se connecter";
-        }
+      if(!user){
+        window.location.href = "/connexion-partenaire.html";
         return;
       }
 
-      let status = "pending";
-
-      const { data: partner } = await sb
+      const { data: partner, error } = await sb
         .from("partners")
         .select("status, company_name")
         .eq("user_id", user.id)
         .maybeSingle();
 
-      if (partner && partner.status) {
-        status = String(partner.status).toLowerCase();
-        if (partner.company_name) {
-          setText("dashboard-subtitle", "Bienvenue " + partner.company_name + ". Suivez ici la progression de votre compte partenaire.");
-        }
+      if(error) console.warn("Partner dashboard:", error);
+
+      const company = partner && partner.company_name ? String(partner.company_name) : "";
+      const status = partner && partner.status
+        ? String(partner.status).trim().toLowerCase()
+        : "pending";
+
+      // Le dashboard validé reste une page séparée.
+      if(["approved","validated","valid","active"].includes(status)){
+        window.location.replace("/tableau-de-bord-partenaire-valide.html");
+        return;
       }
 
-      if (status === "approved") setApprovedState();
-      else if (status === "rejected") setRejectedState();
-      else setPendingState();
+      if(["rejected","refused","correction_required","needs_changes"].includes(status)){
+        setRejected(company);
+      } else {
+        setPending(company);
+      }
 
-    } catch (error) {
-      console.warn("Erreur chargement partenaire:", error);
-      setPendingState();
+    } catch(error){
+      console.warn("Erreur chargement statut partenaire:", error);
+      setPending("");
     }
   }
 
-  document.getElementById("partner-logout")?.addEventListener("click", async function () {
-    try { if (sb) await sb.auth.signOut(); } catch(e) {}
+  document.getElementById("partner-logout")?.addEventListener("click", async function(){
+    try { if(sb) await sb.auth.signOut(); } catch(e) {}
     window.location.href = "/connexion-partenaire.html";
   });
 
-  document.getElementById("contact-manager")?.addEventListener("click", function () {
-    window.location.href = "/contact.html?service=partner";
+  document.getElementById("priority-help-btn")?.addEventListener("click", function(){
+    goSupport("priority");
+  });
+  document.getElementById("write-support-btn")?.addEventListener("click", function(){
+    goSupport("message");
+  });
+  document.getElementById("appointment-btn")?.addEventListener("click", function(){
+    goSupport("appointment");
   });
 
-  loadPartnerStatus();
+  loadStatus();
 })();
 </script>
 
 <script src="/assets/js/partner-flow.js"></script>
-<script src="/components.js"></script>
-</body>
-</html>
+
+</body></html>
