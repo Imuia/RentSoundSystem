@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Étape 6 — Confirmation &amp; signature | Administration RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-container": "#ff4d80",
+                        "secondary": "#c6c6c7",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "outline-variant": "#5d3f44",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-on-surface": "#313030",
+                        "surface-variant": "#353534",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "on-secondary": "#2f3132",
+                        "tertiary-container": "#929090",
+                        "surface-tint": "#ffb2bf",
+                        "on-secondary-fixed-variant": "#454748",
+                        "tertiary": "#c8c6c5",
+                        "on-primary-fixed": "#3f0016",
+                        "surface-container": "#201f1f",
+                        "on-primary-fixed-variant": "#90003b",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-container-highest": "#353534",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#e3e2e3",
+                        "primary": "#ffb2bf",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-error-container": "#ffdad6",
+                        "background": "#131313",
+                        "error": "#ffb4ab",
+                        "surface": "#131313",
+                        "on-tertiary": "#303030",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-primary-container": "#5a0022",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary-container": "#454748",
+                        "primary-fixed": "#ffd9de",
+                        "on-background": "#e5e2e1",
+                        "outline": "#ac878d",
+                        "surface-dim": "#131313",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#393939",
+                        "on-primary": "#660028",
+                        "inverse-primary": "#bc004f",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-error": "#690005",
+                        "on-surface-muted": "#E6BCC2",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#e6bcc2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-padding-y": "0.625rem",
+                        "card-gap": "1.5rem",
+                        "gutter-x": "2.5rem",
+                        "section-padding-y": "6rem",
+                        "container-max": "1280px",
+                        "component-padding-x": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "label-caps": ["Inter"],
+                        "display-hero": ["Manrope"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .neon-shadow { box-shadow: 0 0 20px rgba(252, 3, 109, 0.3); }
+        .glass-panel { background: linear-gradient(145deg, rgba(31,31,31,0.6) 0%, rgba(20,20,20,0.8) 100%); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
+    </style>
+<link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+
+<style id="rss-crm-admin-shell">
+  .crm-stage-nav{
+    display:flex;gap:7px;align-items:center;overflow-x:auto;
+    padding:10px 12px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;background:#171717;scrollbar-width:thin;
+  }
+  .crm-stage-nav a{
+    flex:0 0 auto;text-decoration:none;color:#d7c3c8;background:#232222;
+    border:1px solid rgba(255,255,255,.08);padding:8px 11px;border-radius:8px;
+    font:700 12px/1 Inter,Arial,sans-serif;transition:.18s ease;
+  }
+  .crm-stage-nav a:hover,.crm-stage-nav a.active{
+    color:white;border-color:#FC036D;background:rgba(252,3,109,.13);
+    box-shadow:0 0 18px rgba(252,3,109,.12);
+  }
+  .crm-stitch-frame{
+    background:#131313;border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;overflow:hidden;min-height:620px;
+  }
+  .crm-stitch-content{
+    background:#131313;color:#e5e2e1;min-height:620px;
+  }
+  .crm-stitch-content > main,
+  .crm-stitch-content main{
+    width:100%!important;max-width:none!important;
+    margin-left:0!important;
+  }
+  .crm-stitch-content .md\:ml-64{margin-left:0!important;}
+  .crm-stitch-content .h-screen{height:auto!important;min-height:620px!important;}
+  .crm-stitch-content .overflow-hidden{overflow:visible!important;}
+  .crm-stitch-content .fixed{position:absolute;}
+  @media(max-width:760px){
+    .crm-stage-nav{margin-bottom:12px}
+    .crm-stitch-frame{border-radius:10px}
+  }
+</style>
+
+</head>
+<body data-admin-page="crm">
+<div class="admin-app">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin-dashboard.html">
+    <span class="admin-brand-mark">R</span>
+    <span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span>
+  </a>
+  <nav class="admin-nav">
+    <div class="admin-nav-label">Pilotage</div>
+    <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+    <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+    <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+    <a class="admin-nav-link" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+    <a class="admin-nav-link active" data-nav-page="crm" href="/admin-crm-workflow.html"><span class="material-symbols-outlined">account_tree</span>CRM & Workflow</a>
+    <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+    <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+    <div class="admin-nav-label">Gestion</div>
+    <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+    <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+    <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+    <div class="admin-nav-label">Opérations</div>
+    <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+    <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+    <div class="admin-nav-label">Système</div>
+    <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+  </nav>
+  <div class="admin-sidebar-footer">
+    <div class="admin-profile-mini">
+      <div class="admin-avatar">AD</div>
+      <div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div>
+    </div>
+    <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+  </div>
+</aside>
+
+<div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <div class="admin-topbar-left">
+      <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="admin-page-heading">
+        <h1>Étape 6 — Confirmation &amp; signature</h1>
+        <p>Validation client, confirmation et signature du dossier.</p>
+      </div>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-icon-button" href="/admin-crm-workflow.html" title="Vue globale CRM">
+        <span class="material-symbols-outlined">account_tree</span>
+      </a>
+      <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="admin-icon-button" href="/" title="Voir le site">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <nav class="crm-stage-nav" aria-label="Étapes CRM"><a class="" href="/admin-crm-workflow.html">Workflow</a><a class="" href="/admin-crm-etape-1-qualification.html">1</a><a class="" href="/admin-crm-etape-2-verification.html">2</a><a class="" href="/admin-crm-etape-3-demande-prix.html">3</a><a class="" href="/admin-crm-etape-4-controle-offre.html">4</a><a class="" href="/admin-crm-etape-5-devis.html">5</a><a class="active" href="/admin-crm-etape-6-signature.html">6</a><a class="" href="/admin-crm-etape-7-paiement-caution.html">7</a><a class="" href="/admin-crm-etape-8-logistique.html">8</a><a class="" href="/admin-crm-etape-9-suivi-livraison.html">9</a><a class="" href="/admin-crm-etape-10-retour-inspection.html">10</a><a class="" href="/admin-crm-cloture-caution.html">Clôture</a><a class="" href="/admin-crm-litige.html">Litiges</a><a class="" href="/admin-crm-email-devis.html">Emails</a></nav>
+    <section class="crm-stitch-frame">
+      <div class="crm-stitch-content">
+        
+ TopNavBar 
+
+ Scrollable Content 
+<div class="flex-1 overflow-y-auto p-6 md:p-10">
+<div class="max-w-container-max mx-auto">
+<!-- Header & Stepper -->
+<div class="mb-8">
+<p class="text-secondary font-label-caps text-label-caps uppercase tracking-widest mb-2">Réservation #REQ-8492</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-6">Étape 6 sur 9 : Confirmation &amp; Signature</h2>
+<!-- Stepper -->
+<div class="flex items-center w-full max-w-3xl mb-10">
+<!-- Step 1-5 (Completed) -->
+<div class="flex-1 h-1 bg-primary rounded-l-full"></div>
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center -mx-1 z-10 neon-shadow">
+<span class="material-symbols-outlined text-background text-sm" data-icon="check">check</span>
+</div>
+<div class="flex-1 h-1 bg-primary"></div>
+<div class="w-6 h-6 rounded-full bg-primary flex items-center justify-center -mx-1 z-10 neon-shadow">
+<span class="material-symbols-outlined text-background text-sm" data-icon="check">check</span>
+</div>
+<div class="flex-1 h-1 bg-primary"></div>
+<div class="w-8 h-8 rounded-full border-2 border-primary bg-surface-container flex items-center justify-center -mx-1 z-10 neon-shadow">
+<span class="text-primary font-bold text-sm">6</span>
+</div>
+<!-- Step 7-9 (Pending) -->
+<div class="flex-1 h-1 bg-surface-container-highest"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface-container-highest bg-surface-container flex items-center justify-center -mx-1 z-10"></div>
+<div class="flex-1 h-1 bg-surface-container-highest"></div>
+<div class="w-6 h-6 rounded-full border-2 border-surface-container-highest bg-surface-container flex items-center justify-center -mx-1 z-10"></div>
+<div class="flex-1 h-1 bg-surface-container-highest rounded-r-full"></div>
+</div>
+</div>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Document Viewer Column (Takes 8 cols on desktop) -->
+<div class="lg:col-span-8 glass-panel rounded-xl p-8 flex flex-col h-[700px]">
+<div class="flex justify-between items-center mb-6 pb-4 border-b border-surface-glass-border">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Contrat de Location</h3>
+<p class="text-secondary text-sm">LiveNation Fr • 12-26 Oct 2024</p>
+</div>
+<div class="text-right">
+<p class="text-secondary text-sm">Montant Total</p>
+<p class="font-headline-md text-headline-md text-primary font-bold">22 158 €</p>
+</div>
+</div>
+<!-- PDF Viewer Placeholder -->
+<div class="flex-grow bg-[#E5E2E1] rounded-lg relative overflow-hidden flex items-center justify-center border border-outline-variant/30">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: repeating-linear-gradient(45deg, #000 25%, transparent 25%, transparent 75%, #000 75%, #000), repeating-linear-gradient(45deg, #000 25%, #E5E2E1 25%, #E5E2E1 75%, #000 75%, #000); background-position: 0 0, 10px 10px; background-size: 20px 20px;"></div>
+<div class="text-center z-10 text-inverse-surface mix-blend-difference">
+<span class="material-symbols-outlined text-6xl mb-4" data-icon="description">description</span>
+<p class="font-body-lg text-body-lg font-semibold text-black">Aperçu du Document PDF</p>
+<p class="text-sm mt-2 text-black/70">Contrat_Location_REQ8492.pdf</p>
+</div>
+</div>
+<div class="mt-6 flex justify-end">
+<button class="flex items-center gap-2 px-6 py-3 rounded-DEFAULT border border-outline-variant text-on-surface hover:bg-surface-container transition-colors uppercase font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                                Télécharger le Contrat PDF
+                            </button>
+</div>
+</div>
+<!-- Side Panel Actions (Takes 4 cols on desktop) -->
+<div class="lg:col-span-4 flex flex-col gap-6">
+<!-- Status Card -->
+<div class="bg-surface-container-low rounded-xl p-6 border border-surface-glass-border">
+<h3 class="font-headline-md text-headline-md mb-6 border-b border-surface-glass-border pb-4">Statut des Signatures</h3>
+<!-- Partner Signature -->
+<div class="flex items-start gap-4 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">SonicWorks Audio</p>
+<p class="text-secondary text-sm mb-1">Partenaire</p>
+<p class="text-primary text-xs bg-primary/10 px-2 py-1 rounded inline-block">Signé le 04 Oct 2024</p>
+</div>
+</div>
+<!-- Client Signature -->
+<div class="flex items-start gap-4 mb-8">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest border border-outline-variant flex items-center justify-center text-secondary flex-shrink-0">
+<span class="material-symbols-outlined" data-icon="schedule">schedule</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">LiveNation Fr</p>
+<p class="text-secondary text-sm mb-1">Client</p>
+<p class="text-[#ffb4ab] text-xs bg-error-container/30 px-2 py-1 rounded inline-block mb-3">En attente de signature</p>
+<button class="text-xs text-[#fc036d] border border-[#fc036d] px-3 py-1.5 rounded hover:bg-[#fc036d]/10 transition-colors">
+                                        Relancer le client
+                                    </button>
+</div>
+</div>
+<!-- Manual Override -->
+<div class="pt-6 border-t border-surface-glass-border">
+<p class="text-sm text-secondary mb-3">Signature papier reçue ?</p>
+<label class="flex items-center cursor-pointer">
+<div class="relative">
+<input class="sr-only" type="checkbox"/>
+<div class="block bg-surface-container-highest w-10 h-6 rounded-full border border-outline-variant"></div>
+<div class="dot absolute left-1 top-1 bg-secondary w-4 h-4 rounded-full transition"></div>
+</div>
+<div class="ml-3 text-sm text-on-surface font-medium">Valider manuellement</div>
+</label>
+</div>
+</div>
+<!-- Final Action -->
+<div class="mt-auto">
+<button class="w-full bg-[#fc036d] opacity-50 cursor-not-allowed text-white font-label-caps text-label-caps py-4 rounded-DEFAULT uppercase tracking-wider flex justify-center items-center gap-2" disabled="">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+                                Confirmer la Réservation
+                            </button>
+<p class="text-center text-xs text-secondary mt-3">La confirmation nécessite toutes les signatures.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+
+</div>
+
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div id="header-container" hidden></div>
+<div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>

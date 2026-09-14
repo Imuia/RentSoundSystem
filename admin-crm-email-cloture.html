@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM — Email clôture &amp; remboursement | Administration RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "primary": "#ffb2bf",
+                "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                "outline": "#ac878d",
+                "surface-bright": "#393939",
+                "surface-container-high": "#2a2a2a",
+                "on-surface-muted": "#E6BCC2",
+                "inverse-on-surface": "#313030",
+                "on-secondary-fixed": "#1a1c1d",
+                "error-container": "#93000a",
+                "error": "#ffb4ab",
+                "neon-glow": "rgba(252, 3, 109, 0.3)",
+                "on-primary-fixed-variant": "#90003b",
+                "tertiary": "#c8c6c5",
+                "surface-variant": "#353534",
+                "primary-fixed-dim": "#ffb2bf",
+                "secondary-fixed": "#e3e2e3",
+                "secondary-fixed-dim": "#c6c6c7",
+                "on-error": "#690005",
+                "secondary-container": "#454748",
+                "primary-fixed": "#ffd9de",
+                "inverse-surface": "#e5e2e1",
+                "on-tertiary-fixed": "#1b1b1c",
+                "on-surface-variant": "#e6bcc2",
+                "on-surface": "#e5e2e1",
+                "surface-container": "#201f1f",
+                "secondary": "#c6c6c7",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "outline-variant": "#5d3f44",
+                "on-error-container": "#ffdad6",
+                "background": "#131313",
+                "on-tertiary": "#303030",
+                "surface-glass": "rgba(31, 31, 31, 0.6)",
+                "on-secondary": "#2f3132",
+                "surface-dim": "#131313",
+                "on-primary": "#660028",
+                "surface-container-highest": "#353534",
+                "surface-container-lowest": "#0e0e0e",
+                "surface-tint": "#ffb2bf",
+                "surface": "#131313",
+                "primary-container": "#ff4d80",
+                "inverse-primary": "#bc004f",
+                "tertiary-container": "#929090",
+                "on-secondary-container": "#b5b5b6",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-container-low": "#1c1b1b",
+                "on-secondary-fixed-variant": "#454748",
+                "on-primary-container": "#5a0022",
+                "on-tertiary-fixed-variant": "#474746",
+                "on-primary-fixed": "#3f0016",
+                "on-tertiary-container": "#2a2a2a",
+                "on-background": "#e5e2e1"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+        },
+        "spacing": {
+                "section-padding-y": "6rem",
+                "container-max": "1280px",
+                "card-gap": "1.5rem",
+                "gutter-x": "2.5rem",
+                "component-padding-y": "0.625rem",
+                "component-padding-x": "1.5rem"
+        },
+        "fontFamily": {
+                "display-hero": ["Manrope"],
+                "display-hero-mobile": ["Manrope"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"],
+                "headline-lg": ["Manrope"],
+                "label-caps": ["Inter"],
+                "headline-md": ["Manrope"]
+        },
+        "fontSize": {
+                "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "display-hero-mobile": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}]
+        }
+      },
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.6) 0%, rgba(19, 13, 15, 0.6) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .glow-magenta {
+            box-shadow: 0 0 20px 0 rgba(252, 3, 109, 0.3);
+        }
+    </style>
+<link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+
+<style id="rss-crm-admin-shell">
+  .crm-stage-nav{
+    display:flex;gap:7px;align-items:center;overflow-x:auto;
+    padding:10px 12px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;background:#171717;scrollbar-width:thin;
+  }
+  .crm-stage-nav a{
+    flex:0 0 auto;text-decoration:none;color:#d7c3c8;background:#232222;
+    border:1px solid rgba(255,255,255,.08);padding:8px 11px;border-radius:8px;
+    font:700 12px/1 Inter,Arial,sans-serif;transition:.18s ease;
+  }
+  .crm-stage-nav a:hover,.crm-stage-nav a.active{
+    color:white;border-color:#FC036D;background:rgba(252,3,109,.13);
+    box-shadow:0 0 18px rgba(252,3,109,.12);
+  }
+  .crm-stitch-frame{
+    background:#131313;border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;overflow:hidden;min-height:620px;
+  }
+  .crm-stitch-content{
+    background:#131313;color:#e5e2e1;min-height:620px;
+  }
+  .crm-stitch-content > main,
+  .crm-stitch-content main{
+    width:100%!important;max-width:none!important;
+    margin-left:0!important;
+  }
+  .crm-stitch-content .md\:ml-64{margin-left:0!important;}
+  .crm-stitch-content .h-screen{height:auto!important;min-height:620px!important;}
+  .crm-stitch-content .overflow-hidden{overflow:visible!important;}
+  .crm-stitch-content .fixed{position:absolute;}
+  @media(max-width:760px){
+    .crm-stage-nav{margin-bottom:12px}
+    .crm-stitch-frame{border-radius:10px}
+  }
+</style>
+
+</head>
+<body data-admin-page="crm">
+<div class="admin-app">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin-dashboard.html">
+    <span class="admin-brand-mark">R</span>
+    <span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span>
+  </a>
+  <nav class="admin-nav">
+    <div class="admin-nav-label">Pilotage</div>
+    <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+    <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+    <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+    <a class="admin-nav-link" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+    <a class="admin-nav-link active" data-nav-page="crm" href="/admin-crm-workflow.html"><span class="material-symbols-outlined">account_tree</span>CRM & Workflow</a>
+    <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+    <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+    <div class="admin-nav-label">Gestion</div>
+    <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+    <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+    <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+    <div class="admin-nav-label">Opérations</div>
+    <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+    <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+    <div class="admin-nav-label">Système</div>
+    <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+  </nav>
+  <div class="admin-sidebar-footer">
+    <div class="admin-profile-mini">
+      <div class="admin-avatar">AD</div>
+      <div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div>
+    </div>
+    <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+  </div>
+</aside>
+
+<div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <div class="admin-topbar-left">
+      <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="admin-page-heading">
+        <h1>CRM — Email clôture &amp; remboursement</h1>
+        <p>Prévisualisation de la confirmation de clôture et remboursement de caution.</p>
+      </div>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-icon-button" href="/admin-crm-workflow.html" title="Vue globale CRM">
+        <span class="material-symbols-outlined">account_tree</span>
+      </a>
+      <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="admin-icon-button" href="/" title="Voir le site">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <nav class="crm-stage-nav" aria-label="Étapes CRM"><a class="" href="/admin-crm-workflow.html">Workflow</a><a class="" href="/admin-crm-etape-1-qualification.html">1</a><a class="" href="/admin-crm-etape-2-verification.html">2</a><a class="" href="/admin-crm-etape-3-demande-prix.html">3</a><a class="" href="/admin-crm-etape-4-controle-offre.html">4</a><a class="" href="/admin-crm-etape-5-devis.html">5</a><a class="" href="/admin-crm-etape-6-signature.html">6</a><a class="" href="/admin-crm-etape-7-paiement-caution.html">7</a><a class="" href="/admin-crm-etape-8-logistique.html">8</a><a class="" href="/admin-crm-etape-9-suivi-livraison.html">9</a><a class="" href="/admin-crm-etape-10-retour-inspection.html">10</a><a class="" href="/admin-crm-cloture-caution.html">Clôture</a><a class="" href="/admin-crm-litige.html">Litiges</a><a class="" href="/admin-crm-email-devis.html">Emails</a></nav>
+    <section class="crm-stitch-frame">
+      <div class="crm-stitch-content">
+        
+ Transaction Content Container 
+<div class="w-full max-w-[800px]">
+<!-- Header Identity -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 gap-6">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-2">Projet #REQ-8492</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Client: Zenith Production Paris</p>
+</div>
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full border border-primary/30 bg-primary/10">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-label-caps text-primary font-bold">Dossier Clôturé</span>
+</div>
+</div>
+<!-- Summary Glass Card -->
+<div class="glass-panel rounded-xl p-8 mb-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">description</span>
+<h2 class="font-headline-md text-headline-md text-on-surface">Inspection Technique</h2>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    Suite au retour du parc matériel, nos ingénieurs système ont effectué un diagnostic complet de l'unité <span class="text-on-surface font-semibold">L-Acoustics KS28 (SN: 9284)</span>. Une défaillance mineure de la bobine mobile a été identifiée, nécessitant une intervention technique standard. Le reste du kit a été validé conforme aux spécifications de rendement acoustique nominal.
+                </p>
+</div>
+<!-- Financial Breakdown Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between">
+<span class="text-label-caps text-on-surface-variant mb-4">Dépôt Initial</span>
+<div class="font-headline-md text-headline-md text-on-surface">10,000.00 €</div>
+</div>
+<div class="glass-panel p-6 rounded-xl border-l-4 border-primary flex flex-col justify-between bg-primary/5">
+<span class="text-label-caps text-primary mb-4">Retenue Technique</span>
+<div class="font-headline-md text-headline-md text-primary">-450.00 €</div>
+<div class="text-[10px] text-primary/60 mt-2 uppercase tracking-widest">Main d'œuvre &amp; Composants</div>
+</div>
+<div class="glass-panel p-6 rounded-xl flex flex-col justify-between bg-surface-container-high">
+<span class="text-label-caps text-on-surface-variant mb-4">Remboursement Final</span>
+<div class="font-headline-md text-headline-md text-on-surface">9,550.00 €</div>
+</div>
+</div>
+<!-- Action Section -->
+<div class="flex flex-col items-center text-center gap-8 mb-24">
+<p class="text-body-md font-body-md text-on-surface-variant max-w-lg">
+                    Le remboursement a été initié vers votre compte bancaire (terminant par *8821). Les fonds seront disponibles sous 3 à 5 jours ouvrés selon votre établissement.
+                </p>
+<a class="glow-magenta bg-[#FC036D] text-white font-bold text-label-caps px-10 py-4 rounded-lg flex items-center gap-3 hover:scale-[1.02] active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">download</span>
+                    FACTURE &amp; RAPPORT TECHNIQUE
+                </a>
+</div>
+<!-- Atmosphere Image (Glassmorphism Context) -->
+<div class="relative h-64 w-full rounded-2xl overflow-hidden mb-24 glass-panel">
+<img class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A macro shot of professional high-end audio equipment in a dark recording studio setting. The lighting is cinematic with deep obsidian surfaces and vibrant electric magenta neon accents reflecting off the metallic hardware. The atmosphere is sophisticated, technical, and premium, evoking a sense of nocturnal precision in a professional audio engineering environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdeRsnOrUVS0m_B4YgQdkTRio_eBnFMvXQHyJW_O-B9ym7Fh-vGEaEk8jvsPKOzjKVm7MMBmNYuX3mPumXhHlAnNnnC6hq9duU33zYaivMKmsWK8bqBkJnzZlGayTvTxE8j6WUlMhX-I92wYrmuSJjVdX9hw0JmFhgFUWF2Fpp6VK7A-0GuzugWJ2vRD1awiUrL0bHEVQ0OGT8qq3sYjDAtjg7e8SDzaHJhjw4hWRX4pBf_IHQSXnxGmcFUzERe1F3FQb3LO7NXnk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-6 left-8">
+<div class="text-label-caps text-primary mb-1">Qualité Certifiée</div>
+<div class="text-headline-md font-bold">Maintenance Audio Elite</div>
+</div>
+</div>
+</div>
+
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div id="header-container" hidden></div>
+<div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>

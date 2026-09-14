@@ -132,8 +132,35 @@
     }
   }
 
+
+  function ensureCrmNavigation() {
+    const nav = $('.admin-nav');
+    if (!nav || $('[data-nav-page="crm"]', nav)) return;
+
+    const link = document.createElement('a');
+    link.className = 'admin-nav-link';
+    link.dataset.navPage = 'crm';
+    link.href = '/admin-crm-workflow.html';
+    link.innerHTML = '<span class="material-symbols-outlined">account_tree</span>CRM & Workflow';
+
+    const studioIa = $('[data-nav-page="studio-ia"]', nav);
+    const reservations = $('[data-nav-page="reservations"]', nav);
+    const orders = $('[data-nav-page="orders"]', nav);
+
+    if (studioIa && studioIa.parentNode === nav) {
+      studioIa.insertAdjacentElement('afterend', link);
+    } else if (reservations && reservations.parentNode === nav) {
+      reservations.insertAdjacentElement('beforebegin', link);
+    } else if (orders && orders.parentNode === nav) {
+      orders.insertAdjacentElement('beforebegin', link);
+    } else {
+      nav.appendChild(link);
+    }
+  }
+
   function setupShell() {
     ensureStudioIaNavLink();
+    ensureCrmNavigation();
     const sidebar = $('.admin-sidebar');
     const overlay = $('.admin-mobile-overlay');
     const menu = $('[data-admin-menu]');

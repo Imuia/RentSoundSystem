@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM — Gestion des litiges | Administration RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-primary-fixed-variant": "#90003b",
+                        "surface-dim": "#131313",
+                        "outline-variant": "#5d3f44",
+                        "primary-fixed": "#ffd9de",
+                        "surface-variant": "#353534",
+                        "on-primary-fixed": "#3f0016",
+                        "on-surface-variant": "#e6bcc2",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "primary": "#ffb2bf",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-primary-container": "#5a0022",
+                        "tertiary-container": "#929090",
+                        "on-background": "#e5e2e1",
+                        "on-surface-muted": "#E6BCC2",
+                        "secondary": "#c6c6c7",
+                        "surface-bright": "#393939",
+                        "on-secondary-container": "#b5b5b6",
+                        "on-secondary-fixed-variant": "#454748",
+                        "surface-container": "#201f1f",
+                        "primary-container": "#ff4d80",
+                        "on-error": "#690005",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "background": "#131313",
+                        "surface": "#131313",
+                        "inverse-primary": "#bc004f",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "secondary-fixed": "#e3e2e3",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "on-secondary": "#2f3132",
+                        "inverse-surface": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "surface-tint": "#ffb2bf",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-tertiary": "#303030",
+                        "surface-container-highest": "#353534",
+                        "tertiary": "#c8c6c5",
+                        "on-primary": "#660028",
+                        "surface-container-low": "#1c1b1b",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "outline": "#ac878d",
+                        "inverse-on-surface": "#313030",
+                        "error-container": "#93000a",
+                        "secondary-container": "#454748",
+                        "on-error-container": "#ffdad6",
+                        "accent-fuchsia": "#FC036D"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "card-gap": "1.5rem",
+                        "component-padding-x": "1.5rem",
+                        "section-padding-y": "6rem",
+                        "gutter-x": "2.5rem",
+                        "component-padding-y": "0.625rem"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "body-md": ["Inter"]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(31, 31, 31, 0.7), rgba(19, 13, 15, 0.4));
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow-primary {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.2);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-glow {
+            box-shadow: 0 0 30px rgba(252, 3, 109, 0.3);
+        }
+    </style>
+<link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+
+<style id="rss-crm-admin-shell">
+  .crm-stage-nav{
+    display:flex;gap:7px;align-items:center;overflow-x:auto;
+    padding:10px 12px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;background:#171717;scrollbar-width:thin;
+  }
+  .crm-stage-nav a{
+    flex:0 0 auto;text-decoration:none;color:#d7c3c8;background:#232222;
+    border:1px solid rgba(255,255,255,.08);padding:8px 11px;border-radius:8px;
+    font:700 12px/1 Inter,Arial,sans-serif;transition:.18s ease;
+  }
+  .crm-stage-nav a:hover,.crm-stage-nav a.active{
+    color:white;border-color:#FC036D;background:rgba(252,3,109,.13);
+    box-shadow:0 0 18px rgba(252,3,109,.12);
+  }
+  .crm-stitch-frame{
+    background:#131313;border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;overflow:hidden;min-height:620px;
+  }
+  .crm-stitch-content{
+    background:#131313;color:#e5e2e1;min-height:620px;
+  }
+  .crm-stitch-content > main,
+  .crm-stitch-content main{
+    width:100%!important;max-width:none!important;
+    margin-left:0!important;
+  }
+  .crm-stitch-content .md\:ml-64{margin-left:0!important;}
+  .crm-stitch-content .h-screen{height:auto!important;min-height:620px!important;}
+  .crm-stitch-content .overflow-hidden{overflow:visible!important;}
+  .crm-stitch-content .fixed{position:absolute;}
+  @media(max-width:760px){
+    .crm-stage-nav{margin-bottom:12px}
+    .crm-stitch-frame{border-radius:10px}
+  }
+</style>
+
+</head>
+<body data-admin-page="crm">
+<div class="admin-app">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin-dashboard.html">
+    <span class="admin-brand-mark">R</span>
+    <span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span>
+  </a>
+  <nav class="admin-nav">
+    <div class="admin-nav-label">Pilotage</div>
+    <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+    <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+    <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+    <a class="admin-nav-link" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+    <a class="admin-nav-link active" data-nav-page="crm" href="/admin-crm-workflow.html"><span class="material-symbols-outlined">account_tree</span>CRM & Workflow</a>
+    <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+    <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+    <div class="admin-nav-label">Gestion</div>
+    <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+    <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+    <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+    <div class="admin-nav-label">Opérations</div>
+    <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+    <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+    <div class="admin-nav-label">Système</div>
+    <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+  </nav>
+  <div class="admin-sidebar-footer">
+    <div class="admin-profile-mini">
+      <div class="admin-avatar">AD</div>
+      <div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div>
+    </div>
+    <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+  </div>
+</aside>
+
+<div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <div class="admin-topbar-left">
+      <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="admin-page-heading">
+        <h1>CRM — Gestion des litiges</h1>
+        <p>Traitement et simulation des litiges techniques.</p>
+      </div>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-icon-button" href="/admin-crm-workflow.html" title="Vue globale CRM">
+        <span class="material-symbols-outlined">account_tree</span>
+      </a>
+      <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="admin-icon-button" href="/" title="Voir le site">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <nav class="crm-stage-nav" aria-label="Étapes CRM"><a class="" href="/admin-crm-workflow.html">Workflow</a><a class="" href="/admin-crm-etape-1-qualification.html">1</a><a class="" href="/admin-crm-etape-2-verification.html">2</a><a class="" href="/admin-crm-etape-3-demande-prix.html">3</a><a class="" href="/admin-crm-etape-4-controle-offre.html">4</a><a class="" href="/admin-crm-etape-5-devis.html">5</a><a class="" href="/admin-crm-etape-6-signature.html">6</a><a class="" href="/admin-crm-etape-7-paiement-caution.html">7</a><a class="" href="/admin-crm-etape-8-logistique.html">8</a><a class="" href="/admin-crm-etape-9-suivi-livraison.html">9</a><a class="" href="/admin-crm-etape-10-retour-inspection.html">10</a><a class="" href="/admin-crm-cloture-caution.html">Clôture</a><a class="active" href="/admin-crm-litige.html">Litiges</a><a class="" href="/admin-crm-email-devis.html">Emails</a></nav>
+    <section class="crm-stitch-frame">
+      <div class="crm-stitch-content">
+        
+ TopNavBar Anchor 
+
+ Content Area 
+<div class="max-w-[1280px] mx-auto px-10 py-10">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="px-2 py-1 bg-accent-fuchsia/10 border border-accent-fuchsia/30 text-accent-fuchsia text-[10px] font-bold rounded-full uppercase tracking-widest">Etape 10: Retour &amp; Inspection</span>
+<span class="text-on-surface-variant text-body-md opacity-40">/</span>
+<span class="text-on-surface-variant text-body-md">REF-984210</span>
+</div>
+<h2 class="text-display-hero font-headline-lg text-on-surface leading-none">Inspection du Matériel</h2>
+</div>
+<div class="text-right">
+<p class="text-label-caps font-label-caps text-on-surface-variant opacity-60 mb-1">Status Retour</p>
+<div class="flex items-center gap-2 text-error font-bold text-headline-md">
+<span class="material-symbols-outlined">report</span>
+                        LITIGE TECHNIQUE EN COURS
+                    </div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-card-gap">
+<!-- Main Inspection List -->
+<div class="col-span-12 lg:col-span-8 space-y-6">
+<div class="glass-panel p-8 rounded-xl">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-6">Liste des items retournés</h3>
+<!-- Table Style List -->
+<div class="space-y-4">
+<!-- Item 1: Good -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-surface-glass-border hover:border-white/10 transition-all rounded-lg">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 bg-surface-container-highest rounded flex items-center justify-center overflow-hidden">
+<img alt="Audio Mixer" class="w-full h-full object-cover grayscale opacity-60" data-alt="A professional high-end audio mixing console with illuminated sliders and buttons in a dark, moody recording studio environment. The lighting is focused and technical, with neon accents reflected on the metallic surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApkUbFAil1B69rGN5Xfea7Y2_UXaYrMxDpMrhNMCx4CW0Ukub6GYHdmLatYZsEX2TB-vj8_PLfE0DHceP4uCEV9Eo1S4H4h0g8RfzQgdbgo9iDj7Bj6aUpPvKd_tBoInf5OiVsrlKZCw9irgnsl0reJJCHOVMJHGlCAPTKf6hu5CxUB0yI4Hh5m9KAORlhMTeNnEVhno3rMDtnLuQFHKQNCC4IW_HQgtQvSbvINfakGFsrEc5c_0Xgjh0e5CJnWYNjhipTTmI-NLQ"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">DiGiCo SD12 Console</p>
+<p class="text-label-caps text-on-surface-variant text-[11px] opacity-60">SN: DG-5521-X | Flightcase OK</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-label-caps text-secondary font-bold uppercase tracking-tighter">CONFORME</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Item 2: DAMAGED -->
+<div class="flex items-center justify-between p-4 bg-error-container/10 border border-error/30 rounded-lg relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 w-1 bg-error"></div>
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 bg-surface-container-highest rounded flex items-center justify-center overflow-hidden border border-error/20">
+<img alt="Subwoofer" class="w-full h-full object-cover" data-alt="A large, professional L-Acoustics KS28 Subwoofer in a black finish. The mesh grill shows a noticeable dent and scratch, placed in a dark warehouse setting with dramatic fuchsia stage lighting hitting the side of the unit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAW8lPo2dsnmTburI_9BTqakxJnxmigdY982uMTa8hJmXZlcUSA4GtbOXoo_4CBHCFyI3Jz9FQ-oQM1azlwOgqAGryMVeVd9mQ-AdvgRGhH3-H7GooFghO4RTdH_6JFD-vE_cOx8j8Sp5agEhQCUYKrgLOdVXp5U_uPhjdB_gc-4j-VOD4PpuKCCNQm9YyZ1qnBhc1_LEcsVWZx_5JW-ApHwKjVEpusTMOfYAJMOs3D8UED--f0-brUdbmaggJLGyp1YMlCpbtYUUg"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">L-Acoustics KS28 Subwoofer</p>
+<p class="text-label-caps text-error text-[11px] font-bold">SN: SN-8492-B | DAMAGED</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="text-label-caps text-error text-[10px] font-bold">LITIGE OUVERT</p>
+<p class="text-body-md font-bold text-on-surface">- 450.00€</p>
+</div>
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+</div>
+<!-- Item 3: Pending -->
+<div class="flex items-center justify-between p-4 bg-surface-container-low border border-surface-glass-border rounded-lg opacity-60">
+<div class="flex items-center gap-4">
+<div class="w-16 h-16 bg-surface-container-highest rounded flex items-center justify-center overflow-hidden">
+<img alt="Power Amp" class="w-full h-full object-cover grayscale" data-alt="Rack-mounted professional power amplifiers in a server-like configuration. Dim blue and magenta ambient lighting in a tech room, technical details visible on the digital displays of the devices." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA196ehO8SFEL0pIgQOaMq4LJ1ibUb735sI8e_VLpTNaE1_DCV9s-rzNMntksEOSw_VWC5Ep7Pj8xv5GbVCaIMBKj2CIC6PKqQHi82LFyJEoTpzqb5t1_zHj6zkAvo79GAx9QvkcHRgspUiLOK6N6XPco2NaJ5cl0ZRTg2OeKChILAHOW7q9rShN2tp4AxGLWkJqqHdn-bu7pJw-tOkqb_iWMntn4Tz9yLkjpWcVLZqLBIsUWZR5YB4emOkZAKROR8f-8j0KiZwq9k"/>
+</div>
+<div>
+<p class="font-bold text-on-surface">L-Acoustics LA12X Amp</p>
+<p class="text-label-caps text-on-surface-variant text-[11px]">SN: LA-9092-K | En attente test</p>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<span class="text-label-caps text-on-surface-variant font-medium">PENDING...</span>
+<span class="material-symbols-outlined text-on-surface-variant">hourglass_empty</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Dispute Detail -->
+<div class="glass-panel p-8 rounded-xl border-l-4 border-l-error active-glow">
+<div class="flex items-start justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-error/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-error">engineering</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">Rapport de Litige Technique</h3>
+<p class="text-label-caps text-on-surface-variant opacity-60">Dossier #LT-8492-2024</p>
+</div>
+</div>
+<button class="px-4 py-2 border border-outline text-label-caps text-on-surface hover:bg-surface-container-highest transition-all rounded">
+                                ÉDITER RAPPORT
+                            </button>
+</div>
+<div class="grid grid-cols-2 gap-8">
+<div class="space-y-4">
+<div>
+<label class="text-label-caps text-on-surface-variant text-[10px] block mb-1">DESCRIPTION DE L'INCIDENT</label>
+<p class="text-body-md text-on-surface bg-surface-container-highest/30 p-4 rounded border border-surface-glass-border">
+                                        Transducteur HS sur unité <span class="font-bold text-primary">SN-8492-B</span>. Impact physique visible sur la grille de protection frontale (enfoncement 3cm). Nécessite remplacement du driver 18" et redressage de grille.
+                                    </p>
+</div>
+<div class="flex gap-4">
+<div class="flex-1">
+<label class="text-label-caps text-on-surface-variant text-[10px] block mb-1">HEURE DU CONSTAT</label>
+<p class="text-body-md text-on-surface font-mono">14:32 - 24/05/2024</p>
+</div>
+<div class="flex-1">
+<label class="text-label-caps text-on-surface-variant text-[10px] block mb-1">INSPECTEUR</label>
+<p class="text-body-md text-on-surface">Marc L. (Tech 1)</p>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<label class="text-label-caps text-on-surface-variant text-[10px] block mb-1">ESTIMATION DES RÉPARATIONS</label>
+<div class="bg-black/20 rounded p-6 border border-surface-glass-border">
+<div class="flex justify-between mb-2">
+<span class="text-on-surface-variant">Pièce (Driver 18" OEM)</span>
+<span class="text-on-surface font-mono">320.00€</span>
+</div>
+<div class="flex justify-between mb-2">
+<span class="text-on-surface-variant">Main d'œuvre (2h)</span>
+<span class="text-on-surface font-mono">130.00€</span>
+</div>
+<div class="h-px bg-surface-glass-border my-4"></div>
+<div class="flex justify-between text-headline-sm font-bold">
+<span class="text-accent-fuchsia">TOTAL ESTIMÉ</span>
+<span class="text-accent-fuchsia font-mono text-2xl">450.00€</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Modules -->
+<div class="col-span-12 lg:col-span-4 space-y-card-gap">
+<!-- Deposit Module -->
+<div class="glass-panel p-8 rounded-xl border border-accent-fuchsia/20">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-accent-fuchsia" style="font-variation-settings: 'FILL' 1;">shield</span>
+<h3 class="text-headline-sm font-headline-md text-on-surface">Caution &amp; Garantie</h3>
+</div>
+<div class="mb-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-caps text-accent-fuchsia font-bold text-[10px] tracking-[0.2em]">STATUT CAUTION</span>
+<span class="px-2 py-0.5 bg-accent-fuchsia/20 text-accent-fuchsia text-[10px] font-bold rounded">DEDUCTION IN PROGRESS</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-accent-fuchsia h-full w-[95%] shadow-[0_0_10px_#FC036D]"></div>
+</div>
+</div>
+<div class="space-y-4 mb-8">
+<div class="flex justify-between items-center text-body-md">
+<span class="text-on-surface-variant">Dépôt Initial</span>
+<span class="font-mono text-on-surface">10,000.00€</span>
+</div>
+<div class="flex justify-between items-center text-body-md text-error font-bold">
+<span class="flex items-center gap-1">Déduction Réparation <span class="material-symbols-outlined text-sm">info</span></span>
+<span class="font-mono">- 450.00€</span>
+</div>
+<div class="pt-4 border-t border-surface-glass-border flex justify-between items-center">
+<span class="text-headline-sm font-bold text-on-surface">Solde à Libérer</span>
+<div class="text-right">
+<span class="block text-2xl font-mono font-bold text-primary">9,550.00€</span>
+<span class="text-[10px] text-on-surface-variant">Prêt pour déblocage</span>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-transparent border border-accent-fuchsia text-accent-fuchsia font-bold text-label-caps hover:bg-accent-fuchsia hover:text-white transition-all duration-300 rounded-lg flex items-center justify-center gap-2 group">
+                            VALIDER LA DÉDUCTION
+                            <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">payments</span>
+</button>
+</div>
+<!-- Client Summary -->
+<div class="glass-panel p-8 rounded-xl">
+<h3 class="text-label-caps font-headline-md text-on-surface-variant mb-4 opacity-60">Informations Client</h3>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-surface-container-high flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary">corporate_fare</span>
+</div>
+<div>
+<p class="font-bold text-on-surface">Zenith Production Paris</p>
+<p class="text-label-caps text-on-surface-variant text-[11px]">Compte Premium Gold</p>
+</div>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Location id</span>
+<span class="text-on-surface">#RENT-2024-X42</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Fin du contrat</span>
+<span class="text-on-surface">24/05/2024</span>
+</div>
+</div>
+<div class="mt-6 p-4 bg-surface-container-high rounded border border-surface-glass-border">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-[18px]">history</span>
+<p class="text-[12px] text-on-surface-variant">Ce client n'a aucun antécédent de litige sur les 12 derniers mois.</p>
+</div>
+</div>
+</div>
+<!-- CTA Actions -->
+<div class="flex flex-col gap-3">
+<button class="w-full py-4 bg-surface-container-highest text-on-surface font-bold text-label-caps hover:bg-surface-bright transition-all rounded-lg">
+                            GÉNÉRER BON DE RETOUR
+                        </button>
+<button class="w-full py-4 bg-transparent border border-outline-variant text-on-surface-variant font-bold text-label-caps hover:border-on-surface transition-all rounded-lg">
+                            SIGNALER AU SUPPORT TECHNIQUE
+                        </button>
+</div>
+</div>
+</div>
+</div>
+ Background Decorative Element 
+<div class="fixed bottom-0 right-0 w-[500px] h-[500px] bg-accent-fuchsia/5 blur-[120px] rounded-full -z-10 pointer-events-none"></div>
+
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div id="header-container" hidden></div>
+<div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>
