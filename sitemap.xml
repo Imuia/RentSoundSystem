@@ -2429,4 +2429,11 @@
     <xhtml:link rel="alternate" hreflang="ar" href="https://rentsoundsystem.com/ar/politique-confidentialite"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://rentsoundsystem.com/politique-confidentialite"/>
   </url>
+
+  <url>
+    <loc>https://rentsoundsystem.com/destinations-hubs-mondiaux</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/contact-mondial-hubs-internationaux</loc>
+  </url>
 </urlset>
