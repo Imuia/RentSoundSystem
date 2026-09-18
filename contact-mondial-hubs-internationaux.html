@@ -444,30 +444,6 @@
 
 
 
-<script id="rss-contact-global-components">
-(function(){
-  async function loadFragment(targetId, url){
-    const target = document.getElementById(targetId);
-    if(!target) return;
-    try{
-      const response = await fetch(url, {cache:'no-cache'});
-      if(!response.ok) throw new Error(url + ' HTTP ' + response.status);
-      target.innerHTML = await response.text();
-      target.querySelectorAll('script').forEach(function(oldScript){
-        const script = document.createElement('script');
-        Array.from(oldScript.attributes).forEach(function(attr){ script.setAttribute(attr.name, attr.value); });
-        script.textContent = oldScript.textContent;
-        oldScript.replaceWith(script);
-      });
-    }catch(error){
-      console.error('RentSoundSystem component load error:', error);
-    }
-  }
-  document.addEventListener('DOMContentLoaded', function(){
-    loadFragment('header-container', '/header.html');
-    loadFragment('footer-container', '/footer.html');
-  });
-})();
-</script>
+<script src="/components.js"></script>
 
 </body></html>
