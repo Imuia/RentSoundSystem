@@ -171,7 +171,7 @@
           <div class="space-y-2.5 text-xs text-neutral-300 border-t border-white/5 pt-4">
             <div class="flex items-center gap-2.5">
               <span class="material-symbols-outlined text-primary text-base">call</span>
-              <a href="tel:+212524330011" class="hover:text-white transition-colors font-mono font-medium">+212 634 774 416</a>
+              <a href="tel:+212634774416" class="hover:text-white transition-colors font-mono font-medium">+212 634 774 416</a>
             </div>
             <div class="flex items-center gap-2.5">
               <span class="material-symbols-outlined text-primary text-base">mail</span>
@@ -204,7 +204,7 @@
           <div class="space-y-2.5 text-xs text-neutral-300 border-t border-white/5 pt-4">
             <div class="flex items-center gap-2.5">
               <span class="material-symbols-outlined text-primary text-base">call</span>
-              <a href="tel:+6567018890" class="hover:text-white transition-colors font-mono font-medium">+65 6701 8890</a>
+              <a href="tel:+261377564686" class="hover:text-white transition-colors font-mono font-medium">+261 37 75 646 86</a>
             </div>
             <div class="flex items-center gap-2.5">
               <span class="material-symbols-outlined text-primary text-base">mail</span>
@@ -260,7 +260,7 @@
             <div>
               <h4 class="text-sm font-bold text-white">Caution &amp; Contrats Sécurisés</h4>
               <p class="text-xs text-neutral-400 mt-0.5">Vérification KBIS, caution séquestrée Stripe B2B, assurance AXA 1M€ incluse.</p>
-              <span class="inline-block mt-2 text-[11px] text-neutral-400 font-mono">legal@rentsoundsystem.com</span>
+              <a href="mailto:legal@rentsoundsystem.com" class="inline-block mt-2 text-[11px] text-neutral-400 font-mono hover:text-white transition-colors">legal@rentsoundsystem.com</a>
             </div>
           </div>
 
@@ -290,7 +290,7 @@
 
       <!-- RIGHT COLUMN: DETAILED CONTACT FORM -->
       <div class="lg:col-span-7">
-        <form action="/demande-de-devis" method="get" class="bg-surface-container rounded-2xl p-8 border border-white/10 shadow-2xl space-y-6">
+        <form id="contact-mondial-form" class="bg-surface-container rounded-2xl p-8 border border-white/10 shadow-2xl space-y-6">
           <div class="border-b border-white/10 pb-4">
             <h3 class="text-xl font-bold text-white">Formulaire de Contact &amp; Devis Express</h3>
             <p class="text-xs text-neutral-400 mt-1">Tous les champs avec un astérisque (*) sont obligatoires pour le calcul logistique.</p>
@@ -399,10 +399,12 @@
           </div>
 
           <!-- SUBMIT BUTTON -->
-          <button type="submit" class="w-full py-4 rounded-xl font-extrabold uppercase tracking-wider bg-primary hover:bg-primary-hover text-white shadow-xl shadow-primary/25 transition-all transform active:scale-98 flex items-center justify-center gap-2 text-sm">
+          <button type="submit" class="w-full py-4 rounded-xl font-extrabold uppercase tracking-wider bg-primary hover:bg-primary-hover disabled:opacity-60 disabled:cursor-not-allowed text-white shadow-xl shadow-primary/25 transition-all transform active:scale-98 flex items-center justify-center gap-2 text-sm">
             <span class="material-symbols-outlined text-lg">send</span>
-            Envoyer ma demande aux régies régionales
+            <span class="submit-label">Envoyer ma demande aux régies régionales</span>
           </button>
+
+          <div id="contact-form-status" class="hidden rounded-xl border px-4 py-3 text-sm" role="status" aria-live="polite"></div>
 
           <p class="text-[11px] text-center text-neutral-500">
             Protection des données certifiée RGPD &amp; chiffrement TLS 256-bit. Vos informations ne sont jamais revendues.
@@ -444,6 +446,101 @@
 
 
 
+
+<script>
+(function () {
+  const form = document.getElementById('contact-mondial-form');
+  if (!form) return;
+
+  const endpoint = 'https://crxofkxinssppfgdsxpiy.supabase.co/functions/v1/contact-mondial';
+  const submitButton = form.querySelector('button[type="submit"]');
+  const submitLabel = form.querySelector('.submit-label');
+  const statusBox = document.getElementById('contact-form-status');
+  const regionInputs = form.querySelectorAll('input[name="region"]');
+
+  function updateRegionStyles() {
+    regionInputs.forEach((input) => {
+      const label = input.closest('label');
+      if (!label) return;
+      const icon = label.querySelector('.material-symbols-outlined');
+      if (input.checked) {
+        label.classList.add('border-primary', 'bg-primary/10', 'text-white');
+        label.classList.remove('border-white/10', 'bg-surface', 'text-neutral-300');
+        if (icon) icon.classList.add('text-primary');
+      } else {
+        label.classList.remove('border-primary', 'bg-primary/10', 'text-white');
+        label.classList.add('border-white/10', 'bg-surface', 'text-neutral-300');
+        if (icon) icon.classList.remove('text-primary');
+      }
+    });
+  }
+
+  regionInputs.forEach((input) => input.addEventListener('change', updateRegionStyles));
+  updateRegionStyles();
+
+  function showStatus(type, message) {
+    statusBox.className = 'rounded-xl border px-4 py-3 text-sm';
+    if (type === 'success') {
+      statusBox.classList.add('border-green-500/30', 'bg-green-500/10', 'text-green-300');
+    } else {
+      statusBox.classList.add('border-red-500/30', 'bg-red-500/10', 'text-red-300');
+    }
+    statusBox.textContent = message;
+    statusBox.classList.remove('hidden');
+  }
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    if (!form.reportValidity()) return;
+
+    const data = new FormData(form);
+    const payload = {
+      region: data.get('region'),
+      nom: data.get('nom'),
+      societe: data.get('societe'),
+      email: data.get('email'),
+      telephone: data.get('telephone'),
+      type_evenement: data.get('type_evenement'),
+      marque_rider: data.get('marque_rider'),
+      details: data.get('details'),
+      livraison: data.get('livraison') === 'oui',
+      ingenieur_systeme: data.get('ingenieur_systeme') === 'oui',
+      accord_multi_villes: data.get('accord_multi_villes') === 'oui'
+    };
+
+    submitButton.disabled = true;
+    const previousLabel = submitLabel.textContent;
+    submitLabel.textContent = 'Envoi en cours...';
+    statusBox.classList.add('hidden');
+
+    try {
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      let result = {};
+      try { result = await response.json(); } catch (_) {}
+
+      if (!response.ok || result.success !== true) {
+        throw new Error(result.error || 'Erreur lors de l’envoi');
+      }
+
+      showStatus('success', 'Votre demande a bien été envoyée. Notre équipe vous répondra rapidement.');
+      form.reset();
+      updateRegionStyles();
+    } catch (error) {
+      console.error('Contact Mondial:', error);
+      showStatus('error', 'Impossible d’envoyer la demande pour le moment. Merci de réessayer ou de nous contacter par e-mail.');
+    } finally {
+      submitButton.disabled = false;
+      submitLabel.textContent = previousLabel;
+    }
+  });
+})();
+</script>
 
 <script src="/components.js"></script>
 
