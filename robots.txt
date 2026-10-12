@@ -18,5 +18,9 @@ Disallow: /mot-de-passe-oublie
 Disallow: /reinitialiser-mot-de-passe
 Disallow: /mot-de-passe-reinitialise
 Disallow: /api/
+Disallow: /web
+Disallow: /web/*
+Disallow: /en/*
+
 
 Sitemap: https://rentsoundsystem.com/sitemap.xml
