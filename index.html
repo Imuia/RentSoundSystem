@@ -1392,11 +1392,14 @@ html, body {
         bounds.extend([safeCenter.lat, safeCenter.lng]);
       }
       map.fitBounds(bounds.pad(0.18), {
-        maxZoom: isCountryCenter(safeCenter) ? 7 : 12,
+        maxZoom: isCountryCenter(safeCenter) ? 7 : (window.innerWidth < 768 ? 14 : 12),
         animate: true
       });
     } else {
-      map.setView([safeCenter.lat, safeCenter.lng], safeCenter.zoom || 14, { animate: true });
+      const targetZoom = (!isCountryCenter(safeCenter) && window.innerWidth < 768)
+        ? (safeCenter.zoom ? safeCenter.zoom + 1 : 15)
+        : (safeCenter.zoom || 14);
+      map.setView([safeCenter.lat, safeCenter.lng], targetZoom, { animate: true });
     }
 
     setTimeout(fixMapSize, 50);
@@ -1441,7 +1444,10 @@ html, body {
           .bindPopup('Votre position', { className: 'rss-popup' });
       }
 
-      map.setView([currentCenter.lat, currentCenter.lng], currentCenter.zoom || 15, { animate: true });
+      const targetZoom = (!isCountryCenter(currentCenter) && window.innerWidth < 768)
+        ? (currentCenter.zoom ? currentCenter.zoom + 1 : 15)
+        : (currentCenter.zoom || 15);
+      map.setView([currentCenter.lat, currentCenter.lng], targetZoom, { animate: true });
     }
 
     if (listingsReady) {
@@ -1536,12 +1542,16 @@ html, body {
       mapEl.innerHTML = '';
     }
 
+    const initZoom = (!isCountryCenter(DEFAULT_CITY) && window.innerWidth < 768)
+      ? DEFAULT_CITY.zoom + 1
+      : DEFAULT_CITY.zoom;
+
     map = L.map(mapEl, {
       zoomControl: false,
       scrollWheelZoom: true,
       preferCanvas: false,
       maxZoom: 18
-    }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], DEFAULT_CITY.zoom);
+    }).setView([DEFAULT_CITY.lat, DEFAULT_CITY.lng], initZoom);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       minZoom: 2,
