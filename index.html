@@ -716,6 +716,9 @@ html, body {
     nices: { name: 'Nice', country: 'France', countryCode: 'fr', lat: 43.7102, lng: 7.2620, zoom: 14, searchType: 'city' },
     paris: { name: 'Paris', country: 'France', countryCode: 'fr', lat: 48.8566, lng: 2.3522, zoom: 14, searchType: 'city' },
     france: { name: 'France', country: 'France', countryCode: 'fr', lat: 46.2276, lng: 2.2137, zoom: 6, searchType: 'country' },
+    'nosy be': { name: 'Nosy Be', country: 'Madagascar', countryCode: 'mg', lat: -13.3120, lng: 48.2534, zoom: 13, searchType: 'city' },
+    'nosy-be': { name: 'Nosy Be', country: 'Madagascar', countryCode: 'mg', lat: -13.3120, lng: 48.2534, zoom: 13, searchType: 'city' },
+    nosybe: { name: 'Nosy Be', country: 'Madagascar', countryCode: 'mg', lat: -13.3120, lng: 48.2534, zoom: 13, searchType: 'city' },
     antananarivo: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
     tananarive: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
     tana: { name: 'Antananarivo', country: 'Madagascar', countryCode: 'mg', lat: -18.8792, lng: 47.5079, zoom: 14, searchType: 'city' },
@@ -755,7 +758,12 @@ html, body {
     const text = compactWords(value);
     if (!text) return '';
     for (const code in COUNTRY_ALIASES) {
-      if (COUNTRY_ALIASES[code].some(alias => text === alias || text.indexOf(alias) !== -1)) return code;
+      if (COUNTRY_ALIASES[code].some(alias => {
+        if (alias.length <= 2) {
+          return text === alias;
+        }
+        return text === alias || new RegExp('\\b' + String(alias).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(text);
+      })) return code;
     }
     return '';
   }
@@ -1229,6 +1237,7 @@ html, body {
     // Antananarivo et Tananarive désignent la même zone.
     if (v === 'tananarive' || v === 'antananarivo') return 'antananarivo';
     if (v === 'tanà' || v === 'tana') return 'antananarivo';
+    if (v === 'hell' || v === 'hell-ville' || v === 'nosy-be' || v === 'nosybe' || v === 'ampangorinana') return 'nosy be';
     return v;
   }
 
