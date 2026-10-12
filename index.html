@@ -1224,17 +1224,10 @@ html, body {
 
     // 1. Priorité absolue aux annonces de la ville recherchée.
     const exactCity = sameCountry
-      .filter(item => listingCityMatchesCenter(item, safeCenter))
-      .filter(item => hasCoordinates(item));
+      .filter(item => listingCityMatchesCenter(item, safeCenter));
 
-    const exactInRadius = enrichByDistance(exactCity, safeCenter)
-      .filter(item =>
-        typeof item._distanceKm === 'number' &&
-        item._distanceKm <= DEFAULT_RADIUS_KM
-      );
-
-    if (exactInRadius.length) {
-      return exactInRadius.slice(0, limit);
+    if (exactCity.length) {
+      return enrichByDistance(exactCity, safeCenter).slice(0, limit);
     }
 
     // 2. Si la ville n'a aucune annonce, élargir automatiquement aux villes voisines
@@ -1362,8 +1355,8 @@ html, body {
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
-    const nearest = popularNearbyItems(center || currentCenter, 4);
-    const newest = newestNearbyItems(center || currentCenter, 4);
+    const nearest = popularNearbyItems(center || currentCenter, 8);
+    const newest = newestNearbyItems(center || currentCenter, 8);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
