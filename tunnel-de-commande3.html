@@ -764,12 +764,12 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const datesRow=datesEl?.closest('.flex.justify-between.items-center');
     if(datesEl && hasDates){datesEl.textContent=dateFR(qs('#rental-start')?.value)+' - '+dateFR(qs('#rental-end')?.value)+' ('+t.d+' jour'+(t.d>1?'s':'')+')';}
     if(datesRow) datesRow.classList.toggle('hidden', !hasDates);
-    setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || (hasDates ? ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')') : 'Location — dates à sélectionner')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#label-deposit', t.deposit > 0 ? 'Caution obligatoire (dépôt de garantie)' : 'Caution (dépôt de garantie)'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
+setText('#summary-quantity',p.quantity+' unité'+(p.quantity>1?'s':'')); setText('#label-rental-days',t.rentalLabel || (hasDates ? ('Location ('+t.d+' jour'+(t.d>1?'s':'')+')') : 'Location — dates à sélectionner')); setText('#amount-rental',money(t.rental)); setText('#label-delivery',qs('#delivery-transport')?.checked?'Livraison & reprise':'Retrait en entrepôt'); setText('#amount-delivery',money(t.delivery)); setText('#amount-insurance',t.technician?money(t.technician):'--'); setText('#label-deposit', t.deposit > 0 ? 'Caution — Empreinte bancaire (non débitée)' : 'Caution'); setText('#amount-deposit',money(t.deposit)); setText('#amount-tax',money(t.tax)); setText('#amount-total',money(t.total));
     const depositEl=qs('#amount-deposit');
     if(depositEl){
       let note=qs('#rss-caution-note');
-      if(!note){note=document.createElement('div'); note.id='rss-caution-note'; note.className='rss-caution-note'; depositEl.parentElement.appendChild(note);}
-      note.textContent = t.deposit > 0 ? 'Obligatoire : empreinte bancaire ou dépôt demandé avant validation.' : 'Aucune caution demandée pour cette annonce.';
+      if(!note){note=document.createElement('div'); note.id='rss-caution-note'; note.className='rss-caution-note text-xs text-on-surface-variant mt-1.5 p-2 bg-surface-variant/40 rounded border border-outline-variant/50'; depositEl.parentElement.appendChild(note);}
+      note.textContent = t.deposit > 0 ? 'La caution de '+money(t.deposit)+' fait l’objet d’une simple empreinte bancaire (autorisation). Aucun montant n’est prélevé immédiatement sur votre compte, mais cette réservation de fonds peut impacter temporairement votre plafond de carte.' : 'Aucune caution demandée pour cette annonce.';
     }
     const taxLabel=Array.from(document.querySelectorAll('span')).find(el=>el.textContent.trim().startsWith('TVA')); if(taxLabel)taxLabel.textContent='TVA ('+Math.round(t.vatRate*100)+'%)';
     const img=qs('.w-20.h-20 img'); if(img&&p.image){img.src=p.image; img.alt=p.name||'Produit RentSoundSystem';}
@@ -963,10 +963,18 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const billing={name:stripePayload.customer.name,email:stripePayload.customer.email,phone:stripePayload.customer.phone};
 
     if(data.rental_client_secret){
-      rentalPI=await confirmPayment(data.rental_client_secret,billing);
+      try {
+        rentalPI=await confirmPayment(data.rental_client_secret,billing);
+      } catch(err) {
+        throw new Error('Échec du paiement de la location : ' + (err.message || err));
+      }
     }
     if(data.deposit_client_secret && stripePayload.deposit_amount > 0){
-      depositPI=await confirmPayment(data.deposit_client_secret,billing);
+      try {
+        depositPI=await confirmPayment(data.deposit_client_secret,billing);
+      } catch(err) {
+        throw new Error('Échec de l’empreinte de caution : ' + (err.message || err));
+      }
     }
 
     const stripeResult={

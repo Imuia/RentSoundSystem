@@ -1080,15 +1080,19 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     if(totalLabel){
       totalLabel.textContent =
         (!showTaxDetails || t.taxMode==='legacy_public_price')
-          ? 'Total à payer'
-          : (t.taxPending ? 'Total estimatif' : 'Total TTC');
+          ? 'Montant à payer immédiatement'
+          : (t.taxPending ? 'Montant à payer (estimatif)' : 'Montant à payer immédiatement (TTC)');
     }
 
     const depositEl=qs('#amount-deposit');
+    const depositLabel=depositEl?.previousElementSibling;
+    if(depositLabel){
+      depositLabel.textContent = t.deposit > 0 ? 'Caution — Empreinte bancaire (non débitée)' : 'Caution';
+    }
     if(depositEl){
       let note=qs('#rss-caution-note');
-      if(!note){note=document.createElement('div');note.id='rss-caution-note';note.className='rss-caution-note';depositEl.parentElement.appendChild(note);}
-      note.textContent=t.deposit>0?'La caution est distincte du total de location ; elle n’est pas incluse dans le montant à régler.':'Aucune caution demandée pour cette annonce.';
+      if(!note){note=document.createElement('div');note.id='rss-caution-note';note.className='rss-caution-note text-xs text-on-surface-variant mt-1.5 p-2 bg-surface-variant/40 rounded border border-outline-variant/50';depositEl.parentElement.appendChild(note);}
+      note.textContent=t.deposit>0?'La caution de '+money(t.deposit)+' fait l’objet d’une simple empreinte bancaire (autorisation). Aucun montant n’est prélevé immédiatement sur votre compte, mais cette réservation de fonds peut impacter temporairement votre plafond de carte.':'Aucune caution demandée pour cette annonce.';
     }
     let taxNote=qs('#rss-tax-note');
     if(!taxNote&&taxRow){
@@ -1548,10 +1552,18 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const billing={name:stripePayload.customer.name,email:stripePayload.customer.email,phone:stripePayload.customer.phone};
 
     if(data.rental_client_secret){
-      rentalPI=await confirmPayment(data.rental_client_secret,billing);
+      try {
+        rentalPI=await confirmPayment(data.rental_client_secret,billing);
+      } catch(err) {
+        throw new Error('Échec du paiement de la location : ' + (err.message || err));
+      }
     }
     if(data.deposit_client_secret && stripePayload.deposit_amount > 0){
-      depositPI=await confirmPayment(data.deposit_client_secret,billing);
+      try {
+        depositPI=await confirmPayment(data.deposit_client_secret,billing);
+      } catch(err) {
+        throw new Error('Échec de l’empreinte de caution : ' + (err.message || err));
+      }
     }
 
     const stripeResult={
@@ -1623,8 +1635,9 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
         btn.innerHTML=original;
         return;
       }
+      const isSched = !!finalOrder.stripe?.deposit_scheduled;
       showStripeMessage(
-        stripeResult.deposit_scheduled
+        isSched
           ? 'Paiement validé. La carte est enregistrée chez Stripe et l’empreinte de caution sera réalisée avant la location. Redirection...'
           : 'Paiement validé et caution autorisée. Redirection vers la confirmation...',
         'success'
