@@ -1010,6 +1010,19 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   function getPaymentDetails(){if(selectedPayment==='paypal')return{paypalEmail:qs('#paypal-email')?.value.trim()||'',reference:qs('#paypal-reference')?.value||''}; if(selectedPayment==='apple_pay')return{phone:qs('#apple-phone')?.value.trim()||'',device:qs('#apple-device')?.value||''}; if(selectedPayment==='crypto')return{currency:qs('#crypto-currency')?.value||'',network:qs('#crypto-network')?.value||'',transaction:qs('#crypto-tx')?.value.trim()||''}; if(selectedPayment==='bank_transfer')return{holder:qs('#bank-account-holder')?.value.trim()||'',plannedDate:qs('#bank-transfer-date')?.value||'',iban:qs('#bank-iban')?.textContent||'',bic:qs('#bank-bic')?.textContent||'',reference:qs('#bank-reference')?.textContent||''}; return{cardName:qs('#card-name')?.value.trim()||''};}
 
+  // Fonction locale au script du tunnel : le script Stripe possède sa propre portée (IIFE),
+  // donc sa fonction updateDepositTermsVisibility n'est pas accessible ici.
+  function updateDepositTermsVisibility(depositAmount){
+    const amount=Number(depositAmount||0);
+    const checkbox=qs('#accept-deposit-terms');
+    const label=checkbox?.closest('label');
+    const info=checkbox?.closest('.flex')?.previousElementSibling;
+    if(label) label.style.display=amount>0?'':'none';
+    if(info && info.textContent && info.textContent.includes('Information caution obligatoire')) {
+      info.style.display=amount>0?'':'none';
+    }
+  }
+
   function updateSummary(){
     const t=totals(),p=t.product;
     setText('#summary-item-name',p.name);
