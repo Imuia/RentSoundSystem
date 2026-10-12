@@ -1355,8 +1355,8 @@ html, body {
   function renderProductGrids(center) {
     const nearestGrid = document.getElementById('nearest-products-grid');
     const newestGrid = document.getElementById('newest-products-grid');
-    const nearest = popularNearbyItems(center || currentCenter, 8);
-    const newest = newestNearbyItems(center || currentCenter, 8);
+    const nearest = popularNearbyItems(center || currentCenter, 4);
+    const newest = newestNearbyItems(center || currentCenter, 4);
 
     if (nearestGrid) {
       nearestGrid.innerHTML = nearest.length
