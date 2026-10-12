@@ -216,6 +216,8 @@ function computePricing(listing, reservation) {
     0
   );
 
+  // Le montant de location facturé exclut volontairement la caution :
+  // celle-ci est créée séparément comme autorisation/empreinte bancaire.
   return {
     dates,
     quantity,
