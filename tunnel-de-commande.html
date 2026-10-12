@@ -705,7 +705,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 
   function productFromListing(item){
     if(!item) return {};
-    const price=safeNumber(firstFilled(item.price,item.dailyPrice,item.price_day,item.price_per_day),0);
+    const price=safeNumber(firstFilled(item.price_per_day,item.price_day,item.dailyPrice,item.price),0);
     const caution=safeNumber(firstFilled(item.caution,item.deposit,item.security_deposit,item.deposit_amount),0);
     const vatRate=safeNumber(firstFilled(item.vat_rate,item.tva_rate,item.tax_rate),0);
     return {
@@ -776,7 +776,11 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     const draft=getDraft();
     const stored=readJson('rssSelectedProduct') || readJson('rssLastProduct') || {};
     const fromListing=productFromListing(loadedListing);
-    return normalizeProduct(Object.assign({},DEFAULT_PRODUCT,stored||{},fromListing||{},draft.product||{}));
+    const merged=Object.assign({},DEFAULT_PRODUCT,stored||{},draft.product||{},fromListing||{});
+    // Le tarif de l'annonce actuellement relue depuis Supabase prime sur un ancien
+    // tarif conservé dans rssCheckoutDraft/rssSelectedProduct.
+    if(fromListing && fromListing.dailyPrice > 0) merged.dailyPrice=fromListing.dailyPrice;
+    return normalizeProduct(merged);
   }
 
   async function getSupabase(){if(!window.supabase)return null; return window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);}
@@ -845,20 +849,14 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return Math.max(1,Math.round((ed-sd)/(1000*60*60*24))+1);
   }
   function rentalAmount(product,d){
-    const draft = getDraft();
     if(!d || d < 1) return { amount:0, mode:'no_dates', label:'Location — dates à sélectionner' };
     const qty = Math.max(1, Number(product.quantity || 1));
     const day = safeNumber(product.dailyPrice,0);
-    const draftDays = Number(draft?.rental?.days || 0);
-    const exactRental = safeNumber(draft?.amounts?.rental, 0);
 
-    // IMPORTANT : on reprend le calcul exact de la fiche produit si les dates correspondent.
-    // Cela évite le bug où le tunnel remplaçait 1400€/jour x 2 jours par le forfait week-end 2000€.
-    if (draft?.source === 'product-page' && exactRental > 0 && (!draftDays || draftDays === d)) {
-      return { amount: exactRental, mode:'product_exact', label:'Location ('+d+' jour'+(d>1?'s':'')+')' };
-    }
-
-    // Par défaut : calcul simple et stable au prix/jour.
+    // Le montant mémorisé dans le navigateur peut être ancien ou provenir d'une
+    // autre sélection. Le tunnel recalcule donc toujours la location à partir
+    // du tarif journalier courant, des dates et de la quantité. Le serveur Stripe
+    // effectue le même calcul à partir de l'annonce publiée dans Supabase.
     return { amount: day * d * qty, mode:'day', label:'Location ('+d+' jour'+(d>1?'s':'')+')' };
   }
 

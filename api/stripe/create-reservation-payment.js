@@ -151,8 +151,11 @@ function computePricing(listing, reservation) {
     throw new Error(`Durée maximale : ${maxDuration} jour(s).`);
   }
 
+  // Le tarif journalier de l'annonce publiée est la source de vérité.
+  // Les champs journaliers explicites priment sur les champs de compatibilité,
+  // afin d'éviter qu'un ancien montant global soit interprété comme un prix/jour.
   const dailyPrice = optionPrice(
-    listing.price ?? listing.dailyPrice ?? listing.price_day ?? listing.price_per_day,
+    listing.price_per_day ?? listing.price_day ?? listing.dailyPrice ?? listing.price,
     0
   );
   if (dailyPrice <= 0) throw new Error("Prix de location de l'annonce invalide.");
