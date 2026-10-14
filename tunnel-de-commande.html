@@ -266,6 +266,47 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   #stripe-card-element.StripeElement--focus{border-color:#fc036d!important;box-shadow:0 0 0 1px rgba(252,3,109,.48),0 0 26px rgba(252,3,109,.18)!important;}
   #stripe-card-element.StripeElement--invalid{border-color:#ff6b6b!important;}
 </style>
+
+<style id="rss-checkout-responsive-layout-fix">
+  /* Layout fix: checkout form left, order summary right on desktop.
+     Keep the same single-column flow on tablet/mobile. */
+  #rss-checkout-layout {
+    display: grid !important;
+    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+    align-items: start;
+    gap: clamp(1rem, 2.5vw, 3rem);
+    width: 100%;
+  }
+  #rss-checkout-layout > div:first-child,
+  #rss-checkout-layout > div:last-child {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+  }
+  #rss-checkout-layout > div:last-child > .sticky {
+    position: sticky;
+    top: 6rem;
+  }
+  /* Prevent long labels/values from forcing the summary wider than its column. */
+  #rss-checkout-layout > div:last-child .flex.justify-between {
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+  #rss-checkout-layout > div:last-child .flex.justify-between > span:last-child,
+  #rss-checkout-layout > div:last-child .flex.justify-between > strong {
+    overflow-wrap: anywhere;
+  }
+  @media (max-width: 1023.98px) {
+    #rss-checkout-layout {
+      grid-template-columns: minmax(0, 1fr) !important;
+      gap: 1.5rem;
+    }
+    #rss-checkout-layout > div:last-child > .sticky {
+      position: static !important;
+      top: auto !important;
+    }
+  }
+</style>
 </head>
 <body class="bg-background text-on-surface font-body antialiased min-h-screen flex flex-col">
 <div id="header-container"></div>
@@ -275,7 +316,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <h1 class="font-headline text-headline-xl text-inverse-surface mb-2 tracking-tighter">Paiement Sécurisé</h1>
 <p class="font-body text-body-lg text-on-surface-variant">Finalisez votre réservation de matériel audio professionnel.</p>
 </div>
-<div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+<div id="rss-checkout-layout" class="flex flex-col lg:flex-row gap-8 lg:gap-12">
 <!-- Left Column: Checkout Steps -->
 <div class="w-full lg:w-2/3 flex flex-col gap-6">
 <!-- Step 1: Information -->
