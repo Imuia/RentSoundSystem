@@ -508,26 +508,63 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <div class="flex items-start gap-3 mb-4">
 <span class="material-symbols-outlined text-primary">account_balance</span>
 <div>
-<h3 class="font-headline font-bold text-inverse-surface mb-1">Virement bancaire</h3>
-<p class="text-sm text-on-surface-variant">Le client confirme la commande puis reçoit les instructions de virement. La réservation reste en attente jusqu’à réception du paiement.</p>
+<h3 class="font-headline font-bold text-inverse-surface mb-1">Virement bancaire — coordonnées Numixtra LLC</h3>
+<p class="text-sm text-on-surface-variant">Choisissez la devise du virement pour afficher les coordonnées correspondantes. La commande restera en attente jusqu’à vérification de la réception des fonds.</p>
 </div>
 </div>
-<div class="grid gap-3 text-sm">
-<div class="flex justify-between gap-4 border-t border-outline-variant/50 pt-3"><span class="text-on-surface-variant">Bénéficiaire</span><strong class="text-inverse-surface text-right">RentSoundSystem / IMUIA LLC</strong></div>
-<div class="flex justify-between gap-4"><span class="text-on-surface-variant">IBAN</span><strong class="text-inverse-surface text-right" id="bank-iban">FR76 0000 0000 0000 0000 0000 000</strong></div>
-<div class="flex justify-between gap-4"><span class="text-on-surface-variant">BIC</span><strong class="text-inverse-surface text-right" id="bank-bic">BANKFRPPXXX</strong></div>
+<div class="rounded border border-primary/30 bg-primary/10 text-sm text-on-surface-variant p-4 mb-4">
+<strong class="text-primary">Important — le total de la commande est affiché en EUR.</strong>
+<p class="mt-1">Les coordonnées figurant sur le relevé transmis acceptent uniquement des GBP pour le compte britannique et des USD pour les coordonnées internationales. Elles ne permettent pas de recevoir un virement en EUR. Avant tout virement, demandez à RentSoundSystem le montant exact à envoyer en GBP ou USD. N’effectuez pas de conversion approximative et n’envoyez pas d’euros sur ces coordonnées.</p>
+</div>
+<div class="flex flex-col gap-1 mb-4">
+<label for="bank-transfer-currency" class="font-label text-label-caps text-on-surface-variant">Devise du virement *</label>
+<select id="bank-transfer-currency" required class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md">
+<option value="">Choisissez une devise…</option>
+<option value="GBP">GBP — Livre sterling (coordonnées britanniques)</option>
+<option value="USD">USD — Dollar américain (coordonnées internationales)</option>
+</select>
+</div>
+<div id="bank-transfer-currency-prompt" class="rounded border border-outline-variant bg-surface p-4 text-sm text-on-surface-variant">Sélectionnez GBP ou USD pour afficher les coordonnées bancaires correspondantes.</div>
+<div id="bank-gbp-details" class="hidden rounded border border-outline-variant bg-surface p-4 space-y-3 text-sm">
+<div class="flex items-center justify-between gap-3"><h4 class="font-headline font-bold text-inverse-surface">Coordonnées GBP — Royaume-Uni</h4><span class="text-xs text-primary font-bold">GBP uniquement</span></div>
+<div class="grid gap-2">
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Bénéficiaire</span><strong class="text-inverse-surface text-right">Numixtra LLC</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Adresse du bénéficiaire</span><strong class="text-inverse-surface text-right">30 N Gould St, Sheridan, WY 82801-6317, United States</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Numéro de compte</span><strong id="bank-gbp-account" class="text-inverse-surface text-right font-mono">90316399</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Sort code</span><strong id="bank-gbp-sort-code" class="text-inverse-surface text-right font-mono">23-01-63</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Banque</span><strong class="text-inverse-surface text-right">Revolut Ltd</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Adresse de la banque</span><strong class="text-inverse-surface text-right">30 South Colonnade, London, E14 5HX, United Kingdom</strong></div>
 <div class="flex justify-between gap-4"><span class="text-on-surface-variant">Référence à indiquer</span><strong class="text-primary text-right" id="bank-reference">RSS-COMMANDE</strong></div>
 </div>
-<button type="button" class="payment-copy-btn mt-4" id="copy-bank-details">Copier le RIB</button>
+<p class="text-xs text-on-surface-variant">Le relevé indique les virements CHAPS, BACS et paiements instantanés, avec un délai pouvant aller jusqu’à 2 jours ouvrés. Le compte reçoit uniquement des GBP.</p>
+</div>
+<div id="bank-usd-details" class="hidden rounded border border-outline-variant bg-surface p-4 space-y-3 text-sm">
+<div class="flex items-center justify-between gap-3"><h4 class="font-headline font-bold text-inverse-surface">Coordonnées USD — virements internationaux</h4><span class="text-xs text-primary font-bold">USD uniquement</span></div>
+<div class="grid gap-2">
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Bénéficiaire</span><strong class="text-inverse-surface text-right">Numixtra LLC</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Adresse du bénéficiaire</span><strong class="text-inverse-surface text-right">30 N Gould St, Sheridan, WY 82801-6317, United States</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Numéro de compte</span><strong id="bank-usd-account" class="text-inverse-surface text-right font-mono">218890536639</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Numéro de routage du virement (indiqué sur le relevé)</span><strong id="bank-usd-routing" class="text-inverse-surface text-right font-mono">REVOUS31</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">SWIFT / BIC</span><strong id="bank-usd-bic" class="text-inverse-surface text-right font-mono">REVOUS31</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">BIC intermédiaire</span><strong id="bank-usd-intermediary" class="text-inverse-surface text-right font-mono">CHASGB2L</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Banque</span><strong class="text-inverse-surface text-right">Revolut Technologies Inc.</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Adresse de la banque</span><strong class="text-inverse-surface text-right">107 Greenwich Street, Floor 20, New York, NY 10006, United States</strong></div>
+<div class="flex justify-between gap-4"><span class="text-on-surface-variant">Référence à indiquer</span><strong class="text-primary text-right" id="bank-reference-usd">RSS-COMMANDE</strong></div>
+</div>
+<p class="text-xs text-on-surface-variant">Le relevé indique un délai de 3 à 5 jours ouvrés et précise que la banque émettrice peut facturer des frais. Des frais de 10 USD sont annoncés pour les virements Wire bancaires domestiques américains. Pour un virement domestique américain, vérifiez les instructions exactes auprès de la banque avant l’envoi.</p>
+</div>
+<button type="button" class="payment-copy-btn mt-4" id="copy-bank-details">Copier les coordonnées bancaires</button>
+<p id="bank-copy-feedback" class="hidden text-xs text-primary mt-2" aria-live="polite"></p>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="flex flex-col gap-1">
-<label class="font-label text-label-caps text-on-surface-variant">Nom du titulaire du compte émetteur</label>
+<label for="bank-account-holder" class="font-label text-label-caps text-on-surface-variant">Nom du titulaire du compte émetteur *</label>
 <input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="bank-account-holder" type="text" placeholder="Nom ou société"/>
 </div>
 <div class="flex flex-col gap-1">
-<label class="font-label text-label-caps text-on-surface-variant">Date prévue du virement</label>
+<label for="bank-transfer-date" class="font-label text-label-caps text-on-surface-variant">Date prévue du virement</label>
 <input class="bg-surface border border-outline-variant rounded px-4 py-3 text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors font-body text-body-md" id="bank-transfer-date" type="date"/>
+</div>
 </div>
 </div>
 </div>
@@ -1008,7 +1045,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     if(btn&&!btn.disabled)btn.innerHTML='<span class="material-symbols-outlined" data-icon="lock">lock</span> '+(btnLabels[selectedPayment]||'Confirmer et payer');
   }
 
-  function getPaymentDetails(){if(selectedPayment==='paypal')return{paypalEmail:qs('#paypal-email')?.value.trim()||'',reference:qs('#paypal-reference')?.value||''}; if(selectedPayment==='apple_pay')return{phone:qs('#apple-phone')?.value.trim()||'',device:qs('#apple-device')?.value||''}; if(selectedPayment==='crypto')return{currency:qs('#crypto-currency')?.value||'',network:qs('#crypto-network')?.value||'',transaction:qs('#crypto-tx')?.value.trim()||''}; if(selectedPayment==='bank_transfer')return{holder:qs('#bank-account-holder')?.value.trim()||'',plannedDate:qs('#bank-transfer-date')?.value||'',iban:qs('#bank-iban')?.textContent||'',bic:qs('#bank-bic')?.textContent||'',reference:qs('#bank-reference')?.textContent||''}; return{cardName:qs('#card-name')?.value.trim()||''};}
+  function getPaymentDetails(){if(selectedPayment==='paypal')return{paypalEmail:qs('#paypal-email')?.value.trim()||'',reference:qs('#paypal-reference')?.value||''}; if(selectedPayment==='apple_pay')return{phone:qs('#apple-phone')?.value.trim()||'',device:qs('#apple-device')?.value||''}; if(selectedPayment==='crypto')return{currency:qs('#crypto-currency')?.value||'',network:qs('#crypto-network')?.value||'',transaction:qs('#crypto-tx')?.value.trim()||''}; if(selectedPayment==='bank_transfer'){const currency=qs('#bank-transfer-currency')?.value||'';const gbp=currency==='GBP';return{holder:qs('#bank-account-holder')?.value.trim()||'',plannedDate:qs('#bank-transfer-date')?.value||'',currency,beneficiary:'Numixtra LLC',beneficiaryAddress:'30 N Gould St, Sheridan, WY 82801-6317, United States',accountNumber:gbp?'90316399':'218890536639',sortCode:gbp?'23-01-63':'',routingNumber:gbp?'':'REVOUS31',iban:'',bic:gbp?'':'REVOUS31',intermediaryBic:gbp?'':'CHASGB2L',bank:gbp?'Revolut Ltd':'Revolut Technologies Inc.',bankAddress:gbp?'30 South Colonnade, London, E14 5HX, United Kingdom':'107 Greenwich Street, Floor 20, New York, NY 10006, United States',reference:qs('#bank-reference')?.textContent||getOrderRef()};} return{cardName:qs('#card-name')?.value.trim()||''};}
 
   // Fonction locale au script du tunnel : le script Stripe possède sa propre portée (IIFE),
   // donc sa fonction updateDepositTermsVisibility n'est pas accessible ici.
@@ -1165,7 +1202,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     return true;
   }
 
-  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const product=getProduct(); const totals=calculateTotals(product); const terms=qs('#accept-deposit-terms'); if(Number(totals.deposit||0)>0 && terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
+  function validate(){hideMessage(); clearFieldErrors(); if(!requireRentalDates()) return false; const required=['#first-name','#last-name','#email','#phone','#event-city']; for(const s of required){const el=qs(s); if(el&&!el.value.trim()){el.focus(); showMessage('Veuillez compléter tous les champs obligatoires.'); return false;}} const email=qs('#email')?.value.trim()||''; if(!/^\S+@\S+\.\S+$/.test(email)){qs('#email')?.focus(); showMessage('Email invalide.'); return false;} const phone=(qs('#phone')?.value||'').replace(/\s/g,''); if(phone.length<8){qs('#phone')?.focus(); showMessage('Téléphone invalide.'); return false;} if(selectedPayment==='card'){const product=getProduct(); const totals=calculateTotals(product); const terms=qs('#accept-deposit-terms'); if(Number(totals.deposit||0)>0 && terms && !terms.checked){terms.focus(); showMessage('Vous devez accepter les conditions de caution.'); return false;}} if(selectedPayment==='paypal'&&!/^\S+@\S+\.\S+$/.test(qs('#paypal-email')?.value.trim()||'')){qs('#paypal-email')?.focus(); showMessage('Indiquez un e-mail PayPal valide.'); return false;} if(selectedPayment==='apple_pay'&&(qs('#apple-phone')?.value||'').replace(/\s/g,'').length<8){qs('#apple-phone')?.focus(); showMessage('Indiquez le téléphone associé à Apple Pay.'); return false;} if(selectedPayment==='bank_transfer'&&!qs('#bank-transfer-currency')?.value){qs('#bank-transfer-currency')?.focus(); showMessage('Choisissez la devise du virement : GBP ou USD. Les coordonnées fournies ne permettent pas de recevoir des EUR.'); return false;} if(selectedPayment==='bank_transfer'&&!(qs('#bank-account-holder')?.value||'').trim()){qs('#bank-account-holder')?.focus(); showMessage('Indiquez le titulaire du compte émetteur du virement.'); return false;} return true;}
 
   async function requireLogin(){
     /*
@@ -1358,10 +1395,56 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
     });
     qsa('.payment-method').forEach(btn=>btn.addEventListener('click',()=>{selectedPayment=btn.dataset.method; updatePaymentUI();}));
     qs('#confirm-order-btn')?.addEventListener('click',submit);
-    qs('#copy-bank-details')?.addEventListener('click',()=>{
-      const text='Bénéficiaire : RentSoundSystem / IMUIA LLC\nIBAN : '+(qs('#bank-iban')?.textContent||'')+'\nBIC : '+(qs('#bank-bic')?.textContent||'')+'\nRéférence : '+(qs('#bank-reference')?.textContent||'');
-      navigator.clipboard?.writeText(text);
-      showMessage('RIB copié.','success');
+    qs('#bank-transfer-currency')?.addEventListener('change',()=>{
+      const currency=qs('#bank-transfer-currency').value;
+      qs('#bank-transfer-currency-prompt')?.classList.toggle('hidden',!!currency);
+      qs('#bank-gbp-details')?.classList.toggle('hidden',currency!=='GBP');
+      qs('#bank-usd-details')?.classList.toggle('hidden',currency!=='USD');
+      const ref=qs('#bank-reference')?.textContent||getOrderRef();
+      if(qs('#bank-reference-usd'))qs('#bank-reference-usd').textContent=ref;
+      const feedback=qs('#bank-copy-feedback');
+      if(feedback)feedback.classList.add('hidden');
+    });
+    qs('#copy-bank-details')?.addEventListener('click',async()=>{
+      const currency=qs('#bank-transfer-currency')?.value||'';
+      if(!currency){showMessage('Choisissez d’abord GBP ou USD pour afficher les coordonnées correspondantes.');qs('#bank-transfer-currency')?.focus();return;}
+      const ref=qs('#bank-reference')?.textContent||getOrderRef();
+      const common=[
+        'Bénéficiaire : Numixtra LLC',
+        'Adresse bénéficiaire : 30 N Gould St, Sheridan, WY 82801-6317, United States',
+        'Référence de commande : '+ref
+      ];
+      const lines=currency==='GBP' ? [
+        'VIREMENT EN GBP — COORDONNÉES ROYAUME-UNI',
+        ...common,
+        'Numéro de compte : 90316399',
+        'Sort code : 23-01-63',
+        'Banque : Revolut Ltd',
+        'Adresse de la banque : 30 South Colonnade, London, E14 5HX, United Kingdom',
+        'Le compte accepte uniquement les GBP. Délai indiqué : jusqu’à 2 jours ouvrés.'
+      ] : [
+        'VIREMENT INTERNATIONAL EN USD — SWIFT',
+        ...common,
+        'Numéro de compte : 218890536639',
+        'Numéro de routage du virement indiqué sur le relevé : REVOUS31',
+        'SWIFT / BIC : REVOUS31',
+        'BIC intermédiaire : CHASGB2L',
+        'Banque : Revolut Technologies Inc.',
+        'Adresse de la banque : 107 Greenwich Street, Floor 20, New York, NY 10006, United States',
+        'Délai indiqué : 3 à 5 jours ouvrés. Des frais bancaires peuvent s’appliquer. Vérifiez auprès de la banque les instructions exactes pour un wire domestique américain.'
+      ];
+      const text=lines.join(String.fromCharCode(10));
+      try{
+        if(!navigator.clipboard?.writeText)throw new Error('Clipboard unavailable');
+        await navigator.clipboard.writeText(text);
+        const feedback=qs('#bank-copy-feedback');
+        if(feedback){feedback.textContent='Coordonnées '+currency+' copiées. Vérifiez le montant exact à envoyer avant de faire le virement.';feedback.classList.remove('hidden');}
+        showMessage('Coordonnées '+currency+' copiées. Le montant doit être confirmé dans la même devise avant le virement.','success');
+      }catch(e){
+        const feedback=qs('#bank-copy-feedback');
+        if(feedback){feedback.textContent='La copie automatique est indisponible. Sélectionnez les coordonnées affichées et copiez-les manuellement.';feedback.classList.remove('hidden');}
+        showMessage('Copie automatique indisponible. Les coordonnées sont affichées à l’écran.','error');
+      }
     });
     qs('#card-number')?.addEventListener('input',e=>{e.target.value=e.target.value.replace(/\D/g,'').replace(/(.{4})/g,'$1 ').trim().slice(0,19)});
     qs('#card-expiry')?.addEventListener('input',e=>{let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2)v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v});
