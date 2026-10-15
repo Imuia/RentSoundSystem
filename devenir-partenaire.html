@@ -346,8 +346,18 @@
           stripe_status: 'not_started'
         };
 
-        const { error } = await client.from('partner_requests').insert([payload]);
+        const { data: insertedData, error } = await client.from('partner_requests').insert([payload]).select().single();
         if(error) throw error;
+
+        try {
+          await fetch('/api/partner-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.assign({}, payload, { id: insertedData ? insertedData.id : '', full_name: payload.contact_name }))
+          });
+        } catch(notifyErr) {
+          console.warn('Notification email warning:', notifyErr);
+        }
 
         form.reset();
         alertBox('success', 'Votre demande partenaire a bien été envoyée. Elle est maintenant en attente de validation par RentSoundSystem.');
