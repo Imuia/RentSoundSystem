@@ -409,13 +409,17 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           if (partner.status === 'approved' || partner.status === 'active') {
-            await supabaseClient.from('profiles').upsert({
-              id: user.id,
-              email: finalEmail,
-              full_name: partner.name || user.user_metadata?.full_name || finalEmail.split('@')[0],
-              role: 'partner',
-              updated_at: new Date().toISOString()
-            }, { onConflict: 'id' });
+            try {
+              const { error: upsertErr } = await supabaseClient.from('profiles').upsert({
+                id: user.id,
+                email: finalEmail,
+                full_name: partner.name || user.user_metadata?.full_name || finalEmail.split('@')[0],
+                role: 'partner'
+              }, { onConflict: 'id' });
+              if (upsertErr) console.warn('Mise à jour profil partenaire:', upsertErr);
+            } catch (errPartnerProfile) {
+              console.warn('Mise à jour profil partenaire non bloquante:', errPartnerProfile);
+            }
 
             return '/tableau-de-bord-partenaire-valide.html';
           }
@@ -442,12 +446,16 @@ document.addEventListener('DOMContentLoaded', function () {
           localStorage.setItem('rssPartnerStatus', request.status || 'pending');
 
           if (request.status === 'approved') {
-            await supabaseClient.from('profiles').upsert({
-              id: user.id,
-              email: finalEmail,
-              role: 'partner',
-              updated_at: new Date().toISOString()
-            }, { onConflict: 'id' });
+            try {
+              const { error: upsertErr } = await supabaseClient.from('profiles').upsert({
+                id: user.id,
+                email: finalEmail,
+                role: 'partner'
+              }, { onConflict: 'id' });
+              if (upsertErr) console.warn('Mise à jour profil partenaire:', upsertErr);
+            } catch (errRequestProfile) {
+              console.warn('Mise à jour profil partenaire non bloquante:', errRequestProfile);
+            }
 
             return '/tableau-de-bord-partenaire-valide.html';
           }
@@ -800,20 +808,38 @@ if (params.get('type') === 'partner') {
           return;
         }
 
-        // Si Supabase renvoie déjà une session, on prépare le profil client.
-        if (data?.user) {
-          await supabaseClient.from('profiles').upsert({
-            id: data.user.id,
-            email: email,
-            full_name: fullName,
-            company_name: company,
-            role: 'client',
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'id' });
+        // Si Supabase renvoie déjà une session authentifiée, on prépare le profil client.
+        // Sinon (confirmation e-mail requise), l'upsert sera exécuté à la première connexion authentifiée
+        // pour respecter les politiques RLS sans bloquer l'inscription.
+        if (data?.session && data?.user) {
+          try {
+            const { error: profileErr } = await supabaseClient.from('profiles').upsert({
+              id: data.user.id,
+              email: email,
+              full_name: fullName,
+              company_name: company,
+              role: 'client'
+            }, { onConflict: 'id' });
+            if (profileErr) console.warn('Initialisation profil client :', profileErr);
+          } catch (eProfile) {
+            console.warn('Initialisation profil non bloquante :', eProfile);
+          }
         }
 
-        showStatus('Compte créé. Vérifiez votre e-mail si Supabase demande une confirmation. Sinon redirection...', 'success');
-        if (data?.session) window.location.href = LOCAL_REDIRECT_URL;
+        if (data?.session) {
+          showStatus('Compte créé avec succès. Redirection...', 'success');
+          window.location.href = LOCAL_REDIRECT_URL;
+        } else {
+          showStatus('Votre compte a été créé avec succès ! Un e-mail de confirmation vient de vous être envoyé. Merci de cliquer sur le lien reçu pour valider votre compte (pensez également à vérifier vos courriers indésirables / spams).', 'success');
+          // Bascule douce vers l'onglet connexion en préremplissant l'e-mail
+          setTimeout(() => {
+            activateTab('login');
+            emailInput.value = email;
+            password.value = '';
+            const confirmInput = document.getElementById('confirm-password');
+            if (confirmInput) confirmInput.value = '';
+          }, 3500);
+        }
       } else {
         const { error } = await supabaseClient.auth.signInWithPassword({
           email: email,
@@ -829,20 +855,32 @@ if (params.get('type') === 'partner') {
         clearAccountIdentityStorage(false);
 
         if (userData?.user) {
-          const { data: existingProfile } = await supabaseClient
-            .from('profiles')
-            .select('role')
-            .eq('id', userData.user.id)
-            .maybeSingle();
+          try {
+            const { data: existingProfile, error: fetchProfileErr } = await supabaseClient
+              .from('profiles')
+              .select('role')
+              .eq('id', userData.user.id)
+              .maybeSingle();
 
-          await supabaseClient.from('profiles').upsert({
-            id: userData.user.id,
-            email: userData.user.email,
-            full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Client',
-            company_name: userData.user.user_metadata?.company_name || '',
-            role: existingProfile?.role || 'client',
-            updated_at: new Date().toISOString()
-          }, { onConflict: 'id' });
+            if (fetchProfileErr) {
+              console.warn('Lecture profil existant en erreur, synchronisation reportée pour préserver le rôle:', fetchProfileErr);
+            } else {
+              // On conserve impérativement le rôle existant (partner, admin, etc.) s'il est déjà défini.
+              const userRole = existingProfile?.role || 'client';
+
+              const { error: syncErr } = await supabaseClient.from('profiles').upsert({
+                id: userData.user.id,
+                email: userData.user.email,
+                full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Client',
+                company_name: userData.user.user_metadata?.company_name || '',
+                role: userRole
+              }, { onConflict: 'id' });
+
+              if (syncErr) console.warn('Synchronisation profil après connexion :', syncErr);
+            }
+          } catch (errSyncProfile) {
+            console.warn('Synchronisation profil après connexion non bloquante :', errSyncProfile);
+          }
         }
 
         const nextUrl = await resolveLoginRedirect(userData?.user);
