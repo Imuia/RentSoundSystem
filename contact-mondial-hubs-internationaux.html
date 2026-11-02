@@ -296,6 +296,18 @@
             <p class="text-xs text-neutral-400 mt-1">Tous les champs avec un astérisque (*) sont obligatoires pour le calcul logistique.</p>
           </div>
 
+          <!-- DESTINATION / VILLE PRE-REMPLIE -->
+          <div id="ville-selected-box" class="p-3.5 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-primary text-xl">location_on</span>
+              <div>
+                <span class="text-[10px] uppercase font-bold tracking-wider text-primary block">Destination sélectionnée</span>
+                <span id="ville-selected-name" class="text-sm font-bold text-white">Toutes destinations</span>
+              </div>
+            </div>
+            <input type="hidden" name="ville" id="contact-ville-input" value="">
+          </div>
+
           <!-- SELECT REGION / CONTINENT -->
           <div>
             <label class="block text-xs font-bold uppercase tracking-wider text-neutral-300 mb-2">Zone Géographique de l'Événement *</label>
@@ -478,6 +490,32 @@
   regionInputs.forEach((input) => input.addEventListener('change', updateRegionStyles));
   updateRegionStyles();
 
+  // Pré-remplissage automatique de la ville depuis l'URL (?ville=...)
+  const urlParams = new URLSearchParams(window.location.search);
+  const villeParam = urlParams.get('ville');
+  const regionParam = urlParams.get('region');
+  const detailsField = form.querySelector('textarea[name="details"]');
+  const villeInput = document.getElementById('contact-ville-input');
+  const villeNameDisplay = document.getElementById('ville-selected-name');
+
+  if (villeParam) {
+    const cleanVille = villeParam.trim();
+    if (villeInput) villeInput.value = cleanVille;
+    if (villeNameDisplay) villeNameDisplay.textContent = cleanVille;
+    if (detailsField && !detailsField.value) {
+      detailsField.value = `Projet événementiel à ${cleanVille} : `;
+    }
+  }
+
+  // Pré-sélection de la région si spécifiée ou déduite
+  if (regionParam) {
+    const matchingRegion = form.querySelector(`input[name="region"][value="${regionParam}"]`);
+    if (matchingRegion) {
+      matchingRegion.checked = true;
+      updateRegionStyles();
+    }
+  }
+
   function showStatus(type, message) {
     statusBox.className = 'rounded-xl border px-4 py-3 text-sm';
     if (type === 'success') {
@@ -497,6 +535,7 @@
     const data = new FormData(form);
     const payload = {
       region: data.get('region'),
+      ville: data.get('ville') || (new URLSearchParams(window.location.search).get('ville') || ''),
       nom: data.get('nom'),
       societe: data.get('societe'),
       email: data.get('email'),
