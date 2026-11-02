@@ -410,12 +410,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if (partner.status === 'approved' || partner.status === 'active') {
             try {
-              await supabaseClient.from('profiles').upsert({
+              const { error: upsertErr } = await supabaseClient.from('profiles').upsert({
                 id: user.id,
                 email: finalEmail,
                 full_name: partner.name || user.user_metadata?.full_name || finalEmail.split('@')[0],
                 role: 'partner'
               }, { onConflict: 'id' });
+              if (upsertErr) console.warn('Mise à jour profil partenaire:', upsertErr);
             } catch (errPartnerProfile) {
               console.warn('Mise à jour profil partenaire non bloquante:', errPartnerProfile);
             }
@@ -446,11 +447,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
           if (request.status === 'approved') {
             try {
-              await supabaseClient.from('profiles').upsert({
+              const { error: upsertErr } = await supabaseClient.from('profiles').upsert({
                 id: user.id,
                 email: finalEmail,
                 role: 'partner'
               }, { onConflict: 'id' });
+              if (upsertErr) console.warn('Mise à jour profil partenaire:', upsertErr);
             } catch (errRequestProfile) {
               console.warn('Mise à jour profil partenaire non bloquante:', errRequestProfile);
             }
@@ -811,13 +813,14 @@ if (params.get('type') === 'partner') {
         // pour respecter les politiques RLS sans bloquer l'inscription.
         if (data?.session && data?.user) {
           try {
-            await supabaseClient.from('profiles').upsert({
+            const { error: profileErr } = await supabaseClient.from('profiles').upsert({
               id: data.user.id,
               email: email,
               full_name: fullName,
               company_name: company,
               role: 'client'
             }, { onConflict: 'id' });
+            if (profileErr) console.warn('Initialisation profil client :', profileErr);
           } catch (eProfile) {
             console.warn('Initialisation profil non bloquante :', eProfile);
           }
@@ -853,19 +856,28 @@ if (params.get('type') === 'partner') {
 
         if (userData?.user) {
           try {
-            const { data: existingProfile } = await supabaseClient
+            const { data: existingProfile, error: fetchProfileErr } = await supabaseClient
               .from('profiles')
               .select('role')
               .eq('id', userData.user.id)
               .maybeSingle();
 
-            await supabaseClient.from('profiles').upsert({
-              id: userData.user.id,
-              email: userData.user.email,
-              full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Client',
-              company_name: userData.user.user_metadata?.company_name || '',
-              role: existingProfile?.role || 'client'
-            }, { onConflict: 'id' });
+            if (fetchProfileErr) {
+              console.warn('Lecture profil existant en erreur, synchronisation reportée pour préserver le rôle:', fetchProfileErr);
+            } else {
+              // On conserve impérativement le rôle existant (partner, admin, etc.) s'il est déjà défini.
+              const userRole = existingProfile?.role || 'client';
+
+              const { error: syncErr } = await supabaseClient.from('profiles').upsert({
+                id: userData.user.id,
+                email: userData.user.email,
+                full_name: userData.user.user_metadata?.full_name || userData.user.email?.split('@')[0] || 'Client',
+                company_name: userData.user.user_metadata?.company_name || '',
+                role: userRole
+              }, { onConflict: 'id' });
+
+              if (syncErr) console.warn('Synchronisation profil après connexion :', syncErr);
+            }
           } catch (errSyncProfile) {
             console.warn('Synchronisation profil après connexion non bloquante :', errSyncProfile);
           }
