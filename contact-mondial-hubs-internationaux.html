@@ -499,11 +499,11 @@
   const villeNameDisplay = document.getElementById('ville-selected-name');
 
   if (villeParam) {
-    const decodedVille = decodeURIComponent(villeParam).trim();
-    if (villeInput) villeInput.value = decodedVille;
-    if (villeNameDisplay) villeNameDisplay.textContent = decodedVille;
+    const cleanVille = villeParam.trim();
+    if (villeInput) villeInput.value = cleanVille;
+    if (villeNameDisplay) villeNameDisplay.textContent = cleanVille;
     if (detailsField && !detailsField.value) {
-      detailsField.value = `Projet événementiel à ${decodedVille} : `;
+      detailsField.value = `Projet événementiel à ${cleanVille} : `;
     }
   }
 
