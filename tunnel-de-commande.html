@@ -406,25 +406,25 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <h2 class="font-headline text-headline-md text-inverse-surface">Méthode de Paiement</h2>
 </div>
 <div class="grid gap-4 mb-6 grid-cols-2 md:grid-cols-5" id="payment-methods">
+<button type="button" data-method="bank_transfer" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl">account_balance</span>
+<span class="font-label text-label-md text-on-surface-variant text-center">Virement Bancaire</span>
+</button>
 <button type="button" data-method="card" class="payment-method p-4 border-2 border-primary rounded flex flex-col items-center justify-center gap-2 bg-surface-container-high transition-colors" aria-pressed="true">
 <span class="material-symbols-outlined text-inverse-surface text-3xl" data-icon="credit_card">credit_card</span>
 <span class="font-label text-label-md text-inverse-surface">Carte Bancaire</span>
-</button>
-<button type="button" data-method="paypal" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
-<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
-<span class="font-label text-label-md text-on-surface-variant">PayPal</span>
-</button>
-<button type="button" data-method="apple_pay" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
-<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="payments">payments</span>
-<span class="font-label text-label-md text-on-surface-variant">Apple Pay</span>
 </button>
 <button type="button" data-method="crypto" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
 <span class="material-symbols-outlined text-on-surface-variant text-3xl">currency_bitcoin</span>
 <span class="font-label text-label-md text-on-surface-variant">Crypto</span>
 </button>
-<button type="button" data-method="bank_transfer" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
-<span class="material-symbols-outlined text-on-surface-variant text-3xl">account_balance</span>
-<span class="font-label text-label-md text-on-surface-variant text-center">Virement Bancaire</span>
+<button type="button" data-method="apple_pay" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="payments">payments</span>
+<span class="font-label text-label-md text-on-surface-variant">Apple Pay</span>
+</button>
+<button type="button" data-method="paypal" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-label text-label-md text-on-surface-variant">PayPal</span>
 </button></div>
 <div id="payment-note" class="mb-5 rounded border border-primary/30 bg-primary/10 text-primary px-4 py-3 text-sm">Carte bancaire sélectionnée.</div>
 <div id="payment-panels" class="space-y-4">
