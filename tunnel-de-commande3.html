@@ -337,13 +337,13 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <h2 class="font-headline text-headline-md text-inverse-surface">Méthode de Paiement</h2>
 </div>
 <div class="grid gap-4 mb-6 grid-cols-2 md:grid-cols-5" id="payment-methods">
-<button type="button" data-method="bank_transfer" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
-<span class="material-symbols-outlined text-on-surface-variant text-3xl">account_balance</span>
-<span class="font-label text-label-md text-on-surface-variant text-center">Virement Bancaire</span>
+<button type="button" data-method="bank_transfer" class="payment-method p-4 border-2 border-primary rounded flex flex-col items-center justify-center gap-2 bg-surface-container-high transition-colors" aria-pressed="true">
+<span class="material-symbols-outlined text-inverse-surface text-3xl">account_balance</span>
+<span class="font-label text-label-md text-inverse-surface text-center">Virement Bancaire</span>
 </button>
-<button type="button" data-method="card" class="payment-method p-4 border-2 border-primary rounded flex flex-col items-center justify-center gap-2 bg-surface-container-high transition-colors" aria-pressed="true">
-<span class="material-symbols-outlined text-inverse-surface text-3xl" data-icon="credit_card">credit_card</span>
-<span class="font-label text-label-md text-inverse-surface">Carte Bancaire</span>
+<button type="button" data-method="card" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
+<span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="credit_card">credit_card</span>
+<span class="font-label text-label-md text-on-surface-variant">Carte Bancaire</span>
 </button>
 <button type="button" data-method="crypto" class="payment-method p-4 border border-outline-variant rounded flex flex-col items-center justify-center gap-2 hover:border-primary hover:bg-surface-container-high transition-colors" aria-pressed="false">
 <span class="material-symbols-outlined text-on-surface-variant text-3xl">currency_bitcoin</span>
@@ -357,9 +357,9 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 <span class="material-symbols-outlined text-on-surface-variant text-3xl" data-icon="account_balance_wallet">account_balance_wallet</span>
 <span class="font-label text-label-md text-on-surface-variant">PayPal</span>
 </button></div>
-<div id="payment-note" class="mb-5 rounded border border-primary/30 bg-primary/10 text-primary px-4 py-3 text-sm">Carte bancaire sélectionnée.</div>
+<div id="payment-note" class="mb-5 rounded border border-primary/30 bg-primary/10 text-primary px-4 py-3 text-sm">Virement bancaire sélectionné : le RIB et la référence apparaissent ci-dessous.</div>
 <div id="payment-panels" class="space-y-4">
-<form class="payment-panel active flex-col gap-4" id="card-payment-fields" data-panel="card">
+<form class="payment-panel flex-col gap-4" id="card-payment-fields" data-panel="card">
 <div id="rss-stripe-test-panel" class="payment-info-card flex flex-col gap-4">
   <div class="flex items-start gap-3">
     <span class="material-symbols-outlined text-primary">verified_user</span>
@@ -472,7 +472,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
 </div>
 </div>
 
-<div class="payment-panel flex-col gap-4" id="bank-transfer-payment-fields" data-panel="bank_transfer">
+<div class="payment-panel active flex-col gap-4" id="bank-transfer-payment-fields" data-panel="bank_transfer">
 <div class="payment-info-card">
 <div class="flex items-start gap-3 mb-4">
 <span class="material-symbols-outlined text-primary">account_balance</span>
@@ -580,7 +580,7 @@ input:focus{box-shadow:0 0 0 1px #FC036D,0 0 22px rgba(252,3,109,.18)!important;
   const CONFIRMATION_URL='/confirmation-de-commande.html';
   const DEFAULT_PRODUCT={name:'Matériel RentSoundSystem',description:'Location de matériel événementiel professionnel',dailyPrice:0,deposit:0,caution:0,quantity:1,image:'',vatRate:0};
   const ORDER_REF_KEY='rssPendingOrderRef';
-  let selectedPayment='card';
+  let selectedPayment='bank_transfer';
   let loadedListing=null;
 
   function qs(s){return document.querySelector(s)}
