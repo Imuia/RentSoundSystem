@@ -844,6 +844,719 @@
 }
 
 </style>
+<!-- Leaflet CSS for Interactive Map -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<style>
+/* --- CANNES CATALOG & INTERACTIVE MAP STYLES --- */
+.cannes-catalog-section {
+  padding: 60px 0 96px;
+  background: var(--rss-bg);
+}
+
+.cannes-search-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: linear-gradient(145deg, rgba(31,31,31,.85), rgba(22,22,22,.92));
+  border: 1px solid rgba(252,3,109,.24);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.45);
+  margin-bottom: 24px;
+}
+
+.cannes-search-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1 1 280px;
+  background: rgba(14,14,14,.65);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.cannes-search-input-wrap:focus-within {
+  border-color: var(--rss-primary);
+  box-shadow: 0 0 16px rgba(252,3,109,.25);
+}
+
+.cannes-search-input-wrap .material-symbols-outlined {
+  color: var(--rss-primary);
+  font-size: 20px;
+}
+
+.cannes-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.cannes-search-input::placeholder {
+  color: rgba(229,226,225,.45);
+}
+
+.cannes-search-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(14,14,14,.65);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  padding: 10px 14px;
+}
+
+.cannes-search-select-wrap .material-symbols-outlined {
+  color: var(--rss-muted);
+  font-size: 18px;
+}
+
+.cannes-search-select {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--rss-text);
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.cannes-search-select option {
+  background: #1c1b1b;
+  color: #fff;
+}
+
+.cannes-search-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,.1);
+  background: rgba(35,35,35,.7);
+  color: var(--rss-text);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+
+.cannes-search-reset-btn:hover {
+  background: rgba(252,3,109,.15);
+  border-color: rgba(252,3,109,.4);
+  color: #fff;
+}
+
+/* Category pills */
+.cannes-filters-pills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.cannes-filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: rgba(30,30,30,.8);
+  border: 1px solid rgba(255,255,255,.08);
+  color: var(--rss-muted);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+  user-select: none;
+}
+
+.cannes-filter-pill:hover {
+  border-color: rgba(252,3,109,.4);
+  color: #fff;
+}
+
+.cannes-filter-pill.active {
+  background: rgba(252,3,109,.16);
+  border-color: var(--rss-primary);
+  color: #fff;
+  box-shadow: 0 0 16px rgba(252,3,109,.3);
+}
+
+.cannes-filter-pill .pill-count {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.12);
+}
+
+.cannes-filter-pill.active .pill-count {
+  background: var(--rss-primary);
+  color: #fff;
+}
+
+/* Catalog count status */
+.cannes-results-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  font-size: 14px;
+  color: var(--rss-muted);
+}
+
+.cannes-results-summary strong {
+  color: #fff;
+}
+
+.cannes-results-summary .cannes-geo-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--rss-primary);
+}
+
+/* Grid layout for products */
+.cannes-catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+  gap: 24px;
+}
+
+.cannes-prod-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(145deg, rgba(31,31,31,.68), rgba(22,21,21,.88));
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  backdrop-filter: blur(10px);
+}
+
+.cannes-prod-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(252,3,109,.4);
+  box-shadow: 0 12px 36px rgba(0,0,0,.5), 0 0 20px rgba(252,3,109,.12);
+}
+
+.cannes-prod-card.cannes-card-highlighted {
+  border-color: var(--rss-primary) !important;
+  box-shadow: 0 0 30px rgba(252,3,109,.45) !important;
+  transform: translateY(-4px) scale(1.01);
+}
+
+.cannes-prod-media {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  background: #181818;
+  overflow: hidden;
+}
+
+.cannes-prod-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .6s ease;
+  display: block;
+}
+
+.cannes-prod-card:hover .cannes-prod-img {
+  transform: scale(1.06);
+}
+
+.cannes-prod-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 40% 30%, rgba(252,3,109,.18), transparent 55%), #1c1c1c;
+  color: rgba(255,255,255,.2);
+}
+
+.cannes-prod-placeholder .material-symbols-outlined {
+  font-size: 48px;
+}
+
+.cannes-prod-badges {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.cannes-badge-cat {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: rgba(14,14,14,.85);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.cannes-badge-fulfillment {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  backdrop-filter: blur(8px);
+}
+
+.cannes-fulfillment-local {
+  background: rgba(252,3,109,.2);
+  border: 1px solid rgba(252,3,109,.5);
+  color: #FC036D;
+}
+
+.cannes-fulfillment-delivery {
+  background: rgba(30,144,255,.18);
+  border: 1px solid rgba(30,144,255,.4);
+  color: #60a5fa;
+}
+
+.cannes-prod-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.cannes-prod-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--rss-primary);
+}
+
+.cannes-prod-meta .brand-pill {
+  color: #fff;
+  background: rgba(255,255,255,.08);
+  padding: 3px 7px;
+  border-radius: 4px;
+}
+
+.cannes-prod-title {
+  margin: 0 0 10px;
+  font-family: Manrope, Inter, sans-serif;
+  font-size: 18px;
+  line-height: 1.35;
+  color: #fff;
+  font-weight: 700;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 48px;
+}
+
+.cannes-prod-desc {
+  margin: 0 0 16px;
+  color: var(--rss-muted);
+  font-size: 13px;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  flex-grow: 1;
+}
+
+.cannes-prod-location-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 0;
+  margin-bottom: 16px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  font-size: 12px;
+  color: var(--rss-muted);
+}
+
+.cannes-prod-city {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cannes-prod-city .material-symbols-outlined {
+  font-size: 16px;
+  color: var(--rss-primary);
+}
+
+.cannes-locate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(252,3,109,.12);
+  border: 1px solid rgba(252,3,109,.25);
+  color: var(--rss-primary);
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+
+.cannes-locate-btn:hover {
+  background: var(--rss-primary);
+  color: #fff;
+}
+
+.cannes-prod-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.cannes-prod-price-box {
+  display: flex;
+  flex-direction: column;
+}
+
+.cannes-prod-price-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--rss-muted);
+}
+
+.cannes-prod-price-val {
+  font-family: Manrope, Inter, sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--rss-primary);
+  line-height: 1.1;
+}
+
+.cannes-prod-price-val small {
+  font-size: 12px;
+  color: var(--rss-muted);
+  font-weight: 500;
+}
+
+.cannes-prod-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cannes-action-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.15);
+  background: rgba(255,255,255,.05);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: all .2s ease;
+  white-space: nowrap;
+}
+
+.cannes-action-view:hover {
+  background: rgba(255,255,255,.15);
+  border-color: rgba(255,255,255,.3);
+  color: #fff;
+}
+
+.cannes-action-rent {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 9px 14px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: var(--rss-primary);
+  color: #fff !important;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  transition: all .2s ease;
+  box-shadow: 0 0 16px rgba(252,3,109,.3);
+  white-space: nowrap;
+}
+
+.cannes-action-rent:hover {
+  background: #ff1a7f;
+  box-shadow: 0 0 24px rgba(252,3,109,.55);
+  transform: translateY(-1px);
+}
+
+/* Loading skeleton */
+.cannes-skeleton-card {
+  height: 380px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(28,27,27,.6) 25%, rgba(40,40,40,.6) 50%, rgba(28,27,27,.6) 75%);
+  background-size: 200% 100%;
+  animation: cannes-skeleton 1.6s infinite ease-in-out;
+  border: 1px solid rgba(255,255,255,.05);
+}
+
+@keyframes cannes-skeleton {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Empty state */
+.cannes-empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 24px;
+  background: linear-gradient(145deg, rgba(31,31,31,.6), rgba(20,20,20,.7));
+  border: 1px dashed rgba(252,3,109,.3);
+  border-radius: 14px;
+  color: var(--rss-muted);
+}
+
+.cannes-empty-state .material-symbols-outlined {
+  font-size: 52px;
+  color: var(--rss-primary);
+  margin-bottom: 14px;
+}
+
+.cannes-empty-state h3 {
+  font-size: 20px;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.cannes-empty-state p {
+  max-width: 480px;
+  margin: 0 auto 20px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Real interactive Leaflet map styling */
+#cannes-interactive-map {
+  width: 100%;
+  height: 520px;
+  border-radius: 12px;
+  position: relative;
+  z-index: 1;
+  background: #111;
+}
+
+#cannes-interactive-map.leaflet-container {
+  font-family: Inter, Arial, sans-serif;
+  background: #111 !important;
+}
+
+#cannes-interactive-map .leaflet-tile {
+  filter: grayscale(100%) brightness(0.42) contrast(1.22);
+}
+
+#cannes-interactive-map .leaflet-control-attribution {
+  background: rgba(14,14,14,.8) !important;
+  color: #888 !important;
+  font-size: 10px !important;
+}
+
+#cannes-interactive-map .leaflet-control-attribution a {
+  color: var(--rss-primary) !important;
+}
+
+#cannes-interactive-map .leaflet-control-zoom a {
+  background: rgba(28,27,27,.9) !important;
+  color: #fff !important;
+  border-color: rgba(255,255,255,.1) !important;
+}
+
+#cannes-interactive-map .leaflet-control-zoom a:hover {
+  background: var(--rss-primary) !important;
+  color: #fff !important;
+}
+
+/* Custom Leaflet Pin */
+.cannes-map-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.cannes-map-pin {
+  width: 32px;
+  height: 32px;
+  border-radius: 50% 50% 50% 0;
+  background: #FC036D;
+  transform: rotate(-45deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(252,3,109,.85), 0 4px 10px rgba(0,0,0,.6);
+  border: 2px solid #fff;
+  cursor: pointer;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.cannes-map-pin:hover,
+.cannes-map-pin.is-active {
+  transform: rotate(-45deg) scale(1.2);
+  box-shadow: 0 0 32px rgba(252,3,109,1), 0 6px 14px rgba(0,0,0,.8);
+  z-index: 9999 !important;
+}
+
+.cannes-map-pin-icon {
+  transform: rotate(45deg);
+  color: #fff;
+  font-size: 16px;
+  font-variation-settings: 'FILL' 1;
+}
+
+/* Leaflet Popup */
+.cannes-map-popup .leaflet-popup-content-wrapper {
+  background: rgba(20,20,20,.95) !important;
+  color: #e5e2e1 !important;
+  border: 1px solid rgba(252,3,109,.35) !important;
+  border-radius: 12px !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  box-shadow: 0 12px 36px rgba(0,0,0,.7), 0 0 24px rgba(252,3,109,.25) !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+.cannes-map-popup .leaflet-popup-tip {
+  background: rgba(20,20,20,.95) !important;
+  border: 1px solid rgba(252,3,109,.35) !important;
+}
+
+.cannes-map-popup .leaflet-popup-content {
+  margin: 0 !important;
+  line-height: 1.4 !important;
+  width: 250px !important;
+}
+
+.cannes-popup-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.cannes-popup-thumb {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  display: block;
+  background: #181818;
+}
+
+.cannes-popup-info {
+  padding: 12px 14px;
+}
+
+.cannes-popup-tag {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--rss-primary);
+  margin-bottom: 4px;
+}
+
+.cannes-popup-title {
+  margin: 0 0 6px;
+  font-family: Manrope, Inter, sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.3;
+}
+
+.cannes-popup-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+
+.cannes-popup-price {
+  font-family: Manrope, Inter, sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--rss-primary);
+}
+
+.cannes-popup-price small {
+  font-size: 10px;
+  color: var(--rss-muted);
+}
+
+.cannes-popup-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff !important;
+  background: var(--rss-primary);
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  transition: background .2s;
+}
+
+.cannes-popup-link:hover {
+  background: #ff1a7f;
+}
+
+@media (max-width: 768px) {
+  #cannes-interactive-map {
+    height: 380px;
+  }
+  .cannes-catalog-grid {
+    grid-template-columns: 1fr;
+  }
+  .cannes-search-bar {
+    padding: 10px 12px;
+  }
+}
+
+</style>
 </head>
 <body>
 <!-- Header commun RentSoundSystem -->
@@ -868,22 +1581,120 @@
             et avant-premières du Festival du Film. Déploiement exclusif de Void Acoustics et L-Acoustics.
           </p>
 <div class="cannes-actions">
-<a class="cannes-btn cannes-btn-primary" href="/catalog.html">Voir l'Inventaire</a>
+<a class="cannes-btn cannes-btn-primary" href="#cannes-catalog">Voir l'Inventaire</a>
 <a class="cannes-btn cannes-btn-secondary" href="/contact.html">Consultation</a>
 </div>
 </div>
 </div>
 </section>
+<section id="cannes-catalog" aria-labelledby="cannes-catalog-heading" class="cannes-section cannes-catalog-section">
+  <div class="cannes-container">
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:32px;">
+      <div>
+        <div class="cannes-kicker">
+          <span aria-hidden="true" class="cannes-kicker-dot"></span>
+          Inventaire Disponible en Direct
+        </div>
+        <h2 id="cannes-catalog-heading" class="cannes-title" style="margin-top:12px;">Catalogue Sonorisation à Cannes</h2>
+        <p class="cannes-copy">
+          Équipements professionnels prêts pour vos événements, yachts et réceptions sur Cannes et la Côte d'Azur.
+        </p>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <a href="#cannes-hubs-title" class="cannes-btn cannes-btn-secondary" style="font-size:10px; min-height:40px; padding:8px 16px;">
+          <span class="material-symbols-outlined" style="font-size:16px; margin-right:6px;">map</span>
+          Voir sur la Carte
+        </a>
+      </div>
+    </div>
+
+    <!-- Search & Filter Controls -->
+    <div class="cannes-search-bar">
+      <div class="cannes-search-input-wrap">
+        <span class="material-symbols-outlined">search</span>
+        <input type="text" id="cannes-search-input" class="cannes-search-input" placeholder="Rechercher par nom, marque (JBL, Bose, Pioneer...), modèle ou mots-clés..." aria-label="Recherche de matériel" autocomplete="off">
+        <button type="button" id="cannes-search-clear" style="display:none; background:none; border:none; color:var(--rss-muted); cursor:pointer; padding:0; line-height:1;" aria-label="Effacer la recherche">
+          <span class="material-symbols-outlined" style="font-size:18px;">close</span>
+        </button>
+      </div>
+
+      <div class="cannes-search-select-wrap">
+        <span class="material-symbols-outlined">tune</span>
+        <select id="cannes-filter-brand" class="cannes-search-select" aria-label="Filtrer par marque">
+          <option value="">Toutes les marques</option>
+        </select>
+      </div>
+
+      <div class="cannes-search-select-wrap">
+        <span class="material-symbols-outlined">sort</span>
+        <select id="cannes-sort-select" class="cannes-search-select" aria-label="Trier les résultats">
+          <option value="default">Recommandé</option>
+          <option value="price-asc">Tarif croissant</option>
+          <option value="price-desc">Tarif décroissant</option>
+          <option value="name-asc">Nom (A-Z)</option>
+        </select>
+      </div>
+
+      <button type="button" id="cannes-reset-btn" class="cannes-search-reset-btn">
+        <span class="material-symbols-outlined" style="font-size:16px;">restart_alt</span>
+        Réinitialiser
+      </button>
+    </div>
+
+    <!-- Category Pills -->
+    <div id="cannes-category-pills" class="cannes-filters-pills" role="tablist" aria-label="Filtrer par catégorie">
+      <!-- Dynamic category pills will be loaded here -->
+    </div>
+
+    <!-- Results count & Geo info -->
+    <div class="cannes-results-summary">
+      <div>
+        <span id="cannes-results-count">Chargement des équipements de Cannes...</span>
+      </div>
+      <div class="cannes-geo-count">
+        <span class="material-symbols-outlined" style="font-size:16px;">location_on</span>
+        <span id="cannes-geo-count-label">Carte synchronisée</span>
+      </div>
+    </div>
+
+    <!-- Catalog Grid -->
+    <div id="cannes-products-grid" class="cannes-catalog-grid" aria-live="polite">
+      <!-- Loading skeletons will be rendered initially -->
+      <div class="cannes-skeleton-card"></div>
+      <div class="cannes-skeleton-card"></div>
+      <div class="cannes-skeleton-card"></div>
+    </div>
+  </div>
+</section>
+
 <section aria-labelledby="cannes-hubs-title" class="cannes-section cannes-hubs">
 <div class="cannes-container">
-<h2 class="cannes-title" id="cannes-hubs-title">Hubs de Déploiement Stratégiques</h2>
-<p class="cannes-copy">
-          Logistique d'intervention rapide sur toute la Côte d'Azur. De Monaco à Saint-Tropez,
-          notre équipement arrive calibré et prêt.
-        </p>
-<div class="cannes-map cannes-glass rss-live-map"><iframe class="rss-live-map-frame" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://www.openstreetmap.org/export/embed.html?bbox=6.95%2C43.52%2C7.12%2C43.60&amp;layer=mapnik" title="Carte réelle de Cannes"></iframe><div class="rss-live-map-badge">Carte réelle • Cannes &amp; Côte d’Azur</div><div class="rss-live-map-status"><strong>Hubs desservis</strong><span>La Croisette • Monaco • Antibes • Saint-Tropez</span></div><span aria-hidden="true" class="rss-map-center-pin"></span></div>
+<div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px; margin-bottom:24px;">
+  <div>
+    <h2 class="cannes-title" id="cannes-hubs-title">Hubs de Déploiement Stratégiques</h2>
+    <p class="cannes-copy" style="margin-top:8px;">
+      Logistique d'intervention rapide sur toute la Côte d'Azur. Localisez les équipements disponibles à Cannes et autour de vous.
+    </p>
+  </div>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <button type="button" id="cannes-recenter-map-btn" class="cannes-btn cannes-btn-secondary" style="font-size:10px; min-height:40px; padding:8px 16px;">
+      <span class="material-symbols-outlined" style="font-size:16px; margin-right:6px;">my_location</span>
+      Centrer sur Cannes
+    </button>
+  </div>
+</div>
+
+<div class="cannes-map cannes-glass" style="height:520px; position:relative; overflow:hidden;">
+  <div id="cannes-interactive-map"></div>
+  <div class="rss-live-map-badge" style="z-index:1000;">Carte interactive • Catalogue Cannes & Côte d’Azur</div>
+  <div class="rss-live-map-status" style="z-index:1000;" id="cannes-map-status-box">
+    <strong id="cannes-map-status-title">Hub Cannes & Côte d'Azur</strong>
+    <span id="cannes-map-status-desc">Marqueurs synchronisés avec la recherche</span>
+  </div>
+</div>
 </div>
 </section>
+
 <section aria-labelledby="cannes-arsenal-title" class="cannes-section cannes-arsenal">
 <div class="cannes-container">
 <h2 class="cannes-title" id="cannes-arsenal-title">Arsenal Sans Compromis</h2>
@@ -1018,5 +1829,727 @@
       ]);
     });
   </script>
+
+<!-- Supabase SDK & Leaflet JS -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script id="cannes-interactive-catalog-script">
+(function () {
+  'use strict';
+
+  const SUPABASE_URL = "https://crxofkxinsspfgdsxpiy.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+  const CANNES_CENTER = { lat: 43.5528, lng: 7.0174, zoom: 13 };
+
+  let supabaseClient = null;
+  let allCannesItems = [];
+  let currentFilteredItems = [];
+  let mapInstance = null;
+  let activeMarkers = [];
+  let selectedCategory = 'all';
+
+  function safe(str) {
+    return String(str || '').replace(/[&<>"']/g, function (m) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m];
+    });
+  }
+
+  function cleanText(value) {
+    return String(value == null ? '' : value)
+      .replace(/<[^>]*>?/gm, '')
+      .replace(/&nbsp;/g, ' ')
+      .trim();
+  }
+
+  function moneyFormat(value) {
+    const n = Number(value || 0);
+    return n.toLocaleString('fr-FR', { maximumFractionDigits: 0 }) + '€';
+  }
+
+  function normalizeKey(str) {
+    return String(str || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, ' ')
+      .trim();
+  }
+
+  const KNOWN_BRANDS = [
+    'AudioHead7', 'Bose', 'Funktion One', 'JBL', 'Pioneer', 'Pioneer DJ',
+    'Silent Arena', 'Silent Disco', 'BoomTone DJ', 'L-Acoustics', 'Electro-Voice',
+    'Meyer Sound', 'Midas', 'DiGiCo', 'Sennheiser', 'Shure', 'RCF', 'Yamaha', 'Allen & Heath'
+  ];
+
+  function resolveItemBrand(item) {
+    const raw = (item.brand || item.marque || '').trim();
+    if (raw) {
+      if (normalizeKey(raw) === 'jbl') return 'JBL';
+      if (normalizeKey(raw) === 'pioneer') return 'Pioneer DJ';
+      return raw;
+    }
+    const haystack = [item.title, item.model, item.description].map(cleanText).join(' ');
+    for (const b of KNOWN_BRANDS) {
+      const bKey = normalizeKey(b);
+      if (normalizeKey(haystack).includes(bKey)) {
+        return b;
+      }
+    }
+    return 'RentSoundSystem';
+  }
+
+  const CATEGORY_LABELS = {
+    'casque': 'Casques & Silent Party',
+    'casques': 'Casques & Silent Party',
+    'deejay': 'DJ & Régie',
+    'dj': 'DJ & Régie',
+    'sonorisation-eclairage': 'Sonorisation & Éclairage',
+    'sonorisation': 'Sonorisation',
+    'evenement-production': 'Événementiel & Scène',
+    'multimedia-digital': 'Multimédia & Conférence'
+  };
+
+  function resolveCategoryLabel(cat) {
+    const raw = cleanText(cat);
+    if (!raw) return 'Sonorisation & Événementiel';
+    const key = normalizeKey(raw).replace(/\s+/g, '-');
+    return CATEGORY_LABELS[key] || (raw.charAt(0).toUpperCase() + raw.slice(1));
+  }
+
+  function isReliableCannesCoords(lat, lng) {
+    if (lat === null || lat === undefined || lng === null || lng === undefined) return false;
+    const nLat = parseFloat(lat);
+    const nLng = parseFloat(lng);
+    if (isNaN(nLat) || isNaN(nLng)) return false;
+    // Reliable bounds covering Cannes, Le Cannet, Mandelieu, Antibes, Nice region Côte d'Azur
+    return (nLat >= 43.40 && nLat <= 43.85 && nLng >= 6.80 && nLng <= 7.45);
+  }
+
+  function resolveFulfillment(item) {
+    const city = (item.city || '').trim().toLowerCase();
+    const addr = (item.address || '').trim().toLowerCase();
+    const loc = (item.location || '').trim().toLowerCase();
+    const title = (item.title || '').trim().toLowerCase();
+    const isCoordsInCannes = isReliableCannesCoords(item.lat, item.lng) && parseFloat(item.lat) >= 43.50 && parseFloat(item.lat) <= 43.62;
+    const isLocal = (city === 'cannes' || city === 'cennes' || city === 'le cannet' || addr.includes('cannes') || isCoordsInCannes);
+    if (isLocal) {
+      let displayName = 'Cannes';
+      if (city === 'le cannet') displayName = 'Le Cannet (Cannes)';
+      else if (title.includes('mougins') || title.includes('juan les pins')) displayName = 'Cannes & Environs';
+      return {
+        type: 'local',
+        badgeClass: 'cannes-fulfillment-local',
+        icon: 'storefront',
+        label: 'Basé à Cannes',
+        cityText: displayName
+      };
+    }
+    return {
+      type: 'delivery',
+      badgeClass: 'cannes-fulfillment-delivery',
+      icon: 'local_shipping',
+      label: 'Livrable à Cannes',
+      cityText: (item.city && item.city.toLowerCase() !== 'paris' ? item.city : 'Côte d’Azur') + ' • Livraison Cannes incluse'
+    };
+  }
+
+  function filterCannesListings(items) {
+    return (items || []).filter(function (item) {
+      const city = (item.city || '').trim().toLowerCase();
+      const loc = (item.location || '').trim().toLowerCase();
+      const addr = (item.address || '').trim().toLowerCase();
+      const title = (item.title || '').trim().toLowerCase();
+      const desc = (item.description || '').trim().toLowerCase();
+      const lat = item.lat;
+      const lng = item.lng;
+
+      if (city === 'cannes' || city === 'cennes' || city === 'le cannet') return true;
+      if (loc.includes('cannes') || addr.includes('cannes')) return true;
+      if (title.includes('cannes') && !title.includes('paris')) return true;
+      if (desc.includes('cannes') && (desc.includes('disponible') || desc.includes('livr') || desc.includes('location'))) return true;
+      if (isReliableCannesCoords(lat, lng)) {
+        const nLat = parseFloat(lat);
+        const nLng = parseFloat(lng);
+        if (nLat >= 43.50 && nLat <= 43.62 && nLng >= 6.95 && nLng <= 7.10) {
+          return true;
+        }
+      }
+      return false;
+    });
+  }
+
+  function normalizeItem(raw) {
+    const brand = resolveItemBrand(raw);
+    const categoryLabel = resolveCategoryLabel(raw.category);
+    const fulfillment = resolveFulfillment(raw);
+    const hasCoords = isReliableCannesCoords(raw.lat, raw.lng);
+
+    // Primary image
+    const imgs = Array.isArray(raw.listing_images) ? raw.listing_images.slice() : [];
+    imgs.sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+    const primaryImg = (imgs[0] && imgs[0].image_url) ? imgs[0].image_url : '';
+
+    const priceNum = Number(raw.price || raw.daily_price || 0);
+
+    return Object.assign({}, raw, {
+      _resolvedBrand: brand,
+      _resolvedCategory: categoryLabel,
+      _fulfillment: fulfillment,
+      _hasCoords: hasCoords,
+      _primaryImg: primaryImg,
+      _priceNum: priceNum,
+      _searchIndex: normalizeKey([
+        raw.title,
+        brand,
+        raw.model,
+        categoryLabel,
+        raw.type,
+        fulfillment.label,
+        fulfillment.cityText,
+        cleanText(raw.description)
+      ].join(' '))
+    });
+  }
+
+  function getProductUrl(item) {
+    if (item.original_id !== undefined && item.original_id !== null) {
+      return '/product.html?original_id=' + encodeURIComponent(item.original_id);
+    }
+    if (item.id) {
+      return '/product.html?id=' + encodeURIComponent(item.id);
+    }
+    return '/product.html';
+  }
+
+  function handleDirectRental(item) {
+    const productPayload = {
+      id: item.id || '',
+      original_id: item.original_id || null,
+      name: item.title || 'Matériel de sonorisation',
+      title: item.title || 'Matériel de sonorisation',
+      brand: item._resolvedBrand || 'RentSoundSystem',
+      model: item.model || '',
+      category: item._resolvedCategory || 'Sonorisation',
+      type: item.type || 'rental',
+      location: item.location || 'Cannes',
+      city: item.city || 'Cannes',
+      country: item.country || 'France',
+      price: item._priceNum,
+      dailyPrice: item._priceNum,
+      caution: Number(item.caution || 0),
+      image: item._primaryImg || '',
+      images: Array.isArray(item.listing_images) ? item.listing_images.map(function(i){ return i.image_url; }) : []
+    };
+
+    try {
+      localStorage.setItem('rssSelectedProduct', JSON.stringify(productPayload));
+      localStorage.setItem('rssLastProduct', JSON.stringify(productPayload));
+      const draft = {
+        product: productPayload,
+        source: 'cannes-hub',
+        updatedAt: new Date().toISOString()
+      };
+      localStorage.setItem('rssCheckoutDraft', JSON.stringify(draft));
+      localStorage.setItem('rssQuoteDraft', JSON.stringify(draft));
+    } catch (e) {
+      console.warn('Erreur stockage brouillon location:', e);
+    }
+
+    const params = new URLSearchParams();
+    if (item.original_id) params.set('original_id', item.original_id);
+    if (item.id) params.set('id', item.id);
+    window.location.href = '/tunnel-de-commande.html?' + params.toString();
+  }
+
+  // Map management
+  function initCannesMap() {
+    if (!window.L) {
+      console.warn('Leaflet non encore prêt.');
+      return;
+    }
+    const container = document.getElementById('cannes-interactive-map');
+    if (!container || mapInstance) return;
+
+    mapInstance = L.map(container, {
+      center: [CANNES_CENTER.lat, CANNES_CENTER.lng],
+      zoom: CANNES_CENTER.zoom,
+      scrollWheelZoom: false,
+      zoomControl: true,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; OpenStreetMap contributors &copy; RentSoundSystem'
+    }).addTo(mapInstance);
+
+    const recenterBtn = document.getElementById('cannes-recenter-map-btn');
+    if (recenterBtn) {
+      recenterBtn.addEventListener('click', function () {
+        fitMapToItems(currentFilteredItems);
+      });
+    }
+
+    renderMapMarkers(currentFilteredItems);
+  }
+
+  function createMarkerIcon(isActive) {
+    return L.divIcon({
+      className: 'cannes-map-marker',
+      html: '<div class="cannes-map-pin' + (isActive ? ' is-active' : '') + '"><span class="material-symbols-outlined cannes-map-pin-icon">speaker</span></div>',
+      iconSize: [32, 32],
+      iconAnchor: [16, 32],
+      popupAnchor: [0, -32]
+    });
+  }
+
+  function buildPopupHtml(item) {
+    const thumb = item._primaryImg
+      ? '<img src="' + safe(item._primaryImg) + '" alt="' + safe(item.title) + '" class="cannes-popup-thumb" onerror="this.style.display=\'none\';">'
+      : '<div style="height:80px;background:#181818;display:flex;align-items:center;justify-content:center;color:#666;"><span class="material-symbols-outlined">speaker</span></div>';
+
+    return '<div class="cannes-popup-card">' +
+      thumb +
+      '<div class="cannes-popup-info">' +
+        '<div class="cannes-popup-tag">' + safe(item._resolvedBrand) + ' • ' + safe(item._fulfillment.cityText) + '</div>' +
+        '<h4 class="cannes-popup-title">' + safe(item.title) + '</h4>' +
+        '<div class="cannes-popup-bottom">' +
+          '<div class="cannes-popup-price">' + moneyFormat(item._priceNum) + ' <small>/jour</small></div>' +
+          '<a href="' + safe(getProductUrl(item)) + '" class="cannes-popup-link">Voir</a>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  function renderMapMarkers(items) {
+    if (!mapInstance || !window.L) return;
+
+    activeMarkers.forEach(function (m) { mapInstance.removeLayer(m); });
+    activeMarkers = [];
+
+    const geocoded = (items || []).filter(function (it) { return it._hasCoords; });
+
+    geocoded.forEach(function (item) {
+      const lat = parseFloat(item.lat);
+      const lng = parseFloat(item.lng);
+      const marker = L.marker([lat, lng], {
+        icon: createMarkerIcon(false),
+        title: item.title
+      });
+
+      marker.bindPopup(buildPopupHtml(item), {
+        className: 'cannes-map-popup',
+        maxWidth: 280
+      });
+
+      marker.on('click', function () {
+        highlightCard(item.id);
+      });
+
+      marker.itemReferenceId = item.id;
+      marker.addTo(mapInstance);
+      activeMarkers.push(marker);
+    });
+
+    // Update status badge on map
+    const statusDesc = document.getElementById('cannes-map-status-desc');
+    if (statusDesc) {
+      statusDesc.textContent = geocoded.length + ' équipement' + (geocoded.length > 1 ? 's' : '') + ' géolocalisé' + (geocoded.length > 1 ? 's' : '') + ' sur la carte';
+    }
+
+    fitMapToItems(items);
+  }
+
+  function fitMapToItems(items) {
+    if (!mapInstance) return;
+    const geocoded = (items || []).filter(function (it) { return it._hasCoords; });
+    if (!geocoded.length) {
+      mapInstance.setView([CANNES_CENTER.lat, CANNES_CENTER.lng], CANNES_CENTER.zoom, { animate: true });
+      return;
+    }
+
+    if (geocoded.length === 1) {
+      mapInstance.setView([parseFloat(geocoded[0].lat), parseFloat(geocoded[0].lng)], 14, { animate: true });
+      return;
+    }
+
+    const bounds = L.latLngBounds(geocoded.map(function (it) {
+      return [parseFloat(it.lat), parseFloat(it.lng)];
+    }));
+    mapInstance.fitBounds(bounds.pad(0.18), {
+      maxZoom: 15,
+      animate: true
+    });
+  }
+
+  function focusMarkerForProduct(productId) {
+    if (!mapInstance) return;
+    const foundMarker = activeMarkers.find(function (m) { return m.itemReferenceId === productId; });
+    if (foundMarker) {
+      mapInstance.setView(foundMarker.getLatLng(), 15, { animate: true });
+      foundMarker.openPopup();
+      const mapEl = document.getElementById('cannes-hubs-title');
+      if (mapEl) {
+        mapEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  function highlightCard(productId) {
+    const card = document.querySelector('.cannes-prod-card[data-product-id="' + productId + '"]');
+    if (!card) return;
+    document.querySelectorAll('.cannes-prod-card').forEach(function (c) {
+      c.classList.remove('cannes-card-highlighted');
+    });
+    card.classList.add('cannes-card-highlighted');
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  // Product cards rendering
+  function renderProductsGrid(items) {
+    const grid = document.getElementById('cannes-products-grid');
+    const resultsCountEl = document.getElementById('cannes-results-count');
+    const geoCountLabel = document.getElementById('cannes-geo-count-label');
+
+    const total = items.length;
+    const geoCount = items.filter(function (it) { return it._hasCoords; }).length;
+
+    if (resultsCountEl) {
+      resultsCountEl.innerHTML = total > 0
+        ? '<strong>' + total + '</strong> matériel' + (total > 1 ? 's' : '') + ' disponible' + (total > 1 ? 's' : '') + ' à Cannes'
+        : 'Aucun matériel correspondant';
+    }
+
+    if (geoCountLabel) {
+      geoCountLabel.textContent = geoCount + ' sur la carte';
+    }
+
+    if (!items.length) {
+      grid.innerHTML = '<div class="cannes-empty-state">' +
+        '<span class="material-symbols-outlined">search_off</span>' +
+        '<h3>Aucun équipement ne correspond à votre recherche</h3>' +
+        '<p>Essayez de modifier vos termes de recherche, d\'élargir les marques ou de réinitialiser les filtres pour retrouver l\'ensemble du catalogue de Cannes.</p>' +
+        '<button type="button" class="cannes-btn cannes-btn-primary" id="cannes-empty-reset-btn" style="min-height:42px; font-size:11px;">Voir tout le catalogue de Cannes</button>' +
+      '</div>';
+      const emptyBtn = document.getElementById('cannes-empty-reset-btn');
+      if (emptyBtn) emptyBtn.addEventListener('click', resetAllFilters);
+      return;
+    }
+
+    grid.innerHTML = items.map(function (item) {
+      const url = getProductUrl(item);
+      const shortDesc = cleanText(item.description) || 'Matériel de sonorisation professionnelle haut de gamme vérifié et disponible à Cannes.';
+      const imgHtml = item._primaryImg
+        ? '<img src="' + safe(item._primaryImg) + '" alt="' + safe(item.title) + '" class="cannes-prod-img" loading="lazy" onerror="this.parentElement.classList.add(\'cannes-prod-placeholder\');this.remove();">'
+        : '<div class="cannes-prod-placeholder"><span class="material-symbols-outlined">speaker</span></div>';
+
+      const locateBtnHtml = item._hasCoords
+        ? '<button type="button" class="cannes-locate-btn" data-locate-id="' + safe(item.id) + '" title="Localiser sur la carte"><span class="material-symbols-outlined" style="font-size:14px;">pin_drop</span>Carte</button>'
+        : '';
+
+      return '<article class="cannes-prod-card" data-product-id="' + safe(item.id) + '">' +
+        '<div class="cannes-prod-media">' +
+          imgHtml +
+          '<div class="cannes-prod-badges">' +
+            '<span class="cannes-badge-cat">' + safe(item._resolvedCategory) + '</span>' +
+            '<span class="cannes-badge-fulfillment ' + safe(item._fulfillment.badgeClass) + '">' +
+              '<span class="material-symbols-outlined" style="font-size:12px;">' + safe(item._fulfillment.icon) + '</span>' +
+              safe(item._fulfillment.label) +
+            '</span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="cannes-prod-body">' +
+          '<div class="cannes-prod-meta">' +
+            '<span class="brand-pill">' + safe(item._resolvedBrand) + '</span>' +
+            (item.model ? '<span>' + safe(item.model) + '</span>' : '') +
+          '</div>' +
+          '<h3 class="cannes-prod-title" title="' + safe(item.title) + '">' + safe(item.title) + '</h3>' +
+          '<p class="cannes-prod-desc">' + safe(shortDesc) + '</p>' +
+          '<div class="cannes-prod-location-bar">' +
+            '<div class="cannes-prod-city">' +
+              '<span class="material-symbols-outlined">location_on</span>' +
+              '<span>' + safe(item._fulfillment.cityText) + '</span>' +
+            '</div>' +
+            locateBtnHtml +
+          '</div>' +
+          '<div class="cannes-prod-footer">' +
+            '<div class="cannes-prod-price-box">' +
+              '<span class="cannes-prod-price-label">Tarif location</span>' +
+              '<div class="cannes-prod-price-val">' + moneyFormat(item._priceNum) + ' <small>/jour</small></div>' +
+            '</div>' +
+            '<div class="cannes-prod-actions">' +
+              '<a href="' + safe(url) + '" class="cannes-action-view" data-product-id="' + safe(item.id) + '">Voir le produit</a>' +
+              '<button type="button" class="cannes-action-rent" data-rent-id="' + safe(item.id) + '">Louer ce matériel</button>' +
+            '</div>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+    }).join('');
+
+    // Bind action events
+    grid.querySelectorAll('.cannes-action-rent').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = btn.getAttribute('data-rent-id');
+        const targetItem = allCannesItems.find(function (it) { return it.id === id; });
+        if (targetItem) {
+          handleDirectRental(targetItem);
+        }
+      });
+    });
+
+    grid.querySelectorAll('.cannes-locate-btn').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        const id = btn.getAttribute('data-locate-id');
+        focusMarkerForProduct(id);
+      });
+    });
+
+    grid.querySelectorAll('.cannes-prod-card').forEach(function (card) {
+      card.addEventListener('click', function (e) {
+        if (e.target.closest('button') || e.target.closest('a')) return;
+        const id = card.getAttribute('data-product-id');
+        focusMarkerForProduct(id);
+      });
+    });
+  }
+
+  // Filters logic
+  function populateBrands(items) {
+    const brandSelect = document.getElementById('cannes-filter-brand');
+    if (!brandSelect) return;
+    const brandsSet = new Set();
+    items.forEach(function (it) {
+      if (it._resolvedBrand) brandsSet.add(it._resolvedBrand);
+    });
+    const sorted = Array.from(brandsSet).sort(function (a, b) {
+      return a.localeCompare(b, 'fr');
+    });
+
+    brandSelect.innerHTML = '<option value="">Toutes les marques (' + items.length + ')</option>' +
+      sorted.map(function (b) {
+        const count = items.filter(function (it) { return it._resolvedBrand === b; }).length;
+        return '<option value="' + safe(b) + '">' + safe(b) + ' (' + count + ')</option>';
+      }).join('');
+  }
+
+  function populateCategoryPills(items) {
+    const container = document.getElementById('cannes-category-pills');
+    if (!container) return;
+
+    const catMap = new Map();
+    items.forEach(function (it) {
+      const c = it._resolvedCategory;
+      catMap.set(c, (catMap.get(c) || 0) + 1);
+    });
+
+    let html = '<button type="button" class="cannes-filter-pill active" data-category="all" role="tab" aria-selected="true">' +
+      'Tous les équipements <span class="pill-count">' + items.length + '</span>' +
+    '</button>';
+
+    catMap.forEach(function (count, label) {
+      html += '<button type="button" class="cannes-filter-pill" data-category="' + safe(label) + '" role="tab" aria-selected="false">' +
+        safe(label) + ' <span class="pill-count">' + count + '</span>' +
+      '</button>';
+    });
+
+    container.innerHTML = html;
+
+    container.querySelectorAll('.cannes-filter-pill').forEach(function (pill) {
+      pill.addEventListener('click', function () {
+        container.querySelectorAll('.cannes-filter-pill').forEach(function (p) {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+        selectedCategory = pill.getAttribute('data-category') || 'all';
+        applyFilters();
+      });
+    });
+  }
+
+  function applyFilters() {
+    const searchVal = normalizeKey((document.getElementById('cannes-search-input') && document.getElementById('cannes-search-input').value) || '');
+    const brandVal = (document.getElementById('cannes-filter-brand') && document.getElementById('cannes-filter-brand').value) || '';
+    const sortVal = (document.getElementById('cannes-sort-select') && document.getElementById('cannes-sort-select').value) || 'default';
+
+    const clearBtn = document.getElementById('cannes-search-clear');
+    if (clearBtn) {
+      clearBtn.style.display = searchVal.length > 0 ? 'inline-flex' : 'none';
+    }
+
+    let results = allCannesItems.filter(function (item) {
+      // 1. Text search across name, brand, model, category, type, description, keywords
+      if (searchVal) {
+        if (!item._searchIndex.includes(searchVal)) {
+          return false;
+        }
+      }
+
+      // 2. Brand filter
+      if (brandVal && item._resolvedBrand !== brandVal) {
+        return false;
+      }
+
+      // 3. Category filter
+      if (selectedCategory && selectedCategory !== 'all') {
+        if (item._resolvedCategory !== selectedCategory) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+
+    // 4. Sorting
+    if (sortVal === 'price-asc') {
+      results.sort(function (a, b) { return a._priceNum - b._priceNum; });
+    } else if (sortVal === 'price-desc') {
+      results.sort(function (a, b) { return b._priceNum - a._priceNum; });
+    } else if (sortVal === 'name-asc') {
+      results.sort(function (a, b) { return (a.title || '').localeCompare(b.title || '', 'fr'); });
+    }
+
+    currentFilteredItems = results;
+    renderProductsGrid(results);
+    renderMapMarkers(results);
+  }
+
+  function resetAllFilters() {
+    const searchInput = document.getElementById('cannes-search-input');
+    const brandSelect = document.getElementById('cannes-filter-brand');
+    const sortSelect = document.getElementById('cannes-sort-select');
+
+    if (searchInput) searchInput.value = '';
+    if (brandSelect) brandSelect.value = '';
+    if (sortSelect) sortSelect.value = 'default';
+
+    selectedCategory = 'all';
+    const pills = document.querySelectorAll('#cannes-category-pills .cannes-filter-pill');
+    pills.forEach(function (p) {
+      if (p.getAttribute('data-category') === 'all') {
+        p.classList.add('active');
+        p.setAttribute('aria-selected', 'true');
+      } else {
+        p.classList.remove('active');
+        p.setAttribute('aria-selected', 'false');
+      }
+    });
+
+    applyFilters();
+  }
+
+  function bindControls() {
+    const searchInput = document.getElementById('cannes-search-input');
+    const searchClear = document.getElementById('cannes-search-clear');
+    const brandSelect = document.getElementById('cannes-filter-brand');
+    const sortSelect = document.getElementById('cannes-sort-select');
+    const resetBtn = document.getElementById('cannes-reset-btn');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', applyFilters);
+    }
+    if (searchClear) {
+      searchClear.addEventListener('click', function () {
+        if (searchInput) {
+          searchInput.value = '';
+          searchInput.focus();
+        }
+        applyFilters();
+      });
+    }
+    if (brandSelect) {
+      brandSelect.addEventListener('change', applyFilters);
+    }
+    if (sortSelect) {
+      sortSelect.addEventListener('change', applyFilters);
+    }
+    if (resetBtn) {
+      resetBtn.addEventListener('click', resetAllFilters);
+    }
+  }
+
+  // Data fetching
+  async function loadCannesCatalog() {
+    try {
+      if (!window.supabase) {
+        console.warn('Chargement SDK Supabase...');
+        return;
+      }
+      supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      const response = await supabaseClient
+        .from('listings')
+        .select('*, listing_images(image_url, position)')
+        .eq('status', 'publish')
+        .limit(1000);
+
+      if (response.error) {
+        throw response.error;
+      }
+
+      const rawItems = response.data || [];
+      const cannesRaw = filterCannesListings(rawItems);
+      allCannesItems = cannesRaw.map(normalizeItem);
+      currentFilteredItems = allCannesItems.slice();
+
+      console.info('[RentSoundSystem] Cannes Hub initialisé :', {
+        totalListingsInDb: rawItems.length,
+        cannesTotalListings: allCannesItems.length,
+        geolocatedListings: allCannesItems.filter(function (it) { return it._hasCoords; }).length
+      });
+
+      populateBrands(allCannesItems);
+      populateCategoryPills(allCannesItems);
+      renderProductsGrid(currentFilteredItems);
+
+      if (window.L) {
+        initCannesMap();
+      } else {
+        window.addEventListener('load', initCannesMap);
+      }
+    } catch (err) {
+      console.error('Erreur de chargement du catalogue Cannes:', err);
+      const grid = document.getElementById('cannes-products-grid');
+      if (grid) {
+        grid.innerHTML = '<div class="cannes-empty-state">' +
+          '<span class="material-symbols-outlined">error</span>' +
+          '<h3>Chargement temporairement indisponible</h3>' +
+          '<p>Une erreur réseau est survenue lors de la récupération des matériels de Cannes. Veuillez recharger la page.</p>' +
+          '<button type="button" class="cannes-btn cannes-btn-primary" onclick="window.location.reload();">Réessayer</button>' +
+        '</div>';
+      }
+    }
+  }
+
+  // Ensure dependencies are loaded
+  function boot() {
+    bindControls();
+    // Check if Supabase JS is present
+    if (window.supabase) {
+      loadCannesCatalog();
+    } else {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+      script.onload = loadCannesCatalog;
+      script.onerror = function () {
+        console.error('Impossible de charger Supabase JS CDN');
+      };
+      document.head.appendChild(script);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', boot);
+  } else {
+    boot();
+  }
+})();
+
+</script>
 </body>
 </html>
