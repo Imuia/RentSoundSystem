@@ -485,14 +485,19 @@ html, body {
   // 101 marques dédoublonnées selon les mêmes routes canoniques.
   const CATALOG_MASTER_BRANDS = ["Alcons Audio","Allen & Heath","Alto","American audio","American DJ","Apart","Audio Technica","AudioCase","AudioHead7","Behringer","Bergerault","Black Swamp Percussion","BoomTone DJ","Bose","Botex","Cameo","Celestion","Cerwin Vega","Coda Audio","Community Professional Loudspeakers","d&b audiotechnik","D.A.S","DB Technologies","De Haske","Denis Wick","Denon","DiGiCo","Dunlop","EAW (Eastern Acoustic Works)","Ecler","Edition Dux","Electro-Voice","Elokance","ESP","Faber Music","Faderfox","FBT Audio","Fischer Amps","Formula Sound","Friedman","Funktion One","Gemini","GHS","Gibraltar","Goldon","Hercules DJ","HK","Jakob Winter","Jamey Aebersold","Jargar","JBL","Joral","Kaufmann","KRK Systems","KV2 Audio","L-Acoustics","LD Systems","Lindy","Litecraft","Mac Mah","Marshall","Martin Audio","Meyer Sound","Midas","Native Instruments","Neumann","Nexo Sound","Numark","Ohm Audio","Omnitronic","Ortofon","Ottolink","Outline Audio","Ovation","Oxford University Press","Paiste","Peavey Commercial Audio","Pioneer DJ","Presonus","QSC","Quilter","Rane","RCF","Reloop","Renkus-Heinz","Rode Microphones","Roland","Sennheiser","Shure","Silent Arena","Silent Disco","Soundcraft","Studio 49","Tannoy","Technics","The box","Turbo Sound","Ulsa","Vestax","Void Acoustics","Yamaha"];
 
-  const MASTER_BRAND_ALIASES = {"black swamp":"Black Swamp Percussion","pioneer":"Pioneer DJ","electro voice ev":"Electro-Voice","allen heath":"Allen & Heath","shure micros":"Shure","electrovoice":"Electro-Voice","d b audiotechnik":"d&b audiotechnik"};
+  const MASTER_BRAND_ALIASES = {"black swamp":"Black Swamp Percussion","pioneer":"Pioneer DJ","electro voice ev":"Electro-Voice","allen heath":"Allen & Heath","shure micros":"Shure","electrovoice":"Electro-Voice","d b audiotechnik":"d&b audiotechnik","audio7":"AudioHead7","audio 7":"AudioHead7","audio-7":"AudioHead7","audio head 7":"AudioHead7","audiohead 7":"AudioHead7"};
 
   const BRAND_ALIASES = {
     "l acoustics": "L-Acoustics",
     "lacoustics": "L-Acoustics",
     "l acoustic": "L-Acoustics",
     "electro voice": "Electro-Voice",
-    "electrovoice": "Electro-Voice"
+    "electrovoice": "Electro-Voice",
+    "audio7": "AudioHead7",
+    "audio 7": "AudioHead7",
+    "audio-7": "AudioHead7",
+    "audio head 7": "AudioHead7",
+    "audiohead 7": "AudioHead7"
   };
 
   function canonicalBrandLabel(value) {
@@ -536,6 +541,17 @@ html, body {
       /\b(zlx|elx|ekx|etx|evolve(?: 30m| 50m| 70)?|re3)\b/.test(text)
     ) {
       return "Electro-Voice";
+    }
+
+    // Détection Audio7 / AudioHead7
+    if (
+      text.includes("audiohead7") ||
+      text.includes("audiohead") ||
+      text.includes("audio head 7") ||
+      text.includes("audio7") ||
+      text.includes("audio 7")
+    ) {
+      return "AudioHead7";
     }
 
     return "";
@@ -1001,9 +1017,13 @@ html, body {
 
     if (searchValue) {
       const exactBrandKey = normalizeBrandKey(searchValue);
+      const canonicalName = canonicalBrandLabel(searchValue);
+      const canonicalKey = normalizeBrandKey(canonicalName);
+
       const exactBrand = Array.from(document.querySelectorAll(".catalog-brand"))
         .find(function (input) {
-          return (input.dataset.brandKey || "") === exactBrandKey;
+          const k = input.dataset.brandKey || "";
+          return k === exactBrandKey || (canonicalKey && k === canonicalKey);
         });
 
       if (exactBrand && !requestedBrands.length) {
