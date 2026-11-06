@@ -1025,7 +1025,7 @@ html, body {
   function currentCatalogUrl() {
     const params = new URLSearchParams();
     const city = cleanCityName(currentCenter.name || '');
-    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"], input[data-i18n-placeholder="common.search_placeholder"]');
     const q = equipmentInput && equipmentInput.value ? equipmentInput.value.trim() : '';
     if (q) params.set('q', q);
     if (city && city !== 'Votre position' && city !== 'Autour de vous') params.set('city', city);
@@ -1051,7 +1051,7 @@ html, body {
   }
 
   function setHeroCityInput(label) {
-    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"], input[data-i18n-placeholder="common.location_placeholder"]');
     const clean = cleanCityName(label);
     if (cityInput && clean && !cityInput.value) cityInput.value = clean;
   }
@@ -1168,7 +1168,7 @@ html, body {
   }
 
   function equipmentFilter(items) {
-    const input = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const input = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"], input[data-i18n-placeholder="common.search_placeholder"]');
     const q = input && input.value ? input.value.trim().toLowerCase() : '';
     if (!q) return items;
     return items.filter(item => {
@@ -1609,9 +1609,23 @@ html, body {
     );
   }
 
+    function scrollToResults() {
+    const target = document.getElementById('nearest-products-grid');
+    if (!target) return;
+    const scrollTarget = target.firstElementChild || target;
+    const header = document.querySelector('.rss-site-header');
+    const headerHeight = header ? header.getBoundingClientRect().height : 80;
+    const targetRect = scrollTarget.getBoundingClientRect();
+    const targetScrollY = window.pageYOffset + targetRect.top - headerHeight - 20;
+    window.scrollTo({
+      top: Math.max(0, targetScrollY),
+      behavior: 'smooth'
+    });
+  }
+
   async function searchAroundCity() {
     manualSearchDone = true;
-    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"], input[data-i18n-placeholder="common.location_placeholder"]');
     const query = cityInput && cityInput.value ? cityInput.value.trim() : '';
 
     if (!query) {
@@ -1635,7 +1649,7 @@ html, body {
         if (nearestGrid) nearestGrid.innerHTML = '<div class="rss-empty-state"><span class="material-symbols-outlined">info</span><div><strong>Aucune annonce disponible pour cette zone.</strong><p>Il n’existe pas encore d’annonce disponible pour cette ville ou ce pays. Essayez une autre destination ou consultez les dernières annonces publiées dans le monde.</p></div></div>';
       }
 
-      document.getElementById('rss-map')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      scrollToResults();
     } catch (e) {
       console.error(e);
       alert('Erreur de recherche de ville.');
@@ -1654,8 +1668,8 @@ html, body {
       locateUser(true);
     });
 
-    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"]');
-    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"]');
+    const cityInput = document.querySelector('input[placeholder="Ville ou code postal"], input[data-i18n-placeholder="common.location_placeholder"]');
+    const equipmentInput = document.querySelector('input[placeholder="De quel équipement avez-vous besoin ?"], input[data-i18n-placeholder="common.search_placeholder"]');
     const searchButton = Array.from(document.querySelectorAll('button')).find(button => button.textContent.trim().toLowerCase() === 'rechercher');
 
     if (cityInput) {
