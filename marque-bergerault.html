@@ -164,7 +164,7 @@ body{padding-top:80px!important}
                     Créateur d'instruments à percussions : nos vibraphones, marimbas, xylophones, jeux de cloches, grosses caisses et timbales sont mondialement reconnus.
                 </p>
 <div class="flex flex-col sm:flex-row gap-4">
-<a href="/catalog.html?search=Bergerault" class="bg-primary text-background font-label-caps text-label-caps uppercase px-8 py-4 rounded hover:opacity-90 transition-all shadow-neon hover:shadow-neon-hover flex items-center justify-center gap-2">
+<a href='/catalog?brand=Bergerault' class="bg-primary text-background font-label-caps text-label-caps uppercase px-8 py-4 rounded hover:opacity-90 transition-all shadow-neon hover:shadow-neon-hover flex items-center justify-center gap-2">
                         Découvrir la collection
                         <span class="material-symbols-outlined text-lg">arrow_forward</span>
 </a>
@@ -263,5 +263,46 @@ function applyRepresentativeImage(cardId,item){if(!item)return;const card=docume
 function makeCardClickable(cardId,search){const card=document.getElementById(cardId);if(!card)return;const url='/catalog.html?search='+encodeURIComponent(search);card.style.cursor='pointer';card.setAttribute('role','link');card.setAttribute('tabindex','0');card.addEventListener('click',e=>{if(!e.target.closest('a,button'))location.href=url;});card.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();location.href=url;}});}
 async function loadBergeraultImages(){try{if(!window.supabase)return;const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const res=await client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(500);if(res.error)throw res.error;const products=(res.data||[]).filter(isBergerault);applyRepresentativeImage('bergerault-card-mallets',pick(products,['vibraphone','marimba','xylophone','glockenspiel']));applyRepresentativeImage('bergerault-card-timpani',pick(products,['timbale','timpani']));applyRepresentativeImage('bergerault-card-bassdrum',pick(products,['grosse caisse','bass drum','concert bass']));}catch(e){console.warn('Bergerault representative images:',e);}}
 document.addEventListener('DOMContentLoaded',()=>{loadHeader();makeCardClickable('bergerault-card-mallets','Bergerault vibraphone marimba');makeCardClickable('bergerault-card-timpani','Bergerault timbales');makeCardClickable('bergerault-card-bassdrum','Bergerault grosse caisse');loadBergeraultImages();});
+</script>
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Bergerault";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
 </script>
 </body></html>

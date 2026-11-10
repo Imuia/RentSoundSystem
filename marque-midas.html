@@ -286,7 +286,7 @@ body{padding-top:80px!important}
                     Découvrez l'excellence audio britannique. Des préamplis légendaires aux consoles de mixage numériques de pointe, l'équipement Midas définit le standard de l'industrie pour les tournées mondiales et les studios professionnels.
                 </p>
 <div class="flex space-x-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Midas'" class="btn-magenta flex items-center space-x-2">
+<button type="button" onclick="window.location.href='/catalog?brand=Midas'" class="btn-magenta flex items-center space-x-2">
 <span>Explorer le Catalogue</span>
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </button>
@@ -352,7 +352,7 @@ body{padding-top:80px!important}
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Équipement Vedette</h2>
 <p class="font-body-md text-body-md text-on-surface-variant">L'arsenal Midas disponible à la location.</p>
 </div>
-<button type="button" onclick="window.location.href='/catalog.html?search=Midas'" class="hidden md:flex bg-transparent border border-outline-variant text-on-surface hover:bg-surface-container font-label-caps text-label-caps px-4 py-2 rounded uppercase transition-colors items-center space-x-2">
+<button type="button" onclick="window.location.href='/catalog?brand=Midas'" class="hidden md:flex bg-transparent border border-outline-variant text-on-surface hover:bg-surface-container font-label-caps text-label-caps px-4 py-2 rounded uppercase transition-colors items-center space-x-2">
 <span>Voir tout l'inventaire</span>
 <span class="material-symbols-outlined text-sm">arrow_forward</span>
 </button>
@@ -691,5 +691,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Midas";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

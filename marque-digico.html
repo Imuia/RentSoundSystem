@@ -231,7 +231,7 @@ Chargement des produits DiGiCo…
                         Des solutions de mixage puissantes, flexibles et reconnues par les professionnels de l'industrie.
                     </p>
 </div>
-<button type="button" onclick="window.location.href='/catalog.html?search=DiGiCo'" class="flex items-center gap-2 text-primary font-label-caps text-label-caps hover:text-primary-fixed-dim transition-colors group">
+<button type="button" onclick="window.location.href='/catalog?brand=DiGiCo'" class="flex items-center gap-2 text-primary font-label-caps text-label-caps hover:text-primary-fixed-dim transition-colors group">
                     VOIR TOUT L'INVENTAIRE
                     <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
 </button>
@@ -371,7 +371,7 @@ Chargement des produits DiGiCo…
 <li><a href="/location-sono/location-sono-dubai">Location Sono Dubai</a></li>
 </ul></div>
 <div class="rss-footer-col"><h3>Catégories</h3><ul>
-<li><a href="/catalog.html?search=DiGiCo">Consoles DiGiCo</a></li>
+<li><a href='/catalog?brand=DiGiCo'>Consoles DiGiCo</a></li>
 <li><a href="/catalog.html?search=DiGiCo%20Quantum">Quantum</a></li>
 <li><a href="/catalog.html?search=DiGiCo%20SD">SD Series</a></li>
 <li><a href="/catalog.html?search=DiGiCo%20Rack">Stage Racks</a></li>
@@ -655,4 +655,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "DiGiCo";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

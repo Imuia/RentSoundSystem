@@ -243,7 +243,7 @@ body{padding-top:80px!important}
                     L'équipement audio et d'éclairage de référence pour les professionnels de la scène. Des contrôleurs de précision aux systèmes d'éclairage immersifs, concevez des expériences inoubliables.
                 </p>
 <div class="flex flex-col sm:flex-row gap-4 mt-4">
-<a class="inline-flex items-center justify-center px-8 py-4 bg-primary-container text-on-primary-container font-label-caps text-label-caps uppercase rounded-full hover:bg-primary transition-colors glow-shadow gap-2" href="/catalog.html?search=BoomTone%20DJ">
+<a class="inline-flex items-center justify-center px-8 py-4 bg-primary-container text-on-primary-container font-label-caps text-label-caps uppercase rounded-full hover:bg-primary transition-colors glow-shadow gap-2" href='/catalog?brand=BoomTone DJ'>
 <span class="">Explorer la Gamme</span>
 <span class="material-symbols-outlined">arrow_forward</span>
 </a>
@@ -504,4 +504,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "BoomTone DJ";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

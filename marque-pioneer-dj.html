@@ -183,7 +183,7 @@ body{padding-top:80px!important}
                     Le standard de l'industrie pour les performances club professionnelles. Une qualité audio sans compromis alliée à un contrôle intuitif.
                 </p>
 <div class="flex gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Pioneer%20DJ'" class="bg-primary text-on-primary font-bold py-3 px-8 rounded hover:bg-opacity-90 transition-colors duration-200 text-lg">
+<button type="button" onclick="window.location.href='/catalog?brand=Pioneer DJ'" class="bg-primary text-on-primary font-bold py-3 px-8 rounded hover:bg-opacity-90 transition-colors duration-200 text-lg">
                         Explorer l'Inventaire
                     </button>
 <button type="button" onclick="document.querySelector('#pioneer-flagship')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-primary text-primary font-bold py-3 px-8 rounded hover:bg-primary/10 transition-colors duration-200 text-lg">
@@ -514,5 +514,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Pioneer DJ";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

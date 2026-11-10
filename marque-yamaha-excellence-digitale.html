@@ -304,7 +304,7 @@ main{background:#131313!important}
                     Louez les consoles de mixage les plus avancées du marché pour vos tournées mondiales, festivals et installations de classe mondiale.
                 </p>
 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Yamaha'" class="btn-primary w-full sm:w-auto">Explorer le Catalogue</button>
+<button type="button" onclick="window.location.href='/catalog?brand=Yamaha'" class="btn-primary w-full sm:w-auto">Explorer le Catalogue</button>
 <button type="button" onclick="document.querySelector('#yamaha-products')?.scrollIntoView({behavior:'smooth'})" class="btn-secondary w-full sm:w-auto flex items-center justify-center gap-2">
 <span class="material-symbols-outlined text-sm">play_circle</span>
                         Voir le Workflow
@@ -549,5 +549,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Yamaha";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

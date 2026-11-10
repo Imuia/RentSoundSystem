@@ -201,7 +201,7 @@ body{padding-top:80px!important}
                     L'excellence sonore sans compromis. Accédez à l'inventaire premium Meyer Sound sur la marketplace exclusive RentSoundSystem pour vos productions les plus exigeantes.
                 </p>
 <div class="flex flex-col sm:flex-row gap-6">
-<button type="button" onclick="window.location.href='/catalog.html?search=Meyer%20Sound'" class="bg-brand-fuchsia text-white px-8 py-4 rounded-lg text-label-caps font-label-caps uppercase shadow-[0_0_20px_rgba(252,3,109,0.3)] hover:scale-105 transition-transform flex items-center gap-2">
+<button type="button" onclick="window.location.href='/catalog?brand=Meyer Sound'" class="bg-brand-fuchsia text-white px-8 py-4 rounded-lg text-label-caps font-label-caps uppercase shadow-[0_0_20px_rgba(252,3,109,0.3)] hover:scale-105 transition-transform flex items-center gap-2">
 <span class="material-symbols-outlined">explore</span>
                         Parcourir l'Inventaire
                     </button>
@@ -238,7 +238,7 @@ Chargement des produits Meyer Sound…
 <h2 class="text-headline-lg font-headline-lg text-on-surface mb-4">Systèmes Linéaires &amp; Subwoofers</h2>
 <p class="text-body-lg font-body-lg text-on-surface-variant max-w-xl">La précision à l'état pur, conçue pour les tournées mondiales et les installations fixes complexes.</p>
 </div>
-<a class="hidden md:flex items-center gap-2 text-brand-fuchsia font-bold hover:underline" href="/catalog.html?search=Meyer%20Sound">
+<a class="hidden md:flex items-center gap-2 text-brand-fuchsia font-bold hover:underline" href='/catalog?brand=Meyer Sound'>
                         Voir tout le catalogue <span class="material-symbols-outlined">arrow_forward</span>
 </a>
 </div>
@@ -354,7 +354,7 @@ Chargement des produits Meyer Sound…
 </ul></div>
 <div class="rss-footer-col"><h3>Catégories</h3><ul>
 <li><a href="/catalog.html?search=line%20array">Line Array</a></li>
-<li><a href="/catalog.html?search=Meyer%20Sound">Meyer Sound</a></li>
+<li><a href='/catalog?brand=Meyer Sound'>Meyer Sound</a></li>
 <li><a href="/catalog.html?search=subwoofer">Subwoofers</a></li>
 <li><a href="/catalog.html?search=enceintes">Enceintes professionnelles</a></li>
 <li><a href="/catalog.html">Sonorisation &amp; production</a></li>
@@ -609,4 +609,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 </script>
 
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Meyer Sound";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

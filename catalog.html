@@ -485,7 +485,35 @@ html, body {
   // 101 marques dédoublonnées selon les mêmes routes canoniques.
   const CATALOG_MASTER_BRANDS = ["Alcons Audio","Allen & Heath","Alto","American audio","American DJ","Apart","Audio Technica","AudioCase","AudioHead7","Behringer","Bergerault","Black Swamp Percussion","BoomTone DJ","Bose","Botex","Cameo","Celestion","Cerwin Vega","Coda Audio","Community Professional Loudspeakers","d&b audiotechnik","D.A.S","DB Technologies","De Haske","Denis Wick","Denon","DiGiCo","Dunlop","EAW (Eastern Acoustic Works)","Ecler","Edition Dux","Electro-Voice","Elokance","ESP","Faber Music","Faderfox","FBT Audio","Fischer Amps","Formula Sound","Friedman","Funktion One","Gemini","GHS","Gibraltar","Goldon","Hercules DJ","HK","Jakob Winter","Jamey Aebersold","Jargar","JBL","Joral","Kaufmann","KRK Systems","KV2 Audio","L-Acoustics","LD Systems","Lindy","Litecraft","Mac Mah","Marshall","Martin Audio","Meyer Sound","Midas","Native Instruments","Neumann","Nexo Sound","Numark","Ohm Audio","Omnitronic","Ortofon","Ottolink","Outline Audio","Ovation","Oxford University Press","Paiste","Peavey Commercial Audio","Pioneer DJ","Presonus","QSC","Quilter","Rane","RCF","Reloop","Renkus-Heinz","Rode Microphones","Roland","Sennheiser","Shure","Silent Arena","Silent Disco","Soundcraft","Studio 49","Tannoy","Technics","The box","Turbo Sound","Ulsa","Vestax","Void Acoustics","Yamaha"];
 
-  const MASTER_BRAND_ALIASES = {"black swamp":"Black Swamp Percussion","pioneer":"Pioneer DJ","electro voice ev":"Electro-Voice","allen heath":"Allen & Heath","shure micros":"Shure","electrovoice":"Electro-Voice","d b audiotechnik":"d&b audiotechnik","audio7":"AudioHead7","audio 7":"AudioHead7","audio-7":"AudioHead7","audio head 7":"AudioHead7","audiohead 7":"AudioHead7"};
+  const MASTER_BRAND_ALIASES = {
+    "black swamp": "Black Swamp Percussion",
+    "black swamp percussion": "Black Swamp Percussion",
+    "pioneer": "Pioneer DJ",
+    "pioneer dj": "Pioneer DJ",
+    "electro voice ev": "Electro-Voice",
+    "electro voice": "Electro-Voice",
+    "electrovoice": "Electro-Voice",
+    "allen heath": "Allen & Heath",
+    "allen and heath": "Allen & Heath",
+    "shure micros": "Shure",
+    "shure": "Shure",
+    "d b audiotechnik": "d&b audiotechnik",
+    "d and b audiotechnik": "d&b audiotechnik",
+    "db audiotechnik": "d&b audiotechnik",
+    "audio7": "AudioHead7",
+    "audio 7": "AudioHead7",
+    "audiohead 7": "AudioHead7",
+    "audiohead7": "AudioHead7",
+    "audio head 7": "AudioHead7",
+    "audio head7": "AudioHead7",
+    "l acoustics": "L-Acoustics",
+    "lacoustics": "L-Acoustics",
+    "l acoustic": "L-Acoustics",
+    "nexo": "Nexo Sound",
+    "nexo sound": "Nexo Sound",
+    "american dj": "American DJ",
+    "adj": "American DJ"
+  };
 
   const BRAND_ALIASES = {
     "l acoustics": "L-Acoustics",
@@ -495,9 +523,10 @@ html, body {
     "electrovoice": "Electro-Voice",
     "audio7": "AudioHead7",
     "audio 7": "AudioHead7",
-    "audio-7": "AudioHead7",
+    "audiohead 7": "AudioHead7",
+    "audiohead7": "AudioHead7",
     "audio head 7": "AudioHead7",
-    "audiohead 7": "AudioHead7"
+    "audio head7": "AudioHead7"
   };
 
   function canonicalBrandLabel(value) {
@@ -514,51 +543,20 @@ html, body {
     return master || raw;
   }
 
-  function inferLegacyBrand(item) {
-    const text = normalizeBrandKey([
-      item.title,
-      item.model,
-      item.description,
-      item.category
-    ].map(cleanRaw).join(" "));
+  function resolveBrandLabels(item) {
+    const brands = new Set();
 
-    if (!text) return "";
-
-    // Anciennes annonces L-Acoustics : parfois le champ marque est vide
-    // alors que le modèle/titre permet de l'identifier clairement.
+    const modelText = normalizeBrandKey(item.model);
     if (
-      text.includes("l acoustics") ||
-      text.includes("lacoustics") ||
-      /\b(k1|k2|kara(?: ii)?|ks28|sb28|la12x|la4x|a10|a15|x15 hiq|syva)\b/.test(text)
+      modelText.includes("audiohead7") ||
+      modelText.includes("audio head 7") ||
+      modelText.includes("audio 7") ||
+      modelText === "audio7"
     ) {
-      return "L-Acoustics";
+      brands.add("AudioHead7");
     }
 
-    // Même principe pour Electro-Voice.
-    if (
-      text.includes("electro voice") ||
-      text.includes("electrovoice") ||
-      /\b(zlx|elx|ekx|etx|evolve(?: 30m| 50m| 70)?|re3)\b/.test(text)
-    ) {
-      return "Electro-Voice";
-    }
-
-    // Détection Audio7 / AudioHead7
-    if (
-      text.includes("audiohead7") ||
-      text.includes("audiohead") ||
-      text.includes("audio head 7") ||
-      text.includes("audio7") ||
-      text.includes("audio 7")
-    ) {
-      return "AudioHead7";
-    }
-
-    return "";
-  }
-
-  function resolveBrandLabel(item) {
-    const explicit = canonicalBrandLabel(
+    const rawBrand = cleanRaw(
       item.brand ||
       item.brand_name ||
       item.manufacturer ||
@@ -567,7 +565,50 @@ html, body {
       ""
     );
 
-    return explicit || inferLegacyBrand(item);
+    if (rawBrand) {
+      rawBrand.split(",").forEach(function (part) {
+        const canonical = canonicalBrandLabel(part.trim());
+        if (canonical) brands.add(canonical);
+      });
+    }
+
+    if (!brands.size) {
+      const model = cleanRaw(item.model);
+      if (model) {
+        const c = canonicalBrandLabel(model);
+        if (CATALOG_MASTER_BRANDS.indexOf(c) !== -1) brands.add(c);
+      }
+    }
+
+    if (!brands.size) {
+      const text = normalizeBrandKey([
+        item.title,
+        item.model,
+        item.description,
+        item.category
+      ].map(cleanRaw).join(" "));
+
+      if (
+        text.includes("l acoustics") ||
+        text.includes("lacoustics") ||
+        /\b(k1|k2|kara(?: ii)?|ks28|sb28|la12x|la4x|a10|a15|x15 hiq|syva)\b/.test(text)
+      ) {
+        brands.add("L-Acoustics");
+      } else if (
+        text.includes("electro voice") ||
+        text.includes("electrovoice") ||
+        /\b(zlx|elx|ekx|etx|evolve(?: 30m| 50m| 70)?|re3)\b/.test(text)
+      ) {
+        brands.add("Electro-Voice");
+      }
+    }
+
+    return Array.from(brands);
+  }
+
+  function resolveBrandLabel(item) {
+    const list = resolveBrandLabels(item);
+    return list[0] || "";
   }
 
   function looksLikeIdentifier(value) {
@@ -641,12 +682,16 @@ html, body {
   function normalizeListing(item) {
     const categoryLabel = resolveCategoryLabel(item.category);
     const cityLabel = resolveCityLabel(item);
-    const brandLabel = resolveBrandLabel(item);
+    const brandLabels = resolveBrandLabels(item);
+    const brandKeys = brandLabels.map(normalizeBrandKey);
+    const brandLabel = brandLabels[0] || "";
     return Object.assign({}, item, {
       category_label: categoryLabel,
       category_key: normalizeKey(categoryLabel),
       city_label: cityLabel,
       city_key: normalizeKey(cityLabel),
+      brand_labels: brandLabels,
+      brand_keys: brandKeys,
       brand_label: brandLabel,
       brand_key: normalizeBrandKey(brandLabel)
     });
@@ -755,9 +800,8 @@ html, body {
       if (f.max && price > f.max) return false;
       if (f.categories.length && f.categories.indexOf(categoryKey) === -1) return false;
       if (f.brands.length && !f.brands.some(function (wantedBrand) {
-        return brandKey === wantedBrand ||
-          brandFallbackText === wantedBrand ||
-          brandFallbackText.indexOf(wantedBrand) !== -1;
+        const itemBrandKeys = item.brand_keys || (brandKey ? [brandKey] : []);
+        return itemBrandKeys.indexOf(wantedBrand) !== -1;
       })) return false;
 
       return true;
@@ -933,9 +977,11 @@ html, body {
 
   function requestedBrandParams() {
     try {
-      return new URLSearchParams(window.location.search)
-        .getAll("brand")
-        .map(function (value) { return value.trim(); })
+      const params = new URLSearchParams(window.location.search);
+      return params.getAll("brand")
+        .concat(params.getAll("marque"))
+        .concat(params.getAll("brand_slug"))
+        .map(function (value) { return cleanRaw(value); })
         .filter(Boolean);
     } catch (_) {
       return [];
@@ -1003,30 +1049,34 @@ html, body {
     try { params = new URLSearchParams(window.location.search); }
     catch (_) { return; }
 
-    const requestedBrands = params.getAll("brand")
-      .map(normalizeBrandKey)
+    const rawBrandParams = params.getAll("brand")
+      .concat(params.getAll("marque"))
+      .concat(params.getAll("brand_slug"))
+      .map(function (v) { return cleanRaw(v); })
+      .filter(Boolean);
+
+    const requestedCanonicalKeys = rawBrandParams
+      .map(function (v) { return normalizeBrandKey(canonicalBrandLabel(v)); })
       .filter(Boolean);
 
     const searchValue = (params.get("search") || "").trim();
 
-    if (requestedBrands.length) {
+    if (requestedCanonicalKeys.length) {
       document.querySelectorAll(".catalog-brand").forEach(function (input) {
-        input.checked = requestedBrands.indexOf(input.dataset.brandKey || "") !== -1;
+        const inputKey = input.dataset.brandKey || "";
+        input.checked = requestedCanonicalKeys.indexOf(inputKey) !== -1;
       });
     }
 
     if (searchValue) {
-      const exactBrandKey = normalizeBrandKey(searchValue);
-      const canonicalName = canonicalBrandLabel(searchValue);
-      const canonicalKey = normalizeBrandKey(canonicalName);
-
+      const canonicalSearch = canonicalBrandLabel(searchValue);
+      const exactBrandKey = normalizeBrandKey(canonicalSearch);
       const exactBrand = Array.from(document.querySelectorAll(".catalog-brand"))
         .find(function (input) {
-          const k = input.dataset.brandKey || "";
-          return k === exactBrandKey || (canonicalKey && k === canonicalKey);
+          return (input.dataset.brandKey || "") === exactBrandKey;
         });
 
-      if (exactBrand && !requestedBrands.length) {
+      if (exactBrand && !requestedCanonicalKeys.length) {
         exactBrand.checked = true;
         if ($("catalog-search")) $("catalog-search").value = "";
       } else if ($("catalog-search")) {

@@ -310,7 +310,7 @@ body{padding-top:80px!important}
                     L'équipement de choix pour les turntablists professionnels et les scènes les plus exigeantes. Une construction en acier massif, une précision numérique implacable et une ergonomie conçue pour l'instinct.
                 </p>
 <div class="flex gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Rane'" class="bg-primary text-white font-body text-[14px] font-semibold uppercase tracking-wide px-8 py-4 rounded hover:bg-primary/90 transition-all active:scale-95 shadow-[0_0_15px_rgba(252,3,109,0.5)]">
+<button type="button" onclick="window.location.href='/catalog?brand=Rane'" class="bg-primary text-white font-body text-[14px] font-semibold uppercase tracking-wide px-8 py-4 rounded hover:bg-primary/90 transition-all active:scale-95 shadow-[0_0_15px_rgba(252,3,109,0.5)]">
                         Explorer l'Inventaire
                     </button>
 <button type="button" onclick="document.querySelector('#rane-arsenal')?.scrollIntoView({behavior:'smooth'})" class="bg-transparent border border-outline text-on-surface font-body text-[14px] font-semibold uppercase tracking-wide px-8 py-4 rounded hover:bg-surface-container-high transition-all active:scale-95 flex items-center gap-2">
@@ -647,5 +647,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Rane";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

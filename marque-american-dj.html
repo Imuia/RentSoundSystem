@@ -218,7 +218,7 @@ body{padding-top:80px!important}
                     Fondée en 1985, ADJ est la référence mondiale en matière de solutions d'éclairage et d'effets visuels pour les événements professionnels. Louez l'excellence pour vos productions.
                 </p>
 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-<button type="button" onclick="window.location.href='/catalog.html?search=American%20DJ'" class="btn-primary px-8 py-4 rounded-full font-label-caps text-label-caps tracking-widest font-bold">
+<button type="button" onclick="window.location.href='/catalog?brand=American DJ'" class="btn-primary px-8 py-4 rounded-full font-label-caps text-label-caps tracking-widest font-bold">
                         Explorer le catalogue ADJ
                     </button>
 <button type="button" onclick="document.querySelector('#adj-products')?.scrollIntoView({behavior:'smooth'})" class="px-8 py-4 rounded-full border border-outline-variant text-on-surface hover:bg-surface-container transition-colors duration-300 font-label-caps text-label-caps tracking-widest font-bold flex items-center justify-center gap-2">
@@ -630,5 +630,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "American DJ";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

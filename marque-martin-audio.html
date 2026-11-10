@@ -228,7 +228,7 @@ html,body{overflow-x:hidden!important;background:#131313!important}
                         La référence absolue en matière d'optimisation acoustique. Louez les systèmes line array MLA et Wavefront Precision qui propulsent les plus grandes scènes mondiales.
                     </p>
 <div class="flex flex-wrap items-center gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Martin%20Audio'" class="bg-[#FC036D] text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(252,3,109,0.4)] btn-glow transition-all active:scale-95 font-bold flex items-center gap-2">
+<button type="button" onclick="window.location.href='/catalog?brand=Martin Audio'" class="bg-[#FC036D] text-white font-label-caps text-label-caps uppercase px-8 py-4 rounded-xl shadow-[0_0_20px_rgba(252,3,109,0.4)] btn-glow transition-all active:scale-95 font-bold flex items-center gap-2">
                             Explorer le Catalogue
                             <span class="material-symbols-outlined">arrow_forward</span>
 </button>
@@ -267,7 +267,7 @@ Chargement des produits Martin Audio…
 <h2 class="font-headline-lg text-headline-lg text-on-surface font-bold mb-2">Catalogue Phare</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant">L'arsenal acoustique Martin Audio disponible à la location.</p>
 </div>
-<button type="button" onclick="window.location.href='/catalog.html?search=Martin%20Audio'" class="hidden md:flex items-center gap-2 text-[#FC036D] font-label-caps text-label-caps uppercase hover:text-white transition-colors">
+<button type="button" onclick="window.location.href='/catalog?brand=Martin Audio'" class="hidden md:flex items-center gap-2 text-[#FC036D] font-label-caps text-label-caps uppercase hover:text-white transition-colors">
                         Voir tout l'inventaire <span class="material-symbols-outlined">arrow_forward</span>
 </button>
 </div>
@@ -472,7 +472,7 @@ Chargement des produits Martin Audio…
 <li><a href="/location-sono/location-sono-taipei">Location Sono Taipei</a></li>
 </ul></div>
 <div class="rss-footer-col"><h3>Catégories</h3><ul>
-<li><a href="/catalog.html?search=Martin%20Audio">Martin Audio</a></li>
+<li><a href='/catalog?brand=Martin Audio'>Martin Audio</a></li>
 <li><a href="/catalog.html?search=Martin%20Audio%20MLA">MLA</a></li>
 <li><a href="/catalog.html?search=Martin%20Audio%20Wavefront">Wavefront Precision</a></li>
 <li><a href="/catalog.html?search=Martin%20Audio%20BlacklineX">BlacklineX</a></li>
@@ -760,4 +760,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Martin Audio";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>
