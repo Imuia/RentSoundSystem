@@ -198,7 +198,7 @@ body{padding-top:80px!important}
                         "Chez Black Swamp Percussion, nous sommes des percussionnistes qui ont le même engagement et la même passion pour l'art de la percussion que vous."
                     </p>
 <div class="flex flex-col sm:flex-row gap-4">
-<a href="/catalog.html?search=Black%20Swamp%20Percussion" class="bg-primary-container text-[#ffffff] font-label-caps text-label-caps px-component-padding-x py-component-padding-y rounded-lg shadow-[0_0_30px_var(--tw-shadow-color)] shadow-neon-glow hover:opacity-80 transition-all uppercase tracking-wider font-semibold border border-inverse-primary flex items-center justify-center gap-2">
+<a href='/catalog?brand=Black Swamp Percussion' class="bg-primary-container text-[#ffffff] font-label-caps text-label-caps px-component-padding-x py-component-padding-y rounded-lg shadow-[0_0_30px_var(--tw-shadow-color)] shadow-neon-glow hover:opacity-80 transition-all uppercase tracking-wider font-semibold border border-inverse-primary flex items-center justify-center gap-2">
                             Explorer le Catalogue
                             <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
 </a>
@@ -472,4 +472,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Black Swamp Percussion";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

@@ -207,7 +207,7 @@ body{padding-top:80px!important}
                     L'excellence en matière de conception et de fabrication de solutions de transport et de protection pour l'équipement audio professionnel. Une robustesse à toute épreuve pour vos tournées mondiales.
                 </p>
 <div class="flex justify-center gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=AudioCase'" class="bg-primary-container text-white px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase neon-shadow hover:bg-primary transition-colors flex items-center gap-2">
+<button type="button" onclick="window.location.href='/catalog?brand=AudioCase'" class="bg-primary-container text-white px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase neon-shadow hover:bg-primary transition-colors flex items-center gap-2">
                         Découvrir la Gamme
                         <span class="material-symbols-outlined">arrow_forward</span>
 </button>
@@ -476,5 +476,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "AudioCase";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

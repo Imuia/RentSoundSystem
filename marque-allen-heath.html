@@ -255,7 +255,7 @@ main{padding-top:0!important}
 <div class="mb-16 text-center">
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Écosystème Numérique Allen &amp; Heath</h2>
 <p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Produits Allen &amp; Heath disponibles sur RentSoundSystem. Les annonces Supabase sont chargées automatiquement ; à défaut, la sélection publique actuellement mise en avant sur le site reste visible.</p>
-<a class="inline-flex items-center gap-2 mt-6 text-brand-fuchsia font-label-caps text-label-caps uppercase tracking-widest" href="/catalog.html?search=Allen%20%26%20Heath">Voir tout l'inventaire Allen &amp; Heath →</a></div>
+<a class="inline-flex items-center gap-2 mt-6 text-brand-fuchsia font-label-caps text-label-caps uppercase tracking-widest" href='/catalog?brand=Allen%20%26%20Heath'>Voir tout l'inventaire Allen &amp; Heath →</a></div>
 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8" id="allen-heath-products-grid"><div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Chargement des produits Allen &amp; Heath disponibles...</div></div>
 </section>
 <!-- Video Case Studies (Asymmetric) -->
@@ -494,7 +494,7 @@ main{padding-top:0!important}
     const grid=document.getElementById('allen-heath-products-grid');
     if(!grid)return;
     if(!products.length){
-      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Aucun produit Allen & Heath disponible n’a été trouvé. <a class="text-brand-fuchsia" href="/catalog.html?search=Allen%20%26%20Heath">Voir le catalogue</a>.</div>';
+      grid.innerHTML='<div class="md:col-span-2 xl:col-span-3 text-center text-on-surface-variant py-16">Aucun produit Allen & Heath disponible n’a été trouvé. <a class="text-brand-fuchsia" href='/catalog?brand=Allen%20%26%20Heath'>Voir le catalogue</a>.</div>';
       updateItemListSchema([]);return;
     }
     grid.innerHTML=products.map((item,index)=>{
@@ -640,4 +640,45 @@ main{padding-top:0!important}
 
   document.addEventListener('DOMContentLoaded',()=>{loadSharedHeader();loadAllenHeathProducts();});
 })();
-</script></body></html>
+</script><script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Allen & Heath";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
+</body></html>

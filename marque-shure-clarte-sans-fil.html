@@ -183,7 +183,7 @@
                     L'équipement de référence pour les tournées mondiales, les installations de diffusion et les productions théâtrales exigeantes. Disponible à la location partout en Europe.
                 </p>
 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Shure'" class="bg-primary-fuchsia text-white font-label-caps text-label-caps px-8 py-4 rounded-xl uppercase tracking-widest neon-glow hover:bg-opacity-90 transition-all">
+<button type="button" onclick="window.location.href='/catalog?brand=Shure'" class="bg-primary-fuchsia text-white font-label-caps text-label-caps px-8 py-4 rounded-xl uppercase tracking-widest neon-glow hover:bg-opacity-90 transition-all">
                         Explorer le Catalogue
                     </button>
 <button type="button" onclick="document.querySelector('#shure-catalog-section')?.scrollIntoView({behavior:'smooth'})" class="glass-panel text-on-surface font-label-caps text-label-caps px-8 py-4 rounded-xl uppercase tracking-widest hover:bg-surface-container transition-all">
@@ -220,7 +220,7 @@
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Équipement à Louer</h2>
 <p class="font-body-md text-body-md text-secondary">Technologies RF de pointe pour des performances sans faille.</p>
 </div>
-<button type="button" onclick="window.location.href='/catalog.html?search=Shure'" class="hidden md:flex items-center text-primary-fuchsia font-label-caps text-label-caps hover:text-white transition-colors">
+<button type="button" onclick="window.location.href='/catalog?brand=Shure'" class="hidden md:flex items-center text-primary-fuchsia font-label-caps text-label-caps hover:text-white transition-colors">
                     Tout voir <span class="material-symbols-outlined ml-2">arrow_forward</span>
 </button>
 </div>
@@ -314,7 +314,7 @@
 <li><a href="/location-sono/location-sono-barcelone">Location Sono Barcelone</a></li>
 </ul></div>
 <div class="rss-footer-col"><h3>Catégories</h3><ul>
-<li><a href="/catalog.html?search=Shure">Shure</a></li>
+<li><a href='/catalog?brand=Shure'>Shure</a></li>
 <li><a href="/catalog.html?search=Shure%20Axient%20Digital">Axient Digital</a></li>
 <li><a href="/catalog.html?search=Shure%20PSM1000">PSM1000</a></li>
 <li><a href="/catalog.html?search=Shure%20ULX-D">ULX-D</a></li>
@@ -361,4 +361,45 @@ async function loadRentSoundSystemHeader(){
 document.addEventListener('DOMContentLoaded',loadRentSoundSystemHeader);
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Shure";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

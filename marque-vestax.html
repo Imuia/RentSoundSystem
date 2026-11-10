@@ -250,7 +250,7 @@ body{padding-top:80px!important}
                     Conçu pour les exigences exactes de la culture scratch et des puristes du vinyle. Découvrez la légendaire série PMC et les platines PDX — où la précision mécanique rencontre l'énergie nocturne.
                 </p>
 <div class="flex gap-4 mt-4">
-<button type="button" onclick="window.location.href='/catalog.html?search=Vestax'" class="bg-fuchsia text-white px-6 py-3 rounded font-body font-medium hover:bg-fuchsia/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)]">
+<button type="button" onclick="window.location.href='/catalog?brand=Vestax'" class="bg-fuchsia text-white px-6 py-3 rounded font-body font-medium hover:bg-fuchsia/90 transition-colors shadow-[0_0_15px_rgba(252,3,109,0.4)]">
                         Explorer l'Inventaire
                     </button>
 <button type="button" onclick="document.querySelector('#vestax-products')?.scrollIntoView({behavior:'smooth'})" class="px-6 py-3 rounded font-body font-medium text-white border border-outline-variant hover:bg-surface-container transition-colors">
@@ -267,7 +267,7 @@ body{padding-top:80px!important}
 <h2 class="font-headline text-[32px] font-semibold text-white">Matériel Légendaire</h2>
 <p class="font-body text-[16px] text-on-surface-variant mt-2">Les outils qui ont défini une génération d'artistes scratch.</p>
 </div>
-<a class="text-white font-medium hover:text-fuchsia transition-colors flex items-center gap-1 text-[14px]" href="/catalog.html?search=Vestax">
+<a class="text-white font-medium hover:text-fuchsia transition-colors flex items-center gap-1 text-[14px]" href='/catalog?brand=Vestax'>
                     Voir Tous les Modèles <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
 </a>
 </div>
@@ -553,5 +553,46 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Vestax";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body>
 </html>

@@ -200,7 +200,7 @@ body{padding-top:80px!important}
                     Behringer est une marque allemande fondée en 1989, reconnue pour sa large gamme d'équipements audio à des prix abordables. Spécialisée dans la conception de consoles de mixage, d'amplificateurs et de processeurs.
                 </p>
 <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto justify-center">
-<a href="/catalog.html?search=Behringer" class="bg-primary text-on-primary font-label-caps text-label-caps uppercase px-8 py-4 rounded-DEFAULT neon-shadow hover:bg-white hover:text-background transition-all duration-300 flex items-center justify-center gap-2">
+<a href='/catalog?brand=Behringer' class="bg-primary text-on-primary font-label-caps text-label-caps uppercase px-8 py-4 rounded-DEFAULT neon-shadow hover:bg-white hover:text-background transition-all duration-300 flex items-center justify-center gap-2">
 <span class="">Explorer l'inventaire</span>
 <span class="material-symbols-outlined">arrow_forward</span>
 </a>
@@ -214,7 +214,7 @@ body{padding-top:80px!important}
 <h2 class="font-headline-lg text-headline-lg text-on-surface">Équipements Phares</h2>
 <p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-xl">Des solutions de mixage et d'amplification conçues pour la performance live et le studio.</p>
 </div>
-<a class="text-primary font-label-caps text-label-caps uppercase hover:text-white transition-colors flex items-center gap-1 group" href="/catalog.html?search=Behringer">
+<a class="text-primary font-label-caps text-label-caps uppercase hover:text-white transition-colors flex items-center gap-1 group" href='/catalog?brand=Behringer'>
                     Voir tout le catalogue 
                     <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">east</span>
 </a>
@@ -449,4 +449,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Behringer";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

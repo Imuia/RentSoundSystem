@@ -240,10 +240,10 @@ body{padding-top:80px!important}
                     Sous les marques des fabricants qu'elle représente, BOTEX INTERNATIONAL propose une offre complète de solutions de contrôle d'éclairage et de distribution électrique pour l'industrie du spectacle.
                 </p>
 <div class="flex flex-col sm:flex-row gap-4">
-<a href="/catalog.html?search=Botex" class="bg-primary-container text-on-primary-container px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-wider neon-glow-shadow hover:bg-inverse-primary transition-all duration-300 text-center">
+<a href='/catalog?brand=Botex' class="bg-primary-container text-on-primary-container px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-wider neon-glow-shadow hover:bg-inverse-primary transition-all duration-300 text-center">
                         Explorer le Catalogue
                     </a>
-<button type="button" onclick="window.location.href='/catalog.html?search=Botex'" class="bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-wider hover:bg-surface-container transition-all duration-300 flex items-center gap-2">
+<button type="button" onclick="window.location.href='/catalog?brand=Botex'" class="bg-transparent border border-outline-variant text-on-surface px-8 py-4 rounded-DEFAULT font-label-caps text-label-caps uppercase tracking-wider hover:bg-surface-container transition-all duration-300 flex items-center gap-2">
 <span class="">Fiches Techniques</span>
 <span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
 </button>
@@ -302,7 +302,7 @@ body{padding-top:80px!important}
 <p class="font-body-md text-body-md text-on-surface-variant mb-6">
                                 Les solutions Botex s'intègrent nativement avec les parcs matériels existants, facilitant le déploiement sur les festivals et les installations fixes.
                             </p>
-<a class="text-primary font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-2 hover:text-inverse-primary transition-colors" href="/catalog.html?search=Botex">
+<a class="text-primary font-label-caps text-label-caps uppercase tracking-wider flex items-center gap-2 hover:text-inverse-primary transition-colors" href='/catalog?brand=Botex'>
                                 Voir la compatibilité <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
 </a>
 </div>
@@ -520,4 +520,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Botex";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

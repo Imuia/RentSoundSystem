@@ -497,7 +497,7 @@ body{padding-top:80px!important;background:#131313!important}
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">La Gamme Légendaire</h2>
 <p class="font-body-md text-body-md text-on-surface-variant max-w-xl">L'équipement de sonorisation le plus demandé de l'industrie, reconnu pour sa fiabilité à toute épreuve et ses performances audio supérieures.</p>
 </div>
-<button class="material-symbols-outlined text-[#FC036D] text-sm" onclick="window.location.href='/catalog.html?search=QSC'" type="button">
+<button class="material-symbols-outlined text-[#FC036D] text-sm" onclick="window.location.href='/catalog?brand=QSC'" type="button">
                     Voir tout le catalogue <span class="material-symbols-outlined">arrow_forward</span>
 </button>
 </div>
@@ -718,7 +718,7 @@ body{padding-top:80px!important;background:#131313!important}
       renderProducts(products);
     }catch(err){
       console.warn('QSC products:',err);
-      grid.innerHTML='<div class="md:col-span-3 text-center text-on-surface-variant py-16">Les produits QSC sont temporairement indisponibles. <a class="text-[#FC036D]" href="/catalog.html?search=QSC">Voir le catalogue QSC</a>.</div>';
+      grid.innerHTML='<div class="md:col-span-3 text-center text-on-surface-variant py-16">Les produits QSC sont temporairement indisponibles. <a class="text-[#FC036D]" href='/catalog?brand=QSC'>Voir le catalogue QSC</a>.</div>';
     }
   }
 
@@ -727,4 +727,45 @@ body{padding-top:80px!important;background:#131313!important}
     loadQscProducts();
   });
 })();
-</script></body></html>
+</script><script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "QSC";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
+</body></html>

@@ -258,7 +258,7 @@ Chargement des produits d&amp;b…
 <h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Équipement Phare</h2>
 <p class="font-body-md text-body-md text-on-surface-muted">L'arsenal des professionnels de l'audio.</p>
 </div>
-<button type="button" onclick="window.location.href='/catalog.html?search=d%26b%20audiotechnik'" class="hidden md:flex text-magenta hover:text-white transition-colors items-center font-label-caps text-label-caps uppercase">
+<button type="button" onclick="window.location.href='/catalog?brand=d%26b%20audiotechnik'" class="hidden md:flex text-magenta hover:text-white transition-colors items-center font-label-caps text-label-caps uppercase">
                         Tout voir <span class="material-symbols-outlined ml-2" data-icon="arrow_forward">arrow_forward</span>
 </button>
 </div>
@@ -335,7 +335,7 @@ Chargement des produits d&amp;b…
 <li><a href="/location-sono/location-sono-monaco">Location Sono Monaco</a></li>
 </ul></div>
 <div class="rss-footer-col"><h3>Catégories</h3><ul>
-<li><a href="/catalog.html?search=d%26b%20audiotechnik">d&amp;b audiotechnik</a></li>
+<li><a href='/catalog?brand=d%26b%20audiotechnik'>d&amp;b audiotechnik</a></li>
 <li><a href="/catalog.html?search=line%20array">Line Array</a></li>
 <li><a href="/catalog.html?search=amplificateur">Amplification</a></li>
 <li><a href="/catalog.html?search=subwoofer">Subwoofers</a></li>
@@ -607,4 +607,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "d&b audiotechnik";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>
