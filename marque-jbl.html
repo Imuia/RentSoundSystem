@@ -600,4 +600,45 @@ document.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "JBL";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>

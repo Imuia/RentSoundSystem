@@ -225,4 +225,45 @@ function applyProduct(slotId,item){if(!item)return;const slot=document.getElemen
 async function loadTechnics(){try{if(!window.supabase)return;const client=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);const res=await client.from('listings').select('*, listing_images(image_url, position)').eq('status','publish').limit(500);if(res.error)throw res.error;const products=(res.data||[]).filter(isTechnics);const used=new Set();applyProduct('technics-slot-sl1200mk7',chooseStrict(products,['sl 1200mk7','sl-1200mk7','1200 mk7'],used));applyProduct('technics-slot-sl1210gr',chooseStrict(products,['sl 1210gr','sl-1210gr','1210 gr'],used));applyProduct('technics-slot-diamond',chooseStrict(products,['stylus','diamond','diamant','cartridge','cellule'],used));applyProduct('technics-slot-mixer',chooseStrict(products,['mixer','mixing','table de mixage','dj mixer'],used));}catch(e){console.warn('Technics products:',e);}}
 document.addEventListener('DOMContentLoaded',()=>{loadHeader();setupFallback('technics-slot-sl1200mk7','Technics SL-1200MK7');setupFallback('technics-slot-sl1210gr','Technics SL-1210GR');setupFallback('technics-slot-diamond','Technics stylus cartridge');setupFallback('technics-slot-mixer','Technics DJ mixer');loadTechnics();});
 </script>
+<script id="rss-brand-catalog-nav">
+(function() {
+  const brandName = "Technics";
+  const catalogUrl = "/catalog?brand=" + encodeURIComponent(brandName);
+  function bindCatalogCtas() {
+    document.querySelectorAll("a, button").forEach(function(el) {
+      const text = (el.textContent || "").trim().toLowerCase();
+      const isCatalogCta = (
+        text.includes("voir le catalogue") ||
+        text.includes("explorer le catalogue") ||
+        text.includes("parcourir le catalogue") ||
+        text.includes("voir tout le catalogue") ||
+        text.includes("voir l'inventaire") ||
+        text.includes("voir l’inventaire") ||
+        text.includes("explorer l'inventaire") ||
+        text.includes("explorer l’inventaire") ||
+        text.includes("parcourir l'inventaire") ||
+        text.includes("parcourir l’inventaire") ||
+        text.includes("voir tout l'inventaire") ||
+        text.includes("voir tout l’inventaire")
+      );
+      if (isCatalogCta) {
+        if (el.tagName.toLowerCase() === "a") {
+          el.setAttribute("href", catalogUrl);
+        } else {
+          el.removeAttribute("onclick");
+          el.onclick = function(e) {
+            if (e) { e.preventDefault(); e.stopPropagation(); }
+            window.location.href = catalogUrl;
+          };
+        }
+      }
+    });
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", bindCatalogCtas);
+  } else {
+    bindCatalogCtas();
+  }
+})();
+</script>
 </body></html>
