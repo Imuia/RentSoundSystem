@@ -350,11 +350,44 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
 
   function buildProfile(publicData, legacy, listing, lookupEmail){
     const hasPublicProfile=Boolean(publicData?.profile_exists);
-    const source=Object.assign({},legacy||{},listing||{});
+
+    // IMPORTANT : l'identité et la présentation viennent exclusivement
+    // de la fiche partenaire. Une annonce ne doit jamais écraser sa bio,
+    // son nom, son logo ou ses coordonnées.
+    const source=Object.assign({},legacy||{});
     const profile=Object.assign({},source,publicData||{});
     profile.has_public_profile=hasPublicProfile;
-    profile.name=first(publicData?.name,source.name,source.owner_name,source.company_name,source.display_name,source.owner_username,'Partenaire RentSoundSystem');
-    profile.description=plainProfileText(first(publicData?.description,source.description,source.owner_description,source.partner_description,'Partenaire spécialisé dans la location de matériel événementiel professionnel.'));
+
+    profile.name=first(
+      publicData?.name,
+      publicData?.company_name,
+      publicData?.display_name,
+      source.name,
+      source.company_name,
+      source.display_name,
+      source.owner_name,
+      source.partner_name,
+      source.owner_username,
+      'Partenaire RentSoundSystem'
+    );
+
+    // Accepte les champs de présentation courants de la fiche partenaire,
+    // sans reprendre le texte descriptif d'une annonce produit.
+    profile.description=plainProfileText(first(
+      publicData?.description,
+      publicData?.partner_description,
+      publicData?.company_description,
+      publicData?.bio,
+      publicData?.about,
+      source.description,
+      source.partner_description,
+      source.company_description,
+      source.bio,
+      source.about,
+      source.owner_description,
+      'Présentation non renseignée par ce partenaire.'
+    ));
+
     profile.logo_url=normalizeImageUrl(first(
       publicData?.logo_url,
       source.logo_url,
@@ -365,9 +398,7 @@ body{margin:0;background:radial-gradient(circle at 82% 4%,rgba(252,3,109,.15),tr
       source.owner_avatar_url,
       source.profile_image_url,
       source.profile_picture_url,
-      source.profile_photo_url,
-      source.image_url,
-      source.image
+      source.profile_photo_url
     ));
     profile.location=baseLocation(profile,hasPublicProfile) || 'Localisation non précisée';
     profile.email=hasPublicProfile ? first(publicData?.email) : first(source.email,source.owner_email,lookupEmail);
