@@ -1211,13 +1211,11 @@ html, body {
   function nearbyItems(center, limit) {
     const safeCenter = center || currentCenter;
     const safeLimit = Math.max(1, Number(limit) || 4);
-    const source = activeListings.length ? activeListings : allListings;
+    const source = equipmentFilter(activeListings.length ? activeListings : allListings);
 
-    const sameCountry = equipmentFilter(source)
-      .filter(item => listingCountryMatchesCenter(item, safeCenter));
-
-    // Recherche pays : toutes les annonces du pays, sans rayon de ville.
+    // Recherche par pays : rester strictement dans le pays demandé.
     if (isCountryCenter(safeCenter)) {
+      const sameCountry = source.filter(item => listingCountryMatchesCenter(item, safeCenter));
       return uniqueListings(sameCountry)
         .sort((a, b) =>
           Number(b.featured || 0) - Number(a.featured || 0) ||
@@ -1226,39 +1224,49 @@ html, body {
         .slice(0, safeLimit);
     }
 
-    // Recherche ville : la ville exacte passe en premier, puis les villes voisines.
-    // Toute annonce géolocalisée au-delà du rayon est exclue (ex. Paris pour Cannes).
-    const exactCity = enrichByDistance(
-      sameCountry.filter(item => listingCityMatchesCenter(item, safeCenter)),
-      safeCenter
-    )
-      .filter(item =>
-        typeof item._distanceKm !== 'number' ||
-        item._distanceKm <= DEFAULT_RADIUS_KM
-      )
-      .map(item => Object.assign({}, item, { _isExactCity: true }));
+    // Recherche par ville ou GPS : classement mondial par distance réelle.
+    // On ne limite PAS les résultats au pays : les villes proches d'une frontière
+    // restent éligibles, mais aucune annonce éloignée ne peut remonter.
+    const centerCode = centerCountryCode(safeCenter);
+    const geolocated = source
+      .filter(hasCoordinates)
+      .map(item => {
+        const copy = Object.assign({}, item);
+        copy._distanceKm = haversineKm(
+          Number(safeCenter.lat), Number(safeCenter.lng),
+          getLat(item), getLng(item)
+        );
+        return copy;
+      })
+      .filter(item => Number.isFinite(item._distanceKm));
 
-    const neighboring = enrichByDistance(
-      sameCountry.filter(item =>
-        hasCoordinates(item) && !listingCityMatchesCenter(item, safeCenter)
-      ),
-      safeCenter
-    )
-      .filter(item =>
-        typeof item._distanceKm === 'number' &&
-        item._distanceKm <= DEFAULT_RADIUS_KM
-      )
+    // Une annonce de la ville exacte doit aussi être cohérente avec le pays
+    // lorsqu'un pays est connu (évite les homonymes de villes dans le monde).
+    const exactCity = geolocated.filter(item => {
+      if (!listingCityMatchesCenter(item, safeCenter)) return false;
+      const itemCode = inferCountryCodeFromListing(item);
+      return !(centerCode && itemCode && itemCode !== centerCode);
+    }).map(item => Object.assign({}, item, { _isExactCity: true }));
+
+    const otherNearby = geolocated
+      .filter(item => !listingCityMatchesCenter(item, safeCenter))
       .map(item => Object.assign({}, item, { _isExactCity: false }));
 
-    // Déduplication sans perdre la priorité géographique.
-    return uniqueListings(exactCity.concat(neighboring))
+    // Élargissement progressif mondial : 25, 75, 150, 300 puis 500 km.
+    // À chaque étape, les annonces les plus proches sont classées en premier.
+    const expansionRadiiKm = [25, 75, 150, 300, 500];
+    let nearby = [];
+    for (const radius of expansionRadiiKm) {
+      nearby = otherNearby.filter(item => item._distanceKm <= radius);
+      if (exactCity.length + nearby.length >= safeLimit) break;
+    }
+
+    return uniqueListings(exactCity.concat(nearby))
       .sort((a, b) => {
         if (Boolean(a._isExactCity) !== Boolean(b._isExactCity)) {
           return a._isExactCity ? -1 : 1;
         }
-        const da = typeof a._distanceKm === 'number' ? a._distanceKm : Number.POSITIVE_INFINITY;
-        const db = typeof b._distanceKm === 'number' ? b._distanceKm : Number.POSITIVE_INFINITY;
-        return da - db;
+        return a._distanceKm - b._distanceKm;
       })
       .slice(0, safeLimit);
   }
