@@ -623,7 +623,66 @@ input[type="checkbox"], input[type="radio"]{
     $$('input,select,textarea').forEach(el=>el.addEventListener('input',updateSummary));
     $('#listing-search')?.addEventListener('input', function(){ renderListingPicker(this.value||''); }); ['#need-delivery','#need-tech','#need-insurance'].forEach(s=>$(s)?.addEventListener('change',updateSummary));
     $$('.quote-tab').forEach(tab=>tab.addEventListener('click',()=>goStep(Number(tab.dataset.step)))); $('#prev-step')?.addEventListener('click',()=>goStep(currentStep-1,true)); $('#next-step')?.addEventListener('click',()=>goStep(currentStep+1));
-    $('#quote-form')?.addEventListener('submit',async ev=>{ev.preventDefault(); if(!validateStep(4))return; const btn=$('#submit-quote'); if(btn){btn.disabled=true;btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';} const req=buildRequest(); saveLocalRequest(req); const result=await saveSupabase(req); const message=result.ok?'Demande de devis envoyée. Notre équipe revient vers vous rapidement.':'Demande enregistrée sur cette page. Supabase indique : '+result.error; toast(message); showAlert(message); const alert=$('#quote-alert'); if(alert){alert.classList.remove('border-error/40','bg-error-container/20','text-error'); alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');} if(btn){btn.disabled=false;btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';} });
+    $('#quote-form')?.addEventListener('submit',async ev=>{
+      ev.preventDefault();
+      if(!validateStep(4)) return;
+
+      const btn=$('#submit-quote');
+      const originalButtonHtml=btn?.innerHTML || '';
+      if(btn){
+        btn.disabled=true;
+        btn.innerHTML='<span class="material-symbols-outlined text-sm">hourglass_top</span> Envoi...';
+      }
+      hideAlert();
+
+      try {
+        const req=buildRequest();
+        const result=await saveSupabase(req);
+
+        if(!result.ok) {
+          throw new Error('La demande n’a pas pu être enregistrée : '+result.error);
+        }
+
+        // Déclenche l'envoi des deux emails côté serveur (Resend).
+        // L'adresse administrateur est définie dans les secrets de la fonction,
+        // jamais exposée dans le code public de la page.
+        const sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+        const {data:mailResult,error:mailError}=await sb.functions.invoke(
+          'quote-request-notification',
+          {body:req}
+        );
+
+        if(mailError || mailResult?.ok !== true) {
+          console.error('[RentSoundSystem] Demande enregistrée, mais emails non confirmés :',mailError || mailResult);
+          saveLocalRequest({...req,notification_status:'failed'});
+          throw new Error(
+            'Votre demande est enregistrée (référence '+req.id+'), mais les emails n’ont pas pu être confirmés. Merci de contacter notre équipe ou de réessayer plus tard.'
+          );
+        }
+
+        saveLocalRequest({...req,notification_status:'sent'});
+        const message='Demande envoyée avec succès ! Référence : '+req.id+'. Un email de confirmation vous a été envoyé.';
+        toast(message);
+        showAlert(message);
+        const alert=$('#quote-alert');
+        if(alert){
+          alert.classList.remove('border-error/40','bg-error-container/20','text-error');
+          alert.classList.add('border-electric-magenta','bg-electric-magenta/10','text-on-surface');
+        }
+        if(btn){
+          btn.innerHTML='<span class="material-symbols-outlined text-sm">check_circle</span> Envoyé';
+        }
+      } catch(error) {
+        console.error('[RentSoundSystem] Erreur demande de devis :',error);
+        const message=error?.message || 'Une erreur est survenue pendant l’envoi.';
+        showAlert(message);
+        toast(message);
+        if(btn){
+          btn.disabled=false;
+          btn.innerHTML=originalButtonHtml;
+        }
+      }
+    });
     updateChannelCards(); updateSummary(); goStep(1,true); loadListing();
   }
   document.addEventListener('DOMContentLoaded',bind);
