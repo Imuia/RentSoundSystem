@@ -3,8 +3,28 @@
 -- RentSoundSystem - Supabase
 -- Table cible : public.listings
 -- ==============================================================================
+--
+-- GARANTIES DE SÉCURITÉ DE CETTE MIGRATION :
+-- 1. Ne modifie AUCUNE donnée existante (les colonnes d'origine 'title' et 'description'
+--    ainsi que prix, caution, stocks, disponibilités restent 100% intactes).
+-- 2. Crée un snapshot miroir de sauvegarde complet : `listings_backup_before_i18n` (avec protection
+--    IF NOT EXISTS : si le script est rejoué, la sauvegarde originale n'est JAMAIS écrasée).
+-- 3. Ajoute uniquement des colonnes nouvelles avec la clause IF NOT EXISTS.
+-- 4. Rollback doux (Option A) recommandé : ne fait que supprimer les 8 colonnes ajoutées
+--    sans toucher ni risquer d'écraser de nouvelles annonces ou réservations créées entre temps.
+-- ==============================================================================
 
--- 1. Ajout additif des colonnes multilingues
+-- 0. SAUVEGARDE PRÉALABLE DES DONNÉES (Snapshot miroir)
+-- Ce snapshot fige l'état exact de la table public.listings avant la migration.
+-- Grâce à IF NOT EXISTS, un rejeu ultérieur ne risque pas de remplacer la sauvegarde initiale.
+CREATE TABLE IF NOT EXISTS public.listings_backup_before_i18n AS
+TABLE public.listings;
+
+COMMENT ON TABLE public.listings_backup_before_i18n IS 'Snapshot miroir de sécurité de la table listings créé avant la migration multilingue.';
+
+
+-- 1. AJOUT ADDITIF DES COLONNES MULTILINGUES
+-- Ces colonnes sont strictement optionnelles et n'altèrent aucune contrainte d'intégrité existante.
 ALTER TABLE IF EXISTS public.listings
   ADD COLUMN IF NOT EXISTS title_fr TEXT,
   ADD COLUMN IF NOT EXISTS title_en TEXT,
@@ -15,15 +35,20 @@ ALTER TABLE IF EXISTS public.listings
   ADD COLUMN IF NOT EXISTS included_fr TEXT,
   ADD COLUMN IF NOT EXISTS included_en TEXT;
 
--- 2. Initialisation des annonces rédigées originellement en français
---    Par défaut, on préserve le contenu original dans les colonnes FR
+
+-- 2. INITIALISATION DES ANNONCES ORIGINELLEMENT EN FRANÇAIS (280 annonces)
+-- On initialise title_fr et description_fr avec le contenu d'origine existant sans rien écraser.
 UPDATE public.listings
 SET
   title_fr = COALESCE(title_fr, title),
   description_fr = COALESCE(description_fr, description)
 WHERE original_id NOT IN (452, 467, 398);
 
--- 3. Gestion spécifique des annonces dont la description d'origine était en anglais
+
+-- 3. GESTION SPÉCIFIQUE DES ANNONCES DONT LE CONTENU D'ORIGINE ÉTAIT EN ANGLAIS
+-- On stocke le texte anglais d'origine dans description_en, et on renseigne la traduction française soignée dans description_fr.
+-- Les colonnes standards d'origine `title` et `description` NE SONT PAS TOUCHÉES.
+
 -- Annonce 452 : Location Pack Son JBL – Agadir
 UPDATE public.listings
 SET
@@ -108,8 +133,15 @@ La série Air de VOID est mondialement reconnue pour son élégance esthétique 
   included_en = '2 VOID Stasys X Air subwoofers, 2 VOID Air Vantage speakers, 2 VOID Airten V3 speakers, 2 Pioneer CDJ 3000, 1 Pioneer DJM 900 Nexus mixer, cabling and amplification'
 WHERE original_id = 398;
 
+
 -- ==============================================================================
--- Script de Rollback / Réversibilité (si nécessaire) :
+-- 4. PROCÉDURES DE ROLLBACK / RÉVERSIBILITÉ
+-- ==============================================================================
+--
+-- OPTION A : ROLLBACK DOUX (RECOMMANDÉ)
+-- Supprime uniquement les 8 colonnes multilingues ajoutées.
+-- Sécurité garantie : aucune donnée originelle n'est touchée, et aucune modification
+-- ultérieure (nouvelles annonces, réservations, statuts) n'est écrasée ni perdue.
 --
 -- ALTER TABLE public.listings
 --   DROP COLUMN IF EXISTS title_fr,
@@ -120,4 +152,17 @@ WHERE original_id = 398;
 --   DROP COLUMN IF EXISTS features_en,
 --   DROP COLUMN IF EXISTS included_fr,
 --   DROP COLUMN IF EXISTS included_en;
+--
+--
+-- OPTION B : RESTAURATION COMPLÈTE DE SECOURS (À utiliser avec précaution)
+-- Attention : à n'utiliser que si une anomalie majeure survient immédiatement après l'exécution.
+-- Ne pas utiliser si de nouvelles annonces ou réservations ont été créées entre-temps,
+-- car restaurer la table à partir du snapshot écraserait les données insérées postérieurement.
+--
+-- DROP TABLE IF EXISTS public.listings;
+-- CREATE TABLE public.listings AS TABLE public.listings_backup_before_i18n;
+--
+--
+-- Nettoyage optionnel du snapshot (uniquement lorsque la migration est définitivement validée) :
+-- DROP TABLE IF EXISTS public.listings_backup_before_i18n;
 -- ==============================================================================
