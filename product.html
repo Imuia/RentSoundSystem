@@ -1652,8 +1652,17 @@ function applyOwnerDisplay(item){
 
     if (error || !item) {
       console.error('Produit introuvable', error);
+      let rob = document.querySelector('meta[name="robots"]');
+      if (!rob) {
+        rob = document.createElement('meta');
+        rob.name = 'robots';
+        document.head.appendChild(rob);
+      }
+      rob.content = 'noindex, nofollow, noarchive';
+      document.title = 'Produit introuvable (404) - RentSoundSystem';
+      console.error('Produit introuvable', error);
       text(document.querySelector('.lg\\:col-span-5 h1'), 'Produit introuvable');
-      setProductOptions(itemWithPartner || item);
+      setProductOptions(item || {});
       document.body.classList.add('rss-product-loaded');
       return;
     }
