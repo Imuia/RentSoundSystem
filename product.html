@@ -9,6 +9,7 @@
 <script id="rss-product-jsonld" type="application/ld+json">{}</script>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/js/rss-product-i18n.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
 <script id="tailwind-config">
@@ -414,9 +415,9 @@
 <!-- Detailed Description & Specs Tabs -->
 <div class="bg-surface-container-low rounded-xl border border-outline-variant/20 overflow-hidden">
 <div class="flex border-b border-outline-variant/20">
-<button type="button" data-tab="overview" class="rss-tab-btn rss-tab-active flex-1 py-4 text-center font-headline font-bold text-body-md text-primary border-b-2 border-primary bg-surface-container-high">Aperçu</button>
-<button type="button" data-tab="specs" class="rss-tab-btn flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Spécifications techniques</button>
-<button type="button" data-tab="included" class="rss-tab-btn flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Inclus</button>
+<button type="button" data-tab="overview" data-i18n="product.overview" class="rss-tab-btn rss-tab-active flex-1 py-4 text-center font-headline font-bold text-body-md text-primary border-b-2 border-primary bg-surface-container-high">Aperçu</button>
+<button type="button" data-tab="specs" data-i18n="product.specs" class="rss-tab-btn flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Spécifications techniques</button>
+<button type="button" data-tab="included" data-i18n="product.included" class="rss-tab-btn flex-1 py-4 text-center font-headline font-semibold text-body-md text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">Inclus</button>
 </div>
 <div id="rss-tab-overview" class="rss-tab-panel active p-8 space-y-6">
 <h3 class="font-headline text-headline-lg text-on-surface">Chargement...</h3>
@@ -425,21 +426,21 @@
 <div class="bg-surface p-4 rounded border border-outline-variant/20 flex items-start space-x-3">
 <span class="material-symbols-outlined text-primary">speaker</span>
 <div>
-<div class="font-label text-label-caps text-on-surface mb-1">Enceintes</div>
+<div data-i18n="product.speakers" class="font-label text-label-caps text-on-surface mb-1">Enceintes</div>
 <div class="font-body text-body-sm text-on-surface-variant">Chargement...</div>
 </div>
 </div>
 <div class="bg-surface p-4 rounded border border-outline-variant/20 flex items-start space-x-3">
 <span class="material-symbols-outlined text-primary">settings_input_component</span>
 <div>
-<div class="font-label text-label-caps text-on-surface mb-1">Amplification</div>
+<div data-i18n="product.amplification" class="font-label text-label-caps text-on-surface mb-1">Amplification</div>
 <div class="font-body text-body-sm text-on-surface-variant">Chargement...</div>
 </div>
 </div>
 </div>
 </div>
 <div id="rss-tab-specs" class="rss-tab-panel p-8 space-y-5">
-<h3 class="font-headline text-headline-lg text-on-surface">Spécifications techniques</h3>
+<h3 data-i18n="product.specs" class="font-headline text-headline-lg text-on-surface">Spécifications techniques</h3>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div class="bg-surface p-4 rounded border border-outline-variant/20"><div class="text-primary font-bold mb-1">Puissance</div><div class="text-on-surface-variant">Configuration professionnelle adaptée aux événements live.</div></div>
 <div class="bg-surface p-4 rounded border border-outline-variant/20"><div class="text-primary font-bold mb-1">Connectique</div><div class="text-on-surface-variant">Entrées/sorties audio professionnelles selon disponibilité.</div></div>
@@ -448,7 +449,7 @@
 </div>
 </div>
 <div id="rss-tab-included" class="rss-tab-panel p-8 space-y-5">
-<h3 class="font-headline text-headline-lg text-on-surface">Inclus dans la location</h3>
+<h3 data-i18n="product.included_in_rental" class="font-headline text-headline-lg text-on-surface">Inclus dans la location</h3>
 <ul class="space-y-3 text-on-surface-variant">
 <li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> Matériel principal selon l’annonce</li>
 <li class="flex gap-3"><span class="material-symbols-outlined text-primary">check_circle</span> Câblage de base si précisé par le loueur</li>
@@ -491,10 +492,10 @@
 <div id="rss-owner-card" class="rss-added-by-card p-8 relative overflow-hidden">
   <div class="flex items-start justify-between gap-5">
     <div class="min-w-0">
-      <div class="rss-added-label mb-1">Ajouté par</div>
+      <div data-i18n="product.added_by" class="rss-added-label mb-1">Ajouté par</div>
       <h3 id="rss-owner-name" class="rss-added-name truncate">Client</h3>
       <a id="rss-owner-profile-link" href="/profil-partenaire.html" class="rss-added-profile-btn mt-3">
-        Voir le profil
+        <span data-i18n="product.view_profile">Voir le profil</span>
         <span class="material-symbols-outlined text-[17px]">chevron_right</span>
       </a>
     </div>
@@ -507,7 +508,7 @@
   <p id="rss-owner-description" class="rss-added-desc">Partenaire RentSoundSystem spécialisé dans la location de matériel événementiel professionnel.</p>
   <div class="mt-5 grid grid-cols-1 gap-2">
     <a id="rss-owner-contact" href="/demande-de-devis.html" class="rss-added-contact px-3 py-2 rounded-full text-sm transition inline-flex items-center justify-center">
-      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span>Contacter le partenaire
+      <span class="material-symbols-outlined text-[16px] align-middle mr-1">mail</span><span data-i18n="product.contact_partner">Contacter le partenaire</span>
     </a>
   </div>
   <span id="rss-owner-username" class="hidden"></span>
@@ -522,14 +523,14 @@
 <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 blur-[50px] rounded-full pointer-events-none"></div>
 <div class="flex justify-between items-end mb-6 border-b border-outline-variant/20 pb-4">
 <div>
-<div class="font-label text-label-caps text-on-surface-variant mb-1">Tarif de base</div>
+<div data-i18n="product.base_rate" class="font-label text-label-caps text-on-surface-variant mb-1">Tarif de base</div>
 <div id="rss-base-price" class="font-headline text-headline-lg text-primary font-bold" data-price="0">— <span class="text-body-md text-on-surface-variant font-normal">/ jour</span></div>
 </div>
 
 </div>
 <!-- Date Picker Placeholder -->
 <div class="mb-6">
-<label class="block font-label text-label-caps text-on-surface mb-2">Dates de location</label><p class="text-xs text-on-surface-variant mb-2">Cliquez sur une ou plusieurs dates pour les sélectionner.</p>
+<label data-i18n="product.rental_dates" class="block font-label text-label-caps text-on-surface mb-2">Dates de location</label><p data-i18n="product.click_to_select_dates" class="text-xs text-on-surface-variant mb-2">Cliquez sur une ou plusieurs dates pour les sélectionner.</p>
 <div class="border border-outline-variant/30 rounded-lg overflow-hidden bg-surface">
 <div class="bg-primary flex justify-between items-center p-3 text-on-primary font-bold">
 <span id="rss-cal-prev" class="rss-calendar-nav material-symbols-outlined cursor-pointer text-[20px]">chevron_left</span>
@@ -544,27 +545,27 @@
 <div class="space-y-3 mb-8">
 <label class="flex items-center space-x-3 cursor-pointer group">
 <input id="rss-option-delivery" data-option-price="50" class="rss-price-option form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
-<span class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Frais de livraison</span>
+<span data-i18n="product.delivery_fee" class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Frais de livraison</span>
 <span class="font-body text-body-md text-on-surface-variant">+50.00 €</span>
 </label>
 <label class="flex items-center space-x-3 cursor-pointer group">
 <input id="rss-option-install" data-option-price="150" class="rss-price-option form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-background rounded-sm h-5 w-5" type="checkbox">
-<span class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Installation technique</span>
+<span data-i18n="product.technical_installation" class="font-body text-body-md text-on-surface group-hover:text-primary transition-colors flex-1">Installation technique</span>
 <span class="font-body text-body-md text-on-surface-variant">+150.00 €</span>
 </label>
 </div>
 <div class="flex justify-between items-center mb-6 pt-4 border-t border-outline-variant/20">
-<span class="font-headline text-headline-md text-on-surface">Total :</span>
+<span data-i18n="product.total" class="font-headline text-headline-md text-on-surface">Total :</span>
 <span id="rss-total-price" class="font-headline text-headline-md text-primary font-bold">0.00 €</span>
 </div>
 <div class="space-y-4">
 <button class="w-full bg-primary text-on-primary font-headline font-bold text-body-lg py-4 rounded-lg hover:bg-primary-fixed transition-colors flex justify-center items-center space-x-2">
 <span class="material-symbols-outlined">event_available</span>
-<span class="">Réserver maintenant</span>
+<span data-i18n="product.book_now" class="">Réserver maintenant</span>
 </button>
 <button class="animate-glow-pulse w-full bg-transparent border border-outline-variant text-on-surface font-headline font-bold text-body-lg py-4 rounded-lg hover:border-primary hover:text-primary transition-colors flex justify-center items-center space-x-2">
 <span class="material-symbols-outlined">request_quote</span>
-<span class="">Faire une demande de devis</span>
+<span data-i18n="product.request_quote" class="">Faire une demande de devis</span>
 </button>
 </div>
 <div class="mt-4 flex justify-center space-x-4 text-on-surface-variant">
@@ -581,7 +582,7 @@
 </main>
 <!-- Footer Component -->
 <section class="w-full max-w-[1280px] mx-auto px-6 py-12 border-t border-outline-variant/20">
-<h2 class="font-headline text-headline-lg text-on-surface mb-8">Accessoires Complémentaires</h2>
+<h2 data-i18n="product.complementary_accessories" class="font-headline text-headline-lg text-on-surface mb-8">Accessoires Complémentaires</h2>
 <div id="related-products-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6">
   <div class="col-span-full text-on-surface-variant">Chargement des annonces complémentaires...</div>
 </div>
@@ -1396,62 +1397,65 @@ function applyOwnerDisplay(item){
   }
 
   function realTechRows(item) {
+    const pi18n = window.RssProductI18n;
+    const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+    const locItem = pi18n ? pi18n.resolveLocalizedProduct(item) : { title: item.title, description: item.description };
     const type = productTechType(item);
-    const title = valueOr(item.title, 'Produit');
+    const title = valueOr(locItem.title || item.title, isEn ? 'Equipment' : 'Produit');
     const brandModel = valueOr([item.brand, item.model].filter(Boolean).join(' '), title);
-    const category = valueOr(item.category, 'Matériel').replace(/-/g, ' ');
-    const city = valueOr(item.city || item.location, 'Ville non précisée');
-    const desc = cleanDescription(item.description);
+    const category = valueOr(item.category, isEn ? 'Audio equipment' : 'Matériel').replace(/-/g, ' ');
+    const city = valueOr(item.city || item.location, isEn ? 'City not specified' : 'Ville non précisée');
+    const desc = cleanDescription(locItem.description || item.description);
     const txt = normalizeTech(title + ' ' + desc + ' ' + category + ' ' + brandModel);
 
     let rows = [];
 
     if (type === 'silent') {
       rows = [
-        ['Type', 'Silent Disco / casques audio'],
-        ['Configuration', techFind(txt, [/(\d+\s*casques?)/i, /kit de\s*(\d+)/i]) || 'Kit casques audio'],
-        ['Canaux UHF', techFind(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || '1 ou 2 canaux'],
-        ['Transmission', /uhf/i.test(txt) ? 'UHF' : 'Sans fil selon annonce'],
-        ['Autonomie', techFind(txt, [/(\d+\s*h(?:eures?)?)/i]) || 'Selon annonce'],
-        ['Inclus pack', techFind(txt, [/inclus dans le pack\s*:?([^.]*)/i]) || 'Casques + accessoires selon annonce'],
-        ['Localisation', city]
+        [isEn ? 'Type' : 'Type', isEn ? 'Silent Disco / audio headphones' : 'Silent Disco / casques audio'],
+        [isEn ? 'Configuration' : 'Configuration', techFind(txt, [/(\d+\s*casques?)/i, /kit de\s*(\d+)/i]) || (isEn ? 'Audio headphone kit' : 'Kit casques audio')],
+        [isEn ? 'UHF channels' : 'Canaux UHF', techFind(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || (isEn ? '1 or 2 channels' : '1 ou 2 canaux')],
+        [isEn ? 'Transmission' : 'Transmission', /uhf/i.test(txt) ? 'UHF' : (isEn ? 'Wireless per listing' : 'Sans fil selon annonce')],
+        [isEn ? 'Battery life' : 'Autonomie', techFind(txt, [/(\d+\s*h(?:eures?)?)/i]) || (isEn ? 'Per listing' : 'Selon annonce')],
+        [isEn ? 'Pack included' : 'Inclus pack', techFind(txt, [/inclus dans le pack\s*:?([^.]*)/i]) || (isEn ? 'Headphones + accessories per listing' : 'Casques + accessoires selon annonce')],
+        [isEn ? 'Location' : 'Localisation', city]
       ];
     } else if (type === 'dj') {
       rows = [
-        ['Type', 'Régie DJ / matériel de mixage'],
-        ['Marque / modèle', brandModel],
-        ['Application', 'DJ set, club, festival, événement privé ou corporate'],
-        ['Configuration', category],
-        ['Connectique', techFind(txt, [/(usb[^.]{0,60})/i, /(xlr[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || 'Selon annonce'],
-        ['Localisation', city]
+        [isEn ? 'Type' : 'Type', isEn ? 'DJ Booth / mixing gear' : 'Régie DJ / matériel de mixage'],
+        [isEn ? 'Brand / model' : 'Marque / modèle', brandModel],
+        [isEn ? 'Application' : 'Application', isEn ? 'DJ set, club, festival, private or corporate event' : 'DJ set, club, festival, événement privé ou corporate'],
+        [isEn ? 'Configuration' : 'Configuration', category],
+        [isEn ? 'Connectivity' : 'Connectique', techFind(txt, [/(usb[^.]{0,60})/i, /(xlr[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || (isEn ? 'Per listing details' : 'Selon annonce')],
+        [isEn ? 'Location' : 'Localisation', city]
       ];
     } else if (type === 'eclairage') {
       rows = [
-        ['Type', 'Éclairage scénique'],
-        ['Marque / modèle', brandModel],
-        ['Application', 'Show lumière, scène, club, événementiel'],
-        ['Pilotage', /dmx/i.test(txt) ? 'DMX' : 'Selon annonce'],
-        ['Source', /led/i.test(txt) ? 'LED' : 'Selon annonce'],
-        ['Localisation', city]
+        [isEn ? 'Type' : 'Type', isEn ? 'Stage & scenic lighting' : 'Éclairage scénique'],
+        [isEn ? 'Brand / model' : 'Marque / modèle', brandModel],
+        [isEn ? 'Application' : 'Application', isEn ? 'Light show, stage, club, event production' : 'Show lumière, scène, club, événementiel'],
+        [isEn ? 'Control' : 'Pilotage', /dmx/i.test(txt) ? 'DMX' : (isEn ? 'Per listing details' : 'Selon annonce')],
+        [isEn ? 'Light source' : 'Source', /led/i.test(txt) ? 'LED' : (isEn ? 'Per listing details' : 'Selon annonce')],
+        [isEn ? 'Location' : 'Localisation', city]
       ];
     } else {
       rows = [
-        ['Catégorie', category],
-        ['Marque / modèle', brandModel],
-        ['Application', 'Concerts, clubs, DJ sets, soirées privées et événements corporate'],
-        ['Configuration', /line array/i.test(txt) ? 'Système line array' : 'Système professionnel selon annonce'],
-        ['Connectique', techFind(txt, [/(xlr[^.]{0,60})/i, /(speakon[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || 'Selon disponibilité loueur'],
-        ['Localisation', city]
+        [isEn ? 'Category' : 'Catégorie', category],
+        [isEn ? 'Brand / model' : 'Marque / modèle', brandModel],
+        [isEn ? 'Application' : 'Application', isEn ? 'Concerts, clubs, DJ sets, private parties & corporate events' : 'Concerts, clubs, DJ sets, soirées privées et événements corporate'],
+        [isEn ? 'Configuration' : 'Configuration', /line array/i.test(txt) ? (isEn ? 'Line array system' : 'Système line array') : (isEn ? 'Professional system per listing' : 'Système professionnel selon annonce')],
+        [isEn ? 'Connectivity' : 'Connectique', techFind(txt, [/(xlr[^.]{0,60})/i, /(speakon[^.]{0,60})/i, /(rca[^.]{0,60})/i]) || (isEn ? 'Subject to owner availability' : 'Selon disponibilité loueur')],
+        [isEn ? 'Location' : 'Localisation', city]
       ];
     }
 
-    if (item.price) rows.push(['Tarif journalier', money(item.price) + ' / jour']);
+    if (item.price) rows.push([isEn ? 'Daily rate' : 'Tarif journalier', money(item.price) + (isEn ? ' / day' : ' / jour')]);
 
     const extracted = [
-      ['Puissance', techFind(txt, [/(\d+\s*(?:w|kw|watts?)(?:\s*rms|\s*aes)?)/i])],
-      ['Réponse en fréquence', techFind(txt, [/(\d+\s*hz\s*[-–]\s*\d+\s*(?:hz|khz))/i])],
-      ['Portée', techFind(txt, [/(\d+\s*m(?:etres?)?)/i])],
-      ['Quantité', techFind(txt, [/(\d+\s*(?:casques?|enceintes?|subs?|subwoofers?|lyres?|micros?))/i])]
+      [isEn ? 'Power' : 'Puissance', techFind(txt, [/(\d+\s*(?:w|kw|watts?)(?:\s*rms|\s*aes)?)/i])],
+      [isEn ? 'Frequency response' : 'Réponse en fréquence', techFind(txt, [/(\d+\s*hz\s*[-–]\s*\d+\s*(?:hz|khz))/i])],
+      [isEn ? 'Range' : 'Portée', techFind(txt, [/(\d+\s*m(?:etres?)?)/i])],
+      [isEn ? 'Quantity' : 'Quantité', techFind(txt, [/(\d+\s*(?:casques?|enceintes?|subs?|subwoofers?|lyres?|micros?))/i])]
     ];
 
     extracted.concat(rowsFromColumns(item)).forEach(function (r) {
@@ -1464,42 +1468,48 @@ function applyOwnerDisplay(item){
   }
 
   function realCoreStats(item) {
+    const pi18n = window.RssProductI18n;
+    const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+    const locItem = pi18n ? pi18n.resolveLocalizedProduct(item) : { title: item.title, description: item.description };
     const type = productTechType(item);
-    const txt = normalizeTech([item.title, item.description, item.category].join(' '));
-    const city = valueOr(item.city || item.location, 'Ville non précisée');
+    const txt = normalizeTech([locItem.title || item.title, locItem.description || item.description, item.category].join(' '));
+    const city = valueOr(item.city || item.location, isEn ? 'City not specified' : 'Ville non précisée');
 
     if (type === 'silent') {
       return [
-        ['Application', 'Silent Disco'],
-        ['Canaux UHF', techFind(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || '1 ou 2 canaux'],
-        ['Quantité', techFind(txt, [/(\d+\s*casques?)/i]) || 'Kit casques'],
-        ['Lieu', city]
+        [isEn ? 'Application' : 'Application', 'Silent Disco'],
+        [isEn ? 'UHF channels' : 'Canaux UHF', techFind(txt, [/(\d+\s*(?:ou|\/|-)?\s*\d*\s*canaux?)/i]) || (isEn ? '1 or 2 channels' : '1 ou 2 canaux')],
+        [isEn ? 'Quantity' : 'Quantité', techFind(txt, [/(\d+\s*casques?)/i]) || (isEn ? 'Headphone kit' : 'Kit casques')],
+        [isEn ? 'Location' : 'Lieu', city]
       ];
     }
 
     const rows = realTechRows(item);
-    while (rows.length < 4) rows.push(['Info', 'Selon annonce']);
+    while (rows.length < 4) rows.push([isEn ? 'Info' : 'Info', isEn ? 'Per listing' : 'Selon annonce']);
     return rows.slice(0, 4);
   }
 
   function realIncludedRows(item) {
+    const pi18n = window.RssProductI18n;
+    const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+    const locItem = pi18n ? pi18n.resolveLocalizedProduct(item) : { title: item.title, description: item.description };
     const type = productTechType(item);
-    const title = valueOr(item.title, 'Matériel principal');
+    const title = valueOr(locItem.title || item.title, isEn ? 'Main equipment' : 'Matériel principal');
 
     if (type === 'silent') {
       return [
         title,
-        'Casques audio selon quantité indiquée dans l’annonce',
-        'Émetteur UHF / base selon configuration loueur',
-        'Vérification fonctionnelle avant retrait'
+        isEn ? 'Audio headphones according to quantity stated in listing' : 'Casques audio selon quantité indiquée dans l’annonce',
+        isEn ? 'UHF transmitter / base station per rental setup' : 'Émetteur UHF / base selon configuration loueur',
+        isEn ? 'Functional check prior to handover' : 'Vérification fonctionnelle avant retrait'
       ];
     }
 
     return [
       title,
-      'Câblage ou accessoires de base si précisés par le loueur',
-      'Vérification fonctionnelle au retrait',
-      'Options livraison et installation disponibles'
+      isEn ? 'Standard cables if provided by the owner' : 'Câblage ou accessoires de base si précisés par le loueur',
+      isEn ? 'Functional verification upon pickup' : 'Vérification fonctionnelle au retrait',
+      isEn ? 'Delivery and installation options available' : 'Options livraison et installation disponibles'
     ];
   }
 
@@ -1578,6 +1588,7 @@ function applyOwnerDisplay(item){
         ? `<img src="${safe(img)}" alt="${title}" loading="eager" decoding="async" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('rss-img-placeholder');this.remove();">`
         : '<span class="material-symbols-outlined text-outline-variant text-[40px]">inventory_2</span>';
 
+      const seeText = (window.RssProductI18n && window.RssProductI18n.getActiveLanguage() === 'en') ? "View listing" : "Voir l'annonce";
       return `
         <article data-product-link="${url}" class="rss-clickable-card bg-surface-container-low p-4 rounded-xl border border-outline-variant/20 flex flex-col">
           <div class="rss-related-img aspect-video bg-surface rounded-lg mb-4 overflow-hidden border border-outline-variant/10 flex items-center justify-center">
@@ -1588,7 +1599,7 @@ function applyOwnerDisplay(item){
           <div class="flex items-center justify-between gap-3">
             <span class="font-headline text-primary font-bold">${price}</span>
             <button type="button" class="py-2 px-3 bg-surface-container-high hover:bg-primary hover:text-on-primary text-primary border border-primary/20 transition-colors rounded-lg font-label text-label-caps font-bold">
-              Voir l'annonce
+              ${seeText}
             </button>
           </div>
         </article>`;
@@ -1656,10 +1667,13 @@ function applyOwnerDisplay(item){
 
     const images = getImages(enrichedItem);
     const firstImage = images[0] || '';
-    const title = enrichedItem.title || 'Annonce RentSoundSystem';
-    const city = enrichedItem.city || enrichedItem.location || 'Votre ville';
+    const pi18n = window.RssProductI18n;
+    const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+    const locItem = pi18n ? pi18n.resolveLocalizedProduct(enrichedItem) : { title: enrichedItem.title, description: enrichedItem.description };
+    const title = locItem.title || enrichedItem.title || 'Annonce RentSoundSystem';
+    const city = enrichedItem.city || enrichedItem.location || (isEn ? 'Your city' : 'Votre ville');
     const country = enrichedItem.country || 'France';
-    const category = enrichedItem.category || 'Matériel audio';
+    const category = enrichedItem.category || (isEn ? 'Audio equipment' : 'Matériel audio');
     const price = money(enrichedItem.price || 0);
 
     // Synchronisation prix réel Supabase -> interface + tunnel.
@@ -1668,7 +1682,7 @@ function applyOwnerDisplay(item){
     const realBasePrice = Number(enrichedItem.price || 0);
     if (basePriceEl) {
       basePriceEl.dataset.price = String(realBasePrice);
-      basePriceEl.innerHTML = money(realBasePrice) + ' <span class="text-body-md text-on-surface-variant font-normal">/ jour</span>';
+      basePriceEl.innerHTML = money(realBasePrice) + ' <span class="text-body-md text-on-surface-variant font-normal">' + (isEn ? '/ day' : '/ jour') + '</span>';
     }
     if (totalPriceEl) totalPriceEl.textContent = money(realBasePrice);
 
@@ -1721,22 +1735,57 @@ function applyOwnerDisplay(item){
     if (overviewTitle) overviewTitle.textContent = title;
 
     const overviewDesc = document.getElementById('rss-overview-description') || document.querySelector('#rss-tab-overview p');
-    if (overviewDesc) overviewDesc.innerHTML = formatDescriptionHTML(enrichedItem.description);
+    if (overviewDesc) overviewDesc.innerHTML = formatDescriptionHTML(locItem.description || enrichedItem.description);
 
     updateRealProductTech(enrichedItem);
 
     const statBoxes = document.querySelectorAll('.lg\\:col-span-5 .grid.grid-cols-2.gap-2 .font-headline');
 
-    const priceLabel = Array.from(document.querySelectorAll('div')).find(el => el.textContent.trim() === 'Tarif de base');
+    const priceLabel = Array.from(document.querySelectorAll('div')).find(el => el.textContent.trim() === 'Tarif de base' || el.textContent.trim() === 'Base rate');
     if (priceLabel && priceLabel.nextElementSibling) {
-      priceLabel.nextElementSibling.innerHTML = price + ' <span class="text-body-md text-on-surface-variant font-normal">/ jour</span>';
+      priceLabel.nextElementSibling.innerHTML = price + ' <span class="text-body-md text-on-surface-variant font-normal">' + (isEn ? '/ day' : '/ jour') + '</span>';
     }
-    const totalRow = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim() === 'Total :');
+    const totalRow = Array.from(document.querySelectorAll('span')).find(el => el.textContent.trim() === 'Total :' || el.textContent.trim() === 'Total:');
     if (totalRow && totalRow.nextElementSibling) text(totalRow.nextElementSibling, price);
 
     loadRelated(enrichedItem);
     document.body.classList.add('rss-product-loaded');
   }
+
+  function refreshProductTranslations() {
+    const enrichedItem = window.RSS_CURRENT_PRODUCT;
+    if (!enrichedItem) return;
+    const pi18n = window.RssProductI18n;
+    const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+    const locItem = pi18n ? pi18n.resolveLocalizedProduct(enrichedItem) : { title: enrichedItem.title, description: enrichedItem.description };
+    const title = locItem.title || enrichedItem.title || 'Annonce RentSoundSystem';
+
+    text(document.querySelector('.lg\\:col-span-5 h1'), title);
+    const breadcrumbLast = document.querySelector('main .flex.items-center.space-x-2.text-body-sm span.text-on-surface');
+    text(breadcrumbLast, title);
+    const overviewTitle = document.querySelector('#rss-tab-overview h3');
+    if (overviewTitle) overviewTitle.textContent = title;
+
+    const overviewDesc = document.getElementById('rss-overview-description') || document.querySelector('#rss-tab-overview p');
+    if (overviewDesc) overviewDesc.innerHTML = formatDescriptionHTML(locItem.description || enrichedItem.description);
+
+    updateRealProductTech(enrichedItem);
+
+    const basePriceEl = document.getElementById('rss-base-price');
+    const realBasePrice = Number(enrichedItem.price || 0);
+    if (basePriceEl) {
+      basePriceEl.innerHTML = money(realBasePrice) + ' <span class="text-body-md text-on-surface-variant font-normal">' + (isEn ? '/ day' : '/ jour') + '</span>';
+    }
+    if (window.RSS_REFRESH_CALENDAR_I18N) {
+      window.RSS_REFRESH_CALENDAR_I18N();
+    }
+  }
+
+  window.addEventListener('rss:languageChanged', function () {
+    refreshProductTranslations();
+  });
+
+  window.RSS_REFRESH_PRODUCT_TRANSLATIONS = refreshProductTranslations;
 
   ready(function () {
     bindStaticClickableCards();
@@ -1773,7 +1822,15 @@ function applyOwnerDisplay(item){
     let currentMonthIndex = new Date().getMonth();
     let currentYear = new Date().getFullYear();
 
-    const months = ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    function getMonthsList() {
+      const pi18n = window.RssProductI18n;
+      const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+      return isEn
+        ? ['January','February','March','April','May','June','July','August','September','October','November','December']
+        : ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'];
+    }
+
+    const months = getMonthsList();
 
     function todayMidnight() {
       const now = new Date();
@@ -1882,7 +1939,8 @@ function applyOwnerDisplay(item){
 
     function prettyDate(key) {
       const parts = key.split('-');
-      return Number(parts[2]) + ' ' + months[Number(parts[1]) - 1] + ' ' + parts[0];
+      const currentMonths = getMonthsList();
+      return Number(parts[2]) + ' ' + currentMonths[Number(parts[1]) - 1] + ' ' + parts[0];
     }
 
     function updateTotal() {
@@ -1906,9 +1964,13 @@ function applyOwnerDisplay(item){
     function renderCalendar() {
       if (!calendarGrid) return;
 
-      if (monthLabel) monthLabel.textContent = months[currentMonthIndex] + ' ' + currentYear;
+      const pi18n = window.RssProductI18n;
+      const isEn = pi18n && pi18n.getActiveLanguage() === 'en';
+      const currentMonths = getMonthsList();
 
-      const daysOfWeek = ['Di','Lu','Ma','Me','Je','Ve','Sa'];
+      if (monthLabel) monthLabel.textContent = currentMonths[currentMonthIndex] + ' ' + currentYear;
+
+      const daysOfWeek = isEn ? ['Su','Mo','Tu','We','Th','Fr','Sa'] : ['Di','Lu','Ma','Me','Je','Ve','Sa'];
       const firstDay = new Date(currentYear, currentMonthIndex, 1).getDay();
       const daysInMonth = new Date(currentYear, currentMonthIndex + 1, 0).getDate();
 
@@ -1928,7 +1990,7 @@ function applyOwnerDisplay(item){
         const cls = past
           ? 'rss-day-past'
           : 'rss-day hover:border-primary hover:text-primary';
-        const title = past ? 'Date passée indisponible' : 'Sélectionner cette date';
+        const title = past ? (isEn ? 'Past date unavailable' : 'Date passée indisponible') : (isEn ? 'Select this date' : 'Sélectionner cette date');
         html += '<button type="button" data-date="' + key + '" title="' + title + '" ' + (past ? 'disabled aria-disabled="true"' : '') + ' class="' + cls + ' py-2 border border-outline-variant/30 rounded bg-surface-container font-bold text-on-surface transition-colors ' + (selected ? 'rss-selected-day' : '') + '">' + day + '</button>';
       }
 
@@ -2109,6 +2171,11 @@ function applyOwnerDisplay(item){
     window.addEventListener('rss:product-loaded', function () {
       updateQuantityVisibility();
     });
+
+    window.RSS_REFRESH_CALENDAR_I18N = function () {
+      renderCalendar();
+      updateTotal();
+    };
   });
 })();
 </script>
@@ -2326,12 +2393,12 @@ function applyOwnerDisplay(item){
       const btn = e.target.closest('button');
       if(!btn) return;
       const label = (btn.textContent || '').toLowerCase();
-      if(label.includes('réserver maintenant')){
+      if(label.includes('réserver maintenant') || label.includes('book now')){
         e.preventDefault();
         e.stopImmediatePropagation();
         goCheckout();
       }
-      if(label.includes('faire une demande de devis')){
+      if(label.includes('faire une demande de devis') || label.includes('request a quote')){
         e.preventDefault();
         e.stopImmediatePropagation();
         const draft = currentProductDraft();
