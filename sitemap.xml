@@ -416,9 +416,7 @@
   <url>
     <loc>https://rentsoundsystem.com/produit/194/table-de-mixage-db2</loc>
   </url>
-  <url>
-    <loc>https://rentsoundsystem.com/produit/195/source-audiophony-mpu320</loc>
-  </url>
+
   <url>
     <loc>https://rentsoundsystem.com/produit/196/casque-sennheiser-hd25</loc>
   </url>
@@ -992,12 +990,8 @@
   <url>
     <loc>https://rentsoundsystem.com/produit/495/colonne-sonorisation-maui-5-go-5200mah-soires-confrences-performances-live</loc>
   </url>
-  <url>
-    <loc>https://rentsoundsystem.com/produit/496/montre-avec-casque</loc>
-  </url>
-  <url>
-    <loc>https://rentsoundsystem.com/produit/497/montre-avec-casque</loc>
-  </url>
+
+
   <url>
     <loc>https://rentsoundsystem.com/langues</loc>
   </url>
@@ -2435,5 +2429,30 @@
   </url>
   <url>
     <loc>https://rentsoundsystem.com/contact-mondial-hubs-internationaux</loc>
+  </url>
+
+  <url>
+    <loc>https://rentsoundsystem.com/categories</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/categorie-casques-ecouteurs</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/categorie-dj-djing</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/categorie-evenementiel-production</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/categorie-instruments-music</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/categorie-multimedia-digital</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/categorie-sonorisation-eclairage</loc>
+  </url>
+  <url>
+    <loc>https://rentsoundsystem.com/conditions-utilisation</loc>
   </url>
 </urlset>

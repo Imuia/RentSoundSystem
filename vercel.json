@@ -449,12 +449,16 @@
   ],
   "rewrites": [
     {
+      "source": "/fr/:category/louer-:slug",
+      "destination": "/api/legacy-redirect?category=:category&slug=:slug"
+    },
+    {
       "source": "/produit/:original_id/:slug",
-      "destination": "/product?original_id=:original_id"
+      "destination": "/api/product-router?original_id=:original_id&slug=:slug"
     },
     {
       "source": "/produit/id/:id/:slug",
-      "destination": "/product?id=:id"
+      "destination": "/api/product-router?id=:id&slug=:slug"
     }
   ],
   "redirects": [
@@ -489,23 +493,83 @@
       "permanent": true
     },
     {
+      "source": "/fr/tarifs",
+      "destination": "/tarifs",
+      "permanent": true
+    },
+    {
       "source": "/fr/mentionlegal",
       "destination": "/mentions-legales",
       "permanent": true
     },
     {
-      "source": "/fr/:category/louer-:slug-:original_id",
-      "destination": "/produit/:original_id/:slug",
+      "source": "/fr/mentions-legales",
+      "destination": "/mentions-legales",
       "permanent": true
     },
     {
-      "source": "/fr/:category/:original_id-louer-:slug",
-      "destination": "/produit/:original_id/:slug",
+      "source": "/fr/politique-confidentialite",
+      "destination": "/politique-confidentialite",
+      "permanent": true
+    },
+    {
+      "source": "/centre-aide",
+      "destination": "/centre-assistance",
+      "permanent": true
+    },
+    {
+      "source": "/centre-aide.html",
+      "destination": "/centre-assistance",
+      "permanent": true
+    },
+    {
+      "source": "/connexion-partenaire",
+      "destination": "/connexion-partenaire1",
+      "permanent": true
+    },
+    {
+      "source": "/connexion-partenaire.html",
+      "destination": "/connexion-partenaire1",
+      "permanent": true
+    },
+    {
+      "source": "/ajouter-annonce",
+      "destination": "/ajouter-materiel-partenaire",
+      "permanent": true
+    },
+    {
+      "source": "/ajouter-annonce.html",
+      "destination": "/ajouter-materiel-partenaire",
+      "permanent": true
+    },
+    {
+      "source": "/location-sono/location-sonorisation-cannes",
+      "destination": "/location-sono/location-sono-cannes",
+      "permanent": true
+    },
+    {
+      "source": "/location-sono/location-sonorisation-dubai",
+      "destination": "/location-sono/location-sono-dubai",
+      "permanent": true
+    },
+    {
+      "source": "/location-sono/location-sono-marseille",
+      "destination": "/catalog?city=Marseille",
+      "permanent": true
+    },
+    {
+      "source": "/location-sono/location-sono-nice",
+      "destination": "/catalog?city=Nice",
       "permanent": true
     },
     {
       "source": "/web/en/location-materiel-sono-particuliers/5-louer-sonorisation-and-eclairage",
       "destination": "/categorie-sonorisation-eclairage",
+      "permanent": true
+    },
+    {
+      "source": "/fr/:category/:original_id-louer-:slug",
+      "destination": "/produit/:original_id/:slug",
       "permanent": true
     }
   ]

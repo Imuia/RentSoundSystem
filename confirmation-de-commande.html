@@ -372,7 +372,7 @@
       payment_intent:rentalId,
       order:order?.id || ''
     });
-    link.href='/api/stripe/webhook?invoice=1&'+params.toString();
+    link.href='/espace-client-reservations.html?order=' + encodeURIComponent(order?.id || '');
     link.classList.remove('opacity-50','pointer-events-none');
     link.title='Télécharger la facture PDF';
   }
