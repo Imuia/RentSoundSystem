@@ -22,7 +22,7 @@ module.exports = async function handler(req, res) {
   // The old endpoint redirected these URLs to the canonical product route.
   if (String(req.query?.legacy || '') === '1') {
     const legacySlug = Array.isArray(req.query.slug) ? req.query.slug[0] : req.query.slug;
-    const match = String(legacySlug || '').trim().match(/^(.+)-(\\d+)$/);
+   const match = String(legacySlug || '').trim().match(/^(.+)-(\d+)$/);
     if (!match) return res.status(404).send('Not Found');
 
     const targetUrl = `/produit/${match[2]}/${match[1]}`;
