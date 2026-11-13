@@ -18,6 +18,19 @@ module.exports = async function handler(req, res) {
     return res.status(405).send('Method Not Allowed');
   }
 
+  // Legacy URL compatibility: /fr/:category/louer-:slug-:originalId
+  // The old endpoint redirected these URLs to the canonical product route.
+  if (String(req.query?.legacy || '') === '1') {
+    const legacySlug = Array.isArray(req.query.slug) ? req.query.slug[0] : req.query.slug;
+    const match = String(legacySlug || '').trim().match(/^(.+)-(\\d+)$/);
+    if (!match) return res.status(404).send('Not Found');
+
+    const targetUrl = `/produit/${match[2]}/${match[1]}`;
+    if (typeof res.redirect === 'function') return res.redirect(301, targetUrl);
+    res.setHeader('Location', targetUrl);
+    return res.status(301).end();
+  }
+
   const originalId = Array.isArray(req.query.original_id)
     ? req.query.original_id[0]
     : req.query.original_id;

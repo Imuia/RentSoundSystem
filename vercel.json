@@ -449,8 +449,16 @@
   ],
   "rewrites": [
     {
+      "source": "/api/maps-autocomplete",
+      "destination": "/api/maps?mode=autocomplete"
+    },
+    {
+      "source": "/api/maps-place",
+      "destination": "/api/maps?mode=place"
+    },
+    {
       "source": "/fr/:category/louer-:slug",
-      "destination": "/api/legacy-redirect?category=:category&slug=:slug"
+      "destination": "/api/product-router?legacy=1&category=:category&slug=:slug"
     },
     {
       "source": "/produit/:original_id/:slug",
