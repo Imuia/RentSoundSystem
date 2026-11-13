@@ -1,0 +1,90 @@
+/* Custom Animations and Transitions */
+
+:root {
+    --transition-speed: 300ms;
+    --ease-modern: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Global Transitions */
+html, body {
+    overflow-x: hidden;
+    width: 100%;
+    position: relative;
+    transition: background-color var(--transition-speed) var(--ease-modern),
+                border-color var(--transition-speed) var(--ease-modern),
+                color var(--transition-speed) var(--ease-modern),
+                opacity var(--transition-speed) var(--ease-modern),
+                transform var(--transition-speed) var(--ease-modern),
+                box-shadow var(--transition-speed) var(--ease-modern);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* Scroll Animation Classes */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 800ms var(--ease-modern),
+                transform 800ms var(--ease-modern);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Hover Effects */
+.hover-lift:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.btn-animate:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 20px rgba(255, 77, 128, 0.3); /* Primary color glow */
+}
+
+.btn-animate:active {
+    transform: scale(0.97);
+}
+
+/* Link Transitions */
+.nav-link {
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #ffb2bf; /* Primary color */
+    transition: width var(--transition-speed) var(--ease-modern);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* Input Focus Glow */
+input:focus, select:focus, textarea:focus {
+    box-shadow: 0 0 0 2px rgba(255, 178, 191, 0.2);
+    border-color: #ffb2bf !important;
+}
+
+/* Card Specifics */
+.card-animate {
+    overflow: hidden;
+}
+
+.card-animate img {
+    transition: transform 500ms var(--ease-modern);
+}
+
+.card-animate:hover img {
+    transform: scale(1.1);
+}

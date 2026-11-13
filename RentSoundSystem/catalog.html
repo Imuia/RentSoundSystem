@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link rel="preload" href="/header.html" as="fetch" crossorigin>
+<link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<title>Catalogue de Location - RentSoundSystem.com</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {"on-secondary-container": "#b4b5b5", "surface-container-lowest": "#0e0e0e", "surface-container": "#1f1f1f", "tertiary-fixed": "#e5e2e1", "on-primary-container": "#5a0022", "surface-container-high": "#2a2a2a", "on-secondary-fixed": "#1a1c1c", "surface-bright": "#393939", "tertiary-container": "#929090", primary: "#FC036D", "on-surface-variant": "#e6bcc2", "secondary-fixed-dim": "#c6c6c7", "on-error-container": "#ffdad6", "surface-variant": "#353535", "on-error": "#690005", "inverse-on-surface": "#303030", surface: "#131313", "on-surface": "#e2e2e2", "error-container": "#93000a", "surface-container-low": "#1b1b1b", outline: "#ac878d", "on-tertiary-fixed-variant": "#474746", background: "#131313", "on-primary": "#ffffff", "inverse-primary": "#bc004f", tertiary: "#c8c6c5", error: "#ffb4ab", secondary: "#c6c6c7", "on-secondary": "#2f3131", "on-tertiary-fixed": "#1c1b1b", "on-primary-fixed-variant": "#90003b", "secondary-container": "#454747", "primary-container": "#ff4d80", "surface-tint": "#FC036D", "secondary-fixed": "#e2e2e2", "on-secondary-fixed-variant": "#454747", "surface-dim": "#131313", "on-tertiary-container": "#2a2a2a", "tertiary-fixed-dim": "#c8c6c5", "outline-variant": "#5d3f44", "on-background": "#e2e2e2", "surface-container-highest": "#353535", "inverse-surface": "#e2e2e2", "on-primary-fixed": "#3f0016", "primary-fixed": "#D9025D", "primary-fixed-dim": "#FC036D", "on-tertiary": "#313030"}, borderRadius: {DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem"}, spacing: {"container-max": "1280px", "stack-sm": "12px", "margin-mobile": "16px", gutter: "24px", "margin-desktop": "40px", "stack-lg": "48px", base: "8px", "stack-md": "24px"}, fontFamily: {"headline-xl": ["Manrope"], "label-caps": ["Inter"], "headline-md": ["Manrope"], "body-md": ["Inter"], "body-lg": ["Inter"], "body-sm": ["Inter"], "headline-lg": ["Manrope"], "label-md": ["Inter"], headline: ["Manrope"], display: ["Manrope"], body: ["Inter"], label: ["Inter"]}, fontSize: {"headline-xl": ["48px", {lineHeight: "56px", letterSpacing: "-0.02em", fontWeight: "700"}], "label-caps": ["12px", {lineHeight: "16px", letterSpacing: "0.05em", fontWeight: "600"}], "headline-md": ["24px", {lineHeight: "32px", fontWeight: "600"}], "body-md": ["16px", {lineHeight: "24px", fontWeight: "400"}], "body-lg": ["18px", {lineHeight: "28px", fontWeight: "400"}], "body-sm": ["14px", {lineHeight: "20px", fontWeight: "400"}], "headline-lg": ["32px", {lineHeight: "40px", letterSpacing: "-0.01em", fontWeight: "600"}], "label-md": ["12px", {lineHeight: "16px", fontWeight: "500"}]}}}};</script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+        }
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121212;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353535;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #454747;
+        }
+    
+.catalog-card { cursor:pointer; }
+.catalog-card:hover { transform: translateY(-4px); }
+.catalog-img-placeholder {
+  background: radial-gradient(circle at 50% 20%, rgba(252,3,109,.28), transparent 35%), linear-gradient(180deg,#242424,#101010);
+}
+.catalog-img-placeholder::after {
+  content:'image bientôt disponible';
+  color:rgba(255,255,255,.45);
+  font-size:12px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.line-clamp-2 { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.line-clamp-3 { display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+
+</style>
+
+<style id="rss-catalog-global-header-footer-compat">
+  #header-container { min-height: auto; }
+  #footer-container { min-height: 320px; }
+
+  #header-container header,
+  #footer-container footer { display:block; }
+
+  #header-container .max-w-container-max,
+  #footer-container .max-w-container-max { max-width: 1280px; }
+
+  #header-container .px-margin-mobile,
+  #footer-container .px-margin-mobile { padding-left: 16px; padding-right: 16px; }
+
+  #header-container .gap-stack-sm { gap: 12px; }
+  #header-container .gap-stack-md { gap: 24px; }
+
+  #header-container .font-headline-md,
+  #footer-container .font-headline { font-family: Manrope, sans-serif; }
+
+  #header-container .font-body-md,
+  #footer-container .font-body { font-family: Inter, sans-serif; }
+
+  #header-container .text-headline-md { font-size: 24px; line-height: 32px; font-weight: 600; }
+  #header-container .text-body-md { font-size: 16px; line-height: 24px; }
+  #header-container .text-label-md { font-size: 12px; line-height: 16px; }
+
+  @media (min-width: 768px) {
+    #header-container .md\:px-margin-desktop,
+    #footer-container .md\:px-margin-desktop { padding-left: 40px; padding-right: 40px; }
+  }
+
+  #header-container header {
+    background: rgba(19,19,19,.80);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,.10);
+  }
+
+  #footer-container footer {
+    background: #0e0e0e;
+    border-top: 1px solid rgba(255,255,255,.05);
+  }
+</style>
+
+
+<style id="rss-catalog-responsive-fix">
+html, body {
+  overflow-x: hidden !important;
+}
+
+/* Desktop stays unchanged */
+#catalog-grid article {
+  min-width: 0;
+}
+
+/* TABLET */
+@media (max-width: 1024px) {
+  main {
+    gap: 20px !important;
+  }
+
+  #catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  aside {
+    width: 240px !important;
+  }
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+  body {
+    padding-top: 74px !important;
+  }
+
+  main {
+    display: flex !important;
+    flex-direction: column !important;
+    padding-top: 24px !important;
+    padding-bottom: 32px !important;
+    gap: 24px !important;
+  }
+
+  aside {
+    width: 100% !important;
+    position: relative !important;
+    order: 2 !important;
+  }
+
+  section.flex-grow {
+    order: 1 !important;
+    width: 100% !important;
+  }
+
+  aside > div {
+    padding: 18px !important;
+    border-radius: 14px !important;
+  }
+
+  h1.font-headline-xl {
+    font-size: 34px !important;
+    line-height: 40px !important;
+  }
+
+  h2.font-headline-lg {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .flex.items-center.gap-2:has(#catalog-sort) {
+    width: 100% !important;
+    justify-content: space-between !important;
+  }
+
+  #catalog-sort {
+    min-width: 170px !important;
+    padding: 10px 12px !important;
+  }
+
+  #catalog-search {
+    font-size: 16px !important;
+  }
+
+  .w-full.md\:max-w-xl {
+    max-width: 100% !important;
+    border-radius: 12px !important;
+  }
+
+  .w-full.h-48.md\:h-64 {
+    height: 220px !important;
+    margin-bottom: 24px !important;
+  }
+
+  .w-full.h-48.md\:h-64 .absolute.bottom-stack-md {
+    left: 16px !important;
+    right: 16px !important;
+    bottom: 16px !important;
+  }
+
+  .w-full.h-48.md\:h-64 h2 {
+    font-size: 24px !important;
+    line-height: 30px !important;
+  }
+
+  .w-full.h-48.md\:h-64 p {
+    font-size: 14px !important;
+    line-height: 20px !important;
+  }
+
+  #catalog-grid {
+    grid-template-columns: 1fr !important;
+    gap: 18px !important;
+  }
+
+  #catalog-grid article {
+    border-radius: 14px !important;
+  }
+
+  #catalog-grid article .h-48 {
+    height: 220px !important;
+  }
+
+  #catalog-grid article h3 {
+    font-size: 20px !important;
+    line-height: 26px !important;
+  }
+
+  .open-product {
+    padding: 12px 14px !important;
+  }
+
+  #catalog-pagination {
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  #catalog-pagination button {
+    min-width: 42px !important;
+    min-height: 42px !important;
+  }
+
+  input,
+  select,
+  button {
+    min-height: 44px;
+  }
+}
+
+/* SMALL MOBILE */
+@media (max-width: 420px) {
+  h1.font-headline-xl {
+    font-size: 30px !important;
+    line-height: 36px !important;
+  }
+
+  main {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  .px-margin-mobile {
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  #catalog-grid article .p-stack-sm {
+    padding: 14px !important;
+  }
+
+  #catalog-grid article .flex.justify-between.items-center.border-t {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .open-product {
+    width: 100% !important;
+  }
+}
+</style>
+
+
+<style id="rss-catalog-filter-toggle-fix">
+@media (max-width: 767px) {
+  body.catalog-filters-closed aside {
+    display: none !important;
+  }
+
+  body.catalog-filters-open aside {
+    display: block !important;
+  }
+
+  #rss-mobile-filter-toggle {
+    display: flex !important;
+    order: 1 !important;
+    position: relative;
+    z-index: 5;
+    cursor: pointer;
+  }
+
+  aside {
+    order: 2 !important;
+  }
+
+  section.flex-grow {
+    order: 3 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  #rss-mobile-filter-toggle {
+    display: none !important;
+  }
+
+  aside {
+    display: block !important;
+  }
+}
+</style>
+
+
+<style id="rss-catalog-category-city-display-fix">
+#catalog-category-list,#catalog-brand-list {max-height:260px;overflow-y:auto;padding-right:4px}
+#catalog-category-list label,#catalog-brand-list label{padding:7px 8px;border:1px solid transparent;border-radius:8px}
+#catalog-category-list label:hover,#catalog-brand-list label:hover{background:rgba(252,3,109,.08);border-color:rgba(252,3,109,.22)}
+#filter-city{cursor:pointer}
+#filter-city option{background:#131313;color:#e2e2e2}
+</style>
+
+<!-- rss-catalog-categories-table-v1 -->
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col pt-20">
+<div id="header-container"></div>
+<main class="flex-grow flex flex-col md:flex-row w-full max-w-container-max mx-auto pt-stack-lg pb-stack-lg gap-gutter px-margin-mobile md:px-margin-desktop">
+<!-- Filters Sidebar -->
+
+<button id="rss-mobile-filter-toggle" type="button" class="md:hidden w-full bg-surface-container-high border border-white/10 text-on-surface rounded-xl px-4 py-3 flex items-center justify-between mb-4">
+  <span class="font-label-md text-label-md uppercase tracking-widest">Filtres</span>
+  <span class="material-symbols-outlined" id="rss-mobile-filter-icon">expand_more</span>
+</button>
+
+<aside class="w-full md:w-64 flex-shrink-0 space-y-stack-md">
+<div class="bg-surface-container rounded-xl p-stack-md border border-white/10">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm" data-i18n="catalog.filters">Filtres</h2>
+<!-- Category Filter -->
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest" data-i18n="catalog.category">Catégorie</h3>
+<div id="catalog-category-list" class="space-y-2"></div>
+</div>
+<!-- Brand Filter -->
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Marque</h3>
+<div id="catalog-brand-list" class="space-y-2"></div>
+</div>
+<!-- Price Filter -->
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest" data-i18n="catalog.daily_rate">Tarif Journalier</h3>
+<div class="flex items-center gap-2">
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-2 py-1 placeholder:text-on-surface-variant" id="filter-min-price" placeholder="Min" type="number"/>
+<span class="text-on-surface-variant">-</span>
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-2 py-1 placeholder:text-on-surface-variant" id="filter-max-price" placeholder="Max" type="number"/>
+</div>
+</div>
+<!-- Location Filter -->
+<div class="mb-stack-sm border-b border-white/10 pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Lieu</h3>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="location_on">location_on</span>
+<select id="filter-city" class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm pl-8 pr-2 py-2 appearance-none text-on-surface">
+<option value="">Toutes les villes</option>
+</select>
+</div>
+</div>
+<!-- Dates Filter -->
+<div class="mb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-3 uppercase tracking-widest">Dates de Location</h3>
+<div class="space-y-2">
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-2 text-on-surface" id="filter-start-date" placeholder="Retrait" type="date"/>
+<input class="w-full bg-surface border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-2 text-on-surface" id="filter-end-date" placeholder="Retour" type="date"/>
+</div>
+</div>
+<button id="clear-filters" type="button" class="w-full bg-surface-bright hover:bg-surface-variant text-on-surface font-label-md text-label-md py-2 rounded transition-colors border border-white/5">
+                    Effacer les Filtres
+                </button>
+</div>
+</aside>
+<!-- Product Grid Catalog -->
+<section class="flex-grow">
+<div class="flex flex-col gap-stack-sm mb-stack-md">
+  <div class="flex flex-col md:flex-row md:justify-between md:items-end gap-stack-sm">
+    <div>
+      <h1 class="font-headline-xl text-headline-xl text-on-surface mb-2" data-i18n="catalog.title">Catalogue de Location</h1>
+      <p class="font-body-md text-body-md text-on-surface-variant"><span id="catalog-count">Chargement des annonces...</span></p>
+    </div>
+    <div class="flex items-center gap-2">
+      <span class="font-body-sm text-body-sm text-on-surface-variant">Trier par:</span>
+      <select id="catalog-sort" class="bg-surface-container border border-outline-variant rounded focus:border-primary focus:ring-1 focus:ring-primary text-body-sm px-3 py-1 appearance-none text-on-surface">
+        <option>Recommandé</option>
+        <option>Prix: Croissant</option>
+        <option>Prix: Décroissant</option>
+        <option>Mieux Noté</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Search Bar moved from header into page body -->
+  <div class="w-full md:max-w-xl flex items-center bg-surface-container rounded-full px-4 py-3 border border-white/10 focus-within:border-primary transition-colors">
+    <span class="material-symbols-outlined text-on-surface-variant mr-2 text-[20px]" data-icon="search">search</span>
+    <input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm text-on-surface placeholder:text-on-surface-variant w-full" id="catalog-search" placeholder="Rechercher du matériel..." type="text"/>
+  </div>
+</div>
+<!-- Header Image Banner -->
+<div class="w-full h-48 md:h-64 mb-stack-lg rounded-xl overflow-hidden relative border border-white/10 group">
+<img alt="Hero image showing professional audio equipment setup" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700" data-alt="A wide shot of a massive professional audio setup on a dark, minimalist concert stage before a show. Towering line array speakers flank a complex mixing console in the foreground. The lighting is low and moody, dominated by deep pitch blacks and sharp, vivid pink accent lights slicing through a subtle atmospheric haze. The aesthetic is highly technical, clinical, and premium, reflecting a high-end corporate event production environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCr5mylJdg_7eBxu0Tq2C8UNJcJJRvFqrOlsV_C62oe9at4xL5FrteqRSOV24h7lMs1ITFbmcjritXmXmCk0_kkunYfuwS2S9qGUVqjhOk0zmXRpgINnThKpskkR17Fzk5cbxA5kl5_p_CIHnBvsPqDLQ6OlcMzOsIiELQDDErgJ7oeSyFkYsVD4t0QaC3sW6BfKNaAf3mouN9YNLCCJKSuy9EgD-xJ5FXv8M3l5aOr9-tbNEXa7YqIxUgfahYQWyYhHgd_NRpP8bo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent"></div>
+<div class="absolute bottom-stack-md left-stack-md">
+<span class="bg-primary text-on-primary font-label-caps text-label-caps px-2 py-1 rounded mb-2 inline-block">Configuration Vedette</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Système L-Acoustics K2</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Système line array complet prêt pour les arènes, disponible pour un déploiement immédiat.</p>
+</div>
+</div>
+<!-- Bento Grid / Dynamic Supabase Layout -->
+<div id="catalog-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+  <div class="col-span-full text-center text-on-surface-variant py-16">Chargement des produits...</div>
+</div>
+<!-- Pagination -->
+<div id="catalog-pagination" class="flex justify-center items-center gap-2 mt-stack-lg pt-stack-md border-t border-white/10"></div>
+</section>
+</main>
+<div id="footer-container"></div>
+
+
+<script id="rss-catalog-supabase">
+(function () {
+  const SUPABASE_URL = "https://crxofkxinsspfgdsxpiy.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj";
+  const PAGE_SIZE = 12;
+
+  let supabaseClient = null;
+  let currentPage = 1;
+  let allItems = [];
+  let filteredItems = [];
+  let categoryLookup = Object.create(null);
+
+  function $(id) {
+    return document.getElementById(id);
+  }
+
+  function safe(value) {
+    return String(value || "").replace(/[&<>"]/g, function (m) {
+      return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[m];
+    });
+  }
+
+  function cleanRaw(value) {
+    return String(value == null ? "" : value)
+      .replace(/<[^>]*>?/gm, "")
+      .replace(/&nbsp;/g, " ")
+      .trim();
+  }
+
+  function clean(value) {
+    const raw = cleanRaw(value);
+    return raw || "Annonce disponible sur RentSoundSystem.";
+  }
+
+  function money(value) {
+    const n = Number(value || 0);
+    return n.toLocaleString("fr-FR", { maximumFractionDigits: 0 }) + "€";
+  }
+
+  function normalizeKey(value) {
+    return clean(value)
+      .toLocaleLowerCase("fr-FR")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[’']/g, "'")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  function normalizeBrandKey(value) {
+    return cleanRaw(value)
+      .toLocaleLowerCase("fr-FR")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/&/g, " and ")
+      .replace(/[^a-z0-9]+/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+  // Liste maître synchronisée depuis la page /marques :
+  // 101 marques dédoublonnées selon les mêmes routes canoniques.
+  const CATALOG_MASTER_BRANDS = ["Alcons Audio","Allen & Heath","Alto","American audio","American DJ","Apart","Audio Technica","AudioCase","AudioHead7","Behringer","Bergerault","Black Swamp Percussion","BoomTone DJ","Bose","Botex","Cameo","Celestion","Cerwin Vega","Coda Audio","Community Professional Loudspeakers","d&b audiotechnik","D.A.S","DB Technologies","De Haske","Denis Wick","Denon","DiGiCo","Dunlop","EAW (Eastern Acoustic Works)","Ecler","Edition Dux","Electro-Voice","Elokance","ESP","Faber Music","Faderfox","FBT Audio","Fischer Amps","Formula Sound","Friedman","Funktion One","Gemini","GHS","Gibraltar","Goldon","Hercules DJ","HK","Jakob Winter","Jamey Aebersold","Jargar","JBL","Joral","Kaufmann","KRK Systems","KV2 Audio","L-Acoustics","LD Systems","Lindy","Litecraft","Mac Mah","Marshall","Martin Audio","Meyer Sound","Midas","Native Instruments","Neumann","Nexo Sound","Numark","Ohm Audio","Omnitronic","Ortofon","Ottolink","Outline Audio","Ovation","Oxford University Press","Paiste","Peavey Commercial Audio","Pioneer DJ","Presonus","QSC","Quilter","Rane","RCF","Reloop","Renkus-Heinz","Rode Microphones","Roland","Sennheiser","Shure","Silent Arena","Silent Disco","Soundcraft","Studio 49","Tannoy","Technics","The box","Turbo Sound","Ulsa","Vestax","Void Acoustics","Yamaha"];
+
+  const MASTER_BRAND_ALIASES = {
+    "black swamp": "Black Swamp Percussion",
+    "black swamp percussion": "Black Swamp Percussion",
+    "pioneer": "Pioneer DJ",
+    "pioneer dj": "Pioneer DJ",
+    "electro voice ev": "Electro-Voice",
+    "electro voice": "Electro-Voice",
+    "electrovoice": "Electro-Voice",
+    "allen heath": "Allen & Heath",
+    "allen and heath": "Allen & Heath",
+    "shure micros": "Shure",
+    "shure": "Shure",
+    "d b audiotechnik": "d&b audiotechnik",
+    "d and b audiotechnik": "d&b audiotechnik",
+    "db audiotechnik": "d&b audiotechnik",
+    "audio7": "AudioHead7",
+    "audio 7": "AudioHead7",
+    "audiohead 7": "AudioHead7",
+    "audiohead7": "AudioHead7",
+    "audio head 7": "AudioHead7",
+    "audio head7": "AudioHead7",
+    "l acoustics": "L-Acoustics",
+    "lacoustics": "L-Acoustics",
+    "l acoustic": "L-Acoustics",
+    "nexo": "Nexo Sound",
+    "nexo sound": "Nexo Sound",
+    "american dj": "American DJ",
+    "adj": "American DJ"
+  };
+
+  const BRAND_ALIASES = {
+    "l acoustics": "L-Acoustics",
+    "lacoustics": "L-Acoustics",
+    "l acoustic": "L-Acoustics",
+    "electro voice": "Electro-Voice",
+    "electrovoice": "Electro-Voice",
+    "audio7": "AudioHead7",
+    "audio 7": "AudioHead7",
+    "audiohead 7": "AudioHead7",
+    "audiohead7": "AudioHead7",
+    "audio head 7": "AudioHead7",
+    "audio head7": "AudioHead7"
+  };
+
+  function canonicalBrandLabel(value) {
+    const raw = cleanRaw(value);
+    if (!raw) return "";
+    const key = normalizeBrandKey(raw);
+
+    if (MASTER_BRAND_ALIASES[key]) return MASTER_BRAND_ALIASES[key];
+    if (BRAND_ALIASES[key]) return BRAND_ALIASES[key];
+
+    const master = CATALOG_MASTER_BRANDS.find(function (name) {
+      return normalizeBrandKey(name) === key;
+    });
+    return master || raw;
+  }
+
+  function resolveBrandLabels(item) {
+    const brands = new Set();
+
+    const modelText = normalizeBrandKey(item.model);
+    if (
+      modelText.includes("audiohead7") ||
+      modelText.includes("audio head 7") ||
+      modelText.includes("audio 7") ||
+      modelText === "audio7"
+    ) {
+      brands.add("AudioHead7");
+    }
+
+    const rawBrand = cleanRaw(
+      item.brand ||
+      item.brand_name ||
+      item.manufacturer ||
+      item.manufacturer_name ||
+      item.marque ||
+      ""
+    );
+
+    if (rawBrand) {
+      rawBrand.split(",").forEach(function (part) {
+        const canonical = canonicalBrandLabel(part.trim());
+        if (canonical) brands.add(canonical);
+      });
+    }
+
+    if (!brands.size) {
+      const model = cleanRaw(item.model);
+      if (model) {
+        const c = canonicalBrandLabel(model);
+        if (CATALOG_MASTER_BRANDS.indexOf(c) !== -1) brands.add(c);
+      }
+    }
+
+    if (!brands.size) {
+      const text = normalizeBrandKey([
+        item.title,
+        item.model,
+        item.description,
+        item.category
+      ].map(cleanRaw).join(" "));
+
+      if (
+        text.includes("l acoustics") ||
+        text.includes("lacoustics") ||
+        /\b(k1|k2|kara(?: ii)?|ks28|sb28|la12x|la4x|a10|a15|x15 hiq|syva)\b/.test(text)
+      ) {
+        brands.add("L-Acoustics");
+      } else if (
+        text.includes("electro voice") ||
+        text.includes("electrovoice") ||
+        /\b(zlx|elx|ekx|etx|evolve(?: 30m| 50m| 70)?|re3)\b/.test(text)
+      ) {
+        brands.add("Electro-Voice");
+      }
+    }
+
+    return Array.from(brands);
+  }
+
+  function resolveBrandLabel(item) {
+    const list = resolveBrandLabels(item);
+    return list[0] || "";
+  }
+
+  function looksLikeIdentifier(value) {
+    const v = String(value || "").trim();
+    return /^[0-9]+$/.test(v) ||
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(v);
+  }
+
+  function formatLocationLabel(value) {
+    const v = clean(value).replace(/\s+/g, " ").trim();
+    if (!v) return "";
+    if (v === v.toLocaleUpperCase("fr-FR") && v.length > 2) {
+      return v.toLocaleLowerCase("fr-FR").replace(/(^|[\s-])([a-zà-ÿ])/gu, function (_, separator, letter) {
+        return separator + letter.toLocaleUpperCase("fr-FR");
+      });
+    }
+    return v;
+  }
+
+  /*
+    Les anciennes catégories importées sont parfois des slugs techniques
+    (ex. « instruments-a-percussion »). On les affiche toujours avec
+    un libellé métier lisible, sans modifier la valeur stockée dans Supabase.
+  */
+  const CATEGORY_DISPLAY_NAMES = {
+    "casque": "Casques & écouteurs",
+    "casques": "Casques & écouteurs",
+    "deejay": "DJ & DJing",
+    "dj": "DJ & DJing",
+    "dj-gear": "DJ & DJing",
+    "evenement-production": "Événementiel & production",
+    "evenementiel-production": "Événementiel & production",
+    "instruments-a-percussion": "Instruments music",
+    "multimedia-digital": "Multimédia & digital",
+    "sonorisation-eclairage": "Sonorisation & éclairage"
+  };
+
+  function categoryDisplayLabel(value) {
+    const raw = clean(value);
+    if (!raw) return "Matériel professionnel";
+
+    const key = normalizeKey(raw).replace(/[ _]+/g, "-");
+    if (CATEGORY_DISPLAY_NAMES[key]) return CATEGORY_DISPLAY_NAMES[key];
+
+    // Sécurité pour les autres anciens slugs : aucun tiret technique n'est affiché.
+    return raw
+      .replace(/[-_]+/g, " ")
+      .replace(/\s+/g, " ")
+      .replace(/(^|\s)([a-zà-ÿ])/gu, function (_, separator, letter) {
+        return separator + letter.toLocaleUpperCase("fr-FR");
+      })
+      .trim();
+  }
+
+  function resolveCategoryLabel(value) {
+    const raw = clean(value);
+    if (!raw) return "Matériel professionnel";
+
+    const mapped = categoryLookup[normalizeKey(raw)];
+    if (mapped) return categoryDisplayLabel(mapped);
+
+    return looksLikeIdentifier(raw)
+      ? "Matériel professionnel"
+      : categoryDisplayLabel(raw);
+  }
+
+  function resolveCityLabel(item) {
+    return formatLocationLabel(item.city || item.location || "");
+  }
+
+  function normalizeListing(item) {
+    const categoryLabel = resolveCategoryLabel(item.category);
+    const cityLabel = resolveCityLabel(item);
+    const brandLabels = resolveBrandLabels(item);
+    const brandKeys = brandLabels.map(normalizeBrandKey);
+    const brandLabel = brandLabels[0] || "";
+    return Object.assign({}, item, {
+      category_label: categoryLabel,
+      category_key: normalizeKey(categoryLabel),
+      city_label: cityLabel,
+      city_key: normalizeKey(cityLabel),
+      brand_labels: brandLabels,
+      brand_keys: brandKeys,
+      brand_label: brandLabel,
+      brand_key: normalizeBrandKey(brandLabel)
+    });
+  }
+
+  async function loadCategoryLookup() {
+    const lookup = Object.create(null);
+
+    try {
+      const result = await supabaseClient
+        .from("categories")
+        .select("id,name,title,slug")
+        .order("name", { ascending: true });
+
+      if (result.error) {
+        console.warn("Catégories Supabase indisponibles :", result.error.message || result.error);
+        return lookup;
+      }
+
+      (result.data || []).forEach(function (category) {
+        const label = categoryDisplayLabel(category.name || category.title || category.slug || "");
+        if (!label) return;
+        [category.id, category.name, category.title, category.slug].forEach(function (key) {
+          const normalized = normalizeKey(key);
+          if (normalized) lookup[normalized] = label;
+        });
+      });
+    } catch (error) {
+      console.warn("Catégories Supabase indisponibles :", error);
+    }
+
+    return lookup;
+  }
+
+
+  function productUrl(item) {
+    if (item.original_id !== undefined && item.original_id !== null) {
+      return "/product.html?original_id=" + encodeURIComponent(item.original_id);
+    }
+    if (item.id) return "/product.html?id=" + encodeURIComponent(item.id);
+    return "/product.html";
+  }
+
+  function firstImage(item) {
+    const imgs = Array.isArray(item.listing_images) ? item.listing_images.slice() : [];
+    imgs.sort(function (a, b) { return (a.position || 0) - (b.position || 0); });
+    return imgs[0] && imgs[0].image_url ? imgs[0].image_url : "";
+  }
+
+  function showError(message) {
+    const grid = $("catalog-grid");
+    if (grid) {
+      grid.innerHTML = '<div class="col-span-full text-center text-red-400 py-16">' + safe(message) + '</div>';
+    }
+    const count = $("catalog-count");
+    if (count) count.textContent = "Erreur de chargement.";
+    console.error("CATALOG ERROR:", message);
+  }
+
+  function getFilters() {
+    return {
+      search: ($("catalog-search") && $("catalog-search").value || "").trim().toLocaleLowerCase("fr-FR"),
+      min: Number(($("filter-min-price") && $("filter-min-price").value) || 0),
+      max: Number(($("filter-max-price") && $("filter-max-price").value) || 0),
+      city: ($("filter-city") && $("filter-city").value || "").trim(),
+      sort: ($("catalog-sort") && $("catalog-sort").value || "Recommandé"),
+      categories: Array.from(document.querySelectorAll(".catalog-category:checked"))
+        .map(function (element) { return element.dataset.categoryKey || ""; })
+        .filter(Boolean),
+      brands: Array.from(document.querySelectorAll(".catalog-brand:checked"))
+        .map(function (element) { return element.dataset.brandKey || ""; })
+        .filter(Boolean)
+    };
+  }
+
+  function applyFilters() {
+    const f = getFilters();
+
+    filteredItems = allItems.filter(function (item) {
+      const text = [
+        item.title,
+        item.description,
+        item.city_label,
+        item.category_label,
+        item.brand,
+        item.model
+      ].join(" ").toLocaleLowerCase("fr-FR");
+
+      const price = Number(item.price || 0);
+      const cityKey = item.city_key || "";
+      const categoryKey = item.category_key || "";
+      const brandKey = item.brand_key || "";
+      const brandFallbackText = normalizeBrandKey([
+        item.brand,
+        item.brand_name,
+        item.manufacturer,
+        item.manufacturer_name,
+        item.marque,
+        item.title,
+        item.model
+      ].map(cleanRaw).join(" "));
+
+      if (f.search && text.indexOf(f.search) === -1) return false;
+      if (f.city && cityKey !== f.city) return false;
+      if (f.min && price < f.min) return false;
+      if (f.max && price > f.max) return false;
+      if (f.categories.length && f.categories.indexOf(categoryKey) === -1) return false;
+      if (f.brands.length && !f.brands.some(function (wantedBrand) {
+        const itemBrandKeys = item.brand_keys || (brandKey ? [brandKey] : []);
+        return itemBrandKeys.indexOf(wantedBrand) !== -1;
+      })) return false;
+
+      return true;
+    });
+
+    if (f.sort.indexOf("Croissant") !== -1) {
+      filteredItems.sort(function (a, b) { return Number(a.price || 0) - Number(b.price || 0); });
+    } else if (f.sort.indexOf("Décroissant") !== -1) {
+      filteredItems.sort(function (a, b) { return Number(b.price || 0) - Number(a.price || 0); });
+    } else {
+      filteredItems.sort(function (a, b) {
+        return Number(b.featured || 0) - Number(a.featured || 0) || Number(b.original_id || b.id || 0) - Number(a.original_id || a.id || 0);
+      });
+    }
+
+    currentPage = 1;
+    render();
+  }
+
+  function render() {
+    const grid = $("catalog-grid");
+    const count = $("catalog-count");
+    if (!grid) return;
+
+    const total = filteredItems.length;
+    const from = (currentPage - 1) * PAGE_SIZE;
+    const to = Math.min(from + PAGE_SIZE, total);
+    const items = filteredItems.slice(from, to);
+
+    if (count) {
+      count.textContent = total
+        ? "Affichage de " + (from + 1) + "-" + to + " sur " + total + " annonces disponibles"
+        : "Aucune annonce disponible";
+    }
+
+    if (!items.length) {
+      grid.innerHTML = '<div class="col-span-full text-center text-on-surface-variant py-16">Aucun produit trouvé.</div>';
+      renderPagination();
+      return;
+    }
+
+    grid.innerHTML = items.map(function (item) {
+      const img = firstImage(item);
+      const title = safe(item.title || "Matériel professionnel");
+      const desc = safe(clean(item.description).slice(0, 145));
+      const category = safe(item.category_label || "Matériel professionnel");
+      const city = safe(item.city_label || "Ville non précisée");
+      const price = money(item.price || 0);
+      const url = productUrl(item);
+
+      const imageHtml = img
+        ? '<img alt="' + title + '" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" referrerpolicy="no-referrer" src="' + safe(img) + '" onerror="this.parentElement.classList.add(&quot;catalog-img-placeholder&quot;);this.remove();">'
+        : '<div class="catalog-img-placeholder w-full h-full flex items-center justify-center"></div>';
+
+      return '' +
+      '<article data-url="' + safe(url) + '" class="catalog-card bg-surface-container border border-white/5 hover:border-primary/50 rounded-xl overflow-hidden group flex flex-col transition-all duration-300 relative">' +
+        '<div class="absolute top-3 left-3 z-10 flex gap-2">' +
+          '<span class="bg-surface-container-high/90 backdrop-blur text-on-surface font-label-caps text-label-caps px-2 py-1 rounded border border-white/10">' + category + '</span>' +
+        '</div>' +
+        '<div class="absolute top-3 right-3 z-10">' +
+          '<button type="button" class="favorite-btn text-on-surface-variant hover:text-primary transition-colors bg-surface-container-high/90 backdrop-blur p-1.5 rounded-full border border-white/10">' +
+            '<span class="material-symbols-outlined text-[18px]">favorite_border</span>' +
+          '</button>' +
+        '</div>' +
+        '<div class="h-48 bg-surface-container-lowest relative overflow-hidden">' + imageHtml + '</div>' +
+        '<div class="p-stack-sm flex flex-col flex-grow">' +
+          '<div class="flex justify-between items-start gap-3 mb-2">' +
+            '<h3 class="font-headline-md text-[20px] leading-tight text-on-surface line-clamp-2">' + title + '</h3>' +
+            '<div class="flex items-center gap-1 shrink-0">' +
+              '<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>' +
+              '<span class="font-label-caps text-label-caps text-on-surface-variant">Disponible</span>' +
+            '</div>' +
+          '</div>' +
+          '<p class="font-body-sm text-body-sm text-on-surface-variant mb-4 flex-grow line-clamp-3">' + desc + '</p>' +
+          '<div class="flex items-center gap-4 mb-4 font-body-sm text-body-sm text-on-surface-variant">' +
+            '<div class="flex items-center gap-1"><span class="material-symbols-outlined text-[16px]">location_on</span>' + city + '</div>' +
+          '</div>' +
+          '<div class="flex justify-between items-center border-t border-white/10 pt-4 mt-auto">' +
+            '<div><span class="font-headline-md text-headline-md text-primary">' + price + '</span><span class="font-body-sm text-body-sm text-on-surface-variant">/jour</span></div>' +
+            '<button type="button" class="open-product bg-primary text-on-primary font-label-md text-label-md px-4 py-2 rounded hover:bg-primary-fixed transition-colors font-bold">Voir l’annonce</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+    }).join("");
+
+    grid.querySelectorAll(".catalog-card").forEach(function (card) {
+      card.addEventListener("click", function (event) {
+        const fav = event.target.closest(".favorite-btn");
+        if (fav) {
+          event.stopPropagation();
+          const icon = fav.querySelector(".material-symbols-outlined");
+          icon.textContent = icon.textContent.trim() === "favorite" ? "favorite_border" : "favorite";
+          return;
+        }
+        window.location.href = card.dataset.url;
+      });
+    });
+
+    renderPagination();
+  }
+
+  function renderPagination() {
+    const box = $("catalog-pagination");
+    if (!box) return;
+
+    const totalPages = Math.max(1, Math.ceil(filteredItems.length / PAGE_SIZE));
+
+    if (totalPages <= 1) {
+      box.innerHTML = "";
+      return;
+    }
+
+    let buttons = "";
+    buttons += '<button data-page="' + Math.max(1, currentPage - 1) + '" ' + (currentPage === 1 ? "disabled" : "") + ' class="catalog-page-btn p-2 border border-white/10 rounded hover:border-primary text-on-surface-variant hover:text-primary transition-colors disabled:opacity-40"><span class="material-symbols-outlined">chevron_left</span></button>';
+
+    for (let p = 1; p <= totalPages; p++) {
+      if (p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2) {
+        buttons += '<button data-page="' + p + '" class="catalog-page-btn w-10 h-10 flex items-center justify-center ' + (p === currentPage ? "bg-primary text-on-primary" : "border border-white/10 text-on-surface hover:border-primary") + ' rounded font-label-md">' + p + '</button>';
+      } else if (p === currentPage - 3 || p === currentPage + 3) {
+        buttons += '<span class="text-on-surface-variant px-2">...</span>';
+      }
+    }
+
+    buttons += '<button data-page="' + Math.min(totalPages, currentPage + 1) + '" ' + (currentPage === totalPages ? "disabled" : "") + ' class="catalog-page-btn p-2 border border-white/10 rounded hover:border-primary text-on-surface-variant hover:text-primary transition-colors disabled:opacity-40"><span class="material-symbols-outlined">chevron_right</span></button>';
+
+    box.innerHTML = buttons;
+
+    box.querySelectorAll(".catalog-page-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const page = Number(btn.dataset.page);
+        if (!page || page === currentPage) return;
+        currentPage = page;
+        render();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+  }
+
+
+  function loadDynamicCategories() {
+    const catBox = document.getElementById("catalog-category-list");
+    if (!catBox) return;
+
+    const categories = new Map();
+    allItems.forEach(function (item) {
+      const key = item.category_key || "";
+      const label = item.category_label || "";
+      if (key && label && !categories.has(key)) categories.set(key, label);
+    });
+
+    const entries = Array.from(categories.entries())
+      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); });
+
+    if (!entries.length) {
+      catBox.innerHTML = '<div class="text-body-sm text-on-surface-variant">Aucune catégorie disponible.</div>';
+      return;
+    }
+
+    catBox.innerHTML = entries.map(function (entry) {
+      const key = entry[0];
+      const label = entry[1];
+      return '<label class="flex items-center gap-2 cursor-pointer group">' +
+        '<input class="catalog-category form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" data-category-key="' + safe(key) + '" type="checkbox">' +
+        '<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">' + safe(label) + '</span>' +
+      '</label>';
+    }).join("");
+
+    catBox.querySelectorAll(".catalog-category").forEach(function (input) {
+      input.addEventListener("change", applyFilters);
+    });
+  }
+
+
+  function requestedBrandParams() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      return params.getAll("brand")
+        .concat(params.getAll("marque"))
+        .concat(params.getAll("brand_slug"))
+        .map(function (value) { return cleanRaw(value); })
+        .filter(Boolean);
+    } catch (_) {
+      return [];
+    }
+  }
+
+  function loadDynamicBrands() {
+    const brandBox = document.getElementById("catalog-brand-list");
+    if (!brandBox) return;
+
+    const brands = new Map();
+
+    // 1. La page Marques est la source maître : les 101 marques sont toujours
+    //    présentes dans le filtre, même si une marque n'a encore aucune annonce.
+    CATALOG_MASTER_BRANDS.forEach(function (label) {
+      const canonical = canonicalBrandLabel(label);
+      const key = normalizeBrandKey(canonical);
+      if (canonical && key && !brands.has(key)) brands.set(key, canonical);
+    });
+
+    // 2. Les marques réellement présentes dans les annonces sont fusionnées,
+    //    sans créer de doublons d'alias.
+    allItems.forEach(function (item) {
+      const label = canonicalBrandLabel(item.brand_label || "");
+      const key = normalizeBrandKey(label);
+      if (!label || !key) return;
+      if (key === normalizeBrandKey("Annonce disponible sur RentSoundSystem.")) return;
+      if (!brands.has(key)) brands.set(key, label);
+    });
+
+    // 3. Une marque passée dans l'URL reste visible/cochable même si elle est nouvelle.
+    requestedBrandParams().forEach(function (label) {
+      const canonical = canonicalBrandLabel(label);
+      const key = normalizeBrandKey(canonical);
+      if (canonical && key && !brands.has(key)) brands.set(key, canonical);
+    });
+
+    const entries = Array.from(brands.entries())
+      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); });
+
+    if (!entries.length) {
+      brandBox.innerHTML = '<div class="text-body-sm text-on-surface-variant">Aucune marque disponible.</div>';
+      return;
+    }
+
+    brandBox.innerHTML = entries.map(function (entry) {
+      const key = entry[0];
+      const label = entry[1];
+      return '<label class="flex items-center gap-2 cursor-pointer group">' +
+        '<input class="catalog-brand form-checkbox bg-surface border-outline-variant text-primary focus:ring-primary focus:ring-offset-surface rounded" data-brand-key="' + safe(key) + '" data-brand-label="' + safe(label) + '" type="checkbox">' +
+        '<span class="font-body-sm text-body-sm text-on-surface group-hover:text-primary transition-colors">' + safe(label) + '</span>' +
+      '</label>';
+    }).join("");
+
+    brandBox.querySelectorAll(".catalog-brand").forEach(function (input) {
+      input.addEventListener("change", function () {
+        syncCatalogUrl();
+        applyFilters();
+      });
+    });
+  }
+
+  function applyUrlFilters() {
+    let params;
+    try { params = new URLSearchParams(window.location.search); }
+    catch (_) { return; }
+
+    const rawBrandParams = params.getAll("brand")
+      .concat(params.getAll("marque"))
+      .concat(params.getAll("brand_slug"))
+      .map(function (v) { return cleanRaw(v); })
+      .filter(Boolean);
+
+    const requestedCanonicalKeys = rawBrandParams
+      .map(function (v) { return normalizeBrandKey(canonicalBrandLabel(v)); })
+      .filter(Boolean);
+
+    const searchValue = (params.get("search") || "").trim();
+
+    if (requestedCanonicalKeys.length) {
+      document.querySelectorAll(".catalog-brand").forEach(function (input) {
+        const inputKey = input.dataset.brandKey || "";
+        input.checked = requestedCanonicalKeys.indexOf(inputKey) !== -1;
+      });
+    }
+
+    if (searchValue) {
+      const canonicalSearch = canonicalBrandLabel(searchValue);
+      const exactBrandKey = normalizeBrandKey(canonicalSearch);
+      const exactBrand = Array.from(document.querySelectorAll(".catalog-brand"))
+        .find(function (input) {
+          return (input.dataset.brandKey || "") === exactBrandKey;
+        });
+
+      if (exactBrand && !requestedCanonicalKeys.length) {
+        exactBrand.checked = true;
+        if ($("catalog-search")) $("catalog-search").value = "";
+      } else if ($("catalog-search")) {
+        $("catalog-search").value = searchValue;
+      }
+    }
+  }
+
+  function syncCatalogUrl() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      params.delete("brand");
+
+      Array.from(document.querySelectorAll(".catalog-brand:checked"))
+        .map(function (input) { return input.dataset.brandLabel || ""; })
+        .filter(Boolean)
+        .forEach(function (label) { params.append("brand", label); });
+
+      const searchValue = ($("catalog-search") && $("catalog-search").value || "").trim();
+      if (searchValue) params.set("search", searchValue);
+      else params.delete("search");
+
+      const query = params.toString();
+      history.replaceState(null, "", window.location.pathname + (query ? "?" + query : ""));
+    } catch (_) {}
+  }
+
+  function loadDynamicCities() {
+    const city = document.getElementById("filter-city");
+    if (!city) return;
+
+    const cities = new Map();
+    allItems.forEach(function (item) {
+      const key = item.city_key || "";
+      const label = item.city_label || "";
+      if (key && label && !cities.has(key)) cities.set(key, label);
+    });
+
+    const entries = Array.from(cities.entries())
+      .sort(function (a, b) { return a[1].localeCompare(b[1], "fr"); });
+
+    city.innerHTML = '<option value="">Tous les lieux</option>' + entries.map(function (entry) {
+      return '<option value="' + safe(entry[0]) + '">' + safe(entry[1]) + '</option>';
+    }).join("");
+
+    city.onchange = applyFilters;
+  }
+
+  function bindFilters() {
+    ["filter-min-price", "filter-max-price", "filter-city", "catalog-sort", "filter-start-date", "filter-end-date"].forEach(function (id) {
+      const el = $(id);
+      if (el) el.addEventListener("change", applyFilters);
+    });
+
+    const search = $("catalog-search");
+    if (search) {
+      let timer = null;
+      search.addEventListener("input", function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          syncCatalogUrl();
+          applyFilters();
+        }, 250);
+      });
+    }
+
+    const clear = $("clear-filters");
+    if (clear) {
+      clear.addEventListener("click", function () {
+        if ($("catalog-search")) $("catalog-search").value = "";
+        if ($("filter-min-price")) $("filter-min-price").value = "";
+        if ($("filter-max-price")) $("filter-max-price").value = "";
+        if ($("filter-city")) $("filter-city").value = "";
+        if ($("catalog-sort")) $("catalog-sort").selectedIndex = 0;
+        document.querySelectorAll(".catalog-category").forEach(function (input) { input.checked = false; });
+        document.querySelectorAll(".catalog-brand").forEach(function (input) { input.checked = false; });
+        try { history.replaceState(null, "", window.location.pathname); } catch (_) {}
+        applyFilters();
+      });
+    }
+  }
+
+  async function loadFromSupabase() {
+    const grid = $("catalog-grid");
+    if (grid) grid.innerHTML = '<div class="col-span-full text-center text-on-surface-variant py-16">Chargement des produits...</div>';
+
+    if (!window.supabase) {
+      showError("Supabase JS non chargé. Vérifiez la connexion au CDN.");
+      return;
+    }
+
+    supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    const result = await supabaseClient
+      .from("listings")
+      .select("*, listing_images(image_url, position)")
+      .eq("status", "publish")
+      .limit(1000);
+
+    if (result.error) {
+      showError(result.error.message || "Erreur Supabase.");
+      return;
+    }
+
+    categoryLookup = await loadCategoryLookup();
+    allItems = (result.data || []).map(normalizeListing);
+    filteredItems = allItems.slice();
+
+    console.info("[Catalog brands]", {
+      masterBrands: CATALOG_MASTER_BRANDS.length,
+      listings: allItems.length,
+      lAcoustics: allItems.filter(function (item) { return item.brand_key === normalizeBrandKey("L-Acoustics"); }).length,
+      electroVoice: allItems.filter(function (item) { return item.brand_key === normalizeBrandKey("Electro-Voice"); }).length
+    });
+
+    loadDynamicCategories();
+    loadDynamicBrands();
+    loadDynamicCities();
+    applyUrlFilters();
+    applyFilters();
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    bindFilters();
+    loadFromSupabase();
+  });
+})();
+</script>
+
+
+<script src="/components.js"></script>
+
+
+
+
+<script id="rss-catalog-filter-toggle-working">
+(function () {
+  function initCatalogFilterToggle() {
+    const toggle = document.getElementById('rss-mobile-filter-toggle');
+    const icon = document.getElementById('rss-mobile-filter-icon');
+    const label = toggle ? toggle.querySelector('span:first-child') : null;
+    const aside = document.querySelector('main aside');
+
+    if (!toggle || !aside || toggle.dataset.bound === '1') return;
+    toggle.dataset.bound = '1';
+
+    function isMobile() {
+      return window.innerWidth < 768;
+    }
+
+    function closeFilters() {
+      document.body.classList.remove('catalog-filters-open');
+      document.body.classList.add('catalog-filters-closed');
+      if (icon) icon.textContent = 'expand_more';
+      if (label) label.textContent = 'Afficher les filtres';
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+
+    function openFilters() {
+      document.body.classList.remove('catalog-filters-closed');
+      document.body.classList.add('catalog-filters-open');
+      if (icon) icon.textContent = 'expand_less';
+      if (label) label.textContent = 'Masquer les filtres';
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    function syncMode() {
+      if (isMobile()) {
+        if (!document.body.classList.contains('catalog-filters-open')) closeFilters();
+      } else {
+        document.body.classList.remove('catalog-filters-closed', 'catalog-filters-open');
+        if (icon) icon.textContent = 'expand_more';
+        if (label) label.textContent = 'Filtres';
+        toggle.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    toggle.addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (document.body.classList.contains('catalog-filters-open')) {
+        closeFilters();
+      } else {
+        openFilters();
+      }
+    });
+
+    // Fermer automatiquement après "Effacer les filtres" sur mobile uniquement
+    const clearBtn = document.getElementById('clear-filters');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function () {
+        if (isMobile()) setTimeout(closeFilters, 200);
+      });
+    }
+
+    window.addEventListener('resize', syncMode);
+    syncMode();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCatalogFilterToggle);
+  } else {
+    initCatalogFilterToggle();
+  }
+
+  window.addEventListener('load', initCatalogFilterToggle);
+})();
+</script>
+
+</body></html>

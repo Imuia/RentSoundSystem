@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Étape 5 — Génération du devis | Administration RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#ffb2bf",
+                        "on-primary-fixed-variant": "#90003b",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb2bf",
+                        "on-surface-variant": "#e6bcc2",
+                        "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                        "on-primary-fixed": "#3f0016",
+                        "outline": "#ac878d",
+                        "on-primary-container": "#5a0022",
+                        "on-tertiary": "#303030",
+                        "on-secondary-container": "#b5b5b6",
+                        "primary-container": "#ff4d80",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-error": "#690005",
+                        "background": "#131313",
+                        "secondary-fixed": "#e3e2e3",
+                        "surface-container": "#201f1f",
+                        "surface-variant": "#353534",
+                        "on-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-tint": "#ffb2bf",
+                        "secondary": "#c6c6c7",
+                        "tertiary-container": "#929090",
+                        "on-primary": "#660028",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-secondary": "#2f3132",
+                        "on-secondary-fixed": "#1a1c1d",
+                        "surface": "#131313",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-fixed-variant": "#454748",
+                        "inverse-primary": "#bc004f",
+                        "primary-fixed": "#ffd9de",
+                        "on-surface-muted": "#E6BCC2",
+                        "secondary-container": "#454748",
+                        "surface-glass": "rgba(31, 31, 31, 0.6)",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "outline-variant": "#5d3f44",
+                        "surface-container-highest": "#353534",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-error-container": "#ffdad6",
+                        "neon-glow": "rgba(252, 3, 109, 0.3)",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-bright": "#393939",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "inverse-on-surface": "#313030"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "section-padding-y": "6rem",
+                        "component-padding-y": "0.625rem",
+                        "gutter-x": "2.5rem",
+                        "card-gap": "1.5rem",
+                        "component-padding-x": "1.5rem"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Manrope"],
+                        "display-hero": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "display-hero-mobile": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                        "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+
+<style id="rss-crm-admin-shell">
+  .crm-stage-nav{
+    display:flex;gap:7px;align-items:center;overflow-x:auto;
+    padding:10px 12px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;background:#171717;scrollbar-width:thin;
+  }
+  .crm-stage-nav a{
+    flex:0 0 auto;text-decoration:none;color:#d7c3c8;background:#232222;
+    border:1px solid rgba(255,255,255,.08);padding:8px 11px;border-radius:8px;
+    font:700 12px/1 Inter,Arial,sans-serif;transition:.18s ease;
+  }
+  .crm-stage-nav a:hover,.crm-stage-nav a.active{
+    color:white;border-color:#FC036D;background:rgba(252,3,109,.13);
+    box-shadow:0 0 18px rgba(252,3,109,.12);
+  }
+  .crm-stitch-frame{
+    background:#131313;border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;overflow:hidden;min-height:620px;
+  }
+  .crm-stitch-content{
+    background:#131313;color:#e5e2e1;min-height:620px;
+  }
+  .crm-stitch-content > main,
+  .crm-stitch-content main{
+    width:100%!important;max-width:none!important;
+    margin-left:0!important;
+  }
+  .crm-stitch-content .md\:ml-64{margin-left:0!important;}
+  .crm-stitch-content .h-screen{height:auto!important;min-height:620px!important;}
+  .crm-stitch-content .overflow-hidden{overflow:visible!important;}
+  .crm-stitch-content .fixed{position:absolute;}
+  @media(max-width:760px){
+    .crm-stage-nav{margin-bottom:12px}
+    .crm-stitch-frame{border-radius:10px}
+  }
+</style>
+
+</head>
+<body data-admin-page="crm">
+<div class="admin-app">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin-dashboard.html">
+    <span class="admin-brand-mark">R</span>
+    <span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span>
+  </a>
+  <nav class="admin-nav">
+    <div class="admin-nav-label">Pilotage</div>
+    <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+    <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+    <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+    <a class="admin-nav-link" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+    <a class="admin-nav-link active" data-nav-page="crm" href="/admin-crm-workflow.html"><span class="material-symbols-outlined">account_tree</span>CRM & Workflow</a>
+    <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+    <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+    <div class="admin-nav-label">Gestion</div>
+    <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+    <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+    <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+    <div class="admin-nav-label">Opérations</div>
+    <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+    <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+    <div class="admin-nav-label">Système</div>
+    <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+  </nav>
+  <div class="admin-sidebar-footer">
+    <div class="admin-profile-mini">
+      <div class="admin-avatar">AD</div>
+      <div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div>
+    </div>
+    <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+  </div>
+</aside>
+
+<div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <div class="admin-topbar-left">
+      <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="admin-page-heading">
+        <h1>Étape 5 — Génération du devis</h1>
+        <p>Préparation et génération du devis commercial.</p>
+      </div>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-icon-button" href="/admin-crm-workflow.html" title="Vue globale CRM">
+        <span class="material-symbols-outlined">account_tree</span>
+      </a>
+      <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="admin-icon-button" href="/" title="Voir le site">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <nav class="crm-stage-nav" aria-label="Étapes CRM"><a class="" href="/admin-crm-workflow.html">Workflow</a><a class="" href="/admin-crm-etape-1-qualification.html">1</a><a class="" href="/admin-crm-etape-2-verification.html">2</a><a class="" href="/admin-crm-etape-3-demande-prix.html">3</a><a class="" href="/admin-crm-etape-4-controle-offre.html">4</a><a class="active" href="/admin-crm-etape-5-devis.html">5</a><a class="" href="/admin-crm-etape-6-signature.html">6</a><a class="" href="/admin-crm-etape-7-paiement-caution.html">7</a><a class="" href="/admin-crm-etape-8-logistique.html">8</a><a class="" href="/admin-crm-etape-9-suivi-livraison.html">9</a><a class="" href="/admin-crm-etape-10-retour-inspection.html">10</a><a class="" href="/admin-crm-cloture-caution.html">Clôture</a><a class="" href="/admin-crm-litige.html">Litiges</a><a class="" href="/admin-crm-email-devis.html">Emails</a></nav>
+    <section class="crm-stitch-frame">
+      <div class="crm-stitch-content">
+        
+ TopNavBar 
+
+ Canvas 
+<div class="flex-1 p-gutter-x">
+<!-- Header & Stepper -->
+<div class="mb-8">
+<div class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps mb-4">
+<span>Projet #REQ-8492</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span>Studio Omega Tour</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface mb-6">Génération et Émission du Devis Client</h1>
+<!-- Stepper -->
+<div class="flex items-center w-full max-w-3xl gap-2">
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(252,3,109,0.3)] mb-2">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="h-1 w-full bg-primary rounded"></div>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(252,3,109,0.3)] mb-2">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="h-1 w-full bg-primary rounded"></div>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(252,3,109,0.3)] mb-2">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="h-1 w-full bg-primary rounded"></div>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold text-sm shadow-[0_0_15px_rgba(252,3,109,0.3)] mb-2">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<div class="h-1 w-full bg-primary rounded"></div>
+</div>
+<div class="flex flex-col items-center flex-1">
+<div class="w-8 h-8 rounded-full border-2 border-primary text-primary flex items-center justify-center font-bold text-sm mb-2 shadow-[0_0_15px_rgba(252,3,109,0.3)] bg-surface-container">
+                            5
+                        </div>
+<div class="h-1 w-full bg-surface-variant rounded"></div>
+</div>
+<div class="flex flex-col items-center flex-1 opacity-50">
+<div class="w-8 h-8 rounded-full border-2 border-outline text-outline flex items-center justify-center font-bold text-sm mb-2 bg-surface-container">
+                            6
+                        </div>
+<div class="h-1 w-full bg-surface-variant rounded"></div>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-3">Étape 5 sur 9 : Validation Finale du Devis</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
+<!-- Main Preview Area (Spans 2 columns) -->
+<div class="lg:col-span-2 bg-surface-container-low rounded-xl border border-surface-glass-border overflow-hidden flex flex-col">
+<div class="bg-surface-container-highest px-6 py-4 border-b border-surface-glass-border flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-on-surface">Aperçu du Devis Final</h3>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-variant flex items-center justify-center text-on-surface-variant transition-colors border border-surface-glass-border">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="w-10 h-10 rounded-full bg-surface-container hover:bg-surface-variant flex items-center justify-center text-on-surface-variant transition-colors border border-surface-glass-border">
+<span class="material-symbols-outlined">zoom_out</span>
+</button>
+</div>
+</div>
+<div class="p-8 flex-1 bg-[#d1d5db] overflow-y-auto relative" style="background-image: radial-gradient(#9ca3af 1px, transparent 1px); background-size: 20px 20px;">
+<!-- Document Mockup -->
+<div class="bg-white text-gray-900 max-w-2xl mx-auto shadow-2xl p-10 min-h-[800px]">
+<!-- Header Doc -->
+<div class="flex justify-between items-start border-b-2 border-gray-200 pb-6 mb-6">
+<div>
+<h4 class="font-headline-md font-bold text-gray-900 tracking-tight">RentSoundSystem</h4>
+<p class="text-sm text-gray-500 mt-1">12 Rue de l'Acoustique, 75011 Paris</p>
+<p class="text-sm text-gray-500">contact@rentsoundsystem.com</p>
+</div>
+<div class="text-right">
+<h2 class="text-3xl font-light text-gray-400 uppercase tracking-wider">Devis</h2>
+<p class="text-sm font-bold mt-2">D-2024-8492</p>
+<p class="text-sm text-gray-500">Date: 04 Oct 2024</p>
+</div>
+</div>
+<!-- Client Info -->
+<div class="flex justify-between mb-10">
+<div>
+<p class="text-xs text-gray-400 uppercase font-bold tracking-widest mb-2">Projet</p>
+<p class="font-bold">Studio Omega Tour</p>
+<p class="text-sm text-gray-600">Période: 12 Oct - 26 Oct 2024</p>
+</div>
+<div>
+<p class="text-xs text-gray-400 uppercase font-bold tracking-widest mb-2">Client</p>
+<p class="font-bold">LiveNation Fr</p>
+<p class="text-sm text-gray-600">14 Place Marie-Jeanne</p>
+<p class="text-sm text-gray-600">75008 Paris</p>
+</div>
+</div>
+<!-- Equipment Table -->
+<table class="w-full text-left mb-8 border-collapse">
+<thead>
+<tr class="border-b-2 border-gray-800 text-sm">
+<th class="py-2">Description</th>
+<th class="py-2 text-center">Qté</th>
+<th class="py-2 text-right">PU HT</th>
+<th class="py-2 text-right">Total HT</th>
+</tr>
+</thead>
+<tbody class="text-sm">
+<tr class="border-b border-gray-200">
+<td class="py-3">
+<p class="font-bold">L-Acoustics K2</p>
+<p class="text-xs text-gray-500">Line Array Element</p>
+</td>
+<td class="py-3 text-center">24</td>
+<td class="py-3 text-right">350 €</td>
+<td class="py-3 text-right">8 400 €</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3">
+<p class="font-bold">DiGiCo SD12</p>
+<p class="text-xs text-gray-500">Console de Mixage Numérique + Optocore</p>
+</td>
+<td class="py-3 text-center">1</td>
+<td class="py-3 text-right">1 200 €</td>
+<td class="py-3 text-right">1 200 €</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3">
+<p class="font-bold">Shure Axient Digital AD4Q</p>
+<p class="text-xs text-gray-500">Récepteur 4 canaux</p>
+</td>
+<td class="py-3 text-center">2</td>
+<td class="py-3 text-right">450 €</td>
+<td class="py-3 text-right">900 €</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3">
+<p class="font-bold">Shure Axient AD2/KSM8</p>
+<p class="text-xs text-gray-500">Emetteur Main</p>
+</td>
+<td class="py-3 text-center">8</td>
+<td class="py-3 text-right">120 €</td>
+<td class="py-3 text-right">960 €</td>
+</tr>
+<tr class="border-b border-gray-200">
+<td class="py-3">
+<p class="font-bold">Câblage &amp; Distribution</p>
+<p class="text-xs text-gray-500">Forfait Tournée</p>
+</td>
+<td class="py-3 text-center">1</td>
+<td class="py-3 text-right">850 €</td>
+<td class="py-3 text-right">850 €</td>
+</tr>
+</tbody>
+</table>
+<!-- Totals -->
+<div class="flex justify-end mb-12">
+<div class="w-64">
+<div class="flex justify-between py-2 border-b border-gray-200">
+<span class="text-sm text-gray-600">Sous-total HT</span>
+<span class="text-sm font-bold">12 310 €</span>
+</div>
+<div class="flex justify-between py-2 border-b border-gray-200">
+<span class="text-sm text-gray-600">Coefficient (Tour 14j)</span>
+<span class="text-sm font-bold">x 1.8</span>
+</div>
+<div class="flex justify-between py-3 border-b-2 border-gray-800">
+<span class="font-bold">Total HT</span>
+<span class="font-bold text-lg">22 158 €</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Sidebar Controls -->
+<div class="flex flex-col gap-card-gap">
+<!-- Emission Details Card -->
+<div class="bg-surface-glass backdrop-blur-xl border border-surface-glass-border rounded-xl p-6 shadow-sm relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent pointer-events-none"></div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_document</span>
+                            Détails de l'Émission
+                        </h3>
+<div class="space-y-6 relative z-10">
+<!-- Key Metrics -->
+<div class="bg-surface-container rounded-lg p-4 border border-surface-glass-border flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Montant Total HT</span>
+<span class="font-headline-md text-primary font-bold">22 655 €</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Date de Livraison</label>
+<div class="text-on-surface font-body-md flex items-center gap-2 bg-surface-container px-3 py-2 rounded border border-surface-glass-border">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+                                        12 Oct 2024
+                                    </div>
+</div>
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Validité</label>
+<div class="text-on-surface font-body-md flex items-center gap-2 bg-surface-container px-3 py-2 rounded border border-surface-glass-border">
+<span class="material-symbols-outlined text-sm">hourglass_empty</span>
+                                        15 jours
+                                    </div>
+</div>
+</div>
+<!-- Notes -->
+<div>
+<label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Notes personnalisées pour le client</label>
+<textarea class="w-full bg-surface-container-highest border border-surface-glass-border rounded-lg p-3 text-body-md font-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none" placeholder="Ajouter un message accompagnant le devis..." rows="4"></textarea>
+</div>
+<!-- Toggles -->
+<div class="space-y-4 pt-4 border-t border-surface-glass-border">
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-[0_0_10px_rgba(252,3,109,0.2)]"></div>
+</div>
+<span class="font-body-md text-on-surface group-hover:text-primary transition-colors">Inclure l'Assurance Matériel</span>
+</label>
+<label class="flex items-center gap-3 cursor-pointer group">
+<div class="relative">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-10 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container shadow-[0_0_10px_rgba(252,3,109,0.2)]"></div>
+</div>
+<span class="font-body-md text-on-surface group-hover:text-primary transition-colors">Inclure les Conditions Générales de Location</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Actions -->
+<div class="mt-auto space-y-4">
+<button class="w-full bg-[#FC036D] text-white font-label-caps text-label-caps py-4 px-6 rounded-lg shadow-[0_0_30px_rgba(252,3,109,0.4)] hover:brightness-110 active:scale-95 transition-all flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">send</span>
+                            GÉNÉRER ET ENVOYER LE DEVIS
+                        </button>
+<button class="w-full bg-transparent text-primary font-label-caps text-label-caps py-4 px-6 rounded-lg border border-outline-variant hover:bg-surface-container active:scale-95 transition-all flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">download</span>
+                            TÉLÉCHARGER LE BROUILLON
+                        </button>
+</div>
+</div>
+</div>
+</div>
+ Footer 
+
+
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div id="header-container" hidden></div>
+<div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>

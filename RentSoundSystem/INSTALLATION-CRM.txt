@@ -1,0 +1,27 @@
+RentSoundSystem — CRM Admin Stitch
+
+Pages créées à partir des maquettes du ZIP Stitch fourni :
+- admin-crm-workflow.html — CRM & Workflow — source: workflow_crm_automatis_rentsoundsystem_final
+- admin-crm-etape-1-qualification.html — Étape 1 — Qualification du client — source: qualification_du_client_tape_1
+- admin-crm-etape-2-verification.html — Étape 2 — Vérification du client / analyse de risque — source: v_rification_du_client_tape_2
+- admin-crm-etape-3-demande-prix.html — Étape 3 — Demande de prix aux partenaires — source: demande_de_prix_aux_partenaires_tape_3
+- admin-crm-etape-4-controle-offre.html — Étape 4 — Contrôle de l’offre — source: contr_le_de_l_offre_tape_4_crm_admin_1
+- admin-crm-etape-5-devis.html — Étape 5 — Génération du devis — source: g_n_ration_du_devis_tape_5_crm_admin
+- admin-crm-etape-6-signature.html — Étape 6 — Confirmation & signature — source: tape_6_confirmation_signature_crm_admin
+- admin-crm-etape-7-paiement-caution.html — Étape 7 — Paiement & gestion de la caution — source: tape_7_paiement_gestion_de_la_caution_crm_admin
+- admin-crm-etape-8-logistique.html — Étape 8 — Planification logistique — source: tape_8_planification_logistique_crm_admin
+- admin-crm-etape-9-suivi-livraison.html — Étape 9 — Suivi de livraison en temps réel — source: tape_9_suivi_de_livraison_en_temps_r_el_crm_admin
+- admin-crm-etape-10-retour-inspection.html — Étape 10 — Retour matériel & inspection — source: tape_10_retour_mat_riel_inspection_crm_admin
+- admin-crm-cloture-caution.html — Clôture — Libération de la caution — source: cl_ture_lib_ration_de_la_caution_crm_admin_final
+- admin-crm-litige.html — CRM — Gestion des litiges — source: simulation_litige_technique_crm_admin
+- admin-crm-email-devis.html — CRM — Email client : devis — source: e_mail_client_votre_devis_rentsoundsystem
+- admin-crm-email-litige.html — CRM — Email notification de litige — source: email_notification_de_litige_technique_client
+- admin-crm-email-cloture.html — CRM — Email clôture & remboursement — source: email_confirmation_de_cl_ture_remboursement_caution
+
+Intégration admin :
+- Remplacer assets/js/admin-core.js par celui fourni.
+- Ce fichier ajoute automatiquement « CRM & Workflow » à la sidebar de toutes les pages admin qui utilisent admin-core.js.
+- Copier les fichiers admin-crm-*.html à la racine du site.
+
+Cette livraison intègre les designs Stitch et la navigation admin.
+Elle ne modifie pas les tables Supabase, Stripe, Auth ni le code métier CRM.

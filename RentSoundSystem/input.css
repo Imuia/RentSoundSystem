@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Material Symbols Outlined */
+.material-symbols-outlined {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Calendar interactive states (utilisé par le JS produit) */
+.calendar-day {
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.calendar-day:not(.disabled):hover {
+  background-color: #2a2a2a;
+  border-color: #FC036D;
+}
+.calendar-day.selected {
+  background-color: #FC036D !important;
+  color: #ffffff !important;
+  border-color: #FC036D !important;
+  font-weight: 700;
+}
+.calendar-day.in-range {
+  background-color: rgba(252, 3, 109, 0.15);
+  border-color: rgba(252, 3, 109, 0.3);
+  color: #FC036D;
+}
+.calendar-day.disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* Toast notification (feedback utilisateur) */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: #1f1f1f;
+  border: 1px solid #FC036D;
+  color: #e2e2e2;
+  padding: 16px 24px;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+  z-index: 9999;
+  transform: translateX(400px);
+  transition: transform 0.3s ease;
+  font-family: Inter, sans-serif;
+  font-size: 14px;
+}
+.toast.show {
+  transform: translateX(0);
+}

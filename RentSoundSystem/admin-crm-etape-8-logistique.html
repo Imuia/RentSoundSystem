@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Étape 8 — Planification logistique | Administration RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: linear-gradient(145deg, rgba(32, 31, 31, 0.6) 0%, rgba(19, 19, 19, 0.8) 100%);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .neon-glow-btn {
+            box-shadow: 0 0 20px rgba(252, 3, 109, 0.3);
+            transition: all 0.3s ease;
+        }
+        .neon-glow-btn:hover {
+            box-shadow: 0 0 35px rgba(252, 3, 109, 0.5);
+            transform: translateY(-2px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #353534;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#ffb2bf",
+                    "background": "#131313",
+                    "secondary-fixed": "#e3e2e3",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-tint": "#ffb2bf",
+                    "on-secondary-fixed": "#1a1c1d",
+                    "on-primary-fixed-variant": "#90003b",
+                    "on-surface": "#e5e2e1",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-container": "#454748",
+                    "on-tertiary-container": "#2a2a2a",
+                    "surface-variant": "#353534",
+                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                    "on-primary": "#660028",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-error": "#690005",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-primary-container": "#5a0022",
+                    "surface-container-highest": "#353534",
+                    "surface-dim": "#131313",
+                    "on-tertiary": "#303030",
+                    "on-surface-variant": "#e6bcc2",
+                    "error": "#ffb4ab",
+                    "surface-bright": "#393939",
+                    "on-primary-fixed": "#3f0016",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "secondary": "#c6c6c7",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "inverse-primary": "#bc004f",
+                    "surface-glass": "rgba(31, 31, 31, 0.6)",
+                    "surface": "#131313",
+                    "on-secondary": "#2f3132",
+                    "outline": "#ac878d",
+                    "inverse-on-surface": "#313030",
+                    "on-tertiary-fixed": "#1b1b1c",
+                    "tertiary-container": "#929090",
+                    "outline-variant": "#5d3f44",
+                    "primary-fixed-dim": "#ffb2bf",
+                    "tertiary": "#c8c6c5",
+                    "surface-container-high": "#2a2a2a",
+                    "on-secondary-container": "#b5b5b6",
+                    "surface-container": "#201f1f",
+                    "neon-glow": "rgba(252, 3, 109, 0.3)",
+                    "primary-container": "#ff4d80",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-fixed": "#ffd9de",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#454748",
+                    "on-surface-muted": "#E6BCC2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "component-padding-x": "1.5rem",
+                    "gutter-x": "2.5rem",
+                    "container-max": "1280px",
+                    "card-gap": "1.5rem",
+                    "section-padding-y": "6rem",
+                    "component-padding-y": "0.625rem"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "display-hero": ["Manrope"],
+                    "headline-md": ["Manrope"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-lg": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "display-hero": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+
+<style id="rss-crm-admin-shell">
+  .crm-stage-nav{
+    display:flex;gap:7px;align-items:center;overflow-x:auto;
+    padding:10px 12px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;background:#171717;scrollbar-width:thin;
+  }
+  .crm-stage-nav a{
+    flex:0 0 auto;text-decoration:none;color:#d7c3c8;background:#232222;
+    border:1px solid rgba(255,255,255,.08);padding:8px 11px;border-radius:8px;
+    font:700 12px/1 Inter,Arial,sans-serif;transition:.18s ease;
+  }
+  .crm-stage-nav a:hover,.crm-stage-nav a.active{
+    color:white;border-color:#FC036D;background:rgba(252,3,109,.13);
+    box-shadow:0 0 18px rgba(252,3,109,.12);
+  }
+  .crm-stitch-frame{
+    background:#131313;border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;overflow:hidden;min-height:620px;
+  }
+  .crm-stitch-content{
+    background:#131313;color:#e5e2e1;min-height:620px;
+  }
+  .crm-stitch-content > main,
+  .crm-stitch-content main{
+    width:100%!important;max-width:none!important;
+    margin-left:0!important;
+  }
+  .crm-stitch-content .md\:ml-64{margin-left:0!important;}
+  .crm-stitch-content .h-screen{height:auto!important;min-height:620px!important;}
+  .crm-stitch-content .overflow-hidden{overflow:visible!important;}
+  .crm-stitch-content .fixed{position:absolute;}
+  @media(max-width:760px){
+    .crm-stage-nav{margin-bottom:12px}
+    .crm-stitch-frame{border-radius:10px}
+  }
+</style>
+
+</head>
+<body data-admin-page="crm">
+<div class="admin-app">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin-dashboard.html">
+    <span class="admin-brand-mark">R</span>
+    <span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span>
+  </a>
+  <nav class="admin-nav">
+    <div class="admin-nav-label">Pilotage</div>
+    <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+    <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+    <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+    <a class="admin-nav-link" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+    <a class="admin-nav-link active" data-nav-page="crm" href="/admin-crm-workflow.html"><span class="material-symbols-outlined">account_tree</span>CRM & Workflow</a>
+    <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+    <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+    <div class="admin-nav-label">Gestion</div>
+    <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+    <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+    <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+    <div class="admin-nav-label">Opérations</div>
+    <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+    <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+    <div class="admin-nav-label">Système</div>
+    <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+  </nav>
+  <div class="admin-sidebar-footer">
+    <div class="admin-profile-mini">
+      <div class="admin-avatar">AD</div>
+      <div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div>
+    </div>
+    <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+  </div>
+</aside>
+
+<div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <div class="admin-topbar-left">
+      <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="admin-page-heading">
+        <h1>Étape 8 — Planification logistique</h1>
+        <p>Organisation de la préparation, du transport et des ressources.</p>
+      </div>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-icon-button" href="/admin-crm-workflow.html" title="Vue globale CRM">
+        <span class="material-symbols-outlined">account_tree</span>
+      </a>
+      <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="admin-icon-button" href="/" title="Voir le site">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <nav class="crm-stage-nav" aria-label="Étapes CRM"><a class="" href="/admin-crm-workflow.html">Workflow</a><a class="" href="/admin-crm-etape-1-qualification.html">1</a><a class="" href="/admin-crm-etape-2-verification.html">2</a><a class="" href="/admin-crm-etape-3-demande-prix.html">3</a><a class="" href="/admin-crm-etape-4-controle-offre.html">4</a><a class="" href="/admin-crm-etape-5-devis.html">5</a><a class="" href="/admin-crm-etape-6-signature.html">6</a><a class="" href="/admin-crm-etape-7-paiement-caution.html">7</a><a class="active" href="/admin-crm-etape-8-logistique.html">8</a><a class="" href="/admin-crm-etape-9-suivi-livraison.html">9</a><a class="" href="/admin-crm-etape-10-retour-inspection.html">10</a><a class="" href="/admin-crm-cloture-caution.html">Clôture</a><a class="" href="/admin-crm-litige.html">Litiges</a><a class="" href="/admin-crm-email-devis.html">Emails</a></nav>
+    <section class="crm-stitch-frame">
+      <div class="crm-stitch-content">
+        
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary font-label-caps mb-4">
+<span class="material-symbols-outlined text-sm mr-2" style="font-variation-settings: 'FILL' 1;">priority_high</span>
+                    Action Requise: Validation Logistique
+                </span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Étape 8 : Planification Logistique</h1>
+<p class="text-on-surface-variant mt-2 max-w-2xl">Veuillez vérifier l'inventaire, assigner les techniciens et valider l'itinéraire pour le départ prévu demain à 06:00.</p>
+</div>
+<button class="neon-glow-btn bg-primary-container hover:bg-[#ff1e5e] text-on-primary-container font-label-caps px-8 py-4 rounded-lg flex items-center gap-3 active:scale-95 transition-all">
+<span class="material-symbols-outlined">description</span>
+                Générer le Bon de Livraison
+            </button>
+</div>
+ Bento Grid Layout 
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Section 1: Preparation Checklist -->
+<div class="md:col-span-7 glass-panel rounded-xl p-8 flex flex-col space-y-6">
+<div class="flex items-center justify-between mb-2">
+<h3 class="font-headline-md text-headline-md flex items-center">
+<span class="material-symbols-outlined text-primary mr-3">fact_check</span>
+                        Préparation du Matériel
+                    </h3>
+<span class="text-on-surface-variant text-label-caps">2/3 Complété</span>
+</div>
+<div class="space-y-4">
+<label class="flex items-center justify-between p-5 rounded-lg bg-surface-container-highest border border-surface-glass-border cursor-pointer group hover:bg-surface-bright transition-all">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">speaker</span>
+<div>
+<p class="font-bold text-on-surface">Système L-Acoustics K2</p>
+<p class="text-xs text-on-surface-variant">24 Enceintes + 12 Subs KS28 préparés</p>
+</div>
+</div>
+<input checked="" class="w-6 h-6 rounded bg-surface-container-low border-outline text-primary-container focus:ring-primary-container" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between p-5 rounded-lg bg-surface-container-highest border border-surface-glass-border cursor-pointer group hover:bg-surface-bright transition-all">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">settings_input_component</span>
+<div>
+<p class="font-bold text-on-surface">Câblage Vérifié</p>
+<p class="text-xs text-on-surface-variant">Multipaires, Socapex et réseau Optocore</p>
+</div>
+</div>
+<input checked="" class="w-6 h-6 rounded bg-surface-container-low border-outline text-primary-container focus:ring-primary-container" type="checkbox"/>
+</label>
+<label class="flex items-center justify-between p-5 rounded-lg bg-surface-container-highest border border-primary/30 cursor-pointer group hover:bg-surface-bright transition-all ring-1 ring-primary/20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary animate-pulse">check_circle</span>
+<div>
+<p class="font-bold text-on-surface">Test de Son Final (S.M.A.R.T.)</p>
+<p class="text-xs text-primary">En attente de calibration studio</p>
+</div>
+</div>
+<input class="w-6 h-6 rounded bg-surface-container-low border-outline text-primary-container focus:ring-primary-container" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Section 2: Team Assignment -->
+<div class="md:col-span-5 glass-panel rounded-xl p-8">
+<h3 class="font-headline-md text-headline-md flex items-center mb-6">
+<span class="material-symbols-outlined text-primary mr-3">engineering</span>
+                    Affectation Équipe
+                </h3>
+<div class="space-y-6">
+<div class="p-4 rounded-lg bg-surface-container-low border border-surface-glass-border">
+<p class="text-label-caps text-on-surface-variant mb-3">Lead Technicien</p>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<img class="w-12 h-12 rounded-full object-cover border-2 border-primary" data-alt="A professional portrait of a senior sound engineer in a dark studio setting. He is wearing a black polo shirt and a headset around his neck. The lighting is dramatic with subtle magenta backlighting, reflecting a high-end professional audio industry aesthetic. He has a confident and focused expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvzXTQFCPe1Qd9GSGKJlOxqWuvB-IJgp3bTv_hOwqd-CCxKW9XFuoj0bkLnfyozOdiCC83gntszi8MBGDoxKdcfgwsUB7VKNQftQszYKPwVK97mzvYDdwnRBOhUgGy88S_jr_jsTFXpi0Pe4_syNcl6vL9SWVVz0F6JGQASN5nCwLfVBxjQVBo-fbAZs6pAPSve4_IAPPNY-edxhnKEeGz24tR20CDQssJDMK0Li5oVX8xv0hF6aFtD5iUHqlxY0WvbIPWYEmwpXY"/>
+<div>
+<p class="font-bold text-on-surface">Marc Dubois</p>
+<p class="text-xs text-on-surface-variant">Spécialiste Système K2</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">swap_horiz</span>
+</div>
+</div>
+<div class="space-y-3">
+<p class="text-label-caps text-on-surface-variant">Équipage (Crew)</p>
+<div class="flex flex-wrap gap-3">
+<div class="flex items-center gap-2 bg-surface-container-highest px-3 py-2 rounded-full border border-surface-glass-border">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-semibold">Julien R.</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant cursor-pointer">close</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest px-3 py-2 rounded-full border border-surface-glass-border">
+<span class="w-2 h-2 rounded-full bg-green-500"></span>
+<span class="text-sm font-semibold">Sarah L.</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant cursor-pointer">close</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-container-highest px-3 py-2 rounded-full border border-surface-glass-border">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+<span class="text-sm font-semibold">Thomas V.</span>
+<span class="material-symbols-outlined text-xs text-on-surface-variant cursor-pointer">close</span>
+</div>
+<button class="flex items-center gap-2 bg-primary/10 px-3 py-2 rounded-full border border-dashed border-primary/40 text-primary text-sm hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined text-sm">add</span>
+                                Ajouter
+                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 3: Transport Logistics -->
+<div class="md:col-span-12 glass-panel rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-3">
+<div class="p-8 border-b md:border-b-0 md:border-r border-surface-glass-border">
+<h3 class="font-headline-md text-headline-md flex items-center mb-6">
+<span class="material-symbols-outlined text-primary mr-3">local_shipping</span>
+                        Véhicule Assigné
+                    </h3>
+<div class="bg-surface-container-low rounded-lg p-5 border border-surface-glass-border relative overflow-hidden group">
+<div class="relative z-10">
+<p class="font-bold text-lg text-on-surface">Mercedes Sprinter L3H2</p>
+<p class="text-on-surface-variant font-label-caps mt-1">Immatriculation: FR-902-RSS</p>
+<div class="mt-4 flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">gas_meter</span>
+<span class="text-xs">Plein effectué (95%)</span>
+</div>
+</div>
+<span class="material-symbols-outlined absolute bottom-[-10px] right-[-10px] text-7xl text-white/5 rotate-12 group-hover:rotate-0 transition-transform duration-500">delivery_truck_speed</span>
+</div>
+</div>
+<div class="p-8 border-b md:border-b-0 md:border-r border-surface-glass-border">
+<h3 class="font-headline-md text-headline-md flex items-center mb-6">
+<span class="material-symbols-outlined text-primary mr-3">schedule</span>
+                        Planning Horaire
+                    </h3>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-on-surface-variant">departure_board</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label-caps">Départ Entrepôt</p>
+<p class="font-bold text-on-surface">Demain, 06:00 AM</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest flex items-center justify-center border border-surface-glass-border">
+<span class="material-symbols-outlined text-on-surface-variant">avg_time</span>
+</div>
+<div>
+<p class="text-xs text-on-surface-variant font-label-caps">Arrivée Prévue Paris</p>
+<p class="font-bold text-on-surface">Demain, 09:30 AM</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-8 relative">
+<h3 class="font-headline-md text-headline-md flex items-center mb-6">
+<span class="material-symbols-outlined text-primary mr-3">location_on</span>
+                        Destination
+                    </h3>
+<div class="space-y-4">
+<div>
+<p class="font-bold text-on-surface">Studio Omega Paris</p>
+<p class="text-on-surface-variant text-sm mt-1">24 Rue des Archives, 75004 Paris, France</p>
+</div>
+<div class="h-24 w-full rounded-lg bg-surface-container-highest border border-surface-glass-border overflow-hidden relative">
+<img class="w-full h-full object-cover opacity-50 grayscale hover:grayscale-0 transition-all duration-700" data-alt="A stylized, low-exposure aerial night view of the Parisian streets around the 4th arrondissement. The city lights create a warm orange glow against the deep blue night sky. The scene is atmospheric and moody, reflecting a high-tech navigation map aesthetic with deep blacks and sharp highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8RAmci2zhL0JLcNh9QC94lUObcQlooIQm459b2EOBhx1XjuiIiRMKHzaE1OGBm4nm4Z1JwrxiXGxDzSUM5eZ7T8sHbNf_yX8GHLy5ErlHnfVs_S_T1oxsh_LCFaFCM6yZ7y176ZY8NvThEbZA9gajRTAzrLSb59HlS_rpfnhmDcUgdxvvNp53Vgp94QhxCfUHgrIqN5frSQgvA-FGfEuE64rImM-JoiLuVYxgASbTxjhPQ6eSpCscXH1HfR4Gt6KbAVfob3xYChM"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl animate-bounce">location_on</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Log Summary -->
+<div class="md:col-span-12 glass-panel rounded-xl p-6 flex flex-col md:flex-row items-center justify-between gap-4 border-l-4 border-primary">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl">info</span>
+<div>
+<p class="text-on-surface font-semibold italic">"Note de Marc: Vérifier l'accès au quai de déchargement, les travaux de voirie sont signalés Rue des Archives."</p>
+<p class="text-xs text-on-surface-variant mt-1">Mis à jour il y a 12 minutes</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 rounded border border-outline-variant text-on-surface hover:bg-surface-container transition-colors font-label-caps text-xs">Modifier les notes</button>
+<button class="px-6 py-2 rounded bg-surface-container-highest text-primary hover:bg-surface-bright transition-colors font-label-caps text-xs">Alerte Équipe</button>
+</div>
+</div>
+</div>
+
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div id="header-container" hidden></div>
+<div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>

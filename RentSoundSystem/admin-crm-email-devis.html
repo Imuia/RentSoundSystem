@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="fr" class="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CRM — Email client : devis | Administration RentSoundSystem</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e5e2e1",
+                    "secondary-fixed": "#e3e2e3",
+                    "background": "#131313",
+                    "surface-glass": "rgba(31, 31, 31, 0.6)",
+                    "on-surface": "#e5e2e1",
+                    "surface-container-lowest": "#0e0e0e",
+                    "inverse-surface": "#e5e2e1",
+                    "on-background": "#e5e2e1",
+                    "tertiary-container": "#929090",
+                    "neon-glow": "rgba(252, 3, 109, 0.3)",
+                    "on-secondary-fixed": "#1a1c1d",
+                    "on-error": "#690005",
+                    "on-primary-container": "#5a0022",
+                    "surface-glass-border": "rgba(255, 255, 255, 0.05)",
+                    "primary-fixed-dim": "#ffb2bf",
+                    "outline-variant": "#5d3f44",
+                    "on-tertiary-fixed": "#1b1b1c",
+                    "surface-container-highest": "#353534",
+                    "primary": "#ffb2bf",
+                    "on-tertiary": "#303030",
+                    "on-surface-variant": "#e6bcc2",
+                    "on-secondary-container": "#b5b5b6",
+                    "primary-container": "#ff4d80",
+                    "tertiary": "#c8c6c5",
+                    "surface": "#131313",
+                    "surface-dim": "#131313",
+                    "surface-variant": "#353534",
+                    "error-container": "#93000a",
+                    "on-primary": "#660028",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "surface-tint": "#ffb2bf",
+                    "primary-fixed": "#ffd9de",
+                    "on-primary-fixed": "#3f0016",
+                    "on-surface-muted": "#E6BCC2",
+                    "inverse-on-surface": "#313030",
+                    "inverse-primary": "#bc004f",
+                    "surface-container": "#201f1f",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary": "#c6c6c7",
+                    "outline": "#ac878d",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-bright": "#393939",
+                    "on-tertiary-container": "#2a2a2a",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-fixed-variant": "#90003b",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "secondary-container": "#454748",
+                    "on-secondary": "#2f3132",
+                    "on-secondary-fixed-variant": "#454748",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "card-gap": "1.5rem",
+                    "component-padding-y": "0.625rem",
+                    "container-max": "1280px",
+                    "section-padding-y": "6rem",
+                    "gutter-x": "2.5rem",
+                    "component-padding-x": "1.5rem"
+            },
+            "fontFamily": {
+                    "headline-md": ["Manrope"],
+                    "headline-lg": ["Manrope"],
+                    "display-hero": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "display-hero-mobile": ["Manrope"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                    "headline-lg": ["40px", { "lineHeight": "1.2", "fontWeight": "700" }],
+                    "display-hero": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                    "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "label-caps": ["12px", { "lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600" }],
+                    "body-lg": ["20px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                    "display-hero-mobile": ["48px", { "lineHeight": "1.2", "fontWeight": "700" }]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<link rel="stylesheet" href="/assets/css/admin-dashboard.css">
+
+<style id="rss-crm-admin-shell">
+  .crm-stage-nav{
+    display:flex;gap:7px;align-items:center;overflow-x:auto;
+    padding:10px 12px;margin-bottom:18px;border:1px solid rgba(255,255,255,.08);
+    border-radius:12px;background:#171717;scrollbar-width:thin;
+  }
+  .crm-stage-nav a{
+    flex:0 0 auto;text-decoration:none;color:#d7c3c8;background:#232222;
+    border:1px solid rgba(255,255,255,.08);padding:8px 11px;border-radius:8px;
+    font:700 12px/1 Inter,Arial,sans-serif;transition:.18s ease;
+  }
+  .crm-stage-nav a:hover,.crm-stage-nav a.active{
+    color:white;border-color:#FC036D;background:rgba(252,3,109,.13);
+    box-shadow:0 0 18px rgba(252,3,109,.12);
+  }
+  .crm-stitch-frame{
+    background:#131313;border:1px solid rgba(255,255,255,.08);
+    border-radius:16px;overflow:hidden;min-height:620px;
+  }
+  .crm-stitch-content{
+    background:#131313;color:#e5e2e1;min-height:620px;
+  }
+  .crm-stitch-content > main,
+  .crm-stitch-content main{
+    width:100%!important;max-width:none!important;
+    margin-left:0!important;
+  }
+  .crm-stitch-content .md\:ml-64{margin-left:0!important;}
+  .crm-stitch-content .h-screen{height:auto!important;min-height:620px!important;}
+  .crm-stitch-content .overflow-hidden{overflow:visible!important;}
+  .crm-stitch-content .fixed{position:absolute;}
+  @media(max-width:760px){
+    .crm-stage-nav{margin-bottom:12px}
+    .crm-stitch-frame{border-radius:10px}
+  }
+</style>
+
+</head>
+<body data-admin-page="crm">
+<div class="admin-app">
+
+<aside class="admin-sidebar">
+  <a class="admin-brand" href="/admin-dashboard.html">
+    <span class="admin-brand-mark">R</span>
+    <span class="admin-brand-copy"><strong>RentSoundSystem</strong><span>Administration</span></span>
+  </a>
+  <nav class="admin-nav">
+    <div class="admin-nav-label">Pilotage</div>
+    <a class="admin-nav-link" data-nav-page="dashboard" href="/admin-dashboard.html"><span class="material-symbols-outlined">dashboard</span>Vue d’ensemble</a>
+    <a class="admin-nav-link" data-nav-page="partners" href="/admin-partenaires.html"><span class="material-symbols-outlined">handshake</span>Partenaires</a>
+    <a class="admin-nav-link" data-nav-page="listings" href="/admin-annonces.html"><span class="material-symbols-outlined">inventory_2</span>Annonces & matériel</a>
+    <a class="admin-nav-link" data-nav-page="studio-ia" href="/admin-studio-ia-shure.html"><span class="material-symbols-outlined">auto_awesome</span>Studio IA</a>
+    <a class="admin-nav-link active" data-nav-page="crm" href="/admin-crm-workflow.html"><span class="material-symbols-outlined">account_tree</span>CRM & Workflow</a>
+    <a class="admin-nav-link" data-nav-page="reservations" href="/admin-reservations.html"><span class="material-symbols-outlined">event_available</span>Réservations</a>
+    <a class="admin-nav-link" data-nav-page="orders" href="/admin-commandes.html"><span class="material-symbols-outlined">request_quote</span>Devis & commandes</a>
+    <div class="admin-nav-label">Gestion</div>
+    <a class="admin-nav-link" data-nav-page="clients" href="/admin-clients.html"><span class="material-symbols-outlined">group</span>Clients</a>
+    <a class="admin-nav-link" data-nav-page="payments" href="/admin-paiements.html"><span class="material-symbols-outlined">payments</span>Paiements</a>
+    <a class="admin-nav-link" data-nav-page="invoices" href="/admin-factures.html"><span class="material-symbols-outlined">receipt_long</span>Factures</a>
+    <div class="admin-nav-label">Opérations</div>
+    <a class="admin-nav-link" data-nav-page="support" href="/espace-support-messagerie.html"><span class="material-symbols-outlined">support_agent</span>Support</a>
+    <a class="admin-nav-link" data-nav-page="logs" href="/admin-logs.html"><span class="material-symbols-outlined">terminal</span>Journaux</a>
+    <div class="admin-nav-label">Système</div>
+    <a class="admin-nav-link" data-nav-page="settings" href="/admin-parametres.html"><span class="material-symbols-outlined">settings</span>Paramètres</a>
+  </nav>
+  <div class="admin-sidebar-footer">
+    <div class="admin-profile-mini">
+      <div class="admin-avatar">AD</div>
+      <div><strong>Administrateur</strong><span data-admin-email>Vérification…</span></div>
+    </div>
+    <div class="security-note">Accès réservé aux rôles <strong>admin</strong> et <strong>super_admin</strong>.</div>
+  </div>
+</aside>
+
+<div class="admin-mobile-overlay" data-admin-close-menu></div>
+
+<main class="admin-main">
+  <header class="admin-topbar">
+    <div class="admin-topbar-left">
+      <button class="admin-icon-button admin-menu-button" data-admin-menu type="button" aria-label="Ouvrir le menu">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+      <div class="admin-page-heading">
+        <h1>CRM — Email client : devis</h1>
+        <p>Prévisualisation de l’email d’envoi du devis au client.</p>
+      </div>
+    </div>
+    <div class="admin-topbar-actions">
+      <a class="admin-icon-button" href="/admin-crm-workflow.html" title="Vue globale CRM">
+        <span class="material-symbols-outlined">account_tree</span>
+      </a>
+      <button class="admin-icon-button" data-refresh-page type="button" title="Actualiser">
+        <span class="material-symbols-outlined">refresh</span>
+      </button>
+      <a class="admin-icon-button" href="/" title="Voir le site">
+        <span class="material-symbols-outlined">open_in_new</span>
+      </a>
+    </div>
+  </header>
+
+  <div class="admin-content">
+    <nav class="crm-stage-nav" aria-label="Étapes CRM"><a class="" href="/admin-crm-workflow.html">Workflow</a><a class="" href="/admin-crm-etape-1-qualification.html">1</a><a class="" href="/admin-crm-etape-2-verification.html">2</a><a class="" href="/admin-crm-etape-3-demande-prix.html">3</a><a class="" href="/admin-crm-etape-4-controle-offre.html">4</a><a class="" href="/admin-crm-etape-5-devis.html">5</a><a class="" href="/admin-crm-etape-6-signature.html">6</a><a class="" href="/admin-crm-etape-7-paiement-caution.html">7</a><a class="" href="/admin-crm-etape-8-logistique.html">8</a><a class="" href="/admin-crm-etape-9-suivi-livraison.html">9</a><a class="" href="/admin-crm-etape-10-retour-inspection.html">10</a><a class="" href="/admin-crm-cloture-caution.html">Clôture</a><a class="" href="/admin-crm-litige.html">Litiges</a><a class="active" href="/admin-crm-email-devis.html">Emails</a></nav>
+    <section class="crm-stitch-frame">
+      <div class="crm-stitch-content">
+        
+ Header 
+<header class="w-full text-center py-10 px-8 border-b border-surface-glass-border bg-surface dark:bg-surface-dim">
+<h1 class="font-headline-lg text-headline-lg text-primary dark:text-primary-fixed tracking-tight">RentSoundSystem</h1>
+</header>
+ Body Content 
+<section class="p-8 sm:p-12 flex flex-col gap-10">
+<!-- Greeting & Intro -->
+<div class="flex flex-col gap-4">
+<h2 class="font-headline-md text-headline-md text-on-surface">Bonjour Alex,</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+                    Suite à nos récents échanges pour l'équipement de votre tournée, nous avons le plaisir de vous informer que le devis détaillé pour le projet <span class="text-on-surface font-semibold">Studio Omega Tour</span> est désormais finalisé et disponible.
+                </p>
+</div>
+<!-- Summary Bento Card -->
+<div class="relative bg-surface-container rounded-xl border border-surface-glass-border p-8 overflow-hidden">
+<!-- Glassmorphism backdrop layer -->
+<div class="absolute inset-0 bg-gradient-to-br from-surface-glass to-transparent backdrop-blur-[12px] opacity-80 pointer-events-none"></div>
+<div class="relative z-10 flex flex-col gap-6">
+<h3 class="font-label-caps text-label-caps text-secondary-fixed-dim uppercase">Récapitulatif de la location</h3>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center border-b border-surface-glass-border pb-4">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+<span class="font-body-md text-body-md">Dates d'exploitation</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface font-semibold">12-26 Oct 2024</span>
+</div>
+<div class="flex justify-between items-center border-b border-surface-glass-border pb-4">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary">location_on</span>
+<span class="font-body-md text-body-md">Lieu principal</span>
+</div>
+<span class="font-body-md text-body-md text-on-surface font-semibold">Paris</span>
+</div>
+<div class="flex justify-between items-end pt-4">
+<span class="font-body-lg text-body-lg text-on-surface-variant">Montant Total TTC</span>
+<span class="font-headline-lg text-headline-lg text-primary tracking-tight">22 158 €</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Attachment Note -->
+<div class="flex items-center gap-4 bg-surface-container-highest p-4 rounded-lg border border-surface-glass-border w-max max-w-full">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">picture_as_pdf</span>
+<span class="font-body-md text-body-md text-on-surface truncate">Devis_Studio_Omega_Tour_v1.pdf</span>
+<button class="material-symbols-outlined text-secondary ml-4 cursor-pointer hover:text-primary transition-colors duration-300" title="Télécharger">download</button>
+</div>
+<!-- Call to Action -->
+<div class="flex flex-col items-center gap-6 mt-4">
+<a class="inline-flex items-center justify-center bg-primary-container text-[#ffffff] font-label-caps text-label-caps uppercase py-5 px-10 rounded-full shadow-[0_0_25px_rgba(252,3,109,0.3)] hover:shadow-[0_0_40px_rgba(252,3,109,0.5)] hover:-translate-y-1 transition-all duration-300 ease-out border border-surface-glass-border relative overflow-hidden group" href="#">
+<span class="relative z-10 flex items-center gap-2">
+                        Consulter mon Devis
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</span>
+<div class="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out"></div>
+</a>
+<div class="flex items-center gap-2 text-secondary-fixed-dim">
+<span class="material-symbols-outlined text-[16px]">info</span>
+<p class="font-body-md text-[14px]">Ce devis est valable pendant 15 jours à compter de sa date d'émission.</p>
+</div>
+</div>
+</section>
+ Footer 
+
+
+      </div>
+    </section>
+  </div>
+</main>
+</div>
+
+<div id="header-container" hidden></div>
+<div id="footer-container" hidden></div>
+<script src="/assets/js/admin-config.js"></script>
+<script src="/assets/js/admin-supabase-adapter.js"></script>
+<script src="/assets/js/admin-core.js"></script>
+</body>
+</html>

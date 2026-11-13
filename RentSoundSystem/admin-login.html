@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Connexion administration | RentSoundSystem</title>
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="googlebot" content="noindex,nofollow,noarchive">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      color-scheme:dark;
+      --bg:#0f0f10;
+      --surface:#171719;
+      --surface2:#202024;
+      --text:#f5f5f6;
+      --muted:#b8b8c0;
+      --border:rgba(255,255,255,.11);
+      --primary:#fc036d;
+      --danger:#ff6b7a;
+      --success:#5ee6a8;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;font-family:Inter,system-ui,sans-serif;background:
+      radial-gradient(circle at 15% 10%,rgba(252,3,109,.14),transparent 32rem),
+      radial-gradient(circle at 90% 100%,rgba(252,3,109,.08),transparent 28rem),
+      var(--bg);color:var(--text)}
+    body{min-height:100vh;display:grid;place-items:center;padding:24px}
+    .wrap{width:min(100%,460px)}
+    .brand{display:flex;align-items:center;gap:12px;margin-bottom:20px;justify-content:center}
+    .mark{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--primary);
+      font:800 22px/1 Manrope,sans-serif;box-shadow:0 0 28px rgba(252,3,109,.32)}
+    .brand strong{font:800 20px/1.1 Manrope,sans-serif}
+    .brand span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .card{background:rgba(23,23,25,.94);border:1px solid var(--border);border-radius:18px;padding:30px;
+      box-shadow:0 28px 80px rgba(0,0,0,.4);backdrop-filter:blur(14px)}
+    h1{font:800 28px/1.15 Manrope,sans-serif;margin:0 0 8px}
+    .lead{color:var(--muted);font-size:14px;line-height:1.55;margin:0 0 26px}
+    label{display:block;font-size:13px;font-weight:700;margin:0 0 8px}
+    .field{margin-bottom:18px}
+    input{width:100%;height:48px;padding:0 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);
+      color:var(--text);font:500 15px Inter,sans-serif;outline:none}
+    input:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(252,3,109,.12)}
+    .password-wrap{position:relative}
+    .password-wrap input{padding-right:72px}
+    .toggle{position:absolute;right:8px;top:7px;height:34px;border:0;border-radius:7px;background:transparent;color:var(--muted);
+      cursor:pointer;font-weight:700}
+    .toggle:hover{color:#fff;background:rgba(255,255,255,.06)}
+    .submit{width:100%;height:50px;border:0;border-radius:10px;background:var(--primary);color:white;
+      font:800 14px Inter,sans-serif;cursor:pointer;box-shadow:0 10px 28px rgba(252,3,109,.2)}
+    .submit:hover{filter:brightness(1.08)}
+    .submit:disabled{opacity:.55;cursor:wait}
+    .message{display:none;margin:18px 0 0;padding:12px 14px;border-radius:9px;font-size:13px;line-height:1.45}
+    .message.error{display:block;background:rgba(255,107,122,.09);border:1px solid rgba(255,107,122,.3);color:#ffc4ca}
+    .message.success{display:block;background:rgba(94,230,168,.08);border:1px solid rgba(94,230,168,.28);color:#bdf7da}
+    .meta{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);color:var(--muted);font-size:12px;line-height:1.55}
+    .back{display:block;text-align:center;margin-top:18px;color:var(--muted);text-decoration:none;font-size:13px}
+    .back:hover{color:var(--primary)}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark">R</div>
+      <div><strong>RentSoundSystem</strong><span>Administration sécurisée</span></div>
+    </div>
+
+    <main class="card">
+      <h1>Connexion administrateur</h1>
+      <p class="lead">Connectez-vous avec un compte Supabase déclaré comme <strong>admin</strong> ou <strong>super_admin</strong>.</p>
+
+      <form id="admin-login-form">
+        <div class="field">
+          <label for="email">Adresse e-mail</label>
+          <input id="email" name="email" type="email" autocomplete="username" required placeholder="admin@exemple.com">
+        </div>
+
+        <div class="field">
+          <label for="password">Mot de passe</label>
+          <div class="password-wrap">
+            <input id="password" name="password" type="password" autocomplete="current-password" required placeholder="Votre mot de passe">
+            <button class="toggle" id="toggle-password" type="button">Afficher</button>
+          </div>
+        </div>
+
+        <button class="submit" id="submit-button" type="submit">Se connecter à l'administration</button>
+        <div id="login-message" class="message" role="alert" aria-live="polite"></div>
+      </form>
+
+      <div class="meta">
+        L'accès est vérifié en deux étapes : authentification Supabase, puis contrôle du rôle via <code>my_admin_role()</code>.
+        Un compte utilisateur normal ne peut pas accéder au back-office.
+      </div>
+    </main>
+
+    <a class="back" href="/">← Retour au site RentSoundSystem</a>
+  </div>
+
+<script>
+(function(){
+  'use strict';
+
+  const SUPABASE_URL = 'https://crxofkxinsspfgdsxpiy.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oRZBgjE_IWkCWn6glpie2A_ymVzz1Uj';
+  const DASHBOARD_URL = '/admin-dashboard.html';
+
+  const form = document.getElementById('admin-login-form');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const submitButton = document.getElementById('submit-button');
+  const message = document.getElementById('login-message');
+  const togglePassword = document.getElementById('toggle-password');
+
+  function showMessage(text,type){
+    message.textContent = text || '';
+    message.className = 'message ' + (type || 'error');
+  }
+
+  function busy(active){
+    submitButton.disabled = !!active;
+    submitButton.textContent = active ? 'Vérification…' : "Se connecter à l'administration";
+  }
+
+  function safeRedirect(){
+    const params = new URLSearchParams(location.search);
+    const redirect = params.get('redirect');
+    if(redirect && /^\/admin-[a-z0-9/_\-.]*$/i.test(redirect)) return redirect;
+    return DASHBOARD_URL;
+  }
+
+  if(!window.supabase){
+    showMessage("La librairie Supabase n'a pas pu être chargée. Rechargez la page.",'error');
+    return;
+  }
+
+  const sb = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+
+  async function checkAdminRole(){
+    const result = await sb.rpc('my_admin_role');
+    if(result.error) throw new Error("Impossible de vérifier le rôle administrateur : " + result.error.message);
+    const role = String(result.data || '');
+    if(role !== 'admin' && role !== 'super_admin') return null;
+    return role;
+  }
+
+  async function inspectExistingSession(){
+    try{
+      const {data:{session}} = await sb.auth.getSession();
+      if(!session || !session.user) return;
+      const role = await checkAdminRole();
+      if(role){
+        showMessage('Session administrateur déjà active. Redirection…','success');
+        location.replace(safeRedirect());
+      }
+    }catch(error){
+      console.warn('Vérification session admin :',error);
+    }
+  }
+
+  togglePassword.addEventListener('click',function(){
+    const visible = passwordInput.type === 'text';
+    passwordInput.type = visible ? 'password' : 'text';
+    togglePassword.textContent = visible ? 'Afficher' : 'Masquer';
+  });
+
+  form.addEventListener('submit',async function(event){
+    event.preventDefault();
+    message.className = 'message';
+    message.textContent = '';
+
+    const email = String(emailInput.value || '').trim();
+    const password = passwordInput.value || '';
+
+    if(!email || !password){
+      showMessage('Saisissez votre e-mail et votre mot de passe.','error');
+      return;
+    }
+
+    busy(true);
+
+    try{
+      const {data,error} = await sb.auth.signInWithPassword({email,password});
+      if(error) throw error;
+      if(!data || !data.user) throw new Error("La session Supabase n'a pas été créée.");
+
+      const role = await checkAdminRole();
+
+      if(!role){
+        await sb.auth.signOut();
+        showMessage("Ce compte est valide, mais il n'est pas déclaré comme administrateur actif dans admin_users.",'error');
+        busy(false);
+        return;
+      }
+
+      showMessage('Connexion réussie (' + role + '). Redirection vers le tableau de bord…','success');
+      location.replace(safeRedirect());
+
+    }catch(error){
+      console.error('Connexion admin :',error);
+      const text = String(error && error.message || '');
+      let friendly = "Connexion impossible. Vérifiez vos identifiants.";
+      if(/Invalid login credentials/i.test(text)) friendly = "E-mail ou mot de passe incorrect.";
+      else if(/Email not confirmed/i.test(text)) friendly = "Cette adresse e-mail n'est pas encore confirmée dans Supabase.";
+      else if(/my_admin_role|function/i.test(text)) friendly = "Connexion réussie mais la fonction my_admin_role() est absente ou inaccessible dans Supabase.";
+      showMessage(friendly,'error');
+      busy(false);
+    }
+  });
+
+  inspectExistingSession();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catégories de location – RentSoundSystem</title>
+<link rel="preload" href="/header.html" as="fetch" crossorigin><link rel="preload" href="/footer.html" as="fetch" crossorigin>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding-top:74px;background:radial-gradient(circle at 18% 0%,rgba(252,3,109,.18),transparent 28%),#0d0d10;color:#f8f1f4;font-family:Inter,sans-serif}
+#header-container,#footer-container{width:100%;max-width:none}
+.hub{max-width:1200px;margin:0 auto;padding:60px 26px 80px}
+h1{font-family:Manrope,sans-serif;font-size:clamp(42px,6vw,74px);letter-spacing:-.055em;line-height:1;margin:0 0 16px}
+p{color:#cbb1bc;max-width:650px;line-height:1.7;font-size:17px}
+.hub-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:42px}
+.hub-card{min-height:192px;text-decoration:none;color:#fff;border:1px solid rgba(255,255,255,.10);border-radius:16px;padding:22px;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden;transition:.22s}
+.hub-card:hover{transform:translateY(-5px);border-color:#fc036d}
+.hub-card>span{position:absolute;top:18px;right:18px;color:#ff7db1}
+.hub-card strong{font-family:Manrope,sans-serif;font-size:23px;letter-spacing:-.03em}
+.hub-card small{color:#e7bacb;margin-top:7px;font-weight:700}
+.hub-headphones{background:linear-gradient(145deg,#29121f,#111114)}.hub-dj{background:linear-gradient(145deg,#26122c,#101012)}.hub-event{background:linear-gradient(145deg,#14232a,#101114)}.hub-instruments{background:linear-gradient(145deg,#2a1c12,#11100e)}.hub-multimedia{background:linear-gradient(145deg,#0d2830,#101215)}.hub-soundlight{background:linear-gradient(145deg,#301024,#111014)}
+@media(max-width:760px){body{padding-top:72px}.hub{padding:36px 16px 56px}.hub-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="header-container"></div>
+<main class="hub">
+<h1>Explorer par univers.</h1>
+<p>Chaque catégorie possède sa propre page et affiche automatiquement les annonces publiées par les partenaires correspondants.</p>
+<div class="hub-grid"><a href="/categorie-casques-ecouteurs.html" class="hub-card hub-headphones">
+      <span class="material-symbols-outlined">arrow_outward</span>
+      <strong>Casques & écouteurs</strong><small>Location audio personnelle</small>
+    </a>
+<a href="/categorie-dj-djing.html" class="hub-card hub-dj">
+      <span class="material-symbols-outlined">arrow_outward</span>
+      <strong>DJ & DJing</strong><small>Régies, platines & mixage</small>
+    </a>
+<a href="/categorie-evenementiel-production.html" class="hub-card hub-event">
+      <span class="material-symbols-outlined">arrow_outward</span>
+      <strong>Événementiel & production</strong><small>Solutions prêtes à déployer</small>
+    </a>
+<a href="/categorie-instruments-music.html" class="hub-card hub-instruments">
+      <span class="material-symbols-outlined">arrow_outward</span>
+      <strong>Instruments music</strong><small>Instruments & scène musicale</small>
+    </a>
+<a href="/categorie-multimedia-digital.html" class="hub-card hub-multimedia">
+      <span class="material-symbols-outlined">arrow_outward</span>
+      <strong>Multimédia & digital</strong><small>Image, diffusion & expériences</small>
+    </a>
+<a href="/categorie-sonorisation-eclairage.html" class="hub-card hub-soundlight">
+      <span class="material-symbols-outlined">arrow_outward</span>
+      <strong>Sonorisation & éclairage</strong><small>Puissance, scène & lumière</small>
+    </a></div>
+</main>
+<div id="footer-container"></div>
+<script src="/components.js"></script>
+</body>
+</html>

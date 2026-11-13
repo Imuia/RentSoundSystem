@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html class="dark" lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <link rel="preload" href="/header.html" as="fetch" crossorigin>
+  <link rel="preload" href="/footer.html" as="fetch" crossorigin>
+  <title>Politique de confidentialité | RentSoundSystem</title>
+  <meta name="description" content="Politique de confidentialité de RentSoundSystem.com : collecte, utilisation, conservation et protection des données personnelles.">
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            background: "#131313",
+            surface: "#131313",
+            "surface-container-lowest": "#0e0e0e",
+            "surface-container-low": "#1b1b1b",
+            "surface-container": "#1f1f1f",
+            "surface-container-high": "#2a2a2a",
+            "surface-container-highest": "#353535",
+            primary: "#FC036D",
+            "primary-container": "#c40254",
+            "on-primary": "#ffffff",
+            "on-background": "#e2e2e2",
+            "on-surface": "#e2e2e2",
+            "on-surface-variant": "#e6bcc2",
+            outline: "#ac878d",
+            "outline-variant": "#5d3f44"
+          },
+          borderRadius: { DEFAULT: "0.125rem", lg: "0.25rem", xl: "0.5rem", full: "0.75rem" },
+          spacing: {
+            "container-max": "1180px",
+            "margin-mobile": "16px",
+            "margin-desktop": "40px",
+            "stack-sm": "12px",
+            "stack-md": "24px",
+            "stack-lg": "48px"
+          },
+          fontFamily: {
+            headline: ["Manrope", "sans-serif"],
+            body: ["Inter", "sans-serif"]
+          }
+        }
+      }
+    };
+  </script>
+  <style>
+    body {
+      background-color: #131313;
+      color: #e2e2e2;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    #header-container { min-height: 73px; }
+    #footer-container { min-height: 320px; }
+    .legal-card {
+      background: linear-gradient(145deg, rgba(31,31,31,.96), rgba(17,17,17,.98));
+      border: 1px solid rgba(172,135,141,.18);
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+    }
+    .legal-section {
+      border-top: 1px solid rgba(172,135,141,.18);
+      padding-top: 28px;
+      margin-top: 28px;
+    }
+    .legal-section:first-child {
+      border-top: 0;
+      padding-top: 0;
+      margin-top: 0;
+    }
+    .legal-section h2 {
+      font-family: Manrope, sans-serif;
+      color: #ffffff;
+      font-size: clamp(1.25rem, 2vw, 1.7rem);
+      line-height: 1.25;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+    .legal-section h3 {
+      font-family: Manrope, sans-serif;
+      color: #ffd9de;
+      font-size: 1rem;
+      font-weight: 800;
+      margin-top: 22px;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .legal-section p,
+    .legal-section li {
+      color: #e6bcc2;
+      font-family: Inter, sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+    .legal-section ul {
+      list-style: disc;
+      padding-left: 22px;
+      margin-top: 8px;
+    }
+    .legal-section strong {
+      color: #ffffff;
+      font-weight: 800;
+    }
+    .legal-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(252,3,109,.35);
+      background: rgba(252,3,109,.12);
+      color: #ffd9de;
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .summary-box {
+      border: 1px solid rgba(252,3,109,.35);
+      background: rgba(252,3,109,.07);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .toc a {
+      display: block;
+      color: #e6bcc2;
+      text-decoration: none;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      font-weight: 700;
+      font-size: 14px;
+    }
+    .toc a:hover { color: #FC036D; }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen flex flex-col antialiased">
+  <div id="header-container"></div>
+
+  <main class="flex-grow pt-[80px]">
+    <section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto py-stack-lg">
+      <div class="text-center max-w-4xl mx-auto">
+        <span class="legal-badge"><span class="material-symbols-outlined text-[18px]">lock</span> Données personnelles</span>
+        <h1 class="font-headline text-[38px] md:text-[56px] leading-tight font-extrabold text-white mt-6 mb-4">Politique de confidentialité</h1>
+        <p class="text-on-surface-variant text-lg leading-8 max-w-3xl mx-auto">
+          Cette politique décrit les règles de collecte, d’utilisation, de conservation et de protection des données personnelles sur RentSoundSystem.com.
+        </p>
+      </div>
+    </section>
+
+    <section class="px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto pb-stack-lg">
+      <div class="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+        <aside class="legal-card rounded-xl p-6 lg:sticky lg:top-[100px] toc">
+          <h2 class="font-headline text-white text-xl font-extrabold mb-3">Sommaire</h2>
+          <a href="#but">Le but de cette politique</a>
+          <a href="#definitions">Interprétation et définitions</a>
+          <a href="#collecte">Collecte des données</a>
+          <a href="#cookies">Cookies et suivi</a>
+          <a href="#utilisation">Utilisation des données</a>
+          <a href="#partage">Partage des données</a>
+          <a href="#conservation">Conservation et transfert</a>
+          <a href="#droits">Suppression et droits</a>
+          <a href="#securite">Sécurité</a>
+          <a href="#tiers">Services tiers</a>
+          <a href="#enfants">Confidentialité des enfants</a>
+          <a href="#contact">Contact</a>
+        </aside>
+
+        <article class="legal-card rounded-xl p-6 md:p-10">
+          <section id="but" class="legal-section">
+            <h2>1. Le but de cette politique de confidentialité</h2>
+            <p>
+              Cette politique de confidentialité décrit nos politiques et procédures sur la collecte, l'utilisation et la divulgation de vos informations lorsque vous utilisez le service. Elle vous informe de vos droits à la vie privée et de la manière dont la loi vous protège.
+            </p>
+            <p>
+              Nous utilisons vos données personnelles pour fournir et améliorer le Service. En utilisant le Service, vous acceptez la collecte et l'utilisation d'informations conformément à la présente politique de confidentialité.
+            </p>
+          </section>
+
+          <section id="definitions" class="legal-section">
+            <h2>2. Interprétation et définitions</h2>
+            <p>
+              Les mots dont la lettre initiale est en majuscule ont des significations définies dans les conditions suivantes. Les définitions auront la même signification qu'elles apparaissent au singulier ou au pluriel.
+            </p>
+
+            <h3>Définitions</h3>
+            <ul>
+              <li><strong>Compte :</strong> désigne un compte unique créé pour vous permettre d'accéder à notre service ou à des parties de notre service.</li>
+              <li><strong>Société :</strong> désigne IMUIA LLC, 1309 Coffeen Avenue STE 1200 Sheridan, Wyoming 82801 USA, ci-après « la Société », « Nous », « Notre » ou « Nos ».</li>
+              <li><strong>Cookies :</strong> désignent de petits fichiers placés sur votre ordinateur, appareil mobile ou tout autre appareil par un site Web.</li>
+              <li><strong>Pays :</strong> fait référence à Delaware, États-Unis.</li>
+              <li><strong>Dispositif :</strong> désigne tout appareil pouvant accéder au Service tel qu'un ordinateur, un téléphone portable ou une tablette numérique.</li>
+              <li><strong>Données personnelles :</strong> désigne toute information relative à une personne identifiée ou identifiable.</li>
+              <li><strong>Service :</strong> fait référence au Site Web.</li>
+              <li><strong>Fournisseur de services :</strong> désigne toute personne physique ou morale qui traite les données pour le compte de la Société.</li>
+              <li><strong>Données d'utilisation :</strong> désigne les données collectées automatiquement, générées par l'utilisation du Service ou issues de l'infrastructure du Service.</li>
+              <li><strong>Site Internet :</strong> désigne RentSoundSystem, accessible depuis www.rentsoundsystem.com.</li>
+              <li><strong>Vous :</strong> désigne la personne accédant ou utilisant le Service, ou la société ou toute autre entité juridique au nom de laquelle cette personne accède ou utilise le Service.</li>
+            </ul>
+          </section>
+
+          <section id="collecte" class="legal-section">
+            <h2>3. Collecte et utilisation de vos données personnelles</h2>
+            <h3>Types de données collectées</h3>
+            <p>
+              Lors de l'utilisation de notre Service, nous pouvons vous demander de nous fournir certaines informations personnellement identifiables pouvant être utilisées pour vous contacter ou vous identifier.
+            </p>
+            <ul>
+              <li>Adresse e-mail</li>
+              <li>Prénom et nom</li>
+              <li>Numéro de téléphone</li>
+              <li>Adresse, État, province, code postal / ZIP, ville</li>
+              <li>Données d'utilisation</li>
+            </ul>
+
+            <h3>Données d'utilisation</h3>
+            <p>
+              Les données d'utilisation sont collectées automatiquement lors de l'utilisation du Service. Elles peuvent inclure des informations telles que l'adresse IP de votre appareil, le type de navigateur, la version du navigateur, les pages visitées, l'heure et la date de votre visite, le temps passé sur ces pages, les identifiants uniques de l'appareil et d'autres données de diagnostic.
+            </p>
+            <p>
+              Lorsque vous accédez au Service depuis un appareil mobile, nous pouvons collecter certaines informations automatiquement, y compris le type d'appareil mobile, l'identifiant unique de l'appareil, l'adresse IP, le système d'exploitation, le type de navigateur Internet mobile et d'autres données de diagnostic.
+            </p>
+          </section>
+
+          <section id="cookies" class="legal-section">
+            <h2>4. Technologies de suivi et cookies</h2>
+            <p>
+              Nous utilisons des cookies et des technologies de suivi similaires pour suivre l'activité sur notre Service et stocker certaines informations. Les technologies utilisées peuvent inclure des balises, des scripts et des fichiers électroniques permettant d'améliorer et d'analyser notre Service.
+            </p>
+
+            <h3>Cookies ou cookies de navigateur</h3>
+            <p>
+              Un cookie est un petit fichier placé sur votre appareil. Vous pouvez demander à votre navigateur de refuser tous les cookies ou de vous signaler l'envoi d'un cookie. Cependant, si vous n'acceptez pas les cookies, vous ne pourrez peut-être pas utiliser certaines parties du Service.
+            </p>
+
+            <h3>Balises Web</h3>
+            <p>
+              Certaines sections de notre Service et nos e-mails peuvent contenir de petits fichiers électroniques connus sous le nom de balises Web, pixels ou gifs clairs. Ils permettent notamment de compter les utilisateurs ayant visité certaines pages ou ouvert un e-mail, et de vérifier l'intégrité du système et du serveur.
+            </p>
+
+            <h3>Cookies nécessaires / essentiels</h3>
+            <p>
+              Ces cookies sont essentiels pour fournir les services disponibles via le site Web et permettre l'utilisation de certaines fonctionnalités. Ils aident à authentifier les utilisateurs et à prévenir l'utilisation frauduleuse des comptes.
+            </p>
+
+            <h3>Cookies d'acceptation de la politique</h3>
+            <p>
+              Ces cookies identifient si les utilisateurs ont accepté l'utilisation de cookies sur le site Web.
+            </p>
+
+            <h3>Cookies de fonctionnalité</h3>
+            <p>
+              Ces cookies permettent de mémoriser les choix que vous faites, comme vos informations de connexion ou votre préférence de langue, afin de vous offrir une expérience plus personnelle.
+            </p>
+          </section>
+
+          <section id="utilisation" class="legal-section">
+            <h2>5. Utilisation de vos données personnelles</h2>
+            <p>La Société peut utiliser les données personnelles aux fins suivantes :</p>
+            <ul>
+              <li><strong>Fournir et maintenir notre Service :</strong> y compris pour surveiller l'utilisation de notre Service.</li>
+              <li><strong>Gérer votre compte :</strong> gérer votre inscription en tant qu'utilisateur du Service.</li>
+              <li><strong>Exécution d'un contrat :</strong> élaborer, respecter et exécuter le contrat d'achat ou de location des produits, articles ou services achetés par le biais du Service.</li>
+              <li><strong>Vous contacter :</strong> par e-mail, appels téléphoniques, SMS ou communications électroniques équivalentes concernant les fonctionnalités, produits ou services sous contrat.</li>
+              <li><strong>Vous fournir des informations :</strong> nouvelles, offres spéciales et informations générales sur des biens, services ou événements similaires, sauf si vous avez choisi de ne pas recevoir ces informations.</li>
+              <li><strong>Gérer vos demandes :</strong> assister et gérer vos demandes envers nous.</li>
+              <li><strong>Transmissions d'entreprise :</strong> évaluer ou mener une fusion, cession, restructuration, réorganisation, dissolution, vente ou transfert d'actifs.</li>
+              <li><strong>Autres fins :</strong> analyse de données, tendances d'utilisation, efficacité des campagnes promotionnelles et amélioration du Service.</li>
+            </ul>
+          </section>
+
+          <section id="partage" class="legal-section">
+            <h2>6. Partage de vos informations personnelles</h2>
+            <p>Nous pouvons partager vos informations personnelles dans les situations suivantes :</p>
+            <ul>
+              <li><strong>Avec les fournisseurs de services :</strong> pour surveiller et analyser l'utilisation du Service ou pour vous contacter.</li>
+              <li><strong>Pour les transmissions d'entreprise :</strong> dans le cadre d'une fusion, vente d'actifs, financement ou acquisition de tout ou partie de notre activité.</li>
+              <li><strong>Avec les affiliés :</strong> à condition que ces affiliés respectent la présente politique de confidentialité.</li>
+              <li><strong>Avec des partenaires commerciaux :</strong> pour vous proposer certains produits, services ou promotions.</li>
+              <li><strong>Avec d'autres utilisateurs :</strong> lorsque vous partagez des informations personnelles dans des espaces publics.</li>
+              <li><strong>Avec votre consentement :</strong> pour toute autre fin avec votre accord.</li>
+            </ul>
+          </section>
+
+          <section id="conservation" class="legal-section">
+            <h2>7. Conservation et transfert de vos données personnelles</h2>
+            <p>
+              La Société ne conservera vos données personnelles que le temps nécessaire aux finalités énoncées dans cette politique de confidentialité. Nous conserverons et utiliserons vos données dans la mesure nécessaire pour nous conformer à nos obligations légales, résoudre les litiges et appliquer nos accords et politiques juridiques.
+            </p>
+            <p>
+              Vos informations, y compris les données personnelles, peuvent être traitées dans les bureaux d'exploitation de la Société et dans tout autre lieu où se trouvent les parties impliquées dans le traitement. Cela signifie que ces informations peuvent être transférées et conservées dans des juridictions où les lois sur la protection des données peuvent différer.
+            </p>
+            <p>
+              La Société prendra toutes les mesures raisonnablement nécessaires pour garantir que vos données sont traitées en toute sécurité et conformément à la présente politique.
+            </p>
+          </section>
+
+          <section id="droits" class="legal-section">
+            <h2>8. Suppression de vos données personnelles</h2>
+            <p>
+              Vous avez le droit de supprimer ou de demander que nous vous aidions à supprimer les données personnelles que nous avons collectées à votre sujet. Vous pouvez mettre à jour, modifier ou supprimer vos informations à tout moment en vous connectant à votre compte, si vous en avez un, et en visitant la section des paramètres du compte.
+            </p>
+            <p>
+              Vous pouvez également nous contacter pour demander l'accès, la correction ou la suppression des informations personnelles que vous nous avez fournies. Nous pouvons toutefois être amenés à conserver certaines informations lorsque nous avons une obligation légale ou une base légale pour le faire.
+            </p>
+          </section>
+
+          <section class="legal-section">
+            <h2>9. Divulgation de vos données personnelles</h2>
+            <h3>Transactions commerciales</h3>
+            <p>
+              Si la Société est impliquée dans une fusion, une acquisition ou une vente d'actifs, vos données personnelles peuvent être transférées. Nous vous aviserons avant que vos données personnelles ne soient transférées et soumises à une politique de confidentialité différente.
+            </p>
+
+            <h3>Forces de l'ordre et exigences légales</h3>
+            <p>La Société peut divulguer vos données personnelles si elle estime de bonne foi qu'une telle action est nécessaire pour :</p>
+            <ul>
+              <li>Se conformer à une obligation légale</li>
+              <li>Protéger et défendre les droits ou la propriété de la Société</li>
+              <li>Prévenir ou enquêter sur d'éventuels actes répréhensibles en rapport avec le Service</li>
+              <li>Protéger la sécurité personnelle des utilisateurs du Service ou du public</li>
+              <li>Se protéger contre la responsabilité légale</li>
+            </ul>
+          </section>
+
+          <section id="securite" class="legal-section">
+            <h2>10. Sécurité de vos données personnelles</h2>
+            <p>
+              La sécurité de vos données personnelles est importante pour nous. Cependant, aucune méthode de transmission sur Internet ou de stockage électronique n'est sécurisée à 100 %. Bien que nous nous efforcions d'utiliser des moyens commercialement acceptables pour protéger vos données personnelles, nous ne pouvons garantir leur sécurité absolue.
+            </p>
+          </section>
+
+          <section id="tiers" class="legal-section">
+            <h2>11. Informations détaillées sur le traitement de vos données personnelles</h2>
+            <p>
+              Les fournisseurs de services que nous utilisons peuvent avoir accès à vos données personnelles. Ces fournisseurs tiers collectent, stockent, utilisent, traitent et transfèrent des informations sur votre activité sur notre Service conformément à leurs propres politiques de confidentialité.
+            </p>
+
+            <h3>Utilisation, performances et services tiers</h3>
+            <p>
+              Nous pouvons utiliser des fournisseurs de services tiers pour améliorer notre Service, notamment Google Places.
+            </p>
+            <p>
+              Google Places est un service exploité par Google qui renvoie des informations sur les lieux à l'aide de requêtes HTTP. Ce service peut collecter des informations auprès de vous et de votre appareil à des fins de sécurité. Les informations recueillies par Google Places sont conservées conformément à la politique de confidentialité de Google.
+            </p>
+          </section>
+
+          <section id="enfants" class="legal-section">
+            <h2>12. Confidentialité des enfants</h2>
+            <p>
+              Notre Service ne s'adresse à personne de moins de 13 ans. Nous ne collectons pas sciemment d'informations personnellement identifiables auprès de toute personne de moins de 13 ans.
+            </p>
+            <p>
+              Si vous êtes un parent ou un tuteur et que vous savez que votre enfant nous a fourni des données personnelles, veuillez nous contacter. Si nous apprenons que nous avons collecté des données personnelles auprès d'une personne de moins de 13 ans sans vérification du consentement parental, nous prendrons des mesures pour supprimer ces informations de nos serveurs.
+            </p>
+          </section>
+
+          <section class="legal-section">
+            <h2>13. Liens vers d'autres sites Web</h2>
+            <p>
+              Notre Service peut contenir des liens vers d'autres sites Web qui ne sont pas exploités par nous. Si vous cliquez sur un lien tiers, vous serez dirigé vers le site de ce tiers. Nous vous conseillons de consulter la politique de confidentialité de chaque site que vous visitez.
+            </p>
+            <p>
+              Nous n'avons aucun contrôle et n'assumons aucune responsabilité quant au contenu, aux politiques de confidentialité ou aux pratiques des sites ou services tiers.
+            </p>
+          </section>
+
+          <section class="legal-section">
+            <h2>14. Modifications de cette politique de confidentialité</h2>
+            <p>
+              Nous pouvons mettre à jour notre politique de confidentialité de temps à autre. Nous vous informerons de tout changement en publiant la nouvelle politique de confidentialité sur cette page.
+            </p>
+            <p>
+              Il vous est conseillé de consulter périodiquement cette politique de confidentialité pour tout changement. Les modifications entrent en vigueur lorsqu'elles sont publiées sur cette page.
+            </p>
+          </section>
+
+          <section id="contact" class="legal-section">
+            <h2>15. Contact</h2>
+            <div class="summary-box">
+              <p><strong>IMUIA LLC</strong></p>
+              <p>1309 Coffeen Avenue STE 1200<br>Sheridan, Wyoming 82801 USA</p>
+              <p>Téléphone : +1 302 549 0280</p>
+              <p>E-mail : <a class="text-primary font-bold hover:underline" href="mailto:info@imuia.com">info@imuia.com</a></p>
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+  <script src="/components.js"></script>
+</body>
+</html>
