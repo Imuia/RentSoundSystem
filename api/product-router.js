@@ -26,7 +26,7 @@ module.exports = async function handler(req, res) {
       'en/utilisateur/867',
       'en/utilisateur/271',
     ]);
-    const normalizedPath = String(rawPath || '').replace(/^\\/+|\\/+$/g, '');
+    const normalizedPath = String(rawPath || '').replace(/^\/+|\/+$/g, '');
     if (!deletedProfiles.has(normalizedPath)) {
       return res.status(404).send('Not Found');
     }
