@@ -450,31 +450,31 @@
   "rewrites": [
     {
       "source": "/fr/utilisateur/258",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=fr/utilisateur/258"
     },
     {
       "source": "/fr/utilisateur/778",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=fr/utilisateur/778"
     },
     {
       "source": "/fr/utilisateur/295",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=fr/utilisateur/295"
     },
     {
       "source": "/fr/utilisateur/858",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=fr/utilisateur/858"
     },
     {
       "source": "/en/utilisateur/66",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=en/utilisateur/66"
     },
     {
       "source": "/en/utilisateur/867",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=en/utilisateur/867"
     },
     {
       "source": "/en/utilisateur/271",
-      "destination": "/api/legacy-gone"
+      "destination": "/api/product-router?gone=1&path=en/utilisateur/271"
     },
     {
       "source": "/api/maps-autocomplete",

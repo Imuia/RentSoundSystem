@@ -13,22 +13,32 @@ const SUPABASE_ANON_KEY =
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 module.exports = async function handler(req, res) {
+  // Exact legacy profile retirement. This branch is isolated from product lookup.
+  const gone = Array.isArray(req.query.gone) ? req.query.gone[0] : req.query.gone;
+  if (gone === '1') {
+    const rawPath = Array.isArray(req.query.path) ? req.query.path[0] : req.query.path;
+    const deletedProfiles = new Set([
+      'fr/utilisateur/258',
+      'fr/utilisateur/778',
+      'fr/utilisateur/295',
+      'fr/utilisateur/858',
+      'en/utilisateur/66',
+      'en/utilisateur/867',
+      'en/utilisateur/271',
+    ]);
+    const normalizedPath = String(rawPath || '').replace(/^\\/+|\\/+$/g, '');
+    if (!deletedProfiles.has(normalizedPath)) {
+      return res.status(404).send('Not Found');
+    }
+    res.setHeader('X-Robots-Tag', 'noindex, nofollow');
+    res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=3600');
+    res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    return res.status(410).send('Gone');
+  }
+
   if (req.method !== 'GET' && req.method !== 'HEAD') {
     res.setHeader('Allow', 'GET, HEAD');
     return res.status(405).send('Method Not Allowed');
-  }
-
-  // Legacy URL compatibility: /fr/:category/louer-:slug-:originalId
-  // The old endpoint redirected these URLs to the canonical product route.
-  if (String(req.query?.legacy || '') === '1') {
-    const legacySlug = Array.isArray(req.query.slug) ? req.query.slug[0] : req.query.slug;
-   const match = String(legacySlug || '').trim().match(/^(.+)-(\d+)$/);
-    if (!match) return res.status(404).send('Not Found');
-
-    const targetUrl = `/produit/${match[2]}/${match[1]}`;
-    if (typeof res.redirect === 'function') return res.redirect(301, targetUrl);
-    res.setHeader('Location', targetUrl);
-    return res.status(301).end();
   }
 
   const originalId = Array.isArray(req.query.original_id)
