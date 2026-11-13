@@ -449,6 +449,34 @@
   ],
   "rewrites": [
     {
+      "source": "/fr/utilisateur/258",
+      "destination": "/api/legacy-gone"
+    },
+    {
+      "source": "/fr/utilisateur/778",
+      "destination": "/api/legacy-gone"
+    },
+    {
+      "source": "/fr/utilisateur/295",
+      "destination": "/api/legacy-gone"
+    },
+    {
+      "source": "/fr/utilisateur/858",
+      "destination": "/api/legacy-gone"
+    },
+    {
+      "source": "/en/utilisateur/66",
+      "destination": "/api/legacy-gone"
+    },
+    {
+      "source": "/en/utilisateur/867",
+      "destination": "/api/legacy-gone"
+    },
+    {
+      "source": "/en/utilisateur/271",
+      "destination": "/api/legacy-gone"
+    },
+    {
       "source": "/api/maps-autocomplete",
       "destination": "/api/maps?mode=autocomplete"
     },
