@@ -31,19 +31,18 @@ window.RSS_ADMIN_CONFIG = {
       location: ['event_city', 'city', 'delivery_city', 'location']
     },
     orders: {
-      label: 'Commandes',
-      source: 'orders',
-      directTable: null,
-      disabledReason: 'Source Commandes non configurée : la table reservations ne doit pas être utilisée comme table de commandes.',
+      label: 'Demandes de devis',
+      source: 'quote_requests',
+      directTable: 'quote_requests',
       readOnly: true,
       statusOptions: [],
-      id: ['id', 'order_id'],
-      title: ['reference', 'order_reference', 'reservation_number', 'equipment_name', 'product_name', 'title', 'id'],
-      subtitle: ['customer_name', 'customer_email', 'client_name', 'subtitle'],
-      status: ['status', 'reservation_status'],
-      amount: ['total_price', 'amount', 'total', 'total_amount'],
-      date: ['created_at', 'start_date', 'date'],
-      location: ['event_city', 'city', 'location']
+      id: ['id'],
+      title: ['full_name', 'company_name', 'email', 'id'],
+      subtitle: ['email', 'phone', 'company_name'],
+      status: ['status'],
+      amount: [],
+      date: ['created_at', 'event_date'],
+      location: ['event_city']
     },
     listings: {
       label: 'Annonces & matériel',
