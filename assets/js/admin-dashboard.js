@@ -91,7 +91,7 @@
       const names = ['reservations', 'orders', 'listings', 'payments', 'partners', 'logs'];
       const entries = await Promise.all(names.map(async name => {
         try { return [name, await A.listResource(name, { limit: A.config.maxRows || 2000 })]; }
-        catch (error) { console.warn(`[RSS Admin] ${name}`, error); return [name, []]; }
+        catch (error) { console.warn(`[RSS Admin] ${name}`, error); return [name, null]; }
       }));
       const results = Object.fromEntries(entries);
 
@@ -123,7 +123,10 @@
       });
       drawRevenueChart(revenueValues);
       renderActivities(results.logs || []);
-      if (integration) integration.textContent = 'Données réelles synchronisées via les fonctions Supabase administrateur.';
+      const unavailable = ['orders', 'payments'].filter(name => results[name] === null);
+      if (integration) integration.textContent = unavailable.length
+        ? `Données partielles : sources à configurer (${unavailable.join(', ')}). Les montants et commandes ne sont pas calculés à partir des réservations.`
+        : 'Données chargées depuis les sources Supabase accessibles à votre compte administrateur.';
     } catch (error) {
       console.error('[RSS Admin] dashboard', error);
       if (integration) integration.textContent = `Erreur de synchronisation : ${error.message || 'inconnue'}`;

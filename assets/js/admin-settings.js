@@ -23,14 +23,14 @@
     try {
       const settings = await A.getSettings();
       apply(settings);
-      status.textContent = 'Paramètres partagés chargés depuis Supabase.';
+      status.textContent = 'Préférences locales chargées sur cet appareil.';
     } catch (error) {
       console.warn('[RSS Admin] paramètres Supabase', error);
       try {
         const local = JSON.parse(localStorage.getItem('rss_admin_preferences') || '{}');
         apply(local);
       } catch {}
-      status.textContent = 'Paramètres Supabase indisponibles : affichage des préférences locales.';
+      status.textContent = 'Préférences locales affichées sur cet appareil.';
     }
   }
 
@@ -46,12 +46,12 @@
       await A.saveSettings(settings);
       localStorage.setItem('rss_admin_preferences', JSON.stringify(settings));
       document.documentElement.dataset.adminDensity = settings.density;
-      A.toast('Paramètres partagés enregistrés', 'success');
-      status.textContent = 'Paramètres enregistrés dans Supabase.';
+      A.toast('Préférences enregistrées sur cet appareil', 'success');
+      status.textContent = 'Préférences locales enregistrées sur cet appareil.';
     } catch (error) {
       console.error(error);
       localStorage.setItem('rss_admin_preferences', JSON.stringify(settings));
-      A.toast('Supabase indisponible : préférences enregistrées localement', 'error');
+      A.toast('Préférences locales enregistrées sur cet appareil', 'success');
       status.textContent = `Échec Supabase : ${error.message || 'erreur inconnue'}`;
     } finally {
       saveButton.disabled = false;

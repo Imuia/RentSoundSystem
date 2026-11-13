@@ -225,7 +225,10 @@
     const resource = config.resources?.[resourceName];
     if (!resource) throw new Error(`Ressource inconnue : ${resourceName}`);
     state.currentResource = resourceName;
-    const result = await tryTable(resource.tables, options);
+    if (resource.disabledReason) throw new Error(resource.disabledReason);
+    const tables = Array.isArray(resource.tables) ? resource.tables : (resource.directTable ? [resource.directTable] : []);
+    if (!tables.length) throw new Error(`Aucune table configurée pour ${resourceName}`);
+    const result = await tryTable(tables, options);
     state.currentTable = result.table;
     state.rows = result.rows;
     state.filtered = result.rows;
@@ -323,6 +326,49 @@
     return row;
   }
 
+  async function listResource(resourceName, options = {}) {
+    const result = await loadResource(resourceName, options);
+    return result.rows;
+  }
+
+  async function requireAdmin() {
+    const client = getClient();
+    if (!client?.auth?.getUser || !client?.rpc) {
+      toast('Connexion administrateur indisponible. Connectez-vous à nouveau.', 'error');
+      window.location.href = config.loginUrl || '/connexion-inscription.html';
+      return false;
+    }
+    try {
+      const { data: userData, error: userError } = await client.auth.getUser();
+      if (userError || !userData?.user) throw userError || new Error('Session absente');
+      state.user = userData.user;
+      const { data: role, error: roleError } = await client.rpc('my_admin_role');
+      if (roleError) throw new Error('Vérification du rôle administrateur impossible.');
+      if (!(config.allowedAdminRoles || ['admin', 'super_admin']).includes(String(role || ''))) {
+        throw new Error('Accès réservé aux administrateurs.');
+      }
+      $$('[data-admin-email], #admin-email').forEach(el => { el.textContent = state.user.email || 'Administrateur'; });
+      return true;
+    } catch (error) {
+      console.warn('[RSS Admin] accès refusé:', error);
+      toast(error.message || 'Accès administrateur refusé.', 'error');
+      window.location.href = config.loginUrl || '/connexion-inscription.html';
+      return false;
+    }
+  }
+
+  function getSettings() {
+    const defaults = { pageSize: config.pageSize || 20, density: 'comfortable', siteUrl: config.siteUrl || '', supportEmail: config.supportEmail || '' };
+    try { return Promise.resolve({ ...defaults, ...JSON.parse(localStorage.getItem('rss_admin_preferences') || '{}') }); }
+    catch { return Promise.resolve(defaults); }
+  }
+
+  function saveSettings(settings) {
+    localStorage.setItem('rss_admin_preferences', JSON.stringify(settings));
+    state.pageSize = Number(settings.pageSize || state.pageSize);
+    return Promise.resolve(settings);
+  }
+
   function getIntegrationState() {
     return {
       connected: Boolean(getClient()),
@@ -346,6 +392,10 @@
     toast,
     tryTable,
     loadResource,
+    listResource,
+    requireAdmin,
+    getSettings,
+    saveSettings,
     rowView,
     filterRows,
     exportRows,

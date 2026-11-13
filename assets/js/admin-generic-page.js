@@ -102,13 +102,13 @@
       const q = new URLSearchParams(location.search).get('q');
       if (q && searchInput && !searchInput.value) searchInput.value = q;
       A.state.search = searchInput?.value || '';
-      if (integrationNote) integrationNote.textContent = `${A.state.rows.length} enregistrement(s) chargé(s) via les fonctions administrateur sécurisées.`;
+      if (integrationNote) integrationNote.textContent = `${A.state.rows.length} enregistrement(s) chargé(s) depuis ${A.state.currentTable || 'la source configurée'}.`;
       render();
     } catch (error) {
       console.error(`[RSS Admin] ${resourceName}`, error);
       if (integrationNote) integrationNote.textContent = `Erreur : ${error.message || 'source indisponible'}`;
       empty?.classList.remove('hidden');
-      A.toast('Impossible de charger les données. Exécutez le fichier SQL admin.', 'error');
+      A.toast(error.message || 'Impossible de charger les données.', 'error');
     } finally {
       loading?.classList.add('hidden');
       if (refreshButton) refreshButton.disabled = false;
