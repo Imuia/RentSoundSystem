@@ -168,11 +168,46 @@
   }
 
   async function loadProfile() {
+    const metadata = state.user?.user_metadata || {};
+    const fallbackName = metadata.full_name || state.user?.email?.split("@")[0] || "Client";
     try {
-      const {data, error} = await state.sb.from("profiles").select("full_name,company_name,email").eq("id",state.user.id).maybeSingle();
-      if (!error && data) state.profile = data;
+      const {data, error} = await state.sb.from("profiles")
+        .select("full_name,company_name,email,role")
+        .eq("id", state.user.id)
+        .maybeSingle();
+      if (error) throw error;
+
+      if (data) {
+        state.profile = data;
+      } else {
+        // Insertion uniquement si le profil est absent : ne jamais écraser un rôle existant.
+        const {error: insertError} = await state.sb.from("profiles").insert({
+          id: state.user.id,
+          email: state.user.email || null,
+          full_name: metadata.full_name || fallbackName,
+          company_name: metadata.company_name || null,
+          role: "client"
+        });
+        if (insertError && insertError.code !== "23505") throw insertError;
+
+        const {data: created, error: reloadError} = await state.sb.from("profiles")
+          .select("full_name,company_name,email,role")
+          .eq("id", state.user.id)
+          .maybeSingle();
+        if (reloadError) throw reloadError;
+        state.profile = created || {
+          full_name: fallbackName,
+          company_name: metadata.company_name || null,
+          email: state.user.email || null
+        };
+      }
     } catch (error) {
-      console.warn("Profil indisponible", error);
+      console.warn("Profil indisponible ou non lisible", error);
+      state.profile = state.profile || {
+        full_name: fallbackName,
+        company_name: metadata.company_name || null,
+        email: state.user?.email || null
+      };
     }
     updateProfileUi();
   }

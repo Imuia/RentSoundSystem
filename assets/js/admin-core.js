@@ -229,6 +229,13 @@
     const tables = Array.isArray(resource.tables) ? resource.tables : (resource.directTable ? [resource.directTable] : []);
     if (!tables.length) throw new Error(`Aucune table configurée pour ${resourceName}`);
     const result = await tryTable(tables, options);
+    // Ne jamais présenter une erreur Supabase comme une liste vide.
+    if (result.error) {
+      state.currentTable = null;
+      state.rows = [];
+      state.filtered = [];
+      throw result.error;
+    }
     state.currentTable = result.table;
     state.rows = result.rows;
     state.filtered = result.rows;
