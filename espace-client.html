@@ -1,1 +1,20 @@
-<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0;url=/espace-client-reservations.html"><title>Espace client – RentSoundSystem</title></head><body><script>location.replace("/espace-client-reservations.html"+window.location.search)</script><p>Votre espace client est maintenant centralisé dans Mes réservations. <a href="/espace-client-reservations.html">Continuer</a></p></body></html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Redirection vers votre espace client – RentSoundSystem</title>
+</head>
+<body>
+  <p>Redirection vers votre espace client…</p>
+  <script>
+    // Conserver le code PKCE (?code=...) OU les jetons de confirmation (#access_token=...).
+    (function () {
+      const target = '/espace-client-reservations.html' + window.location.search + window.location.hash;
+      window.location.replace(target);
+    })();
+  </script>
+  <noscript><a href="/espace-client-reservations.html">Continuer vers mon espace client</a></noscript>
+</body>
+</html>
