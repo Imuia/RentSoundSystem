@@ -74,18 +74,19 @@ window.RSS_ADMIN_CONFIG = {
     },
     payments: {
       label: 'Paiements Stripe',
-      source: 'payments',
-      directTable: null,
-      disabledReason: 'Source Paiements non configurée : aucune table de paiements vérifiée dans les fichiers fournis. Lecture désactivée pour éviter de présenter les réservations comme des paiements.',
+      source: 'reservations',
+      directTable: 'reservations',
+      // N'afficher que les réservations possédant un PaymentIntent Stripe de location.
+      requiredAnyFields: ['rental_payment_intent_id'],
       readOnly: true,
       statusOptions: [],
-      id: ['id', 'payment_id'],
-      title: ['reference', 'order_reference', 'rental_payment_intent_id', 'equipment_name', 'id'],
-      subtitle: ['customer_email', 'email', 'customer_name', 'subtitle'],
-      status: ['payment_status', 'status'],
-      amount: ['total_price', 'amount', 'total', 'total_amount'],
-      date: ['paid_at', 'created_at', 'date'],
-      location: ['event_city', 'city', 'location']
+      id: ['id'],
+      title: ['rental_payment_intent_id', 'equipment_name', 'id'],
+      subtitle: ['customer_name', 'customer_email', 'renter_name'],
+      status: ['payment_status'],
+      amount: ['total_price'],
+      date: ['created_at'],
+      location: []
     },
     invoices: {
       label: 'Factures',

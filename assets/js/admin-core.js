@@ -229,17 +229,18 @@
     const tables = Array.isArray(resource.tables) ? resource.tables : (resource.directTable ? [resource.directTable] : []);
     if (!tables.length) throw new Error(`Aucune table configurée pour ${resourceName}`);
     const result = await tryTable(tables, options);
-    // Ne jamais présenter une erreur Supabase comme une liste vide.
-    if (result.error) {
-      state.currentTable = null;
-      state.rows = [];
-      state.filtered = [];
-      throw result.error;
-    }
+    if (result.error) throw result.error;
     state.currentTable = result.table;
-    state.rows = result.rows;
-    state.filtered = result.rows;
-    return { ...result, resource };
+    const requiredAnyFields = Array.isArray(resource.requiredAnyFields) ? resource.requiredAnyFields : [];
+    const rows = requiredAnyFields.length
+      ? result.rows.filter(row => requiredAnyFields.some(field => {
+          const value = row?.[field];
+          return value !== null && value !== undefined && String(value).trim() !== '';
+        }))
+      : result.rows;
+    state.rows = rows;
+    state.filtered = rows;
+    return { ...result, rows, resource };
   }
 
   function rowView(row, resourceName = state.currentResource) {
