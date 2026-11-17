@@ -314,12 +314,15 @@
               </p>
 </div>
 <!-- Quick Utility Controls -->
-<div class="flex items-center gap-3 self-start md:self-auto">
+<div class="flex items-center gap-3 self-start md:self-auto" id="crm-dashboard-controls">
+ <select id="crm-case-select" aria-label="Choisir un dossier" class="max-w-[190px] rounded bg-[#2a131e] border border-[#4a2133] text-white text-xs px-2 py-2"><option value="">Chargement des dossiers…</option></select>
+ <button type="button" id="crm-refresh" class="h-8 px-3 rounded bg-[#2a131e] border border-[#4a2133] text-white text-xs font-semibold">Actualiser</button>
+ <button type="button" id="crm-import" class="h-8 px-3 rounded bg-[#fc036f] text-white text-xs font-bold">Importer les devis</button>
 <div class="flex items-center rounded bg-[#2a131e] border border-[#4a2133] p-1 text-xs">
-<button class="px-2.5 py-1 rounded bg-[#fc036f] text-white font-semibold">Vue Dossier</button>
-<button class="px-2.5 py-1 rounded text-[#cd8ea9] hover:text-white">Tableau Kanban</button>
+<button type="button" id="crm-view-dossier" class="px-2.5 py-1 rounded bg-[#fc036f] text-white font-semibold">Vue Dossier</button>
+<button type="button" id="crm-view-kanban" class="px-2.5 py-1 rounded text-[#cd8ea9] hover:text-white">Tableau Kanban</button>
 </div>
-<button class="flex items-center gap-2 h-8 px-3 rounded bg-[#2a131e] hover:bg-[#3d192a] border border-[#4a2133] text-white text-xs font-semibold">
+<button type="button" id="crm-partner-filter" class="flex items-center gap-2 h-8 px-3 rounded bg-[#2a131e] hover:bg-[#3d192a] border border-[#4a2133] text-white text-xs font-semibold">
 <span class="material-symbols-outlined text-sm">filter_list</span>
 <span>Partenaires (Tous)</span>
 </button>
@@ -330,77 +333,77 @@
 <div class="border-b border-[#2a131e] bg-[#180b12]/90 sticky top-0 z-30 px-6 lg:px-8 py-3.5 backdrop-blur-md">
 <div class="flex items-center justify-between gap-2 overflow-x-auto pb-1.5 scrollbar-thin">
 <!-- Step 1 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="0" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">1</span>
 <span class="text-xs font-medium">Nouveau lead</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">4</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 2 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="1" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">2</span>
 <span class="text-xs font-medium">Qualification</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">3</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 3 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="2" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">3</span>
 <span class="text-xs font-medium">Vérif. société</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">2</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 4 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="3" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">4</span>
 <span class="text-xs font-medium">Demande part.</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">5</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 5 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="4" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">5</span>
 <span class="text-xs font-medium">Réception devis</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">3</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 6 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="5" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">6</span>
 <span class="text-xs font-medium">Envoi devis</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">2</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 7 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="6" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">7</span>
 <span class="text-xs font-medium">Paiement + caution</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">4</span>
 </div>
 <span class="text-[#fc036f] shrink-0 material-symbols-outlined text-sm">arrow_forward</span>
 <!-- Step 8 (ACTIVE FOCUS STAGE) -->
-<div class="flex items-center shrink-0 gap-2 px-3.5 py-1.5 rounded bg-[#fc036f] text-white shadow-[0_0_15px_rgba(252,3,111,0.5)] border border-[#ff4d80] ring-1 ring-white/30 cursor-pointer">
+<div data-crm-stage="7" class="flex items-center shrink-0 gap-2 px-3.5 py-1.5 rounded bg-[#fc036f] text-white shadow-[0_0_15px_rgba(252,3,111,0.5)] border border-[#ff4d80] ring-1 ring-white/30 cursor-pointer">
 <span class="size-4 rounded-full bg-white text-[9px] font-black text-[#660028] flex items-center justify-center">8</span>
 <span class="text-xs font-bold uppercase tracking-wider">Réservation confirmée</span>
 <span class="text-[10px] font-black bg-white/25 px-1.5 rounded text-white">6</span>
 </div>
 <span class="text-[#fc036f] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 9 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="8" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">9</span>
 <span class="text-xs font-medium">Livraison</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">2</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 10 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="9" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">10</span>
 <span class="text-xs font-medium">Retour matériel</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">1</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 11 -->
-<div class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
+<div data-crm-stage="10" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">11</span>
 <span class="text-xs font-medium">Caution libérée</span>
 <span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">8</span>
@@ -417,20 +420,20 @@
 <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-[#4a2133] pb-6">
 <div class="flex flex-col gap-2">
 <div class="flex flex-wrap items-center gap-2.5">
-<span class="px-2 py-0.5 rounded bg-[#fc036f] text-white text-[11px] font-bold uppercase tracking-wider">
+<span id="crm-case-stage-badge" class="px-2 py-0.5 rounded bg-[#fc036f] text-white text-[11px] font-bold uppercase tracking-wider">
                     Étape 8 / 11 : Confirmé
                   </span>
-<span class="px-2 py-0.5 rounded bg-[#331522] text-[#ffb2bf] border border-[#ff4d80]/30 text-[11px] font-semibold">
+<span id="crm-case-reference" class="px-2 py-0.5 rounded bg-[#331522] text-[#ffb2bf] border border-[#ff4d80]/30 text-[11px] font-semibold">
                     REF-2024-FEH-09
                   </span>
-<span class="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[11px] font-semibold flex items-center gap-1">
+<span id="crm-deposit-badge" class="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[11px] font-semibold flex items-center gap-1">
 <span class="size-1.5 rounded-full bg-emerald-400"></span> Caution Séquestrée (15 000 €)
                   </span>
 </div>
-<h2 class="text-white text-2xl lg:text-3xl font-extrabold font-['Manrope'] tracking-tight">
+<h2 id="crm-case-title" class="text-white text-2xl lg:text-3xl font-extrabold font-['Manrope'] tracking-tight">
                   Festival Electro L'Horizon 2024
                 </h2>
-<div class="flex flex-wrap items-center gap-4 text-xs text-[#cd8ea9]">
+<div id="crm-case-meta" class="flex flex-wrap items-center gap-4 text-xs text-[#cd8ea9]">
 <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">location_on</span> Domaine de Saint-Cloud, Paris</span>
 <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">calendar_today</span> 14 Juin - 17 Juin 2024 (4 Jours)</span>
 <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">corporate_fare</span> SARL Horizon Prod (Siret: 893 204 112)</span>
@@ -465,19 +468,19 @@
 <div class="bg-[#1a0c13] rounded border border-[#4a2133] p-3.5 flex flex-col gap-2.5 text-xs">
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Line Array Principal</span>
-<span class="text-white font-mono font-semibold">16x L-Acoustics K2</span>
+<span class="text-white font-mono font-semibold">—</span>
 </div>
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Subwoofers Infra</span>
-<span class="text-white font-mono font-semibold">12x KS28 (Cardioïde)</span>
+<span class="text-white font-mono font-semibold">—</span>
 </div>
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Amplification &amp; DSP</span>
-<span class="text-white font-mono font-semibold">6x LA12X en Racks Touring</span>
+<span class="text-white font-mono font-semibold">—</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="text-[#cd8ea9]">Régie FOH / Monitors</span>
-<span class="text-white font-mono font-semibold">DiGiCo SD12 + 2x Waves Extreme</span>
+<span class="text-white font-mono font-semibold">—</span>
 </div>
 </div>
 </div>
@@ -491,20 +494,20 @@
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Fournisseur Agréé</span>
 <span class="text-white font-semibold flex items-center gap-1.5">
-<span class="size-2 rounded-full bg-emerald-400"></span> Novelty Grand Paris
+<span class="size-2 rounded-full bg-emerald-400"></span> —
                     </span>
 </div>
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Dépôt de chargement</span>
-<span class="text-white font-mono">Hub Logistique Longjumeau</span>
+<span class="text-white font-mono">—</span>
 </div>
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Fenêtre de livraison</span>
-<span class="text-[#ffb2bf] font-medium">14/06 à 07:30 (Direct site)</span>
+<span class="text-[#ffb2bf] font-medium">—</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="text-[#cd8ea9]">Responsable Technique</span>
-<span class="text-white font-semibold">Marc V. (+33 6 42 19 88 02)</span>
+<span class="text-white font-semibold">—</span>
 </div>
 </div>
 </div>
@@ -517,19 +520,19 @@
 <div class="bg-[#1a0c13] rounded border border-[#4a2133] p-3.5 flex flex-col gap-2.5 text-xs">
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Total Devis Matériel HT</span>
-<span class="text-white font-mono font-bold text-sm">34 250,00 €</span>
+<span class="text-white font-mono font-bold text-sm">—</span>
 </div>
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Acompte 50% encaissé</span>
-<span class="text-emerald-400 font-mono font-semibold">Reçu (Stripe B2B)</span>
+<span class="text-emerald-400 font-mono font-semibold">À confirmer</span>
 </div>
 <div class="flex justify-between items-center pb-2 border-b border-[#351825]">
 <span class="text-[#cd8ea9]">Caution Empreinte CB</span>
-<span class="text-[#ffb2bf] font-mono font-semibold">15 000,00 € (Swikly Validé)</span>
+<span class="text-[#ffb2bf] font-mono font-semibold">À confirmer</span>
 </div>
 <div class="flex justify-between items-center">
 <span class="text-[#cd8ea9]">Solde restant à J-1</span>
-<span class="text-amber-400 font-mono font-semibold">17 125,00 € TTC</span>
+<span class="text-amber-400 font-mono font-semibold">—</span>
 </div>
 </div>
 </div>
@@ -537,25 +540,25 @@
 <!-- Contextual Operational Action Buttons for Step 8 -->
 <div class="flex flex-wrap items-center justify-between gap-4 pt-6">
 <div class="flex flex-wrap items-center gap-2">
-<button class="flex items-center gap-1.5 h-9 px-4 bg-[#fc036f] hover:bg-[#ff1a7d] text-white text-xs font-bold rounded shadow-[0_0_12px_rgba(252,3,111,0.4)] transition-all">
+<button type="button" id="crm-action-next" class="flex items-center gap-1.5 h-9 px-4 bg-[#fc036f] hover:bg-[#ff1a7d] text-white text-xs font-bold rounded shadow-[0_0_12px_rgba(252,3,111,0.4)] transition-all">
 <span class="material-symbols-outlined text-base">local_shipping</span>
 <span>Déclencher Étape 9 : Ordre de Livraison</span>
 </button>
-<button class="flex items-center gap-1.5 h-9 px-3.5 bg-[#331522] hover:bg-[#4a2133] border border-[#ff4d80]/40 text-[#ffb2bf] hover:text-white text-xs font-semibold rounded transition-all">
+<button type="button" id="crm-action-pdf" class="flex items-center gap-1.5 h-9 px-3.5 bg-[#331522] hover:bg-[#4a2133] border border-[#ff4d80]/40 text-[#ffb2bf] hover:text-white text-xs font-semibold rounded transition-all">
 <span class="material-symbols-outlined text-base">download</span>
 <span>Bordereau Préparation PDF</span>
 </button>
-<button class="flex items-center gap-1.5 h-9 px-3.5 bg-[#331522] hover:bg-[#4a2133] border border-[#ff4d80]/40 text-[#ffb2bf] hover:text-white text-xs font-semibold rounded transition-all">
+<button type="button" id="crm-action-call" class="flex items-center gap-1.5 h-9 px-3.5 bg-[#331522] hover:bg-[#4a2133] border border-[#ff4d80]/40 text-[#ffb2bf] hover:text-white text-xs font-semibold rounded transition-all">
 <span class="material-symbols-outlined text-base">call</span>
 <span>Contacter Régisseur Client</span>
 </button>
 </div>
 <div class="flex items-center gap-2 text-xs">
-<button class="px-3 py-2 rounded bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-red-300 font-medium transition-colors flex items-center gap-1">
+<button type="button" id="crm-action-dispute" class="px-3 py-2 rounded bg-red-950/40 hover:bg-red-900/60 border border-red-500/30 text-red-300 font-medium transition-colors flex items-center gap-1">
 <span class="material-symbols-outlined text-sm">report_problem</span>
                   Signaler Anomalie / Litige
                 </button>
-<button class="size-9 rounded bg-[#2a131e] border border-[#4a2133] text-white hover:border-[#fc036f] flex items-center justify-center">
+<button type="button" id="crm-action-more" class="size-9 rounded bg-[#2a131e] border border-[#4a2133] text-white hover:border-[#fc036f] flex items-center justify-center">
 <span class="material-symbols-outlined text-base">more_horiz</span>
 </button>
 </div>
@@ -572,7 +575,7 @@
 </div>
 <span class="text-[11px] text-[#cd8ea9]">Horodatage certifié blockchain interne</span>
 </div>
-<div class="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#4a2133]">
+<div id="crm-timeline" class="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#4a2133]">
 <!-- Event 1 (Latest) -->
 <div class="relative group">
 <div class="absolute -left-6 top-1 size-3.5 rounded-full bg-[#fc036f] ring-4 ring-[#1c0d14]"></div>
@@ -624,7 +627,7 @@
 <span class="text-xs text-[#fc036f] font-semibold cursor-pointer hover:underline">Voir tout (31)</span>
 </div>
 <!-- List Mini Items -->
-<div class="flex flex-col gap-3">
+<div id="crm-other-cases" class="flex flex-col gap-3">
 <div class="p-3 rounded bg-[#231018] border border-[#4a2133]/60 hover:border-[#fc036f]/60 transition-all cursor-pointer">
 <div class="flex justify-between items-start mb-1">
 <span class="text-xs font-bold text-white">Warehouse Rave Nord #4</span>
@@ -675,6 +678,6 @@
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
 
-<script src="/assets/js/admin-crm-workflow.js?v=20261117-buttons"></script>
+<script src="/assets/js/admin-crm-workflow-dashboard.js?v=20261117-v1"></script>
 </body>
 </html>
