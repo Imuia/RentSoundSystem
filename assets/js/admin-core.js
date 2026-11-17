@@ -180,6 +180,123 @@
     }
 
     $('[data-refresh-page]')?.addEventListener('click', () => window.location.reload());
+
+    setupAdminSidebarAccount();
+  }
+
+  function setupAdminSidebarAccount() {
+    const footer = $('.admin-sidebar-footer');
+    if (!footer) return;
+
+    if (!$('#rss-admin-logout-style')) {
+      const style = document.createElement('style');
+      style.id = 'rss-admin-logout-style';
+      style.textContent = `
+        .admin-sidebar-footer .admin-profile-mini {
+          color: #ffffff !important;
+          background: rgba(255,255,255,.075) !important;
+          border: 1px solid rgba(255,255,255,.12) !important;
+          border-radius: 14px;
+          padding: 12px;
+          gap: 10px;
+        }
+        .admin-sidebar-footer .admin-profile-mini strong {
+          display: block;
+          color: #ffffff !important;
+          font-size: 13px;
+          font-weight: 800;
+          line-height: 1.35;
+        }
+        .admin-sidebar-footer .admin-profile-mini [data-admin-email] {
+          display: block;
+          color: #e5e7eb !important;
+          font-size: 12px;
+          line-height: 1.45;
+          overflow-wrap: anywhere;
+          opacity: 1 !important;
+        }
+        .admin-sidebar-footer .security-note {
+          color: #f3f4f6 !important;
+          background: rgba(252,3,109,.12) !important;
+          border-left: 3px solid #fc036d;
+          border-radius: 0 10px 10px 0;
+          padding: 10px 12px;
+          font-size: 11px;
+          line-height: 1.55;
+          opacity: 1 !important;
+        }
+        .admin-sidebar-footer .security-note strong {
+          color: #ffffff !important;
+          font-weight: 800;
+        }
+        .admin-sidebar-logout {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 9px;
+          width: 100%;
+          min-height: 42px;
+          margin-top: 10px;
+          padding: 10px 12px;
+          border: 1px solid rgba(252,3,109,.55);
+          border-radius: 10px;
+          background: #fc036d;
+          color: #ffffff;
+          font: 800 13px/1.2 Inter, Arial, sans-serif;
+          cursor: pointer;
+          transition: background .18s ease, transform .18s ease, opacity .18s ease;
+        }
+        .admin-sidebar-logout:hover {
+          background: #df005d;
+          transform: translateY(-1px);
+        }
+        .admin-sidebar-logout:disabled {
+          cursor: wait;
+          opacity: .65;
+          transform: none;
+        }
+        .admin-sidebar-logout .material-symbols-outlined {
+          font-size: 18px;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    let button = $('#rss-admin-logout');
+    if (!button) {
+      button = document.createElement('button');
+      button.type = 'button';
+      button.id = 'rss-admin-logout';
+      button.className = 'admin-sidebar-logout';
+      button.innerHTML = '<span class="material-symbols-outlined" aria-hidden="true">logout</span><span>Déconnexion</span>';
+      button.setAttribute('aria-label', 'Se déconnecter du compte administrateur');
+      footer.appendChild(button);
+    }
+
+    if (button.dataset.bound === 'true') return;
+    button.dataset.bound = 'true';
+    button.addEventListener('click', async () => {
+      const client = getClient();
+      if (!client?.auth?.signOut) {
+        toast('Service de déconnexion indisponible. Rechargez la page.', 'error');
+        return;
+      }
+
+      button.disabled = true;
+      const label = button.querySelector('span:last-child');
+      if (label) label.textContent = 'Déconnexion…';
+
+      try {
+        const { error } = await client.auth.signOut({ scope: 'local' });
+        if (error) throw error;
+        window.location.replace(config.loginUrl || '/connexion-inscription.html');
+      } catch (error) {
+        console.error('[RSS Admin] Déconnexion impossible:', error);
+        toast(error.message || 'La déconnexion a échoué. Réessayez.', 'error');
+        button.disabled = false;
+        if (label) label.textContent = 'Déconnexion';
+      }
+    });
   }
 
   async function detectUser() {
@@ -229,18 +346,10 @@
     const tables = Array.isArray(resource.tables) ? resource.tables : (resource.directTable ? [resource.directTable] : []);
     if (!tables.length) throw new Error(`Aucune table configurée pour ${resourceName}`);
     const result = await tryTable(tables, options);
-    if (result.error) throw result.error;
     state.currentTable = result.table;
-    const requiredAnyFields = Array.isArray(resource.requiredAnyFields) ? resource.requiredAnyFields : [];
-    const rows = requiredAnyFields.length
-      ? result.rows.filter(row => requiredAnyFields.some(field => {
-          const value = row?.[field];
-          return value !== null && value !== undefined && String(value).trim() !== '';
-        }))
-      : result.rows;
-    state.rows = rows;
-    state.filtered = rows;
-    return { ...result, rows, resource };
+    state.rows = result.rows;
+    state.filtered = result.rows;
+    return { ...result, resource };
   }
 
   function rowView(row, resourceName = state.currentResource) {
