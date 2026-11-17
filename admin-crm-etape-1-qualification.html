@@ -169,6 +169,25 @@
   }
 </style>
 
+
+<style id="rss-crm-qualification-spacing">
+  .crm-stitch-content > .max-w-\[1280px\] { width:100%; max-width:1280px; padding:clamp(14px,2.2vw,30px); box-sizing:border-box; }
+  #crm-qualification-form { min-width:0; }
+  #crm-qualification-form .grid { min-width:0; }
+  #crm-qualification-form .glass-panel { min-width:0; padding:clamp(16px,2vw,28px); }
+  #crm-qualification-form input, #crm-qualification-form textarea, #crm-qualification-form select { min-width:0; width:100%; box-sizing:border-box; }
+  #crm-qualification-form label { line-height:1.4; }
+  #crm-qualification-form .form-input { min-height:44px; border-radius:8px; }
+  #crm-qualification-form textarea.form-input { min-height:76px; }
+  @media(max-width:760px){
+    .crm-stitch-content > .max-w-\[1280px\] { padding:14px; }
+    #crm-qualification-form .glass-panel { padding:16px; }
+    #crm-qualification-form .grid { column-gap:12px; row-gap:14px; }
+    #crm-qualification-form .space-y-5 > :not([hidden]) ~ :not([hidden]) { margin-top:16px; }
+    #crm-qualification-form .font-headline-md { font-size:19px; line-height:1.3; }
+  }
+</style>
+
 </head>
 <body data-admin-page="crm">
 <div class="admin-app">
@@ -238,13 +257,15 @@
       <div class="crm-stitch-content">
         
 <div class="max-w-[1280px] mx-auto">
+<!-- Dossier CRM actif : les champs sont chargés depuis le dossier sélectionné -->
+<div id="crm-case-context" class="mb-5 rounded-xl border border-[#4a2133] bg-[#1c0d14] px-4 py-3 text-sm text-[#cd8ea9]" role="status">Chargement du dossier CRM…</div>
 <!-- Page Header & Progress -->
 <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
 <div>
 <div class="flex items-center gap-2 mb-2">
 <span class="px-3 py-1 rounded-full bg-surface-container-highest border border-surface-glass-border text-primary font-label-caps text-label-caps flex items-center gap-1">
 <span class="material-symbols-outlined text-[14px]">radio_button_checked</span>
-                                Step 1/9
+                                Étape 2/12
                             </span>
 </div>
 <h2 class="font-headline-lg text-headline-lg text-on-surface">Étape 1 : Qualification du Client</h2>
@@ -252,7 +273,7 @@
 </div>
 </div>
 <!-- Form Section -->
-<form class="space-y-6">
+<form id="crm-qualification-form" class="space-y-6" novalidate>
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-card-gap">
 <!-- Col 1: Coordonnées du Client -->
 <div class="glass-panel rounded-xl p-6 md:p-8">
@@ -264,21 +285,21 @@
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Prénom</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Ex: Jean" type="text"/>
+<input name="first_name" id="crm-first-name" autocomplete="given-name" required class="w-full rounded lg p-3 form-input" placeholder="Ex: Jean" type="text"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Nom</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Ex: Dupont" type="text"/>
+<input name="last_name" id="crm-last-name" autocomplete="family-name" required class="w-full rounded lg p-3 form-input" placeholder="Ex: Dupont" type="text"/>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Société</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Nom de l'entreprise" type="text"/>
+<input name="company_name" id="crm-company" autocomplete="organization" class="w-full rounded lg p-3 form-input" placeholder="Nom de l'entreprise" type="text"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Fonction</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Rôle/Titre" type="text"/>
+<input name="job_title" id="crm-job-title" class="w-full rounded lg p-3 form-input" placeholder="Rôle/Titre" type="text"/>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -286,29 +307,29 @@
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Téléphone</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-muted text-[18px]">call</span>
-<input class="w-full rounded lg py-3 pr-3 pl-10 form-input" placeholder="+33 6 00 00 00 00" type="tel"/>
+<input name="client_phone" id="crm-client-phone" autocomplete="tel" class="w-full rounded lg py-3 pr-3 pl-10 form-input" placeholder="+33 6 00 00 00 00" type="tel"/>
 </div>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Email</label>
 <div class="relative">
 <span class="material-symbols-outlined absolute left-3 top-3 text-on-surface-muted text-[18px]">mail</span>
-<input class="w-full rounded lg py-3 pr-3 pl-10 form-input" placeholder="contact@domaine.com" type="email"/>
+<input name="client_email" id="crm-client-email" autocomplete="email" class="w-full rounded lg py-3 pr-3 pl-10 form-input" placeholder="contact@domaine.com" type="email"/>
 </div>
 </div>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Adresse de facturation</label>
-<textarea class="w-full rounded lg p-3 form-input" placeholder="Adresse complète" rows="2"></textarea>
+<textarea name="billing_address" id="crm-billing-address" autocomplete="street-address" class="w-full rounded lg p-3 form-input" placeholder="Adresse complète" rows="2"></textarea>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Site Web</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="https://..." type="url"/>
+<input name="website" id="crm-website" class="w-full rounded lg p-3 form-input" placeholder="https://..." type="url"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Réseaux Sociaux</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Liens (Insta, FB...)" type="text"/>
+<input name="social_links" id="crm-social-links" class="w-full rounded lg p-3 form-input" placeholder="Liens (Insta, FB...)" type="text"/>
 </div>
 </div>
 </div>
@@ -323,32 +344,32 @@
 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Date</label>
-<input class="w-full rounded lg p-3 form-input" type="date"/>
+<input name="event_date" id="crm-event-date" class="w-full rounded lg p-3 form-input" type="date"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Heure Livraison</label>
-<input class="w-full rounded lg p-3 form-input" type="time"/>
+<input name="delivery_time" id="crm-delivery-time" class="w-full rounded lg p-3 form-input" type="time"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Heure Récupération</label>
-<input class="w-full rounded lg p-3 form-input" type="time"/>
+<input name="pickup_time" id="crm-pickup-time" class="w-full rounded lg p-3 form-input" type="time"/>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Ville</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Lieu de l'événement" type="text"/>
+<input name="event_city" id="crm-event-city" class="w-full rounded lg p-3 form-input" placeholder="Lieu de l'événement" type="text"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Adresse Exacte</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Rue, Bâtiment, Salle..." type="text"/>
+<input name="event_address" id="crm-event-address" class="w-full rounded lg p-3 form-input" placeholder="Rue, Bâtiment, Salle..." type="text"/>
 </div>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Type d'Événement</label>
-<select class="w-full rounded lg p-3 form-input appearance-none">
-<option>Sélectionner...</option>
+<select name="event_type" id="crm-event-type" class="w-full rounded lg p-3 form-input appearance-none">
+<option value="" selected>Sélectionner...</option>
 <option>Concert / Festival</option>
 <option>Soirée Privée</option>
 <option>Événement Corporate</option>
@@ -358,35 +379,37 @@
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Nombre Participants</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Estimation" type="number"/>
+<input name="participants" id="crm-participants" min="0" step="1" class="w-full rounded lg p-3 form-input" placeholder="Estimation" type="number"/>
 </div>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Matériel Souhaité</label>
-<textarea class="w-full rounded lg p-3 form-input" placeholder="Système son, platines, micros..." rows="2"></textarea>
+<textarea name="equipment" id="crm-equipment" class="w-full rounded lg p-3 form-input" placeholder="Système son, platines, micros..." rows="2"></textarea>
 </div>
 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Besoins Techniques</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="Ingé son, montage, etc." type="text"/>
+<input name="technical_needs" id="crm-technical-needs" class="w-full rounded lg p-3 form-input" placeholder="Ingé son, montage, etc." type="text"/>
 </div>
 <div>
 <label class="block font-label-caps text-label-caps text-on-surface-variant mb-2">Budget Estimé (€)</label>
-<input class="w-full rounded lg p-3 form-input" placeholder="0.00" type="number"/>
+<input name="estimated_budget" id="crm-estimated-budget" min="0" step="0.01" class="w-full rounded lg p-3 form-input" placeholder="0.00" type="number"/>
 </div>
 </div>
 </div>
 </div>
 </div>
+<div id="crm-qualification-status" class="hidden rounded-lg border px-4 py-3 text-sm" role="status" aria-live="polite"></div>
 <!-- Validation Area -->
 <div class="mt-8 pt-6 border-t border-surface-glass-border flex flex-col md:flex-row items-center justify-between gap-6 bg-surface-container-low p-6 rounded-xl">
 <div class="flex items-center gap-3">
-<input class="w-5 h-5 rounded border-surface-glass-border bg-surface-container-highest text-[#FC036D] focus:ring-[#FC036D] focus:ring-offset-background cursor-pointer" id="verify-info" type="checkbox"/>
+<input class="w-5 h-5 rounded border-surface-glass-border bg-surface-container-highest text-[#FC036D] focus:ring-[#FC036D] focus:ring-offset-background cursor-pointer" id="verify-info" name="information_verified" required type="checkbox"/>
 <label class="font-body-md text-body-md text-on-surface cursor-pointer select-none" for="verify-info">
                                 Informations complètes (Obligatoire)
                             </label>
 </div>
-<button class="w-full md:w-auto bg-magenta text-white px-8 py-3 rounded-lg font-label-caps text-label-caps glow-shadow hover:bg-opacity-90 transition-all flex items-center justify-center gap-2" type="button">
+<button id="crm-qualification-save" class="w-full md:w-auto border border-[#5d3f44] bg-[#2a131e] text-[#ffb2bf] px-6 py-3 rounded-lg font-label-caps text-label-caps hover:bg-[#3d192a] transition-all flex items-center justify-center gap-2" type="button"><span class="material-symbols-outlined">save</span>Enregistrer sans avancer</button>
+<button id="crm-qualification-submit" class="w-full md:w-auto bg-magenta text-white px-8 py-3 rounded-lg font-label-caps text-label-caps glow-shadow hover:bg-opacity-90 transition-all flex items-center justify-center gap-2" type="submit">
 <span class="material-symbols-outlined">check_circle</span>
                             Valider la Qualification
                         </button>
@@ -406,6 +429,6 @@
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
 
-<script src="/assets/js/admin-crm-workflow.js?v=20261117-buttons"></script>
+<script src="/assets/js/admin-crm-stage-qualification.js?v=20261117-1"></script>
 </body>
 </html>
