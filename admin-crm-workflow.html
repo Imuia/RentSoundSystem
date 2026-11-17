@@ -230,6 +230,41 @@
     .crm-stitch-content h2 { line-height: 1.2; }
   }
 </style>
+
+<style id="rss-crm-dashboard-functional-layout">
+  #crm-dashboard-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px;min-width:0;max-width:100%;}
+  #crm-dashboard-controls > *{flex:0 0 auto;white-space:nowrap;min-width:0;}
+  #crm-case-select{width:min(220px,100%);min-width:170px;}
+  #crm-dashboard-status{min-height:15px;margin:2px 0 0;text-align:right;overflow-wrap:anywhere;}
+  #crm-partner-select{min-width:150px;}
+  #crm-kanban-board{min-width:0;}
+  #crm-kanban-board .crm-kanban-column{min-width:230px;max-width:300px;flex:1 0 230px;}
+  #crm-kanban-board .crm-kanban-card{display:block;width:100%;text-align:left;cursor:pointer;}
+  [data-crm-stage]{user-select:none;outline-offset:3px;}
+  [data-crm-stage]:focus-visible,button:focus-visible,select:focus-visible{outline:2px solid #fc036f;outline-offset:2px;}
+  @media(max-width:1350px){
+    .crm-stitch-content > .border-b.bg-\[\#1a0a12\] > .flex{align-items:flex-start;}
+    #crm-dashboard-controls{justify-content:flex-start;width:100%;}
+    #crm-dashboard-status{text-align:left;}
+  }
+  @media(max-width:760px){
+    #crm-dashboard-controls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;}
+    #crm-dashboard-controls > *{width:100%;max-width:none;}
+    #crm-dashboard-controls #crm-case-select{grid-column:1/-1;}
+    #crm-dashboard-controls #crm-dashboard-status{grid-column:1/-1;}
+    #crm-dashboard-controls .flex.items-center.rounded{justify-content:center;}
+    #crm-dashboard-controls .flex.items-center.rounded button{flex:1 1 50%;}
+  }
+  @media print{
+    body{background:#fff!important;color:#111!important;}
+    .admin-sidebar,.admin-topbar,.crm-stage-nav,#crm-dashboard-controls,.crm-stage-nav,button{display:none!important;}
+    .admin-main,.admin-content,.crm-stitch-frame,.crm-stitch-content{width:100%!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important;background:#fff!important;color:#111!important;}
+    #crm-dossier-view{display:block!important;padding:0!important;}
+    #crm-kanban-board{display:none!important;}
+    .crm-stitch-content *{break-inside:avoid;}
+  }
+</style>
+
 </head>
 <body data-admin-page="crm">
 <div class="admin-app">
@@ -326,8 +361,9 @@
 <span class="material-symbols-outlined text-sm">filter_list</span>
 <span>Partenaires (Tous)</span>
 </button>
+ <select id="crm-partner-select" aria-label="Filtrer par partenaire" hidden class="h-8 max-w-[190px] rounded bg-[#2a131e] border border-[#4a2133] text-white text-xs px-2"><option value="">Tous les partenaires</option></select>
 </div>
-</div>
+ <p id="crm-dashboard-status" role="status" aria-live="polite" class="mt-2 text-[11px] text-[#cd8ea9]">Connexion au CRM…</p>
 </div>
 
 <div class="border-b border-[#2a131e] bg-[#180b12]/90 sticky top-0 z-30 px-6 lg:px-8 py-3.5 backdrop-blur-md">
@@ -336,82 +372,82 @@
 <div data-crm-stage="0" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">1</span>
 <span class="text-xs font-medium">Nouveau lead</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">4</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 2 -->
 <div data-crm-stage="1" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">2</span>
 <span class="text-xs font-medium">Qualification</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">3</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 3 -->
 <div data-crm-stage="2" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">3</span>
 <span class="text-xs font-medium">Vérif. société</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">2</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 4 -->
 <div data-crm-stage="3" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">4</span>
 <span class="text-xs font-medium">Demande part.</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">5</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 5 -->
 <div data-crm-stage="4" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">5</span>
 <span class="text-xs font-medium">Réception devis</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">3</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 6 -->
 <div data-crm-stage="5" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">6</span>
 <span class="text-xs font-medium">Envoi devis</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">2</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 7 -->
 <div data-crm-stage="6" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">7</span>
 <span class="text-xs font-medium">Paiement + caution</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">4</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#fc036f] shrink-0 material-symbols-outlined text-sm">arrow_forward</span>
 <!-- Step 8 (ACTIVE FOCUS STAGE) -->
 <div data-crm-stage="7" class="flex items-center shrink-0 gap-2 px-3.5 py-1.5 rounded bg-[#fc036f] text-white shadow-[0_0_15px_rgba(252,3,111,0.5)] border border-[#ff4d80] ring-1 ring-white/30 cursor-pointer">
 <span class="size-4 rounded-full bg-white text-[9px] font-black text-[#660028] flex items-center justify-center">8</span>
 <span class="text-xs font-bold uppercase tracking-wider">Réservation confirmée</span>
-<span class="text-[10px] font-black bg-white/25 px-1.5 rounded text-white">6</span>
+<span class="text-[10px] font-black bg-white/25 px-1.5 rounded text-white">0</span>
 </div>
 <span class="text-[#fc036f] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 9 -->
 <div data-crm-stage="8" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">9</span>
 <span class="text-xs font-medium">Livraison</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">2</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 10 -->
 <div data-crm-stage="9" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">10</span>
 <span class="text-xs font-medium">Retour matériel</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">1</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 <span class="text-[#4a2133] shrink-0 material-symbols-outlined text-sm">chevron_right</span>
 <!-- Step 11 -->
 <div data-crm-stage="10" class="flex items-center shrink-0 gap-2 px-3 py-1.5 rounded bg-[#231018] border border-[#4a2133]/40 text-[#cd8ea9] opacity-80 hover:opacity-100 cursor-pointer">
 <span class="size-4 rounded-full bg-[#4a2133] text-[9px] font-bold text-white flex items-center justify-center">11</span>
 <span class="text-xs font-medium">Caution libérée</span>
-<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">8</span>
+<span class="text-[10px] font-bold bg-[#331522] px-1.5 rounded text-[#ffb2bf]">0</span>
 </div>
 </div>
 </div>
 
-<div class="p-6 lg:p-8 flex flex-col gap-6">
+<div id="crm-dossier-view" class="p-6 lg:p-8 flex flex-col gap-6">
 <!-- ACTIVE DOSSIER HERO CARD : Festival Electro L'Horizon -->
 <div class="rounded bg-gradient-to-b from-[#231018] to-[#190a11] border border-[#5d3f44] p-6 lg:p-7 shadow-2xl relative overflow-hidden">
 <!-- Background Accent Glow -->
@@ -424,19 +460,19 @@
                     Étape 8 / 11 : Confirmé
                   </span>
 <span id="crm-case-reference" class="px-2 py-0.5 rounded bg-[#331522] text-[#ffb2bf] border border-[#ff4d80]/30 text-[11px] font-semibold">
-                    REF-2024-FEH-09
+                    Référence dossier
                   </span>
 <span id="crm-deposit-badge" class="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-[11px] font-semibold flex items-center gap-1">
 <span class="size-1.5 rounded-full bg-emerald-400"></span> Caution Séquestrée (15 000 €)
                   </span>
 </div>
 <h2 id="crm-case-title" class="text-white text-2xl lg:text-3xl font-extrabold font-['Manrope'] tracking-tight">
-                  Festival Electro L'Horizon 2024
+                  Chargement du dossier CRM…
                 </h2>
 <div id="crm-case-meta" class="flex flex-wrap items-center gap-4 text-xs text-[#cd8ea9]">
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">location_on</span> Domaine de Saint-Cloud, Paris</span>
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">calendar_today</span> 14 Juin - 17 Juin 2024 (4 Jours)</span>
-<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">corporate_fare</span> SARL Horizon Prod (Siret: 893 204 112)</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">location_on</span> Ville non renseignée</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">calendar_today</span> Date non renseignée</span>
+<span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-sm text-[#fc036f]">corporate_fare</span> Client non renseigné</span>
 </div>
 </div>
 <!-- SLA Countdown Counter Component -->
@@ -450,10 +486,10 @@
 <span class="material-symbols-outlined text-xs text-[#fc036f]">info</span>
 </div>
 <div class="text-xl font-black font-mono tracking-tight text-white flex items-baseline gap-1">
-<span>14h 22m 09s</span>
+<span>—</span>
 <span class="text-[10px] text-amber-400 font-normal uppercase">Critique</span>
 </div>
-<span class="text-[10px] text-[#cd8ea9]">Assignation du transporteur requise avant J-2</span>
+<span class="text-[10px] text-[#cd8ea9]">Délai à calculer selon le dossier</span>
 </div>
 </div>
 </div>
@@ -573,7 +609,7 @@
 <span class="material-symbols-outlined text-[#fc036f]">timeline</span>
 <h3 class="text-sm font-bold text-white uppercase tracking-wider font-['Manrope']">Journal des Événements &amp; Validations SLA</h3>
 </div>
-<span class="text-[11px] text-[#cd8ea9]">Horodatage certifié blockchain interne</span>
+<span class="text-[11px] text-[#cd8ea9]">Historique des événements enregistrés dans le CRM</span>
 </div>
 <div id="crm-timeline" class="relative pl-6 space-y-6 before:absolute before:left-2 before:top-2 before:bottom-2 before:w-0.5 before:bg-[#4a2133]">
 <!-- Event 1 (Latest) -->
@@ -581,11 +617,11 @@
 <div class="absolute -left-6 top-1 size-3.5 rounded-full bg-[#fc036f] ring-4 ring-[#1c0d14]"></div>
 <div class="flex flex-col gap-1">
 <div class="flex items-center justify-between">
-<span class="text-xs font-bold text-white">Étape 8 validée : Réservation confirmée par Novelty Grand Paris</span>
+<span class="text-xs font-bold text-white">Étape 8 validée : Réservation confirmée par —</span>
 <span class="text-[11px] font-mono text-[#ffb2bf]">Aujourd'hui, 09:42</span>
 </div>
 <p class="text-xs text-[#cd8ea9]">
-                      Disponibilité du parc L-Acoustics K2 bloquée en entrepôt. Fiche technique signée électroniquement par le directeur technique.
+                      Les événements réels du dossier apparaîtront ici après connexion.
                     </p>
 </div>
 </div>
@@ -594,11 +630,11 @@
 <div class="absolute -left-6 top-1 size-3.5 rounded-full bg-emerald-500 ring-4 ring-[#1c0d14]"></div>
 <div class="flex flex-col gap-1">
 <div class="flex items-center justify-between">
-<span class="text-xs font-bold text-white">Étape 7 validée : Acompte 50% &amp; Empreinte Caution enregistrés</span>
+<span class="text-xs font-bold text-white">Étape précédente enregistrée dans le CRM</span>
 <span class="text-[11px] font-mono text-[#cd8ea9]">Hier, 16:15</span>
 </div>
 <p class="text-xs text-[#cd8ea9]">
-                      Transaction Stripe B2B validée (17 125,00 €). Caution 15 000 € verrouillée sur compte séquestre RentSoundSystem.
+                      Aucune information de paiement fictive ne sera affichée.
                     </p>
 </div>
 </div>
@@ -607,11 +643,11 @@
 <div class="absolute -left-6 top-1 size-3.5 rounded-full bg-[#4a2133] ring-4 ring-[#1c0d14]"></div>
 <div class="flex flex-col gap-1">
 <div class="flex items-center justify-between">
-<span class="text-xs font-bold text-white">Étape 6 validée : Devis client accepté sans réserve</span>
+<span class="text-xs font-bold text-white">Historique du dossier</span>
 <span class="text-[11px] font-mono text-[#cd8ea9]">10 Juin, 11:20</span>
 </div>
 <p class="text-xs text-[#cd8ea9]">
-                      Le client Horizon Prod a retourné l'offre commerciale avec option technicien son Lead certifié L-Acoustics.
+                      Les validations et notes seront ajoutées au journal au fil du workflow.
                     </p>
 </div>
 </div>
@@ -630,41 +666,41 @@
 <div id="crm-other-cases" class="flex flex-col gap-3">
 <div class="p-3 rounded bg-[#231018] border border-[#4a2133]/60 hover:border-[#fc036f]/60 transition-all cursor-pointer">
 <div class="flex justify-between items-start mb-1">
-<span class="text-xs font-bold text-white">Warehouse Rave Nord #4</span>
+<span class="text-xs font-bold text-white">Chargement des dossiers…</span>
 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-600/30">Étape 9 : Livr.</span>
 </div>
-<p class="text-[11px] text-[#cd8ea9] truncate">4x Funktion-One Resolution 4 + Bass F218</p>
+<p class="text-[11px] text-[#cd8ea9] truncate">Dossier chargé depuis Supabase</p>
 <div class="flex justify-between items-center mt-2 text-[10px] text-[#cd8ea9]">
-<span>Lille Métropole</span>
+<span>Ville non renseignée</span>
 <span class="font-mono text-white">SLA: 2h restantes</span>
 </div>
 </div>
 <div class="p-3 rounded bg-[#231018] border border-[#4a2133]/60 hover:border-[#fc036f]/60 transition-all cursor-pointer">
 <div class="flex justify-between items-start mb-1">
-<span class="text-xs font-bold text-white">Gala Prestige Hermès Paris</span>
+<span class="text-xs font-bold text-white">—</span>
 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-600/30">Étape 6 : Devis</span>
 </div>
-<p class="text-[11px] text-[#cd8ea9] truncate">Système discret d&amp;b audiotechnik série Y blanche</p>
+<p class="text-[11px] text-[#cd8ea9] truncate">Matériel non renseigné</p>
 <div class="flex justify-between items-center mt-2 text-[10px] text-[#cd8ea9]">
-<span>Palais Brongniart</span>
+<span>Ville non renseignée</span>
 <span class="font-mono text-white">En attente sign.</span>
 </div>
 </div>
 <div class="p-3 rounded bg-[#231018] border border-[#4a2133]/60 hover:border-[#fc036f]/60 transition-all cursor-pointer">
 <div class="flex justify-between items-start mb-1">
-<span class="text-xs font-bold text-white">Open Air Rooftop Molitor</span>
+<span class="text-xs font-bold text-white">—</span>
 <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-600/30">Étape 10 : Retour</span>
 </div>
-<p class="text-[11px] text-[#cd8ea9] truncate">Pack DJ Pioneer Nexus 2 + 4x Point Source Meyer Sound</p>
+<p class="text-[11px] text-[#cd8ea9] truncate">Matériel non renseigné</p>
 <div class="flex justify-between items-center mt-2 text-[10px] text-[#cd8ea9]">
-<span>Piscine Molitor</span>
+<span>Ville non renseignée</span>
 <span class="font-mono text-emerald-400">En cours de check</span>
 </div>
 </div>
 </div>
 </div>
 </div>
-</div>
+<div id="crm-kanban-board" class="p-6 lg:p-8" hidden></div>
 
       </div>
     </section>
@@ -678,6 +714,6 @@
 <script src="/assets/js/admin-supabase-adapter.js"></script>
 <script src="/assets/js/admin-core.js"></script>
 
-<script src="/assets/js/admin-crm-workflow-dashboard.js?v=20261117-v1"></script>
+<script src="/assets/js/admin-crm-workflow-dashboard.js?v=20261117-v2"></script>
 </body>
 </html>
