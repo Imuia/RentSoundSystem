@@ -116,18 +116,18 @@ window.RSS_ADMIN_CONFIG = {
       location: ['city', 'country', 'location']
     },
     logs: {
-      label: 'Journaux',
-      source: 'logs',
-      directTable: 'logs',
+      label: 'Journaux techniques',
+      source: 'admin_audit_logs',
+      directTable: 'admin_audit_logs',
       readOnly: true,
       statusOptions: [],
       id: ['id'],
-      title: ['action', 'event_type', 'message', 'title', 'id'],
-      subtitle: ['resource', 'resource_id', 'admin_email', 'subtitle'],
-      status: ['level', 'status'],
+      title: ['action'],
+      subtitle: ['admin_email', 'resource', 'resource_id', 'note'],
+      status: ['status'],
       amount: [],
-      date: ['created_at', 'date'],
-      location: ['service', 'location']
+      date: ['created_at'],
+      location: ['resource']
     }
   }
 };
