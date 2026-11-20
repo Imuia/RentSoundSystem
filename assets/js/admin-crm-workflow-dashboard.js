@@ -229,32 +229,151 @@
     return m ? m[1] : null;
   }
   async function importQuotes() {
-    toast('Import des demandes de devis en cours…');
-    const { data, error } = await db.from('quote_requests').select('*').order('created_at', { ascending: false }).limit(500);
-    if (error) throw new Error(`Lecture de quote_requests impossible : ${error.message}`);
-    if (!data?.length) { await loadCases(); toast('Aucune demande de devis à importer.'); return; }
-    const payload = data.map(q => {
+    const { data, error } = await db.from('quote_requests')
+      .select('*').order('created_at', { ascending: false }).limit(500);
+
+    if (error) throw new Error('Lecture des demandes impossible : ' + error.message);
+    if (!data?.length) {
+      toast('Aucune demande de devis trouv?e.');
+      return;
+    }
+
+    const { data: existing, error: existingError } = await db
+      .from(TABLE).select('source_quote_id');
+
+    if (existingError) throw new Error('V?rification des dossiers existants impossible : ' + existingError.message);
+
+    const existingIds = new Set((existing || []).map(c => String(c.source_quote_id)));
+    const candidates = data.filter(q => !existingIds.has(String(q.id)));
+
+    if (!candidates.length) {
+      toast('Toutes les demandes sont d?j? pr?sentes dans le CRM.');
+      return;
+    }
+
+    const prepared = candidates.map(q => {
       const nested = parseObject(q.services);
-      const ref = q.reference || q.quote_reference || nested.quote_reference || `RSS-${String(q.id).slice(0, 8).toUpperCase()}`;
-      const fullName = q.full_name || q.client_name || q.customer_name || q.company_name || q.contact_name || q.email || 'Client';
+      const name = q.full_name || q.client_name || q.customer_name ||
+        q.company_name || q.contact_name || '';
+      const email = q.email || q.client_email || q.customer_email || '';
+      const equipment = q.equipment || q.equipment_description ||
+        q.equipment_types || q.items || nested.equipment || '';
+      const eventDate = asDate(q.event_date || q.start_date || q.date);
+      const flags = [];
+      if (!name) flags.push('Nom manquant');
+      if (!email) flags.push('Email manquant');
+      if (!equipment) flags.push('Mat?riel non pr?cis?');
+      if (!eventDate) flags.push('Date ?v?nement manquante');
+
+      const ref = q.reference || q.quote_reference || nested.quote_reference ||
+        'RSS-' + String(q.id).slice(0, 8).toUpperCase();
+
       return {
-        source_quote_id: String(q.id), reference: asText(ref), client_name: asText(fullName),
-        client_email: asText(q.email || q.client_email || q.customer_email),
-        client_phone: asText(q.phone || q.client_phone || q.customer_phone),
-        event_type: asText(q.event_type || q.event || nested.event_type),
-        event_city: asText(q.event_city || q.city || q.location),
-        event_date: asDate(q.event_date || q.start_date || q.date),
-        return_date: asDate(q.return_date || q.end_date),
-        equipment: asText(q.equipment || q.equipment_description || q.equipment_types || q.items || nested.equipment),
-        quantity: Number.parseInt(q.quantity || q.equipment_count, 10) || null,
-        source_status: asText(q.status || 'new'), status: 'open', stage: 0,
-        stage_data: {}, source_snapshot: q, updated_at: new Date().toISOString()
+        quote: q,
+        flags,
+        payload: {
+          source_quote_id: String(q.id),
+          reference: asText(ref),
+          client_name: asText(name || email || 'Client ? identifier'),
+          client_email: asText(email),
+          client_phone: asText(q.phone || q.client_phone || q.customer_phone),
+          event_type: asText(q.event_type || q.event || nested.event_type),
+          event_city: asText(q.event_city || q.city || q.location),
+          event_date: eventDate,
+          return_date: asDate(q.return_date || q.end_date),
+          equipment: asText(equipment),
+          quantity: Number.parseInt(q.quantity || q.equipment_count, 10) || null,
+          source_status: asText(q.status || 'new'),
+          status: 'open',
+          stage: 0,
+          stage_data: {},
+          source_snapshot: q,
+          updated_at: new Date().toISOString()
+        }
       };
     });
-    const { data: inserted, error: upsertError } = await db.from(TABLE).upsert(payload, { onConflict: 'source_quote_id', ignoreDuplicates: true }).select('id');
-    if (upsertError) throw new Error(`Enregistrement CRM impossible : ${upsertError.message}`);
+
+    const dialog = document.createElement('dialog');
+    dialog.id = 'crm-import-preview-dialog';
+    dialog.style.cssText = 'width:min(900px,94vw);max-height:85vh;padding:0;border:1px solid #6b2945;border-radius:12px;background:#180b12;color:white;';
+
+    const rows = prepared.map((item, index) => {
+      const q = item.quote;
+      const label = item.payload.client_name || 'Client';
+      const details = [
+        item.payload.client_email,
+        item.payload.event_city,
+        item.payload.event_date,
+        item.payload.equipment
+      ].filter(Boolean).join(' ? ');
+      const warning = item.flags.length
+        ? '<span style="color:#ffbd75">' + esc(item.flags.join(', ')) + '</span>'
+        : '<span style="color:#83d6a2">Informations principales pr?sentes</span>';
+      return '<label style="display:flex;gap:12px;padding:12px;border-bottom:1px solid #4a2133;align-items:flex-start;cursor:pointer">' +
+        '<input type="checkbox" data-import-index="' + index + '"' +
+        (item.flags.length ? '' : ' checked') +
+        ' style="margin-top:4px;accent-color:#fc036f">' +
+        '<span style="min-width:0;overflow-wrap:anywhere"><strong>' + esc(label) +
+        '</strong><br><small style="color:#cd8ea9">' + esc(details || 'Informations compl?mentaires absentes') +
+        '</small><br><small>' + warning + '</small></span></label>';
+    }).join('');
+
+    dialog.innerHTML =
+      '<div style="padding:18px 20px;border-bottom:1px solid #4a2133">' +
+      '<h2 style="font-size:19px;font-weight:700">Pr?visualisation des demandes</h2>' +
+      '<p style="color:#cd8ea9;font-size:12px;margin-top:5px">' +
+      prepared.length + ' nouvelle(s) demande(s) ? ' + (data.length - candidates.length) +
+      ' d?j? pr?sente(s) dans le CRM</p></div>' +
+      '<div style="max-height:52vh;overflow:auto">' + rows + '</div>' +
+      '<div style="padding:16px 20px;border-top:1px solid #4a2133">' +
+      '<p style="font-size:11px;color:#cd8ea9;margin-bottom:12px">Les demandes incompl?tes sont d?coch?es par d?faut. V?rifiez-les avant de les s?lectionner. Aucune donn?e ne sera import?e sans confirmation.</p>' +
+      '<div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap">' +
+      '<button type="button" data-preview-cancel style="padding:9px 16px;border:1px solid #6b2945;border-radius:6px">Annuler</button>' +
+      '<button type="button" data-preview-confirm style="padding:9px 16px;background:#fc036f;color:white;border-radius:6px;font-weight:700">Confirmer l?importation</button>' +
+      '</div></div>';
+
+    document.body.appendChild(dialog);
+
+    const selected = await new Promise(resolve => {
+      let settled = false;
+      const finish = value => {
+        if (settled) return;
+        settled = true;
+        resolve(value);
+      };
+      dialog.querySelector('[data-preview-cancel]').addEventListener('click', () => {
+        dialog.close();
+        finish(null);
+      });
+      dialog.querySelector('[data-preview-confirm]').addEventListener('click', () => {
+        const indexes = [...dialog.querySelectorAll('[data-import-index]:checked')]
+          .map(input => Number(input.dataset.importIndex));
+        dialog.close();
+        finish(indexes);
+      });
+      dialog.addEventListener('cancel', () => finish(null), { once: true });
+      dialog.addEventListener('close', () => {
+        finish(null);
+        dialog.remove();
+      }, { once: true });
+      dialog.showModal();
+    });
+
+    if (!selected?.length) {
+      toast('Importation annul?e ou aucune demande s?lectionn?e.');
+      return;
+    }
+
+    const payload = selected.map(index => prepared[index].payload);
+    const { data: inserted, error: insertError } = await db
+      .from(TABLE)
+      .upsert(payload, { onConflict: 'source_quote_id', ignoreDuplicates: true })
+      .select('id');
+
+    if (insertError) throw new Error('Import CRM impossible : ' + insertError.message);
+
     await loadCases();
-    toast(`${inserted?.length ?? 0} nouveau(x) dossier(s) importé(s). Les dossiers déjà présents ont été conservés.`);
+    toast((inserted?.length ?? 0) + ' dossier(s) import?(s) dans le CRM.');
   }
   async function updateActive(patch, eventText) {
     if (!active) throw new Error('Aucun dossier sélectionné.');
