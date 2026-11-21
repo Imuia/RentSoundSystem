@@ -28,7 +28,18 @@
     const payload = { company_name:d.company_name||"", full_name:d.full_name||"", contact_name:d.full_name||"", email:String(d.email||"").toLowerCase().trim(), phone:d.phone||"", country:d.country||"", city:d.city||"", website:d.website||"", registration_number:d.registration_number||d.reg_number||"", tax_id:d.tax_id||d.vat_number||"", address_1:d.address_1||"", postal_code:d.postal_code||"", categories:d.categories||[], equipment_types:d.categories||[], equipment_count:Number(d.equipment_count||0), fleet_value:d.fleet_value||"", equipment_condition:d.equipment_condition||"", equipment_description:d.equipment_description||"", coverage_area:d.coverage_area||"", delivery_radius:d.delivery_radius||"", handover_mode:d.handover_mode||"", technician_available:d.technician_available||"", deposit_policy:d.deposit_policy||"", insurance_status:d.insurance_status||"", logistics_notes:d.logistics_notes||"", document_urls:d.document_urls||"", status:"pending", payment_status:"unpaid", stripe_status:"not_started", source:"partner_onboarding" };
     const {data,error}=await c.from("partner_requests").insert(payload).select().single();
     if(error){ console.error(error); show("kyc-message", false, "Erreur Supabase : "+error.message); return; }
-    setEmail(payload.email); localStorage.setItem(REQUEST_ID_KEY, data.id); localStorage.removeItem(DRAFT_KEY); go("/partenaire-soumis.html");
+
+    try {
+      await fetch("/api/partner-notify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.assign({}, payload, { id: data ? data.id : "", kyc_files: d.kyc_files }))
+      });
+    } catch(notifyErr) {
+      console.warn("Notification email warning:", notifyErr);
+    }
+
+    setEmail(payload.email); localStorage.setItem(REQUEST_ID_KEY, data ? data.id : ""); localStorage.removeItem(DRAFT_KEY); go("/partenaire-soumis.html");
   }
   async function submitListing(form){
     const c=client(); if(!c){ alert("Supabase n’est pas chargé."); return; }
